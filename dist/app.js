@@ -431,7 +431,7 @@ function drawChaseVehicle(ctx, w, h) {
 
   // Far rotor stacks sit behind the fuselage in this camera angle.
   stations.slice(0, 2).forEach(([x, y], index) => {
-    drawCoaxialRotor(ctx, x * size, y * size, size * 0.35, state.missionTime * (index ? -8 : 8), index);
+    drawCoaxialRotor(ctx, x * size, y * size, size * 0.42, state.missionTime * (index ? -8 : 8), index);
   });
 
   ctx.strokeStyle = "rgba(104, 109, 108, 0.98)";
@@ -585,7 +585,7 @@ function drawChaseVehicle(ctx, w, h) {
 
   // Near rotor stacks overlap the airframe, making all four stations legible.
   stations.slice(2).forEach(([x, y], index) => {
-    drawCoaxialRotor(ctx, x * size, y * size, size * 0.38, state.missionTime * (index ? -8 : 8), index + 2);
+    drawCoaxialRotor(ctx, x * size, y * size, size * 0.45, state.missionTime * (index ? -8 : 8), index + 2);
   });
   ctx.restore();
 }
@@ -606,41 +606,29 @@ function drawCoaxialRotor(ctx, x, y, radius, spin, index) {
     const layerY = layer === 0 ? -radius * 0.23 : radius * 0.13;
     ctx.save();
     ctx.translate(0, layerY);
-    ctx.scale(1, 0.2);
-    ctx.strokeStyle = layer === 0 ? "rgba(237, 232, 205, 0.28)" : "rgba(172, 184, 181, 0.24)";
-    ctx.lineWidth = Math.max(1.5, radius * 0.034);
-    ctx.beginPath();
-    ctx.ellipse(0, 0, radius, radius, 0, 0, Math.PI * 2);
-    ctx.stroke();
+    ctx.scale(1, 0.23);
     const phase = spin * 0.18 * (layer === 0 ? 1 : -1) + index * 0.7 + layer * 0.48;
-    const blade = radius * 0.82;
+    const blade = radius * 0.98;
     const root = radius * 0.14;
-    const halfWidth = radius * 0.105;
+    const rootWidth = radius * 0.25;
+    const tipWidth = radius * 0.04;
 
-    ctx.strokeStyle = layer === 0 ? "rgba(231, 225, 190, 0.16)" : "rgba(151, 180, 177, 0.14)";
-    ctx.lineWidth = radius * 0.16;
-    for (const offset of [0, Math.PI]) {
-      ctx.beginPath();
-      ctx.arc(0, 0, blade * 0.86, phase + offset - 0.7, phase + offset + 0.12);
-      ctx.stroke();
-    }
-
-    // Several curved wing silhouettes overlap into a high-RPM translucent fan.
-    for (let ghost = 5; ghost >= 0; ghost -= 1) {
+    // Long tapered blades are repeated in tight trailing positions to show RPM.
+    for (let ghost = 8; ghost >= 0; ghost -= 1) {
       ctx.save();
-      ctx.rotate(phase - ghost * 0.13 * (layer === 0 ? 1 : -1));
+      ctx.rotate(phase - ghost * 0.085 * (layer === 0 ? 1 : -1));
       ctx.fillStyle = layer === 0
-        ? `rgba(229, 225, 201, ${0.68 - ghost * 0.1})`
-        : `rgba(155, 174, 170, ${0.62 - ghost * 0.09})`;
+        ? `rgba(220, 208, 170, ${0.42 - ghost * 0.038})`
+        : `rgba(143, 159, 155, ${0.37 - ghost * 0.033})`;
       ctx.beginPath();
-      ctx.moveTo(root, -halfWidth);
-      ctx.quadraticCurveTo(blade * 0.56, -halfWidth * 1.3, blade * 0.94, -halfWidth * 0.42);
-      ctx.quadraticCurveTo(blade, 0, blade * 0.9, halfWidth * 0.48);
-      ctx.lineTo(root, halfWidth);
-      ctx.lineTo(-root, halfWidth);
-      ctx.quadraticCurveTo(-blade * 0.56, halfWidth * 1.3, -blade * 0.94, halfWidth * 0.42);
-      ctx.quadraticCurveTo(-blade, 0, -blade * 0.9, -halfWidth * 0.48);
-      ctx.lineTo(-root, -halfWidth);
+      ctx.moveTo(root, -rootWidth);
+      ctx.lineTo(blade, -tipWidth);
+      ctx.lineTo(blade, tipWidth);
+      ctx.lineTo(root, rootWidth * 0.5);
+      ctx.lineTo(-root, rootWidth * 0.5);
+      ctx.lineTo(-blade, tipWidth);
+      ctx.lineTo(-blade, -tipWidth);
+      ctx.lineTo(-root, -rootWidth);
       ctx.closePath();
       ctx.fill();
       ctx.restore();
