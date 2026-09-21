@@ -40,6 +40,9 @@ const flightCtx = flightCanvas.getContext("2d");
 const chartCtx = chartCanvas.getContext("2d");
 const rotorGrid = $("rotor-grid");
 const pilotRotorGrid = $("pilot-rotor-grid");
+const titanMountainImage = new Image();
+titanMountainImage.decoding = "async";
+titanMountainImage.src = "./assets/titan-mountain-reference.jpg";
 
 const rotorTiles = Array.from({ length: model.rotorCount }, (_, index) => {
   const tile = document.createElement("div");
@@ -317,7 +320,40 @@ function drawTitanEnvironment(ctx, w, h, horizon) {
   ctx.fillStyle = sky;
   ctx.fillRect(0, 0, w, h);
 
-  const ridgeColors = ["rgba(105, 43, 19, 0.34)", "rgba(126, 50, 19, 0.48)", "rgba(145, 57, 18, 0.64)"];
+  if (titanMountainImage.complete && titanMountainImage.naturalWidth > 0) {
+    const sourceW = titanMountainImage.naturalWidth;
+    const sourceH = titanMountainImage.naturalHeight;
+    const targetH = Math.min(h * 0.61, horizon + h * 0.24);
+    const sourceAspect = sourceW / sourceH;
+    const targetAspect = w / targetH;
+    let sx = 0;
+    let sy = 0;
+    let sw = sourceW;
+    let sh = sourceH;
+
+    if (targetAspect > sourceAspect) {
+      sh = sourceW / targetAspect;
+      sy = Math.max(0, Math.min(sourceH - sh, sourceH * 0.08));
+    } else {
+      sw = sourceH * targetAspect;
+      sx = (sourceW - sw) / 2;
+    }
+
+    ctx.save();
+    ctx.globalAlpha = 0.86;
+    ctx.filter = "saturate(0.78) contrast(1.08) brightness(0.88)";
+    ctx.drawImage(titanMountainImage, sx, sy, sw, sh, 0, 0, w, targetH);
+    ctx.restore();
+
+    const mountainHaze = ctx.createLinearGradient(0, 0, 0, targetH);
+    mountainHaze.addColorStop(0, "rgba(230, 159, 69, 0.24)");
+    mountainHaze.addColorStop(0.52, "rgba(190, 91, 30, 0.12)");
+    mountainHaze.addColorStop(1, "rgba(113, 42, 14, 0.46)");
+    ctx.fillStyle = mountainHaze;
+    ctx.fillRect(0, 0, w, targetH);
+  }
+
+  const ridgeColors = ["rgba(105, 43, 19, 0.18)", "rgba(126, 50, 19, 0.3)", "rgba(145, 57, 18, 0.5)"];
   for (let ridge = 0; ridge < 3; ridge += 1) {
     const baseY = horizon + 4 + ridge * 18;
     ctx.fillStyle = ridgeColors[ridge];
