@@ -1,3 +1,6 @@
+import { createChaseRenderer } from "./chase-vehicle.mjs";
+import { enterFreeCamera, orbitCamera } from "./flight-camera.mjs";
+
 const model = {
   massKg: 875,
   titanG: 1.352,
@@ -31,7 +34,7 @@ const state = {
   view: "mission",
   cameraMode: "fixed",
   cameraYaw: 0,
-  cameraPitch: 0,
+  cameraPitch: 0.38,
   chart: [],
   lastTick: performance.now(),
 };
@@ -46,6 +49,14 @@ const pilotRotorGrid = $("pilot-rotor-grid");
 const titanMountainImage = new Image();
 titanMountainImage.decoding = "async";
 titanMountainImage.src = "./assets/titan-mountain-reference.jpg";
+let chaseRenderer;
+try {
+  chaseRenderer = createChaseRenderer();
+} catch (error) {
+  console.warn("3D rendering unavailable; using the fixed flight view.", error);
+  $("free-camera-button").disabled = true;
+  $("free-camera-button").title = "Free camera requires WebGL 2";
+}
 
 const rotorTiles = Array.from({ length: model.rotorCount }, (_, index) => {
   const tile = document.createElement("div");
@@ -449,6 +460,14 @@ function drawTitanHaze(ctx, w, h, horizon) {
 }
 
 function drawChaseVehicle(ctx, w, h) {
+  if (chaseRenderer) {
+    chaseRenderer.draw(ctx, w, h, state);
+    return;
+  }
+  drawChaseVehicleFallback(ctx, w, h);
+}
+
+function drawChaseVehicleFallback(ctx, w, h) {
   const size = clamp(Math.min(w, h) * 0.245, 96, 202);
   const cx = w / 2;
   const cy = h * 0.37;
@@ -1091,6 +1110,8 @@ function bindPilotStick(nubId, kind) {
 }
 
 function setCameraMode(mode) {
+  if (mode === "free" && !chaseRenderer) return;
+  if (mode === "free" && state.cameraMode !== "free") enterFreeCamera(state);
   state.cameraMode = mode;
   document.body.classList.toggle("free-camera", mode === "free");
   const fixedButton = $("fixed-camera-button");
@@ -1107,7 +1128,8 @@ function bindFreeCamera() {
   let lastY = 0;
 
   flightCanvas.addEventListener("pointerdown", (event) => {
-    if (state.view !== "pilot" || state.cameraMode !== "free") return;
+    if (state.view !== "pilot" || state.cameraMode !== "free" || activePointer !== null) return;
+    if (event.pointerType === "mouse" && event.button !== 0) return;
     activePointer = event.pointerId;
     lastX = event.clientX;
     lastY = event.clientY;
@@ -1115,10 +1137,9 @@ function bindFreeCamera() {
   });
 
   flightCanvas.addEventListener("pointermove", (event) => {
-    if (event.pointerId !== activePointer) return;
+    if (event.pointerId !== activePointer || state.cameraMode !== "free" || state.view !== "pilot") return;
     const rect = flightCanvas.getBoundingClientRect();
-    state.cameraYaw = clamp(state.cameraYaw + ((event.clientX - lastX) / Math.max(240, rect.width)) * 2.4, -1.05, 1.05);
-    state.cameraPitch = clamp(state.cameraPitch + ((event.clientY - lastY) / Math.max(180, rect.height)) * 1.8, -0.5, 0.5);
+    orbitCamera(state, event.clientX - lastX, event.clientY - lastY, rect.width, rect.height);
     lastX = event.clientX;
     lastY = event.clientY;
   });
@@ -1129,6 +1150,7 @@ function bindFreeCamera() {
 
   flightCanvas.addEventListener("pointerup", release);
   flightCanvas.addEventListener("pointercancel", release);
+  flightCanvas.addEventListener("lostpointercapture", release);
 }
 
 function setView(view) {
