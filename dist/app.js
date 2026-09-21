@@ -29,6 +29,9 @@ const state = {
   wind: 0.8,
   payloadDelta: 0,
   view: "mission",
+  cameraMode: "fixed",
+  cameraYaw: 0,
+  cameraPitch: 0,
   chart: [],
   lastTick: performance.now(),
 };
@@ -449,13 +452,17 @@ function drawChaseVehicle(ctx, w, h) {
   const size = clamp(Math.min(w, h) * 0.245, 96, 202);
   const cx = w / 2;
   const cy = h * 0.37;
-  const bank = -state.roll * 0.1;
+  const fixedYaw = clamp(Math.sin(((state.heading - 84) * Math.PI) / 180) * 0.34 + state.yaw * 0.42, -0.58, 0.58);
+  const fixedPitch = clamp(state.pitch * 0.5, -0.42, 0.42);
+  const viewYaw = state.cameraMode === "free" ? clamp(state.cameraYaw + fixedYaw * 0.25, -1.15, 1.15) : fixedYaw;
+  const viewPitch = state.cameraMode === "free" ? clamp(state.cameraPitch + fixedPitch * 0.35, -0.58, 0.58) : fixedPitch;
+  const bank = -state.roll * 0.14 + viewYaw * 0.025;
   const lift = Math.sin(state.missionTime * 1.8) * 2.4;
 
   ctx.save();
-  ctx.translate(cx, cy + lift);
+  ctx.translate(cx + viewYaw * size * 0.08, cy + lift - viewPitch * size * 0.07);
   ctx.rotate(bank);
-  ctx.scale(1, 0.86);
+  ctx.transform(1, viewYaw * 0.045, viewYaw * 0.24, 0.86 + viewPitch * 0.13, 0, 0);
 
   // Rear three-quarter chase view: the nose points toward the horizon.
   const stations = [
@@ -1083,6 +1090,47 @@ function bindPilotStick(nubId, kind) {
   pad.addEventListener("pointercancel", release);
 }
 
+function setCameraMode(mode) {
+  state.cameraMode = mode;
+  document.body.classList.toggle("free-camera", mode === "free");
+  const fixedButton = $("fixed-camera-button");
+  const freeButton = $("free-camera-button");
+  fixedButton.classList.toggle("active", mode === "fixed");
+  freeButton.classList.toggle("active", mode === "free");
+  fixedButton.setAttribute("aria-pressed", String(mode === "fixed"));
+  freeButton.setAttribute("aria-pressed", String(mode === "free"));
+}
+
+function bindFreeCamera() {
+  let activePointer = null;
+  let lastX = 0;
+  let lastY = 0;
+
+  flightCanvas.addEventListener("pointerdown", (event) => {
+    if (state.view !== "pilot" || state.cameraMode !== "free") return;
+    activePointer = event.pointerId;
+    lastX = event.clientX;
+    lastY = event.clientY;
+    flightCanvas.setPointerCapture(event.pointerId);
+  });
+
+  flightCanvas.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== activePointer) return;
+    const rect = flightCanvas.getBoundingClientRect();
+    state.cameraYaw = clamp(state.cameraYaw + ((event.clientX - lastX) / Math.max(240, rect.width)) * 2.4, -1.05, 1.05);
+    state.cameraPitch = clamp(state.cameraPitch + ((event.clientY - lastY) / Math.max(180, rect.height)) * 1.8, -0.5, 0.5);
+    lastX = event.clientX;
+    lastY = event.clientY;
+  });
+
+  const release = (event) => {
+    if (event.pointerId === activePointer) activePointer = null;
+  };
+
+  flightCanvas.addEventListener("pointerup", release);
+  flightCanvas.addEventListener("pointercancel", release);
+}
+
 function setView(view) {
   state.view = view;
   document.body.classList.toggle("pilot-view", view === "pilot");
@@ -1119,8 +1167,11 @@ $("cruise-button").addEventListener("click", () => setMode("cruise"));
 $("land-button").addEventListener("click", () => setMode("land"));
 $("mission-view-button").addEventListener("click", () => setView("mission"));
 $("pilot-view-button").addEventListener("click", () => setView("pilot"));
+$("fixed-camera-button").addEventListener("click", () => setCameraMode("fixed"));
+$("free-camera-button").addEventListener("click", () => setCameraMode("free"));
 bindPilotStick("pilot-left-stick", "left");
 bindPilotStick("pilot-right-stick", "right");
+bindFreeCamera();
 
 window.addEventListener("keydown", (event) => {
   const step = event.shiftKey ? 0.08 : 0.04;

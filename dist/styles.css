@@ -613,6 +613,51 @@ body.pilot-view .visual-wrap {
   box-shadow: none;
 }
 
+.camera-switch {
+  display: none;
+}
+
+body.pilot-view .camera-switch {
+  position: absolute;
+  z-index: 6;
+  top: 14px;
+  left: 50%;
+  display: flex;
+  width: 116px;
+  height: 34px;
+  padding: 3px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(238, 226, 204, 0.3);
+  border-radius: 6px;
+  background: rgba(10, 15, 19, 0.78);
+  backdrop-filter: blur(8px);
+}
+
+body.pilot-view .camera-switch button {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  border-radius: 4px;
+  color: rgba(236, 245, 255, 0.62);
+  background: transparent;
+  font: 800 0.67rem/1 Inter, Arial, sans-serif;
+  cursor: pointer;
+}
+
+body.pilot-view .camera-switch button.active {
+  color: #081018;
+  background: var(--cyan);
+}
+
+body.pilot-view.free-camera #flight-canvas {
+  cursor: grab;
+  touch-action: none;
+}
+
+body.pilot-view.free-camera #flight-canvas:active {
+  cursor: grabbing;
+}
+
 body.pilot-view .pilot-deck {
   position: absolute;
   z-index: 4;
