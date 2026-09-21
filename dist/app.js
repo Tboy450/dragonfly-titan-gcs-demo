@@ -462,18 +462,18 @@ function drawChaseVehicle(ctx, w, h) {
   ctx.lineTo(size * 0.69, size * 0.67);
   ctx.stroke();
 
-  // Equipment chassis under the rounded insulated forward cab.
+  // Long equipment deck, similar to the exposed flight-structure photographs.
   const metal = ctx.createLinearGradient(-size * 0.5, -size * 0.65, size * 0.5, size * 0.55);
-  metal.addColorStop(0, "#e2e5e2");
-  metal.addColorStop(0.3, "#8c9697");
-  metal.addColorStop(0.58, "#c0c5c1");
-  metal.addColorStop(1, "#50595a");
+  metal.addColorStop(0, "#87908f");
+  metal.addColorStop(0.34, "#596264");
+  metal.addColorStop(0.7, "#6e7776");
+  metal.addColorStop(1, "#343d3f");
   ctx.fillStyle = metal;
   ctx.strokeStyle = "rgba(38, 43, 44, 0.86)";
   ctx.lineWidth = Math.max(1.5, size * 0.012);
   ctx.beginPath();
-  ctx.moveTo(-size * 0.45, -size * 0.1);
-  ctx.lineTo(size * 0.45, -size * 0.1);
+  ctx.moveTo(-size * 0.45, -size * 0.48);
+  ctx.lineTo(size * 0.45, -size * 0.48);
   ctx.lineTo(size * 0.5, size * 0.38);
   ctx.lineTo(size * 0.45, size * 0.56);
   ctx.lineTo(-size * 0.45, size * 0.56);
@@ -482,7 +482,7 @@ function drawChaseVehicle(ctx, w, h) {
   ctx.fill();
   ctx.stroke();
 
-  // The insulated cab is a distinct bulbous pod rather than a tapered box.
+  // Only the forward third is enclosed by the curved insulated cab.
   const shell = ctx.createLinearGradient(0, -size * 0.78, 0, size * 0.08);
   shell.addColorStop(0, "#f0f1ed");
   shell.addColorStop(0.48, "#a9b0ae");
@@ -491,11 +491,11 @@ function drawChaseVehicle(ctx, w, h) {
   ctx.strokeStyle = "rgba(55, 61, 61, 0.9)";
   ctx.lineWidth = Math.max(1.5, size * 0.014);
   ctx.beginPath();
-  ctx.moveTo(-size * 0.47, size * 0.08);
-  ctx.bezierCurveTo(-size * 0.54, -size * 0.18, -size * 0.39, -size * 0.5, -size * 0.22, -size * 0.56);
-  ctx.quadraticCurveTo(0, -size * 0.66, size * 0.22, -size * 0.56);
-  ctx.bezierCurveTo(size * 0.39, -size * 0.5, size * 0.54, -size * 0.18, size * 0.47, size * 0.08);
-  ctx.quadraticCurveTo(0, size * 0.22, -size * 0.47, size * 0.08);
+  ctx.moveTo(-size * 0.46, -size * 0.18);
+  ctx.bezierCurveTo(-size * 0.5, -size * 0.36, -size * 0.34, -size * 0.54, -size * 0.19, -size * 0.57);
+  ctx.quadraticCurveTo(0, -size * 0.63, size * 0.19, -size * 0.57);
+  ctx.bezierCurveTo(size * 0.34, -size * 0.54, size * 0.5, -size * 0.36, size * 0.46, -size * 0.18);
+  ctx.quadraticCurveTo(0, -size * 0.09, -size * 0.46, -size * 0.18);
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
@@ -503,25 +503,25 @@ function drawChaseVehicle(ctx, w, h) {
   ctx.strokeStyle = "rgba(244, 247, 240, 0.42)";
   ctx.lineWidth = Math.max(1, size * 0.01);
   ctx.beginPath();
-  ctx.moveTo(-size * 0.25, -size * 0.5);
-  ctx.quadraticCurveTo(0, -size * 0.6, size * 0.25, -size * 0.5);
+  ctx.moveTo(-size * 0.23, -size * 0.53);
+  ctx.quadraticCurveTo(0, -size * 0.6, size * 0.23, -size * 0.53);
   ctx.stroke();
 
   // Gold blanket rails and access-panel edges from the integration article.
   ctx.strokeStyle = "#d1a02d";
   ctx.lineWidth = Math.max(2, size * 0.018);
   ctx.beginPath();
-  ctx.moveTo(-size * 0.45, -size * 0.04);
+  ctx.moveTo(-size * 0.45, -size * 0.17);
   ctx.lineTo(-size * 0.42, size * 0.39);
   ctx.lineTo(-size * 0.34, size * 0.52);
   ctx.lineTo(size * 0.34, size * 0.52);
   ctx.lineTo(size * 0.42, size * 0.39);
-  ctx.lineTo(size * 0.45, -size * 0.04);
+  ctx.lineTo(size * 0.45, -size * 0.17);
   ctx.stroke();
 
   ctx.strokeStyle = "rgba(27, 33, 34, 0.62)";
   ctx.lineWidth = 1;
-  for (const y of [0.11, 0.31]) {
+  for (const y of [-0.05, 0.14, 0.33]) {
     ctx.beginPath();
     ctx.moveTo(-size * 0.42, size * y);
     ctx.lineTo(size * 0.42, size * y);
@@ -530,23 +530,23 @@ function drawChaseVehicle(ctx, w, h) {
 
   for (const x of [-0.26, 0, 0.26]) {
     ctx.fillStyle = "#131a1d";
-    ctx.fillRect(size * (x - 0.075), size * 0.17, size * 0.15, size * 0.1);
+    ctx.fillRect(size * (x - 0.075), size * 0.2, size * 0.15, size * 0.1);
     ctx.strokeStyle = "#d1a02d";
-    ctx.strokeRect(size * (x - 0.075), size * 0.17, size * 0.15, size * 0.1);
+    ctx.strokeRect(size * (x - 0.075), size * 0.2, size * 0.15, size * 0.1);
   }
 
   // Large top-mounted high-gain antenna and its short pedestal.
   ctx.strokeStyle = "#656d6d";
   ctx.lineWidth = Math.max(3, size * 0.025);
   ctx.beginPath();
-  ctx.moveTo(size * 0.08, -size * 0.17);
-  ctx.lineTo(size * 0.08, -size * 0.4);
+  ctx.moveTo(size * 0.08, size * 0.42);
+  ctx.lineTo(size * 0.08, size * 0.24);
   ctx.stroke();
   ctx.fillStyle = "#b8bdb8";
   ctx.strokeStyle = "#616968";
   ctx.lineWidth = Math.max(1.5, size * 0.012);
   ctx.beginPath();
-  ctx.ellipse(size * 0.08, -size * 0.42, size * 0.25, size * 0.075, -0.08, 0, Math.PI * 2);
+  ctx.ellipse(size * 0.08, size * 0.22, size * 0.19, size * 0.058, -0.08, 0, Math.PI * 2);
   ctx.fill();
   ctx.stroke();
 
@@ -559,6 +559,28 @@ function drawChaseVehicle(ctx, w, h) {
     ctx.lineTo(side * size * 0.43, size * 0.48);
     ctx.closePath();
     ctx.fill();
+  }
+
+  // Twin helicopter-style landing rails with two braced mounts per side.
+  ctx.strokeStyle = "rgba(61, 67, 67, 0.98)";
+  ctx.lineWidth = Math.max(3.2, size * 0.03);
+  ctx.lineCap = "round";
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * size * 0.61, -size * 0.11);
+    ctx.quadraticCurveTo(side * size * 0.68, -size * 0.04, side * size * 0.67, size * 0.13);
+    ctx.lineTo(side * size * 0.7, size * 0.68);
+    ctx.quadraticCurveTo(side * size * 0.68, size * 0.75, side * size * 0.59, size * 0.73);
+    ctx.stroke();
+
+    ctx.lineWidth = Math.max(2.4, size * 0.022);
+    ctx.beginPath();
+    ctx.moveTo(side * size * 0.39, size * 0.02);
+    ctx.lineTo(side * size * 0.66, size * 0.22);
+    ctx.moveTo(side * size * 0.41, size * 0.38);
+    ctx.lineTo(side * size * 0.69, size * 0.55);
+    ctx.stroke();
+    ctx.lineWidth = Math.max(3.2, size * 0.03);
   }
 
   // Near rotor stacks overlap the airframe, making all four stations legible.
@@ -594,20 +616,30 @@ function drawCoaxialRotor(ctx, x, y, radius, spin, index) {
     const blade = radius * 0.82;
     const root = radius * 0.14;
     const halfWidth = radius * 0.105;
-    for (let ghost = 2; ghost >= 0; ghost -= 1) {
+
+    ctx.strokeStyle = layer === 0 ? "rgba(231, 225, 190, 0.16)" : "rgba(151, 180, 177, 0.14)";
+    ctx.lineWidth = radius * 0.16;
+    for (const offset of [0, Math.PI]) {
+      ctx.beginPath();
+      ctx.arc(0, 0, blade * 0.86, phase + offset - 0.7, phase + offset + 0.12);
+      ctx.stroke();
+    }
+
+    // Several curved wing silhouettes overlap into a high-RPM translucent fan.
+    for (let ghost = 5; ghost >= 0; ghost -= 1) {
       ctx.save();
-      ctx.rotate(phase - ghost * 0.18 * (layer === 0 ? 1 : -1));
+      ctx.rotate(phase - ghost * 0.13 * (layer === 0 ? 1 : -1));
       ctx.fillStyle = layer === 0
-        ? `rgba(225, 222, 202, ${0.74 - ghost * 0.22})`
-        : `rgba(151, 166, 163, ${0.68 - ghost * 0.2})`;
+        ? `rgba(229, 225, 201, ${0.68 - ghost * 0.1})`
+        : `rgba(155, 174, 170, ${0.62 - ghost * 0.09})`;
       ctx.beginPath();
       ctx.moveTo(root, -halfWidth);
-      ctx.lineTo(blade * 0.94, -halfWidth * 0.72);
-      ctx.quadraticCurveTo(blade, 0, blade * 0.94, halfWidth * 0.72);
+      ctx.quadraticCurveTo(blade * 0.56, -halfWidth * 1.3, blade * 0.94, -halfWidth * 0.42);
+      ctx.quadraticCurveTo(blade, 0, blade * 0.9, halfWidth * 0.48);
       ctx.lineTo(root, halfWidth);
       ctx.lineTo(-root, halfWidth);
-      ctx.lineTo(-blade * 0.94, halfWidth * 0.72);
-      ctx.quadraticCurveTo(-blade, 0, -blade * 0.94, -halfWidth * 0.72);
+      ctx.quadraticCurveTo(-blade * 0.56, halfWidth * 1.3, -blade * 0.94, halfWidth * 0.42);
+      ctx.quadraticCurveTo(-blade, 0, -blade * 0.9, -halfWidth * 0.48);
       ctx.lineTo(-root, -halfWidth);
       ctx.closePath();
       ctx.fill();
@@ -705,9 +737,8 @@ function drawVehicle(ctx, w, h) {
   ctx.strokeStyle = "#d1a02d";
   ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.moveTo(-0.33 * scale, -0.94 * scale);
-  ctx.quadraticCurveTo(0, -1.08 * scale, 0.33 * scale, -0.94 * scale);
-  ctx.lineTo(0.52 * scale, -0.56 * scale);
+  ctx.moveTo(-0.48 * scale, -0.92 * scale);
+  ctx.lineTo(0.48 * scale, -0.92 * scale);
   ctx.lineTo(0.52 * scale, 0.72 * scale);
   ctx.lineTo(0.4 * scale, 0.9 * scale);
   ctx.lineTo(-0.4 * scale, 0.9 * scale);
@@ -717,9 +748,26 @@ function drawVehicle(ctx, w, h) {
   ctx.fill();
   ctx.stroke();
 
+  const cabMetal = ctx.createLinearGradient(-0.45 * scale, -1.02 * scale, 0.45 * scale, -0.3 * scale);
+  cabMetal.addColorStop(0, "#eef0ed");
+  cabMetal.addColorStop(0.52, "#a5afae");
+  cabMetal.addColorStop(1, "#687477");
+  ctx.fillStyle = cabMetal;
+  ctx.strokeStyle = "rgba(43, 53, 55, 0.86)";
+  ctx.beginPath();
+  ctx.moveTo(-0.48 * scale, -0.42 * scale);
+  ctx.lineTo(-0.48 * scale, -0.76 * scale);
+  ctx.quadraticCurveTo(-0.34 * scale, -1.03 * scale, 0, -1.06 * scale);
+  ctx.quadraticCurveTo(0.34 * scale, -1.03 * scale, 0.48 * scale, -0.76 * scale);
+  ctx.lineTo(0.48 * scale, -0.42 * scale);
+  ctx.quadraticCurveTo(0, -0.3 * scale, -0.48 * scale, -0.42 * scale);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
   ctx.strokeStyle = "rgba(23, 31, 34, 0.52)";
   ctx.lineWidth = 1;
-  for (const y of [-0.48, -0.12, 0.24, 0.6]) {
+  for (const y of [-0.28, 0.08, 0.44, 0.7]) {
     ctx.beginPath();
     ctx.moveTo(-0.47 * scale, y * scale);
     ctx.lineTo(0.47 * scale, y * scale);
@@ -728,9 +776,9 @@ function drawVehicle(ctx, w, h) {
 
   for (const x of [-0.3, 0, 0.3]) {
     ctx.fillStyle = "#182126";
-    ctx.fillRect((x - 0.09) * scale, 0.34 * scale, 0.18 * scale, 0.16 * scale);
+    ctx.fillRect((x - 0.09) * scale, 0.36 * scale, 0.18 * scale, 0.16 * scale);
     ctx.strokeStyle = "#d1a02d";
-    ctx.strokeRect((x - 0.09) * scale, 0.34 * scale, 0.18 * scale, 0.16 * scale);
+    ctx.strokeRect((x - 0.09) * scale, 0.36 * scale, 0.18 * scale, 0.16 * scale);
   }
 
   // High-gain antenna reads as a large circular dish from above.
@@ -738,20 +786,20 @@ function drawVehicle(ctx, w, h) {
   ctx.strokeStyle = "rgba(66, 75, 76, 0.9)";
   ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.arc(0.08 * scale, -0.45 * scale, 0.25 * scale, 0, Math.PI * 2);
+  ctx.arc(0.08 * scale, 0.04 * scale, 0.25 * scale, 0, Math.PI * 2);
   ctx.fill();
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(-0.08 * scale, -0.45 * scale);
-  ctx.lineTo(0.24 * scale, -0.45 * scale);
-  ctx.moveTo(0.08 * scale, -0.61 * scale);
-  ctx.lineTo(0.08 * scale, -0.29 * scale);
+  ctx.moveTo(-0.08 * scale, 0.04 * scale);
+  ctx.lineTo(0.24 * scale, 0.04 * scale);
+  ctx.moveTo(0.08 * scale, -0.12 * scale);
+  ctx.lineTo(0.08 * scale, 0.2 * scale);
   ctx.stroke();
 
   ctx.fillStyle = "#263034";
   for (const x of [-0.31, 0.31]) {
     ctx.beginPath();
-    ctx.arc(x * scale, -0.72 * scale, 0.055 * scale, 0, Math.PI * 2);
+    ctx.arc(x * scale, -0.63 * scale, 0.055 * scale, 0, Math.PI * 2);
     ctx.fill();
   }
 
