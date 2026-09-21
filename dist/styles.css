@@ -102,11 +102,36 @@ a:hover {
 .topbar {
   min-height: 88px;
   display: grid;
-  grid-template-columns: minmax(260px, 0.7fr) 2fr;
+  grid-template-columns: minmax(250px, 0.72fr) auto minmax(620px, 2fr);
   align-items: center;
   gap: 18px;
   padding: 16px 18px;
   border-radius: 8px;
+}
+
+.view-switch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(78px, 1fr));
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(3, 11, 18, 0.72);
+}
+
+.view-switch button {
+  min-height: 36px;
+  padding: 0 14px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.view-switch button.active {
+  border-color: rgba(124, 231, 255, 0.48);
+  color: #061019;
+  background: var(--cyan);
 }
 
 .brand h1 {
@@ -358,6 +383,236 @@ a:hover {
   bottom: 14px;
 }
 
+.pilot-deck {
+  display: none;
+}
+
+.pilot-control,
+.attitude-wrap,
+.pilot-rotors {
+  min-width: 0;
+  text-align: center;
+}
+
+.pilot-deck > div > span {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(236, 245, 255, 0.7);
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.pilot-deck small {
+  display: block;
+  margin-top: 7px;
+  color: rgba(236, 245, 255, 0.72);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.75rem;
+}
+
+.pilot-stick-box,
+.attitude-indicator {
+  position: relative;
+  width: min(18vw, 210px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(236, 245, 255, 0.18);
+  border-radius: 50%;
+  background: rgba(7, 17, 27, 0.86);
+  box-shadow: 0 20px 55px rgba(22, 5, 0, 0.32);
+}
+
+.pilot-axis {
+  position: absolute;
+  z-index: 1;
+  background: rgba(151, 184, 209, 0.18);
+}
+
+.pilot-axis.horizontal {
+  width: 78%;
+  height: 1px;
+  left: 11%;
+  top: 50%;
+}
+
+.pilot-axis.vertical {
+  width: 1px;
+  height: 78%;
+  left: 50%;
+  top: 11%;
+}
+
+.pilot-stick-box i {
+  position: absolute;
+  z-index: 3;
+  width: 24%;
+  aspect-ratio: 1;
+  left: 38%;
+  top: 38%;
+  border: 2px solid rgba(255, 255, 255, 0.82);
+  border-radius: 50%;
+  background: #d7dde8;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.36);
+}
+
+.axis-label {
+  position: absolute;
+  z-index: 2;
+  color: rgba(236, 245, 255, 0.36);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.68rem;
+  font-style: normal;
+}
+
+.axis-label.up { top: 8%; left: 50%; transform: translateX(-50%); }
+.axis-label.down { bottom: 8%; left: 50%; transform: translateX(-50%); }
+.axis-label.left { left: 7%; top: 50%; transform: translateY(-50%); }
+.axis-label.right { right: 7%; top: 50%; transform: translateY(-50%); }
+
+.attitude-indicator {
+  background: #596371;
+}
+
+.attitude-horizon {
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  left: -25%;
+  top: 50%;
+  transform-origin: 50% 0;
+  background: #39835f;
+  border-top: 2px solid rgba(255, 180, 87, 0.72);
+}
+
+.attitude-indicator i {
+  position: absolute;
+  z-index: 2;
+  width: 34%;
+  height: 12%;
+  left: 33%;
+  top: 47%;
+  border-top: 2px solid rgba(236, 245, 255, 0.8);
+  border-left: 2px solid rgba(236, 245, 255, 0.8);
+  border-right: 2px solid rgba(236, 245, 255, 0.8);
+}
+
+.pilot-rotors {
+  align-self: center;
+  width: min(15vw, 170px);
+  padding: 14px;
+  border: 1px solid rgba(236, 245, 255, 0.15);
+  border-radius: 8px;
+  background: rgba(7, 17, 27, 0.86);
+  box-shadow: 0 20px 55px rgba(22, 5, 0, 0.32);
+}
+
+.pilot-rotor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.pilot-rotor-grid b {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: 1px solid rgba(128, 242, 174, 0.25);
+  border-radius: 50%;
+  color: var(--green);
+  background: rgba(128, 242, 174, 0.07);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+body.pilot-view {
+  background: #b85f31;
+}
+
+body.pilot-view .app-shell {
+  width: 100%;
+  height: 100vh;
+  padding: 16px;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 12px;
+}
+
+body.pilot-view .topbar {
+  z-index: 5;
+  min-height: 70px;
+  grid-template-columns: minmax(220px, 0.7fr) auto minmax(560px, 2fr);
+  padding: 10px 14px;
+  background: rgba(8, 14, 21, 0.94);
+}
+
+body.pilot-view .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+body.pilot-view .brand h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+body.pilot-view .mission-chip {
+  display: none;
+}
+
+body.pilot-view .status-item {
+  min-height: 48px;
+  padding: 6px 9px;
+  border-color: transparent;
+  background: transparent;
+}
+
+body.pilot-view .layout-grid,
+body.pilot-view .center-stage,
+body.pilot-view .visual-wrap {
+  min-height: 0;
+  height: 100%;
+}
+
+body.pilot-view .layout-grid {
+  display: block;
+}
+
+body.pilot-view .center-stage {
+  display: block;
+}
+
+body.pilot-view .left-rail,
+body.pilot-view .right-rail,
+body.pilot-view .telemetry-band,
+body.pilot-view .chart-panel,
+body.pilot-view .sourcebar,
+body.pilot-view .visual-overlay {
+  display: none;
+}
+
+body.pilot-view .visual-wrap {
+  border-color: rgba(92, 32, 12, 0.45);
+  background: #aa4e23;
+  box-shadow: none;
+}
+
+body.pilot-view .pilot-deck {
+  position: absolute;
+  z-index: 4;
+  left: 22px;
+  right: 22px;
+  bottom: 18px;
+  display: grid;
+  grid-template-columns: minmax(170px, 1fr) minmax(170px, 1fr) minmax(120px, 0.55fr) minmax(170px, 1fr);
+  align-items: end;
+  gap: 26px;
+  pointer-events: none;
+}
+
 .telemetry-band {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -496,6 +751,19 @@ a:hover {
   .center-stage {
     grid-template-rows: minmax(390px, 58vh) auto minmax(185px, 0.42fr);
   }
+
+  body.pilot-view .topbar {
+    grid-template-columns: 1fr auto;
+  }
+
+  body.pilot-view .status-strip {
+    grid-column: 1 / -1;
+  }
+
+  body.pilot-view .pilot-deck {
+    grid-template-columns: repeat(4, minmax(130px, 1fr));
+    gap: 14px;
+  }
 }
 
 @media (max-width: 720px) {
@@ -527,5 +795,43 @@ a:hover {
   .visual-overlay {
     min-width: 120px;
     padding: 8px;
+  }
+
+  .view-switch {
+    width: 100%;
+  }
+
+  body.pilot-view .app-shell {
+    padding: 8px;
+  }
+
+  body.pilot-view .topbar {
+    grid-template-columns: 1fr;
+  }
+
+  body.pilot-view .brand {
+    justify-content: center;
+  }
+
+  body.pilot-view .status-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  body.pilot-view .pilot-deck {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  body.pilot-view .pilot-stick-box,
+  body.pilot-view .attitude-indicator {
+    width: min(30vw, 150px);
+  }
+
+  body.pilot-view .pilot-rotors {
+    width: min(28vw, 135px);
   }
 }

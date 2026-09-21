@@ -28,6 +28,7 @@ const state = {
   battery: 96,
   wind: 0.8,
   payloadDelta: 0,
+  view: "mission",
   chart: [],
   lastTick: performance.now(),
 };
@@ -38,6 +39,7 @@ const chartCanvas = $("chart-canvas");
 const flightCtx = flightCanvas.getContext("2d");
 const chartCtx = chartCanvas.getContext("2d");
 const rotorGrid = $("rotor-grid");
+const pilotRotorGrid = $("pilot-rotor-grid");
 
 const rotorTiles = Array.from({ length: model.rotorCount }, (_, index) => {
   const tile = document.createElement("div");
@@ -48,6 +50,13 @@ const rotorTiles = Array.from({ length: model.rotorCount }, (_, index) => {
     <div class="rotor-bar"><i></i></div>
   `;
   rotorGrid.appendChild(tile);
+  return tile;
+});
+
+const pilotRotorTiles = Array.from({ length: model.rotorCount }, () => {
+  const tile = document.createElement("b");
+  tile.textContent = "000";
+  pilotRotorGrid.appendChild(tile);
   return tile;
 });
 
@@ -229,6 +238,11 @@ function drawFlight() {
   const ctx = flightCtx;
   ctx.clearRect(0, 0, w, h);
 
+  if (state.view === "pilot") {
+    drawPilotFlight(ctx, w, h);
+    return;
+  }
+
   const sky = ctx.createLinearGradient(0, 0, 0, h);
   sky.addColorStop(0, "#412318");
   sky.addColorStop(0.28, "#9c4d20");
@@ -269,6 +283,109 @@ function drawFlight() {
   drawGrid(ctx, w, h);
   drawVehicle(ctx, w, h);
   drawHud(ctx, w, h);
+}
+
+function drawPilotFlight(ctx, w, h) {
+  const sky = ctx.createLinearGradient(0, 0, 0, h);
+  sky.addColorStop(0, "#d18a57");
+  sky.addColorStop(0.35, "#bd632f");
+  sky.addColorStop(1, "#85320f");
+  ctx.fillStyle = sky;
+  ctx.fillRect(0, 0, w, h);
+
+  const horizon = h * 0.28 + state.pitch * 30;
+  ctx.fillStyle = "#a4471b";
+  ctx.beginPath();
+  ctx.moveTo(0, horizon + 22);
+  for (let x = 0; x <= w; x += 28) {
+    const dune = Math.sin(x * 0.009 + state.missionTime * 0.02) * 12 + Math.sin(x * 0.021) * 7;
+    ctx.lineTo(x, horizon + dune);
+  }
+  ctx.lineTo(w, h);
+  ctx.lineTo(0, h);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = "rgba(116, 39, 11, 0.34)";
+  ctx.beginPath();
+  ctx.moveTo(0, horizon + 42);
+  for (let x = 0; x <= w; x += 34) {
+    ctx.lineTo(x, horizon + 38 + Math.sin(x * 0.014 + 2.4) * 18);
+  }
+  ctx.lineTo(w, h);
+  ctx.lineTo(0, h);
+  ctx.closePath();
+  ctx.fill();
+
+  drawChaseVehicle(ctx, w, h);
+
+  ctx.save();
+  ctx.fillStyle = "rgba(18, 8, 3, 0.44)";
+  const shadowW = Math.min(w * 0.2, 240) * (1 - Math.min(state.altitude, 60) / 150);
+  ctx.beginPath();
+  ctx.ellipse(w / 2, h * 0.61, shadowW, shadowW * 0.18, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawChaseVehicle(ctx, w, h) {
+  const size = Math.min(w, h) * 0.18;
+  const cx = w / 2;
+  const cy = h * 0.43;
+  const bank = -state.roll * 0.32;
+  const lift = Math.sin(state.missionTime * 1.8) * 3;
+
+  ctx.save();
+  ctx.translate(cx, cy + lift);
+  ctx.rotate(bank);
+
+  ctx.strokeStyle = "rgba(45, 28, 17, 0.96)";
+  ctx.lineWidth = Math.max(5, size * 0.045);
+  ctx.lineCap = "round";
+  [[-0.7, -0.38], [0.7, -0.38], [-0.82, 0.28], [0.82, 0.28]].forEach(([x, y]) => {
+    ctx.beginPath();
+    ctx.moveTo(x * size * 0.3, y * size * 0.15);
+    ctx.lineTo(x * size, y * size);
+    ctx.stroke();
+  });
+
+  const rotors = [[-0.7, -0.38], [0.7, -0.38], [-0.82, 0.28], [0.82, 0.28]];
+  rotors.forEach(([x, y], index) => {
+    const rx = x * size;
+    const ry = y * size;
+    const spin = state.missionTime * (index % 2 ? -8 : 8);
+    ctx.save();
+    ctx.translate(rx, ry);
+    ctx.scale(1, 0.3);
+    ctx.fillStyle = "rgba(43, 31, 23, 0.34)";
+    ctx.beginPath();
+    ctx.ellipse(0, 0, size * 0.48, size * 0.48, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.rotate(spin);
+    ctx.strokeStyle = "rgba(235, 193, 139, 0.38)";
+    ctx.lineWidth = Math.max(3, size * 0.025);
+    ctx.beginPath();
+    ctx.moveTo(-size * 0.43, 0);
+    ctx.lineTo(size * 0.43, 0);
+    ctx.moveTo(0, -size * 0.43);
+    ctx.lineTo(0, size * 0.43);
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  const bodyW = size * 0.92;
+  const bodyH = size * 0.48;
+  ctx.fillStyle = "#171719";
+  ctx.strokeStyle = "rgba(235, 193, 139, 0.48)";
+  ctx.lineWidth = 2;
+  roundRect(ctx, -bodyW / 2, -bodyH / 2, bodyW, bodyH, 8);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = "#bea27c";
+  ctx.fillRect(-bodyW * 0.22, -bodyH * 0.54, bodyW * 0.44, bodyH * 0.28);
+  ctx.fillStyle = "#84340f";
+  ctx.fillRect(-bodyW * 0.47, bodyH * 0.34, bodyW * 0.94, Math.max(3, size * 0.025));
+  ctx.restore();
 }
 
 function drawGrid(ctx, w, h) {
@@ -519,7 +636,16 @@ function updateReadouts() {
     tile.querySelector(".rotor-load").textContent = `${Math.round(load * 100)}%`;
     tile.querySelector(".rotor-rpm").textContent = `${rpm.toString().padStart(4, "0")} rpm`;
     tile.querySelector(".rotor-bar i").style.width = `${Math.round(load * 100)}%`;
+    pilotRotorTiles[index].textContent = `${rpm}`;
   });
+
+  $("pilot-left-readout").textContent = `THR ${Math.round(state.throttle * 100)}% / YAW ${Math.round(state.yaw * 100)}%`;
+  $("pilot-right-readout").textContent = `PIT ${Math.round(state.pitch * 100)}% / ROL ${Math.round(state.roll * 100)}%`;
+  $("attitude-readout").textContent = `P ${state.pitch >= 0 ? "+" : ""}${(state.pitch * 18).toFixed(1)} / R ${state.roll >= 0 ? "+" : ""}${(state.roll * 22).toFixed(1)}`;
+  $("attitude-horizon").style.transform = `translateY(${state.pitch * 24}px) rotate(${-state.roll * 22}deg)`;
+  $("pilot-rotor-summary").textContent = state.wind > 3.8 ? "8 / 8 gust margin" : "8 / 8 nominal";
+  positionStick($("pilot-left-stick"), state.yaw, state.throttle * 2 - 1);
+  positionStick($("pilot-right-stick"), state.roll, state.pitch);
 
   $("link-value").textContent = `${Math.round(84 - state.wind * 1.8 + Math.sin(state.missionTime * 0.18) * 3)}%`;
   $("drams-state").textContent = state.mode === "Surface" ? "Sample ready" : "Standby";
@@ -533,6 +659,17 @@ function updateReadouts() {
 function positionStick(element, x, y) {
   const max = 35;
   element.style.transform = `translate(${clamp(x, -1, 1) * max}%, ${-clamp(y, -1, 1) * max}%)`;
+}
+
+function setView(view) {
+  state.view = view;
+  document.body.classList.toggle("pilot-view", view === "pilot");
+  const missionButton = $("mission-view-button");
+  const pilotButton = $("pilot-view-button");
+  missionButton.classList.toggle("active", view === "mission");
+  pilotButton.classList.toggle("active", view === "pilot");
+  missionButton.setAttribute("aria-pressed", String(view === "mission"));
+  pilotButton.setAttribute("aria-pressed", String(view === "pilot"));
 }
 
 function tick(now) {
@@ -558,6 +695,8 @@ $("hold-button").addEventListener("click", () => setMode("hold"));
 $("takeoff-button").addEventListener("click", () => setMode("takeoff"));
 $("cruise-button").addEventListener("click", () => setMode("cruise"));
 $("land-button").addEventListener("click", () => setMode("land"));
+$("mission-view-button").addEventListener("click", () => setView("mission"));
+$("pilot-view-button").addEventListener("click", () => setView("pilot"));
 
 window.addEventListener("keydown", (event) => {
   const step = event.shiftKey ? 0.08 : 0.04;

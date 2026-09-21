@@ -18,6 +18,10 @@
           <span class="mission-chip">New Frontiers Demo</span>
           <h1>Dragonfly Titan GCS</h1>
         </div>
+        <div class="view-switch" role="group" aria-label="Visualization view">
+          <button id="mission-view-button" class="active" type="button" aria-pressed="true">Mission</button>
+          <button id="pilot-view-button" type="button" aria-pressed="false">Pilot</button>
+        </div>
         <div class="status-strip">
           <div class="status-item">
             <span>Mode</span>
@@ -130,6 +134,50 @@
               <span>Heading</span>
               <strong id="heading-value">084 deg</strong>
             </div>
+            <section class="pilot-deck" aria-label="Pilot controls">
+              <div class="pilot-control">
+                <span>Throttle / Yaw</span>
+                <div class="pilot-stick-box" aria-label="Pilot throttle and yaw stick">
+                  <b class="pilot-axis horizontal"></b>
+                  <b class="pilot-axis vertical"></b>
+                  <i id="pilot-left-stick"></i>
+                  <em class="axis-label up">UP</em>
+                  <em class="axis-label down">DN</em>
+                  <em class="axis-label left">L</em>
+                  <em class="axis-label right">R</em>
+                </div>
+                <small id="pilot-left-readout">THR 52% / YAW 0%</small>
+              </div>
+
+              <div class="attitude-wrap">
+                <span>Attitude</span>
+                <div class="attitude-indicator">
+                  <div id="attitude-horizon" class="attitude-horizon"></div>
+                  <i></i>
+                </div>
+                <small id="attitude-readout">P +0.0 / R +0.0</small>
+              </div>
+
+              <div class="pilot-rotors">
+                <span>Rotors</span>
+                <div id="pilot-rotor-grid" class="pilot-rotor-grid"></div>
+                <small id="pilot-rotor-summary">8 / 8 nominal</small>
+              </div>
+
+              <div class="pilot-control">
+                <span>Pitch / Roll</span>
+                <div class="pilot-stick-box" aria-label="Pilot pitch and roll stick">
+                  <b class="pilot-axis horizontal"></b>
+                  <b class="pilot-axis vertical"></b>
+                  <i id="pilot-right-stick"></i>
+                  <em class="axis-label up">FWD</em>
+                  <em class="axis-label down">AFT</em>
+                  <em class="axis-label left">L</em>
+                  <em class="axis-label right">R</em>
+                </div>
+                <small id="pilot-right-readout">PIT 0% / ROL 0%</small>
+              </div>
+            </section>
           </div>
 
           <section class="telemetry-band" aria-label="Primary telemetry">
