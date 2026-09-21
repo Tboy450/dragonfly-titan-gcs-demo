@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dragonfly Titan GCS Demo</title>
+    <meta
+      name="description"
+      content="Interactive NASA Dragonfly-inspired Titan rotorcraft ground control demo with scaled vehicle telemetry, environmental assumptions, and mission data."
+    />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23081018'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23ffb457' stroke-width='4'/%3E%3Cpath d='M14 32h36M32 14v36' stroke='%237ce7ff' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23e9f2ff'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar" aria-label="Mission status">
+        <div class="brand">
+          <span class="mission-chip">New Frontiers Demo</span>
+          <h1>Dragonfly Titan GCS</h1>
+        </div>
+        <div class="status-strip">
+          <div class="status-item">
+            <span>Mode</span>
+            <strong id="mode-value">Preflight</strong>
+          </div>
+          <div class="status-item">
+            <span>MET</span>
+            <strong id="met-value">00:00</strong>
+          </div>
+          <div class="status-item">
+            <span>Altitude</span>
+            <strong id="altitude-value">0.0 m</strong>
+          </div>
+          <div class="status-item">
+            <span>Speed</span>
+            <strong id="speed-value">0.0 m/s</strong>
+          </div>
+          <div class="status-item">
+            <span>Power</span>
+            <strong id="power-value">5.6 kW</strong>
+          </div>
+          <div class="status-item">
+            <span>Battery</span>
+            <strong id="battery-value">96%</strong>
+          </div>
+        </div>
+      </header>
+
+      <section class="layout-grid" aria-label="Dragonfly simulator">
+        <aside class="panel stack left-rail" aria-label="Mission data">
+          <div class="panel-heading">
+            <span>Vehicle</span>
+            <strong>Scaled Public Baseline</strong>
+          </div>
+          <div class="data-grid compact">
+            <div><span>Mass</span><strong>875 kg</strong></div>
+            <div><span>Envelope</span><strong>3.85 x 3.85 x 1.75 m</strong></div>
+            <div><span>Rotors</span><strong>8 coaxial bladesets</strong></div>
+            <div><span>Rotor diameter</span><strong>1.35 m</strong></div>
+            <div><span>Disk area</span><strong id="disk-area">11.45 m2</strong></div>
+            <div><span>Titan weight</span><strong id="weight-value">1,183 N</strong></div>
+          </div>
+
+          <div class="panel-heading">
+            <span>Titan</span>
+            <strong>Environment Model</strong>
+          </div>
+          <div class="meter-list">
+            <div class="meter">
+              <label for="wind-slider">Surface wind</label>
+              <output id="wind-output">0.8 m/s</output>
+              <input id="wind-slider" type="range" min="0" max="5" step="0.1" value="0.8" />
+            </div>
+            <div class="meter">
+              <label for="payload-slider">Payload margin</label>
+              <output id="payload-output">0 kg</output>
+              <input id="payload-slider" type="range" min="-35" max="60" step="5" value="0" />
+            </div>
+          </div>
+          <div class="data-grid compact">
+            <div><span>Gravity</span><strong>1.352 m/s2</strong></div>
+            <div><span>Air density</span><strong>5.4 kg/m3</strong></div>
+            <div><span>Pressure</span><strong>1.5 bar</strong></div>
+            <div><span>Temperature</span><strong>94 K</strong></div>
+            <div><span>Atmosphere</span><strong>N2 + CH4</strong></div>
+            <div><span>Local day</span><strong>15.95 Earth days</strong></div>
+          </div>
+
+          <div class="panel-heading">
+            <span>Controls</span>
+            <strong>Mode 2 RC</strong>
+          </div>
+          <div class="stick-row">
+            <div class="stick" aria-label="Throttle and yaw stick">
+              <span>Throttle / Yaw</span>
+              <div class="stick-box">
+                <i id="left-stick"></i>
+                <b class="axis x"></b>
+                <b class="axis y"></b>
+              </div>
+              <small id="left-stick-readout">THR 52% / YAW 0%</small>
+            </div>
+            <div class="stick" aria-label="Pitch and roll stick">
+              <span>Pitch / Roll</span>
+              <div class="stick-box">
+                <i id="right-stick"></i>
+                <b class="axis x"></b>
+                <b class="axis y"></b>
+              </div>
+              <small id="right-stick-readout">PIT 0% / ROL 0%</small>
+            </div>
+          </div>
+          <div class="button-row" aria-label="Simulation controls">
+            <button id="auto-button" class="primary" type="button">Auto Profile</button>
+            <button id="hold-button" type="button">Hold</button>
+            <button id="takeoff-button" type="button">Takeoff</button>
+            <button id="cruise-button" type="button">Cruise</button>
+            <button id="land-button" type="button">Land</button>
+          </div>
+        </aside>
+
+        <section class="center-stage">
+          <div class="visual-wrap">
+            <canvas id="flight-canvas" aria-label="Scaled Dragonfly octocopter over Titan terrain"></canvas>
+            <div class="visual-overlay top-left">
+              <span>Scale locked</span>
+              <strong>1 rotor = 1.35 m</strong>
+            </div>
+            <div class="visual-overlay bottom-right">
+              <span>Heading</span>
+              <strong id="heading-value">084 deg</strong>
+            </div>
+          </div>
+
+          <section class="telemetry-band" aria-label="Primary telemetry">
+            <div>
+              <span>Hover induced velocity</span>
+              <strong id="induced-value">3.09 m/s</strong>
+            </div>
+            <div>
+              <span>Ideal hover power</span>
+              <strong id="ideal-power-value">3.65 kW</strong>
+            </div>
+            <div>
+              <span>Modeled hover power</span>
+              <strong id="hover-power-value">5.60 kW</strong>
+            </div>
+            <div>
+              <span>Earth hover equivalent</span>
+              <strong id="earth-power-value">150 kW</strong>
+            </div>
+          </section>
+
+          <section class="panel chart-panel" aria-label="Flight profile chart">
+            <div class="panel-heading">
+              <span>Flight Profile</span>
+              <strong id="profile-note">Takeoff, hover, traverse, descent</strong>
+            </div>
+            <canvas id="chart-canvas" aria-label="Altitude, power, and speed over time"></canvas>
+          </section>
+        </section>
+
+        <aside class="panel stack right-rail" aria-label="Detailed telemetry">
+          <div class="panel-heading">
+            <span>Rotor Deck</span>
+            <strong id="rotor-summary">8 nominal</strong>
+          </div>
+          <div id="rotor-grid" class="rotor-grid"></div>
+
+          <div class="panel-heading">
+            <span>Science Payload</span>
+            <strong>Instrument State</strong>
+          </div>
+          <div class="system-list">
+            <div><span>DraMS mass spectrometer</span><strong id="drams-state">Standby</strong></div>
+            <div><span>DraGNS gamma/neutron</span><strong id="dragns-state">Survey</strong></div>
+            <div><span>DragonCam suite</span><strong id="camera-state">Nav imaging</strong></div>
+            <div><span>DrACO drill transfer</span><strong id="draco-state">Stowed</strong></div>
+            <div><span>DraGMet weather/seismic</span><strong id="dragmet-state">Logging</strong></div>
+          </div>
+
+          <div class="panel-heading">
+            <span>Comms</span>
+            <strong>Direct to Earth</strong>
+          </div>
+          <div class="data-grid compact">
+            <div><span>Band</span><strong>X-band</strong></div>
+            <div><span>Amplifier</span><strong>100 W TWTA</strong></div>
+            <div><span>Link</span><strong id="link-value">83%</strong></div>
+            <div><span>One-way light</span><strong>73-90 min</strong></div>
+          </div>
+
+          <div class="panel-heading">
+            <span>Traverse</span>
+            <strong>Demo Route</strong>
+          </div>
+          <div class="route-map" aria-label="Simplified route from dunes toward Selk Crater">
+            <svg viewBox="0 0 320 180" role="img" aria-label="Dragonfly route schematic">
+              <defs>
+                <linearGradient id="routeGrad" x1="0" x2="1">
+                  <stop offset="0" stop-color="#7ce7ff" />
+                  <stop offset="1" stop-color="#ffb457" />
+                </linearGradient>
+              </defs>
+              <path d="M21 144 C75 102 103 129 143 83 S218 70 288 25" fill="none" stroke="url(#routeGrad)" stroke-width="4" stroke-linecap="round" />
+              <g fill="#07111b" stroke="#c7d8e8" stroke-width="2">
+                <circle cx="21" cy="144" r="8" />
+                <circle cx="143" cy="83" r="8" />
+                <circle cx="288" cy="25" r="8" />
+              </g>
+              <g fill="#dfefff" font-size="12" font-family="Inter, Arial, sans-serif">
+                <text x="30" y="157">Ahmakiq dunes</text>
+                <text x="112" y="70">Waypoint 12</text>
+                <text x="205" y="22">Selk crater sector</text>
+              </g>
+              <path d="M0 166h320" stroke="#273f55" stroke-width="1" />
+            </svg>
+            <div class="route-stats">
+              <span>Total concept traverse</span>
+              <strong>115 km / 20-30 sites</strong>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <footer class="sourcebar">
+        <span>This is an educational simulation, not an official NASA flight product.</span>
+        <a href="https://science.nasa.gov/mission/dragonfly/" target="_blank" rel="noreferrer">NASA mission page</a>
+        <a href="https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/" target="_blank" rel="noreferrer">Spacecraft data</a>
+        <a href="https://solarsystem.nasa.gov/moons/saturn-moons/titan/in-depth/" target="_blank" rel="noreferrer">Titan environment</a>
+      </footer>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>
