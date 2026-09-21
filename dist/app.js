@@ -286,105 +286,343 @@ function drawFlight() {
 }
 
 function drawPilotFlight(ctx, w, h) {
+  const horizon = h * 0.31 + state.pitch * 18;
+  drawTitanEnvironment(ctx, w, h, horizon);
+
+  const shadowWidth = Math.min(w * 0.21, 260) * (1 - Math.min(state.altitude, 60) / 170);
+  ctx.save();
+  ctx.fillStyle = "rgba(38, 16, 5, 0.32)";
+  ctx.filter = "blur(7px)";
+  ctx.beginPath();
+  ctx.ellipse(w / 2, h * 0.58, shadowWidth, shadowWidth * 0.16, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  drawRotorWash(ctx, w, h);
+  drawChaseVehicle(ctx, w, h);
+  drawTitanHaze(ctx, w, h, horizon);
+}
+
+function hashUnit(value) {
+  const raw = Math.sin(value * 12.9898 + 78.233) * 43758.5453;
+  return raw - Math.floor(raw);
+}
+
+function drawTitanEnvironment(ctx, w, h, horizon) {
   const sky = ctx.createLinearGradient(0, 0, 0, h);
-  sky.addColorStop(0, "#d18a57");
-  sky.addColorStop(0.35, "#bd632f");
-  sky.addColorStop(1, "#85320f");
+  sky.addColorStop(0, "#e2a04e");
+  sky.addColorStop(0.28, "#d28438");
+  sky.addColorStop(0.62, "#a64d20");
+  sky.addColorStop(1, "#6d270e");
   ctx.fillStyle = sky;
   ctx.fillRect(0, 0, w, h);
 
-  const horizon = h * 0.28 + state.pitch * 30;
-  ctx.fillStyle = "#a4471b";
-  ctx.beginPath();
-  ctx.moveTo(0, horizon + 22);
-  for (let x = 0; x <= w; x += 28) {
-    const dune = Math.sin(x * 0.009 + state.missionTime * 0.02) * 12 + Math.sin(x * 0.021) * 7;
-    ctx.lineTo(x, horizon + dune);
+  const ridgeColors = ["rgba(105, 43, 19, 0.34)", "rgba(126, 50, 19, 0.48)", "rgba(145, 57, 18, 0.64)"];
+  for (let ridge = 0; ridge < 3; ridge += 1) {
+    const baseY = horizon + 4 + ridge * 18;
+    ctx.fillStyle = ridgeColors[ridge];
+    ctx.beginPath();
+    ctx.moveTo(0, baseY + 16);
+    ctx.bezierCurveTo(w * 0.16, baseY - 22 - ridge * 3, w * 0.3, baseY + 18, w * 0.46, baseY - 6);
+    ctx.bezierCurveTo(w * 0.62, baseY - 30, w * 0.78, baseY + 18, w, baseY - 10);
+    ctx.lineTo(w, h);
+    ctx.lineTo(0, h);
+    ctx.closePath();
+    ctx.fill();
   }
-  ctx.lineTo(w, h);
-  ctx.lineTo(0, h);
-  ctx.closePath();
-  ctx.fill();
 
-  ctx.fillStyle = "rgba(116, 39, 11, 0.34)";
-  ctx.beginPath();
-  ctx.moveTo(0, horizon + 42);
-  for (let x = 0; x <= w; x += 34) {
-    ctx.lineTo(x, horizon + 38 + Math.sin(x * 0.014 + 2.4) * 18);
+  const ground = ctx.createLinearGradient(0, horizon, 0, h);
+  ground.addColorStop(0, "rgba(126, 53, 19, 0.18)");
+  ground.addColorStop(0.35, "#8b3512");
+  ground.addColorStop(1, "#57200c");
+  ctx.fillStyle = ground;
+  ctx.fillRect(0, horizon + 32, w, h - horizon - 32);
+
+  const travel = state.missionTime * Math.max(0.45, state.speed) * 0.0045;
+  for (let i = 0; i < 150; i += 1) {
+    const depth = (hashUnit(i * 8.17) + travel) % 1;
+    const perspective = depth * depth;
+    const y = horizon + 38 + perspective * (h - horizon - 28);
+    const drift = Math.sin(state.heading * Math.PI / 180) * perspective * 90;
+    const x = ((hashUnit(i * 19.31 + 4) * (w + 120) + drift) % (w + 120)) - 60;
+    const size = 0.8 + perspective * (8 + hashUnit(i * 3.9) * 12);
+    const warm = Math.floor(72 + hashUnit(i * 5.6) * 42);
+
+    ctx.fillStyle = `rgba(35, 12, 4, ${0.15 + perspective * 0.42})`;
+    ctx.beginPath();
+    ctx.ellipse(x + size * 0.3, y + size * 0.32, size * 0.86, size * 0.28, -0.14, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = `rgb(${warm + 55}, ${warm}, ${Math.max(18, warm - 44)})`;
+    ctx.beginPath();
+    ctx.moveTo(x - size * 0.74, y + size * 0.12);
+    ctx.lineTo(x - size * 0.34, y - size * 0.52);
+    ctx.lineTo(x + size * 0.36, y - size * 0.42);
+    ctx.lineTo(x + size * 0.72, y + size * 0.02);
+    ctx.lineTo(x + size * 0.28, y + size * 0.34);
+    ctx.lineTo(x - size * 0.45, y + size * 0.3);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.strokeStyle = `rgba(255, 194, 102, ${0.08 + perspective * 0.24})`;
+    ctx.lineWidth = Math.max(0.6, perspective * 1.4);
+    ctx.beginPath();
+    ctx.moveTo(x - size * 0.28, y - size * 0.35);
+    ctx.lineTo(x + size * 0.31, y - size * 0.26);
+    ctx.stroke();
   }
-  ctx.lineTo(w, h);
-  ctx.lineTo(0, h);
-  ctx.closePath();
-  ctx.fill();
+}
 
-  drawChaseVehicle(ctx, w, h);
+function drawRotorWash(ctx, w, h) {
+  const phase = state.missionTime * 2.4;
+  ctx.save();
+  ctx.strokeStyle = "rgba(231, 159, 82, 0.13)";
+  ctx.lineWidth = 2;
+  for (let i = 0; i < 4; i += 1) {
+    const radius = 26 + ((phase * 12 + i * 23) % 90);
+    ctx.beginPath();
+    ctx.ellipse(w / 2, h * 0.57, radius * 1.8, radius * 0.24, 0, Math.PI * 0.08, Math.PI * 0.92);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawTitanHaze(ctx, w, h, horizon) {
+  const haze = ctx.createLinearGradient(0, 0, 0, h);
+  haze.addColorStop(0, "rgba(255, 205, 106, 0.17)");
+  haze.addColorStop(Math.max(0.2, horizon / h), "rgba(235, 145, 61, 0.14)");
+  haze.addColorStop(0.72, "rgba(126, 49, 16, 0.03)");
+  haze.addColorStop(1, "rgba(63, 22, 6, 0.12)");
+  ctx.fillStyle = haze;
+  ctx.fillRect(0, 0, w, h);
 
   ctx.save();
-  ctx.fillStyle = "rgba(18, 8, 3, 0.44)";
-  const shadowW = Math.min(w * 0.2, 240) * (1 - Math.min(state.altitude, 60) / 150);
-  ctx.beginPath();
-  ctx.ellipse(w / 2, h * 0.61, shadowW, shadowW * 0.18, 0, 0, Math.PI * 2);
-  ctx.fill();
+  for (let i = 0; i < 34; i += 1) {
+    const x = (hashUnit(i * 5.13) * w + state.missionTime * state.wind * (2 + hashUnit(i) * 4)) % w;
+    const y = horizon * 0.45 + hashUnit(i * 11.7) * Math.max(40, h - horizon * 0.35);
+    const radius = 0.6 + hashUnit(i * 3.4) * 2.2;
+    ctx.fillStyle = `rgba(255, 197, 112, ${0.04 + hashUnit(i * 4.7) * 0.12})`;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+  }
   ctx.restore();
 }
 
 function drawChaseVehicle(ctx, w, h) {
-  const size = Math.min(w, h) * 0.18;
+  const size = clamp(Math.min(w, h) * 0.245, 96, 202);
   const cx = w / 2;
-  const cy = h * 0.43;
-  const bank = -state.roll * 0.32;
-  const lift = Math.sin(state.missionTime * 1.8) * 3;
+  const cy = h * 0.37;
+  const bank = -state.roll * 0.1;
+  const lift = Math.sin(state.missionTime * 1.8) * 2.4;
 
   ctx.save();
   ctx.translate(cx, cy + lift);
   ctx.rotate(bank);
+  ctx.scale(1, 0.86);
 
-  ctx.strokeStyle = "rgba(45, 28, 17, 0.96)";
-  ctx.lineWidth = Math.max(5, size * 0.045);
+  // Rear three-quarter chase view: the nose points toward the horizon.
+  const stations = [
+    [-0.9, -0.38],
+    [0.9, -0.38],
+    [-1.02, 0.23],
+    [1.02, 0.23],
+  ];
+
+  // Far rotor stacks sit behind the fuselage in this camera angle.
+  stations.slice(0, 2).forEach(([x, y], index) => {
+    drawCoaxialRotor(ctx, x * size, y * size, size * 0.35, state.missionTime * (index ? -8 : 8), index);
+  });
+
+  ctx.strokeStyle = "rgba(104, 109, 108, 0.98)";
+  ctx.lineWidth = Math.max(5, size * 0.052);
   ctx.lineCap = "round";
-  [[-0.7, -0.38], [0.7, -0.38], [-0.82, 0.28], [0.82, 0.28]].forEach(([x, y]) => {
+  stations.forEach(([x, y], index) => {
     ctx.beginPath();
-    ctx.moveTo(x * size * 0.3, y * size * 0.15);
+    ctx.moveTo(Math.sign(x) * size * 0.38, index < 2 ? -size * 0.25 : size * 0.14);
     ctx.lineTo(x * size, y * size);
     ctx.stroke();
   });
 
-  const rotors = [[-0.7, -0.38], [0.7, -0.38], [-0.82, 0.28], [0.82, 0.28]];
-  rotors.forEach(([x, y], index) => {
-    const rx = x * size;
-    const ry = y * size;
-    const spin = state.missionTime * (index % 2 ? -8 : 8);
-    ctx.save();
-    ctx.translate(rx, ry);
-    ctx.scale(1, 0.3);
-    ctx.fillStyle = "rgba(43, 31, 23, 0.34)";
-    ctx.beginPath();
-    ctx.ellipse(0, 0, size * 0.48, size * 0.48, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.rotate(spin);
-    ctx.strokeStyle = "rgba(235, 193, 139, 0.38)";
-    ctx.lineWidth = Math.max(3, size * 0.025);
-    ctx.beginPath();
-    ctx.moveTo(-size * 0.43, 0);
-    ctx.lineTo(size * 0.43, 0);
-    ctx.moveTo(0, -size * 0.43);
-    ctx.lineTo(0, size * 0.43);
-    ctx.stroke();
-    ctx.restore();
-  });
+  // Long fore-aft skids and their splayed supports.
+  ctx.strokeStyle = "rgba(72, 77, 77, 0.98)";
+  ctx.lineWidth = Math.max(3, size * 0.027);
+  ctx.beginPath();
+  ctx.moveTo(-size * 0.34, -size * 0.18);
+  ctx.lineTo(-size * 0.57, size * 0.39);
+  ctx.moveTo(-size * 0.42, size * 0.28);
+  ctx.lineTo(-size * 0.66, size * 0.64);
+  ctx.moveTo(size * 0.34, -size * 0.18);
+  ctx.lineTo(size * 0.57, size * 0.39);
+  ctx.moveTo(size * 0.42, size * 0.28);
+  ctx.lineTo(size * 0.66, size * 0.64);
+  ctx.moveTo(-size * 0.62, size * 0.06);
+  ctx.lineTo(-size * 0.69, size * 0.67);
+  ctx.moveTo(size * 0.62, size * 0.06);
+  ctx.lineTo(size * 0.69, size * 0.67);
+  ctx.stroke();
 
-  const bodyW = size * 0.92;
-  const bodyH = size * 0.48;
-  ctx.fillStyle = "#171719";
-  ctx.strokeStyle = "rgba(235, 193, 139, 0.48)";
-  ctx.lineWidth = 2;
-  roundRect(ctx, -bodyW / 2, -bodyH / 2, bodyW, bodyH, 8);
+  // Equipment chassis under the rounded insulated forward cab.
+  const metal = ctx.createLinearGradient(-size * 0.5, -size * 0.65, size * 0.5, size * 0.55);
+  metal.addColorStop(0, "#e2e5e2");
+  metal.addColorStop(0.3, "#8c9697");
+  metal.addColorStop(0.58, "#c0c5c1");
+  metal.addColorStop(1, "#50595a");
+  ctx.fillStyle = metal;
+  ctx.strokeStyle = "rgba(38, 43, 44, 0.86)";
+  ctx.lineWidth = Math.max(1.5, size * 0.012);
+  ctx.beginPath();
+  ctx.moveTo(-size * 0.45, -size * 0.1);
+  ctx.lineTo(size * 0.45, -size * 0.1);
+  ctx.lineTo(size * 0.5, size * 0.38);
+  ctx.lineTo(size * 0.45, size * 0.56);
+  ctx.lineTo(-size * 0.45, size * 0.56);
+  ctx.lineTo(-size * 0.5, size * 0.38);
+  ctx.closePath();
   ctx.fill();
   ctx.stroke();
-  ctx.fillStyle = "#bea27c";
-  ctx.fillRect(-bodyW * 0.22, -bodyH * 0.54, bodyW * 0.44, bodyH * 0.28);
-  ctx.fillStyle = "#84340f";
-  ctx.fillRect(-bodyW * 0.47, bodyH * 0.34, bodyW * 0.94, Math.max(3, size * 0.025));
+
+  // The insulated cab is a distinct bulbous pod rather than a tapered box.
+  const shell = ctx.createLinearGradient(0, -size * 0.78, 0, size * 0.08);
+  shell.addColorStop(0, "#f0f1ed");
+  shell.addColorStop(0.48, "#a9b0ae");
+  shell.addColorStop(1, "#747d7d");
+  ctx.fillStyle = shell;
+  ctx.strokeStyle = "rgba(55, 61, 61, 0.9)";
+  ctx.lineWidth = Math.max(1.5, size * 0.014);
+  ctx.beginPath();
+  ctx.moveTo(-size * 0.47, size * 0.08);
+  ctx.bezierCurveTo(-size * 0.54, -size * 0.18, -size * 0.39, -size * 0.5, -size * 0.22, -size * 0.56);
+  ctx.quadraticCurveTo(0, -size * 0.66, size * 0.22, -size * 0.56);
+  ctx.bezierCurveTo(size * 0.39, -size * 0.5, size * 0.54, -size * 0.18, size * 0.47, size * 0.08);
+  ctx.quadraticCurveTo(0, size * 0.22, -size * 0.47, size * 0.08);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.strokeStyle = "rgba(244, 247, 240, 0.42)";
+  ctx.lineWidth = Math.max(1, size * 0.01);
+  ctx.beginPath();
+  ctx.moveTo(-size * 0.25, -size * 0.5);
+  ctx.quadraticCurveTo(0, -size * 0.6, size * 0.25, -size * 0.5);
+  ctx.stroke();
+
+  // Gold blanket rails and access-panel edges from the integration article.
+  ctx.strokeStyle = "#d1a02d";
+  ctx.lineWidth = Math.max(2, size * 0.018);
+  ctx.beginPath();
+  ctx.moveTo(-size * 0.45, -size * 0.04);
+  ctx.lineTo(-size * 0.42, size * 0.39);
+  ctx.lineTo(-size * 0.34, size * 0.52);
+  ctx.lineTo(size * 0.34, size * 0.52);
+  ctx.lineTo(size * 0.42, size * 0.39);
+  ctx.lineTo(size * 0.45, -size * 0.04);
+  ctx.stroke();
+
+  ctx.strokeStyle = "rgba(27, 33, 34, 0.62)";
+  ctx.lineWidth = 1;
+  for (const y of [0.11, 0.31]) {
+    ctx.beginPath();
+    ctx.moveTo(-size * 0.42, size * y);
+    ctx.lineTo(size * 0.42, size * y);
+    ctx.stroke();
+  }
+
+  for (const x of [-0.26, 0, 0.26]) {
+    ctx.fillStyle = "#131a1d";
+    ctx.fillRect(size * (x - 0.075), size * 0.17, size * 0.15, size * 0.1);
+    ctx.strokeStyle = "#d1a02d";
+    ctx.strokeRect(size * (x - 0.075), size * 0.17, size * 0.15, size * 0.1);
+  }
+
+  // Large top-mounted high-gain antenna and its short pedestal.
+  ctx.strokeStyle = "#656d6d";
+  ctx.lineWidth = Math.max(3, size * 0.025);
+  ctx.beginPath();
+  ctx.moveTo(size * 0.08, -size * 0.17);
+  ctx.lineTo(size * 0.08, -size * 0.4);
+  ctx.stroke();
+  ctx.fillStyle = "#b8bdb8";
+  ctx.strokeStyle = "#616968";
+  ctx.lineWidth = Math.max(1.5, size * 0.012);
+  ctx.beginPath();
+  ctx.ellipse(size * 0.08, -size * 0.42, size * 0.25, size * 0.075, -0.08, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+
+  // Rear stabilizer fins and sensor housings.
+  ctx.fillStyle = "#847046";
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * size * 0.39, size * 0.32);
+    ctx.lineTo(side * size * 0.57, size * 0.16);
+    ctx.lineTo(side * size * 0.43, size * 0.48);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // Near rotor stacks overlap the airframe, making all four stations legible.
+  stations.slice(2).forEach(([x, y], index) => {
+    drawCoaxialRotor(ctx, x * size, y * size, size * 0.38, state.missionTime * (index ? -8 : 8), index + 2);
+  });
+  ctx.restore();
+}
+
+function drawCoaxialRotor(ctx, x, y, radius, spin, index) {
+  ctx.save();
+  ctx.translate(x, y);
+
+  ctx.strokeStyle = "rgba(62, 66, 66, 0.98)";
+  ctx.lineWidth = Math.max(2.5, radius * 0.07);
+  ctx.beginPath();
+  ctx.moveTo(0, -radius * 0.34);
+  ctx.lineTo(0, radius * 0.35);
+  ctx.stroke();
+
+  // Dragonfly uses two counter-rotating, two-blade rotors on each mast.
+  for (let layer = 0; layer < 2; layer += 1) {
+    const layerY = layer === 0 ? -radius * 0.23 : radius * 0.13;
+    ctx.save();
+    ctx.translate(0, layerY);
+    ctx.scale(1, 0.2);
+    ctx.strokeStyle = layer === 0 ? "rgba(237, 232, 205, 0.28)" : "rgba(172, 184, 181, 0.24)";
+    ctx.lineWidth = Math.max(1.5, radius * 0.034);
+    ctx.beginPath();
+    ctx.ellipse(0, 0, radius, radius, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    const phase = spin * 0.18 * (layer === 0 ? 1 : -1) + index * 0.7 + layer * 0.48;
+    const blade = radius * 0.82;
+    const root = radius * 0.14;
+    const halfWidth = radius * 0.105;
+    for (let ghost = 2; ghost >= 0; ghost -= 1) {
+      ctx.save();
+      ctx.rotate(phase - ghost * 0.18 * (layer === 0 ? 1 : -1));
+      ctx.fillStyle = layer === 0
+        ? `rgba(225, 222, 202, ${0.74 - ghost * 0.22})`
+        : `rgba(151, 166, 163, ${0.68 - ghost * 0.2})`;
+      ctx.beginPath();
+      ctx.moveTo(root, -halfWidth);
+      ctx.lineTo(blade * 0.94, -halfWidth * 0.72);
+      ctx.quadraticCurveTo(blade, 0, blade * 0.94, halfWidth * 0.72);
+      ctx.lineTo(root, halfWidth);
+      ctx.lineTo(-root, halfWidth);
+      ctx.lineTo(-blade * 0.94, halfWidth * 0.72);
+      ctx.quadraticCurveTo(-blade, 0, -blade * 0.94, -halfWidth * 0.72);
+      ctx.lineTo(-root, -halfWidth);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+    ctx.restore();
+
+    ctx.fillStyle = layer === 0 ? "#d4d3c6" : "#8c9896";
+    ctx.strokeStyle = "#3d4444";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(0, layerY, Math.max(3.5, radius * 0.085), 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+  }
   ctx.restore();
 }
 
@@ -413,28 +651,29 @@ function drawVehicle(ctx, w, h) {
   const cx = w / 2;
   const cy = h / 2 + 6;
   const rotorRadius = (model.rotorDiameterM / 2) * scale;
-  const centerOffset = (3.85 / 2 - model.rotorDiameterM / 2) * scale;
+  const xOffset = (3.85 / 2 - model.rotorDiameterM / 2) * scale;
+  const yOffset = xOffset * 1.16;
   const t = state.missionTime;
   const loadBase = clamp(0.44 + state.throttle * 0.55, 0.25, 1.0);
   const rotorCenters = [
-    [-centerOffset, -centerOffset],
-    [centerOffset, -centerOffset],
-    [-centerOffset, centerOffset],
-    [centerOffset, centerOffset],
+    [-xOffset, -yOffset],
+    [xOffset, -yOffset],
+    [-xOffset, yOffset],
+    [xOffset, yOffset],
   ];
 
   ctx.save();
   ctx.translate(cx, cy);
   ctx.rotate(((state.heading - 84) * Math.PI) / 180);
-  ctx.globalAlpha = 0.78;
-  ctx.strokeStyle = "rgba(124, 231, 255, 0.62)";
-  ctx.lineWidth = 3;
-  for (const [x, y] of rotorCenters) {
+  ctx.globalAlpha = 0.9;
+  ctx.strokeStyle = "rgba(154, 171, 176, 0.88)";
+  ctx.lineWidth = 5;
+  rotorCenters.forEach(([x, y], index) => {
     ctx.beginPath();
-    ctx.moveTo(0, 0);
+    ctx.moveTo(index < 2 ? Math.sign(x) * 0.32 * scale : Math.sign(x) * 0.38 * scale, index < 2 ? -0.48 * scale : 0.52 * scale);
     ctx.lineTo(x, y);
     ctx.stroke();
-  }
+  });
 
   rotorCenters.forEach(([x, y], index) => {
     const load = clamp(loadBase + Math.sin(t * 3 + index) * 0.06 + Math.abs(state.roll) * 0.12, 0.2, 1);
@@ -442,24 +681,87 @@ function drawVehicle(ctx, w, h) {
   });
 
   ctx.globalAlpha = 1;
-  ctx.fillStyle = "rgba(223, 239, 255, 0.92)";
-  ctx.strokeStyle = "rgba(7, 17, 27, 0.75)";
-  ctx.lineWidth = 2;
-  roundRect(ctx, -0.62 * scale, -0.42 * scale, 1.24 * scale, 0.84 * scale, 13);
-  ctx.fill();
-  ctx.stroke();
-  ctx.fillStyle = "#07111b";
-  ctx.font = "700 12px Inter, Arial";
-  ctx.textAlign = "center";
-  ctx.fillText("DF", 0, 4);
 
-  ctx.strokeStyle = "rgba(255, 180, 87, 0.86)";
+  // Skid rails remain visible in the top-down engineering view.
+  ctx.strokeStyle = "rgba(121, 139, 143, 0.8)";
+  ctx.lineWidth = 3;
+  for (const side of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(side * 0.68 * scale, -0.72 * scale);
+    ctx.lineTo(side * 0.68 * scale, 0.78 * scale);
+    ctx.moveTo(side * 0.47 * scale, -0.5 * scale);
+    ctx.lineTo(side * 0.68 * scale, -0.62 * scale);
+    ctx.moveTo(side * 0.47 * scale, 0.5 * scale);
+    ctx.lineTo(side * 0.68 * scale, 0.62 * scale);
+    ctx.stroke();
+  }
+
+  const metal = ctx.createLinearGradient(-0.5 * scale, -0.9 * scale, 0.55 * scale, 0.9 * scale);
+  metal.addColorStop(0, "#d2dada");
+  metal.addColorStop(0.42, "#738085");
+  metal.addColorStop(0.72, "#aeb8b8");
+  metal.addColorStop(1, "#4f5a5d");
+  ctx.fillStyle = metal;
+  ctx.strokeStyle = "#d1a02d";
   ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.moveTo(0, -0.88 * scale);
-  ctx.lineTo(0, -1.23 * scale);
-  ctx.lineTo(0.14 * scale, -1.04 * scale);
+  ctx.moveTo(-0.33 * scale, -0.94 * scale);
+  ctx.quadraticCurveTo(0, -1.08 * scale, 0.33 * scale, -0.94 * scale);
+  ctx.lineTo(0.52 * scale, -0.56 * scale);
+  ctx.lineTo(0.52 * scale, 0.72 * scale);
+  ctx.lineTo(0.4 * scale, 0.9 * scale);
+  ctx.lineTo(-0.4 * scale, 0.9 * scale);
+  ctx.lineTo(-0.52 * scale, 0.72 * scale);
+  ctx.lineTo(-0.52 * scale, -0.56 * scale);
+  ctx.closePath();
+  ctx.fill();
   ctx.stroke();
+
+  ctx.strokeStyle = "rgba(23, 31, 34, 0.52)";
+  ctx.lineWidth = 1;
+  for (const y of [-0.48, -0.12, 0.24, 0.6]) {
+    ctx.beginPath();
+    ctx.moveTo(-0.47 * scale, y * scale);
+    ctx.lineTo(0.47 * scale, y * scale);
+    ctx.stroke();
+  }
+
+  for (const x of [-0.3, 0, 0.3]) {
+    ctx.fillStyle = "#182126";
+    ctx.fillRect((x - 0.09) * scale, 0.34 * scale, 0.18 * scale, 0.16 * scale);
+    ctx.strokeStyle = "#d1a02d";
+    ctx.strokeRect((x - 0.09) * scale, 0.34 * scale, 0.18 * scale, 0.16 * scale);
+  }
+
+  // High-gain antenna reads as a large circular dish from above.
+  ctx.fillStyle = "rgba(209, 215, 211, 0.92)";
+  ctx.strokeStyle = "rgba(66, 75, 76, 0.9)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(0.08 * scale, -0.45 * scale, 0.25 * scale, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(-0.08 * scale, -0.45 * scale);
+  ctx.lineTo(0.24 * scale, -0.45 * scale);
+  ctx.moveTo(0.08 * scale, -0.61 * scale);
+  ctx.lineTo(0.08 * scale, -0.29 * scale);
+  ctx.stroke();
+
+  ctx.fillStyle = "#263034";
+  for (const x of [-0.31, 0.31]) {
+    ctx.beginPath();
+    ctx.arc(x * scale, -0.72 * scale, 0.055 * scale, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.fillStyle = "#87764c";
+  ctx.beginPath();
+  ctx.moveTo(-0.47 * scale, 0.52 * scale);
+  ctx.lineTo(-0.72 * scale, 0.78 * scale);
+  ctx.lineTo(-0.46 * scale, 0.86 * scale);
+  ctx.closePath();
+  ctx.fill();
 
   ctx.restore();
 
@@ -491,12 +793,14 @@ function drawRotor(ctx, x, y, r, t, index, load) {
   ctx.lineWidth = 3;
   for (let ring = 0; ring < 2; ring += 1) {
     const phase = t * (3.4 + ring * 0.9) * (index % 2 ? -1 : 1) + index;
+    const bladeRadius = r - ring * 7;
+    ctx.save();
+    ctx.rotate(phase);
     ctx.beginPath();
-    ctx.arc(0, 0, r - ring * 6, phase, phase + Math.PI * 0.72);
+    ctx.moveTo(-bladeRadius, 0);
+    ctx.lineTo(bladeRadius, 0);
     ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(0, 0, r - ring * 6, phase + Math.PI, phase + Math.PI * 1.72);
-    ctx.stroke();
+    ctx.restore();
   }
 
   ctx.fillStyle = "rgba(7, 17, 27, 0.92)";
@@ -661,6 +965,52 @@ function positionStick(element, x, y) {
   element.style.transform = `translate(${clamp(x, -1, 1) * max}%, ${-clamp(y, -1, 1) * max}%)`;
 }
 
+function bindPilotStick(nubId, kind) {
+  const nub = $(nubId);
+  const pad = nub.closest(".pilot-stick-box");
+  let activePointer = null;
+
+  const applyPointer = (event) => {
+    const rect = pad.getBoundingClientRect();
+    const radius = Math.max(1, rect.width * 0.39);
+    const x = clamp((event.clientX - (rect.left + rect.width / 2)) / radius, -1, 1);
+    const y = clamp((event.clientY - (rect.top + rect.height / 2)) / radius, -1, 1);
+    state.auto = false;
+    state.hold = false;
+    if (kind === "left") {
+      state.yaw = x;
+      state.throttle = clamp((1 - y) / 2, 0, 1);
+    } else {
+      state.roll = x;
+      state.pitch = -y;
+    }
+  };
+
+  pad.addEventListener("pointerdown", (event) => {
+    activePointer = event.pointerId;
+    pad.setPointerCapture(event.pointerId);
+    applyPointer(event);
+  });
+
+  pad.addEventListener("pointermove", (event) => {
+    if (event.pointerId === activePointer) applyPointer(event);
+  });
+
+  const release = (event) => {
+    if (event.pointerId !== activePointer) return;
+    activePointer = null;
+    if (kind === "left") {
+      state.yaw = 0;
+    } else {
+      state.pitch = 0;
+      state.roll = 0;
+    }
+  };
+
+  pad.addEventListener("pointerup", release);
+  pad.addEventListener("pointercancel", release);
+}
+
 function setView(view) {
   state.view = view;
   document.body.classList.toggle("pilot-view", view === "pilot");
@@ -697,6 +1047,8 @@ $("cruise-button").addEventListener("click", () => setMode("cruise"));
 $("land-button").addEventListener("click", () => setMode("land"));
 $("mission-view-button").addEventListener("click", () => setView("mission"));
 $("pilot-view-button").addEventListener("click", () => setView("pilot"));
+bindPilotStick("pilot-left-stick", "left");
+bindPilotStick("pilot-right-stick", "right");
 
 window.addEventListener("keydown", (event) => {
   const step = event.shiftKey ? 0.08 : 0.04;

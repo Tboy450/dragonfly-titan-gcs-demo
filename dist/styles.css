@@ -626,6 +626,16 @@ body.pilot-view .pilot-deck {
   pointer-events: none;
 }
 
+body.pilot-view .pilot-control {
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+}
+
+body.pilot-view .pilot-stick-box {
+  cursor: crosshair;
+}
+
 .telemetry-band {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
