@@ -28,13 +28,15 @@ const state = {
   pitch: 0,
   roll: 0,
   heading: 84,
+  positionX: 0,
+  positionZ: 0,
   battery: 96,
   wind: 0.8,
   payloadDelta: 0,
   view: "mission",
   cameraMode: "fixed",
   cameraYaw: 0,
-  cameraPitch: 0.38,
+  cameraPitch: 0.10,
   chart: [],
   lastTick: performance.now(),
 };
@@ -197,6 +199,11 @@ function updateSimulation(dt) {
   }
 
   state.heading = (state.heading + state.yaw * 22 * dt + 360) % 360;
+  if (!state.hold) {
+    const bearing = state.heading * Math.PI / 180;
+    state.positionX += Math.sin(bearing) * state.speed * dt;
+    state.positionZ -= Math.cos(bearing) * state.speed * dt;
+  }
   const d = derived();
   const cruisePenalty = 1 + (state.speed ** 2) / 95;
   const windPenalty = 1 + state.wind * 0.025;
@@ -303,6 +310,10 @@ function drawFlight() {
 }
 
 function drawPilotFlight(ctx, w, h) {
+  if (chaseRenderer) {
+    chaseRenderer.draw(ctx, w, h, state);
+    return;
+  }
   const horizon = h * 0.31 + state.pitch * 18;
   drawTitanEnvironment(ctx, w, h, horizon);
 

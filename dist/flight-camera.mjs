@@ -10,7 +10,7 @@ export function cameraPose(state) {
   return {
     heading,
     azimuth: state.cameraMode === "free" ? state.cameraYaw : heading + 0.28,
-    elevation: state.cameraMode === "free" ? state.cameraPitch : 0.38,
+    elevation: state.cameraMode === "free" ? state.cameraPitch : 0.10,
   };
 }
 

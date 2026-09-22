@@ -1,19 +1,29 @@
 import * as THREE from "./vendor/three/three.module.min.js";
 import { cameraPose } from "./flight-camera.mjs";
+import { createTitanTerrain, terrainHeight } from "./titan-terrain.mjs";
 
 export function createChaseRenderer() {
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
   renderer.setClearColor(0, 0);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 60);
+  const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 12000);
+  const landscape = createTitanTerrain(scene, renderer);
   const craft = new THREE.Group();
   scene.add(craft);
   scene.add(new THREE.HemisphereLight(0xfff3de, 0x645045, 2.5));
   const sun = new THREE.DirectionalLight(0xffeed6, 3.2);
   sun.position.set(-4, 7, -3);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(1024, 1024);
+  Object.assign(sun.shadow.camera, { left: -32, right: 32, top: 32, bottom: -32, near: 1, far: 260 });
+  sun.shadow.normalBias = 0.045;
+  sun.shadow.bias = -0.00015;
   scene.add(sun);
+  scene.add(sun.target);
   const fill = new THREE.DirectionalLight(0xdbe8f3, 1.4);
   fill.position.set(4, 2, 5);
   scene.add(fill);
@@ -27,6 +37,8 @@ export function createChaseRenderer() {
 
   function mesh(geometry, material, position, parent = craft) {
     const part = new THREE.Mesh(geometry, material);
+    part.castShadow = !material.transparent;
+    part.receiveShadow = true;
     part.position.set(...position);
     parent.add(part);
     return part;
@@ -150,15 +162,24 @@ export function createChaseRenderer() {
       lastTime = now;
       rotors.forEach(({ rotor, direction, phase }) => { rotor.rotation.y = rotorPhase * direction + phase; });
       const pose = cameraPose(state);
+      const x = state.positionX || 0;
+      const z = state.positionZ || 0;
+      const groundY = terrainHeight(x, z);
+      const altitude = Math.max(0, state.altitude || 0);
+      craft.position.set(x, groundY + altitude + 0.86, z);
+      landscape.update(x, z);
+      sun.position.set(x - 65, groundY + 115, z - 45);
+      sun.target.position.set(x, groundY, z);
       craft.rotation.set(-state.pitch * 0.32, pose.heading, -state.roll * 0.32, "YXZ");
       const availableHeight = w <= 720 ? Math.max(100, h - 293) : h;
       const distance = Math.max(11.7, 6.4 / camera.aspect, h / availableHeight * 5.5);
       camera.position.set(
-        Math.sin(pose.azimuth) * Math.cos(pose.elevation) * distance,
-        Math.sin(pose.elevation) * distance,
-        Math.cos(pose.azimuth) * Math.cos(pose.elevation) * distance,
+        x + Math.sin(pose.azimuth) * Math.cos(pose.elevation) * distance,
+        craft.position.y + Math.sin(pose.elevation) * distance,
+        z + Math.cos(pose.azimuth) * Math.cos(pose.elevation) * distance,
       );
-      camera.lookAt(0, 0, 0);
+      camera.position.y = Math.max(camera.position.y, terrainHeight(camera.position.x, camera.position.z) + 0.3);
+      camera.lookAt(craft.position);
       renderer.render(scene, camera);
       ctx.drawImage(renderer.domElement, 0, 0, w, h);
     },
