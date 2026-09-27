@@ -85,7 +85,7 @@ a:hover {
   margin: 0 auto;
   padding: 18px;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto auto 1fr auto;
   gap: 14px;
 }
 
@@ -136,7 +136,7 @@ a:hover {
 
 .brand h1 {
   margin: 6px 0 0;
-  font-size: clamp(1.8rem, 3vw, 3rem);
+  font-size: 1.8rem;
   line-height: 0.95;
   letter-spacing: 0;
 }
@@ -328,7 +328,7 @@ a:hover {
   min-width: 0;
   min-height: 0;
   display: grid;
-  grid-template-rows: clamp(380px, 54vh, 720px) auto 220px;
+  grid-template-rows: clamp(380px, 54vh, 720px) auto 220px auto;
   align-content: start;
   gap: 14px;
 }
@@ -548,7 +548,7 @@ body.pilot-view .app-shell {
   width: 100%;
   height: 100vh;
   padding: 16px;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr);
   gap: 12px;
 }
 
@@ -602,6 +602,7 @@ body.pilot-view .left-rail,
 body.pilot-view .right-rail,
 body.pilot-view .telemetry-band,
 body.pilot-view .chart-panel,
+body.pilot-view .engineering-reference,
 body.pilot-view .sourcebar,
 body.pilot-view .visual-overlay {
   display: none;
@@ -803,6 +804,57 @@ body.pilot-view .pilot-rotors {
   border-top: 1px solid var(--line);
 }
 
+.flight-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  padding: 8px 12px;
+  background: #101d25;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.flight-commands {
+  display: flex;
+  gap: 6px;
+}
+
+.flight-commands button {
+  min-width: 66px;
+  padding: 7px 12px;
+  font-size: 0.85rem;
+}
+
+#pilot-navigation {
+  font: 0.85rem Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--green);
+}
+
+.simulation-label { margin-left: auto; color: var(--muted); font-size: 0.75rem; }
+.stick-box { touch-action: none; cursor: crosshair; user-select: none; }
+.engineering-reference { padding: 16px 0; border-top: 1px solid var(--line-strong); }
+.engineering-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.engineering-reference h2 { font-size: 1rem; margin: 0 0 12px; }
+.engineering-reference p { color: #b9cad5; font-size: 0.85rem; line-height: 1.55; }
+.engineering-reference a { font-size: 0.85rem; }
+.engineering-reference dl { margin: 0; font-size: 0.8rem; }
+.engineering-reference dl > div { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.engineering-reference dt { color: var(--muted); }
+.engineering-reference dd { margin: 0; text-align: right; }
+.engineering-reference details { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px; }
+.engineering-reference summary { cursor: pointer; color: var(--cyan); font-size: 0.85rem; }
+.engineering-reference { overflow-wrap: anywhere; }
+
+@media (max-width: 720px) {
+  .flight-bar { padding: 6px; gap: 6px 12px; }
+  .flight-commands { width: 100%; }
+  .flight-commands button { flex: 1; min-width: 0; padding: 5px 4px; font-size: 0.8rem; }
+  .engineering-columns { grid-template-columns: 1fr; }
+  .stick-row { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  body.pilot-view .app-shell { min-height: 760px; height: 100dvh; }
+}
+
 .sourcebar {
   min-height: 46px;
   display: flex;
@@ -827,7 +879,7 @@ body.pilot-view .pilot-rotors {
   }
 
   .center-stage {
-    grid-template-rows: clamp(390px, 58vh, 680px) auto 220px;
+    grid-template-rows: clamp(390px, 58vh, 680px) auto 220px auto;
   }
 
   .visual-wrap {
@@ -871,7 +923,7 @@ body.pilot-view .pilot-rotors {
   }
 
   .center-stage {
-    grid-template-rows: clamp(360px, 56vh, 560px) auto 210px;
+    grid-template-rows: clamp(360px, 56vh, 560px) auto 210px auto;
   }
 
   .visual-wrap {

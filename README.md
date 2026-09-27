@@ -21,7 +21,7 @@ there is no package installation or build step.
 ## Checks
 
 ```sh
-node --test tests/flight-camera.test.mjs
+node --test tests/*.test.mjs
 ```
 
 ## Publishing
@@ -35,3 +35,25 @@ is managed separately.
 Three.js 0.180.0 is included under its [MIT license](dist/vendor/three/LICENSE).
 The Titan terrain reference image was supplied for this project. NASA mission
 references are linked within the app.
+
+## Engineering Context
+
+Mission and Pilot share the same vehicle mesh, flight state, eight rotor speeds,
+controls and local track. Pause freezes the simulation in both views. The terrain
+and slope-aligned rocks sample the same rendered triangles.
+
+The [APL thermal test report](https://tfaws.nasa.gov/wp-content/uploads/TFAWS2024-AT-02.pdf)
+provides the Titan environmental baseline and nitrogen-chamber reference.
+The chamber is a thermal facility on Earth, not a Titan-gravity flight chamber.
+[APL's rotor testing report](https://www.jhuapl.edu/news/news-releases/260123-engineers-lift-dragonfly)
+covers NASA Langley and Sikorsky's aerodynamic work.
+[Lockheed Martin](https://www.lockheedmartin.com/en-us/capabilities/space/deep-space-exploration.html)
+provides cruise-stage and aeroshell hardware.
+
+The 875 kg mass, 1.35 m rotor diameter, 20 kWh usable battery, 0.75 figure of merit
+and 1.15 induced loss factor are illustrative assumptions. Coaxial pairs share
+four unique swept disks for the ideal momentum calculation. RPM mixing and the
+near-surface atmosphere approximation are educational, not flight-qualified.
+There is no chamber CFD, MMRTG charging, battery cutoff, validated aerodynamic
+model or actual mission telemetry. Terrain-following altitude is a demo AGL
+coordinate, not an inertial vertical-dynamics solution.

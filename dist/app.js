@@ -1,43 +1,13 @@
 import { createChaseRenderer } from "./chase-vehicle.mjs";
 import { enterFreeCamera, orbitCamera } from "./flight-camera.mjs";
-
-const model = {
-  massKg: 875,
-  titanG: 1.352,
-  earthG: 9.80665,
-  rhoTitan: 5.4,
-  rhoEarth: 1.225,
-  rotorCount: 8,
-  rotorDiameterM: 1.35,
-  figureOfMerit: 0.75,
-  inducedLossFactor: 1.15,
-  batteryAh: 134,
-};
+import { model, createFlightState, deriveFlight, stepFlight, commandFlight } from "./flight-model.mjs";
 
 const state = {
-  mode: "Preflight",
-  auto: true,
-  hold: false,
-  missionTime: 0,
-  profilePhase: 0,
-  altitude: 0,
-  verticalSpeed: 0,
-  speed: 0,
-  throttle: 0.52,
-  yaw: 0,
-  pitch: 0,
-  roll: 0,
-  heading: 84,
-  positionX: 0,
-  positionZ: 0,
-  battery: 96,
-  wind: 0.8,
-  payloadDelta: 0,
+  ...createFlightState(),
   view: "mission",
   cameraMode: "fixed",
   cameraYaw: 0,
   cameraPitch: 0.10,
-  chart: [],
   lastTick: performance.now(),
 };
 
@@ -79,27 +49,7 @@ const pilotRotorTiles = Array.from({ length: model.rotorCount }, () => {
   return tile;
 });
 
-const derived = () => {
-  const mass = model.massKg + state.payloadDelta;
-  const singleArea = Math.PI * (model.rotorDiameterM / 2) ** 2;
-  const totalArea = singleArea * model.rotorCount;
-  const titanWeight = mass * model.titanG;
-  const earthWeight = mass * model.earthG;
-  const inducedTitan = Math.sqrt(titanWeight / (2 * model.rhoTitan * totalArea));
-  const idealTitan = titanWeight * inducedTitan;
-  const realisticTitan = (idealTitan * model.inducedLossFactor) / model.figureOfMerit;
-  const inducedEarth = Math.sqrt(earthWeight / (2 * model.rhoEarth * totalArea));
-  const idealEarth = earthWeight * inducedEarth;
-  return {
-    mass,
-    totalArea,
-    titanWeight,
-    inducedTitan,
-    idealTitan,
-    realisticTitan,
-    idealEarth,
-  };
-};
+const derived = () => deriveFlight(state);
 
 function formatTime(seconds) {
   const s = Math.max(0, Math.floor(seconds));
@@ -116,130 +66,8 @@ function lerp(a, b, t) {
   return a + (b - a) * t;
 }
 
-function profileAt(t) {
-  const phase = t % 180;
-  if (phase < 22) {
-    return {
-      mode: "Takeoff",
-      altitude: lerp(0, 46, phase / 22),
-      verticalSpeed: 2.1,
-      speed: lerp(0, 4, phase / 22),
-      throttle: 0.66,
-      pitch: 0.12,
-      roll: Math.sin(t * 0.9) * 0.06,
-    };
-  }
-  if (phase < 55) {
-    return {
-      mode: "Hover",
-      altitude: 46 + Math.sin(t * 0.7) * 0.9,
-      verticalSpeed: Math.cos(t * 0.7) * 0.2,
-      speed: 1.3 + Math.sin(t * 0.4) * 0.5,
-      throttle: 0.54,
-      pitch: 0.03,
-      roll: Math.sin(t * 0.5) * 0.08,
-    };
-  }
-  if (phase < 122) {
-    return {
-      mode: "Traverse",
-      altitude: 48 + Math.sin(t * 0.28) * 2.2,
-      verticalSpeed: Math.cos(t * 0.28) * 0.42,
-      speed: 10 + Math.sin(t * 0.35) * 1.2,
-      throttle: 0.61,
-      pitch: 0.3 + Math.sin(t * 0.23) * 0.08,
-      roll: Math.sin(t * 0.42) * 0.2,
-    };
-  }
-  if (phase < 158) {
-    const p = (phase - 122) / 36;
-    return {
-      mode: "Descent",
-      altitude: lerp(48, 7, p),
-      verticalSpeed: -1.15,
-      speed: lerp(7, 2.2, p),
-      throttle: 0.45,
-      pitch: 0.08,
-      roll: Math.sin(t * 0.5) * 0.1,
-    };
-  }
-  return {
-    mode: "Surface",
-    altitude: 0,
-    verticalSpeed: 0,
-    speed: 0,
-    throttle: 0.18,
-    pitch: 0,
-    roll: 0,
-  };
-}
-
-function updateSimulation(dt) {
-  if (!state.hold) {
-    state.missionTime += dt;
-  }
-
-  if (state.auto) {
-    const target = profileAt(state.missionTime);
-    state.mode = target.mode;
-    state.altitude = lerp(state.altitude, target.altitude, 0.08);
-    state.verticalSpeed = lerp(state.verticalSpeed, target.verticalSpeed, 0.12);
-    state.speed = lerp(state.speed, target.speed + state.wind * 0.12, 0.09);
-    state.throttle = lerp(state.throttle, target.throttle, 0.09);
-    state.pitch = lerp(state.pitch, target.pitch, 0.08);
-    state.roll = lerp(state.roll, target.roll, 0.08);
-    state.yaw = Math.sin(state.missionTime * 0.22) * 0.17;
-  } else {
-    const thrustBalance = (state.throttle - 0.5) * 5.2;
-    state.verticalSpeed = clamp(state.verticalSpeed + thrustBalance * dt - 0.18 * dt, -3.5, 4.2);
-    state.altitude = Math.max(0, state.altitude + state.verticalSpeed * dt);
-    if (state.altitude === 0) state.verticalSpeed = Math.max(0, state.verticalSpeed);
-    state.speed = clamp(state.speed + state.pitch * dt * 3 - state.speed * 0.08 * dt, 0, 16);
-    state.mode = state.altitude < 1 ? "Surface" : state.speed > 5 ? "Traverse" : "Manual";
-  }
-
-  state.heading = (state.heading + state.yaw * 22 * dt + 360) % 360;
-  if (!state.hold) {
-    const bearing = state.heading * Math.PI / 180;
-    state.positionX += Math.sin(bearing) * state.speed * dt;
-    state.positionZ -= Math.cos(bearing) * state.speed * dt;
-  }
-  const d = derived();
-  const cruisePenalty = 1 + (state.speed ** 2) / 95;
-  const windPenalty = 1 + state.wind * 0.025;
-  const throttlePenalty = 0.78 + state.throttle * 0.47;
-  state.power = d.realisticTitan * cruisePenalty * windPenalty * throttlePenalty;
-  state.battery = clamp(state.battery - (state.power / 1000) * dt * 0.0012 + 0.001, 0, 100);
-
-  if (!state.hold) {
-    state.chart.push({
-      time: state.missionTime,
-      altitude: state.altitude,
-      powerKw: state.power / 1000,
-      speed: state.speed,
-    });
-    if (state.chart.length > 180) state.chart.shift();
-  }
-}
-
 function setMode(mode) {
-  state.auto = mode === "auto";
-  state.hold = mode === "hold" ? !state.hold : false;
-  if (mode === "takeoff") {
-    state.auto = false;
-    state.throttle = 0.68;
-    state.pitch = 0.08;
-  }
-  if (mode === "cruise") {
-    state.auto = false;
-    state.throttle = 0.6;
-    state.pitch = 0.34;
-  }
-  if (mode === "land") {
-    state.auto = false;
-    state.throttle = 0.39;
-    state.pitch = 0.03;
-  }
+  commandFlight(state, mode);
 }
 
 function resizeCanvas(canvas, ctx) {
@@ -740,6 +568,10 @@ function drawGrid(ctx, w, h) {
 }
 
 function drawVehicle(ctx, w, h) {
+  if (chaseRenderer) {
+    chaseRenderer.drawMission(ctx, w, h, state);
+    return;
+  }
   const scale = Math.min(w, h) / 6.1;
   const cx = w / 2;
   const cy = h / 2 + 6;
@@ -1021,8 +853,7 @@ function drawChart() {
 
 function updateReadouts() {
   const d = derived();
-  const rpmBase = 720 + state.throttle * 640 + state.speed * 8;
-  $("mode-value").textContent = state.mode;
+  $("mode-value").textContent = state.hold ? "Paused" : state.mode;
   $("met-value").textContent = formatTime(state.missionTime);
   $("altitude-value").textContent = `${state.altitude.toFixed(1)} m`;
   $("speed-value").textContent = `${state.speed.toFixed(1)} m/s`;
@@ -1031,6 +862,23 @@ function updateReadouts() {
   $("heading-value").textContent = `${Math.round(state.heading).toString().padStart(3, "0")} deg`;
   $("disk-area").textContent = `${d.totalArea.toFixed(2)} m2`;
   $("weight-value").textContent = `${Math.round(d.titanWeight).toLocaleString()} N`;
+  $("density-value").textContent = `${d.density.toFixed(3)} kg/m3`;
+  $("pressure-value").textContent = `${d.pressureKpa.toFixed(1)} kPa`;
+  $("disk-loading-value").textContent = `${d.diskLoading.toFixed(1)} N/m2`;
+  $("mass-value").textContent = `${d.mass} kg`;
+  $("vertical-speed-value").textContent = `${state.verticalSpeed.toFixed(1)} m/s`;
+  $("north-value").textContent = `${(-state.positionZ).toFixed(0)} m`;
+  $("east-value").textContent = `${state.positionX.toFixed(0)} m`;
+  $("distance-value").textContent = `${state.distance.toFixed(0)} m`;
+  $("pilot-navigation").textContent = `N ${(-state.positionZ).toFixed(0)} / E ${state.positionX.toFixed(0)} m`;
+  document.querySelectorAll('[data-command="hold"]').forEach((button) => {
+    button.textContent = state.hold ? "Resume" : "Pause";
+    button.setAttribute("aria-pressed", String(state.hold));
+  });
+  document.querySelectorAll('[data-command="auto"]').forEach((button) => {
+    button.classList.toggle("primary", state.auto);
+    button.setAttribute("aria-pressed", String(state.auto));
+  });
   $("induced-value").textContent = `${d.inducedTitan.toFixed(2)} m/s`;
   $("ideal-power-value").textContent = `${(d.idealTitan / 1000).toFixed(2)} kW`;
   $("hover-power-value").textContent = `${(d.realisticTitan / 1000).toFixed(2)} kW`;
@@ -1044,8 +892,8 @@ function updateReadouts() {
   positionStick($("right-stick"), state.roll, state.pitch);
 
   rotorTiles.forEach((tile, index) => {
-    const load = clamp(0.44 + state.throttle * 0.48 + Math.sin(state.missionTime * 2.2 + index) * 0.045, 0.18, 1);
-    const rpm = Math.round(rpmBase + Math.sin(state.missionTime * 2.8 + index) * 28);
+    const rpm = Math.round(state.rotorRpm[index]);
+    const load = clamp((rpm / 1150) ** 2, 0, 1);
     tile.querySelector(".rotor-load").textContent = `${Math.round(load * 100)}%`;
     tile.querySelector(".rotor-rpm").textContent = `${rpm.toString().padStart(4, "0")} rpm`;
     tile.querySelector(".rotor-bar i").style.width = `${Math.round(load * 100)}%`;
@@ -1069,14 +917,25 @@ function updateReadouts() {
   $("rotor-summary").textContent = state.wind > 3.8 ? "8 nominal, gust margin" : "8 nominal";
 }
 
+function updateTrack() {
+  const points = [...state.track, { x: state.positionX, z: state.positionZ }];
+  const extent = Math.max(50, ...points.map((p) => Math.max(Math.abs(p.x - state.positionX), Math.abs(p.z - state.positionZ))));
+  const scale = 68 / extent;
+  const project = (p) => `${(160 + (p.x - state.positionX) * scale).toFixed(1)},${(90 + (p.z - state.positionZ) * scale).toFixed(1)}`;
+  $("flight-track").setAttribute("points", points.map(project).join(" "));
+  $("track-craft").setAttribute("transform", `translate(160 90) rotate(${state.heading})`);
+  $("track-scale").textContent = `${(40 / scale).toFixed(0)} m`;
+}
+
 function positionStick(element, x, y) {
-  const max = 35;
-  element.style.transform = `translate(${clamp(x, -1, 1) * max}%, ${-clamp(y, -1, 1) * max}%)`;
+  element.style.left = `${50 + clamp(x, -1, 1) * 34}%`;
+  element.style.top = `${50 - clamp(y, -1, 1) * 34}%`;
+  element.style.transform = "translate(-50%, -50%)";
 }
 
 function bindPilotStick(nubId, kind) {
   const nub = $(nubId);
-  const pad = nub.closest(".pilot-stick-box");
+  const pad = nub.closest(".pilot-stick-box, .stick-box");
   let activePointer = null;
 
   const applyPointer = (event) => {
@@ -1085,7 +944,6 @@ function bindPilotStick(nubId, kind) {
     const x = clamp((event.clientX - (rect.left + rect.width / 2)) / radius, -1, 1);
     const y = clamp((event.clientY - (rect.top + rect.height / 2)) / radius, -1, 1);
     state.auto = false;
-    state.hold = false;
     if (kind === "left") {
       state.yaw = x;
       state.throttle = clamp((1 - y) / 2, 0, 1);
@@ -1118,6 +976,7 @@ function bindPilotStick(nubId, kind) {
 
   pad.addEventListener("pointerup", release);
   pad.addEventListener("pointercancel", release);
+  pad.addEventListener("lostpointercapture", release);
 }
 
 function setCameraMode(mode) {
@@ -1175,13 +1034,18 @@ function setView(view) {
   pilotButton.setAttribute("aria-pressed", String(view === "pilot"));
 }
 
+let readoutTime = 0;
 function tick(now) {
   const dt = Math.min(0.05, (now - state.lastTick) / 1000);
   state.lastTick = now;
-  updateSimulation(dt);
-  updateReadouts();
+  stepFlight(state, dt);
+  if (now - readoutTime > 100) {
+    updateReadouts();
+    updateTrack();
+    if (state.view === "mission") drawChart();
+    readoutTime = now;
+  }
   drawFlight();
-  drawChart();
   requestAnimationFrame(tick);
 }
 
@@ -1193,20 +1057,21 @@ $("payload-slider").addEventListener("input", (event) => {
   state.payloadDelta = Number(event.target.value);
 });
 
-$("auto-button").addEventListener("click", () => setMode("auto"));
-$("hold-button").addEventListener("click", () => setMode("hold"));
-$("takeoff-button").addEventListener("click", () => setMode("takeoff"));
-$("cruise-button").addEventListener("click", () => setMode("cruise"));
-$("land-button").addEventListener("click", () => setMode("land"));
+document.querySelectorAll("[data-command]").forEach((button) => {
+  button.addEventListener("click", () => setMode(button.dataset.command));
+});
 $("mission-view-button").addEventListener("click", () => setView("mission"));
 $("pilot-view-button").addEventListener("click", () => setView("pilot"));
 $("fixed-camera-button").addEventListener("click", () => setCameraMode("fixed"));
 $("free-camera-button").addEventListener("click", () => setCameraMode("free"));
 bindPilotStick("pilot-left-stick", "left");
 bindPilotStick("pilot-right-stick", "right");
+bindPilotStick("left-stick", "left");
+bindPilotStick("right-stick", "right");
 bindFreeCamera();
 
 window.addEventListener("keydown", (event) => {
+  if (event.target.matches("input, select, textarea, button, a") || event.target.isContentEditable) return;
   const step = event.shiftKey ? 0.08 : 0.04;
   const keys = ["w", "a", "s", "d", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "];
   if (!keys.includes(event.key)) return;

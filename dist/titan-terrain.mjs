@@ -16,23 +16,56 @@ function noise(x, z) {
 }
 
 export function terrainHeight(x, z) {
-  const radius = Math.hypot(x, z);
+  const wx = x + 92 * (noise(x / 410 + 12, z / 410 - 8) - 0.5);
+  const wz = z + 80 * (noise(x / 470 - 5, z / 470 + 17) - 0.5);
+  const radius = Math.hypot(wx * 0.88, wz * 1.08);
   const ramp = Math.max(0, Math.min(1, (radius - 95) / 430));
   const foothills = ramp * ramp * (3 - 2 * ramp);
-  const ridge = 1 - Math.abs(noise(x / 290 + 7, z / 290 - 3) * 2 - 1);
+  const ridge = 1 - Math.abs(noise((wx * 0.91 + wz * 0.41) / 290 + 7, (wz * 0.91 - wx * 0.41) / 290 - 3) * 2 - 1);
   const relief = ridge ** 3 * (100 + noise(x / 700, z / 700) * 220);
   const gullies = noise(x / 74, z / 74) * 24 + noise(x / 25, z / 25) * 7;
   return (relief + gullies) * foothills * 0.34 + noise(x / 42, z / 42) * 1.3 + noise(x / 9, z / 9) * 0.13;
 }
 
+// Sample the same triangle split used by PlaneGeometry, including its slope.
+export function sampleTerrainSurface(x, z, positions, segments) {
+  const stride = segments + 1;
+  function cell(value, axis, step) {
+    let low = 0, high = segments;
+    while (high - low > 1) {
+      const middle = (low + high) >> 1;
+      if (positions[middle * step * 3 + axis] <= value) low = middle;
+      else high = middle;
+    }
+    return low;
+  }
+  const column = cell(x, 0, 1), row = cell(z, 2, stride);
+  const a = (row * stride + column) * 3;
+  const b = a + stride * 3, d = a + 3, c = b + 3;
+  const dx = positions[d] - positions[a], dz = positions[b + 2] - positions[a + 2];
+  const u = Math.max(0, Math.min(1, (x - positions[a]) / dx));
+  const v = Math.max(0, Math.min(1, (z - positions[a + 2]) / dz));
+  const [h00, h10, h01, h11] = [positions[a + 1], positions[d + 1], positions[b + 1], positions[c + 1]];
+  const lower = u + v <= 1;
+  const height = lower ? h00 + (h10 - h00) * u + (h01 - h00) * v
+    : h11 + (h01 - h11) * (1 - u) + (h10 - h11) * (1 - v);
+  const sx = lower ? (h10 - h00) / dx : (h11 - h01) / dx;
+  const sz = lower ? (h01 - h00) / dz : (h11 - h10) / dz;
+  const length = Math.hypot(sx, 1, sz);
+  return { height, normal: [-sx / length, 1 / length, -sz / length] };
+}
+
 export function createTitanTerrain(scene, renderer) {
+  const group = new THREE.Group();
+  group.name = "titan-landscape";
+  scene.add(group);
   const hazeColor = new THREE.Color(0xb48b55);
   scene.background = hazeColor;
   scene.fog = new THREE.FogExp2(hazeColor, 0.00078);
 
   const reference = new THREE.TextureLoader().load("./assets/titan-mountain-reference.jpg");
   reference.colorSpace = THREE.SRGBColorSpace;
-  reference.wrapS = reference.wrapT = THREE.MirroredRepeatWrapping;
+  reference.wrapS = reference.wrapT = THREE.ClampToEdgeWrapping;
   reference.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   const groundMaterial = new THREE.MeshStandardMaterial({
     color: 0xa99576, map: reference, roughness: 1, metalness: 0,
@@ -48,15 +81,27 @@ export function createTitanTerrain(scene, renderer) {
         return mix(mix(terrainHash(i), terrainHash(i + vec2(1.0, 0.0)), f.x),
           mix(terrainHash(i + vec2(0.0, 1.0)), terrainHash(i + vec2(1.0, 1.0)), f.x), f.y);
       }
+      vec3 terrainPatch(sampler2D terrainMap, vec2 cell, vec2 p) {
+        float angle = terrainHash(cell + 2.1) * 6.2831853;
+        mat2 rotation = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+        vec2 offset = vec2(terrainHash(cell + 9.2), terrainHash(cell - 6.7)) - 0.5;
+        vec2 uv = vec2(0.5) + rotation * (p - cell) * 0.20 + offset * 0.16;
+        uv.y = 0.12 + uv.y * 0.76;
+        return texture2D(terrainMap, uv).rgb;
+      }
     `).replace("#include <map_fragment>", `
-      vec2 foldedUv = abs(fract(vMapUv) * 2.0 - 1.0);
-      foldedUv.y = 0.10 + foldedUv.y * 0.82;
-      vec4 referenceColor = texture2D(map, foldedUv);
       vec2 groundPoint = vMapUv * 1100.0;
+      vec2 patchPoint = groundPoint / 185.0;
+      patchPoint += vec2(terrainNoise(patchPoint * 0.7), terrainNoise(patchPoint * 0.7 + 27.0)) * 0.45;
+      vec2 cell = floor(patchPoint), blend = fract(patchPoint);
+      blend = blend * blend * (3.0 - 2.0 * blend);
+      vec3 referenceColor = mix(
+        mix(terrainPatch(map, cell, patchPoint), terrainPatch(map, cell + vec2(1.0, 0.0), patchPoint), blend.x),
+        mix(terrainPatch(map, cell + vec2(0.0, 1.0), patchPoint), terrainPatch(map, cell + vec2(1.0), patchPoint), blend.x), blend.y);
       float grains = terrainNoise(groundPoint * 2.5);
       float gravel = terrainNoise(groundPoint * 0.23);
       float detail = 0.82 + 0.24 * gravel + 0.18 * grains;
-      diffuseColor.rgb *= referenceColor.rgb * detail;
+      diffuseColor.rgb *= referenceColor * detail;
     `);
   };
 
@@ -65,14 +110,15 @@ export function createTitanTerrain(scene, renderer) {
   const vertices = geometry.attributes.position;
   const uv = geometry.attributes.uv;
   const terrain = new THREE.Mesh(geometry, groundMaterial);
+  terrain.name = "titan-ground";
   terrain.receiveShadow = true;
-  scene.add(terrain);
+  group.add(terrain);
   let terrainX = NaN, terrainZ = NaN;
 
   function moveTerrain(x, z) {
     const anchorX = Math.round(x / 400) * 400;
     const anchorZ = Math.round(z / 400) * 400;
-    if (anchorX === terrainX && anchorZ === terrainZ) return;
+    if (anchorX === terrainX && anchorZ === terrainZ) return false;
     terrainX = anchorX;
     terrainZ = anchorZ;
     for (let row = 0; row <= segments; row += 1) {
@@ -90,20 +136,26 @@ export function createTitanTerrain(scene, renderer) {
     uv.needsUpdate = true;
     geometry.computeVertexNormals();
     geometry.computeBoundingSphere();
+    return true;
   }
 
   const rockGeometry = new THREE.IcosahedronGeometry(1, 1);
   const rockMaterial = new THREE.MeshStandardMaterial({ color: 0x9a8c73, roughness: 1 });
   const rocks = new THREE.InstancedMesh(rockGeometry, rockMaterial, 1089);
+  rocks.name = "titan-rocks";
   rocks.castShadow = true;
   rocks.receiveShadow = true;
-  scene.add(rocks);
+  group.add(rocks);
   const transform = new THREE.Object3D();
   const rockColor = new THREE.Color();
+  const up = new THREE.Vector3(0, 1, 0);
+  const normal = new THREE.Vector3();
+  const twist = new THREE.Quaternion();
+  const surfaceAt = (x, z) => sampleTerrainSurface(x, z, vertices.array, segments);
   let rockX = NaN, rockZ = NaN;
-  function moveRocks(x, z) {
+  function moveRocks(x, z, force = false) {
     const cellX = Math.floor(x / 8), cellZ = Math.floor(z / 8);
-    if (cellX === rockX && cellZ === rockZ) return;
+    if (!force && cellX === rockX && cellZ === rockZ) return;
     rockX = cellX;
     rockZ = cellZ;
     let index = 0;
@@ -113,8 +165,12 @@ export function createTitanTerrain(scene, renderer) {
         const worldX = (gx + hash(gx + 51, gz)) * 8;
         const worldZ = (gz + hash(gx, gz + 29)) * 8;
         const size = 0.08 + hash(gx + 4, gz + 7) ** 3 * 0.52;
-        transform.position.set(worldX, terrainHeight(worldX, worldZ) + size * 0.24, worldZ);
-        transform.rotation.set(hash(gx, gz) * 0.5, hash(gz, gx) * Math.PI, 0.15);
+        const surface = surfaceAt(worldX, worldZ);
+        normal.set(...surface.normal);
+        transform.position.set(worldX, surface.height, worldZ).addScaledVector(normal, size * 0.12);
+        transform.quaternion.setFromUnitVectors(up, normal);
+        twist.setFromAxisAngle(up, hash(gz, gx) * Math.PI * 2);
+        transform.quaternion.multiply(twist);
         transform.scale.set(size * 1.3, size * 0.55, size);
         transform.updateMatrix();
         rocks.setMatrixAt(index, transform.matrix);
@@ -131,9 +187,11 @@ export function createTitanTerrain(scene, renderer) {
   moveTerrain(0, 0);
   moveRocks(0, 0);
   return {
+    group,
+    heightAt: (x, z) => surfaceAt(x, z).height,
     update(x, z) {
-      moveTerrain(x, z);
-      moveRocks(x, z);
+      const changed = moveTerrain(x, z);
+      moveRocks(x, z, changed);
     },
   };
 }

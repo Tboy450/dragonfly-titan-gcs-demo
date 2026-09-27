@@ -1,6 +1,7 @@
 import * as THREE from "./vendor/three/three.module.min.js";
 import { cameraPose } from "./flight-camera.mjs";
-import { createTitanTerrain, terrainHeight } from "./titan-terrain.mjs";
+import { createTitanTerrain } from "./titan-terrain.mjs";
+import { model } from "./flight-model.mjs";
 
 export function createChaseRenderer() {
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -11,6 +12,7 @@ export function createChaseRenderer() {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 12000);
+  const missionCamera = new THREE.OrthographicCamera(-4, 4, 3, -3, 0.1, 30);
   const landscape = createTitanTerrain(scene, renderer);
   const craft = new THREE.Group();
   scene.add(craft);
@@ -143,11 +145,47 @@ export function createChaseRenderer() {
 
   let width = 0;
   let height = 0;
-  let rotorPhase = 0;
-  let lastTime = performance.now();
+  let renderView = "";
+  function setAttitude(state) {
+    craft.rotation.set(-state.pitch * model.pitchRadians, -state.heading * Math.PI / 180, -state.roll * model.rollRadians, "YXZ");
+    rotors.forEach(({ rotor, phase }, index) => {
+      rotor.rotation.y = (state.rotorPhase?.[index] || 0) + phase;
+    });
+    const blur = Math.min(1, (state.rotorRpm?.[0] || 0) / 700);
+    trails.forEach((material, index) => { material.opacity = 0.10 * (1 - index / 7) * blur; });
+  }
   return {
+    drawMission(ctx, w, h, state) {
+      if (w !== width || h !== height || renderView !== "mission") {
+        renderer.setSize(w, h, false);
+        width = w;
+        height = h;
+        renderView = "mission";
+      }
+      const background = scene.background, fog = scene.fog;
+      scene.background = null;
+      scene.fog = null;
+      landscape.group.visible = false;
+      renderer.shadowMap.enabled = false;
+      craft.position.set(0, 0, 0);
+      setAttitude(state);
+      sun.position.set(-4, 7, -3);
+      sun.target.position.set(0, 0, 0);
+      const halfHeight = Math.max(3.4, 3.0 * h / w);
+      Object.assign(missionCamera, { left: -halfHeight * w / h, right: halfHeight * w / h, top: halfHeight, bottom: -halfHeight });
+      missionCamera.position.set(0, 8, 3.5);
+      missionCamera.lookAt(0, 0, 0);
+      missionCamera.updateProjectionMatrix();
+      renderer.render(scene, missionCamera);
+      ctx.drawImage(renderer.domElement, 0, 0, w, h);
+      landscape.group.visible = true;
+      scene.background = background;
+      scene.fog = fog;
+      renderer.shadowMap.enabled = true;
+    },
     draw(ctx, w, h, state) {
-      if (w !== width || h !== height) {
+      if (w !== width || h !== height || renderView !== "pilot") {
+        renderView = "pilot";
         width = w;
         height = h;
         renderer.setSize(w, h, false);
@@ -157,20 +195,16 @@ export function createChaseRenderer() {
         camera.setViewOffset(w, h, 0, h / 2 - centerY, w, h);
         camera.updateProjectionMatrix();
       }
-      const now = performance.now();
-      rotorPhase += Math.min(0.05, (now - lastTime) / 1000) * (32 + state.throttle * 42);
-      lastTime = now;
-      rotors.forEach(({ rotor, direction, phase }) => { rotor.rotation.y = rotorPhase * direction + phase; });
+      setAttitude(state);
       const pose = cameraPose(state);
       const x = state.positionX || 0;
       const z = state.positionZ || 0;
-      const groundY = terrainHeight(x, z);
+      landscape.update(x, z);
+      const groundY = landscape.heightAt(x, z);
       const altitude = Math.max(0, state.altitude || 0);
       craft.position.set(x, groundY + altitude + 0.86, z);
-      landscape.update(x, z);
       sun.position.set(x - 65, groundY + 115, z - 45);
       sun.target.position.set(x, groundY, z);
-      craft.rotation.set(-state.pitch * 0.32, pose.heading, -state.roll * 0.32, "YXZ");
       const availableHeight = w <= 720 ? Math.max(100, h - 293) : h;
       const distance = Math.max(11.7, 6.4 / camera.aspect, h / availableHeight * 5.5);
       camera.position.set(
@@ -178,7 +212,7 @@ export function createChaseRenderer() {
         craft.position.y + Math.sin(pose.elevation) * distance,
         z + Math.cos(pose.azimuth) * Math.cos(pose.elevation) * distance,
       );
-      camera.position.y = Math.max(camera.position.y, terrainHeight(camera.position.x, camera.position.z) + 0.3);
+      camera.position.y = Math.max(camera.position.y, landscape.heightAt(camera.position.x, camera.position.z) + 0.3);
       camera.lookAt(craft.position);
       renderer.render(scene, camera);
       ctx.drawImage(renderer.domElement, 0, 0, w, h);

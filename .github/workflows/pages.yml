@@ -23,8 +23,8 @@ jobs:
     steps:
       - name: Check out the simulator
         uses: actions/checkout@v6
-      - name: Check camera behavior
-        run: node --test tests/flight-camera.test.mjs
+      - name: Check simulation and terrain
+        run: node --test tests/*.test.mjs
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload the static app

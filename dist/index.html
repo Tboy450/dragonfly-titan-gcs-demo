@@ -51,18 +51,30 @@
         </div>
       </header>
 
+      <section class="flight-bar" aria-label="Shared flight controls">
+        <div class="flight-commands">
+          <button id="auto-button" data-command="auto" class="primary" type="button" aria-pressed="true">Auto</button>
+          <button id="takeoff-button" data-command="takeoff" type="button">Takeoff</button>
+          <button id="cruise-button" data-command="cruise" type="button">Cruise</button>
+          <button id="land-button" data-command="land" type="button">Land</button>
+          <button id="hold-button" data-command="hold" type="button" aria-pressed="false">Pause</button>
+        </div>
+        <output id="pilot-navigation" aria-label="Local position">N 0 / E 0 m</output>
+        <span class="simulation-label">Simulated telemetry</span>
+      </section>
+
       <section class="layout-grid" aria-label="Dragonfly simulator">
         <aside class="panel stack left-rail" aria-label="Mission data">
           <div class="panel-heading">
             <span>Vehicle</span>
-            <strong>Scaled Public Baseline</strong>
+            <strong>Demo Baseline</strong>
           </div>
           <div class="data-grid compact">
-            <div><span>Mass</span><strong>875 kg</strong></div>
+            <div><span>Mass</span><strong id="mass-value">875 kg</strong></div>
             <div><span>Envelope</span><strong>3.85 x 3.85 x 1.75 m</strong></div>
             <div><span>Rotors</span><strong>8 coaxial bladesets</strong></div>
             <div><span>Rotor diameter</span><strong>1.35 m</strong></div>
-            <div><span>Disk area</span><strong id="disk-area">11.45 m2</strong></div>
+            <div><span>Shared disk area</span><strong id="disk-area">5.73 m2</strong></div>
             <div><span>Titan weight</span><strong id="weight-value">1,183 N</strong></div>
           </div>
 
@@ -84,8 +96,8 @@
           </div>
           <div class="data-grid compact">
             <div><span>Gravity</span><strong>1.352 m/s2</strong></div>
-            <div><span>Air density</span><strong>5.4 kg/m3</strong></div>
-            <div><span>Pressure</span><strong>1.5 bar</strong></div>
+            <div><span>Air density</span><strong id="density-value">5.440 kg/m3</strong></div>
+            <div><span>Pressure</span><strong id="pressure-value">146.0 kPa</strong></div>
             <div><span>Temperature</span><strong>94 K</strong></div>
             <div><span>Atmosphere</span><strong>N2 + CH4</strong></div>
             <div><span>Local day</span><strong>15.95 Earth days</strong></div>
@@ -115,21 +127,14 @@
               <small id="right-stick-readout">PIT 0% / ROL 0%</small>
             </div>
           </div>
-          <div class="button-row" aria-label="Simulation controls">
-            <button id="auto-button" class="primary" type="button">Auto Profile</button>
-            <button id="hold-button" type="button">Hold</button>
-            <button id="takeoff-button" type="button">Takeoff</button>
-            <button id="cruise-button" type="button">Cruise</button>
-            <button id="land-button" type="button">Land</button>
-          </div>
         </aside>
 
         <section class="center-stage">
           <div class="visual-wrap">
             <canvas id="flight-canvas" aria-label="Scaled Dragonfly octocopter over Titan terrain"></canvas>
             <div class="visual-overlay top-left">
-              <span>Scale locked</span>
-              <strong>1 rotor = 1.35 m</strong>
+              <span>Vehicle / North up</span>
+              <strong>Rotor diameter 1.35 m</strong>
             </div>
             <div class="visual-overlay bottom-right">
               <span>Heading</span>
@@ -199,7 +204,7 @@
               <strong id="hover-power-value">5.60 kW</strong>
             </div>
             <div>
-              <span>Earth hover equivalent</span>
+              <span>Ideal Earth hover</span>
               <strong id="earth-power-value">150 kW</strong>
             </div>
           </section>
@@ -210,6 +215,39 @@
               <strong id="profile-note">Takeoff, hover, traverse, descent</strong>
             </div>
             <canvas id="chart-canvas" aria-label="Altitude, power, and speed over time"></canvas>
+          </section>
+
+          <section class="engineering-reference" aria-labelledby="engineering-title">
+            <div class="panel-heading">
+              <span id="engineering-title">Engineering References</span>
+              <strong>Published test context</strong>
+            </div>
+            <div class="engineering-columns">
+              <div>
+                <h2>APL TITAN Chamber</h2>
+                <dl>
+                  <div><dt>Test environment</dt><dd>Cryogenic nitrogen</dd></div>
+                  <div><dt>Temperature range</dt><dd>-180 to +150 C</dd></div>
+                  <div><dt>Pressure range</dt><dd>380-700 Torr</dd></div>
+                  <div><dt>Test article</dt><dd>Full-scale thermal mock-up</dd></div>
+                </dl>
+                <p>Earth-gravity thermal testing, not free flight. The chamber pressure range differs from Titan's 146 kPa surface pressure.</p>
+                <a href="https://tfaws.nasa.gov/wp-content/uploads/TFAWS2024-AT-02.pdf" target="_blank" rel="noreferrer">APL thermal test report, 2024 (PDF)</a>
+              </div>
+              <div>
+                <h2>Rotor &amp; Thermal Systems</h2>
+                <p>NASA Langley wind-tunnel campaigns test rotor loads and aerodynamics. Sikorsky supports aeromechanics and flight-hardware modeling.</p>
+                <a href="https://www.jhuapl.edu/news/news-releases/260123-engineers-lift-dragonfly" target="_blank" rel="noreferrer">APL rotor testing, January 2026</a>
+                <p>Lockheed Martin's mission roles include the cruise stage and aeroshell.</p>
+                <a href="https://www.lockheedmartin.com/en-us/capabilities/space/deep-space-exploration.html" target="_blank" rel="noreferrer">Lockheed Martin mission hardware</a>
+                <p>The real lander's thermal system circulates MMRTG waste heat through insulated equipment bays and rejects excess heat through a cold duct.</p>
+              </div>
+            </div>
+            <details>
+              <summary>Model assumptions</summary>
+              <p>875 kg mass, 1.35 m rotors, 20 kWh usable battery, 0.75 figure of merit and 1.15 loss factor are demo assumptions, not qualified flight specifications. Four coaxial stations share four swept disks. Pressure and density use an isothermal near-surface approximation.</p>
+              <p>Attitude, RPM mixing, power, terrain-following altitude, instruments and radio status are illustrative. Chamber heat transfer, MMRTG charging, battery cutoff and full aerodynamic interactions are not simulated.</p>
+            </details>
           </section>
         </section>
 
@@ -245,33 +283,26 @@
 
           <div class="panel-heading">
             <span>Traverse</span>
-            <strong>Demo Route</strong>
+            <strong>Local Flight Track</strong>
           </div>
-          <div class="route-map" aria-label="Simplified route from dunes toward Selk Crater">
-            <svg viewBox="0 0 320 180" role="img" aria-label="Dragonfly route schematic">
-              <defs>
-                <linearGradient id="routeGrad" x1="0" x2="1">
-                  <stop offset="0" stop-color="#7ce7ff" />
-                  <stop offset="1" stop-color="#ffb457" />
-                </linearGradient>
-              </defs>
-              <path d="M21 144 C75 102 103 129 143 83 S218 70 288 25" fill="none" stroke="url(#routeGrad)" stroke-width="4" stroke-linecap="round" />
-              <g fill="#07111b" stroke="#c7d8e8" stroke-width="2">
-                <circle cx="21" cy="144" r="8" />
-                <circle cx="143" cy="83" r="8" />
-                <circle cx="288" cy="25" r="8" />
+          <div class="route-map" aria-label="Recent local flight track, north up">
+            <svg viewBox="0 0 320 180" role="img" aria-label="Recent flight track and current heading">
+              <path d="M160 18v144M18 90h284" stroke="#273f55" />
+              <polyline id="flight-track" points="160,90" fill="none" stroke="#7ce7ff" stroke-width="2" />
+              <path id="track-craft" d="M0 -8L5 6L0 3L-5 6Z" transform="translate(160 90)" fill="#ffb457" />
+              <path d="M20 150v5h40v-5" fill="none" stroke="#dfefff" />
+              <g fill="#dfefff" font-size="12" font-family="Consolas, monospace">
+                <text x="155" y="14">N</text>
+                <text id="track-scale" x="20" y="172">29 m</text>
               </g>
-              <g fill="#dfefff" font-size="12" font-family="Inter, Arial, sans-serif">
-                <text x="30" y="157">Ahmakiq dunes</text>
-                <text x="112" y="70">Waypoint 12</text>
-                <text x="205" y="22">Selk crater sector</text>
-              </g>
-              <path d="M0 166h320" stroke="#273f55" stroke-width="1" />
             </svg>
-            <div class="route-stats">
-              <span>Total concept traverse</span>
-              <strong>115 km / 20-30 sites</strong>
-            </div>
+          </div>
+          <div class="data-grid compact">
+            <div><span>North</span><strong id="north-value">0 m</strong></div>
+            <div><span>East</span><strong id="east-value">0 m</strong></div>
+            <div><span>Distance flown</span><strong id="distance-value">0 m</strong></div>
+            <div><span>Vertical speed</span><strong id="vertical-speed-value">0.0 m/s</strong></div>
+            <div><span>Disk loading</span><strong id="disk-loading-value">206.6 N/m2</strong></div>
           </div>
         </aside>
       </section>
