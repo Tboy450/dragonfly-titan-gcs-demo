@@ -72,8 +72,9 @@ stops accelerated time on warnings. Generation continues through day and night.
 
 Read [the source audit and model assumptions](RESEARCH.md) for the NASA, APL,
 Lockheed Martin and TubeTech references, including claims not supported by the
-public sources. Supplied shell-and-tube images illustrate general engineering;
-they are not presented as verified Dragonfly hardware drawings.
+public sources. The shell-and-tube figures illustrate the liquid-to-liquid exchanger concept
+explored in the design study; they are representative industrial designs, not Dragonfly
+flight hardware.
 
 The independent liquid-to-liquid exchanger study calculates heat flow and outlet
 temperatures from explicit assumptions. It is not part of the flight hardware.
