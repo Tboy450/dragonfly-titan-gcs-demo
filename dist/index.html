@@ -60,7 +60,15 @@
           <button id="hold-button" data-command="hold" type="button" aria-pressed="false">Pause</button>
         </div>
         <output id="pilot-navigation" aria-label="Local position">N 0 / E 0 m</output>
+        <button id="systems-button" type="button">Diagnostics</button>
         <span class="simulation-label">Simulated telemetry</span>
+      </section>
+
+      <section class="mission-strip" aria-label="Survey objective">
+        <div><strong id="objective-title">Shoreline survey</strong><span id="objective-status">Fictional training site / dry-ground sampling</span></div>
+        <output id="objective-distance">171 m to outcrop</output>
+        <button id="mission-action" type="button">Begin survey</button>
+        <span id="vehicle-alert" role="status">Systems nominal</span>
       </section>
 
       <section class="layout-grid" aria-label="Dragonfly simulator">
@@ -245,8 +253,8 @@
             </div>
             <details>
               <summary>Model assumptions</summary>
-              <p>875 kg mass, 1.35 m rotors, 20 kWh usable battery, 0.75 figure of merit and 1.15 loss factor are demo assumptions, not qualified flight specifications. Four coaxial stations share four swept disks. Pressure and density use an isothermal near-surface approximation.</p>
-              <p>Attitude, RPM mixing, power, terrain-following altitude, instruments and radio status are illustrative. Chamber heat transfer, MMRTG charging, battery cutoff and full aerodynamic interactions are not simulated.</p>
+              <p>NASA publishes the 875 kg mass, 1.35 m rotor diameter and 134 Ah battery baseline. The 20 kWh usable energy, 0.75 figure of merit and 1.15 loss factor remain demo assumptions. Four coaxial stations share four swept disks. Pressure and density use an isothermal near-surface approximation.</p>
+              <p>Attitude, RPM mixing, terrain-following altitude, instrument status and guided flight are illustrative. Thermal conductances, operating bands and power loads are not flight-qualified. The shoreline is fictional training geography, not Dragonfly's planned landing site.</p>
             </details>
           </section>
         </section>
@@ -289,6 +297,8 @@
             <svg viewBox="0 0 320 180" role="img" aria-label="Recent flight track and current heading">
               <path d="M160 18v144M18 90h284" stroke="#273f55" />
               <polyline id="flight-track" points="160,90" fill="none" stroke="#7ce7ff" stroke-width="2" />
+              <circle id="track-target" cx="160" cy="90" r="6" fill="none" stroke="#80f2ae" stroke-width="2" />
+              <text id="track-target-label" x="170" y="90" fill="#80f2ae" font-size="11">Outcrop</text>
               <path id="track-craft" d="M0 -8L5 6L0 3L-5 6Z" transform="translate(160 90)" fill="#ffb457" />
               <path d="M20 150v5h40v-5" fill="none" stroke="#dfefff" />
               <g fill="#dfefff" font-size="12" font-family="Consolas, monospace">
@@ -314,6 +324,60 @@
         <a href="https://solarsystem.nasa.gov/moons/saturn-moons/titan/in-depth/" target="_blank" rel="noreferrer">Titan environment</a>
       </footer>
     </main>
+    <dialog id="systems-dialog" aria-labelledby="systems-title">
+      <header class="systems-header"><div><span>Vehicle engineering / simulated</span><h2 id="systems-title">Energy &amp; Thermal Diagnostics</h2></div><button id="close-systems" type="button">Close</button></header>
+      <p id="systems-warning" class="systems-warning" role="status">Systems nominal</p>
+      <div class="systems-columns">
+        <section>
+          <h3>Thermal loop</h3>
+          <dl class="diagnostic-values">
+            <div><dt>Equipment bay</dt><dd id="core-temp">15.0 C</dd></div>
+            <div><dt>Battery</dt><dd id="battery-temp">12.0 C</dd></div>
+            <div><dt>Ambient</dt><dd>-179.2 C</dd></div>
+            <div><dt>Heat into bay</dt><dd id="heat-in">0 W</dd></div>
+            <div><dt>Heat rejected from bay</dt><dd id="heat-out">0 W</dd></div>
+            <div><dt>Circulation integrity</dt><dd id="fan-integrity">100%</dd></div>
+            <div><dt>Insulation integrity</dt><dd id="insulation-integrity">100%</dd></div>
+          </dl>
+          <label class="check-control"><input id="thermal-auto" type="checkbox" checked /> Automatic thermal trim</label>
+          <label class="system-control">Cold-duct bypass <output id="trim-output">15%</output><input id="trim-control" type="range" min="0" max="100" value="15" disabled /></label>
+          <label class="system-control">Circulation fan <output id="fan-output">100%</output><input id="fan-control" type="range" min="0" max="100" value="100" /></label>
+          <label class="system-control">Training fault<select id="fault-control"><option value="none">Nominal hardware</option><option value="fan">Restricted circulation</option><option value="insulation">Insulation damage</option></select></label>
+        </section>
+        <section>
+          <h3>Energy &amp; Surface Operations</h3>
+          <dl class="diagnostic-values">
+            <div><dt>MMRTG electric / assumed</dt><dd id="rtg-output">110 W</dd></div>
+            <div><dt>Vehicle load</dt><dd id="electric-load">0 W</dd></div>
+            <div><dt>Net battery power</dt><dd id="net-power">0 W</dd></div>
+            <div><dt>Stored energy / assumed</dt><dd id="stored-energy">19.2 kWh</dd></div>
+            <div><dt>Time to 15% reserve</dt><dd id="reserve-time">--</dd></div>
+            <div><dt>Local solar time / approximate</dt><dd id="solar-time">12:00 / Day</dd></div>
+            <div><dt>Surface elapsed</dt><dd id="surface-elapsed">0.0 h</dd></div>
+          </dl>
+          <div class="rest-controls"><button id="rest-hour" type="button">Hibernate 1 h</button><button id="rest-night" type="button">Hibernate 8 days</button><button id="rest-stop" type="button" disabled>Wake</button></div>
+          <output id="rest-status" class="rest-status">Hibernation available after dry-ground landing.</output>
+          <h3>Sample return</h3>
+          <dl class="diagnostic-values"><div><dt>Objective</dt><dd id="systems-objective">Not started</dd></div><div><dt>Acquisition</dt><dd id="sample-progress">0 / 30 s</dd></div><div><dt>Samples secured</dt><dd id="sample-count">0</dd></div></dl>
+        </section>
+      </div>
+      <section class="thermal-context">
+        <h3>Documented Dragonfly Architecture</h3>
+        <p>On Titan, fans distribute MMRTG waste heat and a cold-duct bypass controls cooling. In space, the cruise system uses a pumped fluid loop and radiators. Surface convection is not the same as vacuum heat rejection. <a href="https://tfaws.nasa.gov/wp-content/uploads/TFAWS23-AT-14-Presentation.pdf" target="_blank" rel="noreferrer">NASA/APL thermal controller design (2023)</a></p>
+        <p>The battery supports high flight loads while the MMRTG produces electricity day and night. A roughly 16-Earth-day rotation gives approximately eight days per half-cycle near the equator; actual illumination varies. <a href="https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/" target="_blank" rel="noreferrer">NASA power system</a> / <a href="https://science.nasa.gov/saturn/moons/titan/facts/" target="_blank" rel="noreferrer">Titan environment</a></p>
+        <details><summary>Exchanger references &amp; evidence</summary>
+          <p>Shell-and-tube exchangers separate two flowing fluids with tube walls; baffles guide shell-side flow. Fixed, floating-head and U-tube designs manage construction and expansion differently. These are general industrial principles, not confirmation of Dragonfly hardware or a flight efficiency rating. <a href="https://tubetech.com/5-types-of-shell-and-tube-heat-exchangers-and-how-they-work/" target="_blank" rel="noreferrer">TubeTech source article</a></p>
+          <div class="reference-images"><figure><img src="./assets/heat-exchanger-reference.jpg" alt="User-supplied shell-and-tube cutaway showing tubes, baffles and separate fluid paths" loading="lazy" /><figcaption>User-supplied general exchanger reference; not flight hardware.</figcaption></figure><figure><img src="./assets/tubetech-reference.jpg" alt="User-supplied TubeTech diagram of a tube bundle and shell-side flow" loading="lazy" /><figcaption>User-supplied TubeTech reference screenshot.</figcaption></figure></div>
+          <p>Lockheed Martin identifies cruise-stage, aeroshell and integration work. Neither the linked material nor the public NASA/APL sources examined establishes the pictured exchanger as Dragonfly's flight design. <a href="https://www.lockheedmartin.com/en-us/capabilities/space/deep-space-exploration.html" target="_blank" rel="noreferrer">Lockheed Martin</a> / <a href="https://science.nasa.gov/blogs/dragonfly/2026/03/10/nasas-dragonfly-mission-begins-rotorcraft-integration-testing-stage/" target="_blank" rel="noreferrer">NASA integration update</a></p>
+          <p>Calm-weather overheating is a documented design concern. Claims of melting components or skids sinking into ice were not corroborated and are not modeled. <a href="https://www.nasa.gov/podcasts/small-steps-giant-leaps/episode-168-dragonfly-mission-to-titan/" target="_blank" rel="noreferrer">NASA interview</a></p>
+        </details>
+        <details><summary>Simulation limits &amp; assumed parameters</summary>
+          <p>Flight bands: battery 0-40 C; equipment bay -10 to 55 C; reserve 15%. These are training limits, not published Dragonfly constraints. Bay and battery heat capacities are assumed at 60 and 30 kJ/K, coupled by 8 W/K. Trim and insulation use a simplified lumped thermal model, not chamber CFD.</p>
+          <p>20 kWh usable storage, 110 W electric generation and all operating loads are assumed. The nominal 110 W references MMRTG launch output, not guaranteed output at Titan arrival. About 1,800 W of waste heat is the source baseline; only a modeled fraction heats the equipment bay. <a href="https://www.nasa.gov/wp-content/uploads/2015/04/mmrtg.pdf" target="_blank" rel="noreferrer">NASA MMRTG fact sheet</a> / <a href="https://tfaws.nasa.gov/wp-content/uploads/TFAWS2024-AT-02.pdf" target="_blank" rel="noreferrer">APL thermal report</a></p>
+          <p>Hibernation compresses time only on dry ground. It pauses on thermal warnings. The mission's 30-second acquisition, fictional pool, landing protection and automatic guidance are gameplay abstractions, not real mission operations.</p>
+        </details>
+      </section>
+    </dialog>
     <script type="module" src="./app.js"></script>
   </body>
 </html>

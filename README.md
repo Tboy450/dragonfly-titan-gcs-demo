@@ -36,6 +36,23 @@ Three.js 0.180.0 is included under its [MIT license](dist/vendor/three/LICENSE).
 The Titan terrain reference image was supplied for this project. NASA mission
 references are linked within the app.
 
+## Missions and Diagnostics
+
+Begin the fictional shoreline survey, fly to the dry outcrop manually or with
+guided flight, land, collect a sample and return to base. The nearby hydrocarbon
+pool is a training feature, not an actual Dragonfly landing-site reconstruction.
+
+Diagnostics shares the live vehicle state: equipment/battery temperatures,
+circulation and insulation integrity, cold-duct trim, electrical load, MMRTG
+generation, battery reserve and approximate Titan local time. Hibernation on dry
+ground advances thermal/energy calculations with bounded one-second steps and
+stops accelerated time on warnings. Generation continues through day and night.
+
+Read [the source audit and model assumptions](RESEARCH.md) for the NASA, APL,
+Lockheed Martin and TubeTech references, including claims not supported by the
+public sources. Supplied shell-and-tube images illustrate general engineering;
+they are not presented as verified Dragonfly hardware drawings.
+
 ## Engineering Context
 
 Mission and Pilot share the same vehicle mesh, flight state, eight rotor speeds,
@@ -50,10 +67,11 @@ covers NASA Langley and Sikorsky's aerodynamic work.
 [Lockheed Martin](https://www.lockheedmartin.com/en-us/capabilities/space/deep-space-exploration.html)
 provides cruise-stage and aeroshell hardware.
 
-The 875 kg mass, 1.35 m rotor diameter, 20 kWh usable battery, 0.75 figure of merit
-and 1.15 induced loss factor are illustrative assumptions. Coaxial pairs share
+NASA publishes the 875 kg mass and 1.35 m rotor diameter baseline. The 20 kWh
+usable battery, 0.75 figure of merit and 1.15 induced loss factor are illustrative assumptions. Coaxial pairs share
 four unique swept disks for the ideal momentum calculation. RPM mixing and the
 near-surface atmosphere approximation are educational, not flight-qualified.
-There is no chamber CFD, MMRTG charging, battery cutoff, validated aerodynamic
-model or actual mission telemetry. Terrain-following altitude is a demo AGL
+There is no chamber CFD, validated aerodynamic model or actual mission telemetry.
+Thermal limits, generation and protective flight interlocks are training assumptions.
+Terrain-following altitude is a demo AGL
 coordinate, not an inertial vertical-dynamics solution.

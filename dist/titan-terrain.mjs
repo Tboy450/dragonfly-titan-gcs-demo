@@ -1,4 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js";
+import { pools, poolRadius, surveySite } from "./mission-systems.mjs";
 
 function hash(x, z) {
   const value = Math.sin(x * 127.1 + z * 311.7) * 43758.5453;
@@ -24,7 +25,17 @@ export function terrainHeight(x, z) {
   const ridge = 1 - Math.abs(noise((wx * 0.91 + wz * 0.41) / 290 + 7, (wz * 0.91 - wx * 0.41) / 290 - 3) * 2 - 1);
   const relief = ridge ** 3 * (100 + noise(x / 700, z / 700) * 220);
   const gullies = noise(x / 74, z / 74) * 24 + noise(x / 25, z / 25) * 7;
-  return (relief + gullies) * foothills * 0.34 + noise(x / 42, z / 42) * 1.3 + noise(x / 9, z / 9) * 0.13;
+  let height = (relief + gullies) * foothills * 0.34 + noise(x / 42, z / 42) * 1.3 + noise(x / 9, z / 9) * 0.13;
+  for (const pool of pools) {
+    const radius = poolRadius(x, z, pool);
+    if (radius < 1.4) {
+      const blend = Math.max(0, Math.min(1, (radius - 0.72) / 0.68));
+      height = (pool.level - 2.5) * (1 - blend) + height * blend;
+    }
+  }
+  // A small surveyed patch provides a reproducible dry landing target.
+  const pad = Math.max(0, Math.min(1, (Math.hypot(x - surveySite.x, z - surveySite.z) - 14) / 12));
+  return height * pad + 1.4 * (1 - pad);
 }
 
 // Sample the same triangle split used by PlaneGeometry, including its slope.
@@ -113,6 +124,27 @@ export function createTitanTerrain(scene, renderer) {
   terrain.name = "titan-ground";
   terrain.receiveShadow = true;
   group.add(terrain);
+  const liquidMaterial = new THREE.MeshStandardMaterial({ color: 0x343e36, roughness: 0.24, metalness: 0.22, side: THREE.DoubleSide });
+  for (const pool of pools) {
+    const shape = new THREE.Shape();
+    for (let i = 0; i <= 96; i++) {
+      const a = i / 96 * Math.PI * 2;
+      const r = 1 + 0.09 * Math.sin(a * 3) + 0.05 * Math.cos(a * 5);
+      const x = Math.cos(a) * pool.rx * r, y = -Math.sin(a) * pool.rz * r;
+      if (i === 0) shape.moveTo(x, y); else shape.lineTo(x, y);
+    }
+    const water = new THREE.Mesh(new THREE.ShapeGeometry(shape), liquidMaterial);
+    water.rotation.x = -Math.PI / 2;
+    water.position.set(pool.x, pool.level, pool.z);
+    water.name = "hydrocarbon-pool";
+    group.add(water);
+  }
+  const markerMaterial = new THREE.MeshBasicMaterial({ color: 0x80f2ae, transparent: true, opacity: 0.65, side: THREE.DoubleSide });
+  const targetRing = new THREE.Mesh(new THREE.RingGeometry(10.95, 11.0, 96), markerMaterial);
+  targetRing.rotation.x = -Math.PI / 2;
+  targetRing.position.set(surveySite.x, 1.44, surveySite.z);
+  targetRing.name = "survey-marker";
+  group.add(targetRing);
   let terrainX = NaN, terrainZ = NaN;
 
   function moveTerrain(x, z) {

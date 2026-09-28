@@ -85,7 +85,7 @@ a:hover {
   margin: 0 auto;
   padding: 18px;
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: auto auto auto 1fr auto;
   gap: 14px;
 }
 
@@ -548,7 +548,7 @@ body.pilot-view .app-shell {
   width: 100%;
   height: 100vh;
   padding: 16px;
-  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-rows: auto auto auto minmax(0, 1fr);
   gap: 12px;
 }
 
@@ -832,6 +832,69 @@ body.pilot-view .pilot-rotors {
 }
 
 .simulation-label { margin-left: auto; color: var(--muted); font-size: 0.75rem; }
+.mission-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; padding: 10px 14px; background: #142923; border-left: 3px solid var(--green); }
+.mission-strip > div { flex: 1; min-width: 220px; }
+.mission-strip strong, .mission-strip span { display: block; }
+.mission-strip span { font-size: 0.8rem; color: #b9cfc7; margin-top: 4px; }
+.mission-strip button { padding: 8px 14px; min-width: 150px; }
+#vehicle-alert { max-width: 240px; color: var(--green); }
+#vehicle-alert.warning { color: #ffd182; }
+#objective-distance { color: var(--green); font: 0.8rem Consolas, monospace; }
+#systems-button { padding: 6px 14px; }
+button:disabled { opacity: 0.5; cursor: default; }
+
+#systems-dialog { width: min(1080px, calc(100% - 24px)); max-height: 90dvh; padding: 24px; border: 1px solid #59756b; border-radius: 8px; background: #101b20; color: var(--text); overflow: auto; }
+#systems-dialog::backdrop { background: rgba(0, 0, 0, 0.7); }
+.systems-header { display: flex; justify-content: space-between; align-items: center; gap: 18px; }
+.systems-header h2 { margin: 4px 0 0; font-size: 1.35rem; }
+.systems-header span { color: var(--muted); font-size: 0.8rem; }
+.systems-header button { padding: 6px 18px; }
+.systems-warning { border-left: 3px solid var(--amber); padding: 10px 12px; background: #2a2b21; }
+.systems-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+#systems-dialog h3 { font-size: 1rem; margin: 18px 0 12px; }
+.diagnostic-values { margin: 0 0 20px; font-size: 0.88rem; }
+.diagnostic-values > div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.diagnostic-values dt { color: #afc2cd; }
+.diagnostic-values dd { text-align: right; margin: 0; font-family: Consolas, monospace; color: var(--green); }
+.check-control { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; margin: 16px 0; }
+.check-control input { width: 18px; height: 18px; accent-color: var(--green); }
+.system-control { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin: 16px 0; font-size: 0.88rem; }
+.system-control input, .system-control select { width: 100%; accent-color: var(--green); }
+.system-control select { padding: 10px; background: #1c3038; color: var(--text); border: 1px solid var(--line-strong); border-radius: 4px; }
+.rest-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.rest-controls button { padding: 6px 12px; font-size: 0.85rem; }
+.rest-status { display: block; margin-top: 12px; font-size: 0.8rem; color: var(--muted); }
+.thermal-context { border-top: 1px solid var(--line-strong); margin-top: 24px; }
+.thermal-context p, .thermal-context figcaption { color: #b9cbd4; font-size: 0.85rem; line-height: 1.6; }
+.thermal-context details { padding: 14px 0; border-top: 1px solid var(--line); }
+.thermal-context summary { cursor: pointer; color: var(--cyan); }
+.reference-images { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.reference-images figure { margin: 0; }
+.reference-images img { width: 100%; height: auto; display: block; }
+
+@media (max-width: 720px) {
+  .mission-strip { gap: 8px; padding: 8px; }
+  .mission-strip > div { flex-basis: 100%; }
+  .mission-strip button { min-width: 0; margin-left: auto; font-size: 0.8rem; }
+  #vehicle-alert { max-width: none; flex-basis: 100%; }
+  .systems-columns, .reference-images { grid-template-columns: 1fr; }
+  #systems-dialog { padding: 16px; }
+  .systems-header h2 { font-size: 1.1rem; }
+  body.pilot-view .app-shell { min-height: 760px !important; }
+  body.pilot-view .topbar { gap: 8px; padding: 8px; }
+  body.pilot-view .brand h1 { font-size: 1.1rem; }
+  body.pilot-view .view-switch button { min-height: 30px; }
+  body.pilot-view .status-strip { gap: 4px; }
+  body.pilot-view .status-item { min-height: 38px; padding: 3px 6px; }
+  body.pilot-view .flight-bar { gap: 4px 8px; }
+  body.pilot-view #systems-button { min-height: 32px; font-size: 0.8rem; }
+  body.pilot-view .mission-strip { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 8px; }
+  body.pilot-view .mission-strip > div { min-width: 0; }
+  body.pilot-view #objective-status { display: none; }
+  body.pilot-view #mission-action { grid-column: 2; grid-row: 1 / 3; min-height: 36px; padding: 6px; }
+  body.pilot-view #vehicle-alert { grid-column: 1 / -1; margin: 0; }
+  .pilot-deck small { overflow-wrap: anywhere; }
+}
 .stick-box { touch-action: none; cursor: crosshair; user-select: none; }
 .engineering-reference { padding: 16px 0; border-top: 1px solid var(--line-strong); }
 .engineering-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }

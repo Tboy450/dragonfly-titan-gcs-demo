@@ -2,6 +2,7 @@ import * as THREE from "./vendor/three/three.module.min.js";
 import { cameraPose } from "./flight-camera.mjs";
 import { createTitanTerrain } from "./titan-terrain.mjs";
 import { model } from "./flight-model.mjs";
+import { missionTarget, systemsModel } from "./mission-systems.mjs";
 
 export function createChaseRenderer() {
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -16,7 +17,8 @@ export function createChaseRenderer() {
   const landscape = createTitanTerrain(scene, renderer);
   const craft = new THREE.Group();
   scene.add(craft);
-  scene.add(new THREE.HemisphereLight(0xfff3de, 0x645045, 2.5));
+  const ambient = new THREE.HemisphereLight(0xfff3de, 0x645045, 2.5);
+  scene.add(ambient);
   const sun = new THREE.DirectionalLight(0xffeed6, 3.2);
   sun.position.set(-4, 7, -3);
   sun.castShadow = true;
@@ -165,6 +167,8 @@ export function createChaseRenderer() {
       const background = scene.background, fog = scene.fog;
       scene.background = null;
       scene.fog = null;
+      ambient.intensity = 2.5;
+      sun.intensity = 3.2;
       landscape.group.visible = false;
       renderer.shadowMap.enabled = false;
       craft.position.set(0, 0, 0);
@@ -200,6 +204,15 @@ export function createChaseRenderer() {
       const x = state.positionX || 0;
       const z = state.positionZ || 0;
       landscape.update(x, z);
+      const target = missionTarget(state);
+      const marker = landscape.group.getObjectByName("survey-marker");
+      marker.visible = state.mission.phase !== "idle";
+      marker.position.set(target.x, landscape.heightAt(target.x, target.z) + 0.08, target.z);
+      const sunlight = Math.max(0, Math.cos((state.elapsed || 0) / systemsModel.titanDaySeconds * Math.PI * 2));
+      ambient.intensity = 0.65 + sunlight * 1.85;
+      sun.intensity = 0.15 + sunlight * 3.05;
+      scene.background.setHex(0xb48b55).multiplyScalar(0.22 + sunlight * 0.78);
+      scene.fog.color.copy(scene.background);
       const groundY = landscape.heightAt(x, z);
       const altitude = Math.max(0, state.altitude || 0);
       craft.position.set(x, groundY + altitude + 0.86, z);

@@ -1,4 +1,5 @@
-// Environmental values: APL's TFAWS 2024 report. Vehicle/performance values are demo assumptions.
+import { createSystemsState, guidanceTarget, stepSystems, flightRestriction, overLiquid } from "./mission-systems.mjs";
+// Environmental values: APL's TFAWS 2024 report. Performance values are demo assumptions.
 export const model = Object.freeze({
   massKg: 875, titanG: 1.352, earthG: 9.80665,
   rhoTitan: 5.44, rhoEarth: 1.225, pressureKpa: 146, temperatureK: 94,
@@ -13,6 +14,7 @@ const follow = (a, b, rate, dt) => lerp(a, b, 1 - Math.exp(-rate * dt));
 
 export function createFlightState() {
   return {
+    ...createSystemsState(),
     mode: "Preflight", auto: true, hold: false, missionTime: 0,
     altitude: 0, verticalSpeed: 0, speed: 0, throttle: 0.52,
     yaw: 0, pitch: 0, roll: 0, heading: 84, positionX: 0, positionZ: 0,
@@ -66,7 +68,31 @@ export function profileAt(t) {
 export function stepFlight(state, dt) {
   if (state.hold || dt <= 0) return;
   state.missionTime += dt;
-  if (state.auto) {
+  const restricted = flightRestriction(state);
+  if (state.hibernating) {
+    state.altitude = 0; state.verticalSpeed = 0; state.speed = 0; state.throttle = 0;
+    state.mode = "Hibernation";
+  } else if (restricted) {
+    state.auto = false; state.mission.guidance = false;
+    state.speed = follow(state.speed, 0, 2, dt);
+    state.verticalSpeed = state.altitude > 0 ? state.battery > 0 ? -0.7
+      : state.verticalSpeed + (-model.titanG - 0.04 * state.verticalSpeed * Math.abs(state.verticalSpeed)) * dt : 0;
+    state.altitude = Math.max(0, state.altitude + state.verticalSpeed * dt);
+    state.throttle = state.altitude > 0 && state.battery > 0 ? 0.4 : 0;
+    state.pitch = 0; state.roll = 0; state.yaw = 0;
+    state.mode = state.altitude > 0 ? "Safety descent" : "Flight inhibited";
+  } else if (state.mission.guidance) {
+    const target = guidanceTarget(state, dt);
+    const before = state.altitude;
+    const climb = clamp(target.altitude - state.altitude, -0.8, 1.2);
+    state.altitude = Math.max(0, state.altitude + climb * dt);
+    if (state.altitude < 0.03 && target.altitude === 0) state.altitude = 0;
+    state.verticalSpeed = (state.altitude - before) / dt;
+    state.speed = follow(state.speed, target.speed, 1.5, dt);
+    state.throttle = target.throttle;
+    state.pitch = state.speed / 25; state.roll = 0; state.yaw = 0;
+    state.mode = "Guided survey";
+  } else if (state.auto) {
     const target = profileAt(state.missionTime);
     state.mode = target.mode;
     const previousAltitude = state.altitude;
@@ -87,6 +113,12 @@ export function stepFlight(state, dt) {
     const decay = Math.exp(-0.08 * dt);
     state.speed = clamp(state.speed * decay + state.pitch * 3 / 0.08 * (1 - decay), 0, 16);
     state.mode = state.altitude < 0.05 ? "Surface" : state.speed > 5 ? "Traverse" : "Manual";
+  }
+  // Liquid is a no-landing zone in this training scenario, not a buoyancy simulation.
+  if (overLiquid(state.positionX, state.positionZ) && state.altitude < 2 && !state.hibernating) {
+    state.altitude = 2; state.verticalSpeed = Math.max(0, state.verticalSpeed);
+    state.mode = "Liquid avoidance";
+    state.mission.message = "Liquid below: landing inhibited. Move to dry ground.";
   }
   if (state.altitude === 0 && state.verticalSpeed === 0) state.speed = 0;
   state.heading = (state.heading + state.yaw * 22 * dt + 360) % 360;
@@ -109,7 +141,7 @@ export function stepFlight(state, dt) {
   });
   state.power = stopped ? 100 : d.realisticTitan * (1 + state.speed ** 2 / 95)
     * (1 + state.wind * 0.025) * (0.78 + state.throttle * 0.47);
-  state.battery = clamp(state.battery - state.power * dt / (model.batteryEnergyKwh * 36000), 0, 100);
+  stepSystems(state, dt, model.batteryEnergyKwh);
   if (state.sampleTime < 0 || state.missionTime - state.sampleTime >= 0.5 - 1e-9) {
     state.sampleTime = state.missionTime;
     state.chart.push({ time: state.missionTime, altitude: state.altitude, powerKw: state.power / 1000, speed: state.speed });
@@ -124,9 +156,29 @@ export function stepFlight(state, dt) {
 
 export function commandFlight(state, mode) {
   if (mode === "hold") { state.hold = !state.hold; return; }
+  state.restSeconds = 0;
+  state.hibernating = false;
+  state.mission.guidance = false;
   state.hold = false;
   state.auto = mode === "auto";
   if (mode === "takeoff") { state.throttle = 0.68; state.pitch = 0.08; }
   if (mode === "cruise") { state.throttle = 0.6; state.pitch = 0.34; }
   if (mode === "land") { state.throttle = 0.39; state.pitch = 0; state.roll = 0; state.yaw = 0; }
+}
+
+export function advanceRest(state, seconds = 600) {
+  if (state.hold || !state.hibernating) return;
+  let remaining = Math.min(seconds, state.restSeconds);
+  while (remaining > 0) {
+    const dt = Math.min(1, remaining);
+    stepFlight(state, dt);
+    state.restSeconds -= dt;
+    remaining -= dt;
+    // A low charge is a reason to recharge, not a reason to interrupt recharge.
+    if (state.coreC > 40 || state.batteryC < 5 || state.batteryC > 35 || state.fanIntegrity < 0.5) {
+      state.restSeconds = 0;
+      state.restNotice = "Accelerated time stopped: thermal inspection required.";
+      break;
+    }
+  }
 }

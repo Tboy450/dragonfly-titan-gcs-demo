@@ -1,6 +1,7 @@
 import { createChaseRenderer } from "./chase-vehicle.mjs";
 import { enterFreeCamera, orbitCamera } from "./flight-camera.mjs";
-import { model, createFlightState, deriveFlight, stepFlight, commandFlight } from "./flight-model.mjs";
+import { model, createFlightState, deriveFlight, stepFlight, commandFlight, advanceRest } from "./flight-model.mjs";
+import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel } from "./mission-systems.mjs";
 
 const state = {
   ...createFlightState(),
@@ -53,6 +54,8 @@ const derived = () => deriveFlight(state);
 
 function formatTime(seconds) {
   const s = Math.max(0, Math.floor(seconds));
+  if (s >= 86400) return `${Math.floor(s / 86400)}d ${Math.floor(s % 86400 / 3600).toString().padStart(2, "0")}:${Math.floor(s % 3600 / 60).toString().padStart(2, "0")}`;
+  if (s >= 3600) return `${Math.floor(s / 3600)}:${Math.floor(s % 3600 / 60).toString().padStart(2, "0")}:${(s % 60).toString().padStart(2, "0")}`;
   const minutes = Math.floor(s / 60).toString().padStart(2, "0");
   const rest = (s % 60).toString().padStart(2, "0");
   return `${minutes}:${rest}`;
@@ -858,7 +861,7 @@ function updateReadouts() {
   $("altitude-value").textContent = `${state.altitude.toFixed(1)} m`;
   $("speed-value").textContent = `${state.speed.toFixed(1)} m/s`;
   $("power-value").textContent = `${(state.power / 1000).toFixed(1)} kW`;
-  $("battery-value").textContent = `${Math.round(state.battery)}%`;
+  $("battery-value").textContent = `${state.battery.toFixed(1)}%`;
   $("heading-value").textContent = `${Math.round(state.heading).toString().padStart(3, "0")} deg`;
   $("disk-area").textContent = `${d.totalArea.toFixed(2)} m2`;
   $("weight-value").textContent = `${Math.round(d.titanWeight).toLocaleString()} N`;
@@ -915,16 +918,66 @@ function updateReadouts() {
   $("draco-state").textContent = state.mode === "Surface" ? "Armed" : "Stowed";
   $("dragmet-state").textContent = state.altitude > 3 ? "Aloft logging" : "Surface logging";
   $("rotor-summary").textContent = state.wind > 3.8 ? "8 nominal, gust margin" : "8 nominal";
+  updateSystemsReadouts();
+}
+
+function updateSystemsReadouts() {
+  const m = state.mission;
+  const labels = { idle: "Begin survey", outbound: "Fly to outcrop", sample: "Collect sample", sampling: "Acquiring sample", return: "Return to base", complete: "New survey" };
+  $("objective-title").textContent = m.phase === "complete" ? "Survey complete" : "Shoreline survey";
+  $("objective-status").textContent = m.message;
+  $("objective-distance").textContent = `${targetDistance(state).toFixed(0)} m / ${missionTarget(state).name}`;
+  $("mission-action").textContent = m.guidance ? "Manual control" : labels[m.phase];
+  $("mission-action").disabled = m.phase === "sampling";
+  const alert = state.guard || (state.coreC > 40 ? "Equipment bay warming" : state.batteryC < 5 ? "Battery cooling" : "Systems nominal");
+  $("vehicle-alert").textContent = alert;
+  $("vehicle-alert").classList.toggle("warning", alert !== "Systems nominal");
+  $("systems-warning").textContent = alert;
+  $("core-temp").textContent = `${state.coreC.toFixed(1)} C`;
+  $("battery-temp").textContent = `${state.batteryC.toFixed(1)} C`;
+  $("heat-in").textContent = `${Math.round(state.heatInW)} W`;
+  $("heat-out").textContent = `${Math.round(state.heatOutW)} W`;
+  $("fan-integrity").textContent = `${Math.round(state.fanIntegrity * 100)}%`;
+  $("insulation-integrity").textContent = `${Math.round(state.insulationIntegrity * 100)}%`;
+  $("trim-output").textContent = `${Math.round(state.trim * 100)}%`;
+  if (state.thermalAuto) $("trim-control").value = state.trim * 100;
+  $("fan-output").textContent = `${Math.round(state.fan * 100)}%`;
+  $("electric-load").textContent = `${Math.round(state.power)} W`;
+  $("net-power").textContent = `${state.netBatteryW >= 0 ? "+" : ""}${Math.round(state.netBatteryW)} W ${state.netBatteryW >= 0 ? "charging" : "discharging"}`;
+  $("stored-energy").textContent = `${(state.battery / 100 * model.batteryEnergyKwh).toFixed(2)} kWh`;
+  const minutes = Math.max(0, state.battery - 15) / 100 * model.batteryEnergyKwh * 60000 / Math.max(1, -state.netBatteryW);
+  const duration = minutes >= 1440 ? `${(minutes / 1440).toFixed(1)} days` : minutes >= 60 ? `${(minutes / 60).toFixed(1)} h` : `${minutes.toFixed(0)} min`;
+  $("reserve-time").textContent = state.netBatteryW < 0 ? `${duration} at current load` : state.battery >= 100 ? "Fully charged" : "Charging";
+  const hour = (12 + state.elapsed / systemsModel.titanDaySeconds * 24) % 24;
+  $("solar-time").textContent = `${Math.floor(hour).toString().padStart(2, "0")}:${Math.floor(hour % 1 * 60).toString().padStart(2, "0")} / ${hour >= 6 && hour < 18 ? "Day" : "Night"}`;
+  $("surface-elapsed").textContent = `${(state.elapsed / 3600).toFixed(2)} h`;
+  $("systems-objective").textContent = m.phase;
+  $("sample-progress").textContent = `${Math.min(30, m.sampleSeconds).toFixed(0)} / 30 s`;
+  $("sample-count").textContent = m.samples;
+  const canRest = landed(state) && !overLiquid(state.positionX, state.positionZ) && !state.hold && m.phase !== "sampling" && state.restSeconds === 0;
+  $("rest-hour").disabled = !canRest;
+  $("rest-night").disabled = !canRest;
+  $("rest-stop").disabled = !state.hibernating;
+  $("rest-status").textContent = state.restNotice || (state.restSeconds > 0 ? `${(state.restSeconds / 3600).toFixed(1)} h remaining / accelerated surface time` : state.hibernating ? "Hibernating / real-time monitoring" : "Hibernation available after dry-ground landing.");
+  if (m.phase === "sampling") { $("draco-state").textContent = "Acquiring"; $("drams-state").textContent = "Analyzing"; }
+  else if (m.samples > 0) $("drams-state").textContent = "Sample secured";
 }
 
 function updateTrack() {
+  const target = missionTarget(state);
   const points = [...state.track, { x: state.positionX, z: state.positionZ }];
-  const extent = Math.max(50, ...points.map((p) => Math.max(Math.abs(p.x - state.positionX), Math.abs(p.z - state.positionZ))));
+  const extent = Math.max(50, ...[...points, target].map((p) => Math.max(Math.abs(p.x - state.positionX), Math.abs(p.z - state.positionZ))));
   const scale = 68 / extent;
   const project = (p) => `${(160 + (p.x - state.positionX) * scale).toFixed(1)},${(90 + (p.z - state.positionZ) * scale).toFixed(1)}`;
   $("flight-track").setAttribute("points", points.map(project).join(" "));
   $("track-craft").setAttribute("transform", `translate(160 90) rotate(${state.heading})`);
   $("track-scale").textContent = `${(40 / scale).toFixed(0)} m`;
+  const [tx, ty] = project(target).split(",").map(Number);
+  $("track-target").setAttribute("cx", tx);
+  $("track-target").setAttribute("cy", ty);
+  $("track-target-label").setAttribute("x", tx + 10);
+  $("track-target-label").setAttribute("y", ty);
+  $("track-target-label").textContent = target.name;
 }
 
 function positionStick(element, x, y) {
@@ -944,6 +997,9 @@ function bindPilotStick(nubId, kind) {
     const x = clamp((event.clientX - (rect.left + rect.width / 2)) / radius, -1, 1);
     const y = clamp((event.clientY - (rect.top + rect.height / 2)) / radius, -1, 1);
     state.auto = false;
+    state.mission.guidance = false;
+    state.restSeconds = 0;
+    state.hibernating = false;
     if (kind === "left") {
       state.yaw = x;
       state.throttle = clamp((1 - y) / 2, 0, 1);
@@ -1038,7 +1094,9 @@ let readoutTime = 0;
 function tick(now) {
   const dt = Math.min(0.05, (now - state.lastTick) / 1000);
   state.lastTick = now;
-  stepFlight(state, dt);
+  if (state.restSeconds > 0 && !state.hold) {
+    advanceRest(state);
+  } else stepFlight(state, dt);
   if (now - readoutTime > 100) {
     updateReadouts();
     updateTrack();
@@ -1057,6 +1115,20 @@ $("payload-slider").addEventListener("input", (event) => {
   state.payloadDelta = Number(event.target.value);
 });
 
+$("mission-action").addEventListener("click", () => { missionAction(state); updateReadouts(); });
+$("systems-button").addEventListener("click", () => $("systems-dialog").showModal());
+$("close-systems").addEventListener("click", () => $("systems-dialog").close());
+$("thermal-auto").addEventListener("change", (event) => {
+  state.thermalAuto = event.target.checked;
+  $("trim-control").disabled = state.thermalAuto;
+});
+$("trim-control").addEventListener("input", (event) => { state.trim = Number(event.target.value) / 100; });
+$("fan-control").addEventListener("input", (event) => { state.fan = Number(event.target.value) / 100; });
+$("fault-control").addEventListener("change", (event) => { state.fault = event.target.value; });
+$("rest-hour").addEventListener("click", () => startRest(state, 1));
+$("rest-night").addEventListener("click", () => startRest(state, 192));
+$("rest-stop").addEventListener("click", () => { state.restSeconds = 0; state.restNotice = ""; state.hibernating = false; });
+
 document.querySelectorAll("[data-command]").forEach((button) => {
   button.addEventListener("click", () => setMode(button.dataset.command));
 });
@@ -1071,12 +1143,16 @@ bindPilotStick("right-stick", "right");
 bindFreeCamera();
 
 window.addEventListener("keydown", (event) => {
+  if ($("systems-dialog").open) return;
   if (event.target.matches("input, select, textarea, button, a") || event.target.isContentEditable) return;
   const step = event.shiftKey ? 0.08 : 0.04;
   const keys = ["w", "a", "s", "d", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "];
   if (!keys.includes(event.key)) return;
   event.preventDefault();
   state.auto = false;
+  state.mission.guidance = false;
+  state.restSeconds = 0;
+  state.hibernating = false;
   if (event.key === "w") state.throttle = clamp(state.throttle + step, 0, 1);
   if (event.key === "s") state.throttle = clamp(state.throttle - step, 0, 1);
   if (event.key === "a") state.yaw = clamp(state.yaw - step, -1, 1);

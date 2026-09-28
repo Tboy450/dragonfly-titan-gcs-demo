@@ -82,7 +82,7 @@ test("Battery energy uses seconds, and flight history remains bounded", () => {
   const state = createFlightState();
   const battery = state.battery;
   stepFlight(state, 0.1);
-  near(battery - state.battery, state.power * 0.1 / (model.batteryEnergyKwh * 36000));
+  near(battery - state.battery, -state.netBatteryW * 0.1 / (model.batteryEnergyKwh * 36000));
   advance(state, 600, 30);
   assert.equal(state.chart.length, 180);
   assert.ok(state.track.length <= 600);
