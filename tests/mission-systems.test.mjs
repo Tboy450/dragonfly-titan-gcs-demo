@@ -161,8 +161,15 @@ test("Rest requires dry stationary ground, and liquid cannot become a sample sit
   assert.ok(overLiquid(s.positionX, s.positionZ));
   assert.equal(startRest(s, 1), false);
   stepFlight(s, 0.05);
-  assert.ok(s.altitude >= 2);
   assert.equal(s.mode, "Liquid avoidance");
+  // The aircraft climbs clear of the liquid smoothly instead of teleporting to 2 m.
+  let previous = s.altitude;
+  for (let i = 0; i < 300; i++) {
+    stepFlight(s, 1 / 60);
+    assert.ok(s.altitude - previous < 0.06, `step ${s.altitude - previous}`);
+    previous = s.altitude;
+  }
+  assert.ok(s.altitude > 1.8);
 });
 
 test("Energy accounting includes MMRTG input and finite capacity", () => {

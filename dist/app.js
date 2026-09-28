@@ -1,6 +1,6 @@
 import { createChaseRenderer } from "./chase-vehicle.mjs";
-import { enterFreeCamera, orbitCamera } from "./flight-camera.mjs";
-import { model, createFlightState, deriveFlight, stepFlight, commandFlight, advanceRest } from "./flight-model.mjs";
+import { enterFreeCamera, orbitCamera, smoothCameraPose } from "./flight-camera.mjs";
+import { model, createFlightState, deriveFlight, stepFlight, commandFlight, advanceRest, takeManualControl } from "./flight-model.mjs";
 import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel, liquidExchangerStudy } from "./mission-systems.mjs";
 
 const state = {
@@ -9,8 +9,14 @@ const state = {
   cameraMode: "fixed",
   cameraYaw: 0,
   cameraPitch: 0.10,
+  throttleSpring: readThrottlePreference(),
   lastTick: performance.now(),
 };
+
+// Throttle stays where the pilot leaves it unless the optional spring-to-hover mode is chosen.
+function readThrottlePreference() {
+  try { return localStorage.getItem("dragonfly-throttle-spring") === "1"; } catch { return false; }
+}
 
 const $ = (id) => document.getElementById(id);
 const flightCanvas = $("flight-canvas");
@@ -51,6 +57,11 @@ const pilotRotorTiles = Array.from({ length: model.rotorCount }, () => {
 });
 
 const derived = () => deriveFlight(state);
+// In automatic modes the sticks mirror the aircraft; in manual they show the pilot's command.
+const manualControl = () => !state.auto && !state.mission.guidance;
+const stickYaw = () => manualControl() ? state.yawCmd : state.yaw;
+const stickPitch = () => manualControl() ? state.pitchCmd : state.pitch;
+const stickRoll = () => manualControl() ? state.rollCmd : state.roll;
 
 function formatTime(seconds) {
   const s = Math.max(0, Math.floor(seconds));
@@ -790,9 +801,10 @@ function drawHud(ctx, w, h) {
   ctx.lineTo(centerX, centerY + 36);
   ctx.stroke();
 
-  ctx.fillText(`ALT ${state.altitude.toFixed(1)} m`, 24, 74);
-  ctx.fillText(`V/S ${state.verticalSpeed.toFixed(2)} m/s`, 24, 94);
-  ctx.fillText(`SPD ${state.speed.toFixed(1)} m/s`, 24, 114);
+  // Left column starts below the "Vehicle / North up" overlay so ALT is never hidden.
+  ctx.fillText(`ALT ${state.altitude.toFixed(1)} m`, 24, 100);
+  ctx.fillText(`V/S ${state.verticalSpeed.toFixed(2)} m/s`, 24, 120);
+  ctx.fillText(`SPD ${state.speed.toFixed(1)} m/s`, 24, 140);
   ctx.textAlign = "right";
   ctx.fillText(`ROLL ${(state.roll * 22).toFixed(1)} deg`, w - 24, 74);
   ctx.fillText(`PITCH ${(state.pitch * 18).toFixed(1)} deg`, w - 24, 94);
@@ -887,11 +899,13 @@ function updateReadouts() {
   $("earth-power-value").textContent = `${Math.round(d.idealEarth / 1000)} kW`;
   $("wind-output").textContent = `${state.wind.toFixed(1)} m/s`;
   $("payload-output").textContent = `${state.payloadDelta > 0 ? "+" : ""}${state.payloadDelta} kg`;
-  $("left-stick-readout").textContent = `THR ${Math.round(state.throttle * 100)}% / YAW ${Math.round(state.yaw * 100)}%`;
-  $("right-stick-readout").textContent = `PIT ${Math.round(state.pitch * 100)}% / ROL ${Math.round(state.roll * 100)}%`;
+  const leftText = `THR ${Math.round(state.throttle * 100)}% / YAW ${Math.round(stickYaw() * 100)}%`;
+  const rightText = `PIT ${Math.round(stickPitch() * 100)}% / ROL ${Math.round(stickRoll() * 100)}%`;
+  $("left-stick-readout").textContent = leftText;
+  $("right-stick-readout").textContent = rightText;
 
-  positionStick($("left-stick"), state.yaw, state.throttle * 2 - 1);
-  positionStick($("right-stick"), state.roll, state.pitch);
+  positionStick($("left-stick"), stickYaw(), state.throttle * 2 - 1);
+  positionStick($("right-stick"), stickRoll(), stickPitch());
 
   rotorTiles.forEach((tile, index) => {
     const rpm = Math.round(state.rotorRpm[index]);
@@ -902,13 +916,13 @@ function updateReadouts() {
     pilotRotorTiles[index].textContent = `${rpm}`;
   });
 
-  $("pilot-left-readout").textContent = `THR ${Math.round(state.throttle * 100)}% / YAW ${Math.round(state.yaw * 100)}%`;
-  $("pilot-right-readout").textContent = `PIT ${Math.round(state.pitch * 100)}% / ROL ${Math.round(state.roll * 100)}%`;
+  $("pilot-left-readout").textContent = leftText;
+  $("pilot-right-readout").textContent = rightText;
   $("attitude-readout").textContent = `P ${state.pitch >= 0 ? "+" : ""}${(state.pitch * 18).toFixed(1)} / R ${state.roll >= 0 ? "+" : ""}${(state.roll * 22).toFixed(1)}`;
   $("attitude-horizon").style.transform = `translateY(${state.pitch * 24}px) rotate(${-state.roll * 22}deg)`;
   $("pilot-rotor-summary").textContent = state.wind > 3.8 ? "8 / 8 gust margin" : "8 / 8 nominal";
-  positionStick($("pilot-left-stick"), state.yaw, state.throttle * 2 - 1);
-  positionStick($("pilot-right-stick"), state.roll, state.pitch);
+  positionStick($("pilot-left-stick"), stickYaw(), state.throttle * 2 - 1);
+  positionStick($("pilot-right-stick"), stickRoll(), stickPitch());
 
   $("link-value").textContent = `${Math.round(84 - state.wind * 1.8 + Math.sin(state.missionTime * 0.18) * 3)}%`;
   $("drams-state").textContent = state.mode === "Surface" ? "Sample ready" : "Standby";
@@ -1014,29 +1028,34 @@ function bindPilotStick(nubId, kind) {
   const nub = $(nubId);
   const pad = nub.closest(".pilot-stick-box, .stick-box");
   let activePointer = null;
+  let origin = null;
 
+  // Inputs are relative to where the finger lands, so a touch never snaps the sticks.
   const applyPointer = (event) => {
     const rect = pad.getBoundingClientRect();
-    const radius = Math.max(1, rect.width * 0.39);
-    const x = clamp((event.clientX - (rect.left + rect.width / 2)) / radius, -1, 1);
-    const y = clamp((event.clientY - (rect.top + rect.height / 2)) / radius, -1, 1);
-    state.auto = false;
-    state.mission.guidance = false;
-    state.restSeconds = 0;
-    state.hibernating = false;
+    const travel = Math.max(1, rect.width * 0.34);
+    const x = (event.clientX - origin.x) / travel;
+    const y = (event.clientY - origin.y) / travel;
     if (kind === "left") {
-      state.yaw = x;
-      state.throttle = clamp((1 - y) / 2, 0, 1);
+      state.yawCmd = clamp(origin.yaw + x, -1, 1);
+      // Moving the throttle hands altitude back to the pilot; steering alone keeps a button's hold.
+      if (Math.abs(y) > 0.02) {
+        state.altitudeHold = null;
+        state.throttle = clamp(origin.throttle - y / 2, 0, 1);
+      }
     } else {
-      state.roll = x;
-      state.pitch = -y;
+      state.rollCmd = clamp(origin.roll + x, -1, 1);
+      state.pitchCmd = clamp(origin.pitch - y, -1, 1);
     }
   };
 
   pad.addEventListener("pointerdown", (event) => {
+    if (activePointer !== null) return;
     activePointer = event.pointerId;
     pad.setPointerCapture(event.pointerId);
-    applyPointer(event);
+    takeManualControl(state);
+    // Grabbing a stick changes nothing until the finger moves, wherever it lands on the pad.
+    origin = { x: event.clientX, y: event.clientY, throttle: state.throttle, yaw: state.yawCmd, pitch: state.pitchCmd, roll: state.rollCmd };
   });
 
   pad.addEventListener("pointermove", (event) => {
@@ -1047,16 +1066,29 @@ function bindPilotStick(nubId, kind) {
     if (event.pointerId !== activePointer) return;
     activePointer = null;
     if (kind === "left") {
-      state.yaw = 0;
+      state.yawCmd = 0;
+      if (state.throttleSpring) {
+        state.throttle = model.hoverThrottle;
+        state.altitudeHold = null;
+      }
     } else {
-      state.pitch = 0;
-      state.roll = 0;
+      state.pitchCmd = 0;
+      state.rollCmd = 0;
     }
   };
 
   pad.addEventListener("pointerup", release);
   pad.addEventListener("pointercancel", release);
   pad.addEventListener("lostpointercapture", release);
+}
+
+function setThrottleSpring(enabled) {
+  state.throttleSpring = enabled;
+  try { localStorage.setItem("dragonfly-throttle-spring", enabled ? "1" : "0"); } catch { /* preference is optional */ }
+  document.querySelectorAll("[data-throttle-mode]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(enabled));
+    button.textContent = enabled ? "Throttle: centering" : "Throttle: sticky";
+  });
 }
 
 function setCameraMode(mode) {
@@ -1121,6 +1153,7 @@ function tick(now) {
   if (state.restSeconds > 0 && !state.hold) {
     advanceRest(state);
   } else stepFlight(state, dt);
+  smoothCameraPose(state, dt);
   if (now - readoutTime > 100) {
     updateReadouts();
     updateTrack();
@@ -1175,25 +1208,29 @@ window.addEventListener("keydown", (event) => {
   const keys = ["w", "a", "s", "d", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "];
   if (!keys.includes(event.key)) return;
   event.preventDefault();
-  state.auto = false;
-  state.mission.guidance = false;
-  state.restSeconds = 0;
-  state.hibernating = false;
+  takeManualControl(state);
+  if (event.key === "w" || event.key === "s" || event.key === " ") state.altitudeHold = null;
   if (event.key === "w") state.throttle = clamp(state.throttle + step, 0, 1);
   if (event.key === "s") state.throttle = clamp(state.throttle - step, 0, 1);
-  if (event.key === "a") state.yaw = clamp(state.yaw - step, -1, 1);
-  if (event.key === "d") state.yaw = clamp(state.yaw + step, -1, 1);
-  if (event.key === "ArrowUp") state.pitch = clamp(state.pitch + step, -1, 1);
-  if (event.key === "ArrowDown") state.pitch = clamp(state.pitch - step, -1, 1);
-  if (event.key === "ArrowLeft") state.roll = clamp(state.roll - step, -1, 1);
-  if (event.key === "ArrowRight") state.roll = clamp(state.roll + step, -1, 1);
+  if (event.key === "a") state.yawCmd = clamp(state.yawCmd - step, -1, 1);
+  if (event.key === "d") state.yawCmd = clamp(state.yawCmd + step, -1, 1);
+  if (event.key === "ArrowUp") state.pitchCmd = clamp(state.pitchCmd + step, -1, 1);
+  if (event.key === "ArrowDown") state.pitchCmd = clamp(state.pitchCmd - step, -1, 1);
+  if (event.key === "ArrowLeft") state.rollCmd = clamp(state.rollCmd - step, -1, 1);
+  if (event.key === "ArrowRight") state.rollCmd = clamp(state.rollCmd + step, -1, 1);
   if (event.key === " ") {
-    state.pitch = 0;
-    state.roll = 0;
-    state.yaw = 0;
-    state.throttle = 0.52;
+    // Level off: centre the attitude sticks and set the throttle to hold altitude.
+    state.pitchCmd = 0;
+    state.rollCmd = 0;
+    state.yawCmd = 0;
+    state.throttle = model.hoverThrottle;
   }
 });
+
+document.querySelectorAll("[data-throttle-mode]").forEach((button) => {
+  button.addEventListener("click", () => setThrottleSpring(!state.throttleSpring));
+});
+setThrottleSpring(state.throttleSpring);
 
 state.lastTick = performance.now();
 requestAnimationFrame(tick);

@@ -7,18 +7,35 @@ export const model = Object.freeze({
   figureOfMerit: 0.75, inducedLossFactor: 1.15, batteryEnergyKwh: 11.5,
   dragAreaM2: 0.65,
   pitchRadians: Math.PI / 10, rollRadians: 22 * Math.PI / 180,
+  // Handling assumptions. The throttle is a climb-rate command: 50% holds altitude.
+  hoverThrottle: 0.5, climbPerThrottle: 12, maxClimb: 3, maxDescent: -2.5,
+  // ~3,000 N maximum thrust against ~1,183 N Titan weight leaves limited upward margin, and
+  // Titan's 1.35 m/s2 gravity arrests a climb slowly. Both limits are rounded demo values.
+  maxClimbAccel: 1.8, maxSinkAccel: 1.2, maxHorizontalAccel: 1.0,
+  takeoffAltitude: 40, cruiseFloor: 20, cruiseSpeed: 10, liquidClearance: 2,
 });
 
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const follow = (a, b, rate, dt) => lerp(a, b, 1 - Math.exp(-rate * dt));
+// First-order response with a rate limit, so a changed command never produces a jump.
+const approach = (value, target, rate, maxRate, dt) =>
+  value + clamp((target - value) * (1 - Math.exp(-rate * dt)), -maxRate * dt, maxRate * dt);
+
+export const throttleForClimb = (climb) => clamp(model.hoverThrottle + climb / model.climbPerThrottle, 0, 1);
+export const climbForThrottle = (throttle) =>
+  clamp((throttle - model.hoverThrottle) * model.climbPerThrottle, model.maxDescent, model.maxClimb);
+// Touchdown profile: descend at up to 1.3 m/s, easing to 0.35 m/s at contact.
+const landingClimb = (altitude) => -Math.min(1.3, 0.35 + 0.25 * Math.max(0, altitude));
+const IDLE_THROTTLE = 0.18;
 
 export function createFlightState() {
   return {
     ...createSystemsState(),
-    mode: "Preflight", auto: true, hold: false, missionTime: 0,
-    altitude: 0, verticalSpeed: 0, speed: 0, throttle: 0.52,
-    yaw: 0, pitch: 0, roll: 0, heading: 84, positionX: 0, positionZ: 0,
+    mode: "Preflight", auto: true, hold: false, missionTime: 0, autoClock: 0,
+    altitude: 0, verticalSpeed: 0, speed: 0, throttle: model.hoverThrottle, altitudeHold: null,
+    yaw: 0, pitch: 0, roll: 0, yawCmd: 0, pitchCmd: 0, rollCmd: 0,
+    heading: 84, positionX: 0, positionZ: 0,
     battery: 96, power: 0, wind: 0.8, payloadDelta: 0,
     distance: 0, chart: [], track: [{ x: 0, z: 0 }], sampleTime: -1,
     rotorRpm: Array(8).fill(0), rotorPhase: Array(8).fill(0),
@@ -54,22 +71,22 @@ export function profileAt(t) {
   const phase = t % 180;
   if (phase < 22) return {
     mode: "Takeoff", altitude: lerp(0, 46, phase / 22), verticalSpeed: 2.1,
-    speed: lerp(0, 4, phase / 22), throttle: 0.66, pitch: 0.12, roll: Math.sin(t * 0.9) * 0.06,
+    speed: lerp(0, 4, phase / 22), pitch: 0.12, roll: Math.sin(t * 0.9) * 0.06,
   };
   if (phase < 55) return {
-    mode: "Hover", altitude: 46 + Math.sin(t * 0.7) * 0.9, verticalSpeed: Math.cos(t * 0.7) * 0.2,
-    speed: 1.3 + Math.sin(t * 0.4) * 0.5, throttle: 0.54, pitch: 0.03, roll: Math.sin(t * 0.5) * 0.08,
+    mode: "Hover", altitude: 46 + Math.sin(t * 0.7) * 0.9, verticalSpeed: Math.cos(t * 0.7) * 0.63,
+    speed: 1.3 + Math.sin(t * 0.4) * 0.5, pitch: 0.03, roll: Math.sin(t * 0.5) * 0.08,
   };
   if (phase < 122) return {
-    mode: "Traverse", altitude: 48 + Math.sin(t * 0.28) * 2.2, verticalSpeed: Math.cos(t * 0.28) * 0.42,
-    speed: 10 + Math.sin(t * 0.35) * 1.2, throttle: 0.61,
+    mode: "Traverse", altitude: 48 + Math.sin(t * 0.28) * 2.2, verticalSpeed: Math.cos(t * 0.28) * 0.62,
+    speed: 10 + Math.sin(t * 0.35) * 1.2,
     pitch: 0.3 + Math.sin(t * 0.23) * 0.08, roll: Math.sin(t * 0.42) * 0.2,
   };
   if (phase < 158) return {
-    mode: "Descent", altitude: lerp(48, 7, (phase - 122) / 36), verticalSpeed: -1.15,
-    speed: lerp(7, 2.2, (phase - 122) / 36), throttle: 0.45, pitch: 0.08, roll: Math.sin(t * 0.5) * 0.1,
+    mode: "Descent", altitude: lerp(48, 1.5, (phase - 122) / 36), verticalSpeed: -46.5 / 36,
+    speed: lerp(7, 1.5, (phase - 122) / 36), pitch: 0.08, roll: Math.sin(t * 0.5) * 0.1,
   };
-  return { mode: "Surface", altitude: 0, verticalSpeed: 0, speed: 0, throttle: 0.18, pitch: 0, roll: 0 };
+  return { mode: "Surface", altitude: 0, verticalSpeed: 0, speed: 0, pitch: 0, roll: 0 };
 }
 
 export function flightPower(state) {
@@ -84,69 +101,124 @@ export function flightPower(state) {
   return (induced + profile + parasite + climb) * (1 + state.wind * 0.025);
 }
 
+// One vertical model for every mode: altitude and climb rate stay continuous across mode changes.
+function stepVertical(state, climbTarget, dt) {
+  let target = climbTarget;
+  // Liquid is a no-landing zone in this training scenario, not a buoyancy simulation.
+  if (!state.hibernating && overLiquid(state.positionX, state.positionZ)) {
+    target = Math.max(target, (model.liquidClearance - state.altitude) * 1.5);
+  }
+  if (target < 0) target = Math.max(target, landingClimb(state.altitude));
+  if (state.altitude <= 0 && target <= 0) {
+    state.altitude = 0;
+    state.verticalSpeed = 0;
+    return target;
+  }
+  const change = (target - state.verticalSpeed) * (1 - Math.exp(-2.5 * dt));
+  state.verticalSpeed += clamp(change, -model.maxSinkAccel * dt, model.maxClimbAccel * dt);
+  state.altitude = Math.max(0, state.altitude + state.verticalSpeed * dt);
+  if (state.altitude === 0 && state.verticalSpeed < 0) state.verticalSpeed = 0;
+  return target;
+}
+
+function stepAttitude(state, pitch, roll, yaw, dt) {
+  state.pitch = approach(state.pitch, pitch, 4, 0.9, dt);
+  state.roll = approach(state.roll, roll, 4, 1.0, dt);
+  state.yaw = approach(state.yaw, yaw, 5, 3, dt);
+}
+
+function stepSpeed(state, target, rate, dt) {
+  state.speed = Math.max(0, approach(state.speed, Math.max(0, target), rate, model.maxHorizontalAccel, dt));
+}
+
+function showThrottle(state, climbTarget, landedIdle, dt) {
+  const target = landedIdle ? IDLE_THROTTLE : throttleForClimb(climbTarget);
+  state.throttle = follow(state.throttle, target, 4, dt);
+}
+
 export function stepFlight(state, dt) {
   if (state.hold || dt <= 0) return;
   state.missionTime += dt;
   const restricted = flightRestriction(state);
   if (state.hibernating) {
     state.altitude = 0; state.verticalSpeed = 0; state.speed = 0; state.throttle = 0;
+    state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0; state.altitudeHold = null;
+    stepAttitude(state, 0, 0, 0, dt);
     state.mode = "Hibernation";
   } else if (restricted) {
-    state.auto = false; state.mission.guidance = false;
-    state.speed = follow(state.speed, 0, 2, dt);
-    state.verticalSpeed = state.altitude > 0 ? state.battery > 0 ? -0.7
-      : state.verticalSpeed + (-model.titanG - 0.04 * state.verticalSpeed * Math.abs(state.verticalSpeed)) * dt : 0;
-    state.altitude = Math.max(0, state.altitude + state.verticalSpeed * dt);
-    state.throttle = state.altitude > 0 && state.battery > 0 ? 0.4 : 0;
-    state.pitch = 0; state.roll = 0; state.yaw = 0;
+    state.auto = false; state.mission.guidance = false; state.altitudeHold = null;
+    state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0;
+    stepSpeed(state, 0, 2, dt);
+    if (state.battery > 0) {
+      stepVertical(state, state.altitude > 0 ? -0.7 : 0, dt);
+    } else if (state.altitude > 0) {
+      state.verticalSpeed += (-model.titanG - 0.04 * state.verticalSpeed * Math.abs(state.verticalSpeed)) * dt;
+      state.altitude = Math.max(0, state.altitude + state.verticalSpeed * dt);
+      if (state.altitude === 0) state.verticalSpeed = 0;
+    }
+    state.throttle = state.altitude > 0 && state.battery > 0 ? throttleForClimb(-0.7) : 0;
+    stepAttitude(state, 0, 0, 0, dt);
     state.mode = state.altitude > 0 ? "Safety descent" : "Flight inhibited";
   } else if (state.mission.guidance) {
+    state.altitudeHold = null;
     const target = guidanceTarget(state, dt);
-    const before = state.altitude;
-    const climb = clamp(target.altitude - state.altitude, -0.8, 1.2);
-    state.altitude = Math.max(0, state.altitude + climb * dt);
-    if (state.altitude < 0.03 && target.altitude === 0) state.altitude = 0;
-    state.verticalSpeed = (state.altitude - before) / dt;
-    state.speed = follow(state.speed, target.speed, 1.5, dt);
-    state.throttle = target.throttle;
-    state.pitch = state.speed / 25; state.roll = 0; state.yaw = 0;
+    const climb = target.altitude === 0 ? landingClimb(state.altitude) : clamp((target.altitude - state.altitude) * 0.8, -0.8, 1.2);
+    const applied = stepVertical(state, climb, dt);
+    stepSpeed(state, target.speed, 1.5, dt);
+    stepAttitude(state, state.speed / 25, 0, 0, dt);
+    showThrottle(state, applied, state.altitude === 0 && target.altitude === 0, dt);
     state.mode = "Guided survey";
   } else if (state.auto) {
-    const target = profileAt(state.missionTime);
+    state.altitudeHold = null;
+    state.autoClock += dt;
+    const target = profileAt(state.autoClock);
     state.mode = target.mode;
-    const previousAltitude = state.altitude;
-    state.altitude = follow(state.altitude, target.altitude, 5, dt);
-    if (target.mode === "Surface" && state.altitude < 0.03) state.altitude = 0;
-    state.verticalSpeed = (state.altitude - previousAltitude) / dt;
-    state.speed = follow(state.speed, target.speed + (target.mode === "Surface" ? 0 : state.wind * 0.12), 5.6, dt);
-    state.throttle = follow(state.throttle, target.throttle, 5.6, dt);
-    state.pitch = follow(state.pitch, target.pitch, 5, dt);
-    state.roll = follow(state.roll, target.roll, 5, dt);
-    state.yaw = target.mode === "Surface" ? 0 : Math.sin(state.missionTime * 0.22) * 0.17;
+    const surface = target.mode === "Surface";
+    const climb = surface || target.altitude < 0.5 && target.verticalSpeed <= 0
+      ? landingClimb(state.altitude)
+      : clamp(target.verticalSpeed + (target.altitude - state.altitude) * 1.2, -1.6, 2.4);
+    const applied = stepVertical(state, climb, dt);
+    stepSpeed(state, target.speed + (surface ? 0 : state.wind * 0.12), 1.5, dt);
+    stepAttitude(state, target.pitch, target.roll, surface ? 0 : Math.sin(state.autoClock * 0.22) * 0.17, dt);
+    showThrottle(state, applied, surface && state.altitude === 0, dt);
   } else {
-    const thrustBalance = (state.throttle - 0.5) * 5.2;
-    state.verticalSpeed = clamp(state.verticalSpeed + (thrustBalance - 0.18) * dt, -3.5, 4.2);
-    state.altitude = Math.max(0, state.altitude + state.verticalSpeed * dt);
-    if (state.altitude === 0) state.verticalSpeed = Math.max(0, state.verticalSpeed);
-    // Analytic first-order drag response keeps handling stable across frame rates.
-    const decay = Math.exp(-0.08 * dt);
-    state.speed = clamp(state.speed * decay + state.pitch * 3 / 0.08 * (1 - decay), 0, 16);
-    state.mode = state.altitude < 0.05 ? "Surface" : state.speed > 5 ? "Traverse" : "Manual";
+    let climb;
+    if (state.altitudeHold !== null) {
+      climb = state.altitudeHold <= 0 ? landingClimb(state.altitude)
+        : clamp((state.altitudeHold - state.altitude) * 0.6, -1.3, 2.2);
+    } else climb = climbForThrottle(state.throttle);
+    const applied = stepVertical(state, climb, dt);
+    if (state.altitudeHold !== null) {
+      const touchedDown = state.altitudeHold <= 0 && state.altitude === 0;
+      showThrottle(state, applied, touchedDown, dt);
+      if (touchedDown) {
+        // Touchdown: release the hold and bring the throttle to idle so the rotors spin down.
+        state.altitudeHold = null;
+        state.throttle = IDLE_THROTTLE;
+      }
+    }
+    stepAttitude(state, state.pitchCmd, state.rollCmd, state.yawCmd, dt);
+    // Forward speed follows body pitch; pulling back or levelling brakes gradually.
+    stepSpeed(state, state.altitude > 0 ? clamp(state.pitch * 37.5, 0, 16) : 0, 1 / 3, dt);
+    const hold = state.altitudeHold;
+    state.mode = state.altitude < 0.05 ? "Surface"
+      : hold === 0 ? "Landing"
+      : state.speed > 5 ? "Traverse"
+      : hold !== null ? (Math.abs(hold - state.altitude) > 0.5 ? (hold > state.altitude ? "Climb" : "Descent") : "Hover")
+      : "Manual";
   }
-  // Liquid is a no-landing zone in this training scenario, not a buoyancy simulation.
-  if (overLiquid(state.positionX, state.positionZ) && state.altitude < 2 && !state.hibernating) {
-    state.altitude = 2; state.verticalSpeed = Math.max(0, state.verticalSpeed);
+  if (!state.hibernating && overLiquid(state.positionX, state.positionZ) && state.altitude < model.liquidClearance - 0.05) {
     state.mode = "Liquid avoidance";
     state.mission.message = "Liquid below: landing inhibited. Move to dry ground.";
   }
-  if (state.altitude === 0 && state.verticalSpeed === 0) state.speed = 0;
+  // Skids on the ground: residual forward motion bleeds off quickly instead of stopping in one frame.
+  if (state.altitude === 0) state.speed = Math.max(0, approach(state.speed, 0, 6, 4, dt));
   state.heading = (state.heading + state.yaw * 22 * dt + 360) % 360;
   const bearing = state.heading * Math.PI / 180;
   state.positionX += Math.sin(bearing) * state.speed * dt;
   state.positionZ -= Math.cos(bearing) * state.speed * dt;
   state.distance += state.speed * dt;
 
-  const d = deriveFlight(state);
   const stopped = state.altitude === 0 && state.throttle < 0.3;
   const baseRpm = stopped ? 0 : 780 * Math.sqrt(state.throttle * 2);
   // Order matches the 3D model: left front/rear then right front/rear, lower/upper.
@@ -172,6 +244,18 @@ export function stepFlight(state, dt) {
   }
 }
 
+// Hand control to the pilot without changing what the aircraft is currently doing.
+export function takeManualControl(state) {
+  if (state.auto || state.mission.guidance) {
+    state.throttle = throttleForClimb(state.verticalSpeed);
+    state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0;
+  }
+  state.auto = false;
+  state.mission.guidance = false;
+  state.restSeconds = 0;
+  state.hibernating = false;
+}
+
 export function commandFlight(state, mode) {
   if (mode === "hold") { state.hold = !state.hold; return; }
   state.restSeconds = 0;
@@ -179,9 +263,26 @@ export function commandFlight(state, mode) {
   state.mission.guidance = false;
   state.hold = false;
   state.auto = mode === "auto";
-  if (mode === "takeoff") { state.throttle = 0.68; state.pitch = 0.08; }
-  if (mode === "cruise") { state.throttle = 0.6; state.pitch = 0.34; }
-  if (mode === "land") { state.throttle = 0.39; state.pitch = 0; state.roll = 0; state.yaw = 0; }
+  state.rollCmd = 0; state.yawCmd = 0;
+  if (mode === "auto") {
+    // Resume the demonstration profile from the phase that matches the aircraft, not the mission clock.
+    state.autoClock = state.altitude < 0.5 ? 0 : 22;
+    state.altitudeHold = null;
+    return;
+  }
+  if (mode === "takeoff") {
+    state.altitudeHold = Math.max(state.altitude, model.takeoffAltitude);
+    state.throttle = 0.68; state.pitchCmd = 0;
+  }
+  if (mode === "cruise") {
+    state.altitudeHold = Math.max(state.altitude, model.cruiseFloor);
+    state.throttle = state.altitudeHold > state.altitude + 1 ? 0.6 : model.hoverThrottle;
+    state.pitchCmd = model.cruiseSpeed / 37.5;
+  }
+  if (mode === "land") {
+    state.altitudeHold = 0;
+    state.throttle = 0.39; state.pitchCmd = 0;
+  }
 }
 
 export function advanceRest(state, seconds = 600) {

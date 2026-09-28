@@ -85,7 +85,8 @@ export function missionAction(state) {
     }
     if (flightRestriction(state)) { m.message = "Restore energy and thermal margins before sampling."; return; }
     m.phase = "sampling";
-    state.auto = false; state.throttle = 0; state.pitch = 0; state.roll = 0; state.yaw = 0;
+    state.auto = false; state.throttle = 0; state.altitudeHold = null;
+    state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0;
     m.message = "DrACO / DraMS sample acquisition";
     return;
   }
@@ -106,7 +107,7 @@ export function guidanceTarget(state, dt) {
   state.heading = (state.heading + clamp(error, -24 * dt, 24 * dt) + 360) % 360;
   const altitude = distance > 18 ? 18 : 0;
   const speed = distance < 3 || state.altitude < 3 && distance > 18 ? 0 : Math.min(5, distance * 0.18) * Math.max(0, Math.cos(error * Math.PI / 180));
-  return { altitude, speed, throttle: altitude > state.altitude ? 0.62 : altitude < state.altitude ? 0.4 : 0.535 };
+  return { altitude, speed };
 }
 
 export function stepSystems(state, dt, batteryEnergyKwh) {
@@ -185,8 +186,8 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
 
 export function startRest(state, hours) {
   if (!landed(state) || state.hold || state.mission.phase === "sampling" || overLiquid(state.positionX, state.positionZ)) return false;
-  state.auto = false; state.mission.guidance = false; state.throttle = 0;
-  state.pitch = 0; state.roll = 0; state.yaw = 0;
+  state.auto = false; state.mission.guidance = false; state.throttle = 0; state.altitudeHold = null;
+  state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0;
   state.restSeconds = Math.max(0, hours * 3600);
   state.restNotice = "";
   state.hibernating = true;

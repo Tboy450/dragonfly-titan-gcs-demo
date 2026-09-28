@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { cameraPose, enterFreeCamera, orbitCamera, wrapAngle } from "../dist/flight-camera.mjs";
+import { cameraPose, enterFreeCamera, orbitCamera, smoothCameraPose, wrapAngle } from "../dist/flight-camera.mjs";
 
 const fixture = () => ({ heading: 84, cameraMode: "fixed", cameraYaw: 0, cameraPitch: 0.38 });
 const near = (a, b) => assert.ok(Math.abs(wrapAngle(a - b)) < 1e-10, `${a} differs from ${b}`);
@@ -61,4 +61,28 @@ test("Fixed mode follows heading again, and repeated mode switches do not jump",
   state.cameraMode = "free";
   near(cameraPose(state).azimuth, fixed.azimuth);
   assert.equal(cameraPose(state).elevation, fixed.elevation);
+});
+
+test("Rendered camera eases between Free and Fixed instead of teleporting", () => {
+  const state = fixture();
+  smoothCameraPose(state, 1 / 60);
+  enterFreeCamera(state);
+  state.cameraMode = "free";
+  orbitCamera(state, 500, 200, 1000, 600);
+  for (let i = 0; i < 120; i++) smoothCameraPose(state, 1 / 60);
+  near(state.renderPose.azimuth, state.cameraYaw);
+  state.cameraMode = "fixed";
+  let previous = { ...state.renderPose };
+  let largest = 0;
+  for (let i = 0; i < 180; i++) {
+    smoothCameraPose(state, 1 / 60);
+    largest = Math.max(largest, Math.abs(wrapAngle(state.renderPose.azimuth - previous.azimuth)));
+    previous = { ...state.renderPose };
+  }
+  assert.ok(largest < 0.3, `camera jumped ${largest} rad in one frame`);
+  assert.ok(Math.abs(wrapAngle(state.renderPose.azimuth - cameraPose(state).azimuth)) < 1e-4);
+  // Entering Free mid-transition starts from the pose on screen.
+  state.cameraMode = "free";
+  enterFreeCamera(state);
+  near(state.cameraYaw, state.renderPose.azimuth);
 });

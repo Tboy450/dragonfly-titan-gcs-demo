@@ -1,4 +1,4 @@
-# Dragonfly Titan GCS: Research Compendium (September 2026)
+# Dragonfly Titan GCS: Research Compendium (updated September 28, 2026)
 
 Companion to `RESEARCH.md`. It gathers public sources on the real mission and compares them with the simulator's current values. It also sets out the next implementation steps, so another assistant (Codex/GPT) can continue the work.
 
@@ -6,23 +6,30 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 - **[PUB]** Published by NASA, APL, a partner or a peer-reviewed or conference paper (the source is linked).
 - **[CALC]** Arithmetic or textbook physics computed from published inputs. The script is summarized in §9.
 - **[EST]** An estimate or interpretation. It is plausible but not published as a Dragonfly figure.
-- **[BG]** General background, not re-verified in this pass. Verify it before showing it as fact in the app.
+- **[BG]** General background, not re-verified. As of this update no [BG] items remain; the earlier ones have been checked and re-tagged.
+- **Status** (in §7): **Done** means the simulator now implements it; **Partial** and **Open** are still to do.
 
 ---
 
-## 0. Project status at handoff (commit `25d0210`)
+## 0. Project status (September 28, 2026)
 
-- The working tree is clean. Local files match `origin/main` (GitHub `Tboy450/dragonfly-titan-gcs-demo`) and the last commit is "Add sourced thermal diagnostics and shoreline survey mission" (Sep 27, 2026, 11:11 PM). All 20 tests pass.
-- **Unfinished request from the Codex thread.** The thread hit its usage limit before making any edits for this one:
-  1. Treat heating and cooling as heat exchange with Titan's cold, dense, **nitrogen-rich** gas, not as vacuum cooling or Earth air.
-  2. Add a clearly labeled **liquid-to-liquid (shell-and-tube)** exchanger as an engineering assumption, based on the TubeTech reference.
-  → §4 and §8 give the sourced basis and a concrete model for both.
-- **New findings from this review:**
-  - The real rotors are now **three-bladed**. Wind-tunnel results moved the design from two blades to three to reduce vibration [PUB §2]. Both renderers still draw two blades: `dist/chase-vehicle.mjs` (`for (let half = 0; half < 2; …)`) and the `dist/app.js` comment "two-blade rotors".
-  - **Flight power is too high at cruise.** The `(1 + speed²/95)` term in `stepFlight` raises power steadily from hover (~8.5 kW) to ~17.7 kW at 10 m/s. On a real rotorcraft, power *drops* from hover to a minimum near 6–10 m/s [§3.4].
-  - **The battery is about twice the published energy.** The sim assumes 20 kWh; the design is reported at 11.5 kWh [§3.2].
-  - **MMRTG output is fixed at 110 W**, which is the output at launch. Expect roughly 70–100 W at Titan, declining over time [§3.1].
-  - Minor: `index.html` ships stale placeholder numbers (3.09 m/s, 3.65 kW, 150 kW) from the old 8-disk area. JavaScript overwrites them on the first frame.
+**History.** This compendium was first written against commit `25d0210`. Since then:
+- `74ed2c4` "Refine Titan thermal and flight models from published research" (GPT/Codex) implemented most of §3–§4:
+  - three-bladed rotors, the 11.5 kWh battery and time-based MMRTG output (90 W or 70 W, −2.5%/yr);
+  - the hover-to-cruise power curve and nitrogen-environment convection (4 / 10.5 / 75 W/m²·K);
+  - foam + film conductance, 0.052 kg/s circulation, the 0–40% cold-duct trim in 2% steps under a 600 s PI update;
+  - the 0–35 °C battery band with charging inhibit, a vortex-ring-state advisory and a hypothetical liquid-to-liquid exchanger study.
+- `4fd4036` centered the fixed chase camera.
+- **Uncommitted flight-control and mobile update (Claude, this session)**, saved to the project folder but not yet committed or pushed:
+  - **Continuous flight model.** One rate-limited model now drives vertical speed, attitude and forward speed in every mode: climb ≤ 3 m/s, sink ≤ 2.5 m/s, climb acceleration ≤ 1.8 m/s², sink acceleration ≤ 1.2 m/s², horizontal acceleration ≤ 1 m/s², pitch rate ≤ 16°/s. The acceleration limits are grounded in §2.1 (≈3,000 N maximum thrust against ≈1,183 N Titan weight) and Titan's 1.35 m/s² gravity.
+  - **Buttons.** Takeoff climbs to and holds 40 m. Cruise holds altitude (at least 20 m) at 10 m/s. Land descends at up to 1.3 m/s, flares to ~0.35 m/s and idles the rotors.
+  - **Auto** resumes from the matching phase instead of the mission clock. That old behavior caused a 0 → 45 m jump in about 1 s.
+  - **Sticks.** Input is relative to where the finger lands. The throttle is a sticky climb-rate command (50% holds altitude), with an optional spring-to-center mode.
+  - **Rendering.** The aircraft follows the analytic terrain aloft, so the 400 m mesh re-centering (up to 2.4 m ground shift) no longer moves it. The chase camera eases between Fixed and Free.
+  - **Phone layouts.** New portrait and landscape layouts.
+  - **Tests.** 33 tests pass, including regressions for every jump found.
+
+**Still open** (details in §7–§8): operations realism (daylight-only flights and downlink, leapfrog scouting, "land now" fault response, ~400 m cruise altitude), motor preheat energy, phase-change battery buffering, a cruise-phase thermal panel, visibility-based fog and dimmer lighting, rain-darkened ground, and an entry/descent/landing scenario.
 
 ---
 
@@ -237,9 +244,9 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 | Huygens surface | "icy grains with the consistency of wet clay or sand" | [PUB] Nature 2005 |
 | Landing site | Selk region: ellipse 149 × 72 km centered at 3.7°N, 161.8°E; flat interdunes; ice-rich ejecta; impact melt may once have mixed water with organics | [PUB] [Lorenz et al. 2021 via AAS Nova](https://aasnova.org/2021/10/05/where-does-a-dragonfly-land/) ([paper](https://iopscience.iop.org/article/10.3847/PSJ/abd08f)) |
 | Seas and lakes | all but three of 32 named lakes are near the north pole; Ontario Lacus is ~234 × 73 km | [PUB] [Planetary Society](https://www.planetary.org/articles/0315-titans-lakes-the-basics) |
-| Sea depth | Ligeia Mare ~160 m deep and methane-rich | [BG] [Mastrogiuseppe 2014](https://agupubs.onlinelibrary.wiley.com/doi/10.1002/2013GL058618) |
-| Interior | ocean 55–80 km below the ice | [PUB] NASA facts |
-| Magnetic field | no intrinsic global field; Titan has an *induced* magnetosphere inside Saturn's field (so no "geomagnetic polarity") | [BG] [Science 2005](https://science.sciencemag.org/content/308/5724/992) |
+| Seas | Ligeia Mare, the second-largest sea (about Lake Huron + Lake Michigan), reaches ~160 m deep along the radar track and is mostly liquid methane, with a likely organic sludge floor | [PUB] [JPL 2016](https://www.jpl.nasa.gov/news/cassini-explores-a-methane-sea-on-titan/) ([bathymetry, Mastrogiuseppe 2014](https://agupubs.onlinelibrary.wiley.com/doi/10.1002/2013GL058618)) |
+| Interior | NASA's Titan facts page still describes an ocean 55–80 km below the ice. A December 2025 *Nature* reanalysis of Cassini tidal data (Petricca et al.) instead finds strong tidal dissipation that argues against a global ocean: an ice shell over slushy layers, with isolated meltwater pockets near the rocky core that may reach ~20 °C. Dragonfly's seismometer is expected to help settle this. | [PUB] [NASA facts](https://science.nasa.gov/saturn/moons/titan/facts/); [JPL, Dec 2025](https://www.jpl.nasa.gov/news/nasa-study-suggests-saturns-moon-titan-may-not-have-global-ocean/); [Nature](https://www.nature.com/articles/s41586-025-09818-x) |
+| Magnetic field | "No evidence of an internal magnetic field at Titan was detected." Cassini instead saw an *induced* magnetosphere, with Saturn's field draping around Titan's ionosphere. There is no "geomagnetic polarity" to model. | [PUB] [Backes et al., *Science* 2005](https://science.sciencemag.org/content/308/5724/992) |
 
 **Realism note on the pool.** Dragonfly lands near the equator in northern winter, and the seas are near the north pole. A closer match to the landing site would be **rain-darkened wet ground** or a transient methane puddle after a storm, which is documented at low latitude in 2010. The current app already labels the pool fictional.
 
@@ -250,6 +257,7 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 ## 6. Communications
 - **Hardware:** X-band only, APL Frontier radio, 100 W TWTA. The high-gain antenna is an 87.4 cm (34.4 in) radial-line slot disc on a motorized arm, with medium- and low-gain antennas as backups. [PUB] NASA; APL; Jul 9 blog
 - **Direct-to-Earth only**, with no relay. Seen from Titan, Earth stays within ~6° of the Sun, so links happen during the day. The antenna is stowed in flight. [PUB] Lorenz 2018. Expect ~8-day stretches with no transmission. [PUB] Eos 2025
+- **Operations cadence (APL):** "Flight, data transmission, and most science operations will be executed during Titan's daytime hours (eight Earth days)." There is one hop per full Titan day, and the vehicle recharges during the night. [PUB] [APL mission overview](https://dragonfly.jhuapl.edu/What-Is-Dragonfly/)
 - **Light time:** 67–92 min one way [CALC]. The app's 73–90 min is fine.
 - **Sim changes:** block downlink in flight and at night; add an uplink delay to commanded flights; charge the energy cost of downlink (§3.5).
 
@@ -257,50 +265,63 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 
 ## 7. Simulator audit: current value vs. research
 
-| Area | Sim now | Research | Action |
+| Area | Research | Status (Sep 28) | Remaining action |
 |---|---|---|---|
-| Mass, size, rotor Ø | 875 kg; 3.85×3.85×1.75 m; 1.35 m | Same [PUB] | Keep. Optionally show "design max just under 1,000 kg" |
-| Blades | 2 per rotor | **3 per rotor** (2026) [PUB] | Update `chase-vehicle.mjs` and `app.js` |
-| Battery | 20 kWh | **11.5 kWh**, 134 Ah cells [PUB] | Change `batteryEnergyKwh` |
-| MMRTG electric | fixed 110 W | ~70–100 W at Titan, declining ~2.5%/yr [PUB/CALC] | Make it time-based |
-| MMRTG heat | 1,800 W; 24% "captured" | ~2,000 W at start of mission → 1,670 W at end; the fans route it all through ducts, and trim plus foam set the balance [PUB] | Replace the capture fraction with the duct/trim network (§8) |
-| Hover / cruise power | 7.9–8.5 kW hover; 17.7 kW at 10 m/s | 4.5–6 kW cruise, with a minimum near 6–10 m/s [PUB/CALC] | Use the momentum + profile + parasite curve |
-| Flight altitude | 46–48 m profile | nominal ~400 m; profiles 0.5–4 km; ceiling 4 km [PUB] | Raise the auto profile; add a scouting altitude |
-| Flight duration | unlimited by energy | ≤ ~30 min; battery +10 °C per 30 min; 35 °C cap [PUB] | Add a battery-heat limit and a "land now" fault |
-| Descent | vertical "Land" | avoid steep, fast descents (vortex ring state) [PUB] | Warn when descending faster than 0.75·v_h at steep angles |
-| Thermal bands | electronics −10..55 °C; battery 0..40 °C | battery 10±10 °C, 0–35 °C; interior ~0 °C; hibernation ≥ −20 °C [PUB] | Replace |
-| Trim | 0–100%, 8 s smoothing | 0–40% in 2% steps, PI, ~10 min cycle; ≥810 W hot; ≤36 W closed [PUB] | Replace |
-| Convection | `0.6 + 0.3√wind + 0.15√speed` | h ≈ 3–5 calm, ~10–18 at 1.6 m/s, 50–100 in flight [PUB/CALC] | Physics-based h (§8) |
-| Preflight | none | motor preheat 8 × 90 W × 5 min [PUB] | Add a preflight step costing 60 Wh |
-| Wind | 0.8 m/s | < 1 typical, 1.6 max [PUB] | Keep; cap the slider at ~2 m/s |
-| Comms | "Link 83%" cosmetic | direct-to-Earth by day, stowed antenna in flight [PUB] | Gate on day/flight state |
-| Sampling | 30 s, 160 W | DraMS electronics ~120 W; real sampling takes hours [PUB/EST] | Keep 30 s as gameplay, labeled |
-| Pool | fictional shoreline | no seas at the landing site; wet ground after rain is realistic [PUB] | Optional: switch to "rain-darkened interdune" |
-| Fog | color-matched scene fog | visibility ~10 km [PUB]; FogExp2 density ≈ 1.98 / visibility (in scene units) for 2% contrast [CALC] | Tune fog; add optional low ground-fog layer |
+| Mass, size, rotor Ø | 875 kg; 3.85×3.85×1.75 m; 1.35 m [PUB] | **Done** | Optional: show "design max just under 1,000 kg" |
+| Blades | **3 per rotor** (2026) [PUB] | **Done** (`74ed2c4`) | — |
+| Battery | **11.5 kWh** pack, 134 Ah cells [PUB] | **Done** (`74ed2c4`) | — |
+| MMRTG electric | ~70–100 W at Titan, declining ~2.5%/yr [PUB/CALC] | **Done**: 90 W / 70 W options | — |
+| MMRTG heat | ~2,000 W at start of mission → 1,670 W at end; ducts, trim and foam set the balance [PUB] | **Done**: 1,800 W with Pu-238 decay and a gas-loop balance | — |
+| Hover / cruise power | 4.5–6 kW cruise, with a minimum near 6–10 m/s [PUB/CALC] | **Done**: induced + profile + parasite + climb curve | — |
+| Mode transitions | real aircraft cannot teleport; Titan's weak gravity arrests a climb slowly [PUB §2.1] | **Done** (this session): rate-limited vertical, attitude and speed; Auto re-phasing; no mesh-induced jumps | — |
+| Throttle / sticks | Dragonfly is RPM-controlled, fixed pitch [PUB] | **Done** (this session): sticky climb-rate throttle, optional centering, relative stick drag | — |
+| Flight altitude | nominal ~400 m; profiles 0.5–4 km; ceiling 4 km [PUB] | **Open**: auto profile ~46 m, Takeoff 40 m | Raise the auto profile; add a scouting altitude |
+| Flight duration | ≤ ~30 min; battery +10 °C per 30 min; 35 °C cap [PUB] | **Partial**: 35 °C guard exists | Add a "land now" fault and a flight-time estimate |
+| Descent | avoid steep, fast descents (vortex ring state) [PUB] | **Partial**: advisory from `74ed2c4`; Land now flares at ≤ 1.3 m/s | Optional: slanted approach in Auto |
+| Thermal bands | battery 10±10 °C, 0–35 °C; interior ~0 °C; hibernation ≥ −20 °C [PUB] | **Done** | Optional: phase-change buffer (7.5 kg at 22.5 °C) |
+| Trim | 0–40% in 2% steps, PI, ~10 min cycle; ≥810 W hot; ≤36 W closed [PUB] | **Done** (simplified single loop) | — |
+| Convection | h ≈ 3–5 calm, ~10–18 at 1.6 m/s, 50–100 in flight [PUB/CALC] | **Done**: interpolated 4 / 10.5 / 75 | — |
+| Preflight | motor preheat 8 × 90 W × 5 min [PUB] | **Open** | Add a preflight step costing 60 Wh |
+| Wind | < 1 typical, 1.6 max [PUB] | **Partial**: slider still goes to 5 m/s | Cap at ~2 m/s or label the higher values as stress tests |
+| Comms | direct-to-Earth by day, antenna stowed in flight [PUB] | **Open**: "Link %" is cosmetic | Gate on day/flight state; charge downlink energy |
+| Sampling | DraMS electronics ~120 W; real sampling takes hours [PUB/EST] | Gameplay: 30 s, labeled | — |
+| Pool | no seas at the landing site; wet ground after rain is realistic [PUB] | **Open**: labeled fictional | Optional: "rain-darkened interdune" |
+| Fog / light | visibility ~10 km [PUB]; FogExp2 density ≈ 1.98 / visibility (in scene units) for 2% contrast [CALC]; surface light ~1/1,000 of Earth's [PUB] | **Open** | Tune fog and lighting |
+| Phone layout | — | **Done** (this session): portrait and landscape | — |
 
 ---
 
 ## 8. Handoff plan for Codex/GPT (priority order)
 
-1. **Thermal model v2 for the nitrogen environment** (the pending request). Keep the same diagnostics UI.
+Items 1 and 3 and the vortex-ring-state warning are now implemented (see §0). The remaining work is items 2, 4, 5 and 6.
+
+1. **Thermal model v2 for the nitrogen environment.** Done in `74ed2c4`; kept for reference.
    - External coefficient: `h_ext = max(h_nat, h_forced(V_rel))`, where `V_rel` is the wind on the ground or the airspeed in flight. Calibrate to APL values: calm ≈ 4, wind 1.6 m/s ≈ 10–15, flight 50–100.
    - Leak conductance: `UA_leak = 1 / (t/(k·A) + 1/(h_ext·A))` with k = 0.01, t = 0.0762 and A ≈ 20 m² [EST area].
    - Duct heat: `Q_duct = ṁ·cp·(T_rtgAir − T_bay)` with ṁ = 0.052 kg/s × fan speed and cp ≈ 1,040–1,070 J/kg·K (≈ 55 W/K at full fan).
    - Cold duct: `Q_cold = open/0.40 × Q_max(h_ext)`, where Q_max is ~500 W calm and ~810 W in the hot case. Open fraction is 0–0.40 in 0.02 steps, under PI control; closed leak is 36 W.
-   - Battery: phase-change buffer of 7.5 kg × latent heat L at 22.5 °C (L ≈ 150–250 kJ/kg for paraffin [BG]); +10 °C per 30 min of flight; limits 0 / 35 °C.
+   - Battery: phase-change buffer of 7.5 kg × latent heat L at 22.5 °C. Paraffin-type materials run L ≈ 150–250 kJ/kg ([PUB] [overview](https://en.wikipedia.org/wiki/Phase-change_material)), giving a buffer of about 1.1–1.9 MJ ([CALC]); Dragonfly's exact wax is not published. The battery also rises +10 °C per 30 min of flight, within limits of 0 / 35 °C.
    - Motors: a cold node with preheat to −65 °C and ≤ 300 W each in flight.
    - Add tests for calm-overheat, windy-cold and flight-heating cases.
-2. **Cruise mode, a small separate panel.** Pumped fluid loop (CFC-11 heritage, 2 L/min ≈ 0.049 kg/s, C ≈ 43 W/K using ρ ≈ 1,480 kg/m³ and cp ≈ 0.87 kJ/kg·K [BG]), radiators, bypass valves 4–96%, and sunlight as 1,361/r² W/m² from 0.615 to 9.07 AU.
+2. **Cruise mode, a small separate panel.** A pumped fluid loop with radiators, bypass valves (4–96%), and sunlight of 1,361/r² W/m² from 0.615 to 9.07 AU.
+   - The heritage coolant is CFC-11 at 2 L/min. At 1.494 kg/L that is ≈ 0.050 kg/s. CFC-11 melts at −110.5 °C and boils at 23.8 °C at 1 atm, so the loop runs pressurized. [PUB] [properties](https://en.wikipedia.org/wiki/Trichlorofluoromethane); [CALC]
+   - Its liquid heat capacity was not verified this pass. Take it from NIST before computing a capacity rate, and remember that the fluid was still a trade study in 2020.
    - Optionally add the **what-if shell-and-tube exchanger**, labeled "hypothetical", using the counterflow effectiveness formula: ε = (1 − e^(−NTU(1−Cr)))/(1 − Cr·e^(−NTU(1−Cr))), NTU = UA/Cmin, Q = ε·Cmin·ΔT_in.
 3. **Energy realism:** 11.5 kWh battery; time-based MMRTG (90 W → −2.5%/yr, with a 70 W option); the power curve from §3.4; the 60 Wh preflight preheat; downlink energy.
 4. **Operations realism:** flights only in daylight; one committed flight per Titan day; scout-and-return (leapfrog); a "land now" fault response; vortex-ring-state warning; ~400 m cruise altitude.
 5. **Visuals:** three-bladed rotors; high-gain antenna on a raise/lower arm; visibility-based fog; dimmer lighting (~1/1,000 of Earth's); optional rain-darkened ground patches.
-6. **Housekeeping:** fix the stale HTML placeholders; append the new sources to `RESEARCH.md`; keep every assumption labeled in the UI.
+6. **Housekeeping:** the stale placeholders are fixed; still append the new sources to `RESEARCH.md` and keep every assumption labeled in the UI.
+7. **Entry, descent and landing scenario** (optional): the sequence in §2.4 ends with release at 800–1,000 m, falling at 2.9 m/s, and then autonomous powered flight to touchdown. That would make a strong opening sequence for the app.
 
 ---
 
 ## 9. Calculation notes
-The values marked [CALC] came from a short Python script (`titan_physics.py`).
+The values marked [CALC] come from `research/titan_physics.py`, now included in the project. It ran successfully in this session, and anyone can re-run it with `python3 research/titan_physics.py`. The outputs quoted in §3–§5 match its printout. For example:
+- h = 4.49 W/m²·K on Titan versus 3.23 on Earth for natural convection at ΔT = 10 K;
+- 9.91 versus 3.92 W/m²·K for forced convection at 1 m/s;
+- 101 W/m²·K on Titan at 10 m/s;
+- a Titan-to-Earth hover-power ratio of 0.0243;
+- MMRTG output of 90 W after 8 years and 84 W after 11 years.
 
 - **Convection:** Churchill–Chu correlation for natural convection on a vertical plate; flat-plate correlations for forced convection (laminar below Re 5×10⁵, mixed above).
 - **Rotor power:** momentum theory with κ = 1.15, profile power fixed at 25% of ideal hover, and an assumed drag area of 1.5 m².
@@ -315,3 +336,20 @@ The values marked [CALC] came from a short Python script (`titan_physics.py`).
 - [OIG news summary](https://oig.nasa.gov/news/dragonfly-mission-faces-schedule-delays-and-nearly-1-billion-in-cost-increases/)
 - [Selk radar study (PSJ 2022)](https://iopscience.iop.org/article/10.3847/PSJ/ac8428)
 - [MMRTG/Titan radiation study](https://www.sciencedirect.com/science/article/abs/pii/S0094576522004611)
+
+**Further reading, identified but not read:**
+
+These are paywalled or blocked. Read them before using any of their numbers.
+- *Flight Control System Design and Analysis for the Dragonfly Lander* — [AIAA SciTech 2026](https://arc.aiaa.org/doi/10.2514/6.2026-2532)
+- *Modeling and Flight Performance of NASA's Dragonfly Rotorcraft Lander* — [AIAA SciTech 2026](https://arc.aiaa.org/doi/10.2514/6.2026-2534)
+- *EDL Concept of Operations for the Dragonfly Rotorcraft Mission to Titan* — [AIAA SciTech 2026](https://arc.aiaa.org/doi/abs/10.2514/6.2026-1953)
+- *Dragonfly First Flight – Preliminary Flight Dynamics Analysis* — [AIAA 2024](https://arc.aiaa.org/doi/10.2514/6.2024-2119)
+- *Dragonfly Preparation for Powered Flight: Lander Separation State Control* — [AIAA 2024](https://arc.aiaa.org/doi/10.2514/6.2024-2118)
+- *Lidar-Based Landing Hazard Detection for Dragonfly* — [IEEE 2025](https://ieeexplore.ieee.org/document/11068529/)
+
+**Source check for an item flagged in `RESEARCH-FOLLOWUP.md`.** The ICES lead `29ec2f82-fb12-489e-865b-81cfb7622e4e` is *Thermal Design and Control of the Main Electronic Box in Titan Environment for the DraMS Instrument* (ICES-2023-109). It reports:
+- ~120 W of waste heat from the box;
+- nine boards, two of them conductively cooled;
+- a fan passing about 20 CFM (0.0094 m³/s) of conditioned lander gas held near 273 K;
+- electronics survival above ~243 K;
+- measured convection coefficients of 7.34–16.37 W/m²·K at 1.5 atm.

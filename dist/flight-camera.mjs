@@ -14,10 +14,28 @@ export function cameraPose(state) {
   };
 }
 
+// The rendered camera eases toward the requested pose, so switching Fixed/Free or turning
+// never teleports the view. Free mode responds quickly enough to feel attached to the drag.
+export function smoothCameraPose(state, dt) {
+  const target = cameraPose(state);
+  if (!state.renderPose || !(dt > 0)) {
+    state.renderPose = { ...target };
+    return state.renderPose;
+  }
+  const rate = state.cameraMode === "free" ? 18 : 5;
+  const blend = 1 - Math.exp(-rate * Math.min(dt, 0.1));
+  const pose = state.renderPose;
+  pose.heading = target.heading;
+  pose.azimuth = wrapAngle(pose.azimuth + wrapAngle(target.azimuth - pose.azimuth) * blend);
+  pose.elevation += (target.elevation - pose.elevation) * blend;
+  return pose;
+}
+
 export function enterFreeCamera(state) {
-  const pose = cameraPose(state);
+  // Start the orbit from what is on screen, including a camera still easing from a previous switch.
+  const pose = state.renderPose || cameraPose(state);
   state.cameraYaw = wrapAngle(pose.azimuth);
-  state.cameraPitch = pose.elevation;
+  state.cameraPitch = clamp(pose.elevation, 0.04, 1.38);
 }
 
 export function orbitCamera(state, dx, dy, width, height) {

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { model, createFlightState, deriveFlight, stepFlight, commandFlight, flightPower } from "../dist/flight-model.mjs";
+import { model, createFlightState, deriveFlight, stepFlight, commandFlight, flightPower, takeManualControl } from "../dist/flight-model.mjs";
 
 const near = (a, b, tolerance = 1e-8) => assert.ok(Math.abs(a - b) < tolerance, `${a} != ${b}`);
 const advance = (state, seconds, fps = 60) => {
@@ -80,13 +80,13 @@ test("Rotor differential reflects control inputs, not decorative random RPM", ()
   const state = createFlightState();
   state.auto = false;
   state.altitude = 10;
-  state.pitch = 0.5;
+  state.pitchCmd = 0.5;
   state.throttle = 0.55;
   advance(state, 2);
   assert.ok(state.rotorRpm[2] > state.rotorRpm[0]);
   near(state.rotorRpm[0], state.rotorRpm[1]);
   near(state.rotorRpm[0], state.rotorRpm[4]);
-  state.yaw = 0.8;
+  state.yawCmd = 0.8;
   advance(state, 2);
   assert.ok(state.rotorRpm[0] > state.rotorRpm[1]);
   assert.notEqual(state.rotorPhase[0], state.rotorPhase[1]);
@@ -116,4 +116,91 @@ test("Battery energy uses seconds, and flight history remains bounded", () => {
   assert.equal(state.chart.length, 180);
   assert.ok(state.track.length <= 600);
   assert.ok(state.chart.at(-1).time - state.chart[0].time > 89);
+});
+
+// Runs a command script at 60 fps and reports the largest per-frame changes.
+function fly(script, seconds, setup = () => {}) {
+  const state = createFlightState(), dt = 1 / 60;
+  setup(state);
+  const worst = { climb: 0, pitchRate: 0, accel: 0, move: 0 };
+  let previous = structuredClone(state);
+  for (let i = 0; i < seconds * 60; i++) {
+    const t = i * dt;
+    for (const [at, action] of script) if (Math.abs(t - at) < dt / 2) action(state);
+    stepFlight(state, dt);
+    worst.climb = Math.max(worst.climb, Math.abs(state.altitude - previous.altitude) / dt);
+    worst.pitchRate = Math.max(worst.pitchRate, Math.abs(state.pitch - previous.pitch) / dt);
+    if (state.altitude > 0) worst.accel = Math.max(worst.accel, Math.abs(state.speed - previous.speed) / dt);
+    const moved = Math.hypot(state.positionX - previous.positionX, state.positionZ - previous.positionZ);
+    worst.move = Math.max(worst.move, moved - previous.speed * dt - 0.02);
+    previous = structuredClone(state);
+  }
+  return { state, worst };
+}
+const cmd = (mode) => (state) => commandFlight(state, mode);
+
+test("Buttons, Auto re-engagement and the auto loop never jump the aircraft", () => {
+  const scripts = [
+    [[1, cmd("takeoff")], [6, cmd("cruise")], [14, cmd("land")], [40, cmd("auto")], [70, cmd("land")]],
+    [[0.5, cmd("cruise")], [3, cmd("land")], [40, cmd("auto")]],
+    [[2, cmd("takeoff")], [9, cmd("auto")], [12, cmd("takeoff")], [13, cmd("land")]],
+    [],
+  ];
+  for (const script of scripts) {
+    const { worst } = fly(script, script.length ? 90 : 200);
+    assert.ok(worst.climb <= model.maxClimb + 0.05, `vertical speed ${worst.climb}`);
+    assert.ok(worst.pitchRate <= 0.91, `pitch rate ${worst.pitchRate}`);
+    assert.ok(worst.accel <= model.maxHorizontalAccel + 0.01, `acceleration ${worst.accel}`);
+    assert.ok(worst.move <= 0.02, `position jump ${worst.move}`);
+  }
+});
+
+test("Land reverses a climb promptly and touches down gently; Takeoff holds altitude", () => {
+  const climbing = fly([[0.5, cmd("takeoff")]], 8).state;
+  assert.ok(climbing.verticalSpeed > 1.5);
+  commandFlight(climbing, "land");
+  let reversed = null, touchdown = null;
+  for (let i = 0; i < 60 * 90; i++) {
+    const before = climbing.verticalSpeed;
+    stepFlight(climbing, 1 / 60);
+    if (reversed === null && climbing.verticalSpeed < 0) reversed = i / 60;
+    if (touchdown === null && climbing.altitude === 0) touchdown = before;
+  }
+  assert.ok(reversed !== null && reversed < 3.5, `still climbing after ${reversed} s`);
+  assert.ok(touchdown !== null && touchdown > -0.45, `touchdown at ${touchdown} m/s`);
+  assert.equal(climbing.mode, "Surface");
+  assert.ok(climbing.rotorRpm.every((rpm) => rpm < 50));
+
+  const hovering = fly([[0.5, cmd("takeoff")]], 60).state;
+  near(hovering.altitude, model.takeoffAltitude, 0.3);
+  assert.equal(hovering.mode, "Hover");
+});
+
+test("Throttle is a sticky climb command: half throttle holds altitude after a handover", () => {
+  const { state } = fly([[0.5, cmd("takeoff")], [30, (s) => { takeManualControl(s); s.altitudeHold = null; s.throttle = model.hoverThrottle; }]], 45);
+  const held = state.altitude;
+  advance(state, 10);
+  near(state.altitude, held, 0.05);
+  state.throttle = 0.7;
+  advance(state, 5);
+  assert.ok(state.altitude > held + 5);
+  // Handing over from Auto keeps the current climb rate instead of snapping the throttle.
+  const auto = createFlightState();
+  advance(auto, 8);
+  const climb = auto.verticalSpeed;
+  takeManualControl(auto);
+  stepFlight(auto, 1 / 60);
+  near(auto.verticalSpeed, climb, 0.05);
+});
+
+test("Re-engaging Auto resumes from the phase that matches the aircraft", () => {
+  const grounded = fly([[0.5, cmd("land")]], 40).state;
+  commandFlight(grounded, "auto");
+  stepFlight(grounded, 1 / 60);
+  assert.equal(grounded.mode, "Takeoff");
+  assert.ok(grounded.altitude < 0.1);
+  const aloft = fly([[0.5, cmd("takeoff")]], 20).state;
+  commandFlight(aloft, "auto");
+  stepFlight(aloft, 1 / 60);
+  assert.equal(aloft.mode, "Hover");
 });

@@ -886,7 +886,6 @@ button:disabled { opacity: 0.5; cursor: default; }
   .systems-columns, .reference-images { grid-template-columns: 1fr; }
   #systems-dialog { padding: 16px; }
   .systems-header h2 { font-size: 1.1rem; }
-  body.pilot-view .app-shell { min-height: 760px !important; }
   body.pilot-view .topbar { gap: 8px; padding: 8px; }
   body.pilot-view .brand h1 { font-size: 1.1rem; }
   body.pilot-view .view-switch button { min-height: 30px; }
@@ -921,7 +920,6 @@ button:disabled { opacity: 0.5; cursor: default; }
   .flight-commands button { flex: 1; min-width: 0; padding: 5px 4px; font-size: 0.8rem; }
   .engineering-columns { grid-template-columns: 1fr; }
   .stick-row { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-  body.pilot-view .app-shell { min-height: 760px; height: 100dvh; }
 }
 
 .sourcebar {
@@ -1100,5 +1098,355 @@ button:disabled { opacity: 0.5; cursor: default; }
   body.pilot-view .pilot-rotors small {
     min-height: 0;
     margin: 0;
+  }
+}
+
+/* ---------- Throttle mode toggle ---------- */
+.controls-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.throttle-mode {
+  align-self: flex-start;
+  min-height: 30px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #c3d7e8;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.throttle-mode[aria-pressed="true"] {
+  border-color: rgba(128, 242, 174, 0.6);
+  color: var(--green);
+}
+
+.pilot-control .throttle-mode {
+  display: block;
+  margin: 6px auto 0;
+  background: rgba(7, 17, 27, 0.86);
+}
+
+/* ---------- Phones, portrait (≤720px) ---------- */
+@media (max-width: 720px) {
+  .topbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    min-height: 0;
+    padding: 10px;
+  }
+
+  .brand h1 {
+    font-size: 1.3rem;
+  }
+
+  .mission-chip {
+    min-height: 20px;
+    font-size: 0.66rem;
+  }
+
+  .view-switch {
+    width: auto;
+  }
+
+  .status-strip {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .status-item {
+    min-height: 0;
+    padding: 6px 8px;
+  }
+
+  .status-item span {
+    font-size: 0.64rem;
+  }
+
+  .status-item strong {
+    margin-top: 2px;
+    font-size: 0.92rem;
+  }
+
+  .flight-bar {
+    border-radius: 8px;
+  }
+
+  .flight-commands button {
+    min-height: 40px;
+  }
+
+  .simulation-label {
+    display: none;
+  }
+
+  #systems-button {
+    margin-left: auto;
+  }
+
+  /* Flight view first, then the controls that fly it, then the data. */
+  .layout-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .center-stage {
+    display: contents;
+  }
+
+  .visual-wrap {
+    order: 1;
+    height: clamp(300px, 52vh, 460px);
+  }
+
+  .left-rail { order: 2; }
+  .telemetry-band { order: 3; }
+  .chart-panel { order: 4; }
+  .right-rail { order: 5; }
+  .engineering-reference { order: 6; }
+
+  .left-rail .controls-block {
+    order: -1;
+  }
+
+  .stack {
+    overflow: visible;
+  }
+
+  .data-grid,
+  .telemetry-band {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stick-box {
+    max-width: 180px;
+    margin: 8px auto;
+  }
+
+  .stick {
+    text-align: center;
+  }
+
+  .controls-block .throttle-mode {
+    align-self: center;
+  }
+
+  /* Pilot view: one screen, flight view takes whatever the controls leave. */
+  body.pilot-view .app-shell {
+    height: 100dvh;
+    min-height: 540px;
+    padding: 6px;
+    gap: 6px;
+  }
+
+  body.pilot-view .topbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px;
+    padding: 6px 8px;
+  }
+
+  body.pilot-view .brand {
+    justify-content: flex-start;
+  }
+
+  body.pilot-view .brand h1 {
+    font-size: 1rem;
+  }
+
+  body.pilot-view .status-strip {
+    gap: 2px 6px;
+  }
+
+  body.pilot-view .status-item {
+    min-height: 0;
+    padding: 2px 4px;
+  }
+
+  body.pilot-view .status-item strong {
+    font-size: 0.86rem;
+  }
+
+  body.pilot-view .flight-bar {
+    padding: 4px;
+  }
+
+  body.pilot-view .flight-commands button {
+    min-height: 36px;
+  }
+
+  body.pilot-view .mission-strip {
+    padding: 6px 8px;
+  }
+
+  body.pilot-view #vehicle-alert:not(.warning) {
+    display: none;
+  }
+
+  body.pilot-view .visual-wrap {
+    min-height: 0;
+  }
+
+  body.pilot-view .pilot-deck small {
+    min-height: 0;
+  }
+
+  body.pilot-view .pilot-control .throttle-mode {
+    min-height: 26px;
+    padding: 2px 8px;
+    font-size: 0.66rem;
+  }
+}
+
+/* ---------- Phones held sideways: the flight view gets the screen ---------- */
+@media (max-height: 520px) and (orientation: landscape) {
+  body.pilot-view .app-shell {
+    height: 100dvh;
+    min-height: 0;
+    padding: 4px 8px;
+    gap: 4px;
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+  }
+
+  body.pilot-view .topbar {
+    grid-template-columns: auto auto minmax(0, 1fr);
+    gap: 8px;
+    min-height: 0;
+    padding: 4px 8px;
+  }
+
+  body.pilot-view .brand h1 {
+    font-size: 0.95rem;
+  }
+
+  body.pilot-view .view-switch button {
+    min-height: 28px;
+  }
+
+  body.pilot-view .status-strip {
+    grid-column: auto;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 2px;
+  }
+
+  body.pilot-view .status-item {
+    min-height: 0;
+    padding: 0 4px;
+  }
+
+  body.pilot-view .status-item span {
+    font-size: 0.6rem;
+  }
+
+  body.pilot-view .status-item strong {
+    margin-top: 0;
+    font-size: 0.82rem;
+  }
+
+  body.pilot-view .flight-bar {
+    padding: 3px 6px;
+    gap: 4px 10px;
+  }
+
+  body.pilot-view .flight-commands button,
+  body.pilot-view #systems-button {
+    min-height: 30px;
+    padding: 2px 10px;
+    font-size: 0.78rem;
+  }
+
+  body.pilot-view .simulation-label,
+  body.pilot-view #objective-status,
+  body.pilot-view #vehicle-alert:not(.warning) {
+    display: none;
+  }
+
+  body.pilot-view .mission-strip {
+    flex-wrap: nowrap;
+    padding: 3px 8px;
+  }
+
+  body.pilot-view .mission-strip > div {
+    min-width: 0;
+  }
+
+  body.pilot-view .mission-strip button {
+    min-height: 30px;
+    min-width: 0;
+    padding: 2px 12px;
+    font-size: 0.8rem;
+  }
+
+  body.pilot-view .visual-wrap {
+    min-height: 0;
+  }
+
+  body.pilot-view .camera-switch {
+    top: 6px;
+    height: 34px;
+  }
+
+  body.pilot-view .pilot-deck {
+    left: 10px;
+    right: 10px;
+    bottom: 6px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "left attitude right";
+    align-items: end;
+    gap: 8px;
+  }
+
+  body.pilot-view .pilot-control:first-child { grid-area: left; }
+  body.pilot-view .pilot-control:last-child { grid-area: right; }
+  body.pilot-view .attitude-wrap { grid-area: attitude; }
+
+  body.pilot-view .pilot-rotors {
+    display: none;
+  }
+
+  body.pilot-view .pilot-stick-box {
+    width: min(30vh, 118px);
+  }
+
+  body.pilot-view .attitude-indicator {
+    width: min(20vh, 76px);
+  }
+
+  body.pilot-view .pilot-deck > div > span {
+    margin-bottom: 2px;
+    font-size: 0.66rem;
+  }
+
+  body.pilot-view .pilot-deck small {
+    margin-top: 2px;
+    font-size: 0.66rem;
+  }
+
+  body.pilot-view .pilot-control .throttle-mode {
+    min-height: 24px;
+    margin-top: 3px;
+    padding: 1px 8px;
+    font-size: 0.62rem;
+  }
+}
+
+/* ---------- Narrow phones (≤400px) ---------- */
+@media (max-width: 400px) {
+  body.pilot-view .pilot-deck > div > span {
+    min-height: 0;
+    font-size: 0.64rem;
+    white-space: nowrap;
+  }
+
+  body.pilot-view .pilot-deck small {
+    font-size: 0.62rem;
+    white-space: nowrap;
+  }
+
+  body.pilot-view .pilot-deck {
+    gap: 4px;
   }
 }

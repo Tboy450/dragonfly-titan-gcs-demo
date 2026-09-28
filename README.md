@@ -36,6 +36,25 @@ Three.js 0.180.0 is included under its [MIT license](dist/vendor/three/LICENSE).
 The Titan terrain reference image was supplied for this project. NASA mission
 references are linked within the app.
 
+## Flight Controls
+
+- **Takeoff** climbs to 40 m and hovers. **Cruise** holds altitude (at least 20 m) and
+  flies forward at 10 m/s. **Land** descends at up to 1.3 m/s, slows near the ground and
+  idles the rotors after touchdown. **Auto** resumes the demo profile from the phase that
+  matches the aircraft (takeoff if landed, hover if airborne).
+- The **throttle** is a climb-rate command: 50% holds altitude, higher climbs, lower
+  descends. By default it is *sticky* and stays where you leave it. The
+  "Throttle: sticky / centering" toggle under the stick makes it spring back to 50% on
+  release. Yaw, pitch and roll always spring back to center.
+- Sticks respond to how far you drag from where your finger lands, so touching a pad
+  never jerks the controls. Moving the throttle cancels a button's altitude hold;
+  steering does not.
+- Attitude, climb rate and forward speed are rate-limited (climb 3 m/s, sink 2.5 m/s,
+  about 1 m/s² horizontal), so mode changes never teleport the aircraft. The chase camera
+  eases between Fixed and Free instead of snapping.
+- Keyboard: W/S throttle, A/D yaw, arrow keys pitch/roll, Space levels off and holds
+  altitude.
+
 ## Missions and Diagnostics
 
 Begin the fictional shoreline survey, fly to the dry outcrop manually or with

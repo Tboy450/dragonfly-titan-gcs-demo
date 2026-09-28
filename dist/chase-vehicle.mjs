@@ -1,6 +1,6 @@
 import * as THREE from "./vendor/three/three.module.min.js";
 import { cameraPose } from "./flight-camera.mjs";
-import { createTitanTerrain } from "./titan-terrain.mjs";
+import { createTitanTerrain, terrainHeight } from "./titan-terrain.mjs";
 import { model } from "./flight-model.mjs";
 import { missionTarget, systemsModel } from "./mission-systems.mjs";
 
@@ -200,7 +200,7 @@ export function createChaseRenderer() {
         camera.updateProjectionMatrix();
       }
       setAttitude(state);
-      const pose = cameraPose(state);
+      const pose = state.renderPose || cameraPose(state);
       const x = state.positionX || 0;
       const z = state.positionZ || 0;
       landscape.update(x, z);
@@ -213,8 +213,11 @@ export function createChaseRenderer() {
       sun.intensity = 0.15 + sunlight * 3.05;
       scene.background.setHex(0xb48b55).multiplyScalar(0.22 + sunlight * 0.78);
       scene.fog.color.copy(scene.background);
-      const groundY = landscape.heightAt(x, z);
       const altitude = Math.max(0, state.altitude || 0);
+      // Aloft, follow the smooth analytic terrain so mesh re-centering never shifts the aircraft;
+      // near touchdown, blend onto the rendered triangles so the skids meet the visible ground.
+      const meshGround = landscape.heightAt(x, z);
+      const groundY = meshGround + (terrainHeight(x, z) - meshGround) * Math.min(1, altitude / 8);
       craft.position.set(x, groundY + altitude + 0.86, z);
       sun.position.set(x - 65, groundY + 115, z - 45);
       sun.target.position.set(x, groundY, z);

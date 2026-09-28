@@ -111,6 +111,7 @@
             <div><span>Local day</span><strong>15.95 Earth days</strong></div>
           </div>
 
+          <div class="controls-block">
           <div class="panel-heading">
             <span>Controls</span>
             <strong>Mode 2 RC</strong>
@@ -123,7 +124,7 @@
                 <b class="axis x"></b>
                 <b class="axis y"></b>
               </div>
-              <small id="left-stick-readout">THR 52% / YAW 0%</small>
+              <small id="left-stick-readout">THR 50% / YAW 0%</small>
             </div>
             <div class="stick" aria-label="Pitch and roll stick">
               <span>Pitch / Roll</span>
@@ -134,6 +135,8 @@
               </div>
               <small id="right-stick-readout">PIT 0% / ROL 0%</small>
             </div>
+          </div>
+          <button class="throttle-mode" type="button" data-throttle-mode aria-pressed="false" title="Sticky: the throttle stays where you leave it. Centering: it springs back to 50% (hold altitude) when released.">Throttle: sticky</button>
           </div>
         </aside>
 
@@ -164,7 +167,8 @@
                   <em class="axis-label left">L</em>
                   <em class="axis-label right">R</em>
                 </div>
-                <small id="pilot-left-readout">THR 52% / YAW 0%</small>
+                <small id="pilot-left-readout">THR 50% / YAW 0%</small>
+                <button class="throttle-mode" type="button" data-throttle-mode aria-pressed="false" title="Sticky: the throttle stays where you leave it. Centering: it springs back to 50% (hold altitude) when released.">Throttle: sticky</button>
               </div>
 
               <div class="attitude-wrap">
