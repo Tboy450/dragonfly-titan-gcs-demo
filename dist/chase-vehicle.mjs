@@ -1,8 +1,8 @@
 import * as THREE from "./vendor/three/three.module.min.js";
-import { cameraPose } from "./flight-camera.mjs";
-import { createTitanTerrain, terrainHeight } from "./titan-terrain.mjs";
-import { model } from "./flight-model.mjs";
-import { missionTarget, systemsModel } from "./mission-systems.mjs";
+import { cameraPose } from "./flight-camera.mjs?v=20260928b";
+import { createTitanTerrain, terrainHeight } from "./titan-terrain.mjs?v=20260928b";
+import { model } from "./flight-model.mjs?v=20260928b";
+import { missionTarget, systemsModel } from "./mission-systems.mjs?v=20260928b";
 
 export function createChaseRenderer() {
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });

@@ -27,6 +27,9 @@ node --test tests/*.test.mjs
 ## Publishing
 
 Pushing to `main` runs the checks and publishes `dist` to GitHub Pages.
+Before each release, change the `?v=` stamp everywhere it appears in `dist` (index.html and
+every module import) so phones fetch fresh files instead of mixing cached old modules
+with new ones. A test checks that every stamp matches.
 The existing [Sites copy](https://dragonfly-titan-gcs-demo.tboy450.chatgpt.site/)
 is managed separately.
 
