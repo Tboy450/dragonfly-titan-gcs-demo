@@ -5,6 +5,14 @@ import { cameraPose, enterFreeCamera, orbitCamera, wrapAngle } from "../dist/fli
 const fixture = () => ({ heading: 84, cameraMode: "fixed", cameraYaw: 0, cameraPitch: 0.38 });
 const near = (a, b) => assert.ok(Math.abs(wrapAngle(a - b)) < 1e-10, `${a} differs from ${b}`);
 
+test("Fixed camera stays directly aft with a gentle downward viewing angle at every heading", () => {
+  for (const heading of [0, 45, 84, 180, 255, 359, 360]) {
+    const pose = cameraPose({ ...fixture(), heading });
+    near(pose.azimuth, -heading * Math.PI / 180);
+    assert.equal(pose.elevation, 0.16);
+  }
+});
+
 test("Free camera preserves its world bearing through a complete aircraft turn", () => {
   const state = fixture();
   const fixed = cameraPose(state);
@@ -15,7 +23,7 @@ test("Free camera preserves its world bearing through a complete aircraft turn",
     state.heading = 84 + turn;
     const pose = cameraPose(state);
     near(pose.azimuth, fixed.azimuth);
-    near(pose.azimuth - pose.heading, 0.28 + turn * Math.PI / 180);
+    near(pose.azimuth - pose.heading, turn * Math.PI / 180);
   }
 });
 
@@ -48,7 +56,7 @@ test("Fixed mode follows heading again, and repeated mode switches do not jump",
   state.heading = 255;
   state.cameraMode = "fixed";
   const fixed = cameraPose(state);
-  near(fixed.azimuth - fixed.heading, 0.28);
+  near(fixed.azimuth - fixed.heading, 0);
   enterFreeCamera(state);
   state.cameraMode = "free";
   near(cameraPose(state).azimuth, fixed.azimuth);

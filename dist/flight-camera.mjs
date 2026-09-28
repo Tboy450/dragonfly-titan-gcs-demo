@@ -9,8 +9,8 @@ export function cameraPose(state) {
   const heading = -state.heading * Math.PI / 180;
   return {
     heading,
-    azimuth: state.cameraMode === "free" ? state.cameraYaw : heading + 0.28,
-    elevation: state.cameraMode === "free" ? state.cameraPitch : 0.10,
+    azimuth: state.cameraMode === "free" ? state.cameraYaw : heading,
+    elevation: state.cameraMode === "free" ? state.cameraPitch : 0.16,
   };
 }
 
