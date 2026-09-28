@@ -16,7 +16,52 @@ export const systemsModel = Object.freeze({
   foamThickness: 0.0762, foamConductivity: 0.01, foamArea: 20,
   gasMassFlow: 0.052, gasCp: 1050, generatorLossUA: 5.5,
   trimMaximum: 0.4, trimStep: 0.02, controllerPeriod: 600,
+  // ICES-2020: eight rotor motors preheat at ~90 W for 5 min before flight (60 Wh). The 30 min
+  // cool-down before another preheat is needed is a demo assumption.
+  preheatWh: 8 * 90 * 5 / 60, motorCoolSeconds: 1800,
+  // Operations plan (APL): one ~30 min flight; battery gains ~10 C per 30 min in flight (ICES-2020).
+  plannedFlightSeconds: 1800, batteryRisePerSecond: 10 / 1800, batteryLimitC: 35, reservePercent: 15,
+  // Direct-to-Earth X-band. ~5 mJ per bit per AU is the 2018 concept figure (Lorenz); the
+  // 200 W DC draw for the 100 W RF amplifier and the 9.5 AU range are demo assumptions.
+  downlinkW: 200, downlinkJoulesPerBitAu: 0.005, earthRangeAu: 9.5, downlinkMinBattery: 30,
+  maxSurfaceWind: 1.6,
 });
+
+// Titan local solar time at the landing site. The simulation starts at local noon.
+export const titanLocalHour = (state) => (12 + state.elapsed / systemsModel.titanDaySeconds * 24) % 24;
+// Seen from Titan, Earth stays within ~6 deg of the Sun, so Earth is up when the Sun is.
+export const titanDaylight = (state) => { const hour = titanLocalHour(state); return hour >= 6 && hour < 18; };
+
+export function linkStatus(state) {
+  if (state.altitude > 0.001) return { available: false, label: "Antenna stowed / flight" };
+  if (state.hibernating) return { available: false, label: "Hibernating" };
+  if (!titanDaylight(state)) return { available: false, label: "Earth below horizon / night" };
+  if (state.battery <= systemsModel.downlinkMinBattery) return { available: false, label: "Held: battery reserve" };
+  return { available: true, label: state.downlinkActive ? "Downlink in progress" : "Earth in view / ready" };
+}
+
+export function toggleDownlink(state) {
+  state.downlinkActive = !state.downlinkActive && linkStatus(state).available;
+  return state.downlinkActive;
+}
+
+// Minutes of flight left before the battery reserve or the 35 C battery limit, whichever is first.
+export function flightEndurance(state, batteryEnergyKwh) {
+  const usableWh = Math.max(0, state.battery - systemsModel.reservePercent) / 100 * batteryEnergyKwh * 1000;
+  const energyMin = usableWh / Math.max(1, state.power - state.generatedW) * 60;
+  const thermalMin = Math.max(0, systemsModel.batteryLimitC - state.batteryC) / systemsModel.batteryRisePerSecond / 60;
+  const minutes = Math.min(energyMin, thermalMin);
+  return { energyMin, thermalMin, minutes, limit: energyMin <= thermalMin ? "battery reserve" : "battery temperature" };
+}
+
+export function operationsAdvisory(state, batteryEnergyKwh) {
+  if (state.altitude <= 0.001) return "";
+  const endurance = flightEndurance(state, batteryEnergyKwh);
+  if (endurance.minutes < 3) return `Land now: ${endurance.limit} limit in ${Math.max(0, endurance.minutes).toFixed(1)} min`;
+  if (state.flightSeconds > systemsModel.plannedFlightSeconds) return "Land now: planned 30 min flight exceeded";
+  if (!titanDaylight(state)) return "Night flight: outside daylight operations plan";
+  return "";
+}
 
 export function surfaceHeatTransfer(wind, speed, circulation) {
   // Published surface convection envelope; interpolation and duct dimensions are demo assumptions.
@@ -48,6 +93,8 @@ export function createSystemsState() {
     convectionH: 4, ductUA: 0, foamUA: 0, gasFlow: 0, warmGasC: 12,
     generatorToBayW: 0, generatorRejectedW: 0, coldDuctW: 0, chargingBlocked: false,
     elapsed: 0, restSeconds: 0, restNotice: "", hibernating: false, guard: "",
+    motorsCold: true, motorCoolClock: 0, preheatWh: 0, preheats: 0, flightSeconds: 0,
+    downlinkActive: false, downlinkW: 0, dataReturnedBits: 0,
     mission: { phase: "idle", sampleSeconds: 0, samples: 0, guidance: false, message: "Survey a fictional hydrocarbon shoreline from dry ground." },
   };
 }
@@ -120,6 +167,24 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
   state.rtgHeatW = systemsModel.rtgThermalW * 2 ** (-years / 87.7);
   if (state.hibernating) state.power = 45 + 15 * state.fan ** 3;
   else state.power += 15 * state.fan ** 3 + (state.mission.phase === "sampling" ? 160 : 0);
+  // Motor preheat is charged once when the rotors lift off cold; its 5 minutes are time-compressed.
+  if (state.altitude > 0.001) {
+    if (state.motorsCold) {
+      state.battery = Math.max(0, state.battery - systemsModel.preheatWh / (batteryEnergyKwh * 10));
+      state.preheatWh += systemsModel.preheatWh; state.preheats += 1; state.motorsCold = false;
+    }
+    state.motorCoolClock = 0;
+    state.flightSeconds += dt;
+  } else {
+    state.motorCoolClock += dt;
+    if (state.motorCoolClock >= systemsModel.motorCoolSeconds) state.motorsCold = true;
+    if (state.motorCoolClock > 1) state.flightSeconds = 0;
+  }
+  const link = linkStatus(state);
+  if (state.downlinkActive && !link.available) state.downlinkActive = false;
+  state.downlinkW = state.downlinkActive ? systemsModel.downlinkW : 0;
+  state.power += state.downlinkW;
+  state.dataReturnedBits += state.downlinkW * dt / (systemsModel.downlinkJoulesPerBitAu * systemsModel.earthRangeAu);
   state.netBatteryW = state.generatedW - state.power;
   state.chargingBlocked = state.netBatteryW > 0 && (state.batteryC < 0 || state.batteryC >= 35);
   if (state.chargingBlocked) state.netBatteryW = 0;
@@ -187,7 +252,7 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
 export function startRest(state, hours) {
   if (!landed(state) || state.hold || state.mission.phase === "sampling" || overLiquid(state.positionX, state.positionZ)) return false;
   state.auto = false; state.mission.guidance = false; state.throttle = 0; state.altitudeHold = null;
-  state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0;
+  state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0; state.downlinkActive = false;
   state.restSeconds = Math.max(0, hours * 3600);
   state.restNotice = "";
   state.hibernating = true;

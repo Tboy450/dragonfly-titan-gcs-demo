@@ -109,6 +109,7 @@ test("Auto flight converges consistently at 30, 60 and 120 fps", () => {
 
 test("Battery energy uses seconds, and flight history remains bounded", () => {
   const state = createFlightState();
+  state.motorsCold = false; // Isolate flight energy from the one-time motor preheat.
   const battery = state.battery;
   stepFlight(state, 0.1);
   near(battery - state.battery, -state.netBatteryW * 0.1 / (model.batteryEnergyKwh * 36000));

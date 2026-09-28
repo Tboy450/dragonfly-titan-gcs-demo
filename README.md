@@ -77,6 +77,18 @@ temperatures from explicit assumptions. It is not part of the flight hardware.
 See [the research compendium](RESEARCH-COMPENDIUM.md) and
 [the release reconciliation](RESEARCH-FOLLOWUP.md) for follow-up evidence.
 
+## Operations
+
+- **Motor preheat:** the first liftoff after 30 minutes on the ground charges 60 Wh
+  (8 motors x 90 W x 5 min, time-compressed).
+- **Comms:** the Direct to Earth link is available only when landed, awake and in daylight.
+  The antenna is stowed in flight. "Start downlink" draws an assumed 200 W and counts the
+  data returned; it stops at takeoff, at night, in hibernation or below 30% battery.
+- **Flight endurance:** Diagnostics shows the minutes left before the 15% reserve or the
+  35 C battery limit, plus a 30-minute flight timer. The alert bar warns "Land now"
+  near either limit, after 30 minutes, or when flying at night.
+- **Wind** above the 1.6 m/s design maximum is labeled a stress test.
+
 ## Engineering Context
 
 Mission and Pilot share the same vehicle mesh, flight state, eight rotor speeds,

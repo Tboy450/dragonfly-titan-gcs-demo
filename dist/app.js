@@ -1,7 +1,7 @@
 import { createChaseRenderer } from "./chase-vehicle.mjs";
 import { enterFreeCamera, orbitCamera, smoothCameraPose } from "./flight-camera.mjs";
 import { model, createFlightState, deriveFlight, stepFlight, commandFlight, advanceRest, takeManualControl } from "./flight-model.mjs";
-import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel, liquidExchangerStudy } from "./mission-systems.mjs";
+import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel, liquidExchangerStudy, linkStatus, toggleDownlink, flightEndurance, operationsAdvisory, titanLocalHour, titanDaylight } from "./mission-systems.mjs";
 
 const state = {
   ...createFlightState(),
@@ -897,7 +897,9 @@ function updateReadouts() {
   $("ideal-power-value").textContent = `${(d.idealTitan / 1000).toFixed(2)} kW`;
   $("hover-power-value").textContent = `${(d.realisticTitan / 1000).toFixed(2)} kW`;
   $("earth-power-value").textContent = `${Math.round(d.idealEarth / 1000)} kW`;
-  $("wind-output").textContent = `${state.wind.toFixed(1)} m/s`;
+  const stressWind = state.wind > systemsModel.maxSurfaceWind;
+  $("wind-output").textContent = `${state.wind.toFixed(1)} m/s${stressWind ? " / stress" : ""}`;
+  $("wind-note").textContent = stressWind ? "Stress test: above the 1.6 m/s design maximum; Titan surface winds are typically under 1 m/s" : "Within the 1.6 m/s design maximum";
   $("payload-output").textContent = `${state.payloadDelta > 0 ? "+" : ""}${state.payloadDelta} kg`;
   const leftText = `THR ${Math.round(state.throttle * 100)}% / YAW ${Math.round(stickYaw() * 100)}%`;
   const rightText = `PIT ${Math.round(stickPitch() * 100)}% / ROL ${Math.round(stickRoll() * 100)}%`;
@@ -924,7 +926,12 @@ function updateReadouts() {
   positionStick($("pilot-left-stick"), stickYaw(), state.throttle * 2 - 1);
   positionStick($("pilot-right-stick"), stickRoll(), stickPitch());
 
-  $("link-value").textContent = `${Math.round(84 - state.wind * 1.8 + Math.sin(state.missionTime * 0.18) * 3)}%`;
+  const link = linkStatus(state);
+  $("link-value").textContent = link.label;
+  $("downlink-power").textContent = `${Math.round(state.downlinkW)} W`;
+  $("data-returned").textContent = `${(state.dataReturnedBits / 1e6).toFixed(1)} Mbit`;
+  $("downlink-toggle").textContent = state.downlinkActive ? "Stop downlink" : "Start downlink";
+  $("downlink-toggle").disabled = !state.downlinkActive && !link.available;
   $("drams-state").textContent = state.mode === "Surface" ? "Sample ready" : "Standby";
   $("dragns-state").textContent = state.mode === "Surface" ? "Surface scan" : "Survey";
   $("camera-state").textContent = state.speed > 2 ? "Nav imaging" : "Hazcam";
@@ -943,7 +950,7 @@ function updateSystemsReadouts() {
   $("objective-distance").textContent = `${targetDistance(state).toFixed(0)} m / ${missionTarget(state).name}`;
   $("mission-action").textContent = m.guidance ? "Manual control" : labels[m.phase];
   $("mission-action").disabled = m.phase === "sampling";
-  const alert = state.guard || (state.batteryC > 30 ? "Battery nearing 35 C limit" : state.coreC > 40 ? "Equipment bay warming" : state.batteryC < 5 ? "Battery cooling" : envelope.steepDescentCaution ? "Steep-descent caution / VRS proxy" : "Systems nominal");
+  const alert = state.guard || operationsAdvisory(state, model.batteryEnergyKwh) || (state.batteryC > 30 ? "Battery nearing 35 C limit" : state.coreC > 40 ? "Equipment bay warming" : state.batteryC < 5 ? "Battery cooling" : envelope.steepDescentCaution ? "Steep-descent caution / VRS proxy" : "Systems nominal");
   $("vehicle-alert").textContent = alert;
   $("vehicle-alert").classList.toggle("warning", alert !== "Systems nominal");
   $("systems-warning").textContent = alert;
@@ -974,8 +981,12 @@ function updateSystemsReadouts() {
   const minutes = Math.max(0, state.battery - 15) / 100 * model.batteryEnergyKwh * 60000 / Math.max(1, -state.netBatteryW);
   const duration = minutes >= 1440 ? `${(minutes / 1440).toFixed(1)} days` : minutes >= 60 ? `${(minutes / 60).toFixed(1)} h` : `${minutes.toFixed(0)} min`;
   $("reserve-time").textContent = state.chargingBlocked ? "Charging inhibited" : state.netBatteryW < 0 ? `${duration} at current load` : state.battery >= 100 ? "Fully charged" : "Charging";
-  const hour = (12 + state.elapsed / systemsModel.titanDaySeconds * 24) % 24;
-  $("solar-time").textContent = `${Math.floor(hour).toString().padStart(2, "0")}:${Math.floor(hour % 1 * 60).toString().padStart(2, "0")} / ${hour >= 6 && hour < 18 ? "Day" : "Night"}`;
+  const hour = titanLocalHour(state);
+  $("solar-time").textContent = `${Math.floor(hour).toString().padStart(2, "0")}:${Math.floor(hour % 1 * 60).toString().padStart(2, "0")} / ${titanDaylight(state) ? "Day" : "Night"}`;
+  const endurance = flightEndurance(state, model.batteryEnergyKwh);
+  $("flight-endurance").textContent = state.altitude > 0.001 ? `${endurance.minutes.toFixed(1)} min / ${endurance.limit}` : "Landed";
+  $("flight-elapsed").textContent = `${Math.floor(state.flightSeconds / 60)}:${Math.floor(state.flightSeconds % 60).toString().padStart(2, "0")}`;
+  $("motor-preheat").textContent = state.motorsCold ? `Cold / ${systemsModel.preheatWh} Wh at next takeoff` : `Warm / ${state.preheats} preheat${state.preheats === 1 ? "" : "s"}, ${Math.round(state.preheatWh)} Wh used`;
   $("surface-elapsed").textContent = `${(state.elapsed / 3600).toFixed(2)} h`;
   $("systems-objective").textContent = m.phase;
   $("sample-progress").textContent = `${Math.min(30, m.sampleSeconds).toFixed(0)} / 30 s`;
@@ -1186,6 +1197,7 @@ $("rtg-scenario").addEventListener("change", event => { state.arrivalElectricW =
 $("fault-control").addEventListener("change", (event) => { state.fault = event.target.value; });
 $("rest-hour").addEventListener("click", () => startRest(state, 1));
 $("rest-night").addEventListener("click", () => startRest(state, 192));
+$("downlink-toggle").addEventListener("click", () => { toggleDownlink(state); });
 $("rest-stop").addEventListener("click", () => { state.restSeconds = 0; state.restNotice = ""; state.hibernating = false; });
 
 document.querySelectorAll("[data-command]").forEach((button) => {

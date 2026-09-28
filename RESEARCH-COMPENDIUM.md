@@ -20,7 +20,7 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
   - foam + film conductance, 0.052 kg/s circulation, the 0–40% cold-duct trim in 2% steps under a 600 s PI update;
   - the 0–35 °C battery band with charging inhibit, a vortex-ring-state advisory and a hypothetical liquid-to-liquid exchanger study.
 - `4fd4036` centered the fixed chase camera.
-- **Uncommitted flight-control and mobile update (Claude, this session)**, saved to the project folder but not yet committed or pushed:
+- `3bb6cd4` "Smooth flight controls, fix mode-change jumps, and rebuild phone layouts" (Claude):
   - **Continuous flight model.** One rate-limited model now drives vertical speed, attitude and forward speed in every mode: climb ≤ 3 m/s, sink ≤ 2.5 m/s, climb acceleration ≤ 1.8 m/s², sink acceleration ≤ 1.2 m/s², horizontal acceleration ≤ 1 m/s², pitch rate ≤ 16°/s. The acceleration limits are grounded in §2.1 (≈3,000 N maximum thrust against ≈1,183 N Titan weight) and Titan's 1.35 m/s² gravity.
   - **Buttons.** Takeoff climbs to and holds 40 m. Cruise holds altitude (at least 20 m) at 10 m/s. Land descends at up to 1.3 m/s, flares to ~0.35 m/s and idles the rotors.
   - **Auto** resumes from the matching phase instead of the mission clock. That old behavior caused a 0 → 45 m jump in about 1 s.
@@ -28,8 +28,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
   - **Rendering.** The aircraft follows the analytic terrain aloft, so the 400 m mesh re-centering (up to 2.4 m ground shift) no longer moves it. The chase camera eases between Fixed and Free.
   - **Phone layouts.** New portrait and landscape layouts.
   - **Tests.** 33 tests pass, including regressions for every jump found.
+- **Operations and energy realism (Claude, September 28):**
+  - **Motor preheat.** 60 Wh (8 × 90 W × 5 min) is charged once per cold start at liftoff; the 5 minutes are time-compressed. The motors count as cold again after 30 min on the ground [EST].
+  - **Direct-to-Earth comms.** The link is available only when landed, awake and in daylight; the antenna is stowed in flight. A manual downlink session draws 200 W [EST DC draw for the 100 W TWTA] and returns data at ~5 mJ/bit/AU [PUB concept] at an assumed 9.5 AU (≈4.2 kbit/s). It stops automatically at takeoff, at night, in hibernation or below 30% battery.
+  - **Flight endurance and "land now".** Minutes left are the lesser of the energy to the 15% reserve and the time to the 35 °C battery cap at the documented +10 °C per 30 min. Advisories: under 3 min to either limit, the 30 min flight plan exceeded, or flying at night. These are advisories, not automatic landings.
+  - **Wind.** Values above the 1.6 m/s design maximum are labeled as stress tests.
+  - **Tests.** 36 tests pass (`tests/operations.test.mjs` added).
 
-**Still open** (details in §7–§8): operations realism (daylight-only flights and downlink, leapfrog scouting, "land now" fault response, ~400 m cruise altitude), motor preheat energy, phase-change battery buffering, a cruise-phase thermal panel, visibility-based fog and dimmer lighting, rain-darkened ground, and an entry/descent/landing scenario.
+**Still open** (details in §7–§8): leapfrog scouting, ~400 m cruise altitude, uplink delay, phase-change battery buffering, a cruise-phase thermal panel, visibility-based fog and dimmer lighting, rain-darkened ground, and an entry/descent/landing scenario.
 
 ---
 
@@ -276,14 +282,14 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 | Mode transitions | real aircraft cannot teleport; Titan's weak gravity arrests a climb slowly [PUB §2.1] | **Done** (this session): rate-limited vertical, attitude and speed; Auto re-phasing; no mesh-induced jumps | — |
 | Throttle / sticks | Dragonfly is RPM-controlled, fixed pitch [PUB] | **Done** (this session): sticky climb-rate throttle, optional centering, relative stick drag | — |
 | Flight altitude | nominal ~400 m; profiles 0.5–4 km; ceiling 4 km [PUB] | **Open**: auto profile ~46 m, Takeoff 40 m | Raise the auto profile; add a scouting altitude |
-| Flight duration | ≤ ~30 min; battery +10 °C per 30 min; 35 °C cap [PUB] | **Partial**: 35 °C guard exists | Add a "land now" fault and a flight-time estimate |
+| Flight duration | ≤ ~30 min; battery +10 °C per 30 min; 35 °C cap [PUB] | **Done** (Sep 28): 35 °C guard, flight-time estimate, 30 min timer, "land now" advisories | Optional: automatic landing on "land now" |
 | Descent | avoid steep, fast descents (vortex ring state) [PUB] | **Partial**: advisory from `74ed2c4`; Land now flares at ≤ 1.3 m/s | Optional: slanted approach in Auto |
 | Thermal bands | battery 10±10 °C, 0–35 °C; interior ~0 °C; hibernation ≥ −20 °C [PUB] | **Done** | Optional: phase-change buffer (7.5 kg at 22.5 °C) |
 | Trim | 0–40% in 2% steps, PI, ~10 min cycle; ≥810 W hot; ≤36 W closed [PUB] | **Done** (simplified single loop) | — |
 | Convection | h ≈ 3–5 calm, ~10–18 at 1.6 m/s, 50–100 in flight [PUB/CALC] | **Done**: interpolated 4 / 10.5 / 75 | — |
-| Preflight | motor preheat 8 × 90 W × 5 min [PUB] | **Open** | Add a preflight step costing 60 Wh |
-| Wind | < 1 typical, 1.6 max [PUB] | **Partial**: slider still goes to 5 m/s | Cap at ~2 m/s or label the higher values as stress tests |
-| Comms | direct-to-Earth by day, antenna stowed in flight [PUB] | **Open**: "Link %" is cosmetic | Gate on day/flight state; charge downlink energy |
+| Preflight | motor preheat 8 × 90 W × 5 min [PUB] | **Done** (Sep 28): 60 Wh per cold start, time-compressed | — |
+| Wind | < 1 typical, 1.6 max [PUB] | **Done** (Sep 28): values above 1.6 m/s labeled as stress tests | — |
+| Comms | direct-to-Earth by day, antenna stowed in flight [PUB] | **Done** (Sep 28): gated on landed + daylight; 200 W downlink with data counter | Optional: uplink delay on commands |
 | Sampling | DraMS electronics ~120 W; real sampling takes hours [PUB/EST] | Gameplay: 30 s, labeled | — |
 | Pool | no seas at the landing site; wet ground after rain is realistic [PUB] | **Open**: labeled fictional | Optional: "rain-darkened interdune" |
 | Fog / light | visibility ~10 km [PUB]; FogExp2 density ≈ 1.98 / visibility (in scene units) for 2% contrast [CALC]; surface light ~1/1,000 of Earth's [PUB] | **Open** | Tune fog and lighting |
