@@ -9,15 +9,44 @@ export function poolRadius(x, z, pool) {
 export const overLiquid = (x, z) => pools.some(p => poolRadius(x, z, p) < 1);
 const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
 export const systemsModel = Object.freeze({
-  rtgElectricW: 110, rtgThermalW: 1800, ambientC: -179.15,
+  rtgElectricW: 90, rtgThermalW: 1800, ambientC: -179.15,
   coreCapacity: 60000, batteryCapacity: 30000, titanDaySeconds: 15.95 * 86400,
+  externalHCalm: 4, externalHWindy: 10.5, externalHFlight: 75,
+  coldDuctArea: 0.8, internalConductance: 12,
+  foamThickness: 0.0762, foamConductivity: 0.01, foamArea: 20,
+  gasMassFlow: 0.052, gasCp: 1050, generatorLossUA: 5.5,
+  trimMaximum: 0.4, trimStep: 0.02, controllerPeriod: 600,
 });
+
+export function surfaceHeatTransfer(wind, speed, circulation) {
+  // Published surface convection envelope; interpolation and duct dimensions are demo assumptions.
+  const exposure = Math.hypot(Math.max(0, wind), Math.max(0, speed));
+  const h = exposure <= 1.6
+    ? systemsModel.externalHCalm + (systemsModel.externalHWindy - systemsModel.externalHCalm) * Math.sqrt(exposure / 1.6)
+    : systemsModel.externalHWindy + (systemsModel.externalHFlight - systemsModel.externalHWindy) * clamp((exposure - 1.6) / 8.4, 0, 1);
+  const externalUA = h * systemsModel.coldDuctArea;
+  const internalUA = systemsModel.internalConductance * clamp(circulation, 0, 1);
+  // Internal gas transport and external heat rejection act as series resistances.
+  const ductUA = internalUA * externalUA / (internalUA + externalUA);
+  return { h, ductUA };
+}
+
+export function liquidExchangerStudy(hotC, coldC, hotCapacityRate, coldCapacityRate, effectiveness) {
+  const values = [hotC, coldC, hotCapacityRate, coldCapacityRate, effectiveness];
+  if (!values.every(Number.isFinite) || hotC < coldC || hotC <= -273.15 || coldC <= -273.15 || hotCapacityRate <= 0 || coldCapacityRate <= 0 || effectiveness < 0 || effectiveness > 1) return null;
+  // Steady, single-phase energy balance. Effectiveness is an assumption, not a geometry prediction.
+  const heatW = effectiveness * Math.min(hotCapacityRate, coldCapacityRate) * (hotC - coldC);
+  return { heatW, hotOutletC: hotC - heatW / hotCapacityRate, coldOutletC: coldC + heatW / coldCapacityRate };
+}
 
 export function createSystemsState() {
   return {
-    coreC: 15, batteryC: 12, trim: 0.15, thermalAuto: true, fan: 1,
+    coreC: 12, batteryC: 10, trim: 0.04, thermalAuto: true, fan: 1,
+    trimClock: 0, trimIntegral: 0, effectiveTrim: 0, trimFlightLocked: false,
     fault: "none", fanIntegrity: 1, insulationIntegrity: 1,
-    generatedW: 110, netBatteryW: 0, heatInW: 0, heatOutW: 0,
+    generatedW: 90, arrivalElectricW: 90, rtgHeatW: 1800, netBatteryW: 0, heatInW: 0, heatOutW: 0,
+    convectionH: 4, ductUA: 0, foamUA: 0, gasFlow: 0, warmGasC: 12,
+    generatorToBayW: 0, generatorRejectedW: 0, coldDuctW: 0, chargingBlocked: false,
     elapsed: 0, restSeconds: 0, restNotice: "", hibernating: false, guard: "",
     mission: { phase: "idle", sampleSeconds: 0, samples: 0, guidance: false, message: "Survey a fictional hydrocarbon shoreline from dry ground." },
   };
@@ -34,7 +63,7 @@ export function targetDistance(state) {
 
 export function flightRestriction(state) {
   if (state.battery <= 15) return "Battery reserve: land and recharge";
-  if (state.coreC < -10 || state.coreC > 55 || state.batteryC < 0 || state.batteryC > 40) return "Temperature outside demo flight band";
+  if (state.coreC < -20 || state.coreC > 55 || state.batteryC < 0 || state.batteryC >= 35) return "Temperature outside flight band";
   if (state.fanIntegrity < 0.5) return "Restricted circulation: service thermal loop";
   return "";
 }
@@ -85,26 +114,50 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
   state.fanIntegrity = state.fault === "fan" ? 0.35 : 1;
   state.insulationIntegrity = state.fault === "insulation" ? 0.45 : 1;
   const circulation = state.fan * state.fanIntegrity;
-  state.generatedW = systemsModel.rtgElectricW;
+  const years = state.elapsed / (365.25 * 86400);
+  state.generatedW = state.arrivalElectricW * 0.975 ** years;
+  state.rtgHeatW = systemsModel.rtgThermalW * 2 ** (-years / 87.7);
   if (state.hibernating) state.power = 45 + 15 * state.fan ** 3;
   else state.power += 15 * state.fan ** 3 + (state.mission.phase === "sampling" ? 160 : 0);
   state.netBatteryW = state.generatedW - state.power;
+  state.chargingBlocked = state.netBatteryW > 0 && (state.batteryC < 0 || state.batteryC >= 35);
+  if (state.chargingBlocked) state.netBatteryW = 0;
   state.battery = clamp(state.battery + state.netBatteryW * dt / (batteryEnergyKwh * 36000), 0, 100);
 
   const delta = Math.max(0, state.coreC - systemsModel.ambientC);
-  const leakUA = 1.25 / state.insulationIntegrity;
-  // Lumped thermal network: retained RTG heat, equipment losses, duct rejection and battery coupling.
-  state.heatInW = systemsModel.rtgThermalW * 0.24 * circulation + Math.min(600, state.power * 0.025);
-  const convection = 0.6 + 0.3 * Math.sqrt(Math.max(0, state.wind)) + 0.15 * Math.sqrt(state.speed);
-  const trimUA = 4 * circulation * convection;
-  if (state.thermalAuto) {
-    const target = clamp((state.heatInW - leakUA * delta + (state.coreC - 15) * 35) / Math.max(1, trimUA * delta), 0, 1);
-    state.trim += (target - state.trim) * (1 - Math.exp(-dt / 8));
-  }
-  state.heatOutW = (leakUA + trimUA * state.trim) * delta;
+  const transfer = surfaceHeatTransfer(state.wind, state.speed, circulation);
+  state.convectionH = transfer.h;
+  state.ductUA = transfer.ductUA;
+  const foamResistance = systemsModel.foamThickness * state.insulationIntegrity / (systemsModel.foamConductivity * systemsModel.foamArea);
+  state.foamUA = 1 / (foamResistance + 1 / (transfer.h * systemsModel.foamArea));
+  state.gasFlow = systemsModel.gasMassFlow * circulation;
+  const gasCapacityRate = state.gasFlow * systemsModel.gasCp;
+  // Quasi-steady source gas balances all RTG heat between the bay and an external loss path.
+  // The loss-path UA and heat capacities are assumptions, not flight geometry or fin-root temperatures.
+  const generatorUA = systemsModel.generatorLossUA * (transfer.h / systemsModel.externalHCalm) ** 0.1;
+  state.warmGasC = (state.rtgHeatW + gasCapacityRate * state.coreC + generatorUA * systemsModel.ambientC) / (gasCapacityRate + generatorUA);
+  state.generatorToBayW = gasCapacityRate * (state.warmGasC - state.coreC);
+  state.generatorRejectedW = generatorUA * (state.warmGasC - systemsModel.ambientC);
+  state.heatInW = state.generatorToBayW + Math.min(600, state.power * 0.025);
   const batteryExchange = 8 * (state.coreC - state.batteryC);
+  const closedDuctUA = 36 / 194.15;
+  const fullTrimW = transfer.ductUA * delta;
+  state.trimFlightLocked = state.altitude > 0.001;
+  state.trimClock -= dt;
+  if (state.thermalAuto && !state.trimFlightLocked && state.trimClock <= 0) {
+    const error = state.batteryC - 10;
+    state.trimIntegral = clamp(state.trimIntegral + error * 0.0003, -0.06, 0.06);
+    const balance = state.heatInW - (state.foamUA + closedDuctUA) * delta - batteryExchange;
+    const command = systemsModel.trimMaximum * (balance + 10 * error + 30 * (state.coreC - 12)) / Math.max(1, fullTrimW) + state.trimIntegral;
+    state.trim = Math.round(clamp(command, 0, systemsModel.trimMaximum) / systemsModel.trimStep) * systemsModel.trimStep;
+    state.trimClock = systemsModel.controllerPeriod;
+  }
+  state.trim = Math.round(clamp(state.trim, 0, systemsModel.trimMaximum) / systemsModel.trimStep) * systemsModel.trimStep;
+  state.effectiveTrim = state.trimFlightLocked ? 0 : state.trim;
+  state.coldDuctW = closedDuctUA * delta + fullTrimW * state.effectiveTrim / systemsModel.trimMaximum;
+  state.heatOutW = state.foamUA * delta + state.coldDuctW;
   state.coreC += (state.heatInW - state.heatOutW - batteryExchange) * dt / systemsModel.coreCapacity;
-  state.batteryC += (batteryExchange + Math.abs(state.netBatteryW) * 0.015 - 0.08 * (state.batteryC - systemsModel.ambientC)) * dt / systemsModel.batteryCapacity;
+  state.batteryC += (batteryExchange + Math.abs(state.netBatteryW) * 0.035 - 0.08 * (state.batteryC - systemsModel.ambientC)) * dt / systemsModel.batteryCapacity;
   state.guard = flightRestriction(state);
 
   const m = state.mission;

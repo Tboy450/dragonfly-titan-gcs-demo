@@ -861,6 +861,12 @@ button:disabled { opacity: 0.5; cursor: default; }
 .system-control { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin: 16px 0; font-size: 0.88rem; }
 .system-control input, .system-control select { width: 100%; accent-color: var(--green); }
 .system-control select { padding: 10px; background: #1c3038; color: var(--text); border: 1px solid var(--line-strong); border-radius: 4px; }
+#hx-study { min-width: 0; margin: 16px 0; border: 1px solid var(--line); padding: 16px; }
+#hx-study legend { padding: 0 6px; font-size: 0.95rem; }
+.hx-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 14px; }
+.hx-inputs label { display: grid; gap: 8px; font-size: 0.82rem; }
+.hx-inputs input { width: 100%; min-width: 0; padding: 8px; color: var(--text); background: #15252b; border: 1px solid var(--line-strong); border-radius: 4px; }
+#hx-result { display: block; margin-top: 16px; color: var(--green); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .rest-controls { display: flex; flex-wrap: wrap; gap: 8px; }
 .rest-controls button { padding: 6px 12px; font-size: 0.85rem; }
 .rest-status { display: block; margin-top: 12px; font-size: 0.8rem; color: var(--muted); }

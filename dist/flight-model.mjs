@@ -3,8 +3,9 @@ import { createSystemsState, guidanceTarget, stepSystems, flightRestriction, ove
 export const model = Object.freeze({
   massKg: 875, titanG: 1.352, earthG: 9.80665,
   rhoTitan: 5.44, rhoEarth: 1.225, pressureKpa: 146, temperatureK: 94,
-  rotorCount: 8, rotorStations: 4, rotorDiameterM: 1.35,
-  figureOfMerit: 0.75, inducedLossFactor: 1.15, batteryEnergyKwh: 20,
+  rotorCount: 8, rotorStations: 4, bladesPerRotor: 3, rotorDiameterM: 1.35,
+  figureOfMerit: 0.75, inducedLossFactor: 1.15, batteryEnergyKwh: 11.5,
+  dragAreaM2: 0.65,
   pitchRadians: Math.PI / 10, rollRadians: 22 * Math.PI / 180,
 });
 
@@ -35,8 +36,14 @@ export function deriveFlight(state) {
   const earthWeight = mass * model.earthG;
   const inducedTitan = Math.sqrt(titanWeight / (2 * density * totalArea));
   const idealTitan = titanWeight * inducedTitan;
+  // Ground-relative flight-path proxy, not the rotor-shaft inflow measured in the tunnel.
+  const descentSpeed = Math.max(0, -state.verticalSpeed);
+  const descentRatio = descentSpeed / inducedTitan;
+  const descentAngleDeg = Math.atan2(descentSpeed, Math.max(0, state.speed)) * 180 / Math.PI;
+  const steepDescentCaution = state.altitude > 0.1 && descentAngleDeg > 60 && descentRatio > 0.75 && descentRatio < 1.25;
   return {
     mass, totalArea, titanWeight, pressureKpa, density, inducedTitan, idealTitan,
+    descentRatio, descentAngleDeg, steepDescentCaution,
     realisticTitan: idealTitan * model.inducedLossFactor / model.figureOfMerit,
     idealEarth: earthWeight * Math.sqrt(earthWeight / (2 * model.rhoEarth * totalArea)),
     diskLoading: titanWeight / totalArea,
@@ -63,6 +70,18 @@ export function profileAt(t) {
     speed: lerp(7, 2.2, (phase - 122) / 36), throttle: 0.45, pitch: 0.08, roll: Math.sin(t * 0.5) * 0.1,
   };
   return { mode: "Surface", altitude: 0, verticalSpeed: 0, speed: 0, throttle: 0.18, pitch: 0, roll: 0 };
+}
+
+export function flightPower(state) {
+  const d = deriveFlight(state), speed = Math.max(0, state.speed);
+  const ratio = speed / d.inducedTitan;
+  // Forward inflow reduces induced power; profile and parasite terms restore the high-speed rise.
+  const inflow = Math.sqrt(2 / (Math.sqrt(ratio ** 4 + 4) + ratio ** 2));
+  const induced = d.idealTitan * model.inducedLossFactor * inflow;
+  const profile = (d.realisticTitan - d.idealTitan * model.inducedLossFactor) * (1 + 3 * (speed / 55) ** 2);
+  const parasite = 0.5 * d.density * model.dragAreaM2 * speed ** 3;
+  const climb = d.titanWeight * Math.max(0, state.verticalSpeed);
+  return (induced + profile + parasite + climb) * (1 + state.wind * 0.025);
 }
 
 export function stepFlight(state, dt) {
@@ -139,8 +158,7 @@ export function stepFlight(state, dt) {
     state.rotorRpm[i] = follow(rpm, baseRpm * mix, 4, dt);
     state.rotorPhase[i] = (state.rotorPhase[i] + state.rotorRpm[i] * Math.PI / 30 * dt * spin) % (Math.PI * 2);
   });
-  state.power = stopped ? 100 : d.realisticTitan * (1 + state.speed ** 2 / 95)
-    * (1 + state.wind * 0.025) * (0.78 + state.throttle * 0.47);
+  state.power = stopped ? 100 : flightPower(state);
   stepSystems(state, dt, model.batteryEnergyKwh);
   if (state.sampleTime < 0 || state.missionTime - state.sampleTime >= 0.5 - 1e-9) {
     state.sampleTime = state.missionTime;

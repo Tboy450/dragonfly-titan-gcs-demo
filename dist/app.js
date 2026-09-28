@@ -1,7 +1,7 @@
 import { createChaseRenderer } from "./chase-vehicle.mjs";
 import { enterFreeCamera, orbitCamera } from "./flight-camera.mjs";
 import { model, createFlightState, deriveFlight, stepFlight, commandFlight, advanceRest } from "./flight-model.mjs";
-import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel } from "./mission-systems.mjs";
+import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel, liquidExchangerStudy } from "./mission-systems.mjs";
 
 const state = {
   ...createFlightState(),
@@ -505,7 +505,7 @@ function drawCoaxialRotor(ctx, x, y, radius, spin, index) {
   ctx.lineTo(0, radius * 0.35);
   ctx.stroke();
 
-  // Dragonfly uses two counter-rotating, two-blade rotors on each mast.
+  // Each mast carries two counter-rotating three-blade rotors.
   for (let layer = 0; layer < 2; layer += 1) {
     const layerY = layer === 0 ? -radius * 0.23 : radius * 0.13;
     ctx.save();
@@ -524,17 +524,16 @@ function drawCoaxialRotor(ctx, x, y, radius, spin, index) {
       ctx.fillStyle = layer === 0
         ? `rgba(220, 208, 170, ${0.42 - ghost * 0.038})`
         : `rgba(143, 159, 155, ${0.37 - ghost * 0.033})`;
-      ctx.beginPath();
-      ctx.moveTo(root, -rootWidth);
-      ctx.lineTo(blade, -tipWidth);
-      ctx.lineTo(blade, tipWidth);
-      ctx.lineTo(root, rootWidth * 0.5);
-      ctx.lineTo(-root, rootWidth * 0.5);
-      ctx.lineTo(-blade, tipWidth);
-      ctx.lineTo(-blade, -tipWidth);
-      ctx.lineTo(-root, -rootWidth);
-      ctx.closePath();
-      ctx.fill();
+      for (let bladeIndex = 0; bladeIndex < model.bladesPerRotor; bladeIndex++) {
+        ctx.beginPath();
+        ctx.moveTo(root, -rootWidth);
+        ctx.lineTo(blade, -tipWidth);
+        ctx.lineTo(blade, tipWidth);
+        ctx.lineTo(root, rootWidth * 0.5);
+        ctx.closePath();
+        ctx.fill();
+        ctx.rotate(Math.PI * 2 / model.bladesPerRotor);
+      }
       ctx.restore();
     }
     ctx.restore();
@@ -923,31 +922,44 @@ function updateReadouts() {
 
 function updateSystemsReadouts() {
   const m = state.mission;
+  const envelope = deriveFlight(state);
   const labels = { idle: "Begin survey", outbound: "Fly to outcrop", sample: "Collect sample", sampling: "Acquiring sample", return: "Return to base", complete: "New survey" };
   $("objective-title").textContent = m.phase === "complete" ? "Survey complete" : "Shoreline survey";
   $("objective-status").textContent = m.message;
   $("objective-distance").textContent = `${targetDistance(state).toFixed(0)} m / ${missionTarget(state).name}`;
   $("mission-action").textContent = m.guidance ? "Manual control" : labels[m.phase];
   $("mission-action").disabled = m.phase === "sampling";
-  const alert = state.guard || (state.coreC > 40 ? "Equipment bay warming" : state.batteryC < 5 ? "Battery cooling" : "Systems nominal");
+  const alert = state.guard || (state.batteryC > 30 ? "Battery nearing 35 C limit" : state.coreC > 40 ? "Equipment bay warming" : state.batteryC < 5 ? "Battery cooling" : envelope.steepDescentCaution ? "Steep-descent caution / VRS proxy" : "Systems nominal");
   $("vehicle-alert").textContent = alert;
   $("vehicle-alert").classList.toggle("warning", alert !== "Systems nominal");
   $("systems-warning").textContent = alert;
+  $("descent-ratio").textContent = `${envelope.descentRatio.toFixed(2)} x hover inflow`;
+  $("descent-angle").textContent = `${envelope.descentAngleDeg.toFixed(0)} deg`;
+  $("descent-caution").textContent = envelope.steepDescentCaution ? "Caution: steep powered descent" : "No proxy trigger";
   $("core-temp").textContent = `${state.coreC.toFixed(1)} C`;
   $("battery-temp").textContent = `${state.batteryC.toFixed(1)} C`;
   $("heat-in").textContent = `${Math.round(state.heatInW)} W`;
   $("heat-out").textContent = `${Math.round(state.heatOutW)} W`;
+  $("convection-h").textContent = `${state.convectionH.toFixed(1)} W/m2/K`;
+  $("duct-ua").textContent = `${state.ductUA.toFixed(2)} W/K`;
+  $("foam-ua").textContent = `${state.foamUA.toFixed(2)} W/K`;
+  $("gas-flow").textContent = `${state.gasFlow.toFixed(3)} kg/s`;
+  $("warm-gas").textContent = `${state.warmGasC.toFixed(1)} C`;
+  $("rtg-heat").textContent = `${state.rtgHeatW.toFixed(0)} W`;
+  $("rtg-rejected").textContent = `${state.generatorRejectedW.toFixed(0)} W`;
+  $("trim-state").textContent = state.trimFlightLocked ? "Closed during flight" : state.thermalAuto ? `Auto / next update ${Math.max(0, state.trimClock).toFixed(0)} s` : "Manual / 2% increments";
   $("fan-integrity").textContent = `${Math.round(state.fanIntegrity * 100)}%`;
   $("insulation-integrity").textContent = `${Math.round(state.insulationIntegrity * 100)}%`;
   $("trim-output").textContent = `${Math.round(state.trim * 100)}%`;
   if (state.thermalAuto) $("trim-control").value = state.trim * 100;
   $("fan-output").textContent = `${Math.round(state.fan * 100)}%`;
   $("electric-load").textContent = `${Math.round(state.power)} W`;
-  $("net-power").textContent = `${state.netBatteryW >= 0 ? "+" : ""}${Math.round(state.netBatteryW)} W ${state.netBatteryW >= 0 ? "charging" : "discharging"}`;
+  $("rtg-output").textContent = `${state.generatedW.toFixed(1)} W`;
+  $("net-power").textContent = state.chargingBlocked ? "Charging inhibited: battery temperature" : `${state.netBatteryW >= 0 ? "+" : ""}${Math.round(state.netBatteryW)} W ${state.netBatteryW >= 0 ? "charging" : "discharging"}`;
   $("stored-energy").textContent = `${(state.battery / 100 * model.batteryEnergyKwh).toFixed(2)} kWh`;
   const minutes = Math.max(0, state.battery - 15) / 100 * model.batteryEnergyKwh * 60000 / Math.max(1, -state.netBatteryW);
   const duration = minutes >= 1440 ? `${(minutes / 1440).toFixed(1)} days` : minutes >= 60 ? `${(minutes / 60).toFixed(1)} h` : `${minutes.toFixed(0)} min`;
-  $("reserve-time").textContent = state.netBatteryW < 0 ? `${duration} at current load` : state.battery >= 100 ? "Fully charged" : "Charging";
+  $("reserve-time").textContent = state.chargingBlocked ? "Charging inhibited" : state.netBatteryW < 0 ? `${duration} at current load` : state.battery >= 100 ? "Fully charged" : "Charging";
   const hour = (12 + state.elapsed / systemsModel.titanDaySeconds * 24) % 24;
   $("solar-time").textContent = `${Math.floor(hour).toString().padStart(2, "0")}:${Math.floor(hour % 1 * 60).toString().padStart(2, "0")} / ${hour >= 6 && hour < 18 ? "Day" : "Night"}`;
   $("surface-elapsed").textContent = `${(state.elapsed / 3600).toFixed(2)} h`;
@@ -962,6 +974,18 @@ function updateSystemsReadouts() {
   if (m.phase === "sampling") { $("draco-state").textContent = "Acquiring"; $("drams-state").textContent = "Analyzing"; }
   else if (m.samples > 0) $("drams-state").textContent = "Sample secured";
 }
+
+function updateExchangerStudy() {
+  const ids = ["hx-hot", "hx-cold", "hx-hot-rate", "hx-cold-rate", "hx-effectiveness"];
+  const inputs = ids.map(id => $(id));
+  const result = inputs.every(input => input.value !== "" && input.checkValidity())
+    ? liquidExchangerStudy(...inputs.map(input => Number(input.value))) : null;
+  $("hx-result").textContent = result
+    ? `${result.heatW.toFixed(1)} W transferred | Tube outlet ${result.hotOutletC.toFixed(1)} C | Shell outlet ${result.coldOutletC.toFixed(1)} C`
+    : "Enter valid single-phase assumptions; hot inlet must not be colder than cold inlet.";
+}
+$("hx-study").addEventListener("input", updateExchangerStudy);
+updateExchangerStudy();
 
 function updateTrack() {
   const target = missionTarget(state);
@@ -1120,10 +1144,12 @@ $("systems-button").addEventListener("click", () => $("systems-dialog").showModa
 $("close-systems").addEventListener("click", () => $("systems-dialog").close());
 $("thermal-auto").addEventListener("change", (event) => {
   state.thermalAuto = event.target.checked;
+  state.trimClock = 0;
   $("trim-control").disabled = state.thermalAuto;
 });
 $("trim-control").addEventListener("input", (event) => { state.trim = Number(event.target.value) / 100; });
 $("fan-control").addEventListener("input", (event) => { state.fan = Number(event.target.value) / 100; });
+$("rtg-scenario").addEventListener("change", event => { state.arrivalElectricW = Number(event.target.value); });
 $("fault-control").addEventListener("change", (event) => { state.fault = event.target.value; });
 $("rest-hour").addEventListener("click", () => startRest(state, 1));
 $("rest-night").addEventListener("click", () => startRest(state, 192));

@@ -132,12 +132,12 @@ export function createChaseRenderer() {
         rotor.position.set(x, y, z);
         craft.add(rotor);
         const direction = layer === 0 ? 1 : -1;
-        for (let half = 0; half < 2; half += 1) {
+        for (let half = 0; half < model.bladesPerRotor; half += 1) {
           const solid = mesh(bladeGeometry, bladeMaterial, [0, 0, 0], rotor);
-          solid.rotation.y = half * Math.PI;
+          solid.rotation.y = half * Math.PI * 2 / model.bladesPerRotor;
           trails.forEach((material, index) => {
             const ghost = mesh(bladeGeometry, material, [0, 0, 0], rotor);
-            ghost.rotation.y = half * Math.PI - direction * (index + 1) * 0.13;
+            ghost.rotation.y = half * Math.PI * 2 / model.bladesPerRotor - direction * (index + 1) * 0.13;
           });
         }
         rotors.push({ rotor, direction, phase: rotors.length * 0.63 });

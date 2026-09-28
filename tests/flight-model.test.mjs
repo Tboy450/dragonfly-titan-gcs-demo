@@ -1,11 +1,23 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { model, createFlightState, deriveFlight, stepFlight, commandFlight } from "../dist/flight-model.mjs";
+import { model, createFlightState, deriveFlight, stepFlight, commandFlight, flightPower } from "../dist/flight-model.mjs";
 
 const near = (a, b, tolerance = 1e-8) => assert.ok(Math.abs(a - b) < tolerance, `${a} != ${b}`);
 const advance = (state, seconds, fps = 60) => {
   for (let i = 0; i < seconds * fps; i++) stepFlight(state, 1 / fps);
 };
+
+test("Forward-flight power has a cruise minimum and responds to climb and payload", () => {
+  const s = createFlightState();
+  const hover = flightPower(s);
+  s.speed = 8; const cruise = flightPower(s);
+  assert.ok(cruise < hover && cruise > 4000 && cruise < 7000);
+  s.speed = 16; assert.ok(flightPower(s) > cruise);
+  s.speed = 8; s.verticalSpeed = 2; assert.ok(flightPower(s) > cruise);
+  s.verticalSpeed = 0; s.payloadDelta = 60; assert.ok(flightPower(s) > cruise);
+  assert.equal(model.bladesPerRotor, 3);
+  assert.equal(model.batteryEnergyKwh, 11.5);
+});
 
 test("Four coaxial stations count four unique disks", () => {
   const state = createFlightState(), d = deriveFlight(state);
@@ -17,6 +29,23 @@ test("Four coaxial stations count four unique disks", () => {
   assert.ok(deriveFlight(state).realisticTitan > d.realisticTitan);
   state.altitude = 1000;
   assert.ok(deriveFlight(state).density < d.density);
+});
+
+test("Steep-descent advisory uses a bounded proxy and never triggers on the ground or climb", () => {
+  const s = createFlightState(); s.altitude = 50;
+  const vh = deriveFlight(s).inducedTitan;
+  s.verticalSpeed = -vh; s.speed = 0;
+  assert.equal(deriveFlight(s).steepDescentCaution, true);
+  s.speed = 10;
+  assert.equal(deriveFlight(s).steepDescentCaution, false);
+  s.speed = 0; s.verticalSpeed = -0.5 * vh;
+  assert.equal(deriveFlight(s).steepDescentCaution, false);
+  s.verticalSpeed = -1.5 * vh;
+  assert.equal(deriveFlight(s).steepDescentCaution, false);
+  s.verticalSpeed = vh;
+  assert.equal(deriveFlight(s).steepDescentCaution, false);
+  s.verticalSpeed = -vh; s.altitude = 0;
+  assert.equal(deriveFlight(s).steepDescentCaution, false);
 });
 
 test("Pause freezes flight, rotors, energy and history, and retains auto mode", () => {

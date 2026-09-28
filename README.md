@@ -53,6 +53,11 @@ Lockheed Martin and TubeTech references, including claims not supported by the
 public sources. Supplied shell-and-tube images illustrate general engineering;
 they are not presented as verified Dragonfly hardware drawings.
 
+The independent liquid-to-liquid exchanger study calculates heat flow and outlet
+temperatures from explicit assumptions. It is not part of the flight hardware.
+See [the research compendium](RESEARCH-COMPENDIUM.md) and
+[the release reconciliation](RESEARCH-FOLLOWUP.md) for follow-up evidence.
+
 ## Engineering Context
 
 Mission and Pilot share the same vehicle mesh, flight state, eight rotor speeds,
@@ -67,11 +72,17 @@ covers NASA Langley and Sikorsky's aerodynamic work.
 [Lockheed Martin](https://www.lockheedmartin.com/en-us/capabilities/space/deep-space-exploration.html)
 provides cruise-stage and aeroshell hardware.
 
-NASA publishes the 875 kg mass and 1.35 m rotor diameter baseline. The 20 kWh
-usable battery, 0.75 figure of merit and 1.15 induced loss factor are illustrative assumptions. Coaxial pairs share
+NASA publishes the 875 kg mass and 1.35 m rotor diameter baseline. Storage follows
+the 11.5 kWh design reported in 2022, not a newly verified flight-pack measurement.
+Estimated arrival output is 90 W (selectable 70 W), declining 2.5% per Earth year.
+The 0.75 figure of merit, drag area and 1.15 induced loss factor are assumptions. Coaxial pairs share
 four unique swept disks for the ideal momentum calculation. RPM mixing and the
 near-surface atmosphere approximation are educational, not flight-qualified.
 There is no chamber CFD, validated aerodynamic model or actual mission telemetry.
-Thermal limits, generation and protective flight interlocks are training assumptions.
+The surface thermal model uses source-informed gas flow, foam and convection;
+its capacities, loss paths and PI gains are illustrative. Battery limits use the
+2020/2023 designs; protective interlocks remain training logic. The trim closes
+in flight and uses 2% commands up to 40% on a 600-second landed control cycle.
+Both views use the three-blade design confirmed by the rotor engineer in 2026.
 Terrain-following altitude is a demo AGL
 coordinate, not an inertial vertical-dynamics solution.

@@ -201,11 +201,11 @@
           <section class="telemetry-band" aria-label="Primary telemetry">
             <div>
               <span>Hover induced velocity</span>
-              <strong id="induced-value">3.09 m/s</strong>
+              <strong id="induced-value">4.36 m/s</strong>
             </div>
             <div>
               <span>Ideal hover power</span>
-              <strong id="ideal-power-value">3.65 kW</strong>
+              <strong id="ideal-power-value">5.16 kW</strong>
             </div>
             <div>
               <span>Modeled hover power</span>
@@ -213,7 +213,7 @@
             </div>
             <div>
               <span>Ideal Earth hover</span>
-              <strong id="earth-power-value">150 kW</strong>
+              <strong id="earth-power-value">212 kW</strong>
             </div>
           </section>
 
@@ -253,7 +253,7 @@
             </div>
             <details>
               <summary>Model assumptions</summary>
-              <p>NASA publishes the 875 kg mass, 1.35 m rotor diameter and 134 Ah battery baseline. The 20 kWh usable energy, 0.75 figure of merit and 1.15 loss factor remain demo assumptions. Four coaxial stations share four swept disks. Pressure and density use an isothermal near-surface approximation.</p>
+              <p>NASA publishes the 875 kg mass, 1.35 m rotor diameter and 134 Ah battery baseline. Storage uses the 11.5 kWh design reported in 2022, with a 15% demo reserve. Figure of merit, loss and drag factors are assumptions. Four coaxial stations share four swept disks. Each rotor has three blades, matching the 2026 engineer interview.</p>
               <p>Attitude, RPM mixing, terrain-following altitude, instrument status and guided flight are illustrative. Thermal conductances, operating bands and power loads are not flight-qualified. The shoreline is fictional training geography, not Dragonfly's planned landing site.</p>
             </details>
           </section>
@@ -331,49 +331,82 @@
         <section>
           <h3>Thermal loop</h3>
           <dl class="diagnostic-values">
-            <div><dt>Equipment bay</dt><dd id="core-temp">15.0 C</dd></div>
-            <div><dt>Battery</dt><dd id="battery-temp">12.0 C</dd></div>
+            <div><dt>Equipment bay</dt><dd id="core-temp">12.0 C</dd></div>
+            <div><dt>Battery</dt><dd id="battery-temp">10.0 C</dd></div>
             <div><dt>Ambient</dt><dd>-179.2 C</dd></div>
+            <div><dt>Surface gas</dt><dd>Nitrogen-rich</dd></div>
+            <div><dt>Surface reference</dt><dd>146 kPa / 5.44 kg/m3</dd></div>
+            <div><dt>External convection / modeled</dt><dd id="convection-h">-- W/m2/K</dd></div>
+            <div><dt>Open-duct conductance / modeled</dt><dd id="duct-ua">-- W/K</dd></div>
+            <div><dt>Foam + external film</dt><dd id="foam-ua">-- W/K</dd></div>
+            <div><dt>Circulating gas</dt><dd id="gas-flow">0.052 kg/s</dd></div>
+            <div><dt>Warm duct gas / modeled</dt><dd id="warm-gas">-- C</dd></div>
+            <div><dt>MMRTG thermal source</dt><dd id="rtg-heat">1800 W</dd></div>
+            <div><dt>Generator external loss / modeled</dt><dd id="rtg-rejected">-- W</dd></div>
             <div><dt>Heat into bay</dt><dd id="heat-in">0 W</dd></div>
             <div><dt>Heat rejected from bay</dt><dd id="heat-out">0 W</dd></div>
             <div><dt>Circulation integrity</dt><dd id="fan-integrity">100%</dd></div>
             <div><dt>Insulation integrity</dt><dd id="insulation-integrity">100%</dd></div>
           </dl>
           <label class="check-control"><input id="thermal-auto" type="checkbox" checked /> Automatic thermal trim</label>
-          <label class="system-control">Cold-duct bypass <output id="trim-output">15%</output><input id="trim-control" type="range" min="0" max="100" value="15" disabled /></label>
+          <label class="system-control">Cold-duct airflow command <output id="trim-output">4%</output><input id="trim-control" type="range" min="0" max="40" step="2" value="4" disabled /></label>
+          <output id="trim-state" class="rest-status">Auto / 600 s control interval</output>
           <label class="system-control">Circulation fan <output id="fan-output">100%</output><input id="fan-control" type="range" min="0" max="100" value="100" /></label>
           <label class="system-control">Training fault<select id="fault-control"><option value="none">Nominal hardware</option><option value="fan">Restricted circulation</option><option value="insulation">Insulation damage</option></select></label>
         </section>
         <section>
           <h3>Energy &amp; Surface Operations</h3>
           <dl class="diagnostic-values">
-            <div><dt>MMRTG electric / assumed</dt><dd id="rtg-output">110 W</dd></div>
+            <div><dt>MMRTG electric / estimated</dt><dd id="rtg-output">90 W</dd></div>
             <div><dt>Vehicle load</dt><dd id="electric-load">0 W</dd></div>
             <div><dt>Net battery power</dt><dd id="net-power">0 W</dd></div>
-            <div><dt>Stored energy / assumed</dt><dd id="stored-energy">19.2 kWh</dd></div>
+            <div><dt>Stored energy / 2022 baseline</dt><dd id="stored-energy">11.04 kWh</dd></div>
             <div><dt>Time to 15% reserve</dt><dd id="reserve-time">--</dd></div>
             <div><dt>Local solar time / approximate</dt><dd id="solar-time">12:00 / Day</dd></div>
             <div><dt>Surface elapsed</dt><dd id="surface-elapsed">0.0 h</dd></div>
           </dl>
+          <label class="system-control">Arrival power estimate<select id="rtg-scenario"><option value="90">90 W baseline</option><option value="70">70 W conservative</option></select></label>
           <div class="rest-controls"><button id="rest-hour" type="button">Hibernate 1 h</button><button id="rest-night" type="button">Hibernate 8 days</button><button id="rest-stop" type="button" disabled>Wake</button></div>
           <output id="rest-status" class="rest-status">Hibernation available after dry-ground landing.</output>
           <h3>Sample return</h3>
           <dl class="diagnostic-values"><div><dt>Objective</dt><dd id="systems-objective">Not started</dd></div><div><dt>Acquisition</dt><dd id="sample-progress">0 / 30 s</dd></div><div><dt>Samples secured</dt><dd id="sample-count">0</dd></div></dl>
+          <h3>Descent advisory / approximate</h3>
+          <dl class="diagnostic-values"><div><dt>Downspeed ratio</dt><dd id="descent-ratio">0.00 x hover inflow</dd></div><div><dt>Descent path angle</dt><dd id="descent-angle">0 deg</dd></div><div><dt>Vortex-ring-state proxy</dt><dd id="descent-caution">No proxy trigger</dd></div></dl>
         </section>
       </div>
       <section class="thermal-context">
         <h3>Documented Dragonfly Architecture</h3>
         <p>On Titan, fans distribute MMRTG waste heat and a cold-duct bypass controls cooling. In space, the cruise system uses a pumped fluid loop and radiators. Surface convection is not the same as vacuum heat rejection. <a href="https://tfaws.nasa.gov/wp-content/uploads/TFAWS23-AT-14-Presentation.pdf" target="_blank" rel="noreferrer">NASA/APL thermal controller design (2023)</a></p>
+        <p>The surface loop circulates nitrogen-rich atmospheric gas, not liquid nitrogen. Cold gas, flow resistance and external wind affect heat transport. NASA's 2026 workshop abstract continues to describe fan-driven circulation, cold-duct trim and insulation, with coupled thermal and CFD analysis. <a href="https://tfaws.nasa.gov/tfaws-2026/paper-proceedings/" target="_blank" rel="noreferrer">2026 Dragonfly thermal modeling abstract</a></p>
         <p>The battery supports high flight loads while the MMRTG produces electricity day and night. A roughly 16-Earth-day rotation gives approximately eight days per half-cycle near the equator; actual illumination varies. <a href="https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/" target="_blank" rel="noreferrer">NASA power system</a> / <a href="https://science.nasa.gov/saturn/moons/titan/facts/" target="_blank" rel="noreferrer">Titan environment</a></p>
+        <p>The 2024 rotor study found strongest thrust fluctuations in steep descent, beyond 60 degrees and roughly 0.75-1.25 times hover induced speed. The advisory uses ground-relative descent as a proxy, not measured shaft-relative inflow, and does not simulate thrust loss. No trigger does not establish safe flight. <a href="https://rotorcraft.arc.nasa.gov/Publications/files/marshall-et-al-2024.pdf" target="_blank" rel="noreferrer">Marshall et al., 2024</a></p>
         <details><summary>Exchanger references &amp; evidence</summary>
+          <fieldset id="hx-study"><legend>Hypothetical liquid-to-liquid shell study</legend>
+            <p>Independent of vehicle telemetry. Assumed single-phase fluids, no environmental heat loss, no pump power or freezing model. Effectiveness is an input, not a shell-geometry prediction or flight specification.</p>
+            <div class="hx-inputs">
+              <label>Tube hot inlet (C)<input id="hx-hot" type="number" min="-200" max="200" step="any" value="40" /></label>
+              <label>Shell cold inlet (C)<input id="hx-cold" type="number" min="-200" max="200" step="any" value="5" /></label>
+              <label>Tube flow x heat capacity (W/K)<input id="hx-hot-rate" type="number" min="0.01" max="10000" step="any" value="40" /></label>
+              <label>Shell flow x heat capacity (W/K)<input id="hx-cold-rate" type="number" min="0.01" max="10000" step="any" value="30" /></label>
+              <label>Assumed effectiveness (0-1)<input id="hx-effectiveness" type="number" min="0" max="1" step="0.01" value="0.65" /></label>
+            </div>
+            <output id="hx-result" aria-live="polite"></output>
+            <p>Q = effectiveness x smaller heat-capacity rate x inlet temperature difference. Both outlet temperatures conserve that same heat flow. Coolant choice and phase limits need separate qualification. <a href="https://ht.readthedocs.io/en/latest/ht.hx.html#ht.hx.effectiveness_from_NTU" target="_blank" rel="noreferrer">Heat-exchanger energy balance reference</a></p>
+          </fieldset>
           <p>Shell-and-tube exchangers separate two flowing fluids with tube walls; baffles guide shell-side flow. Fixed, floating-head and U-tube designs manage construction and expansion differently. These are general industrial principles, not confirmation of Dragonfly hardware or a flight efficiency rating. <a href="https://tubetech.com/5-types-of-shell-and-tube-heat-exchangers-and-how-they-work/" target="_blank" rel="noreferrer">TubeTech source article</a></p>
+          <dl class="diagnostic-values"><div><dt>Fixed tube sheet</dt><dd>Tube sheets welded to shell</dd></div><div><dt>Floating head</dt><dd>Movable rear header; removable bundle</dd></div><div><dt>U-tube</dt><dd>Free bend accommodates expansion</dd></div><div><dt>Multiple passes / baffles</dt><dd>Alter flow and heat transfer</dd></div></dl>
+          <p>A liquid-to-liquid shell is a reasonable conceptual option for separate coolant circuits. Its geometry alone does not specify coolant, pressure, freezing margin or performance. Nitrogen outside does not require nitrogen inside a sealed liquid circuit. Any such variant here would be an assumed design study, separate from the documented surface gas loop.</p>
+          <p>Complex coupled liquid loops do have spacecraft precedent: NASA describes interacting rover and cruise loops for Mars Science Laboratory. That supports the general concept, not a claim that Dragonfly uses the same hardware or fluids. <a href="https://ntrs.nasa.gov/citations/20120006581" target="_blank" rel="noreferrer">NASA MMRTG heat-exchanger study</a></p>
           <div class="reference-images"><figure><img src="./assets/heat-exchanger-reference.jpg" alt="User-supplied shell-and-tube cutaway showing tubes, baffles and separate fluid paths" loading="lazy" /><figcaption>User-supplied general exchanger reference; not flight hardware.</figcaption></figure><figure><img src="./assets/tubetech-reference.jpg" alt="User-supplied TubeTech diagram of a tube bundle and shell-side flow" loading="lazy" /><figcaption>User-supplied TubeTech reference screenshot.</figcaption></figure></div>
           <p>Lockheed Martin identifies cruise-stage, aeroshell and integration work. Neither the linked material nor the public NASA/APL sources examined establishes the pictured exchanger as Dragonfly's flight design. <a href="https://www.lockheedmartin.com/en-us/capabilities/space/deep-space-exploration.html" target="_blank" rel="noreferrer">Lockheed Martin</a> / <a href="https://science.nasa.gov/blogs/dragonfly/2026/03/10/nasas-dragonfly-mission-begins-rotorcraft-integration-testing-stage/" target="_blank" rel="noreferrer">NASA integration update</a></p>
           <p>Calm-weather overheating is a documented design concern. Claims of melting components or skids sinking into ice were not corroborated and are not modeled. <a href="https://www.nasa.gov/podcasts/small-steps-giant-leaps/episode-168-dragonfly-mission-to-titan/" target="_blank" rel="noreferrer">NASA interview</a></p>
         </details>
         <details><summary>Simulation limits &amp; assumed parameters</summary>
-          <p>Flight bands: battery 0-40 C; equipment bay -10 to 55 C; reserve 15%. These are training limits, not published Dragonfly constraints. Bay and battery heat capacities are assumed at 60 and 30 kJ/K, coupled by 8 W/K. Trim and insulation use a simplified lumped thermal model, not chamber CFD.</p>
-          <p>20 kWh usable storage, 110 W electric generation and all operating loads are assumed. The nominal 110 W references MMRTG launch output, not guaranteed output at Titan arrival. About 1,800 W of waste heat is the source baseline; only a modeled fraction heats the equipment bay. <a href="https://www.nasa.gov/wp-content/uploads/2015/04/mmrtg.pdf" target="_blank" rel="noreferrer">NASA MMRTG fact sheet</a> / <a href="https://tfaws.nasa.gov/wp-content/uploads/TFAWS2024-AT-02.pdf" target="_blank" rel="noreferrer">APL thermal report</a></p>
+          <p>The 2020/2023 thermal designs specify a 0-20 C landed battery band and a 35 C upper operating limit. Charging is inhibited below 0 C or at 35 C. Equipment-bay -20 to 55 C and 15% reserve are demo guards. Thermal nodes (60/30 kJ/K), battery losses, 8 W/K coupling and controller gains are assumptions. PCM buffering, detailed motor preheat and individual electronics temperatures are not resolved. <a href="https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content" target="_blank" rel="noreferrer">APL lander thermal model, 2023</a></p>
+          <p>Convection interpolates between 4 W/m2/K calm, 10.5 at 1.6 m/s and 75 at 10 m/s. These are source-informed bounds, not a CFD correlation. Foam thickness 0.0762 m, cold conductivity 0.01 W/m/K and gas flow 0.052 kg/s come from the preliminary design; 20 m2 area and constant 1050 J/kg/K gas heat capacity are assumptions. Source-gas heat is balanced between bay circulation and an assumed external loss path. The cold duct closes in flight; landed commands use 0-40% airflow in 2% steps and a 600 s PI update. This is a simplified single controller, not the flight MIMO system.</p>
+          <p>Storage uses the 11.5 kWh pack reported in 2022; accessible capacity and reserve remain simplified. Estimated arrival generation is 90 W (or 70 W), declining 2.5% per Earth year; this is not a mission guarantee. Thermal output starts at 1,800 W and follows Pu-238 decay. <a href="https://aerospaceamerica.aiaa.org/features/designing-dragonfly-nasas-titan-explorer/" target="_blank" rel="noreferrer">2022 design report</a> / <a href="https://www.nasa.gov/wp-content/uploads/2015/04/mmrtg.pdf" target="_blank" rel="noreferrer">NASA MMRTG fact sheet</a></p>
+          <p>The flight-power estimate combines decreasing induced power with profile, drag and climb terms. Its drag area (0.65 m2), profile speed (55 m/s), efficiencies and wind correction are assumptions, not a measured flight curve. Three blades per rotor follow the lead rotor engineer's account; the ambiguous transcript RPM figure is not used. <a href="https://www.planetary.org/planetary-radio/2026-engineering-of-dragonfly" target="_blank" rel="noreferrer">APL engineer interview, June 2026</a></p>
+          <p>GS Yuasa identifies supplied LSE134 cells as 134 Ah at 3.75 V nominal. Cell specifications alone do not establish the full pack topology or usable flight energy. <a href="https://gsyuasa-lp.com/news/gs-yuasa-lithium-power-successfully-delivers-generation-3-lse134-li-ion-cells-in-support-of-nasas-dragonfly-mission/" target="_blank" rel="noreferrer">Battery manufacturer</a></p>
           <p>Hibernation compresses time only on dry ground. It pauses on thermal warnings. The mission's 30-second acquisition, fictional pool, landing protection and automatic guidance are gameplay abstractions, not real mission operations.</p>
         </details>
       </section>
