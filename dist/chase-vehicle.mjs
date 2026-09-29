@@ -80,8 +80,8 @@ export function createChaseRenderer(options = {}) {
   }
 
   // The raised rounded enclosure occupies only the forward third of the deck.
-  box(1.03, 0.32, 2.2, [0, 0, 0], metal);
-  box(1.01, 0.04, 1.42, [0, 0.18, 0.38], deck);
+  box(1.03, 0.32, 2.2, [0, 0, 0], metal).userData.classicShell = true;
+  box(1.01, 0.04, 1.42, [0, 0.18, 0.38], deck).userData.classicShell = true;
   const cabProfile = new THREE.Shape();
   cabProfile.moveTo(-0.53, -0.13);
   cabProfile.lineTo(-0.53, 0.36);
@@ -93,7 +93,7 @@ export function createChaseRenderer(options = {}) {
     depth: 0.56, bevelEnabled: true, bevelThickness: 0.09,
     bevelSize: 0.075, bevelSegments: 4, steps: 1, curveSegments: 16,
   });
-  mesh(cab, shell, [0, 0, -1.06]);
+  mesh(cab, shell, [0, 0, -1.06]).userData.classicShell = true;
   for (const side of [-1, 1]) {
     box(0.025, 0.036, 2.12, [side * 0.52, 0.17, 0], gold);
     box(0.025, 0.025, 2.1, [side * 0.52, -0.16, 0], gold);
@@ -149,6 +149,8 @@ export function createChaseRenderer(options = {}) {
   const dishRim = mesh(new THREE.TorusGeometry(0.32, 0.014, 8, 32), metal, [0, 0, 0], classicAntenna.head);
   dishRim.rotation.x = Math.PI / 2;
   mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.18, 8), gold, [0, 0.1, 0], classicAntenna.head);
+  dish.userData.classicShell = true;
+  dishRim.userData.classicShell = true;
 
   const blade = new THREE.Shape();
   blade.moveTo(0.07, -0.055);
@@ -188,6 +190,38 @@ export function createChaseRenderer(options = {}) {
     }
   }
 
+  // ---- Mock-up interior for the ORIGINAL demo model (Internal and Thermal layers) ----
+  // This model is not based on the real Dragonfly design, so its interior is a labeled mock-up:
+  // plausible boxes sized to fit its own body (x -/+0.46, y -0.14 to +0.14) and front cab. The
+  // parts reuse the simulator's thermal zones so the thermal colors still respond live.
+  const mockParts = [];
+  const mockSource = "Mock-up for the original demo model; not based on the real Dragonfly design";
+  function mockPart(name, thermalZone, label, color) {
+    const group = new THREE.Group();
+    group.name = `mock-${name}`;
+    group.userData = { subsystem: group.name, thermalZone, label: `Mock-up: ${label}`, source: mockSource, color, mock: true };
+    classicModel.add(group);
+    mockParts.push(group);
+    buildTarget = group;
+    return new THREE.MeshStandardMaterial({ color, metalness: 0.2, roughness: 0.6 });
+  }
+  let mockMaterial = mockPart("battery", "battery", "battery pack", 0x6f7d58);
+  mesh(new THREE.BoxGeometry(0.7, 0.2, 0.5), mockMaterial, [0, -0.02, 0.55]);
+  mockMaterial = mockPart("electronics", "equipment-bay", "flight computers and power boxes", 0x4f9a8f);
+  for (const [x, z] of [[-0.25, -0.15], [0.25, -0.15], [0, 0.1]]) mesh(new THREE.BoxGeometry(0.2, 0.18, 0.22), mockMaterial, [x, -0.03, z]);
+  mockMaterial = mockPart("drive-electronics", "rde", "rotor drive electronics", 0xa34d4d);
+  for (const x of [-0.3, 0.3]) mesh(new THREE.BoxGeometry(0.16, 0.16, 0.2), mockMaterial, [x, -0.03, 0.15]);
+  mockMaterial = mockPart("science", "equipment-bay", "science instruments in the front cab", 0xb58a4a);
+  for (const x of [-0.18, 0.18]) mesh(new THREE.BoxGeometry(0.25, 0.2, 0.25), mockMaterial, [x, 0.3, -0.8]);
+  mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.16, 16), mockMaterial, [0, 0.5, -0.78]);
+  mockMaterial = mockPart("cold-store", "cold-attic", "cold sample store", 0x7fb3c9);
+  mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.05, 20), mockMaterial, [0, 0.2, -0.98]);
+  mockMaterial = mockPart("heat-source", "mmrtg", "heat source (this model has no MMRTG)", 0xd9823f);
+  mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.3, 20), mockMaterial, [0, -0.02, 0.93]).rotation.x = Math.PI / 2;
+  mockMaterial = mockPart("air-duct", "warm-duct", "warm-air duct along the floor", 0xc9794a);
+  mesh(new THREE.BoxGeometry(0.12, 0.03, 1.9), mockMaterial, [0, -0.125, 0]);
+  buildTarget = classicModel;
+
   // Research model (NASA/APL 2023 design) and its interior: see vehicle-research.mjs.
   const { researchRotors, researchAntenna, subsystems, labeledParts, poseAirflow } = buildResearchModel({
     group: researchModel, mesh, strut, metal, deck, gold, bladeGeometry, bladeMaterial, trails, buildAntenna, upAxis,
@@ -218,25 +252,34 @@ export function createChaseRenderer(options = {}) {
     return material;
   }
   let appliedLayer = "";
-  function applyLayer(layer, state, range = thermalRanges.full) {
-    if (layer === appliedLayer && layer !== "thermal") return;
-    appliedLayer = layer;
+  // which: "research" (NASA 2023 design) or "original" (demo model with a labeled mock-up interior).
+  function applyLayer(layer, state, range = thermalRanges.full, which = "research") {
+    const key = `${layer}|${which}`;
+    if (key === appliedLayer && layer !== "thermal") return;
+    appliedLayer = key;
     const zones = layer === "thermal" ? thermalZoneTemps(state) : null;
-    researchModel.traverse((part) => {
-      if (!part.isMesh) return;
-      if (!part.userData.baseMaterial) part.userData.baseMaterial = part.material;
-      const base = part.userData.baseMaterial;
-      if (layer === "exterior" || (!Array.isArray(base) && base.transparent)) { part.material = base; return; }
-      const owner = ownerOf(part);
-      const shell = owner && shellNames.has(owner.name);
-      if (layer === "internal") { part.material = shell ? ghostShell : base; return; }
-      const zone = owner?.userData.thermalZone || "exterior-structure";
-      part.material = thermalMaterial(`${zone}|${shell}`, zones[zone]?.c ?? systemsModel.ambientC, range, shell);
-    });
-    for (const group of Object.values(subsystems)) {
-      if (group.userData.layer === "interior") group.visible = layer !== "exterior";
+    const models = [
+      [researchModel, which === "research", (part, owner) => !!owner && shellNames.has(owner.name)],
+      [classicModel, which === "original", (part) => !!part.userData.classicShell],
+    ];
+    for (const [root, active, isShell] of models) {
+      root.traverse((part) => {
+        if (!part.isMesh) return;
+        if (!part.userData.baseMaterial) part.userData.baseMaterial = part.material;
+        const base = part.userData.baseMaterial;
+        if (layer === "exterior" || !active || (!Array.isArray(base) && base.transparent)) { part.material = base; return; }
+        const owner = ownerOf(part);
+        const shell = isShell(part, owner);
+        if (layer === "internal") { part.material = shell ? ghostShell : base; return; }
+        const zone = owner?.userData.thermalZone || "exterior-structure";
+        part.material = thermalMaterial(`${zone}|${shell}`, zones[zone]?.c ?? systemsModel.ambientC, range, shell);
+      });
     }
-    subsystems.airflow.visible = layer === "internal";
+    for (const group of Object.values(subsystems)) {
+      if (group.userData.layer === "interior") group.visible = layer !== "exterior" && which === "research";
+    }
+    for (const group of mockParts) group.visible = layer !== "exterior" && which === "original";
+    subsystems.airflow.visible = layer === "internal" && which === "research";
   }
   applyLayer("exterior");
   const labelBox = new THREE.Box3(), labelPoint = new THREE.Vector3();
@@ -262,7 +305,7 @@ export function createChaseRenderer(options = {}) {
   }
   return {
     models: { original: classicModel, research: researchModel },
-    subsystems,
+    subsystems, mockParts,
     // view.layer: "exterior" (default), "internal" or "thermal"; view.range: a thermalRanges entry.
     // Returns the on-screen position of each labeled part for the layer's callouts.
     drawMission(ctx, w, h, state, view = {}) {
@@ -290,33 +333,36 @@ export function createChaseRenderer(options = {}) {
       sun.position.set(-4, 7, -3);
       sun.target.position.set(0, 0, 0);
       const layered = layer !== "exterior";
+      const which = state.vehicleModel === "original" ? "original" : "research";
       if (layered) {
         // Fixed three-quarter view with the nose to the left, like the published thermal figures.
-        researchModel.visible = true;
-        classicModel.visible = false;
+        researchModel.visible = which === "research";
+        classicModel.visible = which === "original";
         craft.rotation.set(0, Math.PI / 2, 0);
         craft.updateMatrixWorld(true);
         poseAirflow(state.missionTime || 0);
         trails.forEach((material) => { material.opacity = 0; }); // no rotor blur over the diagram
       }
-      applyLayer(layer, state, view.range);
-      const halfHeight = layered ? Math.max(1.75, 2.35 * h / w) : Math.max(3.4, 3.0 * h / w);
+      applyLayer(layer, state, view.range, which);
+      // The original model's rotors sit on tall posts, so its layered views are framed wider.
+      const layeredScale = which === "original" ? 1.25 : 1;
+      const halfHeight = layered ? Math.max(1.75, 2.35 * h / w) * layeredScale : Math.max(3.4, 3.0 * h / w);
       Object.assign(missionCamera, { left: -halfHeight * w / h, right: halfHeight * w / h, top: halfHeight, bottom: -halfHeight });
       if (layered) missionCamera.position.set(1.6, 5.2, 7.2);
       else missionCamera.position.set(0, 8, 3.5);
-      missionCamera.lookAt(0, layered ? -0.15 : 0, 0);
+      missionCamera.lookAt(0, layered ? (which === "original" ? 0.1 : -0.15) : 0, 0);
       missionCamera.updateProjectionMatrix();
       renderer.render(scene, missionCamera);
       ctx.drawImage(renderer.domElement, 0, 0, w, h);
       const labels = [];
       if (layered) {
         craft.updateMatrixWorld(true);
-        for (const group of labeledParts) {
+        for (const group of which === "research" ? labeledParts : mockParts) {
           labelBox.setFromObject(group);
           labelBox.getCenter(labelPoint).project(missionCamera);
           labels.push({
             name: group.name, label: group.userData.label, source: group.userData.source,
-            zone: group.userData.thermalZone, color: group.userData.color,
+            zone: group.userData.thermalZone, color: group.userData.color, mock: !!group.userData.mock,
             x: (labelPoint.x + 1) / 2 * w, y: (1 - labelPoint.y) / 2 * h,
           });
         }

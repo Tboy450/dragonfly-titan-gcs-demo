@@ -158,3 +158,37 @@ test("Mission-view layers draw and return callouts for every labeled part", asyn
   chase.draw(context2d, 800, 600, state);
   assert.equal(chase.subsystems.battery.visible, false);
 });
+
+test("The original model's Internal and Thermal views are labeled mock-ups and fit its body", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const chase = createChaseRenderer({ renderer: fakeRenderer() });
+  const state = { ...createFlightState(), vehicleModel: "original" };
+  for (const layer of ["internal", "thermal"]) {
+    const labels = chase.drawMission(context2d, 800, 600, state, { layer });
+    assert.ok(labels.length >= 6, `${layer}: ${labels.length} mock callouts`);
+    for (const label of labels) {
+      assert.equal(label.mock, true);
+      assert.match(label.label, /^Mock-up: /);
+      assert.match(label.source, /not based on the real Dragonfly design/);
+    }
+    assert.equal(chase.models.original.visible, true);
+    assert.equal(chase.models.research.visible, false);
+    assert.equal(chase.subsystems.battery.visible, false, "the research interior stays hidden");
+  }
+  // Every mock part sits inside the original body (x -/+0.515, y -/+0.16, z -/+1.1) or its front cab.
+  state.heading = 0; state.pitch = 0; state.roll = 0;
+  chase.draw(context2d, 800, 600, state);
+  const inverse = chase.models.original.parent.matrixWorld.clone().invert();
+  for (const group of chase.mockParts) {
+    group.traverse((part) => {
+      if (!part.isMesh) return;
+      part.geometry.computeBoundingBox();
+      const box = part.geometry.boundingBox.clone().applyMatrix4(part.matrixWorld).applyMatrix4(inverse);
+      const inCab = box.min.z >= -1.1 && box.max.z <= -0.45 && box.max.y <= 0.72;
+      assert.ok(box.min.x >= -0.5 && box.max.x <= 0.5 && box.min.y >= -0.16 && box.max.y <= (inCab ? 0.72 : 0.16)
+        && box.min.z >= -1.1 && box.max.z <= 1.1, `${group.name} fits`);
+    });
+  }
+  assert.equal(chase.mockParts[0].visible, false, "the pilot view hides the mock interior");
+});

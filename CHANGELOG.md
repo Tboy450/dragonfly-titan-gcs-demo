@@ -31,6 +31,27 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-09-29: Mock-up internal and thermal views for the original model
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add labeled mock-up internal and thermal views for the original model"
+- **What changed:** At the owner's request the original demo model now has its own Internal and
+  Thermal views instead of switching to the NASA 2023 model. Its body, deck, cab and dish turn
+  see-through and seven mock parts appear (battery pack, flight computers and power boxes, rotor
+  drive electronics, science instruments in the front cab, cold sample store, a heat source
+  "this model has no MMRTG", warm-air duct), sized to fit its own body. They reuse the simulator's
+  thermal zones so the thermal colors stay live. Everything is labeled as faux: each part name
+  starts "Mock-up:", each source reads "not based on the real Dragonfly design", the diagram
+  carries a "MOCK-UP: original demo model, not the real layout" watermark, and the layers panel
+  shows a banner pointing to the NASA 2023 model for the research-based views.
+- **Files:** `dist/chase-vehicle.mjs`, `dist/ui/layers-panel.mjs`, `dist/ui/flight-view.mjs`,
+  `dist/index.html`, `dist/styles.css`, `tests/render-smoke.test.mjs`, `README.md`,
+  `ARCHITECTURE.md`
+- **Assumptions:** the mock interior is invented for illustration [EST]; only the temperatures
+  come from the simulator.
+- **Checks:** 65 tests pass (new: mock labels on every callout, research interior hidden, every
+  mock part fits the original body or cab, the Pilot view hides it). Internal and Thermal
+  captures checked in the page.
+
 ### 2026-09-29: Battery phase-change (wax) buffer
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Model the battery's phase-change wax buffer"

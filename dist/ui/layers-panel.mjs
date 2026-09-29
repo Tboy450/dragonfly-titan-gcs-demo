@@ -10,8 +10,10 @@ export function updateLayerPanel() {
   const layered = state.missionLayer !== "exterior";
   document.querySelectorAll("[data-layer]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.layer === state.missionLayer)));
   $("thermal-legend").hidden = state.missionLayer !== "thermal";
+  const mock = layered && state.vehicleModel === "original";
   $("part-list").hidden = !layered;
-  $("layer-note").hidden = !layered;
+  $("mock-banner").hidden = !mock;
+  $("layer-note").hidden = !layered || mock;
   const range = thermalRanges[state.thermalRange];
   $("thermal-min").textContent = `${range.min} C`;
   $("thermal-max").textContent = `${range.max} C`;

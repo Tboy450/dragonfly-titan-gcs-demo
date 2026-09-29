@@ -530,6 +530,14 @@ function drawPartMarkers(ctx, labels) {
     ctx.fillStyle = "#06121a";
     ctx.fillText(String(marker.index), marker.x, marker.y + 0.5);
   }
+  if (partMarkers.some(marker => marker.mock)) {
+    // The original model's interior is invented; say so on the diagram itself.
+    ctx.textAlign = "left";
+    ctx.textBaseline = "alphabetic";
+    ctx.font = "800 13px Inter, Arial, sans-serif";
+    ctx.fillStyle = "rgba(255, 180, 87, 0.95)";
+    ctx.fillText("MOCK-UP: original demo model, not the real layout", 14, ctx.canvas.height / (window.devicePixelRatio || 1) - 14);
+  }
   ctx.restore();
 }
 

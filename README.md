@@ -135,6 +135,10 @@ every part by its live temperature. Tap a number or a row to see a part's temper
 its placement and value come from. The Pilot view shows the same live battery, temperature,
 flight-time, link and plan readouts in a compact strip.
 
+With the **original** model selected, Internal and Thermal show a clearly labeled **mock-up**
+interior instead: that model is not based on the real design, so its parts are made up for
+illustration (their temperatures still come from the simulator).
+
 ## Science Instruments
 
 The Science Payload panel shows each instrument working: DragonCam images in flight,
