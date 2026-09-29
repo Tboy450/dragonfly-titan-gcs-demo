@@ -62,6 +62,14 @@ references are linked within the app.
 - Keyboard: W/S throttle, A/D yaw, arrow keys pitch/roll, Space levels off and holds
   altitude.
 
+## Arrival at Titan
+
+On a browser's first visit the app opens with a one-minute, time-compressed entry, descent and
+landing sequence following the published timeline: entry at 1,270 km, drogue and main
+parachutes, heat-shield separation, the lander lowered below the backshell, rotor spin-up,
+release at 1,000 m and powered flight to touchdown. **Skip** ends it; "Replay the arrival at
+Titan" at the bottom of the page plays it again.
+
 ## Vehicle Model
 
 The default 3D model follows the NASA/APL 2023 design drawings: long insulated fuselage,

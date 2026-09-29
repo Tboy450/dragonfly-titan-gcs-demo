@@ -236,19 +236,22 @@ export function createChaseRenderer(options = {}) {
     buildTarget = subsystems[name];
   }
 
-  // Proportions are measured from the TFAWS 2023 top view, scaled by the MMRTG's 64 cm fin
-  // diameter: nose to MMRTG end ~3.8 m, fuselage 0.88 m wide, skids ~1.55 m apart, rotor hubs
-  // about 1.0 m fore/aft and 1.25 m out (3.85 m tip to tip). The origin is the rotor-hub center.
+  // Proportions are measured from the TFAWS 2023 top view (slide 3, rendered at 260 dpi):
+  // nose to MMRTG end = 1,260 px = 3.85 m, so 327 px/m (the MMRTG's 203 px = 0.62 m checks
+  // against its published 64 cm). Model z = (px - 690) / 327, model x = (py - 355) / 327, with the
+  // origin at the rotor-hub center. Use the same mapping to place interior parts from that
+  // drawing so the internal layer fits this exterior: fuselage 0.86 m wide from z -1.93 to +1.28,
+  // arm roots at z -0.75 / +0.84, rotor hubs at z -/+0.98 and x -/+1.25, skids at x -/+0.75.
   // Fuselage: long, with the underside tapering up at the nose and tail.
   subsystem("fuselage", "insulated-shell");
-  profileBody([[-1.92, -0.05], [-1.80, -0.27], [-1.50, -0.36], [0.85, -0.36], [1.08, -0.26], [1.12, -0.05], [1.12, 0.10], [-1.85, 0.10]], 0.88, foam);
+  profileBody([[-1.90, -0.05], [-1.78, -0.27], [-1.48, -0.36], [0.98, -0.36], [1.20, -0.26], [1.24, -0.05], [1.24, 0.10], [-1.83, 0.10]], 0.86, foam);
   // Attic: the big rounded enclosure over the front of the fuselage.
   subsystem("attic", "insulated-shell");
   profileBody([[-1.88, 0.06], [-1.80, 0.38], [-1.58, 0.50], [-0.82, 0.50], [-0.70, 0.38], [-0.70, 0.06]], 0.84, foam, 0.08);
   const atticPanel = mesh(new THREE.BoxGeometry(0.34, 0.015, 0.42), foamSeam, [0.16, 0.585, -1.5]);
   atticPanel.rotation.x = 0.22;
   subsystem("fuselage", "insulated-shell");
-  for (const z of [-0.45, 0.2, 0.8]) mesh(new THREE.BoxGeometry(0.895, 0.5, 0.018), foamSeam, [0, -0.13, z]);
+  for (const z of [-0.45, 0.2, 0.84]) mesh(new THREE.BoxGeometry(0.875, 0.5, 0.018), foamSeam, [0, -0.13, z]);
   subsystem("navigation-sensors", "external-sensors");
   for (const x of [-0.22, 0, 0.22]) {
     const camera = mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.05, 14), lens, [x, -0.1, -1.97]);
@@ -259,13 +262,13 @@ export function createChaseRenderer(options = {}) {
   subsystem("instrument-booms", "external-sensors");
   strut([-0.44, -0.08, -1.62], [-0.76, -0.03, -1.9], 0.012, metal);
   mesh(new THREE.SphereGeometry(0.03, 12, 8), gold, [-0.76, -0.03, -1.9]);
-  strut([0.44, 0.1, 0.98], [0.64, 0.36, 1.2], 0.012, metal);
-  mesh(new THREE.SphereGeometry(0.03, 12, 8), metal, [0.64, 0.36, 1.2]);
+  strut([0.43, 0.1, 1.08], [0.64, 0.36, 1.3], 0.012, metal);
+  mesh(new THREE.SphereGeometry(0.03, 12, 8), metal, [0.64, 0.36, 1.3]);
 
   // MMRTG at the tail: core cylinder with eight radial fins, axis along the fuselage.
   subsystem("mmrtg", "mmrtg");
   const generator = new THREE.Group();
-  generator.position.set(0, 0.05, 1.47);
+  generator.position.set(0, 0.05, 1.6);
   buildTarget.add(generator);
   mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.66, 24), rtgMaterial, [0, 0, 0], generator).rotation.x = Math.PI / 2;
   for (let i = 0; i < 8; i += 1) {
@@ -288,7 +291,7 @@ export function createChaseRenderer(options = {}) {
   subsystem("fins", "exterior-structure");
   for (const side of [-1, 1]) {
     const hinge = new THREE.Group();
-    hinge.position.set(side * 0.4, 0, 1.08);
+    hinge.position.set(side * 0.39, 0, 1.2);
     hinge.rotation.set(0, side * 0.14, side * -0.05);
     buildTarget.add(hinge);
     mesh(finGeometry, finMaterial, [side * 0.0125, 0, 0], hinge);
@@ -298,15 +301,15 @@ export function createChaseRenderer(options = {}) {
   }
   // Low-gain antenna on a boss just ahead of the MMRTG.
   subsystem("antennas", "antennas");
-  mesh(new THREE.CylinderGeometry(0.1, 0.11, 0.12, 16), foam, [0, 0.2, 0.9]);
-  mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.08, 10), armMaterial, [0, 0.3, 0.9]);
-  mesh(new THREE.SphereGeometry(0.025, 10, 6), armMaterial, [0, 0.35, 0.9]);
+  mesh(new THREE.CylinderGeometry(0.1, 0.11, 0.12, 16), foam, [0, 0.2, 1.02]);
+  mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.08, 10), armMaterial, [0, 0.3, 1.02]);
+  mesh(new THREE.SphereGeometry(0.025, 10, 6), armMaterial, [0, 0.35, 1.02]);
 
   // Thick skids ~1.55 m apart on legs that drop from the arm roots, with a DrACO drill on each.
-  const armRoots = [-0.77, 0.87];
+  const armRoots = [-0.75, 0.84];
   for (const side of [-1, 1]) {
     subsystem("landing-gear", "exterior-structure");
-    const skidX = side * 0.78;
+    const skidX = side * 0.75;
     strut([skidX, -0.8, -1.3], [skidX, -0.8, 1.02], 0.06, deck);
     strut([skidX, -0.8, -1.3], [skidX, -0.7, -1.45], 0.05, deck);
     strut([skidX, -0.8, 1.02], [skidX, -0.72, 1.14], 0.05, deck);
@@ -316,7 +319,7 @@ export function createChaseRenderer(options = {}) {
     }
     subsystem("drills", "drills");
     mesh(new THREE.BoxGeometry(0.12, 0.1, 0.2), metal, [skidX, -0.7, -0.15]);
-    mesh(new THREE.CylinderGeometry(0.02, 0.012, 0.14, 8), metal, [skidX, -0.86, -0.15]);
+    mesh(new THREE.CylinderGeometry(0.02, 0.012, 0.1, 8), metal, [skidX, -0.8, -0.15]);
   }
 
   // High-gain antenna: a flat 0.874 m radial-line slot disc, stowed flat on top for flight.
@@ -345,7 +348,7 @@ export function createChaseRenderer(options = {}) {
   const researchBladeScale = model.rotorDiameterM / 2 / 0.70;
   for (const x of [-1.25, 1.25]) {
     const side = Math.sign(x);
-    for (const [index, z] of [-1.0, 1.0].entries()) {
+    for (const [index, z] of [-0.98, 0.98].entries()) {
       const root = [side * 0.42, 0.02, armRoots[index]];
       const hub = [x, 0.02, z];
       const fairingEnd = root.map((value, axis) => value + (hub[axis] - value) * 0.22);
@@ -377,6 +380,101 @@ export function createChaseRenderer(options = {}) {
     }
   }
   buildTarget = classicModel;
+
+  // ---- Entry, descent and landing hardware for the arrival sequence (timeline in edl.mjs) ----
+  // 4.5 m, 60-degree sphere-cone aeroshell; 8.25 m drogue and 16.7 m main parachutes [PUB].
+  // Colors, riser lengths and the bridle geometry are illustrative.
+  const edlGroup = new THREE.Group();
+  edlGroup.visible = false;
+  scene.add(edlGroup);
+  const shellWhite = new THREE.MeshStandardMaterial({ color: 0xd9d4ca, metalness: 0.15, roughness: 0.65 });
+  const shieldBrown = new THREE.MeshStandardMaterial({ color: 0x3b2b21, metalness: 0.1, roughness: 0.85 });
+  const canopyMaterial = new THREE.MeshStandardMaterial({ color: 0xf1e7d2, roughness: 0.9, side: THREE.DoubleSide });
+  const canopyBand = new THREE.MeshStandardMaterial({ color: 0xc8643a, roughness: 0.9, side: THREE.DoubleSide });
+  const lineMaterial = new THREE.MeshBasicMaterial({ color: 0x8f8574 });
+  const glowMaterial = new THREE.MeshBasicMaterial({ color: 0xff8a3a, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+  const unitLine = new THREE.CylinderGeometry(1, 1, 1, 6);
+  function line(parent, radius = 0.015) {
+    const part = new THREE.Mesh(unitLine, lineMaterial);
+    part.scale.set(radius, 1, radius);
+    parent.add(part);
+    return part;
+  }
+  const lineStart = new THREE.Vector3(), lineEnd = new THREE.Vector3(), lineAxis = new THREE.Vector3();
+  function stretch(part, from, to, radius = 0.015) {
+    lineAxis.subVectors(to, from);
+    part.position.addVectors(from, to).multiplyScalar(0.5);
+    part.scale.set(radius, Math.max(0.001, lineAxis.length()), radius);
+    part.quaternion.setFromUnitVectors(upAxis, lineAxis.normalize());
+  }
+  // The backshell, parachutes and their lines move together; the origin is the backshell rim.
+  const backshellAssembly = new THREE.Group();
+  edlGroup.add(backshellAssembly);
+  const backshell = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 2.25, 1.9, 48), shellWhite);
+  backshell.position.y = 0.95;
+  backshellAssembly.add(backshell);
+  function parachute(radius, riser) {
+    const group = new THREE.Group();
+    const opening = Math.PI * 0.42;
+    const dome = new THREE.Mesh(new THREE.SphereGeometry(radius, 32, 10, 0, Math.PI * 2, 0, opening), canopyMaterial);
+    dome.position.y = riser;
+    group.add(dome);
+    const band = new THREE.Mesh(new THREE.SphereGeometry(radius * 1.002, 32, 3, 0, Math.PI * 2, opening * 0.72, opening * 0.14), canopyBand);
+    band.position.y = riser;
+    group.add(band);
+    const apex = new THREE.Vector3(0, 1.9, 0);
+    for (let i = 0; i < 16; i += 1) {
+      const angle = i / 16 * Math.PI * 2;
+      const rim = new THREE.Vector3(Math.cos(angle) * radius * Math.sin(opening), riser + radius * Math.cos(opening), Math.sin(angle) * radius * Math.sin(opening));
+      stretch(line(group, 0.012), apex, rim, 0.012);
+    }
+    backshellAssembly.add(group);
+    return group;
+  }
+  const drogueChute = parachute(4.125, 14);
+  const mainChute = parachute(8.35, 26);
+  const heatShield = new THREE.Mesh(new THREE.ConeGeometry(2.25, 1.3, 48), shieldBrown);
+  heatShield.rotation.x = Math.PI;
+  edlGroup.add(heatShield);
+  const entryGlow = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 12), glowMaterial);
+  entryGlow.scale.set(3.3, 1.7, 3.3);
+  edlGroup.add(entryGlow);
+  const bridles = [0, 1, 2].map(() => line(edlGroup, 0.014));
+  const shieldFall = new THREE.Vector3();
+
+  function poseArrival(e) {
+    edlGroup.visible = !!e;
+    // The lander is enclosed in the aeroshell until it is lowered out for the pose.
+    craft.visible = !e || e.pose > 0.01;
+    if (!e) return;
+    const lander = craft.position;
+    // Posed: the lander hangs below the backshell. Released: the backshell and chute drift up and away.
+    const rise = 4.5 * e.pose + (e.released ? e.separation * 2.6 : 0);
+    const drift = e.released ? e.separation * 3.4 : 0;
+    backshellAssembly.visible = e.separation < 14;
+    backshellAssembly.position.set(lander.x - drift, lander.y - 0.3 + rise, lander.z + drift * 0.4);
+    backshellAssembly.rotation.y = craft.rotation.y;
+    drogueChute.visible = e.chute === "drogue";
+    mainChute.visible = e.chute === "main";
+    const open = Math.max(0.04, e.chuteOpen);
+    (e.chute === "main" ? mainChute : drogueChute).scale.set(open, 0.35 + 0.65 * open, open);
+    const fall = 0.5 * 5 * e.heatShieldDrop ** 2;
+    heatShield.visible = e.heatShieldDrop < 5;
+    shieldFall.set(lander.x, lander.y - 0.95 - fall, lander.z);
+    heatShield.position.copy(shieldFall);
+    entryGlow.visible = e.glow > 0.01;
+    entryGlow.position.set(lander.x, lander.y - 1.6, lander.z);
+    glowMaterial.opacity = 0.55 * e.glow;
+    const hanging = e.pose > 0.02 && !e.released;
+    bridles.forEach((bridle, index) => {
+      bridle.visible = hanging;
+      if (!hanging) return;
+      const angle = index / 3 * Math.PI * 2 + craft.rotation.y;
+      lineStart.set(backshellAssembly.position.x + Math.cos(angle) * 0.9, backshellAssembly.position.y, backshellAssembly.position.z + Math.sin(angle) * 0.9);
+      lineEnd.set(lander.x + Math.cos(angle) * 0.2, lander.y + 0.2, lander.z + Math.sin(angle) * 0.2);
+      stretch(bridle, lineStart, lineEnd, 0.014);
+    });
+  }
 
   let width = 0;
   let height = 0;
@@ -413,6 +511,8 @@ export function createChaseRenderer(options = {}) {
       sun.intensity = 3.2;
       fill.intensity = 1.4;
       landscape.group.visible = false;
+      edlGroup.visible = false;
+      craft.visible = true;
       renderer.shadowMap.enabled = false;
       craft.position.set(0, 0, 0);
       setAttitude(state);
@@ -458,7 +558,7 @@ export function createChaseRenderer(options = {}) {
       // Day: bright orange sky dome, weak direct beam. Night: faint, dim sky (kept visible for play).
       ambient.intensity = 0.35 + sunlight * 1.85;
       sun.intensity = 0.02 + sunlight * 0.95;
-      landscape.setDaylight(sunlight);
+      landscape.setDaylight(sunlight, state.edl?.space || 0);
       const altitude = Math.max(0, state.altitude || 0);
       // Aloft, follow the smooth analytic terrain so mesh re-centering never shifts the aircraft;
       // near touchdown, blend onto the rendered triangles so the skids meet the visible ground.
@@ -468,14 +568,19 @@ export function createChaseRenderer(options = {}) {
       sun.position.set(x - 65, groundY + 115, z - 45);
       sun.target.position.set(x, groundY, z);
       const availableHeight = w <= 720 ? Math.max(100, h - 293) : h;
-      const distance = Math.max(11.7, 6.4 / camera.aspect, h / availableHeight * 5.5);
+      const baseDistance = Math.max(11.7, 6.4 / camera.aspect, h / availableHeight * 5.5);
+      // During the arrival sequence the camera pulls back to frame the aeroshell and parachutes.
+      const distance = state.edl ? Math.max(baseDistance, state.edl.cameraDistance) : baseDistance;
+      const lookAt = craft.position.clone();
+      if (state.edl) lookAt.y += state.edl.lookUp;
       camera.position.set(
         x + Math.sin(pose.azimuth) * Math.cos(pose.elevation) * distance,
-        craft.position.y + Math.sin(pose.elevation) * distance,
+        lookAt.y + Math.sin(pose.elevation) * distance,
         z + Math.cos(pose.azimuth) * Math.cos(pose.elevation) * distance,
       );
       camera.position.y = Math.max(camera.position.y, landscape.heightAt(camera.position.x, camera.position.z) + 0.3);
-      camera.lookAt(craft.position);
+      camera.lookAt(lookAt);
+      poseArrival(state.edl);
       renderer.render(scene, camera);
       ctx.drawImage(renderer.domElement, 0, 0, w, h);
     },

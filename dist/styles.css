@@ -628,6 +628,29 @@ body.pilot-view .visual-wrap {
 .camera-switch {
   display: none;
 }
+.arrival-overlay {
+  position: absolute;
+  z-index: 7;
+  top: 12px;
+  left: 12px;
+  width: min(420px, calc(100% - 24px));
+  padding: 12px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: rgba(6, 12, 18, 0.84);
+  backdrop-filter: blur(8px);
+}
+
+.arrival-overlay[hidden] { display: none; }
+.arrival-overlay span { color: var(--amber); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; }
+.arrival-overlay strong { display: block; margin-top: 4px; font-size: 1.15rem; }
+.arrival-overlay p { margin: 6px 0 8px; font-size: 0.85rem; color: #c9d8e4; }
+.arrival-readouts { display: flex; justify-content: space-between; font: 700 0.9rem Consolas, monospace; color: var(--green); }
+.arrival-progress { height: 4px; margin: 8px 0 10px; border-radius: 2px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
+.arrival-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--amber), var(--green)); }
+#arrival-skip { min-height: 32px; padding: 4px 16px; }
+body.arrival .pilot-deck, body.arrival .camera-switch, body.arrival .model-toggle { display: none; }
+.link-button { min-height: 0; padding: 2px 6px; border: 0; background: none; color: #bfeeff; font-size: 0.85rem; text-decoration: underline; }
 
 .model-toggle {
   position: absolute;

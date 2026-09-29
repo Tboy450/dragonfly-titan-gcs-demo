@@ -166,6 +166,14 @@
               <strong id="heading-value">084 deg</strong>
             </div>
             <button id="model-toggle" class="model-toggle" type="button" aria-pressed="true" title="Switch between the vehicle model built from NASA/APL 2023 design drawings and the original demo model">Model: NASA 2023</button>
+            <section id="arrival-overlay" class="arrival-overlay" aria-label="Arrival at Titan" hidden>
+              <span>Arrival at Titan / time-compressed</span>
+              <strong id="arrival-title" aria-live="polite">Entry interface</strong>
+              <p id="arrival-detail"></p>
+              <div class="arrival-readouts"><b id="arrival-altitude">1270 km</b><b id="arrival-time">E+0:00</b></div>
+              <div class="arrival-progress" aria-hidden="true"><i id="arrival-progress"></i></div>
+              <button id="arrival-skip" type="button">Skip</button>
+            </section>
             <div class="camera-switch" role="group" aria-label="Chase camera mode">
               <button id="fixed-camera-button" class="active" type="button" aria-pressed="true">Fixed</button>
               <button id="free-camera-button" type="button" aria-pressed="false" title="Drag the flight view to orbit">Free</button>
@@ -344,6 +352,7 @@
 
       <footer class="sourcebar">
         <span>This is an educational simulation, not an official NASA flight product.</span>
+        <button id="arrival-replay" class="link-button" type="button">Replay the arrival at Titan</button>
         <a href="https://science.nasa.gov/mission/dragonfly/" target="_blank" rel="noreferrer">NASA mission page</a>
         <a href="https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/" target="_blank" rel="noreferrer">Spacecraft data</a>
         <a href="https://solarsystem.nasa.gov/moons/saturn-moons/titan/in-depth/" target="_blank" rel="noreferrer">Titan environment</a>

@@ -108,9 +108,12 @@ export function createTitanTerrain(scene, renderer) {
   skyTexture.colorSpace = THREE.SRGBColorSpace;
   scene.background = skyTexture;
   scene.fog = new THREE.FogExp2(horizonColor.clone(), 0.00055);
-  function setDaylight(level) {
+  // space (0-1) darkens the sky toward black overhead for the high-altitude arrival phases.
+  const spaceZenith = new THREE.Color(0x0a0706), spaceHorizon = new THREE.Color(0x8c5424);
+  function setDaylight(level, space = 0) {
     const scale = 0.12 + level * 0.88;
-    const top = zenithColor.clone().multiplyScalar(scale), bottom = horizonColor.clone().multiplyScalar(scale);
+    const top = zenithColor.clone().multiplyScalar(scale).lerp(spaceZenith, space);
+    const bottom = horizonColor.clone().multiplyScalar(scale).lerp(spaceHorizon, space * 0.6);
     const gradient = skyCtx.createLinearGradient(0, 0, 0, 256);
     gradient.addColorStop(0, `#${top.getHexString()}`);
     gradient.addColorStop(0.62, `#${bottom.getHexString()}`);
@@ -120,7 +123,7 @@ export function createTitanTerrain(scene, renderer) {
     skyTexture.needsUpdate = true;
     scene.fog.color.copy(bottom);
   }
-  let daylight = -1;
+  let daylight = "";
   setDaylight(1);
 
   const reference = new THREE.TextureLoader().load("./assets/titan-mountain-reference.jpg");
@@ -296,9 +299,10 @@ export function createTitanTerrain(scene, renderer) {
         ring.position.set(site.x, surfaceAt(site.x, site.z).height + 0.1, site.z);
       }
     },
-    setDaylight(level) {
-      const rounded = Math.round(level * 50) / 50;
-      if (rounded !== daylight) { daylight = rounded; setDaylight(rounded); }
+    setDaylight(level, space = 0) {
+      const rounded = Math.round(level * 50) / 50, roundedSpace = Math.round(space * 50) / 50;
+      const key = `${rounded}/${roundedSpace}`;
+      if (key !== daylight) { daylight = key; setDaylight(rounded, roundedSpace); }
     },
     heightAt: (x, z) => surfaceAt(x, z).height,
     update(x, z) {

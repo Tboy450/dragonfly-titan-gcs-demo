@@ -31,6 +31,33 @@ Notes for every session:
 
 ## Entries
 
+### 2026-09-29: Arrival at Titan opening sequence (entry, descent and landing)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add the arrival-at-Titan entry, descent and landing sequence"
+- **What changed:** A one-minute, time-compressed opening sequence plays on a browser's first
+  visit (Skip button; "Replay the arrival at Titan" in the footer). It follows the published EDL
+  timeline: entry interface at 1,270 km with the capsule spinning at 2 rpm, peak heating
+  (245 km, heat-shield glow), peak deceleration, the 8.25 m drogue at 143 km, the 16.7 m main
+  at 4.8 km, heat-shield separation at 4.4 km, thermal-loop switch, lander pose (lowered on
+  bridles below the backshell), despin with rotor spin-up, lidar ground lock, release at 1,000 m
+  at 2.9 m/s, then powered flight away from the backshell to touchdown at base. A caption panel
+  shows each step with the real altitude and time since entry; the sky darkens toward black at
+  high altitude. The research model's exterior was also refined to the TFAWS 2023 top view at
+  327 px/m (fuselage and MMRTG ~13 cm further aft; body 3.85 m nose to MMRTG end), with the
+  pixel-to-model mapping written in `chase-vehicle.mjs` so the planned internal-parts layer
+  can be placed from the same drawing and fit the exterior.
+- **Files:** `dist/edl.mjs` (new), `dist/chase-vehicle.mjs`, `dist/titan-terrain.mjs`,
+  `dist/app.js`, `dist/index.html`, `dist/styles.css`, `tests/edl.test.mjs` (new),
+  `tests/render-smoke.test.mjs`, `README.md`, `RESEARCH-COMPENDIUM.md`
+- **Assumptions:** [PUB] every altitude, time since entry, parachute size, aeroshell size and
+  mass, release window and rate (SciTech 2025 EDL overview fig. 1; compendium §2.4). [EST] the
+  time compression, capsule/parachute colors, riser and bridle lengths, the backshell shape,
+  the spin shown at one third of 2 rpm, the powered-descent profile and touchdown at base. The
+  lander is hidden while enclosed because its tail fins would poke through the simplified shell.
+- **Checks:** 51 tests pass (new: published altitudes, monotonic descent without jumps, ordered
+  hardware events, 3D smoke test through every phase). Frames rendered in the browser at entry,
+  drogue, main/heat-shield separation, pose, lidar lock and powered flight.
+
 ### 2026-09-29: Research-based 3D vehicle model, land-now fix, 3D smoke tests
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add a research-based Dragonfly model and fix land-now timing"

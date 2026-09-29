@@ -90,3 +90,20 @@ test("Every research-model part belongs to a named subsystem with a thermal zone
     assert.ok(chase.subsystems[name], `${name} subsystem exists`);
   }
 });
+
+test("The arrival sequence hardware draws at every phase", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { edlStateAt, edlDuration } = await import("../dist/edl.mjs");
+  const renderer = fakeRenderer();
+  const chase = createChaseRenderer({ renderer });
+  const state = createFlightState();
+  for (let t = 0; t <= edlDuration; t += 0.5) {
+    state.edl = edlStateAt(t);
+    state.altitude = state.edl.renderAltitudeM;
+    chase.draw(context2d, 800, 600, state);
+  }
+  state.edl = null;
+  chase.draw(context2d, 800, 600, state);
+  assert.equal(renderer.frames, Math.floor(edlDuration / 0.5) + 2);
+});

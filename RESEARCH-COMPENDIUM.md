@@ -318,7 +318,7 @@ Items 1 and 3 and the vortex-ring-state warning are now implemented (see §0). T
 4. **Operations realism:** flights only in daylight; one committed flight per Titan day; scout-and-return (leapfrog); a "land now" fault response; vortex-ring-state warning; ~400 m cruise altitude.
 5. **Visuals:** three-bladed rotors; high-gain antenna on a raise/lower arm; visibility-based fog; dimmer lighting (~1/1,000 of Earth's); optional rain-darkened ground patches.
 6. **Housekeeping:** the stale placeholders are fixed; still append the new sources to `RESEARCH.md` and keep every assumption labeled in the UI.
-7. **Entry, descent and landing scenario** (optional): the sequence in §2.4 ends with release at 800–1,000 m, falling at 2.9 m/s, and then autonomous powered flight to touchdown. That would make a strong opening sequence for the app.
+7. **Entry, descent and landing scenario**: **Done** (Sep 29) as the time-compressed "Arrival at Titan" opening sequence (`dist/edl.mjs`), following §2.4 from entry interface to release at 1,000 m at 2.9 m/s and powered flight to touchdown.
 
 ---
 
