@@ -855,7 +855,28 @@ body.pilot-view .pilot-rotors {
 button:disabled { opacity: 0.5; cursor: default; }
 
 #systems-dialog { width: min(1080px, calc(100% - 24px)); max-height: 90dvh; padding: 24px; border: 1px solid #59756b; border-radius: 8px; background: #101b20; color: var(--text); overflow: auto; }
-#systems-dialog::backdrop { background: rgba(0, 0, 0, 0.7); }
+#systems-dialog::backdrop, #plan-dialog::backdrop { background: rgba(0, 0, 0, 0.7); }
+#plan-dialog { width: min(980px, calc(100% - 24px)); max-height: 92dvh; padding: 24px; border: 1px solid #59756b; border-radius: 8px; background: #101b20; color: var(--text); overflow: auto; }
+.plan-hint { font-size: 0.85rem; color: #b9cfc7; }
+.scouted-text { color: var(--green); }
+.candidate-text { color: var(--amber); }
+.plan-columns { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px; }
+#plan-map { width: 100%; aspect-ratio: 1; display: block; background: #0b1419; border: 1px solid var(--line-strong); border-radius: 6px; touch-action: manipulation; cursor: crosshair; }
+.plan-verdict { margin: 4px 0 8px; padding: 8px 12px; border-left: 3px solid #ff7a6b; background: #2b1d1d; font-weight: 700; }
+.plan-verdict.go { border-left-color: var(--green); background: #16291f; color: var(--green); }
+.plan-issues { margin: 0 0 14px; padding-left: 18px; font-size: 0.84rem; color: #ffc7bf; }
+.plan-issues li.caution { color: var(--amber); }
+#plan-uplink { width: 100%; padding: 10px; }
+.plan-report { margin-top: 14px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.85rem; }
+.plan-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 10px 14px; background: #1b2433; border-left: 3px solid var(--cyan); }
+.plan-strip[hidden] { display: none; }
+.plan-strip > div:first-child { flex: 1; min-width: 220px; }
+.plan-strip strong, .plan-strip span { display: block; }
+.plan-strip span { font-size: 0.8rem; color: #bcd0e2; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.warp-switch { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 6px; overflow: hidden; }
+.warp-switch button { border: 0; border-radius: 0; padding: 6px 12px; }
+.warp-switch button[aria-pressed="true"] { background: var(--cyan); color: #06121a; }
+#plan-button { padding: 6px 14px; }
 .systems-header { display: flex; justify-content: space-between; align-items: center; gap: 18px; }
 .systems-header h2 { margin: 4px 0 0; font-size: 1.35rem; }
 .systems-header span { color: var(--muted); font-size: 0.8rem; }
@@ -894,7 +915,10 @@ button:disabled { opacity: 0.5; cursor: default; }
   .mission-strip > div { flex-basis: 100%; }
   .mission-strip button { min-width: 0; margin-left: auto; font-size: 0.8rem; }
   #vehicle-alert { max-width: none; flex-basis: 100%; }
-  .systems-columns, .reference-images { grid-template-columns: 1fr; }
+  .systems-columns, .reference-images, .plan-columns { grid-template-columns: 1fr; }
+  #plan-dialog { padding: 16px; }
+  .plan-strip { gap: 8px; padding: 8px; }
+  .plan-strip > div:first-child { flex-basis: 100%; }
   #systems-dialog { padding: 16px; }
   .systems-header h2 { font-size: 1.1rem; }
   body.pilot-view .topbar { gap: 8px; padding: 8px; }

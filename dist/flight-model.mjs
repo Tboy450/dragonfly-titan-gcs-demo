@@ -1,4 +1,5 @@
 import { createSystemsState, guidanceTarget, stepSystems, flightRestriction, overLiquid } from "./mission-systems.mjs?v=dev";
+import { createPlan, stepPlan, planGuidance, updateScouting, abortPlan, estimatePlan } from "./flight-plan.mjs?v=dev";
 // Environmental values: APL's TFAWS 2024 report. Performance values are demo assumptions.
 export const model = Object.freeze({
   massKg: 875, titanG: 1.352, earthG: 9.80665,
@@ -39,6 +40,7 @@ export function createFlightState() {
     battery: 96, power: 0, wind: 0.8, payloadDelta: 0,
     distance: 0, chart: [], track: [{ x: 0, z: 0 }], sampleTime: -1,
     rotorRpm: Array(8).fill(0), rotorPhase: Array(8).fill(0),
+    plan: createPlan(), timeWarp: 1,
   };
 }
 
@@ -101,6 +103,12 @@ export function flightPower(state) {
   return (induced + profile + parasite + climb) * (1 + state.wind * 0.025);
 }
 
+// Flight-plan estimate using this vehicle's power curve at half the planned altitude.
+export function estimateFlightPlan(state) {
+  const powerAt = (speed, verticalSpeed) => flightPower({ ...state, speed, verticalSpeed, altitude: state.plan.altitude / 2 });
+  return estimatePlan(state, powerAt, model.batteryEnergyKwh);
+}
+
 // One vertical model for every mode: altitude and climb rate stay continuous across mode changes.
 function stepVertical(state, climbTarget, dt) {
   let target = climbTarget;
@@ -139,7 +147,7 @@ function showThrottle(state, climbTarget, landedIdle, dt) {
 // True when a command or the throttle is asking a landed aircraft to lift off.
 function wantsLiftoff(state) {
   if (state.altitude > 0) return false;
-  if (state.mission.guidance || state.auto) return true;
+  if (state.mission.guidance || state.auto || state.plan.status === "executing") return true;
   if (state.altitudeHold !== null) return state.altitudeHold > 0;
   return climbForThrottle(state.throttle) > 0.05;
 }
@@ -147,6 +155,7 @@ function wantsLiftoff(state) {
 export function stepFlight(state, dt) {
   if (state.hold || dt <= 0) return;
   state.missionTime += dt;
+  stepPlan(state, dt);
   const restricted = flightRestriction(state);
   // The antenna arm must be stowed before liftoff; a flight command ends the downlink and waits.
   const stowing = !state.hibernating && !restricted && state.antennaDeploy > 0 && wantsLiftoff(state);
@@ -162,6 +171,7 @@ export function stepFlight(state, dt) {
     if (state.auto) state.autoClock = 0;
     state.mode = "Stowing antenna";
   } else if (restricted) {
+    abortPlan(state, `Flight plan stopped: ${restricted}`);
     state.auto = false; state.mission.guidance = false; state.altitudeHold = null;
     state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0;
     stepSpeed(state, 0, 2, dt);
@@ -175,6 +185,14 @@ export function stepFlight(state, dt) {
     state.throttle = state.altitude > 0 && state.battery > 0 ? throttleForClimb(-0.7) : 0;
     stepAttitude(state, 0, 0, 0, dt);
     state.mode = state.altitude > 0 ? "Safety descent" : "Flight inhibited";
+  } else if (state.plan.status === "executing") {
+    state.altitudeHold = null;
+    const target = planGuidance(state, dt, model.batteryEnergyKwh);
+    const applied = stepVertical(state, target.climb, dt);
+    stepSpeed(state, target.speed, 1.5, dt);
+    stepAttitude(state, state.speed / 25, 0, 0, dt);
+    showThrottle(state, applied, state.altitude === 0 && target.climb <= 0, dt);
+    state.mode = target.mode;
   } else if (state.mission.guidance) {
     state.altitudeHold = null;
     const target = guidanceTarget(state, dt);
@@ -234,6 +252,7 @@ export function stepFlight(state, dt) {
   state.positionX += Math.sin(bearing) * state.speed * dt;
   state.positionZ -= Math.cos(bearing) * state.speed * dt;
   state.distance += state.speed * dt;
+  updateScouting(state);
 
   const stopped = state.altitude === 0 && state.throttle < 0.3;
   const baseRpm = stopped ? 0 : 780 * Math.sqrt(state.throttle * 2);
@@ -262,6 +281,7 @@ export function stepFlight(state, dt) {
 
 // Hand control to the pilot without changing what the aircraft is currently doing.
 export function takeManualControl(state) {
+  abortPlan(state, "Flight plan stopped: pilot took manual control");
   if (state.auto || state.mission.guidance) {
     state.throttle = throttleForClimb(state.verticalSpeed);
     state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0;
@@ -274,6 +294,7 @@ export function takeManualControl(state) {
 
 export function commandFlight(state, mode) {
   if (mode === "hold") { state.hold = !state.hold; return; }
+  abortPlan(state, "Flight plan stopped by a flight command");
   state.restSeconds = 0;
   state.hibernating = false;
   state.mission.guidance = false;

@@ -1,5 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js";
-import { pools, poolRadius, surveySite, dampGround } from "./mission-systems.mjs?v=dev";
+import { pools, poolRadius, surveySite, dampGround, candidateSites } from "./mission-systems.mjs?v=dev";
 
 function hash(x, z) {
   const value = Math.sin(x * 127.1 + z * 311.7) * 43758.5453;
@@ -41,8 +41,19 @@ export const poolLevels = pools.map((pool) => {
   return lowest - 0.06;
 });
 
+// Candidate landing sites were chosen for low relief; each gets a level 10 m safe landing circle.
+const landingPads = candidateSites.filter(site => !["base", "outcrop"].includes(site.id))
+  .map(site => ({ x: site.x, z: site.z, height: baseHeight(site.x, site.z) }));
+
 export function terrainHeight(x, z) {
   let height = baseHeight(x, z);
+  for (const pad of landingPads) {
+    const distance = Math.hypot(x - pad.x, z - pad.z);
+    if (distance < 24) {
+      const blend = Math.max(0, Math.min(1, (distance - 10) / 14));
+      height = pad.height * (1 - blend) + height * blend;
+    }
+  }
   pools.forEach((pool, index) => {
     const radius = poolRadius(x, z, pool);
     if (radius < 1.4) {
@@ -192,6 +203,18 @@ export function createTitanTerrain(scene, renderer) {
   targetRing.position.set(surveySite.x, 1.44, surveySite.z);
   targetRing.name = "survey-marker";
   group.add(targetRing);
+  // Safe landing circles (10 m) at the candidate sites: green once scouted, amber before.
+  const scoutedMaterial = new THREE.MeshBasicMaterial({ color: 0x80f2ae, transparent: true, opacity: 0.6, side: THREE.DoubleSide, depthWrite: false });
+  const candidateMaterial = new THREE.MeshBasicMaterial({ color: 0xffb457, transparent: true, opacity: 0.6, side: THREE.DoubleSide, depthWrite: false });
+  const siteRingGeometry = new THREE.RingGeometry(9.8, 10.2, 72);
+  const siteRings = candidateSites.map((site) => {
+    const ring = new THREE.Mesh(siteRingGeometry, candidateMaterial);
+    ring.rotation.x = -Math.PI / 2;
+    ring.renderOrder = 1;
+    ring.name = `site-${site.id}`;
+    group.add(ring);
+    return { ring, site };
+  });
   let terrainX = NaN, terrainZ = NaN;
 
   function moveTerrain(x, z) {
@@ -267,6 +290,12 @@ export function createTitanTerrain(scene, renderer) {
   moveRocks(0, 0);
   return {
     group,
+    updateSites(scoutedIds) {
+      for (const { ring, site } of siteRings) {
+        ring.material = scoutedIds.includes(site.id) ? scoutedMaterial : candidateMaterial;
+        ring.position.set(site.x, surfaceAt(site.x, site.z).height + 0.1, site.z);
+      }
+    },
     setDaylight(level) {
       const rounded = Math.round(level * 50) / 50;
       if (rounded !== daylight) { daylight = rounded; setDaylight(rounded); }

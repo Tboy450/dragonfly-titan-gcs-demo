@@ -87,6 +87,17 @@ temperatures from explicit assumptions. It is not part of the flight hardware.
 See [the research compendium](RESEARCH-COMPENDIUM.md) and
 [the release reconciliation](RESEARCH-FOLLOWUP.md) for follow-up evidence.
 
+## Flight Planning
+
+Real Dragonfly flights are planned on Earth, uplinked and flown autonomously (signals take
+73-90 minutes each way). **Plan flight** opens a map: tap waypoints, choose 40 m, 150 m or
+400 m cruise altitude and check the GO / NO-GO estimate (energy, time, battery heat, daylight,
+landing site). **Uplink plan** sends it; after a short simulated delay the lander flies itself.
+Use 1x / 5x / 20x to speed up time during the flight, or **Stop plan** to hold position.
+
+Leapfrog scouting: the last waypoint must be a scouted (green) site. Flying within 60 m of an
+amber candidate site at 20 m or higher scouts it, so a later flight may land there.
+
 ## Operations
 
 - **Motor preheat:** the first liftoff after 30 minutes on the ground charges 60 Wh

@@ -5,6 +5,19 @@
 export const surveySite = Object.freeze({ x: 145, z: -90, radius: 12, name: "Dry outcrop" });
 export const pools = Object.freeze([{ x: 210, z: -110, rx: 11, rz: 7.5, depth: 0.35 }]);
 export const dampGround = Object.freeze({ x: 205, z: -105, rx: 78, rz: 52 });
+// Landing sites for autonomous flights. Base and the outcrop start scouted; the others are
+// candidate interdune sites (chosen for low local relief) that must be scouted from the air
+// before a later flight may land there (leapfrog scouting [PUB]).
+export const candidateSites = Object.freeze([
+  { id: "base", name: "Base", x: 0, z: 0, scouted: true },
+  { id: "outcrop", name: "Dry outcrop", x: 145, z: -90, scouted: true },
+  { id: "a", name: "Site A", x: 219, z: -219, scouted: false },
+  { id: "b", name: "Site B", x: -270, z: 0, scouted: false },
+  { id: "c", name: "Site C", x: 529, z: -444, scouted: false },
+  { id: "d", name: "Site D", x: 834, z: -389, scouted: false },
+  { id: "e", name: "Site E", x: 1352, z: 362, scouted: false },
+  { id: "f", name: "Site F", x: 1710, z: -622, scouted: false },
+].map(Object.freeze));
 export function poolRadius(x, z, pool) {
   const u = (x - pool.x) / pool.rx, v = (z - pool.z) / pool.rz;
   const angle = Math.atan2(v, u);
@@ -103,6 +116,7 @@ export function createSystemsState() {
     elapsed: 0, restSeconds: 0, restNotice: "", hibernating: false, guard: "",
     motorsCold: true, motorCoolClock: 0, preheatWh: 0, preheats: 0, flightSeconds: 0,
     downlinkActive: false, downlinkW: 0, dataReturnedBits: 0, antennaDeploy: 0,
+    scoutedSites: candidateSites.filter(site => site.scouted).map(site => site.id), scoutLog: [],
     mission: { phase: "idle", sampleSeconds: 0, samples: 0, guidance: false, message: "Survey the edge of a rain-darkened interdune from dry ground." },
   };
 }
@@ -151,6 +165,9 @@ export function missionAction(state) {
   state.restSeconds = 0;
   state.hibernating = false;
   state.auto = false;
+  if (state.plan && ["uplinking", "executing"].includes(state.plan.status)) {
+    state.plan.status = "aborted"; state.plan.message = "Flight plan stopped for the guided survey";
+  }
   m.guidance = !m.guidance;
   m.message = m.guidance ? `Guided approach to ${missionTarget(state).name}` : "Manual flight";
 }
@@ -262,6 +279,7 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
 
 export function startRest(state, hours) {
   if (!landed(state) || state.hold || state.mission.phase === "sampling" || overLiquid(state.positionX, state.positionZ)) return false;
+  if (state.plan && ["uplinking", "executing"].includes(state.plan.status)) return false;
   state.auto = false; state.mission.guidance = false; state.throttle = 0; state.altitudeHold = null;
   state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0; state.downlinkActive = false;
   state.restSeconds = Math.max(0, hours * 3600);

@@ -31,6 +31,41 @@ Notes for every session:
 
 ## Entries
 
+### 2026-09-28: Mission planning mode and leapfrog scouting
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add autonomous flight planning with leapfrog scouting"
+- **What changed:**
+  - New **Plan flight** button opens a map: tap up to 6 waypoints (tap a site to snap to it),
+    pick 40 m hop / 150 m scouting / 400 m cruise (nominal) altitude, and read a live estimate
+    (distance, time, energy incl. preheat, battery % and temperature at landing, sites it will
+    scout) with a GO / NO-GO verdict and reasons.
+  - **Uplink plan** simulates the signal delay (8 s here, 73-90 min for real), then the lander
+    flies itself: climb, cruise through the waypoints, descend and land. A strip under the
+    mission bar shows progress, a 1x / 5x / 20x time-speed control and **Stop plan** (holds
+    position). Afterwards it reports actual vs estimated time and energy.
+  - **Leapfrog rule:** the last waypoint must be a scouted site. Base and the Dry outcrop start
+    scouted; six candidate interdune sites (A-F, 0.3-1.9 km out, chosen for low relief and
+    given level 10 m landing circles) turn from amber to green when any flight passes within
+    60 m of them at 20 m or higher. The 3D view shows each site's 10 m safe landing circle.
+  - **Land-now fault response:** during a plan, if flight time left drops under 3 minutes
+    (energy reserve or 35 C battery), the autopilot descends where it is.
+  - Manual control, any flight command, the guided survey or a safety restriction stops a plan.
+  - The flight-profile chart's altitude scale now grows with the flight instead of clipping at 65 m.
+- **Files:** `dist/flight-plan.mjs` (new), `dist/flight-model.mjs`, `dist/mission-systems.mjs`,
+  `dist/titan-terrain.mjs`, `dist/chase-vehicle.mjs`, `dist/app.js`, `dist/index.html`,
+  `dist/styles.css`, `tests/flight-plan.test.mjs` (new), `README.md`, `RESEARCH-COMPENDIUM.md`
+- **Assumptions:** [PUB] no real-time piloting, uplinked autonomous flights, leapfrog scouting,
+  ~10 m safe landing circle, ~400 m nominal cruise, ~30 min longest flights, land-now fault
+  response. [EST] 2.5 m/s planned climb, 10 m/s cruise, 60 m scouting radius at 20 m+,
+  8 s compressed uplink, candidate site positions, the 3-minute land-now trigger. Descent is
+  limited to the simulator's existing 1.3 m/s landing profile.
+- **Checks:** 44 tests pass, including a full autonomous flight (uplink wait, climb to 150 m,
+  scouting Site A, landing inside the 10 m circle, energy within 0.75-1.35x of the estimate),
+  leapfrog follow-up, abort, land-now and level/dry site checks. Planning dialog checked in the
+  browser (sites, GO/NO-GO, estimate). The flight itself was not watched in the browser because
+  the browser pane was hidden; it is covered by the tests.
+- **Open / next:** no uplink of plans at Titan night (real ops) is modeled only as a NO-GO check.
+
 ### 2026-09-28: Redirect page to retire the ChatGPT Sites copy (prepared, not yet published)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add a redirect page for retiring the ChatGPT Sites copy"

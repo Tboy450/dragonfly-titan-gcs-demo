@@ -61,6 +61,7 @@
           <button id="hold-button" data-command="hold" type="button" aria-pressed="false">Pause</button>
         </div>
         <output id="pilot-navigation" aria-label="Local position">N 0 / E 0 m</output>
+        <button id="plan-button" type="button">Plan flight</button>
         <button id="systems-button" type="button">Diagnostics</button>
         <span class="simulation-label">Simulated telemetry</span>
       </section>
@@ -70,6 +71,17 @@
         <output id="objective-distance">171 m to outcrop</output>
         <button id="mission-action" type="button">Begin survey</button>
         <span id="vehicle-alert" role="status">Systems nominal</span>
+      </section>
+
+      <section id="plan-strip" class="plan-strip" aria-label="Autonomous flight" hidden>
+        <div><strong id="plan-strip-title">Autonomous flight</strong><span id="plan-strip-status" role="status">Plan uplinked</span></div>
+        <div class="warp-switch" role="group" aria-label="Simulation speed">
+          <button type="button" data-warp="1" aria-pressed="true">1x</button>
+          <button type="button" data-warp="5" aria-pressed="false">5x</button>
+          <button type="button" data-warp="20" aria-pressed="false">20x</button>
+        </div>
+        <button id="plan-abort" type="button">Stop plan</button>
+        <button id="plan-dismiss" type="button" hidden>Done</button>
       </section>
 
       <section class="layout-grid" aria-label="Dragonfly simulator">
@@ -336,6 +348,32 @@
         <a href="https://solarsystem.nasa.gov/moons/saturn-moons/titan/in-depth/" target="_blank" rel="noreferrer">Titan environment</a>
       </footer>
     </main>
+    <dialog id="plan-dialog" aria-labelledby="plan-title">
+      <header class="systems-header"><div><span>Autonomous flight / simulated</span><h2 id="plan-title">Flight Plan</h2></div><button id="close-plan" type="button">Close</button></header>
+      <p class="plan-hint">Tap the map to add up to 6 waypoints; tap a site to use it. Dragonfly lands at the last waypoint, which must be a <b class="scouted-text">scouted site</b>. Flying within 60 m of an <b class="candidate-text">unscouted site</b> at 20 m or higher scouts it for a later flight.</p>
+      <div class="plan-columns">
+        <div class="plan-map-wrap">
+          <svg id="plan-map" viewBox="0 0 400 400" role="img" aria-label="Flight plan map, north up. Tap to add waypoints."></svg>
+          <div class="rest-controls"><button id="plan-undo" type="button">Undo</button><button id="plan-clear" type="button">Clear</button><button id="plan-zoom" type="button">Zoom: all sites</button></div>
+        </div>
+        <div>
+          <label class="system-control">Cruise altitude<select id="plan-altitude"></select></label>
+          <dl class="diagnostic-values">
+            <div><dt>Route distance</dt><dd id="plan-distance">0 m</dd></div>
+            <div><dt>Flight time / estimate</dt><dd id="plan-time">0:00</dd></div>
+            <div><dt>Energy / incl. preheat</dt><dd id="plan-energy">0 Wh</dd></div>
+            <div><dt>Battery at landing</dt><dd id="plan-battery">--</dd></div>
+            <div><dt>Battery temperature at landing</dt><dd id="plan-battery-temp">--</dd></div>
+            <div><dt>Will scout</dt><dd id="plan-scouts">none</dd></div>
+          </dl>
+          <p id="plan-verdict" class="plan-verdict" role="status">NO-GO</p>
+          <ul id="plan-issues" class="plan-issues"></ul>
+          <button id="plan-uplink" class="primary" type="button" disabled>Uplink plan</button>
+          <div id="plan-report" class="plan-report" hidden></div>
+        </div>
+      </div>
+      <p class="rest-status">Dragonfly is never flown live: signals take 73-90 minutes each way, so flights are planned on Earth, uplinked and flown autonomously. The uplink here takes a few seconds. Estimates use the simulator's power curve and the documented +10 C per 30 min battery heating.</p>
+    </dialog>
     <dialog id="systems-dialog" aria-labelledby="systems-title">
       <header class="systems-header"><div><span>Vehicle engineering / simulated</span><h2 id="systems-title">Energy &amp; Thermal Diagnostics</h2></div><button id="close-systems" type="button">Close</button></header>
       <p id="systems-warning" class="systems-warning" role="status">Systems nominal</p>

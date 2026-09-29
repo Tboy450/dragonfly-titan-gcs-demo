@@ -35,7 +35,7 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
   - **Wind.** Values above the 1.6 m/s design maximum are labeled as stress tests.
   - **Tests.** 36 tests pass (`tests/operations.test.mjs` added).
 
-**Still open** (details in §7–§8): leapfrog scouting, ~400 m cruise altitude, uplink delay, phase-change battery buffering, a cruise-phase thermal panel, visibility-based fog and dimmer lighting, rain-darkened ground, and an entry/descent/landing scenario.
+**Still open** (details in §7–§8): phase-change battery buffering, a cruise-phase thermal panel, visibility-based fog and dimmer lighting, rain-darkened ground, and an entry/descent/landing scenario.
 
 ---
 
@@ -281,7 +281,7 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 | Hover / cruise power | 4.5–6 kW cruise, with a minimum near 6–10 m/s [PUB/CALC] | **Done**: induced + profile + parasite + climb curve | — |
 | Mode transitions | real aircraft cannot teleport; Titan's weak gravity arrests a climb slowly [PUB §2.1] | **Done** (this session): rate-limited vertical, attitude and speed; Auto re-phasing; no mesh-induced jumps | — |
 | Throttle / sticks | Dragonfly is RPM-controlled, fixed pitch [PUB] | **Done** (this session): sticky climb-rate throttle, optional centering, relative stick drag | — |
-| Flight altitude | nominal ~400 m; profiles 0.5–4 km; ceiling 4 km [PUB] | **Open**: auto profile ~46 m, Takeoff 40 m | Raise the auto profile; add a scouting altitude |
+| Flight altitude | nominal ~400 m; profiles 0.5–4 km; ceiling 4 km [PUB] | **Done** (Sep 28): flight plans offer 40 m hop, 150 m scouting and 400 m cruise; the Auto demo stays at ~46 m | Optional: higher profiles (0.5–4 km) |
 | Flight duration | ≤ ~30 min; battery +10 °C per 30 min; 35 °C cap [PUB] | **Done** (Sep 28): 35 °C guard, flight-time estimate, 30 min timer, "land now" advisories | Optional: automatic landing on "land now" |
 | Descent | avoid steep, fast descents (vortex ring state) [PUB] | **Partial**: advisory from `74ed2c4`; Land now flares at ≤ 1.3 m/s | Optional: slanted approach in Auto |
 | Thermal bands | battery 10±10 °C, 0–35 °C; interior ~0 °C; hibernation ≥ −20 °C [PUB] | **Done** | Optional: phase-change buffer (7.5 kg at 22.5 °C) |

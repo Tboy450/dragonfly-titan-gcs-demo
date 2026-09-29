@@ -237,6 +237,7 @@ export function createChaseRenderer() {
       const x = state.positionX || 0;
       const z = state.positionZ || 0;
       landscape.update(x, z);
+      landscape.updateSites(state.scoutedSites || []);
       const target = missionTarget(state);
       const marker = landscape.group.getObjectByName("survey-marker");
       marker.visible = state.mission.phase !== "idle";
