@@ -14,9 +14,12 @@ test("Local modules, styles and images use the ?v=dev stamp the publish workflow
     if (ref === "./assets/titan-mountain-reference.jpg") continue; // also loaded by app.js and the terrain texture
     assert.ok(ref.endsWith("?v=dev"), `index.html references ${ref}`);
   }
-  for (const file of readdirSync(dir).filter(f => f.endsWith(".mjs") || f === "app.js")) {
+  const files = readdirSync(dir, { recursive: true }).map(f => f.replaceAll("\\", "/"))
+    .filter(f => !f.startsWith("vendor/") && (f.endsWith(".mjs") || f === "app.js"));
+  assert.ok(files.includes("ui/context.mjs"), "modules in subfolders are checked too");
+  for (const file of files) {
     const source = readFileSync(new URL(file, dir), "utf8");
-    for (const [, spec] of source.matchAll(/from "(\.\/[\w-]+\.(?:mjs|js)[^"]*)"/g)) {
+    for (const [, spec] of source.matchAll(/(?:from|import) "(\.\.?\/[\w/-]+\.(?:mjs|js)[^"]*)"/g)) {
       assert.ok(spec.endsWith("?v=dev"), `${file} imports ${spec}`);
     }
   }

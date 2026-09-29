@@ -1,0 +1,213 @@
+// Flight buttons, sticks, keyboard, camera modes, view switch and the other form controls.
+import { enterFreeCamera, orbitCamera } from "../flight-camera.mjs?v=dev";
+import { commandFlight, model, takeManualControl } from "../flight-model.mjs?v=dev";
+import { missionAction, startRest, toggleDownlink } from "../mission-systems.mjs?v=dev";
+import { $, chaseRenderer, clamp, flightCanvas, state } from "./context.mjs?v=dev";
+import { updateReadouts } from "./readouts.mjs?v=dev";
+
+function setMode(mode) {
+  commandFlight(state, mode);
+}
+
+
+function bindPilotStick(nubId, kind) {
+  const nub = $(nubId);
+  const pad = nub.closest(".pilot-stick-box, .stick-box");
+  let activePointer = null;
+  let origin = null;
+
+  // Inputs are relative to where the finger lands, so a touch never snaps the sticks.
+  const applyPointer = (event) => {
+    const rect = pad.getBoundingClientRect();
+    const travel = Math.max(1, rect.width * 0.34);
+    const x = (event.clientX - origin.x) / travel;
+    const y = (event.clientY - origin.y) / travel;
+    if (kind === "left") {
+      state.yawCmd = clamp(origin.yaw + x, -1, 1);
+      // Moving the throttle hands altitude back to the pilot; steering alone keeps a button's hold.
+      if (Math.abs(y) > 0.02) {
+        state.altitudeHold = null;
+        state.throttle = clamp(origin.throttle - y / 2, 0, 1);
+      }
+    } else {
+      state.rollCmd = clamp(origin.roll + x, -1, 1);
+      state.pitchCmd = clamp(origin.pitch - y, -1, 1);
+    }
+  };
+
+  pad.addEventListener("pointerdown", (event) => {
+    if (activePointer !== null) return;
+    activePointer = event.pointerId;
+    pad.setPointerCapture(event.pointerId);
+    takeManualControl(state);
+    // Grabbing a stick changes nothing until the finger moves, wherever it lands on the pad.
+    origin = { x: event.clientX, y: event.clientY, throttle: state.throttle, yaw: state.yawCmd, pitch: state.pitchCmd, roll: state.rollCmd };
+  });
+
+  pad.addEventListener("pointermove", (event) => {
+    if (event.pointerId === activePointer) applyPointer(event);
+  });
+
+  const release = (event) => {
+    if (event.pointerId !== activePointer) return;
+    activePointer = null;
+    if (kind === "left") {
+      state.yawCmd = 0;
+      if (state.throttleSpring) {
+        state.throttle = model.hoverThrottle;
+        state.altitudeHold = null;
+      }
+    } else {
+      state.pitchCmd = 0;
+      state.rollCmd = 0;
+    }
+  };
+
+  pad.addEventListener("pointerup", release);
+  pad.addEventListener("pointercancel", release);
+  pad.addEventListener("lostpointercapture", release);
+}
+
+function setThrottleSpring(enabled) {
+  state.throttleSpring = enabled;
+  try { localStorage.setItem("dragonfly-throttle-spring", enabled ? "1" : "0"); } catch { /* preference is optional */ }
+  document.querySelectorAll("[data-throttle-mode]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(enabled));
+    button.textContent = enabled ? "Throttle: centering" : "Throttle: sticky";
+  });
+}
+
+function setCameraMode(mode) {
+  if (mode === "free" && !chaseRenderer) return;
+  if (mode === "free" && state.cameraMode !== "free") enterFreeCamera(state);
+  state.cameraMode = mode;
+  document.body.classList.toggle("free-camera", mode === "free");
+  const fixedButton = $("fixed-camera-button");
+  const freeButton = $("free-camera-button");
+  fixedButton.classList.toggle("active", mode === "fixed");
+  freeButton.classList.toggle("active", mode === "free");
+  fixedButton.setAttribute("aria-pressed", String(mode === "fixed"));
+  freeButton.setAttribute("aria-pressed", String(mode === "free"));
+}
+
+function bindFreeCamera() {
+  let activePointer = null;
+  let lastX = 0;
+  let lastY = 0;
+
+  flightCanvas.addEventListener("pointerdown", (event) => {
+    if (state.view !== "pilot" || state.cameraMode !== "free" || activePointer !== null) return;
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    activePointer = event.pointerId;
+    lastX = event.clientX;
+    lastY = event.clientY;
+    flightCanvas.setPointerCapture(event.pointerId);
+  });
+
+  flightCanvas.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== activePointer || state.cameraMode !== "free" || state.view !== "pilot") return;
+    const rect = flightCanvas.getBoundingClientRect();
+    orbitCamera(state, event.clientX - lastX, event.clientY - lastY, rect.width, rect.height);
+    lastX = event.clientX;
+    lastY = event.clientY;
+  });
+
+  const release = (event) => {
+    if (event.pointerId === activePointer) activePointer = null;
+  };
+
+  flightCanvas.addEventListener("pointerup", release);
+  flightCanvas.addEventListener("pointercancel", release);
+  flightCanvas.addEventListener("lostpointercapture", release);
+}
+
+export function setView(view) {
+  state.view = view;
+  document.body.classList.toggle("pilot-view", view === "pilot");
+  const missionButton = $("mission-view-button");
+  const pilotButton = $("pilot-view-button");
+  missionButton.classList.toggle("active", view === "mission");
+  pilotButton.classList.toggle("active", view === "pilot");
+  missionButton.setAttribute("aria-pressed", String(view === "mission"));
+  pilotButton.setAttribute("aria-pressed", String(view === "pilot"));
+}
+
+
+$("wind-slider").addEventListener("input", (event) => {
+  state.wind = Number(event.target.value);
+});
+
+$("payload-slider").addEventListener("input", (event) => {
+  state.payloadDelta = Number(event.target.value);
+});
+
+$("mission-action").addEventListener("click", () => { missionAction(state); updateReadouts(); });
+$("systems-button").addEventListener("click", () => $("systems-dialog").showModal());
+$("close-systems").addEventListener("click", () => $("systems-dialog").close());
+$("thermal-auto").addEventListener("change", (event) => {
+  state.thermalAuto = event.target.checked;
+  state.trimClock = 0;
+  $("trim-control").disabled = state.thermalAuto;
+});
+$("trim-control").addEventListener("input", (event) => { state.trim = Number(event.target.value) / 100; });
+$("fan-control").addEventListener("input", (event) => { state.fan = Number(event.target.value) / 100; });
+$("rtg-scenario").addEventListener("change", event => { state.arrivalElectricW = Number(event.target.value); });
+$("fault-control").addEventListener("change", (event) => { state.fault = event.target.value; });
+$("rest-hour").addEventListener("click", () => startRest(state, 1));
+$("rest-night").addEventListener("click", () => startRest(state, 192));
+$("downlink-toggle").addEventListener("click", () => { toggleDownlink(state); });
+$("rest-stop").addEventListener("click", () => { state.restSeconds = 0; state.restNotice = ""; state.hibernating = false; });
+
+document.querySelectorAll("[data-command]").forEach((button) => {
+  button.addEventListener("click", () => setMode(button.dataset.command));
+});
+$("mission-view-button").addEventListener("click", () => setView("mission"));
+$("pilot-view-button").addEventListener("click", () => setView("pilot"));
+$("fixed-camera-button").addEventListener("click", () => setCameraMode("fixed"));
+$("free-camera-button").addEventListener("click", () => setCameraMode("free"));
+bindPilotStick("pilot-left-stick", "left");
+bindPilotStick("pilot-right-stick", "right");
+bindPilotStick("left-stick", "left");
+bindPilotStick("right-stick", "right");
+bindFreeCamera();
+
+window.addEventListener("keydown", (event) => {
+  if ($("systems-dialog").open || $("plan-dialog").open) return;
+  if (event.target.matches("input, select, textarea, button, a") || event.target.isContentEditable) return;
+  const step = event.shiftKey ? 0.08 : 0.04;
+  const keys = ["w", "a", "s", "d", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "];
+  if (!keys.includes(event.key)) return;
+  event.preventDefault();
+  takeManualControl(state);
+  if (event.key === "w" || event.key === "s" || event.key === " ") state.altitudeHold = null;
+  if (event.key === "w") state.throttle = clamp(state.throttle + step, 0, 1);
+  if (event.key === "s") state.throttle = clamp(state.throttle - step, 0, 1);
+  if (event.key === "a") state.yawCmd = clamp(state.yawCmd - step, -1, 1);
+  if (event.key === "d") state.yawCmd = clamp(state.yawCmd + step, -1, 1);
+  if (event.key === "ArrowUp") state.pitchCmd = clamp(state.pitchCmd + step, -1, 1);
+  if (event.key === "ArrowDown") state.pitchCmd = clamp(state.pitchCmd - step, -1, 1);
+  if (event.key === "ArrowLeft") state.rollCmd = clamp(state.rollCmd - step, -1, 1);
+  if (event.key === "ArrowRight") state.rollCmd = clamp(state.rollCmd + step, -1, 1);
+  if (event.key === " ") {
+    // Level off: centre the attitude sticks and set the throttle to hold altitude.
+    state.pitchCmd = 0;
+    state.rollCmd = 0;
+    state.yawCmd = 0;
+    state.throttle = model.hoverThrottle;
+  }
+});
+
+document.querySelectorAll("[data-throttle-mode]").forEach((button) => {
+  button.addEventListener("click", () => setThrottleSpring(!state.throttleSpring));
+});
+setThrottleSpring(state.throttleSpring);
+
+function setVehicleModel(choice) {
+  state.vehicleModel = choice;
+  try { localStorage.setItem("dragonfly-vehicle-model", choice); } catch { /* preference is optional */ }
+  $("model-toggle").textContent = choice === "research" ? "Model: NASA 2023" : "Model: original";
+  $("model-toggle").setAttribute("aria-pressed", String(choice === "research"));
+}
+$("model-toggle").addEventListener("click", () => setVehicleModel(state.vehicleModel === "research" ? "original" : "research"));
+setVehicleModel(state.vehicleModel);
+if (!chaseRenderer) $("model-toggle").hidden = true;
