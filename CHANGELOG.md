@@ -31,6 +31,18 @@ Notes for every session:
 
 ## Entries
 
+### 2026-09-29: Fix: the app could freeze when the view had no size
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Keep the frame loop running when the view has no size"
+- **What changed:** When the vehicle view or chart had zero width or height (a hidden tab, a
+  collapsed layout, possibly a phone mid-rotation), drawing threw an error before the next frame
+  was scheduled, which stopped the whole app until a reload. Drawing now skips zero-size views,
+  and the next frame is requested before anything is drawn (at most one pending), so an error in
+  one frame can no longer stop the loop.
+- **Files:** `dist/app.js`
+- **Checks:** 58 tests pass; a scripted run of the page (arrival, layers, planned flight,
+  sampling, downlink, pilot view, model toggle) went from 14 errors to none.
+
 ### 2026-09-29: Arrival sequence framing for phones
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Zoom out on the parachute phases of the arrival sequence"

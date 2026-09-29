@@ -116,6 +116,8 @@ function drawFlight() {
   const rect = resizeCanvas(flightCanvas, flightCtx);
   const w = rect.width;
   const h = rect.height;
+  // A hidden or collapsed view has no size; drawing it would throw.
+  if (w < 2 || h < 2) return;
   const ctx = flightCtx;
   ctx.clearRect(0, 0, w, h);
 
@@ -864,6 +866,7 @@ function drawChart() {
   const rect = resizeCanvas(chartCanvas, chartCtx);
   const w = rect.width;
   const h = rect.height;
+  if (w < 2 || h < 2) return;
   const ctx = chartCtx;
   ctx.clearRect(0, 0, w, h);
   ctx.fillStyle = "rgba(255, 255, 255, 0.025)";
@@ -1498,7 +1501,17 @@ function setView(view) {
 
 let readoutTime = 0;
 let planPanelTime = 0;
+// The next frame is requested first, so an error while drawing one frame can never stop the loop,
+// and at most one frame is ever pending.
+let frameRequested = false;
+function scheduleFrame() {
+  if (frameRequested) return;
+  frameRequested = true;
+  requestAnimationFrame((time) => { frameRequested = false; tick(time); });
+}
+
 function tick(now) {
+  scheduleFrame();
   const dt = Math.min(0.05, (now - state.lastTick) / 1000);
   state.lastTick = now;
   // Time compression is offered only while the lander flies a plan on its own or runs a downlink.
@@ -1525,7 +1538,6 @@ function tick(now) {
     readoutTime = now;
   }
   drawFlight();
-  requestAnimationFrame(tick);
 }
 
 $("wind-slider").addEventListener("input", (event) => {
@@ -1666,4 +1678,4 @@ if (!arrivalSeen) startArrival();
 
 if (["localhost", "127.0.0.1"].includes(location.hostname)) window.dragonflyTick = tick;
 state.lastTick = performance.now();
-requestAnimationFrame(tick);
+scheduleFrame();
