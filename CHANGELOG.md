@@ -31,6 +31,35 @@ Notes for every session:
 
 ## Entries
 
+### 2026-09-29: Pilot view layout: see-through panels, nothing covering the vehicle
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Make the Pilot view panels see-through and compact on phones"
+- **What changed:** From the owner's phone screenshot: the Fixed/Free switch overlapped the Model
+  button, the systems box sat on the drone, and solid stick, attitude and rotor panels plus a tall
+  header left little of the scene. Now: camera switch top-left, Model button top-right, the
+  systems list is a see-through right-aligned list under it (clear of the vehicle); stick pads,
+  attitude ball and rotor readout are see-through; rotor speeds are one slim row on phones; the
+  header puts the six status values in one row and all flight buttons share one compact size
+  (Plan flight had been larger). All rules are in one section at the end of `styles.css`.
+- **Files:** `dist/styles.css`
+- **Checks:** 58 tests pass; measured at 375 x 812: no overlapping overlays, systems list clear of
+  the vehicle, rotor row 22 px, the scene starts ~55 px higher, no sideways scrolling.
+
+### 2026-09-29: Code split for safer handoffs
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commits:** "Split app.js into focused ui/ modules without changing behavior";
+  "Move the research model and arrival hardware out of chase-vehicle.mjs"
+- **What changed:** `app.js` (1,681 lines) is now a 60-line entry point plus `dist/ui/`
+  modules (context, flight-view, chart, readouts, layers-panel, pilot-hud, science-panel,
+  plan-panel, controls, arrival). `chase-vehicle.mjs` (760 lines) keeps the renderer, original
+  model and layers; `vehicle-research.mjs` builds the NASA 2023 model and interior and
+  `arrival-hardware.mjs` builds the aeroshell and parachutes. Code moved verbatim by script;
+  only imports/exports were added. The Sample button no longer forces an immediate readout
+  refresh (the regular 0.1 s refresh covers it), which removed an import cycle.
+- **Checks:** 58 tests pass (the version-stamp test now covers subfolders and `../` imports).
+  A scripted run of the page (arrival, layers, planned flight, sampling, downlink, Pilot view,
+  model toggle) produced byte-identical readouts before and after both splits, with no errors.
+
 ### 2026-09-29: Fix: the app could freeze when the view had no size
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Keep the frame loop running when the view has no size"

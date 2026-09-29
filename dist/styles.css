@@ -1562,3 +1562,70 @@ body.arrival .pilot-hud { display: none; }
     gap: 4px;
   }
 }
+
+/* ---------- Pilot view: see-through panels, nothing covering the vehicle ----------
+   Later rules here deliberately override the earlier pilot-view rules above. */
+body.pilot-view #plan-button,
+body.pilot-view #systems-button { min-height: 34px; padding: 4px 12px; font-size: 0.82rem; }
+
+/* Systems readout: a see-through list in the top-right corner, clear of the vehicle. */
+body.pilot-view .pilot-hud {
+  top: 54px; right: 10px; left: auto; gap: 1px; padding: 0;
+  background: none; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95); font-size: 0.68rem;
+}
+body.pilot-view .pilot-hud div { justify-content: flex-end; gap: 6px; }
+body.pilot-view .pilot-hud span { color: rgba(242, 246, 249, 0.8); }
+
+/* Stick pads, attitude ball and rotor readout: see-through so the scene shows behind them. */
+body.pilot-view .pilot-stick-box { background: rgba(7, 17, 27, 0.26); border-color: rgba(236, 245, 255, 0.34); box-shadow: none; }
+body.pilot-view .pilot-axis { background: rgba(236, 245, 255, 0.3); }
+body.pilot-view .axis-label { color: rgba(236, 245, 255, 0.62); }
+body.pilot-view .attitude-indicator { opacity: 0.78; box-shadow: none; }
+body.pilot-view .pilot-rotors { background: rgba(7, 17, 27, 0.26); border-color: rgba(236, 245, 255, 0.16); box-shadow: none; }
+body.pilot-view .pilot-rotor-grid b { background: transparent; }
+body.pilot-view .pilot-deck > div > span,
+body.pilot-view .pilot-deck small { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); }
+body.pilot-view .pilot-control .throttle-mode { background: rgba(7, 17, 27, 0.45); }
+
+@media (max-width: 720px) {
+  /* Header: title and view switch share a row; the six status values share one row. */
+  body.pilot-view .topbar { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 8px; padding: 6px 8px; }
+  body.pilot-view .brand { justify-content: flex-start; }
+  body.pilot-view .brand h1 { font-size: 0.95rem; }
+  body.pilot-view .view-switch { width: auto; }
+  body.pilot-view .view-switch button { min-height: 30px; padding: 2px 12px; font-size: 0.8rem; }
+  body.pilot-view .status-strip { grid-column: 1 / -1; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 2px; }
+  body.pilot-view .status-item { padding: 1px 2px; }
+  body.pilot-view .status-item span { font-size: 0.52rem; }
+  body.pilot-view .status-item strong { margin-top: 0; font-size: 0.74rem; white-space: nowrap; }
+
+  /* Flight buttons: one compact size for all of them. */
+  body.pilot-view .flight-bar { gap: 4px; padding: 4px; }
+  body.pilot-view .flight-commands { gap: 4px; }
+  body.pilot-view .flight-commands button,
+  body.pilot-view #plan-button,
+  body.pilot-view #systems-button { min-height: 32px; padding: 2px 8px; font-size: 0.76rem; }
+  body.pilot-view #pilot-navigation { font-size: 0.72rem; }
+
+  /* Survey strip: one line. */
+  body.pilot-view .mission-strip { padding: 4px 8px; gap: 2px 8px; }
+  body.pilot-view .mission-strip strong { font-size: 0.82rem; }
+  body.pilot-view #objective-distance { font-size: 0.72rem; }
+  body.pilot-view .mission-strip button { min-height: 30px; padding: 2px 10px; font-size: 0.74rem; }
+
+  /* Scene overlays: camera switch top-left, model button top-right, systems list under it. */
+  body.pilot-view .camera-switch { left: 8px; top: 6px; width: 112px; height: 30px; transform: none; }
+  body.pilot-view .model-toggle { top: 6px; right: 8px; min-height: 30px; padding: 2px 8px; font-size: 0.66rem; }
+  body.pilot-view .pilot-hud { top: 42px; right: 8px; font-size: 0.62rem; }
+  body.pilot-view .pilot-hud strong { font-size: 0.64rem; }
+
+  /* Controls: smaller labels and one slim row of rotor speeds. */
+  body.pilot-view .pilot-deck { gap: 4px 8px; }
+  body.pilot-view .pilot-deck > div > span { min-height: 0; margin-bottom: 2px; font-size: 0.66rem; }
+  body.pilot-view .pilot-deck small { min-height: 0; margin-top: 2px; font-size: 0.64rem; }
+  body.pilot-view .pilot-rotors { padding: 2px 6px; grid-template-columns: auto 1fr; }
+  body.pilot-view .pilot-rotors > span { font-size: 0.6rem; }
+  body.pilot-view .pilot-rotors small { display: none; }
+  body.pilot-view .pilot-rotor-grid { grid-row: auto; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 2px; }
+  body.pilot-view .pilot-rotor-grid b { height: 16px; font-size: 0.64rem; }
+}
