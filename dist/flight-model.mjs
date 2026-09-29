@@ -1,4 +1,4 @@
-import { createSystemsState, guidanceTarget, stepSystems, flightRestriction, overLiquid } from "./mission-systems.mjs?v=20260928b";
+import { createSystemsState, guidanceTarget, stepSystems, flightRestriction, overLiquid } from "./mission-systems.mjs?v=dev";
 // Environmental values: APL's TFAWS 2024 report. Performance values are demo assumptions.
 export const model = Object.freeze({
   massKg: 875, titanG: 1.352, earthG: 9.80665,

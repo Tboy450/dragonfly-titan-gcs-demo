@@ -1,7 +1,7 @@
-import { createChaseRenderer } from "./chase-vehicle.mjs?v=20260928b";
-import { enterFreeCamera, orbitCamera, smoothCameraPose } from "./flight-camera.mjs?v=20260928b";
-import { model, createFlightState, deriveFlight, stepFlight, commandFlight, advanceRest, takeManualControl } from "./flight-model.mjs?v=20260928b";
-import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel, liquidExchangerStudy, linkStatus, toggleDownlink, flightEndurance, operationsAdvisory, titanLocalHour, titanDaylight } from "./mission-systems.mjs?v=20260928b";
+import { createChaseRenderer } from "./chase-vehicle.mjs?v=dev";
+import { enterFreeCamera, orbitCamera, smoothCameraPose } from "./flight-camera.mjs?v=dev";
+import { model, createFlightState, deriveFlight, stepFlight, commandFlight, advanceRest, takeManualControl } from "./flight-model.mjs?v=dev";
+import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel, liquidExchangerStudy, linkStatus, toggleDownlink, flightEndurance, operationsAdvisory, titanLocalHour, titanDaylight } from "./mission-systems.mjs?v=dev";
 
 const state = {
   ...createFlightState(),

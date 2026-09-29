@@ -10,13 +10,14 @@
     />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23081018'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23ffb457' stroke-width='4'/%3E%3Cpath d='M14 32h36M32 14v36' stroke='%237ce7ff' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23e9f2ff'/%3E%3C/svg%3E" />
     <link rel="preload" as="image" href="./assets/titan-mountain-reference.jpg" />
-    <link rel="stylesheet" href="./styles.css?v=20260928b" />
+    <link rel="stylesheet" href="./styles.css?v=dev" />
   </head>
   <body>
     <main class="app-shell">
       <header class="topbar" aria-label="Mission status">
         <div class="brand">
           <span class="mission-chip">New Frontiers Demo</span>
+          <span id="build-label" class="build-label" title="Published version. Local copies show 'Build local'." data-build-stamp>Build local</span>
           <h1>Dragonfly Titan GCS</h1>
         </div>
         <div class="view-switch" role="group" aria-label="Visualization view">
@@ -409,7 +410,7 @@
           <dl class="diagnostic-values"><div><dt>Fixed tube sheet</dt><dd>Tube sheets welded to shell</dd></div><div><dt>Floating head</dt><dd>Movable rear header; removable bundle</dd></div><div><dt>U-tube</dt><dd>Free bend accommodates expansion</dd></div><div><dt>Multiple passes / baffles</dt><dd>Alter flow and heat transfer</dd></div></dl>
           <p>A liquid-to-liquid shell is a reasonable conceptual option for separate coolant circuits. Its geometry alone does not specify coolant, pressure, freezing margin or performance. Nitrogen outside does not require nitrogen inside a sealed liquid circuit. Any such variant here would be an assumed design study, separate from the documented surface gas loop.</p>
           <p>Complex coupled liquid loops do have spacecraft precedent: NASA describes interacting rover and cruise loops for Mars Science Laboratory. That supports the general concept, not a claim that Dragonfly uses the same hardware or fluids. <a href="https://ntrs.nasa.gov/citations/20120006581" target="_blank" rel="noreferrer">NASA MMRTG heat-exchanger study</a></p>
-          <div class="reference-images"><figure><img src="./assets/heat-exchanger-reference.jpg?v=20260928c" alt="Cutaway of a shell-and-tube heat exchanger showing the tube bundle, baffles and separate fluid paths" loading="lazy" /><figcaption>Shell-and-tube heat exchanger cutaway: tube bundle, baffles and separate shell- and tube-side flow paths. Representative industrial design.</figcaption></figure><figure><img src="./assets/tubetech-reference.jpg?v=20260928c" alt="TubeTech diagram of a tube bundle and shell-side flow" loading="lazy" /><figcaption>Tube bundle and shell-side flow arrangement. Source: TubeTech.</figcaption></figure></div>
+          <div class="reference-images"><figure><img src="./assets/heat-exchanger-reference.jpg?v=dev" alt="Cutaway of a shell-and-tube heat exchanger showing the tube bundle, baffles and separate fluid paths" loading="lazy" /><figcaption>Shell-and-tube heat exchanger cutaway: tube bundle, baffles and separate shell- and tube-side flow paths. Representative industrial design.</figcaption></figure><figure><img src="./assets/tubetech-reference.jpg?v=dev" alt="TubeTech diagram of a tube bundle and shell-side flow" loading="lazy" /><figcaption>Tube bundle and shell-side flow arrangement. Source: TubeTech.</figcaption></figure></div>
           <p>Lockheed Martin supplies Dragonfly's cruise stage and aeroshell and supports integration. Public NASA and APL sources do not yet describe a liquid-to-liquid exchanger on Dragonfly, so the figures above illustrate the concept explored in this study rather than flight hardware. <a href="https://www.lockheedmartin.com/en-us/capabilities/space/deep-space-exploration.html" target="_blank" rel="noreferrer">Lockheed Martin</a> / <a href="https://science.nasa.gov/blogs/dragonfly/2026/03/10/nasas-dragonfly-mission-begins-rotorcraft-integration-testing-stage/" target="_blank" rel="noreferrer">NASA integration update</a></p>
           <p>Calm-weather overheating is a documented design concern and is modeled here. Component melting and landing skids sinking into ice do not appear in the published thermal analyses, so they are left out of the model for now. <a href="https://www.nasa.gov/podcasts/small-steps-giant-leaps/episode-168-dragonfly-mission-to-titan/" target="_blank" rel="noreferrer">NASA interview</a></p>
         </details>
@@ -423,6 +424,6 @@
         </details>
       </section>
     </dialog>
-    <script type="module" src="./app.js?v=20260928b"></script>
+    <script type="module" src="./app.js?v=dev"></script>
   </body>
 </html>

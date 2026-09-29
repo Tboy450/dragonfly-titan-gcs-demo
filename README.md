@@ -27,9 +27,12 @@ node --test tests/*.test.mjs
 ## Publishing
 
 Pushing to `main` runs the checks and publishes `dist` to GitHub Pages.
-Before each release, change the `?v=` stamp everywhere it appears in `dist` (index.html and
-every module import) so phones fetch fresh files instead of mixing cached old modules
-with new ones. A test checks that every stamp matches.
+Local files reference each other with `?v=dev`. The publish workflow replaces every stamp
+with the commit hash and writes the build into the header ("Build 1a2b3c4 · date"), so phones
+always fetch fresh files and you can see which version is live. Leave the `?v=dev` stamps as
+they are; a test checks them.
+
+Record every change in [CHANGELOG.md](CHANGELOG.md), signed with who made it.
 The existing [Sites copy](https://dragonfly-titan-gcs-demo.tboy450.chatgpt.site/)
 is managed separately.
 

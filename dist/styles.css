@@ -134,6 +134,17 @@ a:hover {
   background: var(--cyan);
 }
 
+.build-label {
+  margin-left: 8px;
+  color: var(--muted);
+  font: 0.7rem Consolas, monospace;
+  white-space: nowrap;
+}
+
+body.pilot-view .build-label {
+  display: none;
+}
+
 .brand h1 {
   margin: 6px 0 0;
   font-size: 1.8rem;
