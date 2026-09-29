@@ -31,6 +31,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-09-29: Search-engine basics
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add search metadata and a sitemap"
+- **What changed:** The owner could not find the site on Google. Added a descriptive page title
+  and description, `robots` index/follow, a canonical URL, link-preview (Open Graph) tags and
+  `dist/sitemap.xml` (served at `/dragonfly-titan-gcs-demo/sitemap.xml`) for Google Search
+  Console. Listing still depends on Google crawling the site; the owner can speed it up with
+  Search Console (verify the URL-prefix property, submit the sitemap, request indexing).
+- **Files:** `dist/index.html`, `dist/sitemap.xml` (new)
+- **Findings:** the site and repository are public. `https://tboy450.github.io/` has no page
+  (no user-site repository), and the path is case-sensitive (`/Dragonfly-...` gives 404).
+- **Open / next:** optional user-site repository `Tboy450.github.io` with a landing page listing
+  the projects (needs the owner's approval; it would be a new public repository).
+
 ### 2026-09-29: Mock-up internal and thermal views for the original model
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add labeled mock-up internal and thermal views for the original model"
