@@ -17,9 +17,15 @@ export function createChaseRenderer() {
   const landscape = createTitanTerrain(scene, renderer);
   const craft = new THREE.Group();
   scene.add(craft);
-  const ambient = new THREE.HemisphereLight(0xfff3de, 0x645045, 2.5);
+  // Titan: surface light is ~1/1,000 of Earth's, mostly haze-scattered and red/orange, so the sky
+  // dome dominates and direct sunlight casts only faint shadows. Colors and intensities are an
+  // artistic rendering of that (kept bright enough to read on a phone), not a radiometric model.
+  const titanSky = new THREE.Color(0xe3a65e), titanGround = new THREE.Color(0x4d3522);
+  const neutralSky = new THREE.Color(0xfff3de), neutralGround = new THREE.Color(0x645045);
+  const titanSun = new THREE.Color(0xffc98c), neutralSun = new THREE.Color(0xffeed6);
+  const ambient = new THREE.HemisphereLight(titanSky, titanGround, 2.2);
   scene.add(ambient);
-  const sun = new THREE.DirectionalLight(0xffeed6, 3.2);
+  const sun = new THREE.DirectionalLight(titanSun, 1);
   sun.position.set(-4, 7, -3);
   sun.castShadow = true;
   sun.shadow.mapSize.set(1024, 1024);
@@ -28,7 +34,7 @@ export function createChaseRenderer() {
   sun.shadow.bias = -0.00015;
   scene.add(sun);
   scene.add(sun.target);
-  const fill = new THREE.DirectionalLight(0xdbe8f3, 1.4);
+  const fill = new THREE.DirectionalLight(0xdbe8f3, 0);
   fill.position.set(4, 2, 5);
   scene.add(fill);
 
@@ -100,12 +106,33 @@ export function createChaseRenderer() {
   }
   strut([-0.76, -0.66, 0.55], [0.76, -0.66, 0.55], 0.025);
   box(0.23, 0.15, 0.21, [0, -0.26, -0.25], dark);
-  strut([0.06, 0.18, 0.35], [0.06, 0.46, 0.35], 0.035);
-  const dish = mesh(new THREE.SphereGeometry(0.32, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), shell, [0.06, 0.46, 0.35]);
+  // High-gain antenna on its motorized arm: stowed low for flight, raised and aimed for downlink.
+  const hgaBase = new THREE.Group();
+  hgaBase.position.set(0.06, 0.18, 0.35);
+  craft.add(hgaBase);
+  const hgaArm = mesh(new THREE.CylinderGeometry(0.035, 0.035, 1, 10), metal, [0, 0.14, 0], hgaBase);
+  const hgaHead = new THREE.Group();
+  hgaBase.add(hgaHead);
+  const dish = mesh(new THREE.SphereGeometry(0.32, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), shell, [0, 0, 0], hgaHead);
   dish.scale.y = 0.23;
-  const dishRim = mesh(new THREE.TorusGeometry(0.32, 0.014, 8, 32), metal, [0.06, 0.46, 0.35]);
+  const dishRim = mesh(new THREE.TorusGeometry(0.32, 0.014, 8, 32), metal, [0, 0, 0], hgaHead);
   dishRim.rotation.x = Math.PI / 2;
-  strut([0.06, 0.47, 0.35], [0.06, 0.65, 0.35], 0.012, gold);
+  mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.18, 8), gold, [0, 0.1, 0], hgaHead);
+  // Seen from Titan, Earth stays within ~6 deg of the Sun, so the dish aims along the sunlight.
+  const earthDirection = new THREE.Vector3(-65, 115, -45).normalize();
+  const upAxis = new THREE.Vector3(0, 1, 0), aimLocal = new THREE.Vector3();
+  const aimQuaternion = new THREE.Quaternion(), stowedQuaternion = new THREE.Quaternion(), craftInverse = new THREE.Quaternion();
+  function poseAntenna(deployed) {
+    const t = deployed * deployed * (3 - 2 * deployed);
+    const length = 0.28 + 0.62 * t;
+    hgaArm.scale.y = length;
+    hgaArm.position.y = length / 2;
+    hgaHead.position.y = length;
+    craftInverse.copy(craft.quaternion).invert();
+    aimLocal.copy(earthDirection).applyQuaternion(craftInverse);
+    aimQuaternion.setFromUnitVectors(upAxis, aimLocal);
+    hgaHead.quaternion.slerpQuaternions(stowedQuaternion, aimQuaternion, t);
+  }
 
   const blade = new THREE.Shape();
   blade.moveTo(0.07, -0.055);
@@ -150,6 +177,7 @@ export function createChaseRenderer() {
   let renderView = "";
   function setAttitude(state) {
     craft.rotation.set(-state.pitch * model.pitchRadians, -state.heading * Math.PI / 180, -state.roll * model.rollRadians, "YXZ");
+    poseAntenna(state.antennaDeploy || 0);
     rotors.forEach(({ rotor, phase }, index) => {
       rotor.rotation.y = (state.rotorPhase?.[index] || 0) + phase;
     });
@@ -167,8 +195,11 @@ export function createChaseRenderer() {
       const background = scene.background, fog = scene.fog;
       scene.background = null;
       scene.fog = null;
+      // The mission view is a neutral engineering portrait of the vehicle, not a Titan scene.
+      ambient.color.copy(neutralSky); ambient.groundColor.copy(neutralGround); sun.color.copy(neutralSun);
       ambient.intensity = 2.5;
       sun.intensity = 3.2;
+      fill.intensity = 1.4;
       landscape.group.visible = false;
       renderer.shadowMap.enabled = false;
       craft.position.set(0, 0, 0);
@@ -183,6 +214,8 @@ export function createChaseRenderer() {
       renderer.render(scene, missionCamera);
       ctx.drawImage(renderer.domElement, 0, 0, w, h);
       landscape.group.visible = true;
+      ambient.color.copy(titanSky); ambient.groundColor.copy(titanGround); sun.color.copy(titanSun);
+      fill.intensity = 0;
       scene.background = background;
       scene.fog = fog;
       renderer.shadowMap.enabled = true;
@@ -209,10 +242,10 @@ export function createChaseRenderer() {
       marker.visible = state.mission.phase !== "idle";
       marker.position.set(target.x, landscape.heightAt(target.x, target.z) + 0.08, target.z);
       const sunlight = Math.max(0, Math.cos((state.elapsed || 0) / systemsModel.titanDaySeconds * Math.PI * 2));
-      ambient.intensity = 0.65 + sunlight * 1.85;
-      sun.intensity = 0.15 + sunlight * 3.05;
-      scene.background.setHex(0xb48b55).multiplyScalar(0.22 + sunlight * 0.78);
-      scene.fog.color.copy(scene.background);
+      // Day: bright orange sky dome, weak direct beam. Night: faint, dim sky (kept visible for play).
+      ambient.intensity = 0.35 + sunlight * 1.85;
+      sun.intensity = 0.02 + sunlight * 0.95;
+      landscape.setDaylight(sunlight);
       const altitude = Math.max(0, state.altitude || 0);
       // Aloft, follow the smooth analytic terrain so mesh re-centering never shifts the aircraft;
       // near touchdown, blend onto the rendered triangles so the skids meet the visible ground.

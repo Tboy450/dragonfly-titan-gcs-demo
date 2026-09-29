@@ -25,6 +25,9 @@ export const systemsModel = Object.freeze({
   // 200 W DC draw for the 100 W RF amplifier and the 9.5 AU range are demo assumptions.
   downlinkW: 200, downlinkJoulesPerBitAu: 0.005, earthRangeAu: 9.5, downlinkMinBattery: 30,
   maxSurfaceWind: 1.6,
+  // The high-gain antenna rides a motorized arm that is raised for Earth pointing and stowed for
+  // flight [PUB]. The 6 s travel time is a demo assumption.
+  antennaTravelSeconds: 6,
 });
 
 // Titan local solar time at the landing site. The simulation starts at local noon.
@@ -37,7 +40,8 @@ export function linkStatus(state) {
   if (state.hibernating) return { available: false, label: "Hibernating" };
   if (!titanDaylight(state)) return { available: false, label: "Earth below horizon / night" };
   if (state.battery <= systemsModel.downlinkMinBattery) return { available: false, label: "Held: battery reserve" };
-  return { available: true, label: state.downlinkActive ? "Downlink in progress" : "Earth in view / ready" };
+  if (state.downlinkActive) return { available: true, label: state.antennaDeploy < 1 ? "Raising antenna" : "Downlink in progress" };
+  return { available: true, label: state.antennaDeploy > 0 ? "Stowing antenna" : "Earth in view / ready" };
 }
 
 export function toggleDownlink(state) {
@@ -94,7 +98,7 @@ export function createSystemsState() {
     generatorToBayW: 0, generatorRejectedW: 0, coldDuctW: 0, chargingBlocked: false,
     elapsed: 0, restSeconds: 0, restNotice: "", hibernating: false, guard: "",
     motorsCold: true, motorCoolClock: 0, preheatWh: 0, preheats: 0, flightSeconds: 0,
-    downlinkActive: false, downlinkW: 0, dataReturnedBits: 0,
+    downlinkActive: false, downlinkW: 0, dataReturnedBits: 0, antennaDeploy: 0,
     mission: { phase: "idle", sampleSeconds: 0, samples: 0, guidance: false, message: "Survey a fictional hydrocarbon shoreline from dry ground." },
   };
 }
@@ -182,7 +186,10 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
   }
   const link = linkStatus(state);
   if (state.downlinkActive && !link.available) state.downlinkActive = false;
-  state.downlinkW = state.downlinkActive ? systemsModel.downlinkW : 0;
+  const travel = dt / systemsModel.antennaTravelSeconds;
+  state.antennaDeploy = clamp(state.antennaDeploy + (state.downlinkActive ? travel : -travel), 0, 1);
+  // The radio transmits only once the antenna is fully raised and pointed.
+  state.downlinkW = state.downlinkActive && state.antennaDeploy >= 1 ? systemsModel.downlinkW : 0;
   state.power += state.downlinkW;
   state.dataReturnedBits += state.downlinkW * dt / (systemsModel.downlinkJoulesPerBitAu * systemsModel.earthRangeAu);
   state.netBatteryW = state.generatedW - state.power;

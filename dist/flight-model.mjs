@@ -136,15 +136,31 @@ function showThrottle(state, climbTarget, landedIdle, dt) {
   state.throttle = follow(state.throttle, target, 4, dt);
 }
 
+// True when a command or the throttle is asking a landed aircraft to lift off.
+function wantsLiftoff(state) {
+  if (state.altitude > 0) return false;
+  if (state.mission.guidance || state.auto) return true;
+  if (state.altitudeHold !== null) return state.altitudeHold > 0;
+  return climbForThrottle(state.throttle) > 0.05;
+}
+
 export function stepFlight(state, dt) {
   if (state.hold || dt <= 0) return;
   state.missionTime += dt;
   const restricted = flightRestriction(state);
+  // The antenna arm must be stowed before liftoff; a flight command ends the downlink and waits.
+  const stowing = !state.hibernating && !restricted && state.antennaDeploy > 0 && wantsLiftoff(state);
+  if (stowing) state.downlinkActive = false;
   if (state.hibernating) {
     state.altitude = 0; state.verticalSpeed = 0; state.speed = 0; state.throttle = 0;
     state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0; state.altitudeHold = null;
     stepAttitude(state, 0, 0, 0, dt);
     state.mode = "Hibernation";
+  } else if (stowing) {
+    state.altitude = 0; state.verticalSpeed = 0;
+    stepAttitude(state, 0, 0, 0, dt);
+    if (state.auto) state.autoClock = 0;
+    state.mode = "Stowing antenna";
   } else if (restricted) {
     state.auto = false; state.mission.guidance = false; state.altitudeHold = null;
     state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0;

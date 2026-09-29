@@ -70,9 +70,30 @@ export function createTitanTerrain(scene, renderer) {
   const group = new THREE.Group();
   group.name = "titan-landscape";
   scene.add(group);
-  const hazeColor = new THREE.Color(0xb48b55);
-  scene.background = hazeColor;
-  scene.fog = new THREE.FogExp2(hazeColor, 0.00078);
+  // Haze: brighter orange at the horizon, deeper amber overhead. Visibility near the surface is
+  // ~10 km [PUB]; the fog here is denser (~3.6 km for 2% contrast) so the 4.9 km terrain edge stays hidden.
+  const horizonColor = new THREE.Color(0xc9955a), zenithColor = new THREE.Color(0x8a5a30);
+  const skyCanvas = document.createElement("canvas");
+  skyCanvas.width = 2; skyCanvas.height = 256;
+  const skyCtx = skyCanvas.getContext("2d");
+  const skyTexture = new THREE.CanvasTexture(skyCanvas);
+  skyTexture.colorSpace = THREE.SRGBColorSpace;
+  scene.background = skyTexture;
+  scene.fog = new THREE.FogExp2(horizonColor.clone(), 0.00055);
+  function setDaylight(level) {
+    const scale = 0.12 + level * 0.88;
+    const top = zenithColor.clone().multiplyScalar(scale), bottom = horizonColor.clone().multiplyScalar(scale);
+    const gradient = skyCtx.createLinearGradient(0, 0, 0, 256);
+    gradient.addColorStop(0, `#${top.getHexString()}`);
+    gradient.addColorStop(0.62, `#${bottom.getHexString()}`);
+    gradient.addColorStop(1, `#${bottom.getHexString()}`);
+    skyCtx.fillStyle = gradient;
+    skyCtx.fillRect(0, 0, 2, 256);
+    skyTexture.needsUpdate = true;
+    scene.fog.color.copy(bottom);
+  }
+  let daylight = -1;
+  setDaylight(1);
 
   const reference = new THREE.TextureLoader().load("./assets/titan-mountain-reference.jpg");
   reference.colorSpace = THREE.SRGBColorSpace;
@@ -220,6 +241,10 @@ export function createTitanTerrain(scene, renderer) {
   moveRocks(0, 0);
   return {
     group,
+    setDaylight(level) {
+      const rounded = Math.round(level * 50) / 50;
+      if (rounded !== daylight) { daylight = rounded; setDaylight(rounded); }
+    },
     heightAt: (x, z) => surfaceAt(x, z).height,
     update(x, z) {
       const changed = moveTerrain(x, z);

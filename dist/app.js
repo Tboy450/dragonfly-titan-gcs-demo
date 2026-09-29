@@ -13,6 +13,9 @@ const state = {
   lastTick: performance.now(),
 };
 
+// Local development only: expose the live state for inspection from the browser console.
+if (["localhost", "127.0.0.1"].includes(location.hostname)) window.dragonflyState = state;
+
 // Throttle stays where the pilot leaves it unless the optional spring-to-hover mode is chosen.
 function readThrottlePreference() {
   try { return localStorage.getItem("dragonfly-throttle-spring") === "1"; } catch { return false; }

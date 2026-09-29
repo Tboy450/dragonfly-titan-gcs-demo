@@ -31,6 +31,30 @@ Notes for every session:
 
 ## Entries
 
+### 2026-09-28: Titan haze lighting and a moving high-gain antenna
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add Titan haze lighting and a raise-and-stow high-gain antenna"
+- **What changed:**
+  - 3D pilot view lighting now reads as Titan: an orange sky dome carries most of the light,
+    direct sunlight is weak (faint, soft shadows), the sky is a gradient (bright orange
+    horizon, deeper amber overhead), and night is much darker. The Mission view's vehicle
+    portrait keeps neutral lighting.
+  - The high-gain antenna now sits on a motorized arm. "Start downlink" raises it (about 6 s)
+    and aims it along the sunlight (Earth stays within ~6 deg of the Sun from Titan); data only
+    flows once it is fully raised. Any flight command ends the downlink, the vehicle shows
+    "Stowing antenna" and lifts off once the arm is down. The takeoff command is kept.
+  - Local copies only (localhost): `window.dragonflyState` exposes the live state for
+    debugging. It is not defined on the published site.
+- **Files:** `dist/chase-vehicle.mjs`, `dist/titan-terrain.mjs`, `dist/mission-systems.mjs`,
+  `dist/flight-model.mjs`, `dist/app.js`, `tests/operations.test.mjs`
+- **Assumptions:** light colors and intensities are an artistic rendering [EST], kept bright
+  enough for phones (real surface light is ~1/1,000 of Earth's [PUB]). Fog gives ~3.6 km
+  visibility instead of the published ~10 km so the 4.9 km terrain edge stays hidden [EST].
+  The 6 s antenna travel time is [EST]; the raise-for-comms, stow-for-flight behavior is [PUB].
+- **Checks:** 38 tests pass (downlink test now covers the raise delay, stow-before-liftoff and
+  the kept takeoff command); checked in the browser at desktop size.
+- **Open / next:** the Mission view's 2D top-down drawing does not show the raised antenna.
+
 ### 2026-09-28: Signed change log, on-screen build label, automatic version stamping
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add signed change log, build label and automatic version stamping"

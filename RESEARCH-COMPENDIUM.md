@@ -292,7 +292,7 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 | Comms | direct-to-Earth by day, antenna stowed in flight [PUB] | **Done** (Sep 28): gated on landed + daylight; 200 W downlink with data counter | Optional: uplink delay on commands |
 | Sampling | DraMS electronics ~120 W; real sampling takes hours [PUB/EST] | Gameplay: 30 s, labeled | — |
 | Pool | no seas at the landing site; wet ground after rain is realistic [PUB] | **Open**: labeled fictional | Optional: "rain-darkened interdune" |
-| Fog / light | visibility ~10 km [PUB]; FogExp2 density ≈ 1.98 / visibility (in scene units) for 2% contrast [CALC]; surface light ~1/1,000 of Earth's [PUB] | **Open** | Tune fog and lighting |
+| Fog / light | visibility ~10 km [PUB]; FogExp2 density ≈ 1.98 / visibility (in scene units) for 2% contrast [CALC]; surface light ~1/1,000 of Earth's [PUB] | **Done** (Sep 28): haze-dominated orange lighting, weak direct sun, sky gradient, darker night; fog ~3.6 km [EST, limited by the terrain extent] | Optional: larger terrain so fog can match 10 km |
 | Phone layout | — | **Done** (this session): portrait and landscape | — |
 
 ---
