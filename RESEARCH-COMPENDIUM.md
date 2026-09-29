@@ -285,7 +285,7 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 | Flight altitude | nominal ~400 m; profiles 0.5–4 km; ceiling 4 km [PUB] | **Done** (Sep 28): flight plans offer 40 m hop, 150 m scouting and 400 m cruise; the Auto demo stays at ~46 m | Optional: higher profiles (0.5–4 km) |
 | Flight duration | ≤ ~30 min; battery +10 °C per 30 min; 35 °C cap [PUB] | **Done** (Sep 28): 35 °C guard, flight-time estimate, 30 min timer, "land now" advisories | Optional: automatic landing on "land now" |
 | Descent | avoid steep, fast descents (vortex ring state) [PUB] | **Partial**: advisory from `74ed2c4`; Land now flares at ≤ 1.3 m/s | Optional: slanted approach in Auto |
-| Thermal bands | battery 10±10 °C, 0–35 °C; interior ~0 °C; hibernation ≥ −20 °C [PUB] | **Done** | Optional: phase-change buffer (7.5 kg at 22.5 °C) |
+| Thermal bands | battery 10±10 °C, 0–35 °C; interior ~0 °C; hibernation ≥ −20 °C [PUB] | **Done**; **Sep 29**: phase-change buffer (7.5 kg at 22.5 °C [PUB], 200 kJ/kg [EST]) | — |
 | Trim | 0–40% in 2% steps, PI, ~10 min cycle; ≥810 W hot; ≤36 W closed [PUB] | **Done** (simplified single loop) | — |
 | Convection | h ≈ 3–5 calm, ~10–18 at 1.6 m/s, 50–100 in flight [PUB/CALC] | **Done**: interpolated 4 / 10.5 / 75 | — |
 | Preflight | motor preheat 8 × 90 W × 5 min [PUB] | **Done** (Sep 28): 60 Wh per cold start, time-compressed | — |

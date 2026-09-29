@@ -2,7 +2,7 @@
 // 67-92 min, so flights are planned on Earth, uplinked and flown by the lander itself [PUB].
 // It scouts new sites from the air and lands only at sites it has already checked
 // ("leapfrog" scouting [PUB]). Rates, radii and the compressed uplink are demo choices [EST].
-import { systemsModel, candidateSites, overLiquid, titanDaylight, flightRestriction, landed, landNowNeeded } from "./mission-systems.mjs?v=dev";
+import { systemsModel, candidateSites, overLiquid, titanDaylight, flightRestriction, landed, landNowNeeded, batteryAfterFlight } from "./mission-systems.mjs?v=dev";
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
@@ -92,7 +92,7 @@ export function estimatePlan(state, powerAt, batteryEnergyKwh) {
     + powerAt(1, -planModel.descentRate) * descentSeconds - state.generatedW * timeSeconds) / 3600;
   const energyWh = preheatWh + flightWh;
   const endBattery = state.battery - energyWh / (batteryEnergyKwh * 10);
-  const endBatteryC = state.batteryC + timeSeconds * systemsModel.batteryRisePerSecond;
+  const endBatteryC = batteryAfterFlight(state, timeSeconds).c;
 
   if (!points.length) noGo("Add at least one waypoint. The last waypoint is the landing site.");
   if (!landed(state)) noGo("Plans start from a landed, stationary vehicle.");

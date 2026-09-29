@@ -31,6 +31,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-09-29: Battery phase-change (wax) buffer
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Model the battery's phase-change wax buffer"
+- **What changed:** The battery now carries the published 7.5 kg of wax melting at 22.5 C,
+  modeled as one enthalpy: below 22.5 C only the temperature changes; at 22.5 C heat melts (or,
+  when cooling, refreezes) wax at constant temperature; once melted the battery warms again. The
+  flight-time estimate and the flight-plan battery check count the remaining wax, a save keeps the
+  melt fraction, and Diagnostics shows "% melted".
+- **Files:** `dist/mission-systems.mjs`, `dist/flight-plan.mjs`, `dist/save-game.mjs`,
+  `dist/ui/readouts.mjs`, `dist/index.html`, `tests/battery-pcm.test.mjs` (new),
+  `RESEARCH-COMPENDIUM.md`
+- **Assumptions:** [PUB] 7.5 kg, 22.5 C melting point (ICES-2023). [EST] latent heat 200 kJ/kg
+  (mid-range of 150-250 kJ/kg for paraffins; the actual wax is not published), so 1.5 MJ.
+- **Checks:** 64 tests pass (new: melt/refreeze plateau, a long hover plateaus at 22.5 C,
+  estimates include the melt time).
+
 ### 2026-09-29: Start over from the landing
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add a Start over button that replays the landing"

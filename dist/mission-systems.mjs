@@ -38,6 +38,9 @@ export const systemsModel = Object.freeze({
   preheatWh: 8 * 90 * 5 / 60, motorCoolSeconds: 1800,
   // Operations plan (APL): one ~30 min flight; battery gains ~10 C per 30 min in flight (ICES-2020).
   plannedFlightSeconds: 1800, batteryRisePerSecond: 10 / 1800, batteryLimitC: 35, reservePercent: 15,
+  // Phase-change buffer: 7.5 kg of wax melting at 22.5 C limits battery heating in flight [PUB,
+  // ICES-2023]. The wax is not published; 200 kJ/kg is mid-range for paraffins (150-250) [EST].
+  pcmMassKg: 7.5, pcmMeltC: 22.5, pcmLatentJPerKg: 200000,
   // Direct-to-Earth X-band. ~5 mJ per bit per AU is the 2018 concept figure (Lorenz); the
   // 200 W DC draw for the 100 W RF amplifier and the 9.5 AU range are demo assumptions.
   downlinkW: 200, downlinkJoulesPerBitAu: 0.005, earthRangeAu: 9.5, downlinkMinBattery: 30,
@@ -69,11 +72,37 @@ export function toggleDownlink(state) {
   return state.downlinkActive;
 }
 
+// Battery plus its wax buffer as one enthalpy: below the melting point only the temperature
+// changes; at 22.5 C heat melts (or refreezes) wax at constant temperature; once all the wax is
+// melted the temperature rises again.
+export function batteryAfterHeat(celsius, melt, joules) {
+  const capacity = systemsModel.batteryCapacity, meltC = systemsModel.pcmMeltC;
+  const latent = systemsModel.pcmMassKg * systemsModel.pcmLatentJPerKg;
+  const fraction = celsius < meltC ? 0 : celsius > meltC ? 1 : Math.min(1, Math.max(0, melt));
+  const solidAtMelt = capacity * meltC, liquidAtMelt = solidAtMelt + latent;
+  const enthalpy = capacity * celsius + fraction * latent + joules;
+  if (enthalpy < solidAtMelt) return { c: enthalpy / capacity, melt: 0 };
+  if (enthalpy <= liquidAtMelt) return { c: meltC, melt: (enthalpy - solidAtMelt) / latent };
+  return { c: (enthalpy - latent) / capacity, melt: 1 };
+}
+
+// Battery temperature after a flight of the given length at the documented heating rate
+// (+10 C per 30 min without the wax, ICES-2020), including the wax buffer.
+export function batteryAfterFlight(state, seconds) {
+  const joules = systemsModel.batteryCapacity * systemsModel.batteryRisePerSecond * seconds;
+  return batteryAfterHeat(state.batteryC, state.pcmMelt ?? 0, joules);
+}
+
 // Minutes of flight left before the battery reserve or the 35 C battery limit, whichever is first.
 export function flightEndurance(state, batteryEnergyKwh) {
   const usableWh = Math.max(0, state.battery - systemsModel.reservePercent) / 100 * batteryEnergyKwh * 1000;
   const energyMin = usableWh / Math.max(1, state.power - state.generatedW) * 60;
-  const thermalMin = Math.max(0, systemsModel.batteryLimitC - state.batteryC) / systemsModel.batteryRisePerSecond / 60;
+  // Heat the battery can still absorb before 35 C, including any unmelted wax.
+  const heatingW = systemsModel.batteryCapacity * systemsModel.batteryRisePerSecond;
+  const limit = batteryAfterHeat(systemsModel.batteryLimitC, 1, 0);
+  const now = systemsModel.batteryCapacity * state.batteryC + (state.batteryC < systemsModel.pcmMeltC ? 0 : state.batteryC > systemsModel.pcmMeltC ? 1 : (state.pcmMelt ?? 0)) * systemsModel.pcmMassKg * systemsModel.pcmLatentJPerKg;
+  const room = systemsModel.batteryCapacity * limit.c + systemsModel.pcmMassKg * systemsModel.pcmLatentJPerKg - now;
+  const thermalMin = Math.max(0, room) / heatingW / 60;
   const minutes = Math.min(energyMin, thermalMin);
   return { energyMin, thermalMin, minutes, limit: energyMin <= thermalMin ? "battery reserve" : "battery temperature" };
 }
@@ -123,7 +152,7 @@ export function liquidExchangerStudy(hotC, coldC, hotCapacityRate, coldCapacityR
 export function createSystemsState() {
   return {
     coreC: 12, batteryC: 10, trim: 0.04, thermalAuto: true, fan: 1,
-    rdeC: 12, twtaC: 12, noseElectronicsC: 12,
+    rdeC: 12, twtaC: 12, noseElectronicsC: 12, pcmMelt: 0,
     trimClock: 0, trimIntegral: 0, effectiveTrim: 0, trimFlightLocked: false,
     fault: "none", fanIntegrity: 1, insulationIntegrity: 1,
     generatedW: 90, arrivalElectricW: 90, rtgHeatW: 1800, netBatteryW: 0, heatInW: 0, heatOutW: 0,
@@ -275,7 +304,10 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
   state.coldDuctW = closedDuctUA * delta + fullTrimW * state.effectiveTrim / systemsModel.trimMaximum;
   state.heatOutW = state.foamUA * delta + state.coldDuctW;
   state.coreC += (state.heatInW - state.heatOutW - batteryExchange) * dt / systemsModel.coreCapacity;
-  state.batteryC += (batteryExchange + Math.abs(state.netBatteryW) * 0.035 - 0.08 * (state.batteryC - systemsModel.ambientC)) * dt / systemsModel.batteryCapacity;
+  const batteryHeatJ = (batteryExchange + Math.abs(state.netBatteryW) * 0.035 - 0.08 * (state.batteryC - systemsModel.ambientC)) * dt;
+  const battery = batteryAfterHeat(state.batteryC, state.pcmMelt ?? 0, batteryHeatJ);
+  state.batteryC = battery.c;
+  state.pcmMelt = battery.melt;
   stepDisplayNodes(state, dt);
   state.guard = flightRestriction(state);
 

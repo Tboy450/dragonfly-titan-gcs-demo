@@ -117,6 +117,7 @@ function updateSystemsReadouts() {
   $("descent-caution").textContent = envelope.steepDescentCaution ? "Caution: steep powered descent" : "No proxy trigger";
   $("core-temp").textContent = `${state.coreC.toFixed(1)} C`;
   $("battery-temp").textContent = `${state.batteryC.toFixed(1)} C`;
+  $("pcm-melt").textContent = `${Math.round((state.pcmMelt || 0) * 100)}% melted`;
   $("heat-in").textContent = `${Math.round(state.heatInW)} W`;
   $("heat-out").textContent = `${Math.round(state.heatOutW)} W`;
   $("convection-h").textContent = `${state.convectionH.toFixed(1)} W/m2/K`;

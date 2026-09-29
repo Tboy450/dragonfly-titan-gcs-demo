@@ -10,7 +10,7 @@ const persistent = [
   // Where and when
   "positionX", "positionZ", "heading", "missionTime", "elapsed", "distance", "track",
   // Vehicle energy and thermal state, settings and faults
-  "battery", "coreC", "batteryC", "rdeC", "twtaC", "noseElectronicsC", "trim", "trimClock", "trimIntegral",
+  "battery", "coreC", "batteryC", "pcmMelt", "rdeC", "twtaC", "noseElectronicsC", "trim", "trimClock", "trimIntegral",
   "thermalAuto", "fan", "fault", "arrivalElectricW", "wind", "payloadDelta",
   "motorsCold", "motorCoolClock", "preheatWh", "preheats",
   // Mission, scouting, science and data
