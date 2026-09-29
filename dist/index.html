@@ -304,6 +304,10 @@
             <div><span>DrACO drill transfer</span><strong id="draco-state">Stowed</strong></div>
             <div><span>DraGMet weather/seismic</span><strong id="dragmet-state">Logging</strong></div>
           </div>
+          <div class="rest-controls"><button id="sample-here" type="button">Sample here (DrACO + DraMS)</button></div>
+          <output id="science-result" class="rest-status">No samples analyzed yet.</output>
+          <ol id="science-log" class="science-log" aria-label="Science log"></ol>
+          <small class="rest-status">Instrument results are illustrative examples for the kinds of ground expected at Titan, not mission data.</small>
 
           <div class="panel-heading">
             <span>Comms</span>
@@ -316,8 +320,16 @@
             <div><span>One-way light</span><strong>73-90 min</strong></div>
             <div><span>Downlink load</span><strong id="downlink-power">0 W</strong></div>
             <div><span>Data returned</span><strong id="data-returned">0.0 Mbit</strong></div>
+            <div><span>Data stored on board</span><strong id="data-stored">20.0 Mbit</strong></div>
+            <div><span>Time to send / est.</span><strong id="data-eta">--</strong></div>
           </div>
-          <div class="rest-controls"><button id="downlink-toggle" type="button">Start downlink</button></div>
+          <div class="rest-controls"><button id="downlink-toggle" type="button">Start downlink</button>
+            <div id="downlink-warp" class="warp-switch" role="group" aria-label="Downlink speed" hidden>
+              <button type="button" data-warp="1" aria-pressed="true">1x</button>
+              <button type="button" data-warp="20" aria-pressed="false">20x</button>
+              <button type="button" data-warp="100" aria-pressed="false">100x</button>
+            </div>
+          </div>
           <small class="rest-status">Direct to Earth only while landed in daylight; the antenna is stowed in flight. Data rate uses the 2018 concept's ~5 mJ/bit/AU at an assumed 9.5 AU.</small>
 
           <div class="panel-heading">

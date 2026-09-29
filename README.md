@@ -114,6 +114,14 @@ Use 1x / 5x / 20x to speed up time during the flight, or **Stop plan** to hold p
 Leapfrog scouting: the last waypoint must be a scouted (green) site. Flying within 60 m of an
 amber candidate site at 20 m or higher scouts it, so a later flight may land there.
 
+## Science Instruments
+
+The Science Payload panel shows each instrument working: DragonCam images in flight,
+DraGMet logs weather and occasional quakes, DraGNS measures the ground's makeup while landed
+(more precisely the longer it counts), and **Sample here** drills and analyzes the ground with
+DrACO and DraMS. Everything they collect is stored on board until a downlink sends it home;
+Comms shows how long that will take. Results are illustrative examples, not mission data.
+
 ## Operations
 
 - **Motor preheat:** the first liftoff after 30 minutes on the ground charges 60 Wh

@@ -908,6 +908,8 @@ button:disabled { opacity: 0.5; cursor: default; }
 .plan-issues li.caution { color: var(--amber); }
 #plan-uplink { width: 100%; padding: 10px; }
 .plan-report { margin-top: 14px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.85rem; }
+.science-log { margin: 8px 0 0; padding-left: 18px; font-size: 0.78rem; color: #bcd0e2; }
+.science-log li { margin: 2px 0; }
 .plan-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 10px 14px; background: #1b2433; border-left: 3px solid var(--cyan); }
 .plan-strip[hidden] { display: none; }
 .plan-strip > div:first-child { flex: 1; min-width: 220px; }

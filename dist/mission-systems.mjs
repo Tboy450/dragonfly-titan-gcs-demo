@@ -60,11 +60,12 @@ export function linkStatus(state) {
   if (!titanDaylight(state)) return { available: false, label: "Earth below horizon / night" };
   if (state.battery <= systemsModel.downlinkMinBattery) return { available: false, label: "Held: battery reserve" };
   if (state.downlinkActive) return { available: true, label: state.antennaDeploy < 1 ? "Raising antenna" : "Downlink in progress" };
-  return { available: true, label: state.antennaDeploy > 0 ? "Stowing antenna" : "Earth in view / ready" };
+  if (state.antennaDeploy > 0) return { available: true, label: "Stowing antenna" };
+  return { available: true, label: (state.dataStoredBits ?? 1) > 0 ? "Earth in view / ready" : "Earth in view / nothing to send" };
 }
 
 export function toggleDownlink(state) {
-  state.downlinkActive = !state.downlinkActive && linkStatus(state).available;
+  state.downlinkActive = !state.downlinkActive && linkStatus(state).available && (state.dataStoredBits ?? 1) > 0;
   return state.downlinkActive;
 }
 
@@ -205,7 +206,7 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
   state.generatedW = state.arrivalElectricW * 0.975 ** years;
   state.rtgHeatW = systemsModel.rtgThermalW * 2 ** (-years / 87.7);
   if (state.hibernating) state.power = 45 + 15 * state.fan ** 3;
-  else state.power += 15 * state.fan ** 3 + (state.mission.phase === "sampling" ? 160 : 0);
+  else state.power += 15 * state.fan ** 3 + (state.mission.phase === "sampling" ? 160 : 0) + (state.sciencePowerW || 0);
   // Motor preheat is charged once when the rotors lift off cold; its 5 minutes are time-compressed.
   if (state.altitude > 0.001) {
     if (state.motorsCold) {
@@ -226,7 +227,15 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
   // The radio transmits only once the antenna is fully raised and pointed.
   state.downlinkW = state.downlinkActive && state.antennaDeploy >= 1 ? systemsModel.downlinkW : 0;
   state.power += state.downlinkW;
-  state.dataReturnedBits += state.downlinkW * dt / (systemsModel.downlinkJoulesPerBitAu * systemsModel.earthRangeAu);
+  // The radio sends what the instruments have stored, then the session ends.
+  const stored = state.dataStoredBits ?? Infinity;
+  const sent = Math.min(stored, state.downlinkW * dt / (systemsModel.downlinkJoulesPerBitAu * systemsModel.earthRangeAu));
+  if (Number.isFinite(stored)) state.dataStoredBits = stored - sent;
+  state.dataReturnedBits += sent;
+  if (state.downlinkW > 0 && state.dataStoredBits <= 0) {
+    state.downlinkActive = false;
+    state.mission.message = "Downlink complete: all stored data returned to Earth.";
+  }
   state.netBatteryW = state.generatedW - state.power;
   state.chargingBlocked = state.netBatteryW > 0 && (state.batteryC < 0 || state.batteryC >= 35);
   if (state.chargingBlocked) state.netBatteryW = 0;

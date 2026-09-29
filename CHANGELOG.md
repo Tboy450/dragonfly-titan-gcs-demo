@@ -31,6 +31,34 @@ Notes for every session:
 
 ## Entries
 
+### 2026-09-29: Working science instruments and data return
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Make the science instruments produce data, samples and results"
+- **What changed:**
+  - **DragonCam** images in flight (frame count) and fills an onboard data store.
+  - **DraGMet** shows temperature, pressure, wind and methane humidity; its seismometer
+    records an occasional event during long quiet stays on the ground (science log).
+  - **DraGNS** counts while landed and shows the ground's bulk makeup (water ice vs organics)
+    with an uncertainty that shrinks with counting time; moving starts a new measurement.
+  - **Sample here (DrACO + DraMS)** drills anywhere on dry, stationary ground: 30 s, ~160 W,
+    +40 Mbit, and a result that depends on the ground (ice-rich outcrop, rain-dampened sand,
+    organic interdune sand). The survey mission's own sampling is unchanged.
+  - **Downlink** now sends stored data (Comms shows stored, returned and time to send) and ends
+    when the store is empty; a 1x / 20x / 100x speed control appears during a downlink, because
+    at ~4 kbit/s data return, not flying, is the bottleneck [PUB §3.5].
+  - Local copies only: `window.dragonflyTick` exposes the frame loop for testing while the
+    browser tab is hidden (not defined on the published site).
+- **Files:** `dist/science.mjs` (new), `dist/flight-model.mjs`, `dist/mission-systems.mjs`,
+  `dist/app.js`, `dist/index.html`, `dist/styles.css`, `tests/science.test.mjs` (new),
+  `README.md`, `RESEARCH-COMPENDIUM.md`
+- **Assumptions:** [PUB] instrument roles (compendium §2.3), DraMS electronics ~120 W, the data
+  bottleneck. [EST] every data rate and volume, the 30 s sample time, the seismic event rate,
+  ~45% methane humidity shown, the ground types and every result text (labeled in the app as
+  illustrative examples, not mission data).
+- **Checks:** 56 tests pass (new: ground types, camera data, DraGNS precision, sampling rules,
+  power and interruption, downlink drain and stop, seismometer). Checked in the page by
+  stepping the real frame loop: sampling at the outcrop, science log, downlink at 100x.
+
 ### 2026-09-29: Arrival at Titan opening sequence (entry, descent and landing)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add the arrival-at-Titan entry, descent and landing sequence"

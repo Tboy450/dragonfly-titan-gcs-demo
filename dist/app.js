@@ -3,6 +3,7 @@ import { enterFreeCamera, orbitCamera, smoothCameraPose } from "./flight-camera.
 import { model, createFlightState, deriveFlight, stepFlight, commandFlight, advanceRest, takeManualControl, estimateFlightPlan } from "./flight-model.mjs?v=dev";
 import { addWaypoint, undoWaypoint, clearPlan, uplinkPlan, abortPlan, planModel, planActive, isScouted } from "./flight-plan.mjs?v=dev";
 import { edlStateAt, edlDuration, formatSinceEntry, formatAltitude } from "./edl.mjs?v=dev";
+import { startSample, canSampleHere, groundTypeAt, gnsUncertainty, scienceModel } from "./science.mjs?v=dev";
 import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel, liquidExchangerStudy, linkStatus, toggleDownlink, flightEndurance, operationsAdvisory, titanLocalHour, titanDaylight, dampGround, pools, candidateSites } from "./mission-systems.mjs?v=dev";
 
 const state = {
@@ -946,11 +947,7 @@ function updateReadouts() {
   $("data-returned").textContent = `${(state.dataReturnedBits / 1e6).toFixed(1)} Mbit`;
   $("downlink-toggle").textContent = state.downlinkActive ? "Stop downlink" : "Start downlink";
   $("downlink-toggle").disabled = !state.downlinkActive && !link.available;
-  $("drams-state").textContent = state.mode === "Surface" ? "Sample ready" : "Standby";
-  $("dragns-state").textContent = state.mode === "Surface" ? "Surface scan" : "Survey";
-  $("camera-state").textContent = state.speed > 2 ? "Nav imaging" : "Hazcam";
-  $("draco-state").textContent = state.mode === "Surface" ? "Armed" : "Stowed";
-  $("dragmet-state").textContent = state.altitude > 3 ? "Aloft logging" : "Surface logging";
+  updateScience(d);
   $("rotor-summary").textContent = state.wind > 3.8 ? "8 nominal, gust margin" : "8 nominal";
   updateSystemsReadouts();
 }
@@ -1010,8 +1007,7 @@ function updateSystemsReadouts() {
   $("rest-night").disabled = !canRest;
   $("rest-stop").disabled = !state.hibernating;
   $("rest-status").textContent = state.restNotice || (state.restSeconds > 0 ? `${(state.restSeconds / 3600).toFixed(1)} h remaining / accelerated surface time` : state.hibernating ? "Hibernating / real-time monitoring" : "Hibernation available after dry-ground landing.");
-  if (m.phase === "sampling") { $("draco-state").textContent = "Acquiring"; $("drams-state").textContent = "Analyzing"; }
-  else if (m.samples > 0) $("drams-state").textContent = "Sample secured";
+  if (m.phase === "sampling") { $("draco-state").textContent = "Survey sample: drilling"; $("drams-state").textContent = "Survey sample: analyzing"; }
 }
 
 function updateExchangerStudy() {
@@ -1046,6 +1042,33 @@ function updateTrack() {
   const [px, py] = project(pools[0]).split(",").map(Number);
   Object.entries({ cx: px, cy: py, rx: pools[0].rx * scale, ry: pools[0].rz * scale }).forEach(([k, v]) => $("track-puddle").setAttribute(k, v));
 }
+
+// ---- Science payload ----
+function updateScience(d) {
+  const s = state.science;
+  const ground = landed(state) ? groundTypeAt(state.positionX, state.positionZ) : null;
+  $("drams-state").textContent = s.sampling ? `Analyzing ${Math.ceil(scienceModel.sampleSeconds - s.sampleSeconds)} s` : s.samples.length ? `${s.samples.length} sample${s.samples.length === 1 ? "" : "s"} analyzed` : "Ready";
+  $("draco-state").textContent = s.sampling ? "Drilling / transfer" : ground ? "Ready to drill" : "Stowed";
+  $("dragns-state").textContent = ground ? `${ground.name}: ice ~${ground.ice}% / organics ~${ground.organics}% (+/-${gnsUncertainty(state).toFixed(0)}%)` : "Standby (counts when landed)";
+  $("camera-state").textContent = state.altitude > 5 ? `Imaging: ${s.cameraFrames} frames` : `Hazcam / ${s.cameraFrames} frames`;
+  $("dragmet-state").textContent = `94 K / ${d.pressureKpa.toFixed(1)} kPa / ${state.wind.toFixed(1)} m/s / CH4 ~${scienceModel.methaneHumidityPercent}% / ${s.seismicEvents} quakes`;
+  const blocked = canSampleHere(state);
+  $("sample-here").disabled = !!blocked;
+  $("sample-here").title = blocked || "Drill here and analyze the sample (about 160 W for 30 s)";
+  const last = s.samples.at(-1);
+  $("science-result").textContent = last ? `Latest DraMS result (${last.ground}): ${last.result}` : blocked ? `Sampling: ${blocked}` : "No samples analyzed yet.";
+  const log = $("science-log");
+  const text = s.log.map(entry => entry.text).join("|");
+  if (log.dataset.text !== text) {
+    log.dataset.text = text;
+    log.replaceChildren(...s.log.slice(0, 5).map(entry => { const item = document.createElement("li"); item.textContent = entry.text; return item; }));
+  }
+  $("data-stored").textContent = `${(state.dataStoredBits / 1e6).toFixed(1)} Mbit`;
+  const rate = systemsModel.downlinkW / (systemsModel.downlinkJoulesPerBitAu * systemsModel.earthRangeAu);
+  $("data-eta").textContent = state.dataStoredBits > 0 ? formatTime(state.dataStoredBits / rate) : "--";
+  $("downlink-warp").hidden = !state.downlinkActive;
+}
+$("sample-here").addEventListener("click", () => { startSample(state); updateReadouts(); });
 
 // ---- Flight planning (autonomous flights, leapfrog scouting) ----
 const planMap = $("plan-map");
@@ -1163,7 +1186,6 @@ function updatePlanStrip() {
   document.querySelector(".warp-switch").hidden = !active;
   $("plan-abort").hidden = !active;
   $("plan-dismiss").hidden = active;
-  document.querySelectorAll("[data-warp]").forEach(button => button.setAttribute("aria-pressed", String(Number(button.dataset.warp) === state.timeWarp)));
 }
 
 planModel.altitudeOptions.forEach(option => $("plan-altitude").append(new Option(option.label, option.value)));
@@ -1352,8 +1374,8 @@ let planPanelTime = 0;
 function tick(now) {
   const dt = Math.min(0.05, (now - state.lastTick) / 1000);
   state.lastTick = now;
-  // Time compression is offered only while the lander is flying a plan on its own.
-  if (!planActive(state)) state.timeWarp = 1;
+  // Time compression is offered only while the lander flies a plan on its own or runs a downlink.
+  if (!planActive(state) && !state.downlinkActive) state.timeWarp = 1;
   if (state.edl) {
     stepArrival(dt);
   } else if (state.restSeconds > 0 && !state.hold) {
@@ -1368,6 +1390,7 @@ function tick(now) {
     updateReadouts();
     updateTrack();
     updatePlanStrip();
+    document.querySelectorAll("[data-warp]").forEach(button => button.setAttribute("aria-pressed", String(Number(button.dataset.warp) === state.timeWarp)));
     if (now - planPanelTime > 300) { updatePlanPanel(); planPanelTime = now; }
     if (state.view === "mission") drawChart();
     readoutTime = now;
@@ -1512,5 +1535,6 @@ let arrivalSeen = false;
 try { arrivalSeen = localStorage.getItem("dragonfly-arrival-seen") === "1"; } catch { arrivalSeen = true; }
 if (!arrivalSeen) startArrival();
 
+if (["localhost", "127.0.0.1"].includes(location.hostname)) window.dragonflyTick = tick;
 state.lastTick = performance.now();
 requestAnimationFrame(tick);

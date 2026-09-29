@@ -1,5 +1,6 @@
 import { createSystemsState, guidanceTarget, stepSystems, flightRestriction, overLiquid } from "./mission-systems.mjs?v=dev";
 import { createPlan, stepPlan, planGuidance, updateScouting, abortPlan, estimatePlan } from "./flight-plan.mjs?v=dev";
+import { createScienceState, stepScience } from "./science.mjs?v=dev";
 // Environmental values: APL's TFAWS 2024 report. Performance values are demo assumptions.
 export const model = Object.freeze({
   massKg: 875, titanG: 1.352, earthG: 9.80665,
@@ -33,6 +34,7 @@ const IDLE_THROTTLE = 0.18;
 export function createFlightState() {
   return {
     ...createSystemsState(),
+    ...createScienceState(),
     mode: "Preflight", auto: true, hold: false, missionTime: 0, autoClock: 0,
     altitude: 0, verticalSpeed: 0, speed: 0, throttle: model.hoverThrottle, altitudeHold: null,
     yaw: 0, pitch: 0, roll: 0, yawCmd: 0, pitchCmd: 0, rollCmd: 0,
@@ -266,6 +268,7 @@ export function stepFlight(state, dt) {
     state.rotorPhase[i] = (state.rotorPhase[i] + state.rotorRpm[i] * Math.PI / 30 * dt * spin) % (Math.PI * 2);
   });
   state.power = stopped ? 100 : flightPower(state);
+  stepScience(state, dt);
   stepSystems(state, dt, model.batteryEnergyKwh);
   if (state.sampleTime < 0 || state.missionTime - state.sampleTime >= 0.5 - 1e-9) {
     state.sampleTime = state.missionTime;
