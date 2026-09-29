@@ -123,6 +123,7 @@ export function liquidExchangerStudy(hotC, coldC, hotCapacityRate, coldCapacityR
 export function createSystemsState() {
   return {
     coreC: 12, batteryC: 10, trim: 0.04, thermalAuto: true, fan: 1,
+    rdeC: 12, twtaC: 12, noseElectronicsC: 12,
     trimClock: 0, trimIntegral: 0, effectiveTrim: 0, trimFlightLocked: false,
     fault: "none", fanIntegrity: 1, insulationIntegrity: 1,
     generatedW: 90, arrivalElectricW: 90, rtgHeatW: 1800, netBatteryW: 0, heatInW: 0, heatOutW: 0,
@@ -275,6 +276,7 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
   state.heatOutW = state.foamUA * delta + state.coldDuctW;
   state.coreC += (state.heatInW - state.heatOutW - batteryExchange) * dt / systemsModel.coreCapacity;
   state.batteryC += (batteryExchange + Math.abs(state.netBatteryW) * 0.035 - 0.08 * (state.batteryC - systemsModel.ambientC)) * dt / systemsModel.batteryCapacity;
+  stepDisplayNodes(state, dt);
   state.guard = flightRestriction(state);
 
   const m = state.mission;
@@ -298,6 +300,54 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
     m.phase = "complete"; m.guidance = false; state.throttle = 0;
     m.message = "Survey complete: one sample returned to base.";
   }
+}
+
+// Display-only thermal nodes for boxes the published models single out (ICES-2023-389 figs 3-4
+// and text): the two rotorcraft drive electronics (RDEs) heat up considerably in flight; the
+// TWTA under the top deck is warm while on; the lidar and IMU boxes at the base of the nose warm
+// in flight. Each relaxes toward the bay air temperature; heat inputs and time constants are
+// estimates calibrated so a ~30 min flight ends near the published ~300 K for the RDEs. They do
+// not feed back into the lander heat balance above.
+function relax(value, target, seconds, dt) {
+  return target + (value - target) * Math.exp(-dt / seconds);
+}
+function stepDisplayNodes(state, dt) {
+  const flying = state.altitude > 0.001;
+  state.rdeC = relax(state.rdeC ?? state.coreC, state.coreC + (flying ? 0.002 * state.power : 0), 1200, dt);
+  state.twtaC = relax(state.twtaC ?? state.coreC, state.coreC + (flying || state.downlinkW > 0 ? 18 : 0), 900, dt);
+  state.noseElectronicsC = relax(state.noseElectronicsC ?? state.coreC, state.coreC + (flying ? 9 : 0), 900, dt);
+}
+
+// Temperature (C) of every thermal zone the vehicle model is tagged with, with where it comes from.
+// "modeled" values come from the simulator's heat balance; "estimate" values are placed relative to
+// it from the published thermal-model figures; "published" values are documented set points.
+export function thermalZoneTemps(state) {
+  const ambient = systemsModel.ambientC;
+  const inside = state.coreC - ambient;
+  const foamLeakW = (state.foamUA || 0) * inside;
+  const surface = ambient + foamLeakW / (Math.max(1, state.convectionH || 4) * systemsModel.foamArea);
+  const motorsWarm = !state.motorsCold || state.altitude > 0.001;
+  const coldDuctAir = state.coreC - (state.coldDuctW || 0) / Math.max(1, (state.gasFlow || 0.001) * systemsModel.gasCp);
+  return {
+    "equipment-bay": { c: state.coreC, source: "modeled bay air" },
+    battery: { c: state.batteryC, source: "modeled battery" },
+    rde: { c: state.rdeC ?? state.coreC, source: "estimate (ICES-2023 fig. 4)" },
+    twta: { c: state.twtaC ?? state.coreC, source: "estimate (warm when on)" },
+    "nose-electronics": { c: state.noseElectronicsC ?? state.coreC, source: "estimate (warms in flight)" },
+    "warm-duct": { c: state.warmGasC ?? state.coreC, source: "modeled MMRTG gas" },
+    mmrtg: { c: state.warmGasC ?? state.coreC, source: "modeled MMRTG gas (fin roots not modeled)" },
+    "trim-device": { c: Math.max(ambient, Math.min(state.coreC, coldDuctAir)), source: "modeled cold-duct air" },
+    "insulated-shell": { c: surface, source: "modeled foam outer surface" },
+    "cold-attic": { c: ambient + 0.25 * inside, source: "estimate (ICES-2023 fig. 3)" },
+    "nose-cameras": { c: ambient + 0.45 * inside, source: "estimate (ICES-2023 fig. 3)" },
+    "cold-actuators": { c: state.downlinkActive ? -40 : ambient + 0.18 * inside, source: state.downlinkActive ? "published preheat before use" : "estimate (ICES-2023 fig. 3)" },
+    motors: { c: motorsWarm ? -65 : ambient, source: motorsWarm ? "published preheat target" : "Titan air" },
+    "external-sensors": { c: ambient, source: "Titan air" },
+    "exterior-structure": { c: ambient, source: "Titan air" },
+    rotors: { c: ambient, source: "Titan air" },
+    drills: { c: ambient, source: "Titan air" },
+    antennas: { c: ambient, source: "Titan air" },
+  };
 }
 
 export function startRest(state, hours) {

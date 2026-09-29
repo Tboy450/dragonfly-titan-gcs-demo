@@ -2,7 +2,8 @@ import * as THREE from "./vendor/three/three.module.min.js";
 import { cameraPose } from "./flight-camera.mjs?v=dev";
 import { createTitanTerrain, terrainHeight } from "./titan-terrain.mjs?v=dev";
 import { model } from "./flight-model.mjs?v=dev";
-import { missionTarget, systemsModel } from "./mission-systems.mjs?v=dev";
+import { missionTarget, systemsModel, thermalZoneTemps } from "./mission-systems.mjs?v=dev";
+import { thermalRgb, thermalRanges } from "./thermal-scale.mjs?v=dev";
 
 // options.renderer lets tests drive the full scene without a GPU.
 export function createChaseRenderer(options = {}) {
@@ -379,7 +380,145 @@ export function createChaseRenderer(options = {}) {
       }
     }
   }
+  // ---- Interior (shown by the Mission view's Internal and Thermal layers) ----
+  // Placement follows the published descriptions and figures, in the same coordinates as the
+  // exterior above. Inside the 7.62 cm foam the cavity is about x -/+0.36, y -0.33 to +0.07,
+  // and up to y +0.5 under the attic. Sources: ICES-2023-389 (text p2-p7; fig. 3 hot
+  // hibernation and fig. 4 end of a leapfrog flight, nose to the left) and TFAWS 2023 slide 3
+  // (top view: centerline ducting, fans at the tail). Parts the papers name but do not locate
+  // exactly are placed where those figures show them; unnamed boxes are not drawn.
+  const labeledParts = [];
+  function interiorPart(name, thermalZone, label, source, color, layer = "interior") {
+    subsystem(name, thermalZone);
+    const group = subsystems[name];
+    group.userData.layer = layer;
+    group.userData.label = label;
+    group.userData.source = source;
+    group.userData.color = color;
+    labeledParts.push(group);
+    return new THREE.MeshStandardMaterial({ color, metalness: 0.2, roughness: 0.6 });
+  }
+  let material = interiorPart("nose-bulkhead", "equipment-bay", "Nose bulkhead", "ICES-2023 p7, fig. 3", 0x9aa6ad);
+  mesh(new THREE.BoxGeometry(0.7, 0.4, 0.02), material, [0, -0.13, -1.56]);
+  material = interiorPart("nose-cameras-inside", "nose-cameras", "Navigation and forward cameras (no active airflow)", "ICES-2023 p7, fig. 3", 0x3d4a52);
+  for (const x of [-0.22, 0, 0.22]) mesh(new THREE.BoxGeometry(0.09, 0.09, 0.12), material, [x, -0.1, -1.8]);
+  material = interiorPart("nose-electronics", "nose-electronics", "IMUs and lidar electronics (FEB, MEB)", "ICES-2023 p7 (base of the nose), fig. 4", 0x5f8fa3);
+  mesh(new THREE.BoxGeometry(0.22, 0.12, 0.2), material, [-0.15, -0.26, -1.36]);
+  mesh(new THREE.BoxGeometry(0.14, 0.1, 0.14), material, [0.07, -0.27, -1.38]);
+  mesh(new THREE.BoxGeometry(0.09, 0.09, 0.09), material, [0.25, -0.28, -1.42]);
+  mesh(new THREE.BoxGeometry(0.09, 0.09, 0.09), material, [0.25, -0.28, -1.28]);
+  material = interiorPart("sample-carousel", "cold-attic", "Cold attic: DrACO sample carousel", "ICES-2023 p2, p7, fig. 3", 0x7fb3c9);
+  mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.04, 28), material, [0, 0.18, -1.52]);
+  for (let i = 0; i < 8; i += 1) {
+    const angle = i / 8 * Math.PI * 2;
+    mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.06, 10), material, [Math.cos(angle) * 0.11, 0.23, -1.52 + Math.sin(angle) * 0.11]);
+  }
+  material = interiorPart("wonderwall", "cold-attic", "Wonderwall: insulation keeping >100 C between carousel and DraMS", "ICES-2023 p7", 0xe6e0d0);
+  mesh(new THREE.BoxGeometry(0.72, 0.38, 0.05), material, [0, 0.28, -1.3]);
+  material = interiorPart("drams", "equipment-bay", "Warm attic: DraMS mass spectrometer and laser (with fan)", "ICES-2023 p2, p7", 0xb58a4a);
+  mesh(new THREE.BoxGeometry(0.22, 0.2, 0.18), material, [0.08, 0.2, -1.16]);
+  mesh(new THREE.BoxGeometry(0.14, 0.1, 0.3), material, [-0.2, 0.18, -1.0]);
+  mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.03, 12), material, [-0.2, 0.245, -0.9]);
+  mesh(new THREE.BoxGeometry(0.3, 0.18, 0.22), material, [0.06, 0.18, -0.92]);
+  material = interiorPart("rde", "rde", "Rotorcraft drive electronics (2 boxes)", "ICES-2023 p5, p7, fig. 4", 0xa34d4d);
+  for (const x of [-0.16, 0.16]) mesh(new THREE.BoxGeometry(0.24, 0.22, 0.26), material, [x, -0.18, -0.55]);
+  material = interiorPart("hga-actuators", "cold-actuators", "HGA azimuth/elevation actuators", "ICES-2023 p2, fig. 3", 0x4f7fd1);
+  mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.05, 20), material, [0, 0.035, -0.36]);
+  mesh(new THREE.BoxGeometry(0.1, 0.07, 0.12), material, [0, -0.02, -0.36]);
+  material = interiorPart("avionics", "equipment-bay", "Avionics, power and radio boxes (PSUs, DPUs, radio)", "ICES-2023 p7, fig. 4", 0x4f9a8f);
+  mesh(new THREE.BoxGeometry(0.2, 0.22, 0.26), material, [-0.22, -0.18, -0.2]);
+  mesh(new THREE.BoxGeometry(0.2, 0.22, 0.22), material, [-0.22, -0.18, 0.12]);
+  mesh(new THREE.BoxGeometry(0.22, 0.18, 0.3), material, [0.2, -0.2, -0.12]);
+  mesh(new THREE.BoxGeometry(0.18, 0.18, 0.18), material, [0.22, -0.2, 0.2]);
+  material = interiorPart("twta", "twta", "TWTA radio amplifier (under the top deck)", "ICES-2023 p7", 0xc0643c);
+  mesh(new THREE.BoxGeometry(0.3, 0.07, 0.14), material, [0.05, 0.02, 0.08]);
+  material = interiorPart("battery", "battery", "Battery: 11.5 kWh, 7.5 kg phase-change wax, heat pipes", "ICES-2023 p5, figs. 3-4", 0x6f7d58);
+  mesh(new THREE.BoxGeometry(0.6, 0.3, 0.52), material, [0, -0.15, 0.72]);
+  material = interiorPart("aft-bulkhead", "equipment-bay", "Aft bulkhead", "ICES-2023 fig. 4", 0x9aa6ad);
+  mesh(new THREE.BoxGeometry(0.7, 0.4, 0.02), material, [0, -0.13, 1.08]);
+  material = interiorPart("fan", "warm-duct", "Circulation fan: 0.052 kg/s of MMRTG-warmed air, 10-15 W", "ICES-2023 p6; TFAWS 2023 slide 3", 0xd9823f);
+  mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.12, 20), material, [0, -0.12, 1.18]).rotation.x = Math.PI / 2;
+  material = interiorPart("underfloor-duct", "warm-duct", "Under-floor duct: warm air runs forward to the nose", "ICES-2023 p2-p3; TFAWS 2023 slide 3", 0xc9794a);
+  mesh(new THREE.BoxGeometry(0.16, 0.045, 2.6), material, [0, -0.305, -0.13]);
+  material = interiorPart("trim-chimneys", "trim-device", "Trim device: 43 x 34 cm chimney on each side", "ICES-2023 p7, fig. 1", 0xb04a9a);
+  for (const side of [-1, 1]) mesh(new THREE.BoxGeometry(0.025, 0.43, 0.34), material, [side * 0.44, -0.13, 0.45]);
+  // Externally mounted items described in the same paper, visible in every layer.
+  material = interiorPart("nose-sensors", "external-sensors", "METHAN sensor with the E-field sensor above (starboard nose)", "ICES-2023 p2", 0x6b7278, "exterior");
+  mesh(new THREE.BoxGeometry(0.05, 0.07, 0.09), material, [0.455, -0.12, -1.66]);
+  mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.1, 8), material, [0.455, 0.02, -1.66]);
+  material = interiorPart("side-cameras", "cold-actuators", "Side camera suites: down camera, micro-imager, LED (under foam, both sides)", "ICES-2023 p2, fig. 3", 0xbfb8aa, "exterior");
+  for (const side of [-1, 1]) mesh(new THREE.BoxGeometry(0.07, 0.12, 0.16), material, [side * 0.455, -0.24, 0.62]);
+  material = interiorPart("drill-blower", "drills", "DrACO sample blower (behind the port forward arm)", "ICES-2023 p5, p7", 0x8c8f93, "exterior");
+  mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.1, 12), material, [-0.455, -0.2, -0.56]).rotation.z = Math.PI / 2;
+
+  // Circulation loop (ICES-2023 p2-p3): MMRTG -> fan -> under-floor duct forward -> into the body
+  // below the nose -> aft through the bay -> back into the MMRTG. Arrows move along it.
+  const airPath = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0, 0.05, 1.6), new THREE.Vector3(0, -0.1, 1.24), new THREE.Vector3(0, -0.3, 1.1),
+    new THREE.Vector3(0, -0.3, 0), new THREE.Vector3(0, -0.3, -1.3), new THREE.Vector3(0, -0.18, -1.47),
+    new THREE.Vector3(0, -0.02, -1.25), new THREE.Vector3(0.05, -0.02, -0.5), new THREE.Vector3(0.05, 0.04, 0.3),
+    new THREE.Vector3(0, 0.045, 0.95), new THREE.Vector3(0, 0.08, 1.3),
+  ], true, "catmullrom", 0.2);
+  subsystem("airflow", "warm-duct");
+  subsystems.airflow.userData.layer = "interior";
+  const arrowMaterial = new THREE.MeshBasicMaterial({ color: 0xffa64d });
+  const airArrows = Array.from({ length: 26 }, () => mesh(new THREE.ConeGeometry(0.03, 0.08, 8), arrowMaterial, [0, 0, 0]));
+  const arrowTangent = new THREE.Vector3();
+  function poseAirflow(time) {
+    airArrows.forEach((arrow, index) => {
+      const u = (index / airArrows.length + time * 0.05) % 1;
+      airPath.getPointAt(u, arrow.position);
+      airPath.getTangentAt(u, arrowTangent);
+      arrow.quaternion.setFromUnitVectors(upAxis, arrowTangent);
+    });
+  }
   buildTarget = classicModel;
+
+  // ---- Mission-view layers: exterior, internal (see-through shell) and thermal (live colors) ----
+  const shellNames = new Set(["fuselage", "attic", "high-gain-antenna"]);
+  const ghostShell = new THREE.MeshStandardMaterial({ color: 0xd8e3ea, transparent: true, opacity: 0.13, depthWrite: false, roughness: 0.9 });
+  const thermalMaterials = new Map();
+  function ownerOf(part) {
+    if (part.userData.owner === undefined) {
+      let owner = part.parent;
+      while (owner && !owner.userData.subsystem) owner = owner.parent;
+      part.userData.owner = owner || null;
+    }
+    return part.userData.owner;
+  }
+  function thermalMaterial(key, celsius, range, shell) {
+    let material = thermalMaterials.get(key);
+    if (!material) {
+      material = new THREE.MeshLambertMaterial(shell ? { transparent: true, opacity: 0.22, depthWrite: false } : {});
+      thermalMaterials.set(key, material);
+    }
+    const [r, g, b] = thermalRgb(celsius, range);
+    material.color.setRGB(r / 255, g / 255, b / 255, THREE.SRGBColorSpace);
+    return material;
+  }
+  let appliedLayer = "";
+  function applyLayer(layer, state, range = thermalRanges.full) {
+    if (layer === appliedLayer && layer !== "thermal") return;
+    appliedLayer = layer;
+    const zones = layer === "thermal" ? thermalZoneTemps(state) : null;
+    researchModel.traverse((part) => {
+      if (!part.isMesh) return;
+      if (!part.userData.baseMaterial) part.userData.baseMaterial = part.material;
+      const base = part.userData.baseMaterial;
+      if (layer === "exterior" || (!Array.isArray(base) && base.transparent)) { part.material = base; return; }
+      const owner = ownerOf(part);
+      const shell = owner && shellNames.has(owner.name);
+      if (layer === "internal") { part.material = shell ? ghostShell : base; return; }
+      const zone = owner?.userData.thermalZone || "exterior-structure";
+      part.material = thermalMaterial(`${zone}|${shell}`, zones[zone]?.c ?? systemsModel.ambientC, range, shell);
+    });
+    for (const group of Object.values(subsystems)) {
+      if (group.userData.layer === "interior") group.visible = layer !== "exterior";
+    }
+    subsystems.airflow.visible = layer === "internal";
+  }
+  applyLayer("exterior");
+  const labelBox = new THREE.Box3(), labelPoint = new THREE.Vector3();
 
   // ---- Entry, descent and landing hardware for the arrival sequence (timeline in edl.mjs) ----
   // 4.5 m, 60-degree sphere-cone aeroshell; 8.25 m drogue and 16.7 m main parachutes [PUB].
@@ -495,7 +634,10 @@ export function createChaseRenderer(options = {}) {
   return {
     models: { original: classicModel, research: researchModel },
     subsystems,
-    drawMission(ctx, w, h, state) {
+    // view.layer: "exterior" (default), "internal" or "thermal"; view.range: a thermalRanges entry.
+    // Returns the on-screen position of each labeled part for the layer's callouts.
+    drawMission(ctx, w, h, state, view = {}) {
+      const layer = view.layer || "exterior";
       if (w !== width || h !== height || renderView !== "mission") {
         renderer.setSize(w, h, false);
         width = w;
@@ -518,19 +660,46 @@ export function createChaseRenderer(options = {}) {
       setAttitude(state);
       sun.position.set(-4, 7, -3);
       sun.target.position.set(0, 0, 0);
-      const halfHeight = Math.max(3.4, 3.0 * h / w);
+      const layered = layer !== "exterior";
+      if (layered) {
+        // Fixed three-quarter view with the nose to the left, like the published thermal figures.
+        researchModel.visible = true;
+        classicModel.visible = false;
+        craft.rotation.set(0, Math.PI / 2, 0);
+        craft.updateMatrixWorld(true);
+        poseAirflow(state.missionTime || 0);
+        trails.forEach((material) => { material.opacity = 0; }); // no rotor blur over the diagram
+      }
+      applyLayer(layer, state, view.range);
+      const halfHeight = layered ? Math.max(1.75, 2.35 * h / w) : Math.max(3.4, 3.0 * h / w);
       Object.assign(missionCamera, { left: -halfHeight * w / h, right: halfHeight * w / h, top: halfHeight, bottom: -halfHeight });
-      missionCamera.position.set(0, 8, 3.5);
-      missionCamera.lookAt(0, 0, 0);
+      if (layered) missionCamera.position.set(1.6, 5.2, 7.2);
+      else missionCamera.position.set(0, 8, 3.5);
+      missionCamera.lookAt(0, layered ? -0.15 : 0, 0);
       missionCamera.updateProjectionMatrix();
       renderer.render(scene, missionCamera);
       ctx.drawImage(renderer.domElement, 0, 0, w, h);
+      const labels = [];
+      if (layered) {
+        craft.updateMatrixWorld(true);
+        for (const group of labeledParts) {
+          labelBox.setFromObject(group);
+          labelBox.getCenter(labelPoint).project(missionCamera);
+          labels.push({
+            name: group.name, label: group.userData.label, source: group.userData.source,
+            zone: group.userData.thermalZone, color: group.userData.color,
+            x: (labelPoint.x + 1) / 2 * w, y: (1 - labelPoint.y) / 2 * h,
+          });
+        }
+      }
       landscape.group.visible = true;
+      applyLayer("exterior");
       ambient.color.copy(titanSky); ambient.groundColor.copy(titanGround); sun.color.copy(titanSun);
       fill.intensity = 0;
       scene.background = background;
       scene.fog = fog;
       renderer.shadowMap.enabled = true;
+      return labels;
     },
     draw(ctx, w, h, state) {
       if (w !== width || h !== height || renderView !== "pilot") {

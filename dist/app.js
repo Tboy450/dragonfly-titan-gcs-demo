@@ -4,7 +4,8 @@ import { model, createFlightState, deriveFlight, stepFlight, commandFlight, adva
 import { addWaypoint, undoWaypoint, clearPlan, uplinkPlan, abortPlan, planModel, planActive, isScouted } from "./flight-plan.mjs?v=dev";
 import { edlStateAt, edlDuration, formatSinceEntry, formatAltitude } from "./edl.mjs?v=dev";
 import { startSample, canSampleHere, groundTypeAt, gnsUncertainty, scienceModel } from "./science.mjs?v=dev";
-import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel, liquidExchangerStudy, linkStatus, toggleDownlink, flightEndurance, operationsAdvisory, titanLocalHour, titanDaylight, dampGround, pools, candidateSites } from "./mission-systems.mjs?v=dev";
+import { thermalRanges, thermalCss, thermalGradientCss } from "./thermal-scale.mjs?v=dev";
+import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel, liquidExchangerStudy, linkStatus, toggleDownlink, flightEndurance, operationsAdvisory, titanLocalHour, titanDaylight, dampGround, pools, candidateSites, thermalZoneTemps } from "./mission-systems.mjs?v=dev";
 
 const state = {
   ...createFlightState(),
@@ -14,6 +15,7 @@ const state = {
   cameraPitch: 0.10,
   throttleSpring: readThrottlePreference(),
   vehicleModel: readVehicleModelPreference(),
+  missionLayer: "exterior", thermalRange: "full", selectedPart: null,
   lastTick: performance.now(),
 };
 
@@ -593,9 +595,39 @@ function drawGrid(ctx, w, h) {
   ctx.restore();
 }
 
+// Numbered callouts for the Internal and Thermal layers; nudged apart so none overlap.
+let partMarkers = [];
+function drawPartMarkers(ctx, labels) {
+  partMarkers = [];
+  for (const [index, label] of labels.entries()) {
+    let { x, y } = label;
+    for (let tries = 0; tries < 12 && partMarkers.some(m => Math.hypot(m.x - x, m.y - y) < 20); tries += 1) y += 14;
+    partMarkers.push({ ...label, index: index + 1, x, y });
+  }
+  ctx.save();
+  ctx.font = "800 11px Inter, Arial, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  for (const marker of partMarkers) {
+    const selected = marker.name === state.selectedPart;
+    ctx.beginPath();
+    ctx.arc(marker.x, marker.y, selected ? 12 : 9, 0, Math.PI * 2);
+    ctx.fillStyle = selected ? "#7ce7ff" : "rgba(223, 239, 255, 0.92)";
+    ctx.fill();
+    if (selected) { ctx.lineWidth = 2; ctx.strokeStyle = "#06121a"; ctx.stroke(); }
+    ctx.fillStyle = "#06121a";
+    ctx.fillText(String(marker.index), marker.x, marker.y + 0.5);
+  }
+  ctx.restore();
+}
+
 function drawVehicle(ctx, w, h) {
   if (chaseRenderer) {
-    chaseRenderer.drawMission(ctx, w, h, state);
+    const layered = state.missionLayer !== "exterior";
+    if (layered) { ctx.fillStyle = "rgba(6, 12, 18, 0.62)"; ctx.fillRect(0, 0, w, h); }
+    const labels = chaseRenderer.drawMission(ctx, w, h, state, { layer: state.missionLayer, range: thermalRanges[state.thermalRange] });
+    if (layered) drawPartMarkers(ctx, labels);
+    else partMarkers = [];
     return;
   }
   const scale = Math.min(w, h) / 6.1;
@@ -803,16 +835,19 @@ function drawHud(ctx, w, h) {
   ctx.lineWidth = 1;
   const centerX = w / 2;
   const centerY = h / 2 + 20;
-  ctx.beginPath();
-  ctx.moveTo(centerX - 36, centerY);
-  ctx.lineTo(centerX - 10, centerY);
-  ctx.moveTo(centerX + 10, centerY);
-  ctx.lineTo(centerX + 36, centerY);
-  ctx.moveTo(centerX, centerY - 36);
-  ctx.lineTo(centerX, centerY - 10);
-  ctx.moveTo(centerX, centerY + 10);
-  ctx.lineTo(centerX, centerY + 36);
-  ctx.stroke();
+  // The crosshair would sit on top of the part callouts in the Internal and Thermal layers.
+  if (state.missionLayer === "exterior") {
+    ctx.beginPath();
+    ctx.moveTo(centerX - 36, centerY);
+    ctx.lineTo(centerX - 10, centerY);
+    ctx.moveTo(centerX + 10, centerY);
+    ctx.lineTo(centerX + 36, centerY);
+    ctx.moveTo(centerX, centerY - 36);
+    ctx.lineTo(centerX, centerY - 10);
+    ctx.moveTo(centerX, centerY + 10);
+    ctx.lineTo(centerX, centerY + 36);
+    ctx.stroke();
+  }
 
   // Left column starts below the "Vehicle / North up" overlay so ALT is never hidden.
   ctx.fillText(`ALT ${state.altitude.toFixed(1)} m`, 24, 100);
@@ -1041,6 +1076,98 @@ function updateTrack() {
   Object.entries({ cx: dx, cy: dy, rx: dampGround.rx * scale, ry: dampGround.rz * scale }).forEach(([k, v]) => $("track-damp").setAttribute(k, v));
   const [px, py] = project(pools[0]).split(",").map(Number);
   Object.entries({ cx: px, cy: py, rx: pools[0].rx * scale, ry: pools[0].rz * scale }).forEach(([k, v]) => $("track-puddle").setAttribute(k, v));
+}
+
+// ---- Vehicle layers (Mission view) and the shared systems readouts ----
+let partRows = "";
+function updateLayerPanel() {
+  const layered = state.missionLayer !== "exterior";
+  document.querySelectorAll("[data-layer]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.layer === state.missionLayer)));
+  $("thermal-legend").hidden = state.missionLayer !== "thermal";
+  $("part-list").hidden = !layered;
+  $("layer-note").hidden = !layered;
+  const range = thermalRanges[state.thermalRange];
+  $("thermal-min").textContent = `${range.min} C`;
+  $("thermal-max").textContent = `${range.max} C`;
+  $("thermal-range").textContent = `Scale: ${range.label.toLowerCase()}`;
+  if (!layered) { $("part-detail").hidden = true; return; }
+  const zones = thermalZoneTemps(state);
+  const markers = partMarkers.length ? partMarkers : [];
+  const rows = markers.map(marker => `${marker.index}|${marker.name}|${zones[marker.zone]?.c.toFixed(0)}|${marker.name === state.selectedPart}`).join(";");
+  if (rows !== partRows) {
+    partRows = rows;
+    $("part-list").replaceChildren(...markers.map(marker => {
+      const item = document.createElement("li");
+      item.dataset.part = marker.name;
+      item.classList.toggle("active", marker.name === state.selectedPart);
+      const zone = zones[marker.zone];
+      const number = document.createElement("b");
+      number.textContent = marker.index;
+      const name = document.createElement("span");
+      name.textContent = marker.label;
+      const temp = document.createElement("em");
+      temp.textContent = zone ? `${zone.c.toFixed(0)} C` : "";
+      if (zone && state.missionLayer === "thermal") temp.style.color = thermalCss(zone.c, range);
+      item.append(number, name, temp);
+      return item;
+    }));
+  }
+  const selected = markers.find(marker => marker.name === state.selectedPart);
+  $("part-detail").hidden = !selected;
+  if (selected) {
+    const zone = zones[selected.zone];
+    $("part-detail").textContent = `${selected.index}. ${selected.label}: ${zone ? `${zone.c.toFixed(1)} C (${zone.source})` : "no temperature"}. Placement: ${selected.source}.`;
+  }
+}
+
+function selectPart(name) {
+  state.selectedPart = state.selectedPart === name ? null : name;
+  partRows = "";
+  updateLayerPanel();
+}
+
+document.querySelectorAll("[data-layer]").forEach(button => button.addEventListener("click", () => {
+  state.missionLayer = button.dataset.layer;
+  try { localStorage.setItem("dragonfly-mission-layer", state.missionLayer); } catch { /* optional */ }
+  partRows = "";
+  updateLayerPanel();
+}));
+$("thermal-range").addEventListener("click", () => {
+  state.thermalRange = state.thermalRange === "full" ? "inside" : "full";
+  partRows = "";
+  updateLayerPanel();
+});
+$("thermal-bar").style.background = thermalGradientCss();
+$("part-list").addEventListener("click", (event) => {
+  const row = event.target.closest("li[data-part]");
+  if (row) selectPart(row.dataset.part);
+});
+flightCanvas.addEventListener("click", (event) => {
+  if (state.view !== "mission" || !partMarkers.length) return;
+  const rect = flightCanvas.getBoundingClientRect();
+  const x = event.clientX - rect.left, y = event.clientY - rect.top;
+  const hit = partMarkers.reduce((best, marker) => {
+    const distance = Math.hypot(marker.x - x, marker.y - y);
+    return distance < 18 && (!best || distance < best.distance) ? { marker, distance } : best;
+  }, null);
+  if (hit) selectPart(hit.marker.name);
+});
+try {
+  const savedLayer = localStorage.getItem("dragonfly-mission-layer");
+  if (["exterior", "internal", "thermal"].includes(savedLayer)) state.missionLayer = savedLayer;
+} catch { /* optional */ }
+
+// The Pilot view's systems strip reads the same live values as the Mission view panels.
+function updatePilotHud() {
+  if (state.view !== "pilot") return;
+  const endurance = flightEndurance(state, model.batteryEnergyKwh);
+  $("hud-battery").textContent = `${state.battery.toFixed(0)}% / ${state.batteryC.toFixed(0)} C`;
+  $("hud-bay").textContent = `${state.coreC.toFixed(0)} C`;
+  $("hud-endurance").textContent = state.altitude > 0.001 ? `${endurance.minutes.toFixed(1)} min` : "Landed";
+  $("hud-link").textContent = linkStatus(state).label.replace(" / ", ": ");
+  const plan = state.plan;
+  $("hud-plan").textContent = plan.status === "draft" ? (plan.waypoints.length ? `${plan.waypoints.length} waypoints` : "None")
+    : plan.status === "executing" ? `${plan.phase} (${plan.leg + 1}/${plan.waypoints.length})` : plan.status;
 }
 
 // ---- Science payload ----
@@ -1390,6 +1517,8 @@ function tick(now) {
     updateReadouts();
     updateTrack();
     updatePlanStrip();
+    updateLayerPanel();
+    updatePilotHud();
     document.querySelectorAll("[data-warp]").forEach(button => button.setAttribute("aria-pressed", String(Number(button.dataset.warp) === state.timeWarp)));
     if (now - planPanelTime > 300) { updatePlanPanel(); planPanelTime = now; }
     if (state.view === "mission") drawChart();

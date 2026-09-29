@@ -31,6 +31,48 @@ Notes for every session:
 
 ## Entries
 
+### 2026-09-29: Internal-parts and thermal layers, shared Mission/Pilot readouts, slimmer arrival caption
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add internal and thermal vehicle layers and link Mission and Pilot readouts"
+- **What changed:**
+  - **Vehicle Layers panel** under the Mission diagram: Exterior / Internal / Thermal.
+    Internal and Thermal show the NASA 2023 design in a fixed three-quarter view with the nose to
+    the left (like the published thermal figures); the foam shell and HGA disc turn see-through.
+  - **Interior (18 labeled parts)** placed from ICES-2023-389 (text p2-p7, figs. 3-4) and the TFAWS
+    2023 top view, in the same coordinates as the exterior: nose bulkhead; navigation/forward
+    cameras in the unheated nose; IMUs and lidar FEB/MEB at the base of the nose; cold attic with
+    the DrACO sample carousel; the insulating "wonderwall"; warm attic with DraMS (mass spectrometer
+    and laser with fan); two rotorcraft drive electronics boxes; HGA az/el actuators; avionics,
+    power and radio boxes; the TWTA under the top deck; the battery (11.5 kWh, 7.5 kg PCM, heat
+    pipes) at the aft end; aft bulkhead; circulation fan; under-floor duct; trim-device chimneys
+    (43 x 34 cm, both sides); plus the METHAN/E-field sensors, side camera suites and DrACO blower
+    outside. Animated arrows follow the published air loop: MMRTG -> fan -> under-floor duct ->
+    into the body below the nose -> aft through the bay -> back into the MMRTG.
+  - **Thermal layer** colors every part by live temperature on a whole-lander (-180 to +40 C) or
+    inside (-30 to +40 C) scale with a legend. New display-only nodes for the RDEs, TWTA and nose
+    electronics are calibrated to the published end-of-leapfrog figure (RDEs near 300 K, nothing
+    above 35 C); cold-attic, nose-camera and actuator temperatures are placed relative to the bay
+    from the hot-hibernation figure. Each value is tagged modeled / estimate / published.
+  - Numbered callouts on the diagram (nudged apart) and a parts list with live temperatures;
+    tapping either highlights a part and shows its temperature, value source and placement source.
+  - **Linked readouts:** a compact systems strip in the Pilot view (battery % and temperature, bay
+    air, flight time left, link, plan status) reads the same live values as the Mission panels.
+  - **Arrival caption** is now a slim see-through strip along the bottom (one line plus at most
+    two lines of detail on phones; about 20% of the view on a 375 px screen) with a small Skip.
+- **Files:** `dist/chase-vehicle.mjs`, `dist/mission-systems.mjs`, `dist/thermal-scale.mjs` (new),
+  `dist/app.js`, `dist/index.html`, `dist/styles.css`, `tests/render-smoke.test.mjs`,
+  `README.md`, `RESEARCH-COMPENDIUM.md`
+- **Assumptions:** [PUB] part list and their described locations, air loop, foam thickness,
+  chimney size, fan flow, battery PCM, "nothing exceeds 35 C", "internal components no colder than
+  -20 C", published temperature ranges in figs. 3-4. [EST] exact box sizes and positions where the
+  papers give only a region (read from the figures), and the display-node heat inputs, time
+  constants and zone offsets. Unnamed boxes in NASA's figures are not drawn.
+- **Checks:** 58 tests pass (new: every interior part fits inside the 7.62 cm-foam cavity of the
+  exterior, attic parts under the attic roof, chimneys in the side walls; layers return on-screen
+  callouts for all labeled parts and the pilot view restores the exterior). Checked in the page by
+  stepping the real frame loop: Internal and Thermal captures at desktop size, parts list and
+  selection, and the arrival caption and Pilot strip at 375 x 812.
+
 ### 2026-09-29: Working science instruments and data return
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Make the science instruments produce data, samples and results"

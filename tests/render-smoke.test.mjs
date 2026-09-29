@@ -107,3 +107,54 @@ test("The arrival sequence hardware draws at every phase", async () => {
   chase.draw(context2d, 800, 600, state);
   assert.equal(renderer.frames, Math.floor(edlDuration / 0.5) + 2);
 });
+
+test("Interior parts fit inside the insulated cavity of the exterior model", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const chase = createChaseRenderer({ renderer: fakeRenderer() });
+  const state = { ...createFlightState(), vehicleModel: "research", heading: 0, pitch: 0, roll: 0 };
+  chase.draw(context2d, 800, 600, state);
+  const research = chase.models.research;
+  const inverse = research.parent.matrixWorld.clone().invert();
+  let checked = 0;
+  for (const group of Object.values(chase.subsystems)) {
+    if (group.userData.layer !== "interior" || group.name === "airflow") continue;
+    group.traverse((part) => {
+      if (!part.isMesh) return;
+      part.geometry.computeBoundingBox();
+      const box = part.geometry.boundingBox.clone().applyMatrix4(part.matrixWorld).applyMatrix4(inverse);
+      const where = `${group.name} [${box.min.toArray().map(v => v.toFixed(2))} .. ${box.max.toArray().map(v => v.toFixed(2))}]`;
+      // Foam is 7.62 cm thick (ICES-2023): cavity x -/+0.36, floor -0.34, top deck +0.085,
+      // up to +0.5 under the attic (z -1.82 to -0.72). Trim chimneys sit in the side walls.
+      const halfWidth = group.name === "trim-chimneys" ? 0.46 : 0.37;
+      const underAttic = box.min.z >= -1.82 && box.max.z <= -0.72;
+      assert.ok(box.min.x >= -halfWidth && box.max.x <= halfWidth, `width: ${where}`);
+      // The 43 cm chimneys are built into the side walls, which span the body's outer height.
+      const [floor, roof] = group.name === "trim-chimneys" ? [-0.41, 0.15] : [-0.345, underAttic ? 0.5 : 0.085];
+      assert.ok(box.min.y >= floor && box.max.y <= roof, `height: ${where}`);
+      assert.ok(box.min.z >= -1.9 && box.max.z <= 1.3, `length: ${where}`);
+      checked += 1;
+    });
+  }
+  assert.ok(checked >= 30, `checked ${checked} interior meshes`);
+});
+
+test("Mission-view layers draw and return callouts for every labeled part", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { thermalRanges } = await import("../dist/thermal-scale.mjs");
+  const chase = createChaseRenderer({ renderer: fakeRenderer() });
+  const state = createFlightState();
+  assert.deepEqual(chase.drawMission(context2d, 800, 600, state, { layer: "exterior" }), []);
+  for (const layer of ["internal", "thermal"]) {
+    const labels = chase.drawMission(context2d, 800, 600, state, { layer, range: thermalRanges.inside });
+    assert.ok(labels.length >= 15, `${layer}: ${labels.length} callouts`);
+    for (const label of labels) {
+      assert.ok(Number.isFinite(label.x) && Number.isFinite(label.y) && label.label && label.source && label.zone);
+      assert.ok(label.x > 0 && label.x < 800 && label.y > 0 && label.y < 600, `${label.name} on screen`);
+    }
+  }
+  // Drawing the pilot view afterwards restores the exterior with the interior hidden.
+  chase.draw(context2d, 800, 600, state);
+  assert.equal(chase.subsystems.battery.visible, false);
+});

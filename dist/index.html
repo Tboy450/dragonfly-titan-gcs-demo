@@ -166,13 +166,23 @@
               <strong id="heading-value">084 deg</strong>
             </div>
             <button id="model-toggle" class="model-toggle" type="button" aria-pressed="true" title="Switch between the vehicle model built from NASA/APL 2023 design drawings and the original demo model">Model: NASA 2023</button>
-            <section id="arrival-overlay" class="arrival-overlay" aria-label="Arrival at Titan" hidden>
-              <span>Arrival at Titan / time-compressed</span>
-              <strong id="arrival-title" aria-live="polite">Entry interface</strong>
+            <section id="pilot-hud" class="pilot-hud" aria-label="Vehicle systems">
+              <div><span>Battery</span><strong id="hud-battery">96% / 10 C</strong></div>
+              <div><span>Bay air</span><strong id="hud-bay">12 C</strong></div>
+              <div><span>Flight left</span><strong id="hud-endurance">Landed</strong></div>
+              <div><span>Link</span><strong id="hud-link">Ready</strong></div>
+              <div><span>Plan</span><strong id="hud-plan">None</strong></div>
+            </section>
+            <section id="arrival-overlay" class="arrival-overlay" aria-label="Arrival at Titan, time-compressed" hidden>
+              <div class="arrival-head">
+                <span class="arrival-kicker">Arrival at Titan</span>
+                <strong id="arrival-title" aria-live="polite">Entry interface</strong>
+                <b id="arrival-altitude">1270 km</b>
+                <b id="arrival-time">E+0:00</b>
+                <button id="arrival-skip" type="button">Skip</button>
+              </div>
               <p id="arrival-detail"></p>
-              <div class="arrival-readouts"><b id="arrival-altitude">1270 km</b><b id="arrival-time">E+0:00</b></div>
               <div class="arrival-progress" aria-hidden="true"><i id="arrival-progress"></i></div>
-              <button id="arrival-skip" type="button">Skip</button>
             </section>
             <div class="camera-switch" role="group" aria-label="Chase camera mode">
               <button id="fixed-camera-button" class="active" type="button" aria-pressed="true">Fixed</button>
@@ -224,6 +234,25 @@
               </div>
             </section>
           </div>
+
+          <section class="panel layer-panel" aria-labelledby="layer-title">
+            <div class="panel-heading">
+              <span id="layer-title">Vehicle Layers</span>
+              <div class="layer-switch" role="group" aria-label="Vehicle layer">
+                <button type="button" data-layer="exterior" aria-pressed="true">Exterior</button>
+                <button type="button" data-layer="internal" aria-pressed="false">Internal</button>
+                <button type="button" data-layer="thermal" aria-pressed="false">Thermal</button>
+              </div>
+            </div>
+            <div id="thermal-legend" class="thermal-legend" hidden>
+              <span id="thermal-min">-180 C</span><i id="thermal-bar"></i><span id="thermal-max">40 C</span>
+              <button id="thermal-range" type="button">Scale: whole lander</button>
+            </div>
+            <p id="layer-hint" class="rest-status">Internal and Thermal show the NASA 2023 design with the foam shell see-through, nose to the left. Tap a number or a row to highlight a part.</p>
+            <ol id="part-list" class="part-list" hidden></ol>
+            <p id="part-detail" class="part-detail" hidden></p>
+            <small id="layer-note" class="rest-status" hidden>Placement follows ICES-2023-389 (text and figs. 3-4) and the TFAWS 2023 top view. Temperatures: modeled = the simulator's heat balance; estimate = placed from NASA's published thermal-model figures; published = documented set point.</small>
+          </section>
 
           <section class="telemetry-band" aria-label="Primary telemetry">
             <div>

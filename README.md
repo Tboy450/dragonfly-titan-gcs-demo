@@ -114,6 +114,17 @@ Use 1x / 5x / 20x to speed up time during the flight, or **Stop plan** to hold p
 Leapfrog scouting: the last waypoint must be a scouted (green) site. Flying within 60 m of an
 amber candidate site at 20 m or higher scouts it, so a later flight may land there.
 
+## Vehicle Layers
+
+Under the Mission diagram, **Exterior / Internal / Thermal** switches the vehicle view. Internal
+makes the foam shell see-through and shows the parts NASA's thermal papers describe, placed where
+their figures put them: the cold attic with the sample carousel, DraMS, the battery at the aft
+end, the drive electronics, avionics, radio amplifier, circulation fan, under-floor duct and the
+trim-device chimneys, with arrows following the warm-air loop from the MMRTG. Thermal colors
+every part by its live temperature. Tap a number or a row to see a part's temperature and where
+its placement and value come from. The Pilot view shows the same live battery, temperature,
+flight-time, link and plan readouts in a compact strip.
+
 ## Science Instruments
 
 The Science Payload panel shows each instrument working: DragonCam images in flight,
