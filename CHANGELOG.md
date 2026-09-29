@@ -31,6 +31,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-09-29: Saved progress between visits
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Save mission progress in the browser"
+- **What changed:** The mission now survives a reload: position and heading, battery and
+  temperatures, Titan clock, scouted sites and log, survey progress, samples and results, science
+  log, stored and returned data, settings (wind, payload, MMRTG, fan, trim, faults) and a draft
+  flight plan. Saved every 5 s while landed and idle and when the page is hidden or left; if you
+  leave in flight, the last landed moment is kept, so a mission never resumes in mid-air. On
+  return a "Welcome back" message appears and the arrival sequence does not replay. "Start a new
+  mission" in the footer clears the save after a confirmation.
+- **Files:** `dist/save-game.mjs` (new), `dist/ui/persistence.mjs` (new), `dist/ui/arrival.mjs`,
+  `dist/app.js`, `dist/index.html`, `tests/save-game.test.mjs` (new), `ARCHITECTURE.md`, `README.md`
+- **Checks:** 61 tests pass (new: round trip after a real planned flight and sample, only
+  landed states saved, old or malformed saves ignored). In the page: progress saved, reload
+  restored position/heading/sample with the welcome message, reset started a fresh mission.
+- **Open / next:** saves live in one browser only (no sync between phone and computer).
+
 ### 2026-09-29: Architecture and handoff guide
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add an architecture and handoff guide"

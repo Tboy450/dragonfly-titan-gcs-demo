@@ -39,6 +39,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/edl.mjs` | Arrival (entry, descent, landing) timeline from the published EDL figure |
 | `dist/thermal-scale.mjs` | Temperature color scale shared by the thermal layer and its legend |
 | `dist/flight-camera.mjs` | Chase-camera pose and smoothing |
+| `dist/save-game.mjs` | Which state fields are saved between visits (a whitelist), when saving is allowed (landed, idle), and restoring onto a fresh state |
 
 ### 3D scene (three.js; covered by the render smoke tests with a stand-in renderer)
 | File | What it does |
@@ -62,6 +63,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `ui/plan-panel.mjs` | Flight Plan dialog, plan status strip, time-speed buttons |
 | `ui/controls.mjs` | Flight buttons, sticks, keyboard, camera modes, view switch, other controls |
 | `ui/arrival.mjs` | Arrival sequence: start, step, skip, replay, caption |
+| `ui/persistence.mjs` | Saves progress in the browser (every 5 s while landed and when the page is left), restores it on load, "Start a new mission" |
 | `dist/index.html`, `dist/styles.css` | Markup and styles. The phone Pilot-view overrides are in the last section of `styles.css` |
 
 ### Documents and tooling
@@ -88,6 +90,9 @@ There is one live `state` object (`ui/context.mjs`). Each part of the simulation
 | `ui/arrival.mjs` | `edl`, `edlTime` (only while the arrival plays) |
 | `ui/*` (page only) | `view`, `cameraMode`, `vehicleModel`, `missionLayer`, `thermalRange`, `selectedPart`, `throttleSpring`, `renderPose` |
 
+**Saved between visits:** only the fields listed in `save-game.mjs`. When you add state that
+should survive a reload, add it there (and bump `SAVE_VERSION` if old saves would break).
+
 ## One frame (`app.js`)
 
 1. Step the simulation: the arrival sequence, hibernation fast-forward, or `stepFlight()` once per
@@ -107,6 +112,7 @@ There is one live `state` object (`ui/context.mjs`). Each part of the simulation
 | `edl.test.mjs` | Arrival altitudes and ordering |
 | `terrain.test.mjs` | Terrain sampling, damp ground, puddle, level landing sites |
 | `render-smoke.test.mjs` | Whole 3D scene with a stand-in renderer: both models, antenna, day/night, arrival hardware, layers and callouts, the published envelope, subsystem tags, and that every interior part fits inside the foam-lined cavity |
+| `save-game.test.mjs` | Save and restore round trip after a real flight and sample; only landed states; bad saves ignored |
 | `flight-camera.test.mjs`, `cache-version.test.mjs` | Chase camera; `?v=dev` stamps and the build label |
 
 ## Local testing tips

@@ -3,6 +3,7 @@ import { smoothCameraPose } from "./flight-camera.mjs?v=dev";
 import { advanceRest, stepFlight } from "./flight-model.mjs?v=dev";
 import { planActive } from "./flight-plan.mjs?v=dev";
 import { state } from "./ui/context.mjs?v=dev";
+import "./ui/persistence.mjs?v=dev";
 import { drawFlight } from "./ui/flight-view.mjs?v=dev";
 import { drawChart } from "./ui/chart.mjs?v=dev";
 import { updateReadouts, updateTrack } from "./ui/readouts.mjs?v=dev";

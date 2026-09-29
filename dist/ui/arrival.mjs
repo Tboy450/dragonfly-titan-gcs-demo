@@ -3,6 +3,7 @@ import { edlDuration, edlStateAt, formatAltitude, formatSinceEntry } from "../ed
 import { abortPlan } from "../flight-plan.mjs?v=dev";
 import { $, chaseRenderer, state } from "./context.mjs?v=dev";
 import { setView } from "./controls.mjs?v=dev";
+import { restored } from "./persistence.mjs?v=dev";
 
 // ---- Arrival at Titan: entry, descent and landing opening sequence (timeline in edl.mjs) ----
 let arrivalReturnView = "mission";
@@ -59,4 +60,5 @@ $("arrival-skip").addEventListener("click", finishArrival);
 $("arrival-replay").addEventListener("click", () => { window.scrollTo(0, 0); startArrival(); });
 let arrivalSeen = false;
 try { arrivalSeen = localStorage.getItem("dragonfly-arrival-seen") === "1"; } catch { arrivalSeen = true; }
-if (!arrivalSeen) startArrival();
+// A restored mission resumes where it was; the arrival only plays on a fresh first visit.
+if (!arrivalSeen && !restored) startArrival();
