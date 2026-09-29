@@ -31,6 +31,18 @@ Notes for every session:
 
 ## Entries
 
+### 2026-09-28: Redirect page to retire the ChatGPT Sites copy (prepared, not yet published)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a redirect page for retiring the ChatGPT Sites copy"
+- **What changed:** Added `sites-redirect/index.html`, a small page that forwards visitors
+  from the old chatgpt.site copy to the GitHub Pages version, with publishing instructions in
+  `sites-redirect/README.md`. GitHub Pages is unaffected.
+- **Findings:** the `sites` git remote's latest commit (`6890413`, Sep 21) does not match what
+  the chatgpt.site URL serves, so that site is published through ChatGPT's own pipeline;
+  pushing to the remote alone may not change it.
+- **Open / next:** publish the redirect from ChatGPT (or push it to the `sites` remote) once the
+  owner approves.
+
 ### 2026-09-28: Rain-darkened interdune replaces the fictional lake
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Replace the fictional lake with a rain-darkened interdune and methane puddle"

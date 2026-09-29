@@ -33,8 +33,9 @@ always fetch fresh files and you can see which version is live. Leave the `?v=de
 they are; a test checks them.
 
 Record every change in [CHANGELOG.md](CHANGELOG.md), signed with who made it.
-The existing [Sites copy](https://dragonfly-titan-gcs-demo.tboy450.chatgpt.site/)
-is managed separately.
+The older [Sites copy](https://dragonfly-titan-gcs-demo.tboy450.chatgpt.site/)
+is managed separately and is being retired; `sites-redirect/` holds the page that forwards
+its visitors here.
 
 ## Assets
 
