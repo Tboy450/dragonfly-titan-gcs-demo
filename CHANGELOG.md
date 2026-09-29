@@ -19,7 +19,7 @@ Add your entry at the top of **Entries** in the same commit as the change:
 - **Open / next:** follow-ups for the next session
 ```
 
-Notes for every session:
+Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map and rules):
 - The git author on this machine is "Heemi" for all commits, so the signature here (and a
   `Co-Authored-By` line in the commit message) is how authorship is tracked.
 - Research sources, tags ([PUB]/[CALC]/[EST]) and the implementation status table live in
@@ -30,6 +30,14 @@ Notes for every session:
   replaces them with the commit hash (see `.github/workflows/pages.yml`).
 
 ## Entries
+
+### 2026-09-29: Architecture and handoff guide
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add an architecture and handoff guide"
+- **What changed:** New `ARCHITECTURE.md`: house rules, a map of every file, which module owns
+  which fields of the shared state, what one frame does, what each test file covers, and local
+  testing tips. Linked from the README and from the notes at the top of this log.
+- **Files:** `ARCHITECTURE.md`, `README.md`, `CHANGELOG.md`
 
 ### 2026-09-29: Pilot view layout: see-through panels, nothing covering the vehicle
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)

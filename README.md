@@ -7,6 +7,9 @@ A browser-based, NASA Dragonfly-inspired flight and telemetry demo. Includes a
 360-degree free cameras. This is an educational simulation, not an official
 NASA flight product or a validated flight dynamics model.
 
+New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
+rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
+
 ## Run Locally
 
 Serve the `dist` folder over HTTP, then open the local URL:
