@@ -702,14 +702,17 @@ export function createChaseRenderer(options = {}) {
       return labels;
     },
     draw(ctx, w, h, state) {
-      if (w !== width || h !== height || renderView !== "pilot") {
-        renderView = "pilot";
+      const framing = state.edl ? "arrival" : "pilot";
+      if (w !== width || h !== height || renderView !== framing) {
+        renderView = framing;
         width = w;
         height = h;
         renderer.setSize(w, h, false);
         camera.aspect = w / h;
+        // Pilot: center the aircraft above the stick deck. Arrival: the deck is hidden, so center
+        // the scene in the space above the caption strip along the bottom.
         const flightBottom = h - (w <= 720 ? 235 : Math.min(300, h * 0.4));
-        const centerY = (58 + Math.max(138, flightBottom)) / 2;
+        const centerY = framing === "arrival" ? h * 0.42 : (58 + Math.max(138, flightBottom)) / 2;
         camera.setViewOffset(w, h, 0, h / 2 - centerY, w, h);
         camera.updateProjectionMatrix();
       }

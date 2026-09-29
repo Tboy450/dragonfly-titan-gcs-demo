@@ -31,6 +31,19 @@ Notes for every session:
 
 ## Entries
 
+### 2026-09-29: Arrival sequence framing for phones
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Zoom out on the parachute phases of the arrival sequence"
+- **What changed:** While the parachutes are out the camera now pulls back about 3x (drogue
+  40 -> 120 m, main 66 -> 190 m; entry capsule 16 -> 30 m), so the whole ~40 m capsule-and-parachute
+  rig fits on a phone screen at about a third of its former size. After release at 1 km the camera
+  eases back in to the lander (12 m) as it flies down. During the arrival the scene is centered in
+  the space above the caption strip instead of being shifted up for the (hidden) pilot controls,
+  which had pushed the parachute off the top of phone screens.
+- **Files:** `dist/edl.mjs`, `dist/chase-vehicle.mjs`
+- **Checks:** 58 tests pass; frames captured at 375 x 812 at entry, drogue, main, pose,
+  pre-release, after release and near touchdown.
+
 ### 2026-09-29: Internal-parts and thermal layers, shared Mission/Pilot readouts, slimmer arrival caption
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add internal and thermal vehicle layers and link Mission and Pilot readouts"

@@ -64,8 +64,9 @@ export function edlStateAt(t) {
     released: time >= release,
     separation: Math.max(0, time - release),
     space: clamp((Math.log10(Math.max(1, altitudeM)) - 4.7) / 1.2, 0, 1),
-    // Framing: close on the capsule, pulled back for the 8.25 m drogue and further for the 16.7 m main.
-    cameraDistance: time < main ? ease(time, drogue, 1.5, 16, 40) : time < release ? ease(time, main, 1.5, 40, 66) : ease(time, release, 14, 66, 12),
+    // Framing: wide enough to keep the whole capsule-and-parachute assembly on a phone screen
+    // (the main parachute rig is ~40 m tall), then zooming in on the lander after release.
+    cameraDistance: time < main ? ease(time, drogue, 1.5, 30, 120) : time < release ? ease(time, main, 1.5, 120, 190) : ease(time, release, 12, 190, 12),
     lookUp: time < main ? ease(time, drogue, 1.5, 0.5, 8) : time < release ? ease(time, main, 1.5, 8, 18) : ease(time, release, 6, 18, 0),
     cameraElevation: time < drogue ? 0.25 : time < release ? -0.08 : -0.08 + 0.26 * smooth(clamp((time - release) / 8, 0, 1)),
   };
