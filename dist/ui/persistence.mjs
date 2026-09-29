@@ -29,9 +29,15 @@ setInterval(writeSave, 5000);
 window.addEventListener("pagehide", writeSave);
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") writeSave(); });
 
-$("new-mission").addEventListener("click", () => {
-  if (!window.confirm("Start a new mission? This clears the saved progress in this browser.")) return;
+// Start over: clear the saved mission and play the arrival (landing) sequence again.
+function startOver() {
+  if (!window.confirm("Start over from the landing? This clears the saved mission in this browser.")) return;
   resetting = true;
-  try { localStorage.removeItem(SAVE_KEY); } catch { /* ignore */ }
+  try {
+    localStorage.removeItem(SAVE_KEY);
+    localStorage.removeItem("dragonfly-arrival-seen");
+  } catch { /* ignore */ }
   location.reload();
-});
+}
+$("start-over").addEventListener("click", startOver);
+$("new-mission").addEventListener("click", startOver);

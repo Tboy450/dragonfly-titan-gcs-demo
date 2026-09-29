@@ -121,8 +121,8 @@ amber candidate site at 20 m or higher scouts it, so a later flight may land the
 
 Your mission is saved in the browser while the lander is on the ground and whenever you leave
 the page: position, battery and temperatures, the Titan clock, scouted sites, samples, the
-science log and stored data. Coming back resumes where you left off. "Start a new mission" at
-the bottom of the page clears it.
+science log and stored data. Coming back resumes where you left off. **Start over** (next to
+Begin survey) clears it and starts again from the landing sequence.
 
 ## Vehicle Layers
 

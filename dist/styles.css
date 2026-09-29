@@ -1563,6 +1563,12 @@ body.arrival .pilot-hud { display: none; }
   }
 }
 
+/* Start over: a quiet secondary button beside the survey action. */
+.mission-strip .start-over { min-width: 0; padding: 6px 12px; border-color: rgba(236, 245, 255, 0.22); background: transparent; color: #cfe0ea; font-size: 0.8rem; }
+@media (max-width: 720px) {
+  .mission-strip .start-over { padding: 2px 8px; font-size: 0.72rem; }
+}
+
 /* ---------- Pilot view: see-through panels, nothing covering the vehicle ----------
    Later rules here deliberately override the earlier pilot-view rules above. */
 body.pilot-view #plan-button,
@@ -1628,4 +1634,14 @@ body.pilot-view .pilot-control .throttle-mode { background: rgba(7, 17, 27, 0.45
   body.pilot-view .pilot-rotors small { display: none; }
   body.pilot-view .pilot-rotor-grid { grid-row: auto; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 2px; }
   body.pilot-view .pilot-rotor-grid b { height: 16px; font-size: 0.64rem; }
+}
+
+@media (max-width: 720px) {
+  /* Survey strip in the Pilot view: title and distance on the left, both buttons on the right. */
+  body.pilot-view .mission-strip { grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; }
+  body.pilot-view .mission-strip > div { grid-column: 1; grid-row: 1; }
+  body.pilot-view #objective-distance { grid-column: 1; grid-row: 2; }
+  body.pilot-view .mission-strip .start-over { grid-column: 2; grid-row: 1 / 3; margin: 0; }
+  body.pilot-view #mission-action { grid-column: 3; grid-row: 1 / 3; margin: 0; }
+  body.pilot-view #vehicle-alert { grid-column: 1 / -1; }
 }

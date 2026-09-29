@@ -31,6 +31,18 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-09-29: Start over from the landing
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a Start over button that replays the landing"
+- **What changed:** From owner feedback that there was no visible way to reset: a **Start over**
+  button now sits in the survey strip (visible in both views, next to Begin survey). After a
+  confirmation it clears the saved mission and the "arrival seen" flag, then reloads into the
+  landing sequence with a fresh mission. The footer link does the same. On phones the Pilot
+  view's survey strip stays two slim lines with both buttons on the right.
+- **Files:** `dist/index.html`, `dist/ui/persistence.mjs`, `dist/styles.css`, `README.md`
+- **Checks:** 61 tests pass; at 375 x 812 the strip stays 44 px, cancelling keeps the mission,
+  confirming reloads into "Entry interface" with no saved progress.
+
 ### 2026-09-29: Saved progress between visits
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Save mission progress in the browser"
