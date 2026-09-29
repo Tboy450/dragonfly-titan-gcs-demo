@@ -45,6 +45,8 @@ export const systemsModel = Object.freeze({
   // The high-gain antenna rides a motorized arm that is raised for Earth pointing and stowed for
   // flight [PUB]. The 6 s travel time is a demo assumption.
   antennaTravelSeconds: 6,
+  // The simulator's landing profile descends at up to 1.3 m/s; "land now" must allow for that.
+  landingDescentRate: 1.3, landNowMarginMinutes: 1.5, landNowFloorMinutes: 3,
 });
 
 // Titan local solar time at the landing site. The simulation starts at local noon.
@@ -75,10 +77,22 @@ export function flightEndurance(state, batteryEnergyKwh) {
   return { energyMin, thermalMin, minutes, limit: energyMin <= thermalMin ? "battery reserve" : "battery temperature" };
 }
 
+// Minutes of flight left below which the lander must start down now: the time to descend from the
+// current height plus a margin, and never less than three minutes.
+export function landNowThreshold(state) {
+  const descentMinutes = Math.max(0, state.altitude) / systemsModel.landingDescentRate / 60;
+  return Math.max(systemsModel.landNowFloorMinutes, descentMinutes + systemsModel.landNowMarginMinutes);
+}
+
+export function landNowNeeded(state, batteryEnergyKwh) {
+  const endurance = flightEndurance(state, batteryEnergyKwh);
+  return { needed: state.altitude > 0.001 && endurance.minutes < landNowThreshold(state), endurance };
+}
+
 export function operationsAdvisory(state, batteryEnergyKwh) {
   if (state.altitude <= 0.001) return "";
-  const endurance = flightEndurance(state, batteryEnergyKwh);
-  if (endurance.minutes < 3) return `Land now: ${endurance.limit} limit in ${Math.max(0, endurance.minutes).toFixed(1)} min`;
+  const { needed, endurance } = landNowNeeded(state, batteryEnergyKwh);
+  if (needed) return `Land now: ${endurance.limit} limit in ${Math.max(0, endurance.minutes).toFixed(1)} min`;
   if (state.flightSeconds > systemsModel.plannedFlightSeconds) return "Land now: planned 30 min flight exceeded";
   if (!titanDaylight(state)) return "Night flight: outside daylight operations plan";
   return "";

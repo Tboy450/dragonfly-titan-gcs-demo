@@ -11,11 +11,17 @@ const state = {
   cameraYaw: 0,
   cameraPitch: 0.10,
   throttleSpring: readThrottlePreference(),
+  vehicleModel: readVehicleModelPreference(),
   lastTick: performance.now(),
 };
 
 // Local development only: expose the live state for inspection from the browser console.
 if (["localhost", "127.0.0.1"].includes(location.hostname)) window.dragonflyState = state;
+
+// The research-based vehicle model is the default; the original demo model stays available to compare.
+function readVehicleModelPreference() {
+  try { return localStorage.getItem("dragonfly-vehicle-model") === "original" ? "original" : "research"; } catch { return "research"; }
+}
 
 // Throttle stays where the pilot leaves it unless the optional spring-to-hover mode is chosen.
 function readThrottlePreference() {
@@ -40,6 +46,7 @@ try {
   $("free-camera-button").disabled = true;
   $("free-camera-button").title = "Free camera requires WebGL 2";
 }
+if (["localhost", "127.0.0.1"].includes(location.hostname)) window.dragonflyRenderer = chaseRenderer;
 
 const rotorTiles = Array.from({ length: model.rotorCount }, (_, index) => {
   const tile = document.createElement("div");
@@ -1430,6 +1437,16 @@ document.querySelectorAll("[data-throttle-mode]").forEach((button) => {
   button.addEventListener("click", () => setThrottleSpring(!state.throttleSpring));
 });
 setThrottleSpring(state.throttleSpring);
+
+function setVehicleModel(choice) {
+  state.vehicleModel = choice;
+  try { localStorage.setItem("dragonfly-vehicle-model", choice); } catch { /* preference is optional */ }
+  $("model-toggle").textContent = choice === "research" ? "Model: NASA 2023" : "Model: original";
+  $("model-toggle").setAttribute("aria-pressed", String(choice === "research"));
+}
+$("model-toggle").addEventListener("click", () => setVehicleModel(state.vehicleModel === "research" ? "original" : "research"));
+setVehicleModel(state.vehicleModel);
+if (!chaseRenderer) $("model-toggle").hidden = true;
 
 state.lastTick = performance.now();
 requestAnimationFrame(tick);

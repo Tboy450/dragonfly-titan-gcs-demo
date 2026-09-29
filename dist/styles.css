@@ -629,6 +629,23 @@ body.pilot-view .visual-wrap {
   display: none;
 }
 
+.model-toggle {
+  position: absolute;
+  z-index: 6;
+  top: 12px;
+  right: 12px;
+  min-height: 32px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(10, 15, 19, 0.78);
+  font: 800 0.72rem/1 Inter, Arial, sans-serif;
+  color: rgba(236, 245, 255, 0.85);
+}
+
+body.pilot-view .model-toggle {
+  top: 14px;
+}
+
 body.pilot-view .camera-switch {
   position: absolute;
   z-index: 6;

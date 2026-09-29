@@ -274,6 +274,7 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 | Area | Research | Status (Sep 28) | Remaining action |
 |---|---|---|---|
 | Mass, size, rotor Ø | 875 kg; 3.85×3.85×1.75 m; 1.35 m [PUB] | **Done** | Optional: show "design max just under 1,000 kg" |
+| Vehicle geometry | labeled 2023 layout (TFAWS 2023 slide 3; ICES-2020/2023 fig. 1) [PUB] | **Done** (Sep 29): research model, measured 3.87 × 3.83 × 1.81 m; original model kept behind a toggle | Layered Mission views (see Future update requests) |
 | Blades | **3 per rotor** (2026) [PUB] | **Done** (`74ed2c4`) | — |
 | Battery | **11.5 kWh** pack, 134 Ah cells [PUB] | **Done** (`74ed2c4`) | — |
 | MMRTG electric | ~70–100 W at Titan, declining ~2.5%/yr [PUB/CALC] | **Done**: 90 W / 70 W options | — |
@@ -318,6 +319,15 @@ Items 1 and 3 and the vortex-ring-state warning are now implemented (see §0). T
 5. **Visuals:** three-bladed rotors; high-gain antenna on a raise/lower arm; visibility-based fog; dimmer lighting (~1/1,000 of Earth's); optional rain-darkened ground patches.
 6. **Housekeeping:** the stale placeholders are fixed; still append the new sources to `RESEARCH.md` and keep every assumption labeled in the UI.
 7. **Entry, descent and landing scenario** (optional): the sequence in §2.4 ends with release at 800–1,000 m, falling at 2.9 m/s, and then autonomous powered flight to touchdown. That would make a strong opening sequence for the app.
+
+---
+
+## Future update requests
+
+- **Mission vehicle window: layered model views** (requested for a future update, not implemented). Add selectable exterior, thermal, and internal-parts/cutaway views in the vehicle window under Mission. Keep the views synchronized with the shared vehicle and diagnostic state. Clearly label illustrative internal layouts and modeled temperatures rather than presenting them as verified flight hardware or measured thermal imagery.
+  - *Design notes (Claude, 2026-09-29):* the research model in `dist/chase-vehicle.mjs` is already split into named subsystem groups (`fuselage`, `attic`, `navigation-sensors`, `instrument-booms`, `mmrtg`, `fins`, `antennas`, `high-gain-antenna`, `landing-gear`, `drills`, `arms`, `motors`, `rotors`), exposed as `chaseRenderer.subsystems`, each with `userData.thermalZone`. The Mission view draws the vehicle with `drawMission()` (neutral top-down portrait), which is where a layer switch belongs.
+  - *Thermal layer:* color each group by its zone from existing state: `insulated-shell` outer surface ≈ ambient (−179 °C) plus the foam leak (`foamUA`, `heatOutW`); interior bay = `coreC`; battery = `batteryC`; `mmrtg` = warm gas `warmGasC` (fin-root temperature is not modeled); `motors` = preheat target −65 °C [PUB] (not otherwise modeled); `antennas`, `fins`, `exterior-structure` ≈ ambient. Show a legend with the value source and an "illustrative" label.
+  - *Internal-parts layer:* fade the `fuselage`/`attic` shells (transparent material) and show an `interior` group built from the TFAWS 2023 top view (slide 3): ducting down the centerline, fans at the tail end, equipment boxes; label positions as illustrative.
 
 ---
 

@@ -116,3 +116,22 @@ test("Candidate landing sites are level and dry", async () => {
   }
   assert.equal(model.batteryEnergyKwh, 11.5);
 });
+
+test("Land-now allows for the descent from cruise altitude and lands above the reserve", () => {
+  const s = grounded();
+  s.plan.altitude = 400;
+  addWaypoint(s, 0, 0, "outcrop");
+  uplinkPlan(s, estimateFlightPlan(s));
+  flyUntil(s, x => x.plan.phase === "cruise", 900);
+  assert.ok(s.altitude > 390, `reached cruise altitude (${s.altitude.toFixed(0)} m)`);
+  // Enough energy for roughly six minutes: over the old fixed 3-minute trigger, but the
+  // ~5-minute descent from 400 m needs it now.
+  s.battery = systemsModel.reservePercent + 7;
+  run(s, 0.1);
+  assert.equal(s.plan.landNow, true, "land-now starts immediately at 400 m");
+  let lowest = s.battery;
+  flyUntil(s, x => x.plan.status !== "executing", 1200, 0.05, (x) => { lowest = Math.min(lowest, x.battery); });
+  assert.equal(s.plan.status, "complete", `plan ${s.plan.status}: ${s.plan.message}`);
+  assert.equal(s.altitude, 0);
+  assert.ok(lowest > systemsModel.reservePercent, `stays above the reserve (lowest ${lowest.toFixed(2)}%)`);
+});

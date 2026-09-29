@@ -62,6 +62,14 @@ references are linked within the app.
 - Keyboard: W/S throttle, A/D yaw, arrow keys pitch/roll, Space levels off and holds
   altitude.
 
+## Vehicle Model
+
+The default 3D model follows the NASA/APL 2023 design drawings: long insulated fuselage,
+raised "attic" over the nose, MMRTG between two tail fins, four arms with coaxial three-blade
+rotors, wide skids, and a flat high-gain antenna disc that rises for downlink. The **Model**
+button in the vehicle view switches to the original demo model for comparison. Proportions are
+measured from the drawings; the overall size matches the published 3.85 x 3.85 x 1.75 m.
+
 ## Missions and Diagnostics
 
 Begin the interdune survey, fly to the dry outcrop manually or with guided flight, land,

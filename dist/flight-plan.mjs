@@ -2,7 +2,7 @@
 // 67-92 min, so flights are planned on Earth, uplinked and flown by the lander itself [PUB].
 // It scouts new sites from the air and lands only at sites it has already checked
 // ("leapfrog" scouting [PUB]). Rates, radii and the compressed uplink are demo choices [EST].
-import { systemsModel, candidateSites, overLiquid, titanDaylight, flightRestriction, landed, flightEndurance } from "./mission-systems.mjs?v=dev";
+import { systemsModel, candidateSites, overLiquid, titanDaylight, flightRestriction, landed, landNowNeeded } from "./mission-systems.mjs?v=dev";
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
@@ -179,8 +179,9 @@ export function planGuidance(state, dt, batteryEnergyKwh) {
   plan.maxBatteryC = Math.max(plan.maxBatteryC ?? state.batteryC, state.batteryC);
   const target = plan.waypoints[plan.leg];
   const last = plan.leg === plan.waypoints.length - 1;
-  // Fault response: land now when energy or battery temperature is about to run out [PUB].
-  if (!plan.landNow && plan.phase !== "descent" && state.altitude > 0.001 && flightEndurance(state, batteryEnergyKwh).minutes < 3) {
+  // Fault response: land now when energy or battery temperature will not last much longer than
+  // the descent from the current height [PUB response; EST margin].
+  if (!plan.landNow && plan.phase !== "descent" && landNowNeeded(state, batteryEnergyKwh).needed) {
     plan.landNow = true;
     plan.phase = "descent";
     plan.message = "Land now: energy or battery temperature limit";

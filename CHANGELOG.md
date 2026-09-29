@@ -31,6 +31,48 @@ Notes for every session:
 
 ## Entries
 
+### 2026-09-29: Research-based 3D vehicle model, land-now fix, 3D smoke tests
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a research-based Dragonfly model and fix land-now timing"
+- **What changed:**
+  - New default 3D model built from the NASA/APL design drawings in the supplied PDFs
+    (TFAWS 2023 "Dragonfly Lander Overview" slide 3 with labeled parts and a top view;
+    ICES-2020-160 fig. 1; ICES-2023-389 fig. 1; TFAWS 2024 slide 3): long insulated fuselage,
+    rounded "attic" over the nose, finned MMRTG at the tail between two tall splayed fins, four
+    arms angled toward the ends carrying the coaxial three-blade rotors (disks ~R/2 apart), wide
+    thick skids on legs with a drill housing on each, a flat 0.874 m radial-line-slot HGA disc
+    (stowed flat, raised and aimed for downlink), LGA and MGA, nose cameras/lidar and two
+    instrument booms. A **Model** button in the vehicle view switches to the original model for
+    comparison (remembered per browser).
+  - Measured envelope in the tests: 3.87 x 3.83 x 1.81 m vs published 3.85 x 3.85 x 1.75 m.
+  - Parts are grouped into named subsystems, each tagged with a thermal zone, to prepare for
+    the planned Mission-view exterior/thermal/internal layers (design notes in
+    `RESEARCH-COMPENDIUM.md` "Future update requests").
+  - Fixes from the Codex review (2026-09-28): (1) the half-finished model edit called a removed
+    `poseAntenna()` and stopped rendering; fixed. (2) "Land now" used a fixed 3-minute trigger
+    that ignored descent time (a 400 m descent at 1.3 m/s takes ~5 min); it now triggers when
+    flight time left falls below the descent time plus 1.5 min (never below 3 min), both for the
+    autopilot and the manual-flight advisory.
+  - New tests drive the whole 3D scene without a GPU (stand-in renderer), so a rendering crash
+    like (1) now fails the test suite.
+- **Files:** `dist/chase-vehicle.mjs`, `dist/app.js`, `dist/index.html`, `dist/styles.css`,
+  `dist/mission-systems.mjs`, `dist/flight-plan.mjs`, `tests/render-smoke.test.mjs` (new),
+  `tests/flight-plan.test.mjs`, `RESEARCH-COMPENDIUM.md`, `README.md`
+- **Assumptions:** [PUB] envelope, rotor count/diameter/blades, coaxial spacing, MMRTG size, HGA
+  diameter, the labeled part layout. [EST] exact proportions (measured from the drawings using
+  the MMRTG as scale, ~317 px/m), colors, fin outline, boom positions, arm sweep. Rotors keep
+  three blades per the 2026 engineer interview although the 2023 drawings show two.
+- **Checks:** 48 tests pass (new: 3D smoke test over both models, antenna poses, day/night and
+  both views; envelope check; subsystem tagging; land-now from 400 m lands above the reserve).
+  Frames rendered in the browser and compared with the NASA drawings (quarter, side, top,
+  Mission view).
+
+### 2026-09-28: Future Mission vehicle-layer views requested
+- **Signed:** Codex (OpenAI, Codex desktop app)
+- **What changed:** Added the user's future-update request for exterior, thermal, and internal-parts/cutaway views in the Mission vehicle window to `RESEARCH-COMPENDIUM.md`.
+- **Scope:** Backlog documentation only. No simulator changes, commit, or deployment in this review.
+- **Open / next:** Implement later; distinguish modeled thermal values and illustrative internals from verified hardware details.
+
 ### 2026-09-28: Mission planning mode and leapfrog scouting
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add autonomous flight planning with leapfrog scouting"
