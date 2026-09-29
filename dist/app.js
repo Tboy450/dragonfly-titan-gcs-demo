@@ -1,7 +1,7 @@
 import { createChaseRenderer } from "./chase-vehicle.mjs?v=dev";
 import { enterFreeCamera, orbitCamera, smoothCameraPose } from "./flight-camera.mjs?v=dev";
 import { model, createFlightState, deriveFlight, stepFlight, commandFlight, advanceRest, takeManualControl } from "./flight-model.mjs?v=dev";
-import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel, liquidExchangerStudy, linkStatus, toggleDownlink, flightEndurance, operationsAdvisory, titanLocalHour, titanDaylight } from "./mission-systems.mjs?v=dev";
+import { missionAction, missionTarget, targetDistance, startRest, landed, overLiquid, systemsModel, liquidExchangerStudy, linkStatus, toggleDownlink, flightEndurance, operationsAdvisory, titanLocalHour, titanDaylight, dampGround, pools } from "./mission-systems.mjs?v=dev";
 
 const state = {
   ...createFlightState(),
@@ -948,7 +948,7 @@ function updateSystemsReadouts() {
   const m = state.mission;
   const envelope = deriveFlight(state);
   const labels = { idle: "Begin survey", outbound: "Fly to outcrop", sample: "Collect sample", sampling: "Acquiring sample", return: "Return to base", complete: "New survey" };
-  $("objective-title").textContent = m.phase === "complete" ? "Survey complete" : "Shoreline survey";
+  $("objective-title").textContent = m.phase === "complete" ? "Survey complete" : "Interdune survey";
   $("objective-status").textContent = m.message;
   $("objective-distance").textContent = `${targetDistance(state).toFixed(0)} m / ${missionTarget(state).name}`;
   $("mission-action").textContent = m.guidance ? "Manual control" : labels[m.phase];
@@ -1030,6 +1030,10 @@ function updateTrack() {
   $("track-target-label").setAttribute("x", tx + 10);
   $("track-target-label").setAttribute("y", ty);
   $("track-target-label").textContent = target.name;
+  const [dx, dy] = project(dampGround).split(",").map(Number);
+  Object.entries({ cx: dx, cy: dy, rx: dampGround.rx * scale, ry: dampGround.rz * scale }).forEach(([k, v]) => $("track-damp").setAttribute(k, v));
+  const [px, py] = project(pools[0]).split(",").map(Number);
+  Object.entries({ cx: px, cy: py, rx: pools[0].rx * scale, ry: pools[0].rz * scale }).forEach(([k, v]) => $("track-puddle").setAttribute(k, v));
 }
 
 function positionStick(element, x, y) {

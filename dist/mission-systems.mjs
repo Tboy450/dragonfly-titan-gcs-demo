@@ -1,6 +1,10 @@
 // Training geography and engineering limits, not an actual Dragonfly landing-site map.
-export const surveySite = Object.freeze({ x: 145, z: -90, radius: 12, name: "Shore outcrop" });
-export const pools = Object.freeze([{ x: 210, z: -110, rx: 43, rz: 29, level: 0.3 }]);
+// Dragonfly lands among equatorial dunes and interdunes, far from Titan's polar seas. Methane
+// rainstorms have darkened large areas of low-latitude ground [PUB], so the scene shows a
+// rain-darkened interdune (safe to land on) around a small transient methane puddle (no landing).
+export const surveySite = Object.freeze({ x: 145, z: -90, radius: 12, name: "Dry outcrop" });
+export const pools = Object.freeze([{ x: 210, z: -110, rx: 11, rz: 7.5, depth: 0.35 }]);
+export const dampGround = Object.freeze({ x: 205, z: -105, rx: 78, rz: 52 });
 export function poolRadius(x, z, pool) {
   const u = (x - pool.x) / pool.rx, v = (z - pool.z) / pool.rz;
   const angle = Math.atan2(v, u);
@@ -99,7 +103,7 @@ export function createSystemsState() {
     elapsed: 0, restSeconds: 0, restNotice: "", hibernating: false, guard: "",
     motorsCold: true, motorCoolClock: 0, preheatWh: 0, preheats: 0, flightSeconds: 0,
     downlinkActive: false, downlinkW: 0, dataReturnedBits: 0, antennaDeploy: 0,
-    mission: { phase: "idle", sampleSeconds: 0, samples: 0, guidance: false, message: "Survey a fictional hydrocarbon shoreline from dry ground." },
+    mission: { phase: "idle", sampleSeconds: 0, samples: 0, guidance: false, message: "Survey the edge of a rain-darkened interdune from dry ground." },
   };
 }
 

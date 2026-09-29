@@ -31,6 +31,23 @@ Notes for every session:
 
 ## Entries
 
+### 2026-09-28: Rain-darkened interdune replaces the fictional lake
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Replace the fictional lake with a rain-darkened interdune and methane puddle"
+- **What changed:** The large hydrocarbon pool is gone. In its place: a broad patch of
+  rain-darkened damp ground (darker, slightly glossy, ragged edge; safe to land on) around a
+  small methane puddle (about 22 x 15 m; still a no-landing zone). The puddle's surface is set
+  just below the lowest surrounding ground so liquid never floats above its banks. The survey
+  is renamed "Interdune survey"; the target is the "Dry outcrop" at the patch's edge, kept dry.
+  The small track map now shows the damp area (dashed) and the puddle.
+- **Files:** `dist/mission-systems.mjs`, `dist/titan-terrain.mjs`, `dist/flight-model.mjs`,
+  `dist/app.js`, `dist/index.html`, `tests/terrain.test.mjs`, `README.md`
+- **Assumptions:** geography and sizes are training choices [EST]. Basis [PUB]: Dragonfly lands
+  near the equator, far from the polar seas; methane storms darkened ~500,000 km² of
+  equatorial ground in 2010 (JPL 2011). See `RESEARCH-COMPENDIUM.md` §5 "Realism note".
+- **Checks:** 39 tests pass (new: damp ground landable, puddle below its banks); visual check
+  of the puddle and damp ground in the pilot view.
+
 ### 2026-09-28: Titan haze lighting and a moving high-gain antenna
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add Titan haze lighting and a raise-and-stow high-gain antenna"

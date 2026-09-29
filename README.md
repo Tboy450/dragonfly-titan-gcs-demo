@@ -63,9 +63,11 @@ references are linked within the app.
 
 ## Missions and Diagnostics
 
-Begin the fictional shoreline survey, fly to the dry outcrop manually or with
-guided flight, land, collect a sample and return to base. The nearby hydrocarbon
-pool is a training feature, not an actual Dragonfly landing-site reconstruction.
+Begin the interdune survey, fly to the dry outcrop manually or with guided flight, land,
+collect a sample and return to base. The outcrop sits at the edge of a rain-darkened
+interdune: damp ground (darker, safe to land on) around a small methane puddle (no landing).
+This matches the kind of ground expected near Dragonfly's equatorial landing area after a
+methane storm; it is training geography, not a reconstruction of the real site.
 
 Diagnostics shares the live vehicle state: equipment/battery temperatures,
 circulation and insulation integrity, cold-duct trim, electrical load, MMRTG

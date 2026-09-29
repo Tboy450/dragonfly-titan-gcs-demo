@@ -40,3 +40,20 @@ test("Both triangle halves and diagonal preserve exact vertex heights", () => {
     assert.equal(sampleTerrainSurface(x, z, positions, 1).height, expected);
   }
 });
+
+test("Rain-darkened ground is landable and the methane puddle sits below its banks", async () => {
+  const { pools, dampGround, overLiquid, surveySite } = await import("../dist/mission-systems.mjs");
+  const { poolLevels } = await import("../dist/titan-terrain.mjs");
+  const pool = pools[0];
+  // The puddle is small; most of the darkened interdune is ordinary landable ground.
+  assert.ok(pool.rx < dampGround.rx / 4 && pool.rz < dampGround.rz / 4);
+  assert.equal(overLiquid(dampGround.x - dampGround.rx * 0.5, dampGround.z), false);
+  assert.equal(overLiquid(pool.x, pool.z), true);
+  assert.ok(terrainHeight(pool.x, pool.z) < poolLevels[0], "the puddle floor is below its surface");
+  for (let i = 0; i < 36; i++) {
+    const a = i / 36 * Math.PI * 2;
+    const x = pool.x + Math.cos(a) * pool.rx * 1.6, z = pool.z - Math.sin(a) * pool.rz * 1.6;
+    assert.ok(terrainHeight(x, z) >= poolLevels[0], "banks stay above the liquid surface");
+  }
+  assert.equal(overLiquid(surveySite.x, surveySite.z), false);
+});

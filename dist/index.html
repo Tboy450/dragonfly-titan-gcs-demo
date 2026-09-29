@@ -66,7 +66,7 @@
       </section>
 
       <section class="mission-strip" aria-label="Survey objective">
-        <div><strong id="objective-title">Shoreline survey</strong><span id="objective-status">Fictional training site / dry-ground sampling</span></div>
+        <div><strong id="objective-title">Interdune survey</strong><span id="objective-status">Survey the edge of a rain-darkened interdune from dry ground.</span></div>
         <output id="objective-distance">171 m to outcrop</output>
         <button id="mission-action" type="button">Begin survey</button>
         <span id="vehicle-alert" role="status">Systems nominal</span>
@@ -260,7 +260,7 @@
             <details>
               <summary>Model assumptions</summary>
               <p>NASA publishes the 875 kg mass, 1.35 m rotor diameter and 134 Ah battery baseline. Storage uses the 11.5 kWh design reported in 2022, with a 15% demo reserve. Figure of merit, loss and drag factors are assumptions. Four coaxial stations share four swept disks. Each rotor has three blades, matching the 2026 engineer interview.</p>
-              <p>Attitude, RPM mixing, terrain-following altitude, instrument status and guided flight are illustrative. Thermal conductances, operating bands and power loads are not flight-qualified. The shoreline is fictional training geography, not Dragonfly's planned landing site.</p>
+              <p>Attitude, RPM mixing, terrain-following altitude, instrument status and guided flight are illustrative. Thermal conductances, operating bands and power loads are not flight-qualified. The rain-darkened interdune and methane puddle are training geography inspired by low-latitude storm observations, not a reconstruction of Dragonfly's landing site.</p>
             </details>
           </section>
         </section>
@@ -306,6 +306,8 @@
           <div class="route-map" aria-label="Recent local flight track, north up">
             <svg viewBox="0 0 320 180" role="img" aria-label="Recent flight track and current heading">
               <path d="M160 18v144M18 90h284" stroke="#273f55" />
+              <ellipse id="track-damp" cx="-99" cy="-99" rx="1" ry="1" fill="rgba(90, 110, 130, 0.22)" stroke="rgba(150, 175, 200, 0.35)" stroke-dasharray="3 3" />
+              <ellipse id="track-puddle" cx="-99" cy="-99" rx="1" ry="1" fill="rgba(40, 60, 70, 0.8)" />
               <polyline id="flight-track" points="160,90" fill="none" stroke="#7ce7ff" stroke-width="2" />
               <circle id="track-target" cx="160" cy="90" r="6" fill="none" stroke="#80f2ae" stroke-width="2" />
               <text id="track-target-label" x="170" y="90" fill="#80f2ae" font-size="11">Outcrop</text>
@@ -420,7 +422,7 @@
           <p>Storage uses the 11.5 kWh pack reported in 2022; accessible capacity and reserve remain simplified. Estimated arrival generation is 90 W (or 70 W), declining 2.5% per Earth year; this is not a mission guarantee. Thermal output starts at 1,800 W and follows Pu-238 decay. <a href="https://aerospaceamerica.aiaa.org/features/designing-dragonfly-nasas-titan-explorer/" target="_blank" rel="noreferrer">2022 design report</a> / <a href="https://www.nasa.gov/wp-content/uploads/2015/04/mmrtg.pdf" target="_blank" rel="noreferrer">NASA MMRTG fact sheet</a></p>
           <p>The flight-power estimate combines decreasing induced power with profile, drag and climb terms. Its drag area (0.65 m2), profile speed (55 m/s), efficiencies and wind correction are assumptions, not a measured flight curve. Three blades per rotor follow the lead rotor engineer's account; the ambiguous transcript RPM figure is not used. <a href="https://www.planetary.org/planetary-radio/2026-engineering-of-dragonfly" target="_blank" rel="noreferrer">APL engineer interview, June 2026</a></p>
           <p>GS Yuasa identifies supplied LSE134 cells as 134 Ah at 3.75 V nominal. Cell specifications alone do not establish the full pack topology or usable flight energy. <a href="https://gsyuasa-lp.com/news/gs-yuasa-lithium-power-successfully-delivers-generation-3-lse134-li-ion-cells-in-support-of-nasas-dragonfly-mission/" target="_blank" rel="noreferrer">Battery manufacturer</a></p>
-          <p>Hibernation compresses time only on dry ground. It pauses on thermal warnings. The mission's 30-second acquisition, fictional pool, landing protection and automatic guidance are gameplay abstractions, not real mission operations.</p>
+          <p>Hibernation compresses time only on dry ground. It pauses on thermal warnings. The mission's 30-second acquisition, methane puddle, landing protection and automatic guidance are gameplay abstractions, not real mission operations.</p>
         </details>
       </section>
     </dialog>

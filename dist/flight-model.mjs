@@ -225,7 +225,7 @@ export function stepFlight(state, dt) {
   }
   if (!state.hibernating && overLiquid(state.positionX, state.positionZ) && state.altitude < model.liquidClearance - 0.05) {
     state.mode = "Liquid avoidance";
-    state.mission.message = "Liquid below: landing inhibited. Move to dry ground.";
+    state.mission.message = "Methane puddle below: landing inhibited. Move to firm ground.";
   }
   // Skids on the ground: residual forward motion bleeds off quickly instead of stopping in one frame.
   if (state.altitude === 0) state.speed = Math.max(0, approach(state.speed, 0, 6, 4, dt));

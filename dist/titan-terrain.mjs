@@ -1,5 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js";
-import { pools, poolRadius, surveySite } from "./mission-systems.mjs?v=dev";
+import { pools, poolRadius, surveySite, dampGround } from "./mission-systems.mjs?v=dev";
 
 function hash(x, z) {
   const value = Math.sin(x * 127.1 + z * 311.7) * 43758.5453;
@@ -16,7 +16,7 @@ function noise(x, z) {
   return a * (1 - v) + b * v;
 }
 
-export function terrainHeight(x, z) {
+function baseHeight(x, z) {
   const wx = x + 92 * (noise(x / 410 + 12, z / 410 - 8) - 0.5);
   const wz = z + 80 * (noise(x / 470 - 5, z / 470 + 17) - 0.5);
   const radius = Math.hypot(wx * 0.88, wz * 1.08);
@@ -25,14 +25,31 @@ export function terrainHeight(x, z) {
   const ridge = 1 - Math.abs(noise((wx * 0.91 + wz * 0.41) / 290 + 7, (wz * 0.91 - wx * 0.41) / 290 - 3) * 2 - 1);
   const relief = ridge ** 3 * (100 + noise(x / 700, z / 700) * 220);
   const gullies = noise(x / 74, z / 74) * 24 + noise(x / 25, z / 25) * 7;
-  let height = (relief + gullies) * foothills * 0.34 + noise(x / 42, z / 42) * 1.3 + noise(x / 9, z / 9) * 0.13;
-  for (const pool of pools) {
+  return (relief + gullies) * foothills * 0.34 + noise(x / 42, z / 42) * 1.3 + noise(x / 9, z / 9) * 0.13;
+}
+
+// Each puddle's surface sits just below the lowest ground around it, so liquid never floats above its banks.
+export const poolLevels = pools.map((pool) => {
+  let lowest = Infinity;
+  for (let i = 0; i < 72; i++) {
+    const angle = i / 72 * Math.PI * 2;
+    for (const ring of [1, 1.2, 1.45]) {
+      const r = ring * (1 + 0.09 * Math.sin(angle * 3) + 0.05 * Math.cos(angle * 5));
+      lowest = Math.min(lowest, baseHeight(pool.x + Math.cos(angle) * pool.rx * r, pool.z - Math.sin(angle) * pool.rz * r));
+    }
+  }
+  return lowest - 0.06;
+});
+
+export function terrainHeight(x, z) {
+  let height = baseHeight(x, z);
+  pools.forEach((pool, index) => {
     const radius = poolRadius(x, z, pool);
     if (radius < 1.4) {
       const blend = Math.max(0, Math.min(1, (radius - 0.72) / 0.68));
-      height = (pool.level - 2.5) * (1 - blend) + height * blend;
+      height = (poolLevels[index] - pool.depth) * (1 - blend) + height * blend;
     }
-  }
+  });
   // A small surveyed patch provides a reproducible dry landing target.
   const pad = Math.max(0, Math.min(1, (Math.hypot(x - surveySite.x, z - surveySite.z) - 14) / 12));
   return height * pad + 1.4 * (1 - pad);
@@ -134,6 +151,15 @@ export function createTitanTerrain(scene, renderer) {
       float gravel = terrainNoise(groundPoint * 0.23);
       float detail = 0.82 + 0.24 * gravel + 0.18 * grains;
       diffuseColor.rgb *= referenceColor * detail;
+      // Rain-darkened interdune: damp ground is darker and slightly glossier, with a ragged edge.
+      vec2 dampOffset = (groundPoint - vec2(${dampGround.x.toFixed(1)}, ${dampGround.z.toFixed(1)})) / vec2(${dampGround.rx.toFixed(1)}, ${dampGround.rz.toFixed(1)});
+      float dampEdge = length(dampOffset) + (terrainNoise(groundPoint * 0.045) - 0.5) * 0.34 + (terrainNoise(groundPoint * 0.2) - 0.5) * 0.08;
+      float damp = 1.0 - smoothstep(0.72, 1.0, dampEdge);
+      damp *= smoothstep(${(surveySite.radius + 2).toFixed(1)}, ${(surveySite.radius + 10).toFixed(1)}, distance(groundPoint, vec2(${surveySite.x.toFixed(1)}, ${surveySite.z.toFixed(1)})));
+      diffuseColor.rgb *= mix(vec3(1.0), vec3(0.42, 0.43, 0.5), damp);
+    `).replace("#include <roughnessmap_fragment>", `
+      #include <roughnessmap_fragment>
+      roughnessFactor = mix(roughnessFactor, 0.55, damp);
     `);
   };
 
@@ -145,8 +171,8 @@ export function createTitanTerrain(scene, renderer) {
   terrain.name = "titan-ground";
   terrain.receiveShadow = true;
   group.add(terrain);
-  const liquidMaterial = new THREE.MeshStandardMaterial({ color: 0x343e36, roughness: 0.24, metalness: 0.22, side: THREE.DoubleSide });
-  for (const pool of pools) {
+  const liquidMaterial = new THREE.MeshStandardMaterial({ color: 0x2c3230, roughness: 0.18, metalness: 0.25, side: THREE.DoubleSide });
+  pools.forEach((pool, index) => {
     const shape = new THREE.Shape();
     for (let i = 0; i <= 96; i++) {
       const a = i / 96 * Math.PI * 2;
@@ -156,10 +182,10 @@ export function createTitanTerrain(scene, renderer) {
     }
     const water = new THREE.Mesh(new THREE.ShapeGeometry(shape), liquidMaterial);
     water.rotation.x = -Math.PI / 2;
-    water.position.set(pool.x, pool.level, pool.z);
-    water.name = "hydrocarbon-pool";
+    water.position.set(pool.x, poolLevels[index], pool.z);
+    water.name = "methane-puddle";
     group.add(water);
-  }
+  });
   const markerMaterial = new THREE.MeshBasicMaterial({ color: 0x80f2ae, transparent: true, opacity: 0.65, side: THREE.DoubleSide });
   const targetRing = new THREE.Mesh(new THREE.RingGeometry(10.95, 11.0, 96), markerMaterial);
   targetRing.rotation.x = -Math.PI / 2;
