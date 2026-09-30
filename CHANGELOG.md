@@ -31,6 +31,19 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-09-29: Archived the classic sharp-peak terrain style
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Archive the classic sharp-peak terrain style"
+- **What changed:** The owner liked the old sharp mountain tops but agreed realism is the goal,
+  so the smoothed far terrain stays live and the old look is archived: git tag
+  `archive/classic-peaks-terrain` (commit 63eb373, the last version before the smoothing), and
+  `archive/classic-peaks-terrain/` with before/after pictures and a one-line way to bring the
+  peaks back in the current app. The archive folder is outside `dist`, so it is not published
+  on the website.
+- **Files:** `archive/classic-peaks-terrain/README.md` and six pictures (new)
+- **Checks:** no app code changed.
+- **Open / next:** none.
+
 ### 2026-09-29: Natural far mountains (terrain level of detail)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Smooth the far terrain and recenter it without a stall"
