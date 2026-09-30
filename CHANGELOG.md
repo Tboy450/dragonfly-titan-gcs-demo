@@ -42,8 +42,12 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Files:** `dist/index.html`, `dist/sitemap.xml` (new)
 - **Findings:** the site and repository are public. `https://tboy450.github.io/` has no page
   (no user-site repository), and the path is case-sensitive (`/Dragonfly-...` gives 404).
-- **Open / next:** optional user-site repository `Tboy450.github.io` with a landing page listing
-  the projects (needs the owner's approval; it would be a new public repository).
+- **Follow-up (same day, owner approved):** created the public repository
+  [Tboy450.github.io](https://github.com/Tboy450/Tboy450.github.io): `https://tboy450.github.io/`
+  now lists the owner's 14 public projects (private ones deliberately left out), redirects
+  mistyped capitals such as `/Dragonfly-titan-gcs-demo/` to the right site, and serves a root
+  `robots.txt` and `sitemap.xml` covering the home page and the four project sites. That
+  repository keeps its own signed `CHANGELOG.md`.
 
 ### 2026-09-29: Mock-up internal and thermal views for the original model
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
