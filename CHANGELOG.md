@@ -31,6 +31,17 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-09-30: Archived the mountain-basin map
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Archive the mountain-basin map before the landing-area change"
+- **What changed:** Before reshaping the landscape to match the real landing area (Ahmakiq
+  Undae), the working map was archived at the owner's request: git tag
+  `archive/mountain-basin-map` (commit 8ec910b) and `archive/mountain-basin-map/` with the
+  terrain and site-layout code as they were, six pictures, and restore steps.
+- **Files:** `archive/mountain-basin-map/` (new)
+- **Checks:** no app code changed.
+- **Open / next:** the landing-area change itself follows in the next commit.
+
 ### 2026-09-29: Archived the classic sharp-peak terrain style
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Archive the classic sharp-peak terrain style"
