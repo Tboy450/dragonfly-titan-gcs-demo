@@ -31,6 +31,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-09-29: Start over confirms with a second tap
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Confirm Start over with a second tap instead of a popup"
+- **What changed:** The owner reported that Start over did nothing in the Claude app's built-in
+  browser. It asked for confirmation with a browser popup (`window.confirm`), which that
+  browser (and some other in-app browsers) dismisses automatically, so the reset never ran.
+  Both Start over buttons now ask for a second tap on the same button instead: the first tap
+  turns it amber with "Sure? Tap again" for 4 seconds; a second tap clears the save and replays
+  the landing.
+- **Files:** `dist/ui/persistence.mjs`, `dist/styles.css`
+- **Checks:** `node --test tests/*.test.mjs` (66 pass). In the built-in browser: one tap shows
+  the prompt, a second tap reloads with the save cleared and the arrival playing.
+- **Open / next:** none.
+
 ### 2026-09-29: Arrival sequence graphics, realism and animation
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Rework the arrival sequence graphics and camera"

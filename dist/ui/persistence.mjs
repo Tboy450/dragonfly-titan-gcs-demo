@@ -31,7 +31,6 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 
 // Start over: clear the saved mission and play the arrival (landing) sequence again.
 function startOver() {
-  if (!window.confirm("Start over from the landing? This clears the saved mission in this browser.")) return;
   resetting = true;
   try {
     localStorage.removeItem(SAVE_KEY);
@@ -39,5 +38,25 @@ function startOver() {
   } catch { /* ignore */ }
   location.reload();
 }
-$("start-over").addEventListener("click", startOver);
-$("new-mission").addEventListener("click", startOver);
+
+// The first tap asks for a second tap on the same button (within 4 s) instead of showing a
+// browser popup, because some in-app browsers block popups and the button would do nothing.
+const confirmWindowMs = 4000;
+function tapTwiceToStartOver(button) {
+  const label = button.textContent;
+  let armedUntil = 0, timer = 0;
+  button.addEventListener("click", () => {
+    if (performance.now() < armedUntil) { startOver(); return; }
+    armedUntil = performance.now() + confirmWindowMs;
+    button.textContent = "Sure? Tap again";
+    button.classList.add("confirming");
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      armedUntil = 0;
+      button.textContent = label;
+      button.classList.remove("confirming");
+    }, confirmWindowMs);
+  });
+}
+tapTwiceToStartOver($("start-over"));
+tapTwiceToStartOver($("new-mission"));

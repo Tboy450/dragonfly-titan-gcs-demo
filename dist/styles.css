@@ -1570,6 +1570,8 @@ body.arrival .pilot-hud { display: none; }
 @media (max-width: 720px) {
   .mission-strip .start-over { padding: 2px 8px; font-size: 0.72rem; }
 }
+/* Waiting for the second tap that confirms Start over. */
+.start-over.confirming, #new-mission.confirming { border-color: var(--amber); color: #ffd9a8; background: rgba(255, 180, 87, 0.14); }
 
 /* ---------- Pilot view: see-through panels, nothing covering the vehicle ----------
    Later rules here deliberately override the earlier pilot-view rules above. */
