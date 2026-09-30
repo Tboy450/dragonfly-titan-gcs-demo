@@ -167,7 +167,11 @@ Comms shows how long that will take. Results are illustrative examples, not miss
 
 Mission and Pilot share the same vehicle mesh, flight state, eight rotor speeds,
 controls and local track. Pause freezes the simulation in both views. The terrain
-and slope-aligned rocks sample the same rendered triangles.
+and slope-aligned rocks sample the same rendered triangles. Far from the vehicle, where the
+ground mesh is coarse, the terrain drops detail the mesh cannot show and averages ridge shapes
+over each mesh cell, so distant ridges stay natural instead of saw-toothed; the ground the
+vehicle can reach keeps full detail. When the vehicle flies into a new 400 m square, the
+recentered ground is built a few rows per frame and swapped in when complete.
 
 The [APL thermal test report](https://tfaws.nasa.gov/wp-content/uploads/TFAWS2024-AT-02.pdf)
 provides the Titan environmental baseline and nitrogen-chamber reference.

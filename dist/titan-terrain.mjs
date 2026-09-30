@@ -16,16 +16,41 @@ function noise(x, z) {
   return a * (1 - v) + b * v;
 }
 
-function baseHeight(x, z) {
+// Far-terrain level of detail. The rendered mesh gets coarser away from its center (up to ~80 m
+// between vertices at the edge). Detail finer than the spacing can show would alias into
+// spikes, and single vertices landing on a sharp ridge crest would stand up as saw teeth. So
+// where the spacing (cell, m) is coarse, fine noise layers fade to their average and the ridge
+// shape is averaged over the cell (center and four corners), which keeps the mountains' size.
+// Spacings up to 20 m (everywhere the vehicle can be, since the mesh recenters every 400 m)
+// keep the full detail.
+const smoothUnit = (value) => { const u = Math.max(0, Math.min(1, value)); return u * u * (3 - 2 * u); };
+const farDetail = (cell) => smoothUnit((cell - 20) / 12);
+function layer(value, wavelength, cell, far) {
+  if (far === 0) return value;
+  const keep = 1 - (1 - Math.max(0, Math.min(1, (wavelength / 3 - cell) / (wavelength / 6)))) * far;
+  return 0.5 + (value - 0.5) * keep;
+}
+
+function baseHeight(x, z, cell = 0) {
+  const far = farDetail(cell);
   const wx = x + 92 * (noise(x / 410 + 12, z / 410 - 8) - 0.5);
   const wz = z + 80 * (noise(x / 470 - 5, z / 470 + 17) - 0.5);
   const radius = Math.hypot(wx * 0.88, wz * 1.08);
   const ramp = Math.max(0, Math.min(1, (radius - 95) / 430));
   const foothills = ramp * ramp * (3 - 2 * ramp);
-  const ridge = 1 - Math.abs(noise((wx * 0.91 + wz * 0.41) / 290 + 7, (wz * 0.91 - wx * 0.41) / 290 - 3) * 2 - 1);
-  const relief = ridge ** 3 * (100 + noise(x / 700, z / 700) * 220);
-  const gullies = noise(x / 74, z / 74) * 24 + noise(x / 25, z / 25) * 7;
-  return (relief + gullies) * foothills * 0.34 + noise(x / 42, z / 42) * 1.3 + noise(x / 9, z / 9) * 0.13;
+  const ridgeAt = (dx, dz) => {
+    const px = wx + dx, pz = wz + dz;
+    return (1 - Math.abs(noise((px * 0.91 + pz * 0.41) / 290 + 7, (pz * 0.91 - px * 0.41) / 290 - 3) * 2 - 1)) ** 3;
+  };
+  let ridge = ridgeAt(0, 0);
+  if (far > 0) {
+    const step = cell * 0.5;
+    const corners = ridgeAt(step, step) + ridgeAt(-step, step) + ridgeAt(step, -step) + ridgeAt(-step, -step);
+    ridge += ((ridge + corners) / 5 - ridge) * far;
+  }
+  const relief = ridge * (100 + noise(x / 700, z / 700) * 220);
+  const gullies = layer(noise(x / 74, z / 74), 74, cell, far) * 24 + layer(noise(x / 25, z / 25), 25, cell, far) * 7;
+  return (relief + gullies) * foothills * 0.34 + layer(noise(x / 42, z / 42), 42, cell, far) * 1.3 + layer(noise(x / 9, z / 9), 9, cell, far) * 0.13;
 }
 
 // Each puddle's surface sits just below the lowest ground around it, so liquid never floats above its banks.
@@ -45,8 +70,9 @@ export const poolLevels = pools.map((pool) => {
 const landingPads = candidateSites.filter(site => !["base", "outcrop"].includes(site.id))
   .map(site => ({ x: site.x, z: site.z, height: baseHeight(site.x, site.z) }));
 
-export function terrainHeight(x, z) {
-  let height = baseHeight(x, z);
+// cell: mesh spacing at this point in m (0 = full detail); see the level-of-detail note above.
+export function terrainHeight(x, z, cell = 0) {
+  let height = baseHeight(x, z, cell);
   for (const pad of landingPads) {
     const distance = Math.hypot(x - pad.x, z - pad.z);
     if (distance < 24) {
@@ -252,24 +278,41 @@ export function createTitanTerrain(scene, renderer) {
     return { ring, site };
   });
   let terrainX = NaN, terrainZ = NaN;
+  // Grid coordinate t (-1 to 1) to world position, and the distance between neighboring vertices there.
+  const gridAt = (anchor, t) => anchor + t * 70 + Math.sign(t) * t * t * (terrainReachM - 70);
+  const spacing = (t) => (70 + 2 * (terrainReachM - 70) * Math.abs(t)) * 2 / segments;
+  // The mesh recenters in 400 m steps. The next mesh is built a few rows per frame into a spare
+  // buffer and swapped in when complete, so crossing into a new square never stalls a frame.
+  // A jump (start-up, restored mission, arrival) rebuilds at once instead.
+  const rowsPerFrame = 8;
+  const spare = new Float32Array(vertices.array.length);
+  let build = null;
 
   function moveTerrain(x, z) {
     const anchorX = Math.round(x / 400) * 400;
     const anchorZ = Math.round(z / 400) * 400;
-    if (anchorX === terrainX && anchorZ === terrainZ) return false;
-    terrainX = anchorX;
-    terrainZ = anchorZ;
-    for (let row = 0; row <= segments; row += 1) {
-      const v = row / segments * 2 - 1;
-      const worldZ = anchorZ + v * 70 + Math.sign(v) * v * v * (terrainReachM - 70);
+    if (anchorX === terrainX && anchorZ === terrainZ) { build = null; return false; }
+    if (!build || build.anchorX !== anchorX || build.anchorZ !== anchorZ) build = { anchorX, anchorZ, row: 0 };
+    const jumped = !(Math.max(Math.abs(x - terrainX), Math.abs(z - terrainZ)) < 320);
+    const end = jumped ? segments + 1 : Math.min(segments + 1, build.row + rowsPerFrame);
+    for (; build.row < end; build.row += 1) {
+      const v = build.row / segments * 2 - 1;
+      const worldZ = gridAt(anchorZ, v);
       for (let column = 0; column <= segments; column += 1) {
         const u = column / segments * 2 - 1;
-        const worldX = anchorX + u * 70 + Math.sign(u) * u * u * (terrainReachM - 70);
-        const index = row * (segments + 1) + column;
-        vertices.setXYZ(index, worldX, terrainHeight(worldX, worldZ), worldZ);
-        uv.setXY(index, worldX / 1100, worldZ / 1100);
+        const worldX = gridAt(anchorX, u);
+        const index = (build.row * (segments + 1) + column) * 3;
+        spare[index] = worldX;
+        spare[index + 1] = terrainHeight(worldX, worldZ, Math.max(spacing(u), spacing(v)));
+        spare[index + 2] = worldZ;
       }
     }
+    if (build.row <= segments) return false;
+    build = null;
+    terrainX = anchorX;
+    terrainZ = anchorZ;
+    vertices.array.set(spare);
+    for (let index = 0; index < uv.count; index += 1) uv.setXY(index, vertices.getX(index) / 1100, vertices.getZ(index) / 1100);
     vertices.needsUpdate = true;
     uv.needsUpdate = true;
     geometry.computeVertexNormals();

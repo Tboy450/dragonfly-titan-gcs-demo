@@ -31,6 +31,30 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-09-29: Natural far mountains (terrain level of detail)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Smooth the far terrain and recenter it without a stall"
+- **What changed:** The owner asked to improve the distant mountains, which showed saw-tooth
+  peaks (most visible after the lander's release and from high up). Cause: the ground mesh
+  gets coarse away from its center (up to ~80 m between points), so sharp ridge crests and
+  fine bumps sampled that coarsely stood up as triangular teeth. Now, only where the spacing
+  is over 20 m, fine noise layers fade to their average and the ridge shape is averaged over
+  each mesh cell (center and four corners). Same ranges, same average height (33.0 m vs
+  33.0 m in the test sample), same photo texture; roughness at 60 m spacing drops by about a
+  third. Everything the vehicle can reach (spacing up to 20 m) is bit-for-bit unchanged.
+  The extra work made a full rebuild slower (~115 ms vs ~71 ms in Node), so recentering now
+  builds the new mesh 8 rows per frame into a spare buffer and swaps it in when complete
+  (~31 frames). Normal flight no longer has one long rebuild frame (measured: 7.7 ms typical,
+  36 ms on the swap frame). Jumps (start-up, restored mission, arrival) still rebuild at once.
+- **Files:** `dist/titan-terrain.mjs`, `tests/terrain.test.mjs`, `tests/render-smoke.test.mjs`,
+  `README.md`, `ARCHITECTURE.md`
+- **Assumptions:** none new; the terrain function itself is unchanged near the vehicle.
+- **Checks:** `node --test tests/*.test.mjs` (68 pass; new tests for far detail and progressive
+  recentering). Compared 20,000 points against the previous version: identical wherever the
+  spacing is 20 m or less. Before/after frames at phone size: arrival after release (t = 43.5 s,
+  50 s) and a 120 m view near Site F; crossing into a new square renders normally.
+- **Open / next:** none.
+
 ### 2026-09-29: Start over confirms with a second tap
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Confirm Start over with a second tap instead of a popup"

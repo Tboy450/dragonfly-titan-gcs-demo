@@ -192,3 +192,20 @@ test("The original model's Internal and Thermal views are labeled mock-ups and f
   }
   assert.equal(chase.mockParts[0].visible, false, "the pilot view hides the mock interior");
 });
+
+test("The terrain recenters a few rows per frame, and at once after a jump", async () => {
+  const { createTitanTerrain } = await import("../dist/titan-terrain.mjs");
+  const landscape = createTitanTerrain(new THREE.Scene(), fakeRenderer());
+  const ground = landscape.group.getObjectByName("titan-ground").geometry.attributes.position;
+  const center = 120 * 241 + 120;
+  const anchor = () => [ground.getX(center), ground.getZ(center)];
+  assert.deepEqual(anchor(), [0, 0]);
+  // Flying across the edge of the 400 m square: the old mesh stays until the new one is ready.
+  let frames = 0;
+  while (anchor()[0] === 0 && frames < 100) { landscape.update(210, 0); frames++; }
+  assert.deepEqual(anchor(), [400, 0]);
+  assert.ok(frames > 10 && frames <= 31, `swapped after ${frames} frames`);
+  // A jump (restored mission far away) rebuilds immediately.
+  landscape.update(1700, -700);
+  assert.deepEqual(anchor(), [1600, -800]);
+});

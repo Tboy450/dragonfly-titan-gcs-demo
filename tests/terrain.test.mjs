@@ -69,3 +69,32 @@ test("Arrival haze thins with altitude but never reveals the terrain edge", asyn
   // From 2 km up the ground straight below is clearly visible.
   assert.ok(contrast(arrivalHazeDensity(2000), 2000) > 0.4);
 });
+
+test("Far terrain keeps its size but drops detail the coarse mesh cannot show", () => {
+  // Where the mesh is fine (spacing up to 20 m) the ground is exactly the full-detail surface.
+  for (let i = 0; i < 500; i++) {
+    const x = Math.sin(i * 0.7) * 4000, z = Math.cos(i * 1.3) * 4000;
+    for (const cell of [5, 20]) assert.equal(terrainHeight(x, z, cell), terrainHeight(x, z));
+  }
+  // Out where vertices are 60 m apart: same average height, far fewer saw-tooth spikes.
+  const cell = 60;
+  let roughFull = 0, roughFar = 0, meanFull = 0, meanFar = 0, count = 0;
+  for (let line = 0; line < 20; line++) {
+    const angle = line * 0.37, cx = Math.cos(angle), cz = Math.sin(angle);
+    const full = [], far = [];
+    for (let i = 0; i < 60; i++) {
+      const d = 800 + i * cell, x = cx * d + cz * 13 * line, z = cz * d - cx * 13 * line;
+      full.push(terrainHeight(x, z));
+      far.push(terrainHeight(x, z, cell));
+    }
+    for (let i = 1; i < 59; i++) {
+      roughFull += Math.abs(full[i - 1] - 2 * full[i] + full[i + 1]);
+      roughFar += Math.abs(far[i - 1] - 2 * far[i] + far[i + 1]);
+      meanFull += full[i];
+      meanFar += far[i];
+      count++;
+    }
+  }
+  assert.ok(Math.abs(meanFar - meanFull) / count < 1, "mountains keep their height");
+  assert.ok(roughFar < roughFull * 0.75, `roughness ${(roughFar / count).toFixed(1)} vs ${(roughFull / count).toFixed(1)}`);
+});
