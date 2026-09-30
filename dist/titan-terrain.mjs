@@ -94,6 +94,18 @@ export function sampleTerrainSurface(x, z, positions, segments) {
   return { height, normal: [-sx / length, 1 / length, -sz / length] };
 }
 
+// Haze density for the scene fog. Near the ground it is fixed (see createTitanTerrain). During the
+// arrival, higher up, it thins so the ground below slowly emerges from the haze, but never so far
+// that the edge of the terrain mesh (~4.9 km out) shows through: at the edge it keeps contrast
+// under ~3% (FogExp2 contrast = exp(-(density * distance)^2)).
+export const hazeDensity = 0.00055;
+export const terrainReachM = 4870;
+export function arrivalHazeDensity(altitudeM) {
+  const u = Math.min(1, Math.max(0, (altitudeM - 400) / 800));
+  const blend = u * u * (3 - 2 * u);
+  return hazeDensity * (1 - blend) + 1.9 / Math.hypot(altitudeM, terrainReachM) * blend;
+}
+
 export function createTitanTerrain(scene, renderer) {
   const group = new THREE.Group();
   group.name = "titan-landscape";
@@ -107,7 +119,25 @@ export function createTitanTerrain(scene, renderer) {
   const skyTexture = new THREE.CanvasTexture(skyCanvas);
   skyTexture.colorSpace = THREE.SRGBColorSpace;
   scene.background = skyTexture;
-  scene.fog = new THREE.FogExp2(horizonColor.clone(), 0.00055);
+  scene.fog = new THREE.FogExp2(horizonColor.clone(), hazeDensity);
+  // Arrival only: a sky dome shaded by view direction. The flat background is fixed to the screen,
+  // so when the camera looks steeply down its darker top band would outline the fogged far terrain;
+  // the dome keeps the horizon level and seamless with the haze at any camera angle.
+  const skyDome = new THREE.Mesh(new THREE.SphereGeometry(9000, 32, 16), new THREE.ShaderMaterial({
+    uniforms: { top: { value: new THREE.Color() }, bottom: { value: new THREE.Color() }, space: { value: 0 } },
+    side: THREE.BackSide, depthTest: false, depthWrite: false,
+    vertexShader: "varying vec3 vDirection; void main() { vDirection = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
+    // High up (space near 1) the dark sky reaches down almost to the hazy limb below.
+    fragmentShader: `uniform vec3 top; uniform vec3 bottom; uniform float space; varying vec3 vDirection;
+      void main() { gl_FragColor = vec4(mix(bottom, top, smoothstep(-0.25 * space, 0.5 - 0.4 * space, vDirection.y)), 1.0);
+      #include <colorspace_fragment>
+      }`,
+  }));
+  skyDome.name = "arrival-sky";
+  skyDome.renderOrder = -1;
+  skyDome.frustumCulled = false;
+  skyDome.visible = false;
+  group.add(skyDome);
   // space (0-1) darkens the sky toward black overhead for the high-altitude arrival phases.
   const spaceZenith = new THREE.Color(0x0a0706), spaceHorizon = new THREE.Color(0x8c5424);
   function setDaylight(level, space = 0) {
@@ -122,6 +152,9 @@ export function createTitanTerrain(scene, renderer) {
     skyCtx.fillRect(0, 0, 2, 256);
     skyTexture.needsUpdate = true;
     scene.fog.color.copy(bottom);
+    skyDome.material.uniforms.top.value.copy(top);
+    skyDome.material.uniforms.bottom.value.copy(bottom);
+    skyDome.material.uniforms.space.value = space;
   }
   let daylight = "";
   setDaylight(1);
@@ -228,10 +261,10 @@ export function createTitanTerrain(scene, renderer) {
     terrainZ = anchorZ;
     for (let row = 0; row <= segments; row += 1) {
       const v = row / segments * 2 - 1;
-      const worldZ = anchorZ + v * 70 + Math.sign(v) * v * v * 4800;
+      const worldZ = anchorZ + v * 70 + Math.sign(v) * v * v * (terrainReachM - 70);
       for (let column = 0; column <= segments; column += 1) {
         const u = column / segments * 2 - 1;
-        const worldX = anchorX + u * 70 + Math.sign(u) * u * u * 4800;
+        const worldX = anchorX + u * 70 + Math.sign(u) * u * u * (terrainReachM - 70);
         const index = row * (segments + 1) + column;
         vertices.setXYZ(index, worldX, terrainHeight(worldX, worldZ), worldZ);
         uv.setXY(index, worldX / 1100, worldZ / 1100);
@@ -305,6 +338,13 @@ export function createTitanTerrain(scene, renderer) {
       if (key !== daylight) { daylight = key; setDaylight(rounded, roundedSpace); }
     },
     heightAt: (x, z) => surfaceAt(x, z).height,
+    // Arrival only: thin the haze with altitude (0 restores the normal surface haze).
+    setHazeAltitude(altitudeM = 0) { scene.fog.density = arrivalHazeDensity(altitudeM); },
+    // Arrival only: center the sky dome on the camera (null hides it and restores the flat sky).
+    setSkyDome(eye) {
+      skyDome.visible = !!eye;
+      if (eye) skyDome.position.copy(eye);
+    },
     update(x, z) {
       const changed = moveTerrain(x, z);
       moveRocks(x, z, changed);

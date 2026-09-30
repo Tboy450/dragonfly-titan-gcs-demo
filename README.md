@@ -71,7 +71,11 @@ On a browser's first visit the app opens with a one-minute, time-compressed entr
 landing sequence following the published timeline: entry at 1,270 km, drogue and main
 parachutes, heat-shield separation, the lander lowered below the backshell, rotor spin-up,
 release at 1,000 m and powered flight to touchdown. **Skip** ends it; "Replay the arrival at
-Titan" at the bottom of the page plays it again.
+Titan" at the bottom of the page plays it again. The hardware sizes (4.5 m 60-degree aeroshell,
+8.25 m disk-gap-band drogue, 16.7 m ringslot main) are published; the textures, plasma glow,
+sparks, smoke puffs, haze wisps, touchdown dust and camera moves are artistic. Under the main
+parachute the camera looks down past the canopy while the ground emerges from the haze, and
+it closes in on the lander within about three seconds of release.
 
 ## Vehicle Model
 

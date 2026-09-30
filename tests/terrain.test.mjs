@@ -57,3 +57,15 @@ test("Rain-darkened ground is landable and the methane puddle sits below its ban
   }
   assert.equal(overLiquid(surveySite.x, surveySite.z), false);
 });
+
+test("Arrival haze thins with altitude but never reveals the terrain edge", async () => {
+  const { arrivalHazeDensity, hazeDensity, terrainReachM } = await import("../dist/titan-terrain.mjs");
+  const contrast = (density, distance) => Math.exp(-((density * distance) ** 2));
+  assert.equal(arrivalHazeDensity(0), hazeDensity);
+  for (const altitude of [0, 200, 800, 1500, 2500, 4200]) {
+    const density = arrivalHazeDensity(altitude);
+    assert.ok(contrast(density, Math.hypot(altitude, terrainReachM - 250)) < 0.05, `edge shows at ${altitude} m`);
+  }
+  // From 2 km up the ground straight below is clearly visible.
+  assert.ok(contrast(arrivalHazeDensity(2000), 2000) > 0.4);
+});

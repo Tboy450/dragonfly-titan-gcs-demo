@@ -407,6 +407,7 @@ export function createChaseRenderer(options = {}) {
       sun.intensity = 0.02 + sunlight * 0.95;
       landscape.setDaylight(sunlight, state.edl?.space || 0);
       const altitude = Math.max(0, state.altitude || 0);
+      landscape.setHazeAltitude(state.edl ? altitude : 0);
       // Aloft, follow the smooth analytic terrain so mesh re-centering never shifts the aircraft;
       // near touchdown, blend onto the rendered triangles so the skids meet the visible ground.
       const meshGround = landscape.heightAt(x, z);
@@ -420,6 +421,13 @@ export function createChaseRenderer(options = {}) {
       const distance = state.edl ? Math.max(baseDistance, state.edl.cameraDistance) : baseDistance;
       const lookAt = craft.position.clone();
       if (state.edl) lookAt.y += state.edl.lookUp;
+      if (state.edl?.pyro) {
+        // A brief jolt when a mortar fires or a parachute snatches open.
+        const { age, kind } = state.edl.pyro;
+        const jolt = (1 - age / 1.5) ** 2 * distance * (kind === "drogue" || kind === "main" ? 0.005 : 0.002);
+        lookAt.x += Math.sin(age * 47) * jolt;
+        lookAt.y += Math.sin(age * 39 + 1) * jolt;
+      }
       camera.position.set(
         x + Math.sin(pose.azimuth) * Math.cos(pose.elevation) * distance,
         lookAt.y + Math.sin(pose.elevation) * distance,
@@ -427,7 +435,8 @@ export function createChaseRenderer(options = {}) {
       );
       camera.position.y = Math.max(camera.position.y, landscape.heightAt(camera.position.x, camera.position.z) + 0.3);
       camera.lookAt(lookAt);
-      poseArrival(state.edl);
+      landscape.setSkyDome(state.edl ? camera.position : null);
+      poseArrival(state.edl, camera.position);
       renderer.render(scene, camera);
       ctx.drawImage(renderer.domElement, 0, 0, w, h);
     },

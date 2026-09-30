@@ -31,6 +31,42 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-09-29: Arrival sequence graphics, realism and animation
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Rework the arrival sequence graphics and camera"
+- **What changed:** The owner asked for better graphics and realism in the drop-in sequence,
+  more artistic detail and animation on the capsule and parachutes, and a quicker zoom onto the
+  drone after release.
+  - Camera: closes from 190 m to 16 m within 3 s of release (then 12 m). Under the main
+    parachute it rises to look down past the canopy, so the ground slowly emerges from the haze.
+    A brief jolt when a mortar fires or a parachute snatches open.
+  - Capsule: sphere-cone heat shield with ablative tile texture that glows during entry; tan
+    cork-textured backshell with seams, rim ring, parachute mortar and four thruster pods.
+  - Entry: flickering shock-layer glow, a tapering plasma wake, ablation sparks, warm light on
+    the shell, faint speed streaks (entry only), dark sky above the hazy limb.
+  - Parachutes: disk-gap-band drogue and ringslot main (open slot rings) with orange/white gores,
+    crown vents, lines to a confluence point and a riser. They inflate from a slim bag with a
+    small overshoot, breathe and sway. The drogue is cut away, flying off and fading as the main
+    opens. The heat shield drifts and tumbles as it falls.
+  - Atmosphere: haze wisps drift up past the capsule; the scene haze thins with altitude during
+    the arrival (never enough to show the terrain edge); a direction-based sky dome during the
+    arrival keeps the horizon seamless when the camera looks down.
+  - Smoke puffs at mortar fire, heat-shield release and lander release; dust rolls out from the
+    rotor downwash at touchdown (kept thin between the camera and the lander).
+- **Files:** `dist/arrival-hardware.mjs` (rewritten), `dist/edl.mjs` (camera, `speedCue`,
+  `drogueAway`, `touchdownDust`, `pyro`), `dist/titan-terrain.mjs` (`arrivalHazeDensity`,
+  arrival sky dome), `dist/chase-vehicle.mjs`, `tests/terrain.test.mjs`,
+  `tests/render-smoke.test.mjs`, `README.md`, `ARCHITECTURE.md`
+- **Assumptions:** hardware sizes are published [PUB]; nose radius, backshell profile, canopy
+  and line proportions, colors, textures, all effects and camera moves are artistic [EST]
+  (noted at the top of `arrival-hardware.mjs` and in the README).
+- **Checks:** `node --test tests/*.test.mjs` (66 pass, including a new haze-visibility test).
+  Rendered frames at phone size (375x812) and 1280x800 through the whole sequence: entry,
+  drogue deploy, main inflation and drogue cut-away, heat-shield release, pose, release, zoom,
+  touchdown.
+- **Open / next:** the far mountain ridges are coarse (large terrain cells far out), which shows
+  as a saw-tooth skyline at low altitude; a smoother far-terrain level of detail would help.
+
 ### 2026-09-29: Search-engine basics
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add search metadata and a sitemap"

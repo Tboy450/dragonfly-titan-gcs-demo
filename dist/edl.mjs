@@ -65,10 +65,25 @@ export function edlStateAt(t) {
     separation: Math.max(0, time - release),
     space: clamp((Math.log10(Math.max(1, altitudeM)) - 4.7) / 1.2, 0, 1),
     // Framing: wide enough to keep the whole capsule-and-parachute assembly on a phone screen
-    // (the main parachute rig is ~40 m tall), then zooming in on the lander after release.
-    cameraDistance: time < main ? ease(time, drogue, 1.5, 30, 120) : time < release ? ease(time, main, 1.5, 120, 190) : ease(time, release, 12, 190, 12),
-    lookUp: time < main ? ease(time, drogue, 1.5, 0.5, 8) : time < release ? ease(time, main, 1.5, 8, 18) : ease(time, release, 6, 18, 0),
-    cameraElevation: time < drogue ? 0.25 : time < release ? -0.08 : -0.08 + 0.26 * smooth(clamp((time - release) / 8, 0, 1)),
+    // (the main parachute rig is ~40 m tall), then closing in on the lander within ~3 s of release.
+    cameraDistance: time < main ? ease(time, drogue, 1.5, 30, 120)
+      : time < release ? ease(time, main, 1.5, 120, 190)
+        : time < release + 3 ? ease(time, release, 3, 190, 16) : ease(time, release + 3, 10, 16, 12),
+    lookUp: time < main ? ease(time, drogue, 1.5, 0.5, 8) : time < release ? ease(time, main, 1.5, 8, 18) : ease(time, release, 2.5, 18, 0),
+    // Low under the drogue so the canopy stands against the sky; above the main, looking down past
+    // the canopy so the ground emerges from the haze below as the capsule descends.
+    cameraElevation: time < drogue ? 0.25 : time < main ? -0.08
+      : time < release ? ease(time, main + 1, 8, -0.08, 0.42) : ease(time, release, 3, 0.42, 0.18),
+    // Visual speed cue for haze streaks and passing haze layers: hypersonic entry, then the drogue,
+    // then the slow main parachute and powered flight.
+    speedCue: time < drogue ? 1 : time < main ? ease(time, drogue, 1, 1, 0.45) : ease(time, main, 2, 0.45, 0.12),
+    // The drogue is cut away as it pulls out the main; the heat shield tumbles as it falls.
+    drogueAway: time >= main ? time - main : -1,
+    touchdownDust: time >= touchdown - 2 ? clamp((time - (touchdown - 2)) / 2, 0, 1) : 0,
+    // Most recent pyrotechnic event (mortar fire, main deploy, heat shield and lander release) and
+    // its age in seconds, for a brief puff; null once it has faded.
+    pyro: [[release, "release"], [shield, "shield"], [main, "main"], [drogue, "drogue"]]
+      .filter(([at]) => time >= at && time - at < 1.5).map(([at, kind]) => ({ kind, age: time - at }))[0] || null,
   };
 }
 

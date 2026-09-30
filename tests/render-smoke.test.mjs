@@ -5,7 +5,7 @@ import * as THREE from "../dist/vendor/three/three.module.min.js";
 // A minimal stand-in for the browser: canvases whose 2D context accepts every drawing call.
 const context2d = new Proxy({}, {
   get: (target, key) => key in target ? target[key]
-    : key === "createLinearGradient" ? () => ({ addColorStop() {} }) : () => {},
+    : key === "createLinearGradient" || key === "createRadialGradient" ? () => ({ addColorStop() {} }) : () => {},
   set: (target, key, value) => { target[key] = value; return true; },
 });
 const element = () => ({ style: {}, width: 0, height: 0, getContext: () => context2d, addEventListener() {}, removeEventListener() {}, setAttribute() {} });
