@@ -64,6 +64,15 @@ references are linked within the app.
   eases between Fixed and Free instead of snapping.
 - Keyboard: W/S throttle, A/D yaw, arrow keys pitch/roll, Space levels off and holds
   altitude.
+- **Reverse (sim)** beside **Throttle: sticky** arms a tiny fictional reverse-thrust
+  brake, off by default. In manual flight, lower the throttle all the way to **0%**
+  while still rising above 1 m: the pulse adds up to 0.2 m/s² of downward braking
+  until upward momentum is gone. It uses a small modeled rotor pulse and 50 W extra
+  electrical load [EST]. Normal descent speed and the gentle touchdown flare stay
+  unchanged. It does not operate in Auto, flight plans, altitude hold, safety descent,
+  arrival or over liquid. Both views show off / armed / braking, and landed saves
+  retain the enabled setting. This is a simulator convenience, **not a capability
+  of the real Dragonfly's fixed-pitch rotors**.
 
 ## Arrival at Titan
 
@@ -139,6 +148,36 @@ The independent liquid-to-liquid exchanger study calculates heat flow and outlet
 temperatures from explicit assumptions. It is not part of the flight hardware.
 See [the research compendium](RESEARCH-COMPENDIUM.md) and
 [the release reconciliation](RESEARCH-FOLLOWUP.md) for follow-up evidence.
+
+## Titan-inspired Weather
+
+New missions get occasional gradual gust events and rarer methane-rain scenarios.
+Diagnostics offers **Occasional weather events** or **Fixed wind / events off**.
+Moving the surface-wind slider also selects Fixed wind. Automatic events stay within
+the 1.6 m/s design maximum; each starts with a visible 60-simulated-second advisory
+before building, peaking and recovering. Quiet gaps are 10-20 simulated minutes,
+with a 12% rain choice per event. These frequencies and times are **training
+assumptions**, not predictions for Titan. Pause freezes weather, and accelerated
+hibernation stops at a new advisory instead of silently skipping it.
+
+**Run strong methane-storm training** is optional: 120 seconds of warning, a gradual
+build, and gusts up to 4.5 m/s above the flight design envelope. It holds new flight
+plan uplinks through recovery, but does not crash the aircraft or automatically
+abort an existing flight. Land before strong winds. Select Fixed wind to end an
+event; the current wind becomes the fixed setting until you change the slider.
+
+Rain/cloud scenarios gradually thicken the Pilot-view haze, dim the light and add
+darkening/gloss to the existing rain-darkened interdune. Additional wetting fades
+with a two-hour simulated decay time. These are visual training effects: no flooding,
+puddle growth, new landing hazards or altered sample chemistry. Wind feeds the
+existing convection and power calculations, so component temperatures can respond;
+ambient remains -179.15 C, without invented Earth-style hot/cold fronts. Last-landed
+saves preserve event progress, randomness and wetness. Older saves retain fixed wind.
+
+The inspiration is published Cassini observations of [cloud evolution over 11 hours](https://science.nasa.gov/photojournal/pj-watching-summer-clouds-on-titan/),
+[equatorial methane-rain wetting](https://science.nasa.gov/resource/titanic-deluge-annotated/),
+and [inferred organic dust storms](https://science.nasa.gov/solar-system/dust-storms-on-titan-spotted-for-the-first-time/).
+They do not establish these local wind profiles or warning lead times.
 
 ## Flight Planning
 

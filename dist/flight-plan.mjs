@@ -3,6 +3,7 @@
 // It scouts new sites from the air and lands only at sites it has already checked
 // ("leapfrog" scouting [PUB]). Rates, radii and the compressed uplink are demo choices [EST].
 import { systemsModel, candidateSites, overLiquid, titanDaylight, flightRestriction, landed, landNowNeeded, batteryAfterFlight } from "./mission-systems.mjs?v=dev";
+import { weatherAdvisory, weatherFlightIssue } from "./weather.mjs?v=dev";
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
@@ -107,6 +108,9 @@ export function estimatePlan(state, powerAt, batteryEnergyKwh) {
   if (endBattery < systemsModel.reservePercent) noGo(`Battery would end at ${endBattery.toFixed(0)}%, below the ${systemsModel.reservePercent}% reserve.`);
   if (endBatteryC >= systemsModel.batteryLimitC) noGo(`Battery would reach ${endBatteryC.toFixed(0)} C (limit ${systemsModel.batteryLimitC} C).`);
   if (timeSeconds > systemsModel.plannedFlightSeconds) noGo(`Flight time ${(timeSeconds / 60).toFixed(0)} min exceeds the ~30 min longest flights.`);
+  const weatherBlocked = weatherFlightIssue(state);
+  if (weatherBlocked) noGo(weatherBlocked);
+  else if (weatherAdvisory(state)) caution(weatherAdvisory(state));
   if (state.wind > systemsModel.maxSurfaceWind) caution("Wind is above the 1.6 m/s design maximum.");
   if (endBattery >= systemsModel.reservePercent && endBattery < systemsModel.reservePercent + 10) caution("Thin energy margin at landing.");
   return {

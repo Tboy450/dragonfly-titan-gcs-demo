@@ -2,6 +2,7 @@
 // saved, so a mission never resumes in mid-air. No DOM access here; ui/persistence.mjs stores it.
 import { createPlan } from "./flight-plan.mjs?v=dev";
 import { validExpedition } from "./expedition.mjs?v=dev";
+import { createWeatherState, setFixedWind, validWeather } from "./weather.mjs?v=dev";
 
 export const SAVE_VERSION = 1;
 export const SAVE_KEY = "dragonfly-save-v1";
@@ -12,7 +13,7 @@ const persistent = [
   "positionX", "positionZ", "heading", "missionTime", "elapsed", "distance", "track",
   // Vehicle energy and thermal state, settings and faults
   "battery", "coreC", "batteryC", "pcmMelt", "rdeC", "twtaC", "noseElectronicsC", "trim", "trimClock", "trimIntegral",
-  "thermalAuto", "fan", "fault", "arrivalElectricW", "wind", "payloadDelta",
+  "thermalAuto", "fan", "fault", "arrivalElectricW", "wind", "payloadDelta", "weather", "reverseBrakeEnabled",
   "motorsCold", "motorCoolClock", "preheatWh", "preheats",
   // Mission, scouting, science and data
   "mission", "scoutedSites", "scoutLog", "science", "dataStoredBits", "dataReturnedBits", "expedition",
@@ -39,11 +40,18 @@ export function restoreState(state, snapshot) {
   const { values } = snapshot;
   if (!Number.isFinite(values.positionX) || !Number.isFinite(values.battery)) return false;
   if (values.expedition !== undefined && !validExpedition(values.expedition)) return false;
+  if (values.weather !== undefined && (!validWeather(values.weather) || values.wind !== values.weather.lastWind)) return false;
+  if (values.reverseBrakeEnabled !== undefined && typeof values.reverseBrakeEnabled !== "boolean") return false;
   for (const key of persistent) if (values[key] !== undefined) state[key] = copy(values[key]);
+  if (values.weather === undefined) {
+    state.weather = createWeatherState();
+    setFixedWind(state, state.wind);
+  }
   // Resume on the ground, idle, with nothing in progress.
   Object.assign(state, {
     altitude: 0, verticalSpeed: 0, speed: 0, auto: false, hold: false, altitudeHold: null,
     throttle: 0.18, pitch: 0, roll: 0, yaw: 0, pitchCmd: 0, rollCmd: 0, yawCmd: 0, mode: "Surface",
+    reverseBrakeActive: false,
     hibernating: false, restSeconds: 0, downlinkActive: false, antennaDeploy: 0, timeWarp: 1, flightSeconds: 0,
   });
   state.mission.guidance = false;

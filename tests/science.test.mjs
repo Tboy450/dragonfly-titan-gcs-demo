@@ -3,9 +3,10 @@ import assert from "node:assert/strict";
 import { createFlightState, stepFlight, commandFlight, advanceRest } from "../dist/flight-model.mjs";
 import { startSample, canSampleHere, groundTypeAt, groundTypes, gnsUncertainty, scienceModel } from "../dist/science.mjs";
 import { toggleDownlink, linkStatus, startRest, surveySite, dampGround, pools, systemsModel } from "../dist/mission-systems.mjs";
+import { setWeatherMode } from "../dist/weather.mjs";
 
 const run = (s, seconds, dt = 0.05) => { for (let t = 0; t < seconds; t += dt) stepFlight(s, dt); };
-const grounded = () => { const s = createFlightState(); s.auto = false; s.throttle = 0.18; run(s, 0.1); return s; };
+const grounded = () => { const s = createFlightState(); s.auto = false; s.throttle = 0.18; setWeatherMode(s, "fixed"); run(s, 0.1); return s; };
 
 test("Ground types follow the training geography", () => {
   assert.equal(groundTypeAt(surveySite.x, surveySite.z), groundTypes.outcrop);

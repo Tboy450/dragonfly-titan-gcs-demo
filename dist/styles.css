@@ -954,6 +954,15 @@ body.arrival .pilot-hud { display: none; }
 .science-log li { margin: 2px 0; }
 .plan-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 10px 14px; background: #1b2433; border-left: 3px solid var(--cyan); }
 .plan-strip[hidden] { display: none; }
+.weather-strip { padding: 8px 14px; border-left: 3px solid var(--amber); background: #29251c; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 0.8rem; }
+.weather-strip strong { color: var(--amber); }
+.weather-strip small { width: 100%; color: #bcd0e2; font-size: 0.72rem; }
+.weather-strip[hidden] { display: none; }
+#weather-feedback:empty { display: none; }
+#weather-feedback { color: var(--amber); }
+#weather-recent { overflow-wrap: anywhere; }
+body.pilot-view .weather-strip { padding: 4px 8px; font-size: 0.7rem; }
+body.pilot-view .weather-strip strong, body.pilot-view .weather-strip small { display: none; }
 .plan-strip > div:first-child { flex: 1; min-width: 220px; }
 .plan-strip strong, .plan-strip span { display: block; }
 .plan-strip span { font-size: 0.8rem; color: #bcd0e2; margin-top: 4px; font-variant-numeric: tabular-nums; }
@@ -1241,6 +1250,11 @@ body.arrival .pilot-hud { display: none; }
   border-color: rgba(128, 242, 174, 0.6);
   color: var(--green);
 }
+.throttle-toggles { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.reverse-brake-help { color: var(--muted); font-size: 0.72rem; line-height: 1.5; }
+.reverse-brake[aria-pressed="true"] { color: var(--amber); border-color: var(--amber); }
+body.pilot-view .pilot-control .throttle-toggles { margin-top: 4px; justify-content: center; }
+body.pilot-view .pilot-control .throttle-toggles .throttle-mode { margin: 0; }
 
 .pilot-control .throttle-mode {
   display: block;
@@ -1695,4 +1709,8 @@ body.arrival .expedition-panel { display: none; }
 @media (max-height: 520px) and (orientation: landscape) {
   body.pilot-view #expedition-step { display: none; }
   body.pilot-view .expedition-panel { padding: 2px 8px; }
+  body.pilot-view .camera-switch { left: 8px; top: 6px; transform: none; }
+  body.pilot-view .pilot-hud { top: 6px; left: 160px; right: 140px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); font-size: 0.62rem; }
+  body.pilot-view .pilot-hud strong { font-size: 0.64rem; }
+  body.pilot-view .pilot-hud div:last-child { grid-column: 1 / -1; justify-content: center; }
 }

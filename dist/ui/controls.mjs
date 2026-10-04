@@ -2,6 +2,7 @@
 import { enterFreeCamera, orbitCamera } from "../flight-camera.mjs?v=dev";
 import { commandFlight, model, takeManualControl } from "../flight-model.mjs?v=dev";
 import { missionAction, startRest, toggleDownlink } from "../mission-systems.mjs?v=dev";
+import { setFixedWind, setWeatherMode, startStormTraining } from "../weather.mjs?v=dev";
 import { $, chaseRenderer, clamp, flightCanvas, state } from "./context.mjs?v=dev";
 import { updateReadouts } from "./readouts.mjs?v=dev";
 
@@ -134,7 +135,14 @@ export function setView(view) {
 
 
 $("wind-slider").addEventListener("input", (event) => {
-  state.wind = Number(event.target.value);
+  setFixedWind(state, Number(event.target.value));
+});
+$("weather-mode").addEventListener("change", event => {
+  setWeatherMode(state, event.target.value);
+  $("weather-feedback").textContent = "";
+});
+$("weather-training").addEventListener("click", () => {
+  $("weather-feedback").textContent = startStormTraining(state);
 });
 
 $("payload-slider").addEventListener("input", (event) => {
@@ -201,6 +209,13 @@ document.querySelectorAll("[data-throttle-mode]").forEach((button) => {
   button.addEventListener("click", () => setThrottleSpring(!state.throttleSpring));
 });
 setThrottleSpring(state.throttleSpring);
+document.querySelectorAll("[data-reverse-brake]").forEach(button => {
+  button.addEventListener("click", () => {
+    state.reverseBrakeEnabled = !state.reverseBrakeEnabled;
+    if (!state.reverseBrakeEnabled) state.reverseBrakeActive = false;
+    updateReadouts();
+  });
+});
 
 function setVehicleModel(choice) {
   state.vehicleModel = choice;

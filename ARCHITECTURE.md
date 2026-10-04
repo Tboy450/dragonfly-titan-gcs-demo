@@ -37,6 +37,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/flight-plan.mjs` | Flight plans: waypoints, GO/NO-GO estimate, uplink delay, autopilot guidance, leapfrog scouting |
 | `dist/science.mjs` | Instruments: DragonCam data, DraGMet log and seismometer, DraGNS counting, DrACO/DraMS sampling, ground types |
 | `dist/expedition.mjs` | First expedition objectives, suggested flight drafts, site-linked notebook, FIFO sample downlink status, frozen debrief and validation of the optional save field |
+| `dist/weather.mjs` | Seeded, compressed training gust/rain events, advance advisories, optional strong storm, fixed wind, wetting/drying, plan restrictions and weather save validation |
 | `dist/edl.mjs` | Arrival (entry, descent, landing) timeline from the published EDL figure |
 | `dist/thermal-scale.mjs` | Fixed absolute-temperature colors shared by both reading lists and the Thermal mesh; range selection zooms only the legend, with 0-20 C equipment/battery reference green and 35 C+ red (not universal operating limits) |
 | `dist/flight-camera.mjs` | Chase-camera pose and smoothing |
@@ -86,10 +87,12 @@ There is one live `state` object (`ui/context.mjs`). Each part of the simulation
 | Owner | Fields (examples) |
 |---|---|
 | `flight-model.mjs` | `altitude`, `verticalSpeed`, `speed`, `heading`, `pitch`/`roll`/`yaw`, `throttle`, `altitudeHold`, `auto`, `mode`, `rotorRpm`, `missionTime`, `positionX/Z`, `timeWarp` |
+| `flight-model.mjs` (fictional opt-in assist) | `reverseBrakeEnabled` (saved), `reverseBrakeActive` (transient); a zero-throttle upward-momentum brake only in manual flight above 1 m, never a negative throttle value |
 | `mission-systems.mjs` | `battery`, `power`, `coreC`, `batteryC`, `trim`, `fan`, `fault`, `hibernating`, `elapsed` (Titan clock), `downlinkActive`, `antennaDeploy`, `motorsCold`, `flightSeconds`, `scoutedSites`, `rdeC`/`twtaC`, `mission` |
 | `flight-plan.mjs` | `plan` (waypoints, status, phase, estimate, report) |
 | `science.mjs` | `science` (samples, log, counters), `dataStoredBits`, `sciencePowerW` |
 | `expedition.mjs` | `expedition` (status, step, start/end clocks, next sample index, three-site notebook, energy/flight/temperature metrics) |
+| `weather.mjs` | `weather` (seed, mode, clocks, baseline/last wind, event, intensity, haze, rain, wetness, six recent advisories), effective `wind` |
 | `ui/arrival.mjs` | `edl`, `edlTime` (only while the arrival plays) |
 | `ui/*` (page only) | `view`, `cameraMode`, `vehicleModel`, `missionLayer`, `thermalRange`, `selectedPart`, `throttleSpring`, `renderPose` |
 
@@ -100,7 +103,7 @@ should survive a reload, add it there (and bump `SAVE_VERSION` if old saves woul
 
 1. Step the simulation: the arrival sequence, hibernation fast-forward, or `stepFlight()` once per
    time-speed step (1x, or 5x/20x/100x during a flight plan or downlink).
-   `stepFlight()` updates expedition progress after the science and systems steps. Sample
+   `stepFlight()` steps weather before flight/system calculations, then updates expedition progress after the science and systems steps. Weather uses bounded one-second substeps; rest stops at a new warning. The UI seeds new missions with browser randomness; the model factory uses a deterministic default for tests. Sample
    records have a cumulative `downlinkEndBits` boundary (returned + queued data at collection),
    so their transmission status is independent of later imagery or weather data.
 2. Every 0.1 s: refresh readouts, track, plan strip, layers panel, Pilot list and chart.
@@ -112,6 +115,7 @@ should survive a reload, add it there (and bump `SAVE_VERSION` if old saves woul
 | File | Covers |
 |---|---|
 | `flight-model.test.mjs` | Power, continuous flight model, mode changes without jumps |
+| `reverse-brake.test.mjs` | Earlier climb arrest, bounded tiny pulse, RPM/power accounting, manual-only gates, liquid/flare protections, frame-rate consistency, pause and validated/legacy saves |
 | `mission-systems.test.mjs`, `operations.test.mjs` | Thermal/energy model, survey, hibernation, preheat, downlink, antenna, land-now |
 | `flight-plan.test.mjs` | Plan checks, full autonomous flight, leapfrog, abort, land-now from 400 m |
 | `science.test.mjs` | Instruments, sampling, data store and downlink |
@@ -122,6 +126,7 @@ should survive a reload, add it there (and bump `SAVE_VERSION` if old saves woul
 | `save-game.test.mjs` | Save and restore round trip after a real flight and sample; only landed states; bad saves ignored |
 | `flight-camera.test.mjs`, `cache-version.test.mjs` | Chase camera; `?v=dev` stamps and the build label |
 | `thermal-scale.test.mjs` | Fixed cold/reference/hot colors, continuous interpolation and accurate temperature anchors in both legend windows |
+| `weather.test.mjs` | Seeded scheduling, advance warnings, smooth/bounded gusts, rain and drying, optional strong storm, fixed wind, pause/arrival, real convection, rest warning stop, planner cautions/restrictions, save validation and legacy migration |
 
 ## Local testing tips
 

@@ -3,6 +3,7 @@ import { deriveFlight, model } from "../flight-model.mjs?v=dev";
 import { dampGround, flightEndurance, landed, linkStatus, liquidExchangerStudy, missionTarget, operationsAdvisory, overLiquid, pools, systemsModel, targetDistance, titanDaylight, titanLocalHour } from "../mission-systems.mjs?v=dev";
 import { $, clamp, derived, formatTime, state, stickPitch, stickRoll, stickYaw } from "./context.mjs?v=dev";
 import { updateScience } from "./science-panel.mjs?v=dev";
+import { weatherAdvisory, weatherPhase } from "../weather.mjs?v=dev";
 
 const rotorGrid = $("rotor-grid");
 const pilotRotorGrid = $("pilot-rotor-grid");
@@ -62,6 +63,16 @@ export function updateReadouts() {
   const stressWind = state.wind > systemsModel.maxSurfaceWind;
   $("wind-output").textContent = `${state.wind.toFixed(1)} m/s${stressWind ? " / stress" : ""}`;
   $("wind-note").textContent = stressWind ? "Stress test: above the 1.6 m/s design maximum; Titan surface winds are typically under 1 m/s" : "Within the 1.6 m/s design maximum";
+  if (document.activeElement !== $("wind-slider")) $("wind-slider").value = state.wind;
+  $("weather-mode").value = state.weather.mode;
+  const weather = state.weather, advisory = weatherAdvisory(state), phase = weatherPhase(state);
+  $("weather-strip").hidden = !advisory || !!state.edl;
+  $("weather-title").textContent = phase === "warning" ? "Weather advisory" : weather.event?.kind === "training" ? "Storm training / stress" : "Changing weather";
+  $("weather-strip-status").textContent = weatherAdvisory(state, state.view === "pilot");
+  $("weather-status").textContent = advisory || (weather.mode === "fixed" ? "Fixed wind / automatic events off" : "Quiet / occasional gusts and rarer methane-rain scenarios");
+  $("weather-wetness").textContent = `${Math.round(weather.wetness * 100)}% additional wetting / illustrative`;
+  $("weather-recent").textContent = weather.log.length ? weather.log.map(entry => `${entry.kind === "training" ? "Strong storm training" : entry.kind === "rain" ? "Methane rain" : "Gust"} at ${formatTime(entry.clock)}`).join("; ") : "No events yet";
+  $("weather-training").disabled = !!weather.event || !!state.edl || state.hold;
   $("payload-output").textContent = `${state.payloadDelta > 0 ? "+" : ""}${state.payloadDelta} kg`;
   const leftText = `THR ${Math.round(state.throttle * 100)}% / YAW ${Math.round(stickYaw() * 100)}%`;
   const rightText = `PIT ${Math.round(stickPitch() * 100)}% / ROL ${Math.round(stickRoll() * 100)}%`;
@@ -70,6 +81,11 @@ export function updateReadouts() {
 
   positionStick($("left-stick"), stickYaw(), state.throttle * 2 - 1);
   positionStick($("right-stick"), stickRoll(), stickPitch());
+  document.querySelectorAll("[data-reverse-brake]").forEach(button => {
+    const active = state.reverseBrakeActive && !state.hold && !state.edl;
+    button.setAttribute("aria-pressed", String(state.reverseBrakeEnabled));
+    button.textContent = `Reverse (sim): ${!state.reverseBrakeEnabled ? "off" : active ? "braking" : "armed"}`;
+  });
 
   rotorTiles.forEach((tile, index) => {
     const rpm = Math.round(state.rotorRpm[index]);

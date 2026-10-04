@@ -402,10 +402,12 @@ export function createChaseRenderer(options = {}) {
       marker.visible = state.mission.phase !== "idle";
       marker.position.set(target.x, landscape.heightAt(target.x, target.z) + 0.08, target.z);
       const sunlight = Math.max(0, Math.cos((state.elapsed || 0) / systemsModel.titanDaySeconds * Math.PI * 2));
+      const lightLevel = sunlight * (1 - (state.edl ? 0 : state.weather?.haze || 0) * 0.3);
       // Day: bright orange sky dome, weak direct beam. Night: faint, dim sky (kept visible for play).
-      ambient.intensity = 0.35 + sunlight * 1.85;
-      sun.intensity = 0.02 + sunlight * 0.95;
-      landscape.setDaylight(sunlight, state.edl?.space || 0);
+      ambient.intensity = 0.35 + lightLevel * 1.85;
+      sun.intensity = 0.02 + lightLevel * 0.95;
+      landscape.setDaylight(lightLevel, state.edl?.space || 0);
+      landscape.setWeather(state.edl ? null : state.weather);
       const altitude = Math.max(0, state.altitude || 0);
       landscape.setHazeAltitude(state.edl ? altitude : 0);
       // Aloft, follow the smooth analytic terrain so mesh re-centering never shifts the aircraft;

@@ -217,6 +217,11 @@ function drawRotorWash(ctx, w, h) {
 }
 
 function drawTitanHaze(ctx, w, h, horizon) {
+  const cloud = state.edl ? 0 : state.weather?.haze || 0;
+  if (cloud) {
+    ctx.fillStyle = `rgba(89, 66, 47, ${cloud * 0.5})`;
+    ctx.fillRect(0, 0, w, h);
+  }
   const haze = ctx.createLinearGradient(0, 0, 0, h);
   haze.addColorStop(0, "rgba(255, 205, 106, 0.17)");
   haze.addColorStop(Math.max(0.2, horizon / h), "rgba(235, 145, 61, 0.14)");

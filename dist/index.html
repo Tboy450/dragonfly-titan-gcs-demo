@@ -74,6 +74,12 @@
         <span id="vehicle-alert" role="status">Systems nominal</span>
       </section>
 
+      <section id="weather-strip" class="weather-strip" role="status" hidden>
+        <strong id="weather-title">Weather advisory</strong>
+        <span id="weather-strip-status"></span>
+        <small>Compressed training weather, not a real Titan forecast. Settings in Diagnostics.</small>
+      </section>
+
       <section class="panel expedition-panel" aria-labelledby="expedition-title">
         <div class="expedition-heading">
           <div><span id="expedition-step">3 sites / 1 science story</span><h2 id="expedition-title">First expedition</h2></div>
@@ -145,6 +151,7 @@
               <output id="wind-output">0.8 m/s</output>
               <input id="wind-slider" type="range" min="0" max="5" step="0.1" value="0.8" />
               <small id="wind-note" class="rest-status">Within the 1.6 m/s design maximum</small>
+              <small class="rest-status">Changing the slider selects Fixed wind; automatic weather is controlled in Diagnostics.</small>
             </div>
             <div class="meter">
               <label for="payload-slider">Payload margin</label>
@@ -186,7 +193,11 @@
               <small id="right-stick-readout">PIT 0% / ROL 0%</small>
             </div>
           </div>
-          <button class="throttle-mode" type="button" data-throttle-mode aria-pressed="false" title="Sticky: the throttle stays where you leave it. Centering: it springs back to 50% (hold altitude) when released.">Throttle: sticky</button>
+          <div class="throttle-toggles">
+            <button class="throttle-mode" type="button" data-throttle-mode aria-pressed="false" title="Sticky: the throttle stays where you leave it. Centering: it springs back to 50% (hold altitude) when released.">Throttle: sticky</button>
+            <button class="throttle-mode reverse-brake" type="button" data-reverse-brake aria-pressed="false" aria-describedby="reverse-brake-help" title="Fictional training assist: a tiny reverse-thrust pulse at 0% manual throttle while still rising above 1 m. Stops at the top of the climb; normal touchdown is unchanged.">Reverse (sim): off</button>
+          </div>
+          <small id="reverse-brake-help" class="reverse-brake-help">Fictional reverse-thrust brake: at 0% manual throttle, gently cancels upward momentum above 1 m. Not real Dragonfly hardware; descent and touchdown limits are unchanged.</small>
           </div>
         </aside>
 
@@ -208,6 +219,7 @@
               <div><span>Flight left</span><strong id="hud-endurance">Landed</strong></div>
               <div><span>Link</span><strong id="hud-link">Ready</strong></div>
               <div><span>Plan</span><strong id="hud-plan">None</strong></div>
+              <div><span>Weather</span><strong id="hud-weather">0.8 m/s / quiet</strong></div>
             </section>
             <section id="arrival-overlay" class="arrival-overlay" aria-label="Arrival at Titan, time-compressed" hidden>
               <div class="arrival-head">
@@ -237,7 +249,10 @@
                   <em class="axis-label right">R</em>
                 </div>
                 <small id="pilot-left-readout">THR 50% / YAW 0%</small>
-                <button class="throttle-mode" type="button" data-throttle-mode aria-pressed="false" title="Sticky: the throttle stays where you leave it. Centering: it springs back to 50% (hold altitude) when released.">Throttle: sticky</button>
+                <div class="throttle-toggles">
+                  <button class="throttle-mode" type="button" data-throttle-mode aria-pressed="false" title="Sticky: the throttle stays where you leave it. Centering: it springs back to 50% (hold altitude) when released.">Throttle: sticky</button>
+                  <button class="throttle-mode reverse-brake" type="button" data-reverse-brake aria-pressed="false" aria-describedby="reverse-brake-help" title="Fictional training assist: a tiny reverse-thrust pulse at 0% manual throttle while still rising above 1 m. Stops at the top of the climb; normal touchdown is unchanged.">Reverse (sim): off</button>
+                </div>
               </div>
 
               <div class="attitude-wrap">
@@ -498,6 +513,17 @@
           <output id="trim-state" class="rest-status">Auto / 600 s control interval</output>
           <label class="system-control">Circulation fan <output id="fan-output">100%</output><input id="fan-control" type="range" min="0" max="100" value="100" /></label>
           <label class="system-control">Training fault<select id="fault-control"><option value="none">Nominal hardware</option><option value="fan">Restricted circulation</option><option value="insulation">Insulation damage</option></select></label>
+          <h3>Titan-inspired weather / training</h3>
+          <label class="system-control">Weather mode<select id="weather-mode"><option value="natural">Occasional weather events</option><option value="fixed">Fixed wind / events off</option></select></label>
+          <output id="weather-status" class="rest-status">Quiet / occasional gusts and rarer methane-rain scenarios</output>
+          <p class="rest-status">Automatic events stay at or below 1.6 m/s. Their frequency, compressed durations and warning lead times are assumptions, not Titan forecasts. Wind affects cooling; ambient stays at -179.2 C.</p>
+          <button id="weather-training" type="button">Run strong methane-storm training</button>
+          <p class="rest-status">Optional stress scenario: 2 simulated minutes of warning, then winds up to 4.5 m/s, reduced visibility and extra wetting of the existing rain-darkened patch. New flight plans are held until recovery. Select Fixed wind to end an event.</p>
+          <p id="weather-feedback" role="status"></p>
+          <dl class="diagnostic-values">
+            <div><dt>Rain-darkened patch</dt><dd id="weather-wetness">0% additional wetting / illustrative</dd></div>
+            <div><dt>Recent advisories / simulation time</dt><dd id="weather-recent">No events yet</dd></div>
+          </dl>
         </section>
         <section>
           <h3>Energy &amp; Surface Operations</h3>
@@ -524,6 +550,7 @@
       </div>
       <section class="thermal-context">
         <h3>Documented Dragonfly Architecture</h3>
+        <p>Cassini observed methane clouds developing and fading over an 11-hour northern observation, equatorial surface wetting after a methane storm, and features interpreted as organic dust storms over dunes. Those observations do not establish local storm frequencies or warning lead times for Dragonfly. This simulator compresses events into minutes for training; it does not model atmospheric fronts, forecast actual weather, blow rocks into the air or grow the methane puddle. <a href="https://science.nasa.gov/photojournal/pj-watching-summer-clouds-on-titan/" target="_blank" rel="noreferrer">Cloud evolution</a> / <a href="https://science.nasa.gov/resource/titanic-deluge-annotated/" target="_blank" rel="noreferrer">Equatorial rain</a> / <a href="https://science.nasa.gov/solar-system/dust-storms-on-titan-spotted-for-the-first-time/" target="_blank" rel="noreferrer">Dust-storm evidence</a></p>
         <p>On Titan, fans distribute MMRTG waste heat and a cold-duct bypass controls cooling. In space, the cruise system uses a pumped fluid loop and radiators. Surface convection is not the same as vacuum heat rejection. <a href="https://tfaws.nasa.gov/wp-content/uploads/TFAWS23-AT-14-Presentation.pdf" target="_blank" rel="noreferrer">NASA/APL thermal controller design (2023)</a></p>
         <p>The surface loop circulates nitrogen-rich atmospheric gas, not liquid nitrogen. Cold gas, flow resistance and external wind affect heat transport. NASA's 2026 workshop abstract continues to describe fan-driven circulation, cold-duct trim and insulation, with coupled thermal and CFD analysis. <a href="https://tfaws.nasa.gov/tfaws-2026/paper-proceedings/" target="_blank" rel="noreferrer">2026 Dragonfly thermal modeling abstract</a></p>
         <p>The battery supports high flight loads while the MMRTG produces electricity day and night. A roughly 16-Earth-day rotation gives approximately eight days per half-cycle near the equator; actual illumination varies. <a href="https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/" target="_blank" rel="noreferrer">NASA power system</a> / <a href="https://science.nasa.gov/saturn/moons/titan/facts/" target="_blank" rel="noreferrer">Titan environment</a></p>

@@ -194,10 +194,13 @@ export function createTitanTerrain(scene, renderer) {
   const groundMaterial = new THREE.MeshStandardMaterial({
     color: 0xa99576, map: reference, roughness: 1, metalness: 0,
   });
+  const rainWetness = { value: 0 };
   // Both the reference texture and fine ground detail are anchored to world coordinates.
   groundMaterial.onBeforeCompile = (shader) => {
+    shader.uniforms.rainWetness = rainWetness;
     shader.fragmentShader = shader.fragmentShader.replace("#include <common>", `
       #include <common>
+      uniform float rainWetness;
       float terrainHash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
       float terrainNoise(vec2 p) {
         vec2 i = floor(p), f = fract(p);
@@ -237,9 +240,10 @@ export function createTitanTerrain(scene, renderer) {
       float damp = 1.0 - smoothstep(0.72, 1.0, dampEdge);
       damp *= smoothstep(${(surveySite.radius + 2).toFixed(1)}, ${(surveySite.radius + 10).toFixed(1)}, distance(groundPoint, vec2(${surveySite.x.toFixed(1)}, ${surveySite.z.toFixed(1)})));
       diffuseColor.rgb *= mix(vec3(1.0), vec3(0.42, 0.43, 0.5), damp);
+      diffuseColor.rgb *= 1.0 - damp * rainWetness * 0.25;
     `).replace("#include <roughnessmap_fragment>", `
       #include <roughnessmap_fragment>
-      roughnessFactor = mix(roughnessFactor, 0.55, damp);
+      roughnessFactor = mix(roughnessFactor, 0.55 - rainWetness * 0.15, damp);
     `);
   };
 
@@ -285,6 +289,7 @@ export function createTitanTerrain(scene, renderer) {
     return { ring, site };
   });
   let terrainX = NaN, terrainZ = NaN;
+  let weatherHaze = 1;
   // Grid coordinate t (-1 to 1) to world position, and the distance between neighboring vertices there.
   const gridAt = (anchor, t) => anchor + t * 70 + Math.sign(t) * t * t * (terrainReachM - 70);
   const spacing = (t) => (70 + 2 * (terrainReachM - 70) * Math.abs(t)) * 2 / segments;
@@ -388,8 +393,12 @@ export function createTitanTerrain(scene, renderer) {
       if (key !== daylight) { daylight = key; setDaylight(rounded, roundedSpace); }
     },
     heightAt: (x, z) => surfaceAt(x, z).height,
+    setWeather(weather = null) {
+      weatherHaze = 1 + (weather?.haze || 0) * 2.5;
+      rainWetness.value = weather?.wetness || 0;
+    },
     // Arrival only: thin the haze with altitude (0 restores the normal surface haze).
-    setHazeAltitude(altitudeM = 0) { scene.fog.density = arrivalHazeDensity(altitudeM); },
+    setHazeAltitude(altitudeM = 0) { scene.fog.density = arrivalHazeDensity(altitudeM) * weatherHaze; },
     // Arrival only: center the sky dome on the camera (null hides it and restores the flat sky).
     setSkyDome(eye) {
       skyDome.visible = !!eye;

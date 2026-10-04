@@ -31,6 +31,64 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-04: Tiny opt-in simulated reverse-thrust climb brake
+- **Signed:** GitHub Copilot (GPT-6.1 Sol / Copilot App)
+- - **Commit:** "Add Titan weather and optional reverse braking"
+- **What changed:** Added synchronized "Reverse (sim)" toggle buttons beside
+  "Throttle: sticky" in Mission and Pilot. Off by default, with off / armed / braking
+  states. At exactly 0% manual throttle while still rising above 1 m, the fictional
+  pulse adds a small downward acceleration to arrest upward momentum sooner. It
+  stops once upward motion is gone; it cannot add downward speed or alter the gentle
+  landing flare. Auto, guidance, flight plans/uplink, altitude hold, safety descent,
+  arrival, liquid avoidance and pause retain their existing behavior. Rotor readings
+  show a small pulse without negative-throttle square roots; the pulse's extra electrical
+  load reaches the energy/thermal model. Landed saves retain the setting, not an active pulse.
+- **Files:** Flight model, save module, controls/readouts, markup/styles,
+  `tests/reverse-brake.test.mjs`, README, architecture and research compendium.
+- **Assumptions:** Explicitly fictional training convenience, not real Dragonfly
+  reverse thrust. Extra braking 0.2 m/s², nominal pulse 160 RPM and extra load 50 W
+  are [EST]. The normal 0-100% throttle range and descent/touchdown limits are unchanged.
+- **Checks:** Flight/save regressions, measured earlier climb arrest and touchdown,
+  finite RPM, bounded acceleration, power cost, all activation gates, multiple frame
+  rates, pause, saved setting and atomic rejection of malformed settings. Real
+  Edge/WebGL checked synchronized buttons, keyboard and stick zero throttle, phone
+  taps, portrait/landscape placement, landing and reload; no browser errors.
+- **Open / next:** Feature-branch change; GitHub Pages is unchanged until merged
+  into `main`.
+
+### 2026-10-04: Titan-inspired gust and methane-rain training weather
+- **Signed:** GitHub Copilot (GPT-6.1 Sol / Copilot App)
+- **Commit:** "Add Titan weather and optional reverse braking"
+- **What changed:** Added seeded occasional gusts and rarer methane-rain scenarios with
+  advance advisories, gradual build/peak/recovery and fixed-wind controls. New missions
+  receive browser-random seeds; old saves retain their fixed wind. Diagnostics offers an
+  explicit stronger methane-storm stress scenario, and new flight plans are NO-GO until
+  it finishes. Existing flights are not automatically aborted. Slider edits select fixed
+  wind, which also ends an active event. Pause freezes weather; accelerated rest stops
+  at a new warning. Landed checkpoints retain the phase, RNG, recent advisories and wetness.
+  Weather drives existing wind/convection/power calculations rather than inventing
+  ambient hot/cold fronts. Pilot haze thickens, lighting dims and the existing damp
+  interdune darkens/glosses after rain; it dries gradually without new puddles or hazards.
+  Added compact Pilot warnings and a short-landscape HUD arrangement to keep the warning
+  and systems readings clear of the flight controls.
+- **Files:** `dist/weather.mjs`, flight model/planner, save module, terrain/renderer,
+  UI controls/readouts/Pilot HUD/fallback, markup/styles, weather and rendering tests,
+  README, architecture and research compendium.
+- **Assumptions:** All event frequencies, wind profiles, warning lead times, compressed
+  durations and visual effects are [EST], clearly labeled. Automatic events stay within
+  1.6 m/s; only explicit strong training reaches up to 4.5 m/s. Cassini's methane-cloud,
+  equatorial rain and inferred dust-storm observations motivate the scenarios, but do not
+  establish local forecasts or those values. Ambient stays -179.15 C. No validated storm
+  aerodynamics, atmospheric fronts, flooding or sample-chemistry changes are claimed.
+- **Checks:** All 96 Node tests pass, including simulation/save/planner/renderer regressions, warning lead,
+  bounded smooth winds, seed continuity, weather-dependent heat rejection, legacy and
+  malformed saves, rain drying, pause/arrival isolation and accelerated-rest warning stop.
+  Real Edge/WebGL exercised controls, warnings/peak, actual shader compilation, fog/wetness,
+  paused/save/restored weather, legacy startup and phone portrait/landscape layouts;
+  higher-priority thermal alerts remain visible alongside weather.
+- **Open / next:** Feature-branch change, not a Pages deployment. Maintained browser CI,
+  portable saves/status and actual landing-hazard assessment remain separate backlog work.
+
 ### 2026-10-04: Stable temperature colors when zooming the legend
 - **Signed:** GitHub Copilot (GPT-6.1 Sol / Copilot App)
 - **Commit:** "Add first expedition and improve temperature views"

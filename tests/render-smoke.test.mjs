@@ -59,6 +59,7 @@ test("The research model matches the published 3.85 x 3.85 x 1.75 m envelope", a
       part.geometry.computeBoundingBox();
       box.union(part.geometry.boundingBox.clone().applyMatrix4(part.matrixWorld).applyMatrix4(inverse));
     });
+
     return box.getSize(new THREE.Vector3());
   };
   let width = 0, length = 0, height = 0;
@@ -70,6 +71,37 @@ test("The research model matches the published 3.85 x 3.85 x 1.75 m envelope", a
   assert.ok(Math.abs(width - 3.85) < 0.12, `width ${width.toFixed(2)} m`);
   assert.ok(Math.abs(length - 3.85) < 0.12, `length ${length.toFixed(2)} m`);
   assert.ok(Math.abs(height - 1.75) < 0.08, `height ${height.toFixed(2)} m`);
+});
+
+test("Weather changes Pilot haze, light and the wet-ground uniform without changing arrival visuals", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { edlStateAt } = await import("../dist/edl.mjs");
+  const chase = createChaseRenderer({ renderer: fakeRenderer() });
+  const s = createFlightState();
+  chase.draw(context2d, 800, 600, s);
+  let scene = chase.models.research;
+  while (scene.parent) scene = scene.parent;
+  const baseline = scene.fog.density;
+  const sunlight = scene.children.find(child => child.isDirectionalLight);
+  const intensity = sunlight.intensity;
+  const ground = scene.getObjectByName("titan-ground");
+  const shader = { uniforms: {}, fragmentShader: "#include <common>\n#include <map_fragment>\n#include <roughnessmap_fragment>" };
+  ground.material.onBeforeCompile(shader);
+  assert.equal(shader.uniforms.rainWetness.value, 0);
+  s.weather.haze = 1; s.weather.wetness = 0.8;
+  chase.draw(context2d, 800, 600, s);
+  assert.equal(scene.fog.density, baseline * 3.5);
+  assert.ok(sunlight.intensity < intensity);
+  assert.equal(shader.uniforms.rainWetness.value, 0.8);
+  s.edl = edlStateAt(10);
+  chase.draw(context2d, 800, 600, s);
+  assert.equal(scene.fog.density, baseline);
+  assert.equal(sunlight.intensity, intensity);
+  assert.equal(shader.uniforms.rainWetness.value, 0);
+  s.edl = null;
+  chase.draw(context2d, 800, 600, s);
+  assert.equal(shader.uniforms.rainWetness.value, 0.8);
 });
 
 test("Every research-model part belongs to a named subsystem with a thermal zone", async () => {

@@ -37,6 +37,11 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **Still open** (details in §7–§8): phase-change battery buffering, a cruise-phase thermal panel, visibility-based fog and dimmer lighting, rain-darkened ground, and an entry/descent/landing scenario.
 
+**October 4 weather addition:** seeded, occasional training gust/rain events now drive wind,
+thermal convection, Pilot haze/light and additional wetting of the existing interdune patch.
+An explicit stronger storm scenario holds new flight-plan uplinks. All event rates, timings,
+warning lead times and visual intensities are [EST]; see §5.1 below. This is not a local forecast.
+
 ---
 
 ## 1. Mission status and timeline
@@ -258,6 +263,31 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 
 **Sediment.** Fine dust follows the air and settles slowly. Sand-sized grains hop, but need stronger wind than older models predicted. Pebbles barely move. Do not use a single "float" setting for all debris.
 
+### 5.1 Weather observations versus compressed training scenarios (October 4, 2026)
+
+- [PUB] [NASA: Watching Summer Clouds on Titan](https://science.nasa.gov/photojournal/pj-watching-summer-clouds-on-titan/):
+  northern clouds develop, move and fade over an 11-hour Cassini sequence, with frames
+  20 minutes apart. Reported 7-10 m/s cloud motion is aloft, not a surface-wind measurement
+  for Dragonfly's equatorial landing area.
+- [PUB] [NASA: Titanic Deluge](https://science.nasa.gov/resource/titanic-deluge-annotated/):
+  equatorial rain-related changes followed a September 27, 2010 storm and were observed
+  October 14 across roughly 500,000 km². Wet ground remained October 29 and largely dried
+  by January 15. Equatorial regions are mostly arid; the dates do not establish a
+  minute-scale warning lead time or local storm-formation duration.
+- [PUB] [NASA: Dust Storms on Titan Spotted for the First Time](https://science.nasa.gov/solar-system/dust-storms-on-titan-spotted-for-the-first-time/):
+  Cassini bright features over equatorial dunes were interpreted as organic dust storms,
+  implying occasional stronger winds. This is evidence for episodic weather, not an exact
+  surface-wind profile at the landing site.
+- [EST] `weather.mjs`: 10-20 minute quiet gaps; 12% rain choice, otherwise gust;
+  normal peak wind 1.1-1.6 m/s with smooth gust modulation; phase durations 60/90/120/180 s
+  (warning/build/peak/recovery). Optional strong methane-storm training uses a 4.5 m/s peak
+  and 120/180/180/240 s phases. These accelerated scenarios are deliberately not observed rates.
+- [EST] Haze increases up to 3.5 times the base fog density, daylight reduces by up to
+  30%, and additional wetting dries exponentially with a 7,200 s time constant.
+  Wetting changes only the existing damp patch material. No floods, geographic or sample
+  chemistry changes, wind-direction aerodynamics, validated dust transport, or rain cooling
+  are modeled. Ambient remains fixed; wind changes the existing convection and power terms.
+
 ---
 
 ## 6. Communications
@@ -282,6 +312,7 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 | Hover / cruise power | 4.5–6 kW cruise, with a minimum near 6–10 m/s [PUB/CALC] | **Done**: induced + profile + parasite + climb curve | — |
 | Mode transitions | real aircraft cannot teleport; Titan's weak gravity arrests a climb slowly [PUB §2.1] | **Done** (this session): rate-limited vertical, attitude and speed; Auto re-phasing; no mesh-induced jumps | — |
 | Throttle / sticks | Dragonfly is RPM-controlled, fixed pitch [PUB] | **Done** (this session): sticky climb-rate throttle, optional centering, relative stick drag | — |
+| Fictional reverse-thrust brake | Real fixed-pitch Dragonfly rotors do not provide the modeled reverse-thrust capability | **Done** (Oct 4): explicit opt-in simulation toggle beside sticky throttle; tiny pulse only at zero manual throttle while rising above 1 m; normal descent/flare preserved | Extra 0.2 m/s² braking, 160 RPM pulse and 50 W load are [EST] convenience values, not mission hardware/performance. No negative throttle or full reverse-flight mode. |
 | Flight altitude | nominal ~400 m; profiles 0.5–4 km; ceiling 4 km [PUB] | **Done** (Sep 28): flight plans offer 40 m hop, 150 m scouting and 400 m cruise; the Auto demo stays at ~46 m | Optional: higher profiles (0.5–4 km) |
 | Flight duration | ≤ ~30 min; battery +10 °C per 30 min; 35 °C cap [PUB] | **Done** (Sep 28): 35 °C guard, flight-time estimate, 30 min timer, "land now" advisories | Optional: automatic landing on "land now" |
 | Descent | avoid steep, fast descents (vortex ring state) [PUB] | **Partial**: advisory from `74ed2c4`; Land now flares at ≤ 1.3 m/s | Optional: slanted approach in Auto |
@@ -290,6 +321,7 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 | Convection | h ≈ 3–5 calm, ~10–18 at 1.6 m/s, 50–100 in flight [PUB/CALC] | **Done**: interpolated 4 / 10.5 / 75 | — |
 | Preflight | motor preheat 8 × 90 W × 5 min [PUB] | **Done** (Sep 28): 60 Wh per cold start, time-compressed | — |
 | Wind | < 1 typical, 1.6 max [PUB] | **Done** (Sep 28): values above 1.6 m/s labeled as stress tests | — |
+| Episodic weather | Cassini methane clouds/rain and inferred organic dust storms [PUB, §5.1] | **Done** (Oct 4): occasional seeded gust/rain scenarios, advance advisories, wind/convection coupling, Pilot haze/light, lingering patch wetting, fixed mode and optional stronger training | All event frequency, duration, wind profiles, forecasts and visual responses are [EST], not meteorology validated for Dragonfly's landing area. |
 | Comms | direct-to-Earth by day, antenna stowed in flight [PUB] | **Done** (Sep 28): gated on landed + daylight; 200 W downlink with data counter | Optional: uplink delay on commands |
 | Sampling | DraMS electronics ~120 W; real sampling takes hours [PUB/EST] | Gameplay: 30 s, labeled; **Sep 29**: "Sample here" anywhere on dry ground with illustrative, ground-dependent results; DraGNS counting, DraGMet weather/seismic log, DragonCam imagery and a stored-data downlink | Optional: realistic multi-hour sample timelines |
 | Pool | no seas at the landing site; wet ground after rain is realistic [PUB] | **Done** (Sep 28): rain-darkened interdune (landable) around a small methane puddle (no landing) | — |
