@@ -70,6 +70,10 @@ export function edlStateAt(t) {
       : time < release ? ease(time, main, 1.5, 120, 190)
         : time < release + 3 ? ease(time, release, 3, 190, 16) : ease(time, release + 3, 10, 16, 12),
     lookUp: time < main ? ease(time, drogue, 1.5, 0.5, 8) : time < release ? ease(time, main, 1.5, 8, 18) : ease(time, release, 2.5, 18, 0),
+    // A slow orbit around the vehicle. Under the main parachute it swings round to look north
+    // across the dunes (see titan-terrain.mjs), and back before release so the lander is lit
+    // from the side for the close-up.
+    cameraAzimuth: 0.7 + time * 0.035 - 1.1 * (ease(time, main + 1, 7, 0, 1) - ease(time, release - 3, 6, 0, 1)),
     // Low under the drogue so the canopy stands against the sky; above the main, looking down past
     // the canopy so the ground emerges from the haze below as the capsule descends.
     cameraElevation: time < drogue ? 0.25 : time < main ? -0.08

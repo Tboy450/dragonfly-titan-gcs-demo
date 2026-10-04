@@ -39,7 +39,7 @@ function tick(now) {
   smoothCameraPose(state, dt);
   if (state.edl) {
     // The arrival sequence flies its own slow orbit around the descending vehicle.
-    Object.assign(state.renderPose, { azimuth: 0.7 + state.edlTime * 0.035, elevation: state.edl.cameraElevation });
+    Object.assign(state.renderPose, { azimuth: state.edl.cameraAzimuth, elevation: state.edl.cameraElevation });
   }
   if (now - readoutTime > 100) {
     updateReadouts();

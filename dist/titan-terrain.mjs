@@ -16,11 +16,47 @@ function noise(x, z) {
   return a * (1 - v) + b * v;
 }
 
+// Landing area: Ahmakiq Undae (IAU name, Sept 2026), "dunes and interdune areas to the south of
+// Selk Crater, extending to the edge of a range of hills or mountains" [PUB, NASA Dragonfly blog
+// 2026-09-02]. Titan's equatorial dunes are linear, ~100 m high, 1-2 km wide, hundreds of km
+// long, running roughly west-east, made of dark hydrocarbon sand [PUB, JPL]. The layout here is
+// illustrative [EST]: the mission area lies in a ~2 km wide interdune corridor between two dunes
+// (crests ~1.5-1.8 km north and south of the base, trending 8 degrees north of east), with hills
+// beyond the northern dune, toward Selk. The previous mountain-basin map is archived in
+// archive/mountain-basin-map. Coordinates: x is east, -z is north.
+const duneTrend = 8 * Math.PI / 180, duneCos = Math.cos(duneTrend), duneSin = Math.sin(duneTrend);
+const duneSpacing = 3200, duneCrestNorth = 1450, duneHalfWidth = 600;
+const hillsStart = 2700, hillsFull = 3600;
+
+function duneAxes(x, z) {
+  const north = -z;
+  return { along: x * duneCos + north * duneSin, across: -x * duneSin + north * duneCos };
+}
+
+// Dune height (m) and sand cover (0-1) at a point, ignoring the hills.
+function duneAt(along, across) {
+  const meander = 120 * Math.sin(along / 2300 + 0.6) + 120 * (noise(along / 1400 + 3, 5.5) - 0.5);
+  const offset = across - meander - duneCrestNorth;
+  const k = Math.round(offset / duneSpacing);
+  const halfWidth = duneHalfWidth * (0.85 + 0.3 * noise(along / 2100 - k * 2.2, k + 0.5));
+  const u = Math.abs(offset - k * duneSpacing) / halfWidth;
+  if (u >= 1) return { height: 0, sand: 0 };
+  const crest = 75 + 45 * noise(along / 1800 + k * 7.3, k * 3.1);
+  // Rounded toe, gentle flanks (~8 degrees) and a defined crest.
+  return { height: crest * (1 - u) ** 1.35 * (1 + 0.35 * u), sand: smoothUnit((1 - u) / 0.3) };
+}
+
+// Sand cover for ground shading: 1 on dunes, 0 on interdunes and hills.
+export function terrainSand(x, z) {
+  const { along, across } = duneAxes(x, z);
+  return duneAt(along, across).sand * (1 - smoothUnit((across - hillsStart) / (hillsFull - hillsStart)));
+}
+
 // Far-terrain level of detail. The rendered mesh gets coarser away from its center (up to ~80 m
 // between vertices at the edge). Detail finer than the spacing can show would alias into
 // spikes, and single vertices landing on a sharp ridge crest would stand up as saw teeth. So
-// where the spacing (cell, m) is coarse, fine noise layers fade to their average and the ridge
-// shape is averaged over the cell (center and four corners), which keeps the mountains' size.
+// where the spacing (cell, m) is coarse, fine noise layers fade to their average and the hills'
+// ridge shape is averaged over the cell (center and four corners), which keeps their size.
 // Spacings up to 20 m (everywhere the vehicle can be, since the mesh recenters every 400 m)
 // keep the full detail.
 const smoothUnit = (value) => { const u = Math.max(0, Math.min(1, value)); return u * u * (3 - 2 * u); };
@@ -31,13 +67,10 @@ function layer(value, wavelength, cell, far) {
   return 0.5 + (value - 0.5) * keep;
 }
 
-function baseHeight(x, z, cell = 0) {
-  const far = farDetail(cell);
+// Hills toward Selk (the photo-textured ridges of the archived map, beyond the northern dune).
+function hillsAt(x, z, cell, far) {
   const wx = x + 92 * (noise(x / 410 + 12, z / 410 - 8) - 0.5);
   const wz = z + 80 * (noise(x / 470 - 5, z / 470 + 17) - 0.5);
-  const radius = Math.hypot(wx * 0.88, wz * 1.08);
-  const ramp = Math.max(0, Math.min(1, (radius - 95) / 430));
-  const foothills = ramp * ramp * (3 - 2 * ramp);
   const ridgeAt = (dx, dz) => {
     const px = wx + dx, pz = wz + dz;
     return (1 - Math.abs(noise((px * 0.91 + pz * 0.41) / 290 + 7, (pz * 0.91 - px * 0.41) / 290 - 3) * 2 - 1)) ** 3;
@@ -50,7 +83,19 @@ function baseHeight(x, z, cell = 0) {
   }
   const relief = ridge * (100 + noise(x / 700, z / 700) * 220);
   const gullies = layer(noise(x / 74, z / 74), 74, cell, far) * 24 + layer(noise(x / 25, z / 25), 25, cell, far) * 7;
-  return (relief + gullies) * foothills * 0.34 + layer(noise(x / 42, z / 42), 42, cell, far) * 1.3 + layer(noise(x / 9, z / 9), 9, cell, far) * 0.13;
+  return (relief + gullies) * 0.34;
+}
+
+function baseHeight(x, z, cell = 0) {
+  const far = farDetail(cell);
+  const { along, across } = duneAxes(x, z);
+  // Interdune floor: broad gentle swells, low hummocks and gravelly roughness.
+  let height = noise(x / 380 + 4, z / 380 - 2) * 3 + layer(noise(x / 74, z / 74), 74, cell, far) * 1.6
+    + layer(noise(x / 42, z / 42), 42, cell, far) * 1.3 + layer(noise(x / 9, z / 9), 9, cell, far) * 0.13;
+  const hills = smoothUnit((across - hillsStart) / (hillsFull - hillsStart));
+  height += duneAt(along, across).height * (1 - hills);
+  if (hills > 0) height += hillsAt(x, z, cell, far) * hills;
+  return height;
 }
 
 // Each puddle's surface sits just below the lowest ground around it, so liquid never floats above its banks.
@@ -65,6 +110,8 @@ export const poolLevels = pools.map((pool) => {
   }
   return lowest - 0.06;
 });
+
+export const outcropLevel = baseHeight(surveySite.x, surveySite.z) + 0.8;
 
 // Candidate landing sites were chosen for low relief; each gets a level 10 m safe landing circle.
 const landingPads = candidateSites.filter(site => !["base", "outcrop"].includes(site.id))
@@ -87,9 +134,9 @@ export function terrainHeight(x, z, cell = 0) {
       height = (poolLevels[index] - pool.depth) * (1 - blend) + height * blend;
     }
   });
-  // A small surveyed patch provides a reproducible dry landing target.
+  // A small surveyed patch of slightly raised dry ground provides a reproducible landing target.
   const pad = Math.max(0, Math.min(1, (Math.hypot(x - surveySite.x, z - surveySite.z) - 14) / 12));
-  return height * pad + 1.4 * (1 - pad);
+  return height * pad + outcropLevel * (1 - pad);
 }
 
 // Sample the same triangle split used by PlaneGeometry, including its slope.
@@ -194,8 +241,16 @@ export function createTitanTerrain(scene, renderer) {
   });
   // Both the reference texture and fine ground detail are anchored to world coordinates.
   groundMaterial.onBeforeCompile = (shader) => {
+    // Per-vertex sand cover (1 on dunes) from terrainSand().
+    shader.vertexShader = shader.vertexShader
+      .replace("#include <common>", `#include <common>
+      attribute float sand;
+      varying float vSand;`)
+      .replace("#include <begin_vertex>", `#include <begin_vertex>
+      vSand = sand;`);
     shader.fragmentShader = shader.fragmentShader.replace("#include <common>", `
       #include <common>
+      varying float vSand;
       float terrainHash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
       float terrainNoise(vec2 p) {
         vec2 i = floor(p), f = fract(p);
@@ -223,7 +278,13 @@ export function createTitanTerrain(scene, renderer) {
       float grains = terrainNoise(groundPoint * 2.5);
       float gravel = terrainNoise(groundPoint * 0.23);
       float detail = 0.82 + 0.24 * gravel + 0.18 * grains;
-      diffuseColor.rgb *= referenceColor * detail;
+      // Dunes: dark hydrocarbon sand, smoother than the interdune, faintly streaked along their length.
+      float duneAlong = groundPoint.x * ${duneCos.toFixed(5)} - groundPoint.y * ${duneSin.toFixed(5)};
+      float duneAcross = -groundPoint.x * ${duneSin.toFixed(5)} - groundPoint.y * ${duneCos.toFixed(5)};
+      float streak = terrainNoise(vec2(duneAlong * 0.003, duneAcross * 0.045));
+      float ripples = terrainNoise(vec2(duneAlong * 0.05, duneAcross * 1.6));
+      vec3 duneSand = vec3(0.24, 0.11, 0.045) * (0.8 + 0.22 * streak + 0.12 * ripples + 0.08 * grains);
+      diffuseColor.rgb *= mix(referenceColor * detail, duneSand, vSand);
       // Rain-darkened interdune: damp ground is darker and slightly glossier, with a ragged edge.
       vec2 dampOffset = (groundPoint - vec2(${dampGround.x.toFixed(1)}, ${dampGround.z.toFixed(1)})) / vec2(${dampGround.rx.toFixed(1)}, ${dampGround.rz.toFixed(1)});
       float dampEdge = length(dampOffset) + (terrainNoise(groundPoint * 0.045) - 0.5) * 0.34 + (terrainNoise(groundPoint * 0.2) - 0.5) * 0.08;
@@ -240,6 +301,8 @@ export function createTitanTerrain(scene, renderer) {
   const geometry = new THREE.PlaneGeometry(1, 1, segments, segments);
   const vertices = geometry.attributes.position;
   const uv = geometry.attributes.uv;
+  const sandCover = new THREE.BufferAttribute(new Float32Array(vertices.count), 1);
+  geometry.setAttribute("sand", sandCover);
   const terrain = new THREE.Mesh(geometry, groundMaterial);
   terrain.name = "titan-ground";
   terrain.receiveShadow = true;
@@ -262,7 +325,7 @@ export function createTitanTerrain(scene, renderer) {
   const markerMaterial = new THREE.MeshBasicMaterial({ color: 0x80f2ae, transparent: true, opacity: 0.65, side: THREE.DoubleSide });
   const targetRing = new THREE.Mesh(new THREE.RingGeometry(10.95, 11.0, 96), markerMaterial);
   targetRing.rotation.x = -Math.PI / 2;
-  targetRing.position.set(surveySite.x, 1.44, surveySite.z);
+  targetRing.position.set(surveySite.x, outcropLevel + 0.04, surveySite.z);
   targetRing.name = "survey-marker";
   group.add(targetRing);
   // Safe landing circles (10 m) at the candidate sites: green once scouted, amber before.
@@ -285,7 +348,7 @@ export function createTitanTerrain(scene, renderer) {
   // buffer and swapped in when complete, so crossing into a new square never stalls a frame.
   // A jump (start-up, restored mission, arrival) rebuilds at once instead.
   const rowsPerFrame = 8;
-  const spare = new Float32Array(vertices.array.length);
+  const spare = new Float32Array(vertices.array.length), spareSand = new Float32Array(vertices.count);
   let build = null;
 
   function moveTerrain(x, z) {
@@ -305,6 +368,7 @@ export function createTitanTerrain(scene, renderer) {
         spare[index] = worldX;
         spare[index + 1] = terrainHeight(worldX, worldZ, Math.max(spacing(u), spacing(v)));
         spare[index + 2] = worldZ;
+        spareSand[index / 3] = terrainSand(worldX, worldZ);
       }
     }
     if (build.row <= segments) return false;
@@ -312,6 +376,8 @@ export function createTitanTerrain(scene, renderer) {
     terrainX = anchorX;
     terrainZ = anchorZ;
     vertices.array.set(spare);
+    sandCover.array.set(spareSand);
+    sandCover.needsUpdate = true;
     for (let index = 0; index < uv.count; index += 1) uv.setXY(index, vertices.getX(index) / 1100, vertices.getZ(index) / 1100);
     vertices.needsUpdate = true;
     uv.needsUpdate = true;
@@ -345,7 +411,8 @@ export function createTitanTerrain(scene, renderer) {
         const gx = cellX + column, gz = cellZ + row;
         const worldX = (gx + hash(gx + 51, gz)) * 8;
         const worldZ = (gz + hash(gx, gz + 29)) * 8;
-        const size = 0.08 + hash(gx + 4, gz + 7) ** 3 * 0.52;
+        // Icy pebbles lie on the interdune; dune sand buries them.
+        const size = (0.08 + hash(gx + 4, gz + 7) ** 3 * 0.52) * (1 - smoothUnit((terrainSand(worldX, worldZ) - 0.1) / 0.5));
         const surface = surfaceAt(worldX, worldZ);
         normal.set(...surface.normal);
         transform.position.set(worldX, surface.height, worldZ).addScaledVector(normal, size * 0.12);

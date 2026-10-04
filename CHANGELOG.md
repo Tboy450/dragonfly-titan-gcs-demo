@@ -31,6 +31,15 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-04: Commit the existing landing-area terrain and arrival camera
+- **Signed:** Codex (OpenAI GPT-6, Codex desktop app; reviewed and committed existing edits)
+- **Commit:** "Commit landing-area dunes and arrival camera framing"
+- **What changed:** Preserved the local Ahmakiq Undae terrain update: an interdune corridor between long dunes, hills farther north, dark sand shading, fewer exposed rocks on dunes, and a raised dry outcrop. Preserved the arrival camera's northward sweep under the main parachute and return before release.
+- **Files:** `dist/titan-terrain.mjs`, `dist/edl.mjs`, `dist/app.js`
+- **Assumptions:** The dune layout, sand appearance and camera motion remain illustrative [EST]. The previous mountain-basin map remains archived.
+- **Checks:** The preceding review passed all 68 tests and checked the local browser for rendering errors.
+- **Open / next:** Fix the separate survey/science and sampling/hibernation issues identified in the review.
+
 ### 2026-09-30: Archived the mountain-basin map
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Archive the mountain-basin map before the landing-area change"
