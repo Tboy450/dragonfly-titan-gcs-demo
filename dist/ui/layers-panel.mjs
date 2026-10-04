@@ -8,8 +8,9 @@ import { partMarkers } from "./flight-view.mjs?v=dev";
 let partRows = "";
 export function updateLayerPanel() {
   const layered = state.missionLayer !== "exterior";
+  $("component-temperatures").hidden = !layered;
   document.querySelectorAll("[data-layer]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.layer === state.missionLayer)));
-  $("thermal-legend").hidden = state.missionLayer !== "thermal";
+  $("thermal-legend").hidden = !layered;
   const mock = layered && state.vehicleModel === "original";
   $("part-list").hidden = !layered;
   $("mock-banner").hidden = !mock;
@@ -18,16 +19,20 @@ export function updateLayerPanel() {
   $("thermal-min").textContent = `${range.min} C`;
   $("thermal-max").textContent = `${range.max} C`;
   $("thermal-range").textContent = `Scale: ${range.label.toLowerCase()}`;
+  $("thermal-bar").style.background = thermalGradientCss(range);
   if (!layered) { $("part-detail").hidden = true; return; }
   const zones = thermalZoneTemps(state);
   const markers = partMarkers.length ? partMarkers : [];
-  const rows = markers.map(marker => `${marker.index}|${marker.name}|${zones[marker.zone]?.c.toFixed(0)}|${marker.name === state.selectedPart}`).join(";");
+  const rows = `${state.missionLayer}|${state.thermalRange}|` + markers.map(marker => `${marker.index}|${marker.name}|${marker.label}|${zones[marker.zone]?.c.toFixed(0)}|${marker.name === state.selectedPart}`).join(";");
   if (rows !== partRows) {
     partRows = rows;
     $("part-list").replaceChildren(...markers.map(marker => {
       const item = document.createElement("li");
       item.dataset.part = marker.name;
       item.classList.toggle("active", marker.name === state.selectedPart);
+      const button = document.createElement("button");
+      button.type = "button";
+      button.setAttribute("aria-pressed", String(marker.name === state.selectedPart));
       const zone = zones[marker.zone];
       const number = document.createElement("b");
       number.textContent = marker.index;
@@ -35,8 +40,9 @@ export function updateLayerPanel() {
       name.textContent = marker.label;
       const temp = document.createElement("em");
       temp.textContent = zone ? `${zone.c.toFixed(0)} C` : "";
-      if (zone && state.missionLayer === "thermal") temp.style.color = thermalCss(zone.c, range);
-      item.append(number, name, temp);
+      if (zone) temp.style.color = thermalCss(zone.c);
+      button.append(number, name, temp);
+      item.append(button);
       return item;
     }));
   }
@@ -50,6 +56,7 @@ export function updateLayerPanel() {
 
 function selectPart(name) {
   state.selectedPart = state.selectedPart === name ? null : name;
+  if (state.selectedPart) $("component-temperatures").open = true;
   partRows = "";
   updateLayerPanel();
 }
@@ -65,7 +72,6 @@ $("thermal-range").addEventListener("click", () => {
   partRows = "";
   updateLayerPanel();
 });
-$("thermal-bar").style.background = thermalGradientCss();
 $("part-list").addEventListener("click", (event) => {
   const row = event.target.closest("li[data-part]");
   if (row) selectPart(row.dataset.part);

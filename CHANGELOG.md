@@ -31,6 +31,75 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-04: Stable temperature colors when zooming the legend
+- **Signed:** GitHub Copilot (GPT-6.1 Sol / Copilot App)
+- **Commit:** "Add first expedition and improve temperature views"
+- **What changed:** Removed range-relative color normalization. Both readings and the Thermal
+  mesh now use fixed temperature anchors: cold blue, green at 0-20 C, warming yellow and
+  red from 35 C. Whole-lander/inside changes only the visible legend window; its gradient
+  positions follow the same temperature anchors, so a 10 C part stays green in both ranges.
+- **Files:** `dist/thermal-scale.mjs`, layers panel, renderer, flight view, markup, README.
+- **Assumptions:** Green uses the documented landed battery/equipment reference band, not a
+  universal optimum. The panel explicitly explains that exterior parts and MMRTG gas have
+  different targets and that colors are not fault indicators.
+- **Checks:** All 78 Node tests pass, including fixed color anchors, legend positions and
+  actual mesh-material colors for both models. Edge/WebGL verified both panels, both ranges,
+  cold/middle/hot readings and the shared gradient logic.
+
+### 2026-10-04: Shared temperature colors and scale in Internal and Thermal
+- **Signed:** GitHub Copilot (GPT-6.1 Sol / Copilot App)
+- **Commit:** "Add first expedition and improve temperature views"
+- **What changed:** Internal temperature readings now use the same live color mapping as
+  Thermal instead of always-green text. The existing gradient bar and whole-lander/inside
+  range control appear in both expandable panels. The palette, thermal diagram and
+  Internal model materials are unchanged.
+- **Files:** `dist/ui/layers-panel.mjs`, README.
+- **Assumptions:** The shared absolute-temperature scale is not a component-specific
+  optimal/safe operating band.
+
+### 2026-10-04: Expandable component temperatures in Internal and Thermal
+- **Signed:** GitHub Copilot (GPT-6.1 Sol / Copilot App)
+- **Commit:** "Add first expedition and improve temperature views"
+- **What changed:** Live component readings, source details and the Thermal color scale now
+  sit in a native expandable "Component temperatures" panel. It starts collapsed, appears
+  only in Internal/Thermal, and opens when a diagram number is selected. Temperature rows
+  are keyboard-accessible buttons. Both the research and original mock-up models retain
+  their labels, live temperatures and selection behavior.
+- **Files:** `dist/index.html`, `dist/styles.css`, `dist/ui/layers-panel.mjs`, README and architecture.
+- **Assumptions:** No new temperature values or model changes; existing source labels remain.
+- **Checks:** All 74 Node tests pass. Edge/WebGL exercised collapsed/expanded states,
+  both models and layers, live values, scale changes, diagram selection, keyboard controls
+  and phone layout. Research-only placement notes remain hidden for the mock-up model.
+
+### 2026-10-04: First expedition through a dune/interdune landscape
+- **Signed:** GitHub Copilot (GPT-6 Astra / Copilot App)
+- **Commit:** "Add first expedition and improve temperature views"
+- **What changed:** Added a guided dry-sand baseline, scout-and-return flight, rain-darkened
+  site sample, ice-rich outcrop sample, return to base and downlink. Suggested routes are drafts
+  for the existing GO/NO-GO planner, not automatic uplinks. The persistent notebook records
+  site, location, time and illustrative composition; each record tracks its real position in
+  the simulated data queue. The debrief freezes elapsed/flight time, net battery energy used
+  including preheat, and peak battery temperature. Existing saves, manual flight, sampling and
+  the optional quick survey remain available.
+- **Terrain:** Replaced the mountain-basin height field with long dunes, broad interdunes and
+  distant hills; kept continuous mesh sampling, progressive recentering, dry landing circles,
+  the methane puddle and arrival haze. The planning map now shades the shared elevation field.
+- **Related fixes:** An autonomous touchdown now commands rotor idle immediately; otherwise
+  a residual throttle just over 30% could consume flight power on the ground during downlink.
+  Sampling cannot start during an active flight plan or pause, and hibernation cannot bypass
+  its energy cost. Hidden speed controls and completed reports no longer crowd the Pilot view.
+- **Files:** `dist/expedition.mjs`, `dist/ui/expedition-panel.mjs`, flight/science/save modules,
+  terrain, planner, app/UI, expedition and terrain tests, README, architecture and research audit.
+- **Assumptions:** Six-step exercise and suggested routes, dune spacing (~620 m), relief
+  (35-60 m), orientation, hills and site positions are training choices [EST]. Science remains
+  explicitly illustrative. This is not an exact reconstruction of Ahmakiq Undae or a
+  flight-qualified autonomous landing/hazard model.
+- **Checks:** All 74 Node tests pass. Real Edge/WebGL browser exercised arrival/skip, all four
+  expedition flights and three samples, a saved reload, full downlink and debrief; phone
+  portrait and landscape layouts checked without JavaScript or shader errors.
+- **Open / next:** Actual terrain hazard assessment and additional expedition scenarios remain
+  future work. Browser checks used isolated local tooling, not a new build/runtime dependency.
+
 ### 2026-09-30: Archived the mountain-basin map
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Archive the mountain-basin map before the landing-area change"

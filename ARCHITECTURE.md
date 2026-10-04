@@ -36,8 +36,9 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/mission-systems.mjs` | Thermal and energy model, comms/downlink and antenna, trim device, hibernation, survey mission, training geography (damp ground, puddle, candidate sites), land-now logic, thermal zone temperatures |
 | `dist/flight-plan.mjs` | Flight plans: waypoints, GO/NO-GO estimate, uplink delay, autopilot guidance, leapfrog scouting |
 | `dist/science.mjs` | Instruments: DragonCam data, DraGMet log and seismometer, DraGNS counting, DrACO/DraMS sampling, ground types |
+| `dist/expedition.mjs` | First expedition objectives, suggested flight drafts, site-linked notebook, FIFO sample downlink status, frozen debrief and validation of the optional save field |
 | `dist/edl.mjs` | Arrival (entry, descent, landing) timeline from the published EDL figure |
-| `dist/thermal-scale.mjs` | Temperature color scale shared by the thermal layer and its legend |
+| `dist/thermal-scale.mjs` | Fixed absolute-temperature colors shared by both reading lists and the Thermal mesh; range selection zooms only the legend, with 0-20 C equipment/battery reference green and 35 C+ red (not universal operating limits) |
 | `dist/flight-camera.mjs` | Chase-camera pose and smoothing |
 | `dist/save-game.mjs` | Which state fields are saved between visits (a whitelist), when saving is allowed (landed, idle), and restoring onto a fresh state |
 
@@ -47,7 +48,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/chase-vehicle.mjs` | Renderer, lights, the original demo model and its labeled mock-up interior, shared part helpers, Mission-view layers (exterior / internal / thermal) for whichever model is selected, `draw()` for the Pilot view and `drawMission()` for the Mission diagram |
 | `dist/vehicle-research.mjs` | The NASA/APL 2023 design and its interior, grouped into named subsystems tagged with a thermal zone, label and source. The drawing-to-model mapping (327 px/m from the TFAWS 2023 top view) is in its comments |
 | `dist/arrival-hardware.mjs` | Aeroshell, heat shield, parachutes, bridles and descent effects (plasma, sparks, haze wisps, smoke, dust) for the arrival sequence |
-| `dist/titan-terrain.mjs` | Terrain (with far level of detail and progressive recentering), sky, fog and arrival sky dome, damp ground, the puddle, landing-site rings |
+| `dist/titan-terrain.mjs` | Illustrative linear dunes/interdunes and distant hills (with far level of detail and progressive recentering), sky, fog and arrival sky dome, damp ground, the puddle, landing-site rings |
 
 ### Page (`dist/ui/`, one module per panel)
 | File | What it does |
@@ -57,10 +58,11 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `ui/flight-view.mjs` | Draws the Mission and Pilot views (3D, or the 2D fallback without WebGL), part callouts |
 | `ui/chart.mjs` | Flight profile chart |
 | `ui/readouts.mjs` | Status strip, telemetry, rotor tiles, Diagnostics values, local track map |
-| `ui/layers-panel.mjs` | Vehicle Layers panel: layer switch, legend, parts list, selection |
+| `ui/layers-panel.mjs` | Vehicle Layers panel: layer switch, expandable live component temperatures (Internal/Thermal), legend, keyboard-accessible parts list, selection |
 | `ui/pilot-hud.mjs` | Pilot-view systems list (same values as the Mission panels) |
 | `ui/science-panel.mjs` | Science Payload panel and sampling button |
 | `ui/plan-panel.mjs` | Flight Plan dialog, plan status strip, time-speed buttons |
+| `ui/expedition-panel.mjs` | Guided objective and suggested-route actions, persistent notebook and debrief; compact in Pilot view |
 | `ui/controls.mjs` | Flight buttons, sticks, keyboard, camera modes, view switch, other controls |
 | `ui/arrival.mjs` | Arrival sequence: start, step, skip, replay, caption |
 | `ui/persistence.mjs` | Saves progress in the browser (every 5 s while landed and when the page is left), restores it on load, "Start a new mission" |
@@ -87,6 +89,7 @@ There is one live `state` object (`ui/context.mjs`). Each part of the simulation
 | `mission-systems.mjs` | `battery`, `power`, `coreC`, `batteryC`, `trim`, `fan`, `fault`, `hibernating`, `elapsed` (Titan clock), `downlinkActive`, `antennaDeploy`, `motorsCold`, `flightSeconds`, `scoutedSites`, `rdeC`/`twtaC`, `mission` |
 | `flight-plan.mjs` | `plan` (waypoints, status, phase, estimate, report) |
 | `science.mjs` | `science` (samples, log, counters), `dataStoredBits`, `sciencePowerW` |
+| `expedition.mjs` | `expedition` (status, step, start/end clocks, next sample index, three-site notebook, energy/flight/temperature metrics) |
 | `ui/arrival.mjs` | `edl`, `edlTime` (only while the arrival plays) |
 | `ui/*` (page only) | `view`, `cameraMode`, `vehicleModel`, `missionLayer`, `thermalRange`, `selectedPart`, `throttleSpring`, `renderPose` |
 
@@ -97,6 +100,9 @@ should survive a reload, add it there (and bump `SAVE_VERSION` if old saves woul
 
 1. Step the simulation: the arrival sequence, hibernation fast-forward, or `stepFlight()` once per
    time-speed step (1x, or 5x/20x/100x during a flight plan or downlink).
+   `stepFlight()` updates expedition progress after the science and systems steps. Sample
+   records have a cumulative `downlinkEndBits` boundary (returned + queued data at collection),
+   so their transmission status is independent of later imagery or weather data.
 2. Every 0.1 s: refresh readouts, track, plan strip, layers panel, Pilot list and chart.
 3. Draw the Mission or Pilot view. The next frame is requested first, so an error in one frame
    cannot stop the app.
@@ -109,11 +115,13 @@ should survive a reload, add it there (and bump `SAVE_VERSION` if old saves woul
 | `mission-systems.test.mjs`, `operations.test.mjs` | Thermal/energy model, survey, hibernation, preheat, downlink, antenna, land-now |
 | `flight-plan.test.mjs` | Plan checks, full autonomous flight, leapfrog, abort, land-now from 400 m |
 | `science.test.mjs` | Instruments, sampling, data store and downlink |
+| `expedition.test.mjs` | Complete multi-flight expedition and radio transfer, sample attribution, interrupted sampling, idle rotors after autonomous landing, legacy save compatibility and persistent debrief |
 | `edl.test.mjs` | Arrival altitudes and ordering |
 | `terrain.test.mjs` | Terrain sampling, damp ground, puddle, level landing sites |
 | `render-smoke.test.mjs` | Whole 3D scene with a stand-in renderer: both models, antenna, day/night, arrival hardware, layers and callouts, the published envelope, subsystem tags, and that every interior part fits inside the foam-lined cavity |
 | `save-game.test.mjs` | Save and restore round trip after a real flight and sample; only landed states; bad saves ignored |
 | `flight-camera.test.mjs`, `cache-version.test.mjs` | Chase camera; `?v=dev` stamps and the build label |
+| `thermal-scale.test.mjs` | Fixed cold/reference/hot colors, continuous interpolation and accurate temperature anchors in both legend windows |
 
 ## Local testing tips
 

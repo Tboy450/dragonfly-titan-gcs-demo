@@ -142,12 +142,11 @@ test("Interior parts fit inside the insulated cavity of the exterior model", asy
 test("Mission-view layers draw and return callouts for every labeled part", async () => {
   const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
   const { createFlightState } = await import("../dist/flight-model.mjs");
-  const { thermalRanges } = await import("../dist/thermal-scale.mjs");
   const chase = createChaseRenderer({ renderer: fakeRenderer() });
   const state = createFlightState();
   assert.deepEqual(chase.drawMission(context2d, 800, 600, state, { layer: "exterior" }), []);
   for (const layer of ["internal", "thermal"]) {
-    const labels = chase.drawMission(context2d, 800, 600, state, { layer, range: thermalRanges.inside });
+    const labels = chase.drawMission(context2d, 800, 600, state, { layer });
     assert.ok(labels.length >= 15, `${layer}: ${labels.length} callouts`);
     for (const label of labels) {
       assert.ok(Number.isFinite(label.x) && Number.isFinite(label.y) && label.label && label.source && label.zone);
@@ -191,6 +190,36 @@ test("The original model's Internal and Thermal views are labeled mock-ups and f
     });
   }
   assert.equal(chase.mockParts[0].visible, false, "the pilot view hides the mock interior");
+});
+
+test("Thermal mesh colors keep absolute temperature meaning when the legend range changes", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { thermalRgb } = await import("../dist/thermal-scale.mjs");
+  const renderer = fakeRenderer();
+  const chase = createChaseRenderer({ renderer });
+  const state = createFlightState();
+  let currentGroup, renderedColor;
+  const render = renderer.render.bind(renderer);
+  renderer.render = (scene, camera) => {
+    render(scene, camera);
+    currentGroup.traverse(part => { if (part.isMesh) renderedColor = part.material.color.clone(); });
+  };
+  for (const vehicleModel of ["research", "original"]) {
+    state.vehicleModel = vehicleModel;
+    currentGroup = vehicleModel === "research" ? chase.subsystems.battery
+      : chase.mockParts.find(part => part.userData.thermalZone === "battery");
+    for (const batteryC of [-30, 10, 35]) {
+      state.batteryC = batteryC;
+      const rgb = thermalRgb(batteryC);
+      const expected = new THREE.Color().setRGB(...rgb.map(v => v / 255), THREE.SRGBColorSpace);
+      for (const thermalRange of ["full", "inside"]) {
+        state.thermalRange = thermalRange;
+        chase.drawMission(context2d, 800, 600, state, { layer: "thermal" });
+        assert.ok(renderedColor.equals(expected), `${vehicleModel}: ${batteryC} C / ${thermalRange}`);
+      }
+    }
+  }
 });
 
 test("The terrain recenters a few rows per frame, and at once after a jump", async () => {

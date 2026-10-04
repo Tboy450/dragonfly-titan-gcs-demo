@@ -1,6 +1,5 @@
 // Draws the Mission and Pilot views into the flight canvas (3D renderer or 2D fallback).
 import { model } from "../flight-model.mjs?v=dev";
-import { thermalRanges } from "../thermal-scale.mjs?v=dev";
 import { $, chaseRenderer, clamp, flightCanvas, state } from "./context.mjs?v=dev";
 
 const flightCtx = flightCanvas.getContext("2d");
@@ -545,7 +544,7 @@ function drawVehicle(ctx, w, h) {
   if (chaseRenderer) {
     const layered = state.missionLayer !== "exterior";
     if (layered) { ctx.fillStyle = "rgba(6, 12, 18, 0.62)"; ctx.fillRect(0, 0, w, h); }
-    const labels = chaseRenderer.drawMission(ctx, w, h, state, { layer: state.missionLayer, range: thermalRanges[state.thermalRange] });
+    const labels = chaseRenderer.drawMission(ctx, w, h, state, { layer: state.missionLayer });
     if (layered) drawPartMarkers(ctx, labels);
     else partMarkers = [];
     return;

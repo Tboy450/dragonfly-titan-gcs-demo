@@ -1,6 +1,7 @@
 // Saved progress: which parts of the live state survive a page reload. Only landed states are
 // saved, so a mission never resumes in mid-air. No DOM access here; ui/persistence.mjs stores it.
 import { createPlan } from "./flight-plan.mjs?v=dev";
+import { validExpedition } from "./expedition.mjs?v=dev";
 
 export const SAVE_VERSION = 1;
 export const SAVE_KEY = "dragonfly-save-v1";
@@ -14,7 +15,7 @@ const persistent = [
   "thermalAuto", "fan", "fault", "arrivalElectricW", "wind", "payloadDelta",
   "motorsCold", "motorCoolClock", "preheatWh", "preheats",
   // Mission, scouting, science and data
-  "mission", "scoutedSites", "scoutLog", "science", "dataStoredBits", "dataReturnedBits",
+  "mission", "scoutedSites", "scoutLog", "science", "dataStoredBits", "dataReturnedBits", "expedition",
 ];
 
 const copy = (value) => JSON.parse(JSON.stringify(value));
@@ -34,9 +35,10 @@ export function snapshotState(state, savedAt = Date.now()) {
 // Applies a snapshot to a freshly created state. Returns false (and changes nothing) if the
 // snapshot is from another version or malformed.
 export function restoreState(state, snapshot) {
-  if (!snapshot || snapshot.version !== SAVE_VERSION || typeof snapshot.values !== "object") return false;
+  if (!snapshot || snapshot.version !== SAVE_VERSION || !snapshot.values || typeof snapshot.values !== "object") return false;
   const { values } = snapshot;
   if (!Number.isFinite(values.positionX) || !Number.isFinite(values.battery)) return false;
+  if (values.expedition !== undefined && !validExpedition(values.expedition)) return false;
   for (const key of persistent) if (values[key] !== undefined) state[key] = copy(values[key]);
   // Resume on the ground, idle, with nothing in progress.
   Object.assign(state, {

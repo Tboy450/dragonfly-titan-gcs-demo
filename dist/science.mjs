@@ -4,7 +4,7 @@
 // temperature, pressure, wind and methane humidity and carries a seismometer; DragonCam images
 // the surface and scouts landing sites. The data volumes, rates, event timing and every
 // "result" below are illustrative examples [EST], not mission data or predictions.
-import { overLiquid, dampGround, surveySite, landed, systemsModel } from "./mission-systems.mjs?v=dev";
+import { overLiquid, dampGround, surveySite, candidateSites, landed, systemsModel } from "./mission-systems.mjs?v=dev";
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const MBIT = 1e6;
@@ -56,6 +56,8 @@ export function gnsUncertainty(state) {
 }
 
 export function canSampleHere(state) {
+  if (state.edl || state.hold) return "Resume the simulation after arrival first.";
+  if (["uplinking", "executing"].includes(state.plan?.status)) return "Finish or stop the flight plan first.";
   if (!landed(state)) return "Land and stop first.";
   if (state.hibernating) return "Wake the lander first.";
   if (state.science.sampling || state.mission.phase === "sampling") return "A sample is already being analyzed.";
@@ -107,16 +109,22 @@ export function stepScience(state, dt) {
   }
   // DrACO + DraMS sample analysis.
   if (s.sampling) {
-    if (!isLanded || !ground) {
+    if (!isLanded || !ground || state.hibernating || state.battery <= systemsModel.reservePercent + 5) {
       s.sampling = false;
-      logScience(state, "Sample analysis interrupted: the lander moved");
+      logScience(state, "Sample analysis interrupted: restore a stationary, awake lander with energy margin");
     } else {
       state.sciencePowerW += scienceModel.sampleW;
       s.sampleSeconds += dt;
       if (s.sampleSeconds >= scienceModel.sampleSeconds) {
         s.sampling = false;
-        s.samples.push({ ground: ground.name, result: ground.sample, time: state.elapsed });
         bits += scienceModel.sampleMbit * MBIT;
+        const site = candidateSites.find(site => Math.hypot(site.x - state.positionX, site.z - state.positionZ) <= 10);
+        s.samples.push({
+          ground: ground.name, result: ground.sample, time: state.elapsed,
+          siteId: site?.id ?? null, x: state.positionX, z: state.positionZ, ice: ground.ice, organics: ground.organics,
+          // FIFO data boundary: previously returned bits cannot count as this sample's downlink.
+          downlinkEndBits: state.dataReturnedBits + state.dataStoredBits + bits,
+        });
         logScience(state, `DraMS: ${ground.name} analyzed`);
       }
     }

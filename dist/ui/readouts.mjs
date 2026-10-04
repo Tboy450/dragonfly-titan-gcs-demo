@@ -150,7 +150,7 @@ function updateSystemsReadouts() {
   $("systems-objective").textContent = m.phase;
   $("sample-progress").textContent = `${Math.min(30, m.sampleSeconds).toFixed(0)} / 30 s`;
   $("sample-count").textContent = m.samples;
-  const canRest = landed(state) && !overLiquid(state.positionX, state.positionZ) && !state.hold && m.phase !== "sampling" && state.restSeconds === 0;
+  const canRest = landed(state) && !overLiquid(state.positionX, state.positionZ) && !state.hold && m.phase !== "sampling" && !state.science.sampling && state.restSeconds === 0;
   $("rest-hour").disabled = !canRest;
   $("rest-night").disabled = !canRest;
   $("rest-stop").disabled = !state.hibernating;

@@ -95,6 +95,33 @@ test("Far terrain keeps its size but drops detail the coarse mesh cannot show", 
       count++;
     }
   }
-  assert.ok(Math.abs(meanFar - meanFull) / count < 1, "mountains keep their height");
+  assert.ok(Math.abs(meanFar - meanFull) / count < 1, "dunes keep their average height");
   assert.ok(roughFar < roughFull * 0.75, `roughness ${(roughFar / count).toFixed(1)} vs ${(roughFull / count).toFixed(1)}`);
+});
+
+test("Linear dunes leave a broad, low interdune rather than a mountain basin", () => {
+  for (let x = -1000; x <= 1000; x += 50) {
+    const corridor = -0.22 * x;
+    assert.ok(terrainHeight(x, corridor) < 3, `interdune remains low at ${x}`);
+    assert.ok(terrainHeight(x, corridor + 310) > 25, `a continuous dune flanks the corridor at ${x}`);
+    assert.ok(terrainHeight(x, corridor - 310) > 25, `the opposite dune is distinct at ${x}`);
+  }
+});
+
+test("Every named site has a dry, level landing circle and the three expedition terrains differ", async () => {
+  const { candidateSites, overLiquid } = await import("../dist/mission-systems.mjs");
+  const { groundTypeAt } = await import("../dist/science.mjs");
+  for (const site of candidateSites) {
+    const center = terrainHeight(site.x, site.z);
+    for (let angle = 0; angle < Math.PI * 2; angle += 0.3) {
+      const x = site.x + 9 * Math.cos(angle), z = site.z + 9 * Math.sin(angle);
+      assert.equal(overLiquid(x, z), false, site.name);
+      assert.ok(Math.abs(terrainHeight(x, z) - center) < 1e-8, `${site.name} landing circle`);
+    }
+  }
+  const types = ["base", "damp", "outcrop"].map(id => {
+    const site = candidateSites.find(s => s.id === id);
+    return groundTypeAt(site.x, site.z).name;
+  });
+  assert.equal(new Set(types).size, 3);
 });

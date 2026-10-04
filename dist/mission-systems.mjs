@@ -11,6 +11,7 @@ export const dampGround = Object.freeze({ x: 205, z: -105, rx: 78, rz: 52 });
 export const candidateSites = Object.freeze([
   { id: "base", name: "Base", x: 0, z: 0, scouted: true },
   { id: "outcrop", name: "Dry outcrop", x: 145, z: -90, scouted: true },
+  { id: "damp", name: "Rain-darkened site", x: 250, z: -100, scouted: false },
   { id: "a", name: "Site A", x: 219, z: -219, scouted: false },
   { id: "b", name: "Site B", x: -270, z: 0, scouted: false },
   { id: "c", name: "Site C", x: 529, z: -444, scouted: false },
@@ -383,7 +384,7 @@ export function thermalZoneTemps(state) {
 }
 
 export function startRest(state, hours) {
-  if (!landed(state) || state.hold || state.mission.phase === "sampling" || overLiquid(state.positionX, state.positionZ)) return false;
+  if (!landed(state) || state.hold || state.mission.phase === "sampling" || state.science?.sampling || overLiquid(state.positionX, state.positionZ)) return false;
   if (state.plan && ["uplinking", "executing"].includes(state.plan.status)) return false;
   state.auto = false; state.mission.guidance = false; state.throttle = 0; state.altitudeHold = null;
   state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0; state.downlinkActive = false;

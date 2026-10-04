@@ -85,7 +85,37 @@ rotors, wide skids, and a flat high-gain antenna disc that rises for downlink. T
 button in the vehicle view switches to the original demo model for comparison. Proportions are
 measured from the drawings; the overall size matches the published 3.85 x 3.85 x 1.75 m.
 
-## Missions and Diagnostics
+## First Expedition
+
+**Begin expedition** starts a six-step science exercise across three distinct sites:
+collect a dry-sand baseline at base, scout the rain-darkened interdune and return, fly
+back to sample it, sample the ice-rich outcrop, return to base, and downlink the records.
+The objective explains the next step and its scientific purpose. **Prepare flight**
+creates a suggested 40 m route in the existing planner: review its GO / NO-GO checks,
+then explicitly uplink it. Use 5x / 20x during flight and up to 100x during downlink.
+Recharge or wait for daylight in Diagnostics when necessary; the expedition does not
+bypass the energy, thermal, scouting or radio restrictions.
+
+**Notebook / debrief** keeps one new sample from each expedition site, including its
+location, time, illustrative composition and onboard/returned status. A record is
+returned only after its place in the stored-data queue has actually been transmitted;
+earlier downlinks do not count. The final debrief compares the sites and records
+elapsed time, flight time, battery energy used (net draw plus preheat) and peak battery
+temperature. It remains available after reloading. A reload resumes the last landed
+checkpoint and stops any in-progress sample or downlink; resume these explicitly.
+
+Free flight and **Sample here** remain available and can satisfy expedition objectives.
+Samples collected before beginning do not count toward a new expedition. The original
+short survey is retained under **Optional quick survey / Start over**.
+
+The landscape is an illustrative, compressed-scale interpretation of the Ahmakiq Undae
+landing-area description: long dunes, broad low interdunes and distant hills, not the
+previous mountain basin. Dune spacing (~620 m), heights (35-60 m), orientation and all
+site positions are artistic training choices, not a surveyed elevation model. The
+planning map shades the same terrain, with lighter areas representing higher ground.
+Both the geology and science results are examples, not actual observations from Titan.
+
+## Quick Survey and Diagnostics
 
 Begin the interdune survey, fly to the dry outcrop manually or with guided flight, land,
 collect a sample and return to base. The outcrop sits at the edge of a rain-darkened
@@ -125,8 +155,10 @@ amber candidate site at 20 m or higher scouts it, so a later flight may land the
 
 Your mission is saved in the browser while the lander is on the ground and whenever you leave
 the page: position, battery and temperatures, the Titan clock, scouted sites, samples, the
-science log and stored data. Coming back resumes where you left off. **Start over** (next to
-Begin survey) clears it and starts again from the landing sequence.
+science log, expedition notebook/debrief and stored data. Coming back resumes the last landed
+checkpoint. **Start over** (under Optional quick survey, or in Diagnostics) clears it and
+starts again from the landing sequence. Existing saves remain compatible; their expedition
+starts unbegun and their earlier samples remain in the Science Payload panel.
 
 ## Vehicle Layers
 
@@ -135,8 +167,17 @@ makes the foam shell see-through and shows the parts NASA's thermal papers descr
 their figures put them: the cold attic with the sample carousel, DraMS, the battery at the aft
 end, the drive electronics, avionics, radio amplifier, circulation fan, under-floor duct and the
 trim-device chimneys, with arrows following the warm-air loop from the MMRTG. Thermal colors
-every part by its live temperature. Tap a number or a row to see a part's temperature and where
-its placement and value come from. The Pilot view shows the same live battery, temperature,
+every part by its live temperature. In either view, expand **Component temperatures** to
+see the live readings and their sources; it starts collapsed and is hidden in Exterior.
+Tap a diagram number to open the panel and select that part, or select its row by mouse,
+touch or keyboard. Both views color the readings with the same temperature scale, shown
+inside the panel; **Scale** zooms between whole-lander and inside ranges without changing
+the color of any reading or part. Colors are anchored to absolute temperature: blue is cold,
+green is the 0-20 C equipment/battery reference band, yellow is warming, and red is 35 C
+or higher. These are not fault indicators or certified operating bands for every component:
+the cold exterior and hot MMRTG gas have different targets.
+The Internal diagram keeps its component materials; Thermal colors the diagram by temperature.
+The Pilot view shows the same live battery, temperature,
 flight-time, link and plan readouts in a compact strip.
 
 With the **original** model selected, Internal and Thermal show a clearly labeled **mock-up**
@@ -168,8 +209,8 @@ Comms shows how long that will take. Results are illustrative examples, not miss
 Mission and Pilot share the same vehicle mesh, flight state, eight rotor speeds,
 controls and local track. Pause freezes the simulation in both views. The terrain
 and slope-aligned rocks sample the same rendered triangles. Far from the vehicle, where the
-ground mesh is coarse, the terrain drops detail the mesh cannot show and averages ridge shapes
-over each mesh cell, so distant ridges stay natural instead of saw-toothed; the ground the
+ground mesh is coarse, the terrain drops detail the mesh cannot show and averages dune shapes
+around each mesh cell, so distant ridges stay natural instead of saw-toothed; the ground the
 vehicle can reach keeps full detail. When the vehicle flies into a new 400 m square, the
 recentered ground is built a few rows per frame and swapped in when complete.
 

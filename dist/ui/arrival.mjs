@@ -28,7 +28,7 @@ function finishArrival() {
   document.body.classList.remove("arrival");
   $("arrival-overlay").hidden = true;
   Object.assign(state, { altitude: 0, verticalSpeed: 0, speed: 0, throttle: 0.18, pitch: 0, roll: 0, yaw: 0, auto: false, altitudeHold: null, mode: "Surface" });
-  state.mission.message = "Landed at the first site. Begin the interdune survey or plan a flight.";
+  state.mission.message = "Landed at base. Begin the First expedition, try the optional quick survey, or plan a flight.";
   try { localStorage.setItem("dragonfly-arrival-seen", "1"); } catch { /* optional */ }
   setView(arrivalReturnView);
 }

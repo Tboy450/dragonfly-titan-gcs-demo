@@ -20,7 +20,7 @@ function noise(x, z) {
 // between vertices at the edge). Detail finer than the spacing can show would alias into
 // spikes, and single vertices landing on a sharp ridge crest would stand up as saw teeth. So
 // where the spacing (cell, m) is coarse, fine noise layers fade to their average and the ridge
-// shape is averaged over the cell (center and four corners), which keeps the mountains' size.
+// shape is averaged over the cell (center and four corners), which keeps the dunes' size.
 // Spacings up to 20 m (everywhere the vehicle can be, since the mesh recenters every 400 m)
 // keep the full detail.
 const smoothUnit = (value) => { const u = Math.max(0, Math.min(1, value)); return u * u * (3 - 2 * u); };
@@ -33,24 +33,26 @@ function layer(value, wavelength, cell, far) {
 
 function baseHeight(x, z, cell = 0) {
   const far = farDetail(cell);
-  const wx = x + 92 * (noise(x / 410 + 12, z / 410 - 8) - 0.5);
-  const wz = z + 80 * (noise(x / 470 - 5, z / 470 + 17) - 0.5);
-  const radius = Math.hypot(wx * 0.88, wz * 1.08);
-  const ramp = Math.max(0, Math.min(1, (radius - 95) / 430));
-  const foothills = ramp * ramp * (3 - 2 * ramp);
+  // Ahmakiq Undae-inspired linear dunes, broad interdunes and distant hills, not a DEM.
+  // Spacing (~620 m), relief (35-60 m), orientation and site placement are compressed [EST].
   const ridgeAt = (dx, dz) => {
-    const px = wx + dx, pz = wz + dz;
-    return (1 - Math.abs(noise((px * 0.91 + pz * 0.41) / 290 + 7, (pz * 0.91 - px * 0.41) / 290 - 3) * 2 - 1)) ** 3;
+    const px = x + dx, pz = z + dz;
+    const bend = 65 * (noise(px / 1200 + 9, pz / 1800) - 0.5);
+    const cross = pz + px * 0.22 + bend;
+    const crest = (1 - Math.cos(cross / 620 * Math.PI * 2)) / 2;
+    return crest ** 6 * (35 + 25 * noise(px / 1400 + 4, pz / 1400));
   };
   let ridge = ridgeAt(0, 0);
   if (far > 0) {
-    const step = cell * 0.5;
+    const step = cell * 0.7;
     const corners = ridgeAt(step, step) + ridgeAt(-step, step) + ridgeAt(step, -step) + ridgeAt(-step, -step);
     ridge += ((ridge + corners) / 5 - ridge) * far;
   }
-  const relief = ridge * (100 + noise(x / 700, z / 700) * 220);
-  const gullies = layer(noise(x / 74, z / 74), 74, cell, far) * 24 + layer(noise(x / 25, z / 25), 25, cell, far) * 7;
-  return (relief + gullies) * foothills * 0.34 + layer(noise(x / 42, z / 42), 42, cell, far) * 1.3 + layer(noise(x / 9, z / 9), 9, cell, far) * 0.13;
+  const hills = smoothUnit((x - 1200) / 2000) * smoothUnit((-z - 400) / 1600)
+    * (35 + 95 * noise(x / 900 + 12, z / 900));
+  const surface = layer(noise(x / 42, z / 42), 42, cell, far) * 1.3
+    + layer(noise(x / 9, z / 9), 9, cell, far) * 0.13;
+  return ridge + hills + surface;
 }
 
 // Each puddle's surface sits just below the lowest ground around it, so liquid never floats above its banks.
@@ -67,7 +69,7 @@ export const poolLevels = pools.map((pool) => {
 });
 
 // Candidate landing sites were chosen for low relief; each gets a level 10 m safe landing circle.
-const landingPads = candidateSites.filter(site => !["base", "outcrop"].includes(site.id))
+const landingPads = candidateSites.filter(site => site.id !== "outcrop")
   .map(site => ({ x: site.x, z: site.z, height: baseHeight(site.x, site.z) }));
 
 // cell: mesh spacing at this point in m (0 = full detail); see the level-of-detail note above.
@@ -223,7 +225,12 @@ export function createTitanTerrain(scene, renderer) {
       float grains = terrainNoise(groundPoint * 2.5);
       float gravel = terrainNoise(groundPoint * 0.23);
       float detail = 0.82 + 0.24 * gravel + 0.18 * grains;
-      diffuseColor.rgb *= referenceColor * detail;
+      // Keep the supplied texture as fine material detail, not a mountain-shaped landmark.
+      float dune = pow((1.0 - cos((groundPoint.y + groundPoint.x * 0.22) / 620.0 * 6.2831853)) * 0.5, 6.0);
+      vec3 sandColor = mix(vec3(0.63, 0.53, 0.39), vec3(0.35, 0.27, 0.19), dune);
+      diffuseColor.rgb *= mix(sandColor, referenceColor, 0.28) * detail;
+      float outcrop = 1.0 - smoothstep(14.0, 26.0, distance(groundPoint, vec2(${surveySite.x.toFixed(1)}, ${surveySite.z.toFixed(1)})));
+      diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.58, 0.57, 0.49) * detail, outcrop * 0.65);
       // Rain-darkened interdune: damp ground is darker and slightly glossier, with a ragged edge.
       vec2 dampOffset = (groundPoint - vec2(${dampGround.x.toFixed(1)}, ${dampGround.z.toFixed(1)})) / vec2(${dampGround.rx.toFixed(1)}, ${dampGround.rz.toFixed(1)});
       float dampEdge = length(dampOffset) + (terrainNoise(groundPoint * 0.045) - 0.5) * 0.34 + (terrainNoise(groundPoint * 0.2) - 0.5) * 0.08;
