@@ -198,7 +198,11 @@ export function missionAction(state) {
       m.message = "Sampling requires a stationary touchdown inside the dry target."; return;
     }
     if (flightRestriction(state)) { m.message = "Restore energy and thermal margins before sampling."; return; }
+    if (state.hibernating) { m.message = "Wake the lander before sampling."; return; }
+    if (state.science.sampling) { m.message = "A sample is already being analyzed."; return; }
+    if (state.battery <= systemsModel.reservePercent + 5) { m.message = "Battery too low for DrACO and DraMS."; return; }
     m.phase = "sampling";
+    m.sampleSeconds = 0;
     state.auto = false; state.throttle = 0; state.altitudeHold = null;
     state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0;
     m.message = "DrACO / DraMS sample acquisition";
@@ -236,7 +240,7 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
   state.generatedW = state.arrivalElectricW * 0.975 ** years;
   state.rtgHeatW = systemsModel.rtgThermalW * 2 ** (-years / 87.7);
   if (state.hibernating) state.power = 45 + 15 * state.fan ** 3;
-  else state.power += 15 * state.fan ** 3 + (state.mission.phase === "sampling" ? 160 : 0) + (state.sciencePowerW || 0);
+  else state.power += 15 * state.fan ** 3 + (state.sciencePowerW || 0);
   // Motor preheat is charged once when the rotors lift off cold; its 5 minutes are time-compressed.
   if (state.altitude > 0.001) {
     if (state.motorsCold) {
@@ -317,17 +321,6 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
   if (m.phase === "outbound" && atTarget) {
     m.phase = "sample"; m.guidance = false; state.throttle = 0;
     m.message = "Dry outcrop reached. Sample acquisition ready.";
-  } else if (m.phase === "sampling") {
-    if (!atTarget || state.guard) {
-      m.phase = "sample"; m.sampleSeconds = 0;
-      m.message = "Sampling interrupted: restore a safe, stationary landing.";
-    } else {
-      m.sampleSeconds += dt;
-      if (m.sampleSeconds >= 30) {
-        m.samples = 1; m.phase = "return";
-        m.message = "Sample secured. Return to base with energy reserve.";
-      }
-    }
   } else if (m.phase === "return" && atTarget) {
     m.phase = "complete"; m.guidance = false; state.throttle = 0;
     m.message = "Survey complete: one sample returned to base.";
@@ -383,7 +376,7 @@ export function thermalZoneTemps(state) {
 }
 
 export function startRest(state, hours) {
-  if (!landed(state) || state.hold || state.mission.phase === "sampling" || overLiquid(state.positionX, state.positionZ)) return false;
+  if (!landed(state) || state.hold || state.mission.phase === "sampling" || state.science?.sampling || overLiquid(state.positionX, state.positionZ)) return false;
   if (state.plan && ["uplinking", "executing"].includes(state.plan.status)) return false;
   state.auto = false; state.mission.guidance = false; state.throttle = 0; state.altitudeHold = null;
   state.pitchCmd = 0; state.rollCmd = 0; state.yawCmd = 0; state.downlinkActive = false;

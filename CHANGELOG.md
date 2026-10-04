@@ -31,6 +31,15 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-04: Unify survey sampling and block analysis during hibernation
+- **Signed:** Codex (OpenAI, Codex desktop app)
+- **Commit:** "Fix survey science results and sampling hibernation guards"
+- **What changed:** Guided survey acquisition and Sample here now use one DrACO/DraMS job. Both produce one lab result and one sample data packet; sampling at the active survey target also advances the objective. Instrument power is counted once and the last time step is prorated. Hibernation is blocked during analysis, with matching disabled buttons and a status message. Leaving the target or losing safe thermal/energy conditions interrupts acquisition without awarding a result; forced hibernation also aborts it.
+- **Files:** `dist/science.mjs`, `dist/mission-systems.mjs`, `dist/ui/readouts.mjs`, sampling tests and `ARCHITECTURE.md`
+- **Assumptions:** Existing illustrative 30 s, 160 W and 40 Mbit sample parameters are unchanged; these are not published mission performance.
+- **Checks:** All 73 Node tests passed. New regressions cover both controls, data/results, single power accounting at different time steps, interruption/restart, hibernation guards and downlink availability. The local browser showed a 275 W sampling load, a completed result with 40 Mbit added, enabled hibernation again after completion, disabled both buttons during the next analysis with the new status message, and reported no console errors.
+- **Open / next:** These fixes and the preceding terrain/camera commit are local commits, not yet pushed or deployed.
+
 ### 2026-10-04: Commit the existing landing-area terrain and arrival camera
 - **Signed:** Codex (OpenAI GPT-6, Codex desktop app; reviewed and committed existing edits)
 - **Commit:** "Commit landing-area dunes and arrival camera framing"

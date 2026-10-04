@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createFlightState, stepFlight, commandFlight, model, advanceRest } from "../dist/flight-model.mjs";
 import { missionAction, startRest, surveySite, pools, overLiquid, targetDistance, systemsModel, surfaceHeatTransfer, liquidExchangerStudy, stepSystems } from "../dist/mission-systems.mjs";
+import { scienceModel, groundTypes } from "../dist/science.mjs";
 const advance = (s, seconds, dt = 0.05) => { for (let t = 0; t < seconds; t += dt) stepFlight(s, dt); };
 const grounded = () => { const s = createFlightState(); s.auto = false; s.throttle = 0; return s; };
 
@@ -49,12 +50,18 @@ test("Guided survey can land, sample and return without teleporting", () => {
   assert.ok(maxMove <= 0.251);
   missionAction(s);
   assert.equal(s.mission.phase, "sampling");
+  const stored = s.dataStoredBits;
   advance(s, 31);
   assert.equal(s.mission.phase, "return");
   assert.equal(s.mission.samples, 1);
+  assert.equal(s.science.samples.length, 1);
+  assert.equal(s.science.samples[0].ground, groundTypes.outcrop.name);
+  assert.equal(s.science.samples[0].result, groundTypes.outcrop.sample);
+  assert.ok(s.dataStoredBits - stored >= scienceModel.sampleMbit * 1e6);
   missionAction(s);
   advance(s, 240);
   assert.equal(s.mission.phase, "complete");
+  assert.equal(s.science.samples.length, 1);
   assert.ok(Math.hypot(s.positionX, s.positionZ) <= 12);
 });
 
@@ -66,6 +73,9 @@ test("Leaving the target interrupts sample acquisition", () => {
   assert.equal(s.mission.phase, "sample");
   assert.equal(s.mission.samples, 0);
   assert.equal(s.mission.sampleSeconds, 0);
+  assert.equal(s.science.sampling, false);
+  assert.equal(s.science.sampleSeconds, 0);
+  assert.equal(s.science.samples.length, 0);
 });
 
 test("Hibernate charges in day and night; pause freezes all systems", () => {

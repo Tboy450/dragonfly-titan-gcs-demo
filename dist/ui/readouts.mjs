@@ -150,11 +150,12 @@ function updateSystemsReadouts() {
   $("systems-objective").textContent = m.phase;
   $("sample-progress").textContent = `${Math.min(30, m.sampleSeconds).toFixed(0)} / 30 s`;
   $("sample-count").textContent = m.samples;
-  const canRest = landed(state) && !overLiquid(state.positionX, state.positionZ) && !state.hold && m.phase !== "sampling" && state.restSeconds === 0;
+  const sampling = m.phase === "sampling" || state.science.sampling;
+  const canRest = landed(state) && !overLiquid(state.positionX, state.positionZ) && !state.hold && !sampling && state.restSeconds === 0;
   $("rest-hour").disabled = !canRest;
   $("rest-night").disabled = !canRest;
   $("rest-stop").disabled = !state.hibernating;
-  $("rest-status").textContent = state.restNotice || (state.restSeconds > 0 ? `${(state.restSeconds / 3600).toFixed(1)} h remaining / accelerated surface time` : state.hibernating ? "Hibernating / real-time monitoring" : "Hibernation available after dry-ground landing.");
+  $("rest-status").textContent = sampling ? "Sample analysis in progress / hibernation unavailable" : state.restNotice || (state.restSeconds > 0 ? `${(state.restSeconds / 3600).toFixed(1)} h remaining / accelerated surface time` : state.hibernating ? "Hibernating / real-time monitoring" : "Hibernation available after dry-ground landing.");
   if (m.phase === "sampling") { $("draco-state").textContent = "Survey sample: drilling"; $("drams-state").textContent = "Survey sample: analyzing"; }
 }
 

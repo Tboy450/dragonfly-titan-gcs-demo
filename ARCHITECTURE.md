@@ -90,6 +90,12 @@ There is one live `state` object (`ui/context.mjs`). Each part of the simulation
 | `ui/arrival.mjs` | `edl`, `edlTime` (only while the arrival plays) |
 | `ui/*` (page only) | `view`, `cameraMode`, `vehicleModel`, `missionLayer`, `thermalRange`, `selectedPart`, `throttleSpring`, `renderPose` |
 
+Both sampling controls use the DrACO/DraMS job in `science.mjs`. The survey button requests
+it through `mission.phase = "sampling"`; the science step owns its timer, result, data and
+instrument power, and completes the survey acquisition when applicable. Hibernation is
+blocked during either sampling path. `stepScience()` runs before `stepSystems()` so the
+instrument load is included in the energy budget once.
+
 **Saved between visits:** only the fields listed in `save-game.mjs`. When you add state that
 should survive a reload, add it there (and bump `SAVE_VERSION` if old saves would break).
 

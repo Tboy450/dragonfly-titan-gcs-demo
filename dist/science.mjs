@@ -4,7 +4,7 @@
 // temperature, pressure, wind and methane humidity and carries a seismometer; DragonCam images
 // the surface and scouts landing sites. The data volumes, rates, event timing and every
 // "result" below are illustrative examples [EST], not mission data or predictions.
-import { overLiquid, dampGround, surveySite, landed, systemsModel } from "./mission-systems.mjs?v=dev";
+import { overLiquid, dampGround, surveySite, landed, systemsModel, flightRestriction, targetDistance } from "./mission-systems.mjs?v=dev";
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const MBIT = 1e6;
@@ -57,19 +57,31 @@ export function gnsUncertainty(state) {
 
 export function canSampleHere(state) {
   if (!landed(state)) return "Land and stop first.";
+  if (state.hold) return "Resume the simulation first.";
   if (state.hibernating) return "Wake the lander first.";
   if (state.science.sampling || state.mission.phase === "sampling") return "A sample is already being analyzed.";
   if (!groundTypeAt(state.positionX, state.positionZ)) return "No drilling in liquid.";
+  const restricted = flightRestriction(state);
+  if (restricted) return restricted;
   if (state.battery <= systemsModel.reservePercent + 5) return "Battery too low for DrACO and DraMS.";
   return "";
+}
+
+function beginSample(state) {
+  state.science.sampling = true;
+  state.science.sampleSeconds = 0;
+  logScience(state, "DrACO drilling; sample moving pneumatically to DraMS");
 }
 
 export function startSample(state) {
   const blocked = canSampleHere(state);
   if (blocked) return blocked;
-  state.science.sampling = true;
-  state.science.sampleSeconds = 0;
-  logScience(state, "DrACO drilling; sample moving pneumatically to DraMS");
+  beginSample(state);
+  if (state.mission.phase === "sample" && targetDistance(state) <= surveySite.radius) {
+    state.mission.phase = "sampling";
+    state.mission.sampleSeconds = 0;
+    state.mission.message = "DrACO / DraMS sample acquisition";
+  }
   return "";
 }
 
@@ -106,18 +118,36 @@ export function stepScience(state, dt) {
     }
   }
   // DrACO + DraMS sample analysis.
+  const surveying = state.mission.phase === "sampling";
+  // The mission button requests the same instrument job as "Sample here".
+  if (surveying && !s.sampling) beginSample(state);
   if (s.sampling) {
-    if (!isLanded || !ground) {
+    const unsafe = state.hibernating || flightRestriction(state);
+    const leftTarget = surveying && targetDistance(state) > surveySite.radius;
+    if (!isLanded || !ground || unsafe || leftTarget) {
       s.sampling = false;
-      logScience(state, "Sample analysis interrupted: the lander moved");
+      s.sampleSeconds = 0;
+      if (surveying) {
+        state.mission.phase = "sample";
+        state.mission.sampleSeconds = 0;
+        state.mission.message = "Sampling interrupted: restore a safe, stationary landing.";
+      }
+      logScience(state, unsafe ? "Sample analysis interrupted: restore power and thermal conditions" : "Sample analysis interrupted: the lander moved");
     } else {
-      state.sciencePowerW += scienceModel.sampleW;
-      s.sampleSeconds += dt;
+      const sampleDt = Math.min(dt, scienceModel.sampleSeconds - s.sampleSeconds);
+      state.sciencePowerW += scienceModel.sampleW * sampleDt / dt;
+      s.sampleSeconds = Math.min(scienceModel.sampleSeconds, s.sampleSeconds + sampleDt);
+      if (surveying) state.mission.sampleSeconds = s.sampleSeconds;
       if (s.sampleSeconds >= scienceModel.sampleSeconds) {
         s.sampling = false;
         s.samples.push({ ground: ground.name, result: ground.sample, time: state.elapsed });
         bits += scienceModel.sampleMbit * MBIT;
         logScience(state, `DraMS: ${ground.name} analyzed`);
+        if (surveying) {
+          state.mission.samples = 1;
+          state.mission.phase = "return";
+          state.mission.message = "Sample secured. Return to base with energy reserve.";
+        }
       }
     }
   }
