@@ -37,6 +37,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/flight-plan.mjs` | Flight plans: waypoints, GO/NO-GO estimate, uplink delay, autopilot guidance, leapfrog scouting |
 | `dist/science.mjs` | Instruments: DragonCam data, DraGMet log and seismometer, DraGNS counting, DrACO/DraMS sampling, ground types |
 | `dist/edl.mjs` | Arrival (entry, descent, landing) timeline from the published EDL figure |
+| `dist/sound-mix.mjs` | Pure mapping from the state to sound levels and pitches (testable without audio) |
 | `dist/thermal-scale.mjs` | Temperature color scale shared by the thermal layer and its legend |
 | `dist/flight-camera.mjs` | Chase-camera pose and smoothing |
 | `dist/save-game.mjs` | Which state fields are saved between visits (a whitelist), when saving is allowed (landed, idle), and restoring onto a fresh state |
@@ -63,6 +64,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `ui/plan-panel.mjs` | Flight Plan dialog, plan status strip, time-speed buttons |
 | `ui/controls.mjs` | Flight buttons, sticks, keyboard, camera modes, view switch, other controls |
 | `ui/arrival.mjs` | Arrival sequence: start, step, skip, replay, caption |
+| `ui/sound.mjs` | Optional Web Audio soundscape (off by default) and the ♪ button; `updateSound()` runs each frame |
 | `ui/persistence.mjs` | Saves progress in the browser (every 5 s while landed and when the page is left), restores it on load, "Start a new mission" |
 | `dist/index.html`, `dist/styles.css` | Markup and styles. The phone Pilot-view overrides are in the last section of `styles.css` |
 

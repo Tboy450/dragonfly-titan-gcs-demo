@@ -31,6 +31,27 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-08: Optional sound
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add an optional synthesized soundscape"
+- **What changed:** The owner agreed sound "isn't a terrible idea". A **♪ Off / ♪ On** button sits
+  next to Mission and Pilot; sound is off by default and the choice is remembered (a remembered
+  "on" starts at the next click or tap, as browsers require). All synthesized with Web Audio, no
+  files: rotor chop pulsed at the blade-pass frequency with its low tone, a faint motor whine,
+  wind that rises with wind, flight and climb speed, and in the arrival the entry roar,
+  parachute flutter and a thump (low boom plus crack) at each separation. Sound pauses when the
+  page is hidden. Localhost-only debug hook `window.dragonflySound()`.
+- **Files:** `dist/sound-mix.mjs` (new), `dist/ui/sound.mjs` (new), `dist/app.js`,
+  `dist/index.html`, `dist/styles.css`, `tests/sound.test.mjs` (new), `README.md`, `ARCHITECTURE.md`
+- **Assumptions:** blade-pass frequency follows the simulated rpm and the published three
+  blades [PUB/CALC]; the 7 pole pairs, levels, filters and arrival sounds are artistic [EST].
+- **Checks:** `node --test tests/*.test.mjs` (75 pass; new tests for quiet at rest, rotor pitch
+  and gain, wind with speed, entry roar, parachute flutter and one thump per event). In the
+  browser: off by default, the button toggles and is remembered, a remembered "on" waits for a
+  tap, then the audio runs (rotors silent at rest, faint wind); off again suspends it; no console
+  errors. Header fits on a phone in both views. Sound itself was not listened to on this machine.
+- **Open / next:** time-scaled mission rhythm.
+
 ### 2026-10-08: Refined NASA drone model (blades, hubs, blur discs, fins, skids)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Refine the NASA model's rotors, fins and skids"

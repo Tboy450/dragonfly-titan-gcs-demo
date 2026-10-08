@@ -111,7 +111,7 @@ a:hover {
 
 .view-switch {
   display: grid;
-  grid-template-columns: repeat(2, minmax(78px, 1fr));
+  grid-template-columns: repeat(2, minmax(78px, 1fr)) auto;
   padding: 4px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -133,6 +133,9 @@ a:hover {
   color: #061019;
   background: var(--cyan);
 }
+
+.view-switch .sound-toggle { padding: 0 10px; font-size: 0.74rem; font-weight: 700; }
+.view-switch .sound-toggle[aria-pressed="true"] { border-color: rgba(255, 180, 87, 0.6); color: #ffd9a8; }
 
 .build-label {
   margin-left: 8px;

@@ -13,6 +13,7 @@ import "./ui/science-panel.mjs?v=dev";
 import { updatePlanPanel, updatePlanStrip } from "./ui/plan-panel.mjs?v=dev";
 import "./ui/controls.mjs?v=dev";
 import { stepArrival } from "./ui/arrival.mjs?v=dev";
+import { updateSound } from "./ui/sound.mjs?v=dev";
 
 let readoutTime = 0;
 let planPanelTime = 0;
@@ -53,6 +54,7 @@ function tick(now) {
     readoutTime = now;
   }
   drawFlight();
+  updateSound();
 }
 
 

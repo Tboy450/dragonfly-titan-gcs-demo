@@ -87,6 +87,15 @@ sparks, smoke puffs, haze wisps, touchdown dust and camera moves are artistic. U
 parachute the camera looks down past the canopy while the ground emerges from the haze, and
 it closes in on the lander within about three seconds of release.
 
+## Sound
+
+Sound is off until you turn it on with the **♪** button next to Mission and Pilot (browsers only
+start audio after a click or tap; the choice is remembered). Everything is synthesized, with no
+audio files: the rotors' low chop at the blade-pass frequency (rpm / 60 x 3 blades, 35 Hz at
+700 rpm) plus a faint motor whine, wind that rises with wind and flight speed, and in the
+arrival the entry roar, parachute flutter and a thump at each separation. Pitches follow the
+simulation; levels and textures are artistic. Sound pauses when the page is hidden.
+
 ## Vehicle Model
 
 The default 3D model follows the NASA/APL 2023 design drawings: long insulated fuselage,
