@@ -127,6 +127,7 @@ export function operationsAdvisory(state, batteryEnergyKwh) {
   if (needed) return `Land now: ${endurance.limit} limit in ${Math.max(0, endurance.minutes).toFixed(1)} min`;
   if (state.flightSeconds > systemsModel.plannedFlightSeconds) return "Land now: planned 30 min flight exceeded";
   if (!titanDaylight(state)) return "Night flight: outside daylight operations plan";
+  if ((state.dayLog?.flights || 0) > 1) return "Extra flight: the plan is one flight per Titan day";
   return "";
 }
 

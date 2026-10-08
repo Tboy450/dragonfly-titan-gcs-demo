@@ -82,6 +82,19 @@
         <span id="vehicle-alert" role="status">Systems nominal</span>
       </section>
 
+      <section id="day-strip" class="day-strip" aria-label="Titan day">
+        <div class="day-clock"><strong id="day-title">Titan day 1</strong><span id="day-time">12:00 local / Afternoon (Earth in view)</span></div>
+        <div class="day-bar" aria-hidden="true"><span class="day-bar-night"></span><span id="day-marker" class="day-marker"></span></div>
+        <ul class="day-tasks" aria-label="Operations for this Titan day">
+          <li id="day-task-downlink">&#9675; Send data home</li>
+          <li id="day-task-flight">&#9675; One flight</li>
+          <li id="day-task-science">&#9675; Sample science</li>
+          <li class="night-task">Night: recharge, seismic and weather</li>
+        </ul>
+        <button id="day-sleep" type="button">Sleep until dawn</button>
+        <p class="day-scale">Time scale: a real Titan day lasts 382.7 hours (about 16 Earth days), with about one flight per day. Here, flights, sampling and downlinks play in real time (sampling shortened to 30 s), and sleeping through the rest of the day and the night takes a few seconds.</p>
+      </section>
+
       <section id="plan-strip" class="plan-strip" aria-label="Autonomous flight" hidden>
         <div><strong id="plan-strip-title">Autonomous flight</strong><span id="plan-strip-status" role="status">Plan uplinked</span></div>
         <div class="warp-switch" role="group" aria-label="Simulation speed">

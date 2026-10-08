@@ -184,6 +184,13 @@ Comms shows how long that will take. Results are illustrative examples, not miss
   35 C battery limit, plus a 30-minute flight timer. The alert bar warns "Land now"
   near either limit, after 30 minutes, or when flying at night.
 - **Wind** above the 1.6 m/s design maximum is labeled a stress test.
+- **Titan day cycle (time-scaled):** the Mission view's Titan day strip shows the day number,
+  local Titan time, a day/night bar and the day's checklist in the real order of operations:
+  send data home, one flight, sample science, then night (recharge, seismic and weather work).
+  **Sleep until dawn** fast-forwards the rest of the day and the night in a few seconds, wakes
+  the lander at dawn and posts a morning report. A real Titan day lasts 382.7 hours (about 16
+  Earth days) with about one flight per day; here flights, sampling and downlinks play in real
+  time and only waiting is compressed. A second flight in one Titan day is allowed but flagged.
 
 ## Engineering Context
 

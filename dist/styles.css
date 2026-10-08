@@ -1569,6 +1569,25 @@ body.arrival .pilot-hud { display: none; }
 }
 
 /* Start over: a quiet secondary button beside the survey action. */
+/* Titan day strip: day number and clock, day/night bar, today's checklist, sleep button. */
+.day-strip { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; align-items: center; padding: 10px 14px; background: #161f2c; border-left: 3px solid var(--amber); }
+.day-clock { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+.day-clock span { color: var(--muted); font-size: 0.85rem; }
+.day-bar { grid-column: 1 / -1; position: relative; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #6a4a2a, #c98a45 25%, #6a4a2a 50%); }
+.day-bar-night { position: absolute; inset: 0 0 0 50%; border-radius: 0 4px 4px 0; background: #1b2230; }
+.day-marker { position: absolute; top: -3px; width: 3px; height: 14px; margin-left: -1px; border-radius: 2px; background: #e8f4ff; box-shadow: 0 0 4px rgba(232, 244, 255, 0.8); }
+.day-tasks { grid-column: 1; display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 0.8rem; }
+.day-tasks li { padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.day-tasks li.done { border-color: rgba(128, 242, 174, 0.55); color: #a8f5c8; }
+.day-tasks li.over { border-color: rgba(255, 180, 87, 0.6); color: #ffd9a8; }
+.day-tasks .night-task { border-style: dashed; }
+#day-sleep { grid-column: 2; grid-row: 1; }
+.day-scale { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 0.74rem; }
+body.pilot-view .day-strip { display: none; }
+@media (max-width: 720px) {
+  .day-strip { padding: 8px; gap: 6px 8px; }
+  .day-tasks { font-size: 0.72rem; gap: 4px; }
+}
 .mission-strip .start-over { min-width: 0; padding: 6px 12px; border-color: rgba(236, 245, 255, 0.22); background: transparent; color: #cfe0ea; font-size: 0.8rem; }
 @media (max-width: 720px) {
   .mission-strip .start-over { padding: 2px 8px; font-size: 0.72rem; }

@@ -31,6 +31,34 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-08: Time-scaled Titan day cycle
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a time-scaled Titan day cycle"
+- **What changed:** The owner asked for the real mission rhythm as a scaled, interactive cycle
+  with shorter literal cycles, stated somewhere.
+  - A Titan day strip in the Mission view (hidden in Pilot view): day number, local Titan time
+    and phase, a day/night bar with a marker, and the day's checklist in the published order:
+    send data home, one flight, sample science, then night (recharge, seismic and weather).
+  - **Sleep until dawn:** hibernates through the rest of the day and the night at 2,400
+    simulated seconds per frame (about 7 s at 60 fps), wakes at 06:00 and posts a morning
+    report (battery before and after, seismic events, data waiting).
+  - A second flight in one Titan day is allowed; the alert bar says "Extra flight: the plan is
+    one flight per Titan day".
+  - The time scale is stated on the strip and in the README.
+  - The day's checklist is saved with the mission (`dayLog`).
+- **Files:** `dist/titan-day.mjs` (new), `dist/ui/day-strip.mjs` (new), `dist/app.js`,
+  `dist/mission-systems.mjs`, `dist/save-game.mjs`, `dist/index.html`, `dist/styles.css`,
+  `tests/titan-day.test.mjs` (new), `README.md`, `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`
+- **Assumptions:** the cadence (about one daylight flight per Titan day; recharge, seismic and
+  weather work at night) and the 382.7 h day are published [PUB]; the dawn-to-dawn day, the
+  phase names, the compression rate and the report wording are simulator choices [EST].
+- **Checks:** `node --test tests/*.test.mjs` (78 pass; new tests for the day boundaries, the
+  checklist and its reset at dawn, the extra-flight advisory, and a full sleep that recharges,
+  logs the night and wakes at dawn). In the browser at phone size: the strip renders, "Sleep
+  until dawn" ran 431 frames (about 3 ms each), woke at 06:00 on day 2 with the report shown.
+- **Open / next:** none of the approved list remains. Optional later: a real-browser check on
+  publish; dimmer, softer Titan lighting (on hold by the owner).
+
 ### 2026-10-08: Optional sound
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add an optional synthesized soundscape"

@@ -15,6 +15,8 @@ const persistent = [
   "motorsCold", "motorCoolClock", "preheatWh", "preheats",
   // Mission, scouting, science and data
   "mission", "scoutedSites", "scoutLog", "science", "dataStoredBits", "dataReturnedBits",
+  // Today's operations checklist (Titan day cycle)
+  "dayLog",
 ];
 
 const copy = (value) => JSON.parse(JSON.stringify(value));
