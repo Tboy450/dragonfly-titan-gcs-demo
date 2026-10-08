@@ -31,6 +31,37 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-08: Landing area Ahmakiq Undae finished and published
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Finish the Ahmakiq Undae landing area"
+- **What changed:** Completed the landscape change started on Sep 30 (code committed by Codex on
+  Oct 4 as "Commit landing-area dunes and arrival camera framing"). The landscape follows the
+  published description of Dragonfly's landing area, Ahmakiq Undae (IAU, Sept 2026; NASA
+  Dragonfly blog 2026-09-02): dunes and interdunes south of Selk crater, reaching to hills.
+  - Terrain: the base sits in a ~2 km interdune corridor between linear dunes 75-120 m tall,
+    ~1.2 km wide and 3.2 km apart, trending 8 degrees north of east, with the archived map's
+    photo-textured hills beyond the northern dune. Interdune floor: broad swells, low hummocks
+    and gravel. The dry outcrop pad now sits 0.8 m above the local ground instead of a fixed
+    1.4 m.
+  - Look: dark dune sand with long streaks and fine ripples; no pebbles on dunes; the interdune
+    keeps the Huygens-image texture.
+  - Arrival: under the main parachute the camera swings to look north across the dunes and back
+    before release (`cameraAzimuth` in `edl.mjs`).
+  - Wording: the in-app note on geography, the landing message ("Landed in an interdune of
+    Ahmakiq Undae"), the site-layout comment, README (new "Landing Area" section), ARCHITECTURE,
+    the research audit table, and the classic-peaks archive's restore note.
+- **Files:** `dist/index.html`, `dist/ui/arrival.mjs`, `dist/mission-systems.mjs` (comment),
+  `README.md`, `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`, `archive/classic-peaks-terrain/README.md`
+  (terrain, camera and shading code are in Codex's Oct 4 commit)
+- **Assumptions:** the name, the dune/interdune setting, the hills and the dune sizes are
+  published [PUB]; the exact layout, sand colors, outcrop and sites are illustrative [EST]. The
+  owner said landing sites do not need to stay away from dunes, so there is no such rule.
+- **Checks:** `node --test tests/*.test.mjs` (73 pass). Frames at 1280x800 and phone size: the
+  northern dune as a long ridge with hills beyond during the descent, the interdune from 60 m
+  looking south, and a dune flank close up.
+- **Open / next:** drone model refinement, optional sound, and a time-scaled mission rhythm.
+  This push also publishes Codex's Oct 4 survey-sampling fixes.
+
 ### 2026-10-04: Unify survey sampling and block analysis during hibernation
 - **Signed:** Codex (OpenAI, Codex desktop app)
 - **Commit:** "Fix survey science results and sampling hibernation guards"

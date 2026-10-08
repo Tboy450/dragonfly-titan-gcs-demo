@@ -1,4 +1,6 @@
-// Training geography and engineering limits, not an actual Dragonfly landing-site map.
+// Training geography and engineering limits, not an actual Dragonfly landing-site map. The
+// landscape follows the published description of the landing area, Ahmakiq Undae (see
+// titan-terrain.mjs); the sites below are illustrative and sit in one interdune corridor.
 // Dragonfly lands among equatorial dunes and interdunes, far from Titan's polar seas. Methane
 // rainstorms have darkened large areas of low-latitude ground [PUB], so the scene shows a
 // rain-darkened interdune (safe to land on) around a small transient methane puddle (no landing).

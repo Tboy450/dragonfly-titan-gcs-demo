@@ -23,7 +23,10 @@ styles; only the far, coarse part of the mesh differs.
 
 - **Whole app as it was:** git tag `archive/classic-peaks-terrain` (commit 63eb373, the last
   version before the smoothing). `git checkout archive/classic-peaks-terrain`, then serve `dist/`.
-- **Just the peaks, in the current app:** in `dist/titan-terrain.mjs` change
-  `const farDetail = (cell) => smoothUnit((cell - 20) / 12);` to `const farDetail = () => 0;`.
-  With that, every terrain height is exactly the classic one (checked on 20,000 points), and the
-  newer background rebuild when crossing into a new 400 m square stays.
+- **Just the peaks, on the mountain-basin map:** restore that map first
+  ([../mountain-basin-map](../mountain-basin-map/README.md)), then in `dist/titan-terrain.mjs`
+  change `const farDetail = (cell) => smoothUnit((cell - 20) / 12);` to
+  `const farDetail = () => 0;`. Every terrain height is then exactly the classic one (checked on
+  20,000 points), and the newer background rebuild when crossing into a new 400 m square stays.
+  On the current dune map (from 2026-10-08) the same change only sharpens the far hills north of
+  the dunes.

@@ -46,6 +46,16 @@ Three.js 0.180.0 is included under its [MIT license](dist/vendor/three/LICENSE).
 The Titan terrain reference image was supplied for this project. NASA mission
 references are linked within the app.
 
+## Landing Area
+
+The landscape follows the published description of Dragonfly's landing area, **Ahmakiq Undae**
+(named by the IAU in September 2026): dunes and interdunes south of Selk crater, reaching to the
+edge of a range of hills. The base sits in a flat interdune corridor about 2 km wide between two
+long dunes 75-120 m tall that run roughly west to east, with hills beyond the northern dune.
+Dune sizes follow published Cassini results; the exact layout is illustrative. Dune sand is dark
+and pebble-free; the interdune keeps the Huygens-image ground texture. The previous maps are
+archived in [archive/](archive/).
+
 ## Flight Controls
 
 - **Takeoff** climbs to 40 m and hovers. **Cruise** holds altitude (at least 20 m) and
