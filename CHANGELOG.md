@@ -31,6 +31,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-08: Refined NASA drone model (blades, hubs, blur discs, fins, skids)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Refine the NASA model's rotors, fins and skids"
+- **What changed:** The owner approved refining the NASA/APL 2023 model, whose rotor blades were
+  flat paddles.
+  - Blades: a real 3D blade per rotor arm, tapered (chord 0.115 to 0.075 units, rounded tip,
+    slim root cuff), twisted (17 to 5 degrees), with a thin cambered section. The blade is
+    mirrored on counter-rotating rotors so the leading edge always leads.
+  - Hub caps on every rotor, facing away from the motor.
+  - Spinning rotors: a faint disc, denser toward the tips, fades in with rotor speed (replaces
+    the ghost-blade trails on this model; hidden in the Mission diagram layers).
+  - Fins with softly beveled edges; skids with rounded bends and tips.
+  - The original demo model is unchanged.
+- **Files:** `dist/vehicle-research.mjs`, `dist/chase-vehicle.mjs`, `README.md`, `ARCHITECTURE.md`
+- **Assumptions:** blade chord, twist, thickness and camber are estimates from the 2023 drawings
+  and common rotor practice [EST]; the three-blade, 1.35 m rotors and the overall envelope are
+  published [PUB].
+- **Checks:** `node --test tests/*.test.mjs` (73 pass). Envelope still 3.85 x 3.96 x 1.74 m
+  (published 3.85 x 3.85 x 1.75; test tolerance 0.12 m). Before/after frames of the Mission
+  diagram (exterior and internal) and the flight view at rest and with rotors at 720 rpm.
+- **Open / next:** optional sound; time-scaled mission rhythm.
+
 ### 2026-10-08: Landing area Ahmakiq Undae finished and published
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Finish the Ahmakiq Undae landing area"

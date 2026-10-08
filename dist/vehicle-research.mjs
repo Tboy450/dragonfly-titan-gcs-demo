@@ -4,7 +4,7 @@ import * as THREE from "./vendor/three/three.module.min.js";
 import { model } from "./flight-model.mjs?v=dev";
 
 export function buildResearchModel(kit) {
-  const { group: researchModel, mesh, strut, metal, deck, gold, bladeGeometry, bladeMaterial, trails, buildAntenna, upAxis } = kit;
+  const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
   let buildTarget = researchModel;
   const setBuild = (group) => { buildTarget = group; kit.setTarget(group); };
   // ---- Research model: NASA/APL 2023 lander overview (TFAWS 2023 slide 3; ICES-2020-160 and
@@ -21,6 +21,63 @@ export function buildResearchModel(kit) {
   const rtgMaterial = new THREE.MeshStandardMaterial({ color: 0x2d3135, metalness: 0.55, roughness: 0.45 });
   const armMaterial = new THREE.MeshStandardMaterial({ color: 0xc9ccc6, metalness: 0.35, roughness: 0.5 });
   const lens = new THREE.MeshStandardMaterial({ color: 0x0b1318, metalness: 0.6, roughness: 0.15 });
+
+  // Rotor blade: tapered and twisted, with a thin cambered section and a rounded tip, built out
+  // to 0.70 units (scaled to the 1.35 m rotor). Chord, twist and thickness are estimated from the
+  // 2023 drawings and typical rotor practice [EST]. The leading edge faces -z, the direction a
+  // blade moves when its rotor's phase increases; rotors turning the other way mirror it.
+  function bladeGeometry() {
+    const stations = 22, around = 12, rootR = 0.07, tipR = 0.70;
+    const positions = [], indices = [];
+    for (let i = 0; i <= stations; i += 1) {
+      const s = i / stations;
+      const r = rootR + (tipR - rootR) * s;
+      let chord = 0.115 - 0.04 * Math.min(1, s / 0.86);
+      if (s > 0.86) chord *= 0.12 + 0.88 * Math.sqrt(Math.max(0, 1 - ((s - 0.86) / 0.14) ** 2));
+      if (s < 0.08) chord *= 0.55 + 0.45 * (s / 0.08); // slim root cuff into the hub
+      const pitch = (17 - 12 * s) * Math.PI / 180;
+      const thickness = chord * (0.12 - 0.05 * s);
+      const camber = chord * 0.035;
+      for (let j = 0; j < around; j += 1) {
+        const a = j / around * Math.PI * 2;
+        const x = Math.cos(a) * 0.5; // +0.5 trailing edge, -0.5 leading edge
+        const y = Math.sin(a) * 0.5 * thickness * (1 - 0.35 * x) + camber * (1 - 4 * x * x);
+        const z = (x + 0.25) * chord; // quarter-chord line on the blade axis
+        positions.push(r, y * Math.cos(pitch) - z * Math.sin(pitch), z * Math.cos(pitch) + y * Math.sin(pitch));
+      }
+    }
+    for (let i = 0; i < stations; i += 1) {
+      for (let j = 0; j < around; j += 1) {
+        const a = i * around + j, b = i * around + (j + 1) % around, c = a + around, d = b + around;
+        indices.push(a, c, b, b, c, d);
+      }
+    }
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    geometry.setIndex(indices);
+    geometry.computeVertexNormals();
+    return geometry;
+  }
+  const researchBlade = bladeGeometry();
+  const bladeMaterial = new THREE.MeshStandardMaterial({ color: 0xbfc4bd, metalness: 0.3, roughness: 0.42, side: THREE.DoubleSide });
+  // Spinning rotors read as a faint disc, denser toward the tips; opacity follows rotor speed.
+  const discCanvas = document.createElement("canvas");
+  discCanvas.width = discCanvas.height = 256;
+  const discPaint = discCanvas.getContext("2d");
+  const discShade = discPaint.createRadialGradient(128, 128, 12, 128, 128, 128);
+  discShade.addColorStop(0, "rgba(220, 214, 196, 0)");
+  discShade.addColorStop(0.2, "rgba(220, 214, 196, 0.35)");
+  discShade.addColorStop(0.8, "rgba(226, 220, 204, 0.6)");
+  discShade.addColorStop(0.95, "rgba(236, 230, 214, 0.85)");
+  discShade.addColorStop(1, "rgba(236, 230, 214, 0)");
+  discPaint.fillStyle = discShade;
+  discPaint.fillRect(0, 0, 256, 256);
+  const discTexture = new THREE.CanvasTexture(discCanvas);
+  discTexture.colorSpace = THREE.SRGBColorSpace;
+  const rotorDiscMaterial = new THREE.MeshBasicMaterial({ map: discTexture, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide });
+  const rotorDiscGeometry = new THREE.RingGeometry(0.06, 0.70, 64, 1);
+  rotorDiscGeometry.rotateX(-Math.PI / 2);
+  const spinnerGeometry = new THREE.SphereGeometry(0.075, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2);
 
   function taper(from, to, radiusFrom, radiusTo, material) {
     const start = new THREE.Vector3(...from), end = new THREE.Vector3(...to);
@@ -108,7 +165,7 @@ export function buildResearchModel(kit) {
   finOutline.quadraticCurveTo(0.74, 0.88, 0.5, 0.88);
   finOutline.lineTo(0.22, 0.86);
   finOutline.closePath();
-  const finGeometry = new THREE.ExtrudeGeometry(finOutline, { depth: 0.025, bevelEnabled: false, curveSegments: 8 });
+  const finGeometry = new THREE.ExtrudeGeometry(finOutline, { depth: 0.015, bevelEnabled: true, bevelThickness: 0.005, bevelSize: 0.005, bevelSegments: 2, curveSegments: 10 });
   finGeometry.rotateY(-Math.PI / 2);
   subsystem("fins", "exterior-structure");
   for (const side of [-1, 1]) {
@@ -135,6 +192,10 @@ export function buildResearchModel(kit) {
     strut([skidX, -0.8, -1.3], [skidX, -0.8, 1.02], 0.06, deck);
     strut([skidX, -0.8, -1.3], [skidX, -0.7, -1.45], 0.05, deck);
     strut([skidX, -0.8, 1.02], [skidX, -0.72, 1.14], 0.05, deck);
+    // Rounded bends and tips so the skid reads as one bent tube.
+    for (const [z, y, radius] of [[-1.3, -0.8, 0.06], [1.02, -0.8, 0.06], [-1.45, -0.7, 0.05], [1.14, -0.72, 0.05]]) {
+      mesh(new THREE.SphereGeometry(radius, 14, 10), deck, [skidX, y, z]);
+    }
     for (const z of armRoots) {
       strut([side * 0.42, -0.3, z], [skidX, -0.76, z], 0.035);
       strut([side * 0.42, -0.34, z - Math.sign(z) * 0.35], [skidX, -0.76, z], 0.018);
@@ -190,13 +251,14 @@ export function buildResearchModel(kit) {
         buildTarget.add(rotor);
         const direction = layer === 0 ? 1 : -1;
         for (let blade = 0; blade < model.bladesPerRotor; blade += 1) {
-          const solid = mesh(bladeGeometry, bladeMaterial, [0, 0, 0], rotor);
+          const solid = mesh(researchBlade, bladeMaterial, [0, 0, 0], rotor);
           solid.rotation.y = blade * Math.PI * 2 / model.bladesPerRotor;
-          trails.forEach((material, trailIndex) => {
-            const ghost = mesh(bladeGeometry, material, [0, 0, 0], rotor);
-            ghost.rotation.y = blade * Math.PI * 2 / model.bladesPerRotor - direction * (trailIndex + 1) * 0.13;
-          });
+          solid.scale.z = direction; // the leading edge leads in this rotor's direction of turn
         }
+        // Hub spinner facing away from the motor, and the blur disc.
+        const spinner = mesh(spinnerGeometry, armMaterial, [0, 0, 0], rotor);
+        if (layer === 0) spinner.rotation.x = Math.PI;
+        mesh(rotorDiscGeometry, rotorDiscMaterial, [0, 0, 0], rotor);
         researchRotors.push({ rotor, direction, phase: researchRotors.length * 0.63 });
       }
     }
@@ -294,5 +356,5 @@ export function buildResearchModel(kit) {
     });
   }
   kit.setTarget(null);
-  return { researchRotors, researchAntenna, subsystems, labeledParts, poseAirflow };
+  return { researchRotors, researchAntenna, subsystems, labeledParts, poseAirflow, rotorDiscMaterial };
 }

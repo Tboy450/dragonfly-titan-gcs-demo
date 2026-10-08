@@ -45,7 +45,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | File | What it does |
 |---|---|
 | `dist/chase-vehicle.mjs` | Renderer, lights, the original demo model and its labeled mock-up interior, shared part helpers, Mission-view layers (exterior / internal / thermal) for whichever model is selected, `draw()` for the Pilot view and `drawMission()` for the Mission diagram |
-| `dist/vehicle-research.mjs` | The NASA/APL 2023 design and its interior, grouped into named subsystems tagged with a thermal zone, label and source. The drawing-to-model mapping (327 px/m from the TFAWS 2023 top view) is in its comments |
+| `dist/vehicle-research.mjs` | The NASA/APL 2023 design (with its own twisted rotor blades, hub caps and rotor blur discs) and its interior, grouped into named subsystems tagged with a thermal zone, label and source. The drawing-to-model mapping (327 px/m from the TFAWS 2023 top view) is in its comments |
 | `dist/arrival-hardware.mjs` | Aeroshell, heat shield, parachutes, bridles and descent effects (plasma, sparks, haze wisps, smoke, dust) for the arrival sequence |
 | `dist/titan-terrain.mjs` | Ahmakiq Undae dunes, interdunes and hills (with far level of detail and progressive recentering), dune-sand shading, sky, fog and arrival sky dome, damp ground, the puddle, landing-site rings |
 

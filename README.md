@@ -94,6 +94,9 @@ raised "attic" over the nose, MMRTG between two tail fins, four arms with coaxia
 rotors, wide skids, and a flat high-gain antenna disc that rises for downlink. The **Model**
 button in the vehicle view switches to the original demo model for comparison. Proportions are
 measured from the drawings; the overall size matches the published 3.85 x 3.85 x 1.75 m.
+Rotor blades are tapered and twisted with a thin cambered section and rounded tips, with hub caps,
+and spinning rotors show a faint blur disc that strengthens with rotor speed. Blade chord, twist
+and thickness are estimates from the drawings.
 
 ## Missions and Diagnostics
 

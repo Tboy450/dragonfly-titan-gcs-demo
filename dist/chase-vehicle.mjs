@@ -223,8 +223,8 @@ export function createChaseRenderer(options = {}) {
   buildTarget = classicModel;
 
   // Research model (NASA/APL 2023 design) and its interior: see vehicle-research.mjs.
-  const { researchRotors, researchAntenna, subsystems, labeledParts, poseAirflow } = buildResearchModel({
-    group: researchModel, mesh, strut, metal, deck, gold, bladeGeometry, bladeMaterial, trails, buildAntenna, upAxis,
+  const { researchRotors, researchAntenna, subsystems, labeledParts, poseAirflow, rotorDiscMaterial } = buildResearchModel({
+    group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis,
     setTarget: (group) => { buildTarget = group || classicModel; },
   });
   buildTarget = classicModel;
@@ -302,6 +302,7 @@ export function createChaseRenderer(options = {}) {
     });
     const blur = Math.min(1, (state.rotorRpm?.[0] || 0) / 700);
     trails.forEach((material, index) => { material.opacity = 0.10 * (1 - index / 7) * blur; });
+    rotorDiscMaterial.opacity = 0.3 * Math.max(0, blur - 0.15) / 0.85;
   }
   return {
     models: { original: classicModel, research: researchModel },
@@ -342,6 +343,7 @@ export function createChaseRenderer(options = {}) {
         craft.updateMatrixWorld(true);
         poseAirflow(state.missionTime || 0);
         trails.forEach((material) => { material.opacity = 0; }); // no rotor blur over the diagram
+        rotorDiscMaterial.opacity = 0;
       }
       applyLayer(layer, state, view.range, which);
       // The original model's rotors sit on tall posts, so its layered views are framed wider.
