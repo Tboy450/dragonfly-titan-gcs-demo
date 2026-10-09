@@ -2,7 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createFlightState, advanceRest } from "../dist/flight-model.mjs";
 import { systemsModel, operationsAdvisory } from "../dist/mission-systems.mjs";
-import { titanDayNumber, hoursUntilDawn, dayPhase, updateDayLog, sleepUntilDawn, finishNight, dawnSleepStepSeconds } from "../dist/titan-day.mjs";
+import { titanDayNumber, hoursUntilDawn, dayPhase, updateDayLog, sleepUntilMorning, finishNight, sleepStepSeconds } from "../dist/titan-day.mjs";
+import { titanLocalHour } from "../dist/mission-systems.mjs";
 
 const day = systemsModel.titanDaySeconds;
 const landedState = () => Object.assign(createFlightState(), { altitude: 0, speed: 0, verticalSpeed: 0, throttle: 0, auto: false, mode: "Surface" });
@@ -40,20 +41,20 @@ test("The day checklist counts flights, downlinks and samples, and resets at daw
   assert.ok(!state.dayLog.downlinked && !state.dayLog.sampled);
 });
 
-test("Sleep until dawn recharges, logs the night, wakes at dawn and reports", () => {
+test("Sleep until morning recharges, logs the night, wakes at 08:00 and reports", () => {
   const state = landedState();
   state.battery = 55;
-  assert.ok(sleepUntilDawn(state));
+  assert.ok(sleepUntilMorning(state));
   let frames = 0, report = "";
-  while (state.wakeAtDawn && frames < 2000) {
-    advanceRest(state, dawnSleepStepSeconds);
+  while (state.wakeAtMorning && frames < 2000) {
+    advanceRest(state, sleepStepSeconds);
     report = finishNight(state) || report;
     frames++;
   }
   assert.ok(frames < 500, `took ${frames} frames`);
   assert.equal(state.hibernating, false);
   assert.equal(titanDayNumber(state), 2);
-  assert.ok(Math.abs(hoursUntilDawn(state) - day / 3600) < 0.01, "woke at dawn");
+  assert.ok(Math.abs(titanLocalHour(state) - 8) < 0.01, "woke at 08:00 local, after sunrise");
   assert.ok(state.battery > 90);
-  assert.match(report, /Dawn, Titan day 2: battery 55% to \d+%, \d+ seismic events?/);
+  assert.match(report, /Morning, Titan day 2: battery 55% to \d+%, \d+ seismic events?/);
 });

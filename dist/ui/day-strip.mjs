@@ -1,7 +1,7 @@
 // Titan day strip (Mission view): day number, local time, day/night bar, today's checklist and
-// "Sleep until dawn". The cycle itself is in ../titan-day.mjs.
+// "Sleep until morning". The cycle itself is in ../titan-day.mjs.
 import { landed, overLiquid, titanLocalHour } from "../mission-systems.mjs?v=dev";
-import { dayPhase, dayProgress, hoursUntilDawn, sleepUntilDawn, titanDayNumber } from "../titan-day.mjs?v=dev";
+import { dayPhase, dayProgress, sleepUntilMorning, titanDayNumber } from "../titan-day.mjs?v=dev";
 import { $, state } from "./context.mjs?v=dev";
 
 function clock(state) {
@@ -26,12 +26,12 @@ export function updateDayStrip() {
   task("day-task-flight", log.flights > 0, log.flights > 1 ? `${log.flights} flights (plan: 1)` : "One flight");
   $("day-task-flight").classList.toggle("over", log.flights > 1);
   task("day-task-science", log.sampled, "Sample science");
-  const sleeping = state.wakeAtDawn && state.hibernating;
+  const sleeping = state.wakeAtMorning && state.hibernating;
   const sampling = state.mission.phase === "sampling" || state.science?.sampling;
   const canSleep = !state.edl && landed(state) && !overLiquid(state.positionX, state.positionZ) && !state.hold && !sampling && state.restSeconds === 0;
   const button = $("day-sleep");
   button.disabled = sleeping || !canSleep;
-  button.textContent = sleeping ? `Sleeping: dawn in ${Math.max(0, hoursUntilDawn(state)).toFixed(0)} h` : "Sleep until dawn";
+  button.textContent = sleeping ? `Sleeping: morning in ${Math.max(0, state.restSeconds / 3600).toFixed(0)} h` : "Sleep until morning";
 }
 
-$("day-sleep").addEventListener("click", () => { if (sleepUntilDawn(state)) updateDayStrip(); });
+$("day-sleep").addEventListener("click", () => { if (sleepUntilMorning(state)) updateDayStrip(); });

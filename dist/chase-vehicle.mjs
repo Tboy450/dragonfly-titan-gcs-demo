@@ -290,6 +290,12 @@ export function createChaseRenderer(options = {}) {
   let width = 0;
   let height = 0;
   let renderView = "";
+  // Where each model's skids touch the ground (craft frame: x right, -z forward), for slopes.
+  const skidFootprints = {
+    research: { halfWidth: 0.75, front: -1.3, rear: 1.02 },
+    original: { halfWidth: 0.77, front: -1.07, rear: 1.17 },
+  };
+
   function setAttitude(state) {
     craft.rotation.set(-state.pitch * model.pitchRadians, -state.heading * Math.PI / 180, -state.roll * model.rollRadians, "YXZ");
     craft.updateMatrix();
@@ -410,10 +416,23 @@ export function createChaseRenderer(options = {}) {
       landscape.setDaylight(sunlight, state.edl?.space || 0);
       const altitude = Math.max(0, state.altitude || 0);
       landscape.setHazeAltitude(state.edl ? altitude : 0);
-      // Aloft, follow the smooth analytic terrain so mesh re-centering never shifts the aircraft;
-      // near touchdown, blend onto the rendered triangles so the skids meet the visible ground.
-      const meshGround = landscape.heightAt(x, z);
+      // Near the ground the vehicle settles onto its skids: the rendered ground under the four skid
+      // ends gives a plane, and the vehicle tilts to match it (fully on the ground, fading out by
+      // 3 m up). Aloft, follow the smooth analytic terrain so mesh re-centering never shifts it.
+      const foot = state.vehicleModel === "original" ? skidFootprints.original : skidFootprints.research;
+      const yaw = craft.rotation.y, cosYaw = Math.cos(yaw), sinYaw = Math.sin(yaw);
+      const footHeight = (side, along) => landscape.heightAt(x + side * cosYaw + along * sinYaw, z - side * sinYaw + along * cosYaw);
+      const left = -foot.halfWidth, right = foot.halfWidth;
+      const frontY = (footHeight(left, foot.front) + footHeight(right, foot.front)) / 2;
+      const rearY = (footHeight(left, foot.rear) + footHeight(right, foot.rear)) / 2;
+      const leftY = (footHeight(left, foot.front) + footHeight(left, foot.rear)) / 2;
+      const rightY = (footHeight(right, foot.front) + footHeight(right, foot.rear)) / 2;
+      const length = foot.rear - foot.front;
+      const meshGround = frontY + (rearY - frontY) * -foot.front / length; // the plane under the craft origin
       const groundY = meshGround + (terrainHeight(x, z) - meshGround) * Math.min(1, altitude / 8);
+      const settle = 1 - Math.min(1, altitude / 3);
+      craft.rotation.x += Math.atan2(frontY - rearY, length) * settle;
+      craft.rotation.z += Math.atan2(rightY - leftY, 2 * foot.halfWidth) * settle;
       craft.position.set(x, groundY + altitude + 0.86, z);
       sun.position.set(x - 65, groundY + 115, z - 45);
       sun.target.position.set(x, groundY, z);

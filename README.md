@@ -187,8 +187,8 @@ Comms shows how long that will take. Results are illustrative examples, not miss
 - **Titan day cycle (time-scaled):** the Mission view's Titan day strip shows the day number,
   local Titan time, a day/night bar and the day's checklist in the real order of operations:
   send data home, one flight, sample science, then night (recharge, seismic and weather work).
-  **Sleep until dawn** fast-forwards the rest of the day and the night in a few seconds, wakes
-  the lander at dawn and posts a morning report. A real Titan day lasts 382.7 hours (about 16
+  **Sleep until morning** fast-forwards the rest of the day and the night in a few seconds,
+  wakes the lander at 08:00 local (after sunrise, so the scene is lit) and posts a morning report. A real Titan day lasts 382.7 hours (about 16
   Earth days) with about one flight per day; here flights, sampling and downlinks play in real
   time and only waiting is compressed. A second flight in one Titan day is allowed but flagged.
 

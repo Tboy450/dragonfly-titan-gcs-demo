@@ -209,3 +209,27 @@ test("The terrain recenters a few rows per frame, and at once after a jump", asy
   landscape.update(1700, -700);
   assert.deepEqual(anchor(), [1600, -800]);
 });
+
+test("On a sloping dune flank the lander settles onto all four skid ends", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { terrainHeight } = await import("../dist/titan-terrain.mjs");
+  const chase = createChaseRenderer({ renderer: fakeRenderer() });
+  for (const [vehicleModel, foot] of [["research", [0.75, -1.3, 1.02]], ["original", [0.77, -1.07, 1.17]]]) {
+    for (const heading of [0, 30, 90, 200]) {
+      // About 11 degrees of slope, about 1.4 km south of the base.
+      const state = { ...createFlightState(), vehicleModel, positionX: 300, positionZ: 1400, altitude: 0, heading, pitch: 0, roll: 0 };
+      chase.draw(context2d, 800, 600, state);
+      const craft = chase.models.research.parent;
+      craft.updateMatrixWorld(true);
+      const [halfWidth, front, rear] = foot;
+      for (const [lx, lz] of [[-halfWidth, front], [halfWidth, front], [-halfWidth, rear], [halfWidth, rear]]) {
+        const end = new THREE.Vector3(lx, -0.86, lz).applyMatrix4(craft.matrixWorld);
+        const gap = end.y - terrainHeight(end.x, end.z);
+        assert.ok(Math.abs(gap) < 0.12, `${vehicleModel} heading ${heading}: skid end ${gap.toFixed(2)} m off the ground`);
+      }
+      const tilt = new THREE.Vector3(0, 1, 0).applyQuaternion(craft.quaternion).angleTo(new THREE.Vector3(0, 1, 0));
+      assert.ok(tilt > 8 * Math.PI / 180, `${vehicleModel} tilts with the slope`);
+    }
+  }
+});

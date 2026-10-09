@@ -14,7 +14,7 @@ import { updatePlanPanel, updatePlanStrip } from "./ui/plan-panel.mjs?v=dev";
 import "./ui/controls.mjs?v=dev";
 import { stepArrival } from "./ui/arrival.mjs?v=dev";
 import { updateSound } from "./ui/sound.mjs?v=dev";
-import { dawnSleepStepSeconds, finishNight, updateDayLog } from "./titan-day.mjs?v=dev";
+import { finishNight, sleepStepSeconds, updateDayLog } from "./titan-day.mjs?v=dev";
 import { updateDayStrip } from "./ui/day-strip.mjs?v=dev";
 
 let readoutTime = 0;
@@ -37,7 +37,7 @@ function tick(now) {
   if (state.edl) {
     stepArrival(dt);
   } else if (state.restSeconds > 0 && !state.hold) {
-    advanceRest(state, state.wakeAtDawn ? dawnSleepStepSeconds : undefined);
+    advanceRest(state, state.wakeAtMorning ? sleepStepSeconds : undefined);
   } else for (let step = 0; step < state.timeWarp; step += 1) stepFlight(state, dt);
   if (!state.edl) { updateDayLog(state); finishNight(state); }
   smoothCameraPose(state, dt);

@@ -31,6 +31,31 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-08: Lander settles onto sloped ground; sleep until morning
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Settle the lander onto sloped ground and wake after sunrise"
+- **What changed:**
+  - Landing angle: near the ground the vehicle now rests on its skids. The rendered ground
+    under the four skid ends defines a plane; the vehicle pitches and rolls to match it (fully
+    on the ground, fading out by 3 m up) and its height follows that plane, so every skid end
+    touches the ground on slopes such as the dune flanks (about 10-12 degrees). Both models,
+    each with its own skid footprint.
+  - Day cycle: "Sleep until dawn" became "Sleep until morning" and wakes at 08:00 local instead
+    of 06:00. At dawn the sun is at the horizon and the scene was nearly black, against the
+    owner's wish to keep the light visible; at 08:00 it is well lit. The operations day still
+    rolls over at 06:00.
+- **Files:** `dist/chase-vehicle.mjs`, `dist/titan-day.mjs`, `dist/ui/day-strip.mjs`,
+  `dist/app.js`, `dist/index.html`, `tests/render-smoke.test.mjs`, `tests/titan-day.test.mjs`,
+  `README.md`
+- **Assumptions:** the skid footprints are taken from each model's own geometry; the 3 m
+  blend and the 08:00 wake-up are simulator choices [EST]. Flight physics is unchanged (only
+  the drawn attitude settles onto the ground).
+- **Checks:** `node --test tests/*.test.mjs` (79 pass; new test: on an 11-degree dune flank all
+  four skid ends of both models are within 12 cm of the ground at four headings, and the
+  vehicle tilts more than 8 degrees; before this change the ends were about 0.2 m off). Frames
+  at phone size, midday, on the flank across and up the slope.
+- **Open / next:** none.
+
 ### 2026-10-08: Archived the paddle rotor blades as an asset
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Archive the paddle rotor blades as an asset"
