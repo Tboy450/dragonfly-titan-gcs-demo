@@ -16,6 +16,7 @@ were never committed).
 | [mountain-basin-map](mountain-basin-map/README.md) | The mountain-basin map around the base | 2026-10-08 | `archive/mountain-basin-map` |
 | [paddle-blades](paddle-blades/README.md) | Flat paddle rotor blades on the NASA model (with OBJ files) | 2026-10-08 | `archive/paddle-blades` |
 | [mission-grid-backdrop](mission-grid-backdrop/README.md) | The Mission diagram's single grid/horizon backdrop | 2026-10-08 | `archive/mission-grid-backdrop` |
+| [airflow-arrows-v1](airflow-arrows-v1/README.md) | First Internal-layer air-flow arrows (one fixed-speed loop) | 2026-10-08 | `archive/airflow-arrows-v1` |
 | [mission-backdrop-drafts](mission-backdrop-drafts/README.md) | Drafts of the new backdrops: cut-off blueprint label, tiled ground seams, true-color thermal where cold parts blend in | 2026-10-08 (never published) | none |
 
 ### Replaced before this rule (in git history only, not yet archived here)

@@ -306,7 +306,9 @@ export function drawMissionBackdropOverlay(ctx, w, h, labels) {
       const text = dimension.text, width = ctx.measureText(text).width + 8;
       // Label at the middle of the line, kept inside the frame.
       const mx = Math.min(w - width / 2 - 6, Math.max(width / 2 + 6, (a.x + b.x) / 2));
-      const my = Math.min(h - 14, Math.max(14, (a.y + b.y) / 2));
+      let my = Math.min(h - 14, Math.max(14, (a.y + b.y) / 2));
+      // Keep clear of the telemetry readouts at the top left (ALT / V/S / SPD).
+      if (mx - width / 2 < 170 && my > 80 && my < 152) my = 160;
       ctx.fillStyle = "rgba(11, 39, 71, 0.9)";
       ctx.fillRect(mx - width / 2, my - 8, width, 16);
       ctx.fillStyle = "rgba(200, 232, 255, 0.95)";

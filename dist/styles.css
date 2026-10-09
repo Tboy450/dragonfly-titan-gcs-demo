@@ -937,6 +937,13 @@ button:disabled { opacity: 0.5; cursor: default; }
 .part-list li em { font: 700 0.78rem Consolas, monospace; font-style: normal; color: var(--green); }
 .mock-banner { margin: 8px 0 0; padding: 8px 10px; border-left: 3px solid var(--amber); background: rgba(255, 180, 87, 0.1); color: #ffd9a8; font-size: 0.82rem; }
 .mock-banner[hidden] { display: none; }
+.airflow-panel { margin: 10px 0 0; padding: 8px 10px; border-left: 3px solid #ff8a3a; background: rgba(255, 138, 58, 0.07); font-size: 0.8rem; }
+.airflow-panel[hidden] { display: none; }
+.airflow-panel h4 { margin: 0 0 6px; font-size: 0.86rem; }
+.airflow-panel h4 small { color: var(--muted); font-weight: 400; }
+.airflow-panel dl { display: grid; gap: 6px; margin: 0; }
+.airflow-panel dt { color: #ffc89a; font-weight: 700; }
+.airflow-panel dd { margin: 2px 0 0; color: #d7e3ec; }
 .part-detail { margin: 8px 0 0; padding: 8px 10px; border-left: 3px solid var(--cyan); background: rgba(124, 231, 255, 0.07); font-size: 0.82rem; }
 body.pilot-view .layer-panel { display: none; }
 .pilot-hud { display: none; }

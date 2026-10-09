@@ -175,7 +175,13 @@ Under the Mission diagram, **Exterior / Internal / Thermal** switches the vehicl
 makes the foam shell see-through and shows the parts NASA's thermal papers describe, placed where
 their figures put them: the cold attic with the sample carousel, DraMS, the battery at the aft
 end, the drive electronics, avionics, radio amplifier, circulation fan, under-floor duct and the
-trim-device chimneys, with arrows following the warm-air loop from the MMRTG. Thermal colors
+trim-device chimneys, with arrows following the warm-air loop from the MMRTG. The loop is live:
+its arrows move with the fan's flow and go from MMRTG-warm to bay-cool; when the trim flaps open,
+a share of the flow (blue) runs through the exposed cold duct in each side chimney, and the flaps
+swing open with the setting. Green dots mark the controller's two temperature inputs (battery and
+MMRTG fin root). A "Warm-air loop" panel under the diagram explains, with live values, how the
+air moves, how it is regulated (trim 0-40% in 2% steps about every 10 minutes) and how it is
+measured. Thermal colors
 every part by its live temperature. Tap a number or a row to see a part's temperature and where
 its placement and value come from. The Pilot view shows the same live battery, temperature,
 flight-time, link and plan readouts in a compact strip.

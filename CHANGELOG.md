@@ -34,6 +34,42 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-08: Realistic air loop in the Internal diagram
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Show how the warm-air loop moves, is regulated and is measured"
+- **What changed:** The owner asked for more realistic airflow: how it moves, how it is regulated
+  and how it is measured. In the Internal layer:
+  - Moves: 40 arrows around the published loop (MMRTG, fan, under-floor duct, nose, bay), their
+    speed following the modeled flow (0.052 kg/s x fan setting x fan health) and their color going
+    from MMRTG-warm to bay-cool; slowed for viewing.
+  - Regulated: when the trim device opens, up to 10 arrows per side take the cold-duct bypass
+    through each side chimney and turn blue; the foam-covered flaps swing open with the trim
+    setting (40% flow at about 24 degrees [EST], near the 23.7 degrees of the 2024 test [PUB]).
+  - Measured: two green sensor dots, the battery temperature and the MMRTG fin-root temperature,
+    the published controller inputs, are new numbered parts with live temperatures.
+  - Arrows are drawn over the parts so the paths through boxes and chimneys stay visible.
+  - A live "Warm-air loop" panel under the diagram: flow, MMRTG gas and bay temperatures, duct
+    gas speed (~4 m/s, estimated from the modeled duct section), trim share and heat dumped, the
+    next controller adjustment, and an honest note that Dragonfly uses two alternating
+    controllers while this simulator uses one simplified loop; plus the ground test's 203
+    thermocouples and 15 air-velocity sensors.
+  - The blueprint's "1.75 m" label now stays clear of the telemetry readouts.
+  - Archived first (house rule 6): `archive/airflow-arrows-v1/`, tag `archive/airflow-arrows-v1`
+    (commit c6a7f07).
+- **Files:** `dist/vehicle-research.mjs`, `dist/chase-vehicle.mjs`, `dist/ui/layers-panel.mjs`,
+  `dist/ui/mission-backdrop.mjs`, `dist/index.html`, `dist/styles.css`,
+  `tests/render-smoke.test.mjs`, `archive/airflow-arrows-v1/` (new), `archive/README.md`,
+  `README.md`
+- **Assumptions:** loop route, flow rate, trim range and steps, controller inputs and test
+  instrumentation are published [PUB]; the bypass path, flap-angle mapping, sensor placement,
+  duct gas speed and arrow look are estimates [EST].
+- **Checks:** `node --test tests/*.test.mjs` (86 pass; new test: no cold-duct arrows with the
+  flaps closed, ten per side and a 24-degree flap fully open, no loop with the fan stopped).
+  Browser at 1280x800: arrows over the parts, blue bypass at 30% trim, live panel text; no
+  console errors.
+- **Open / next:** the owner's "Reverse (sim)" brake, Titan weather and first expedition are on
+  the unmerged GitHub branch `tboy450-project-improvement-priorities` (GitHub Copilot, Oct 4).
+
 ### 2026-10-08: Archived the Mission backdrop drafts
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Archive the Mission backdrop drafts"

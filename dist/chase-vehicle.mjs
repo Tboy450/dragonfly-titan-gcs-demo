@@ -350,7 +350,7 @@ export function createChaseRenderer(options = {}) {
         classicModel.visible = which === "original";
         craft.rotation.set(0, Math.PI / 2, 0);
         craft.updateMatrixWorld(true);
-        poseAirflow(state.missionTime || 0);
+        poseAirflow(state.missionTime || 0, state);
         trails.forEach((material) => { material.opacity = 0; }); // no rotor blur over the diagram
         rotorDiscMaterial.opacity = 0;
       }
