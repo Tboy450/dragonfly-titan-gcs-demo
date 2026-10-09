@@ -43,6 +43,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/science.mjs` | Instruments: DragonCam data, DraGMet log and seismometer, DraGNS counting, DrACO/DraMS sampling, ground types |
 | `dist/edl.mjs` | Arrival (entry, descent, landing) timeline from the published EDL figure |
 | `dist/titan-day.mjs` | Time-scaled Titan day cycle: day number, phase, the day's checklist, sleep until dawn and the morning report |
+| `dist/downwash.mjs` | Rotor wash at the ground: wash speed and dust strength from rotor speed, height, climb, forward speed and ground kind |
 | `dist/sound-mix.mjs` | Pure mapping from the state to sound levels and pitches (testable without audio) |
 | `dist/thermal-scale.mjs` | Temperature color scale shared by the thermal layer and its legend |
 | `dist/flight-camera.mjs` | Chase-camera pose and smoothing |
@@ -53,6 +54,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 |---|---|
 | `dist/chase-vehicle.mjs` | Renderer, lights, the original demo model and its labeled mock-up interior, shared part helpers, Mission-view layers (exterior / internal / thermal) for whichever model is selected, `draw()` for the Pilot view and `drawMission()` for the Mission diagram |
 | `dist/vehicle-research.mjs` | The NASA/APL 2023 design (with its own twisted rotor blades, hub caps and rotor blur discs) and its interior, grouped into named subsystems tagged with a thermal zone, label and source. The drawing-to-model mapping (327 px/m from the TFAWS 2023 top view) is in its comments |
+| `dist/downwash-dust.mjs` | Rotor-wash dust sprites near the ground (flight view; a child of the landscape group) |
 | `dist/arrival-hardware.mjs` | Aeroshell, heat shield, parachutes, bridles and descent effects (plasma, sparks, haze wisps, smoke, dust) for the arrival sequence |
 | `dist/titan-terrain.mjs` | Ahmakiq Undae dunes, interdunes and hills (with far level of detail and progressive recentering), dune-sand shading, sky, fog and arrival sky dome, damp ground, the puddle, landing-site rings |
 

@@ -6,6 +6,7 @@ import { missionTarget, systemsModel, thermalZoneTemps } from "./mission-systems
 import { thermalRgb, thermalRanges } from "./thermal-scale.mjs?v=dev";
 import { buildResearchModel } from "./vehicle-research.mjs?v=dev";
 import { createArrivalHardware } from "./arrival-hardware.mjs?v=dev";
+import { createDownwashDust } from "./downwash-dust.mjs?v=dev";
 
 // options.renderer lets tests drive the full scene without a GPU.
 export function createChaseRenderer(options = {}) {
@@ -19,6 +20,8 @@ export function createChaseRenderer(options = {}) {
   const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 12000);
   const missionCamera = new THREE.OrthographicCamera(-4, 4, 3, -3, 0.1, 30);
   const landscape = createTitanTerrain(scene, renderer);
+  // Rotor-wash dust near the ground (a child of the landscape, so the Mission diagram hides it).
+  const downwashDust = createDownwashDust(landscape.group, landscape.heightAt);
   const craft = new THREE.Group();
   scene.add(craft);
   // Titan: surface light is ~1/1,000 of Earth's, mostly haze-scattered and red/orange, so the sky
@@ -312,7 +315,7 @@ export function createChaseRenderer(options = {}) {
   }
   return {
     models: { original: classicModel, research: researchModel },
-    subsystems, mockParts,
+    subsystems, mockParts, downwashDust,
     // view.layer: "exterior" (default), "internal" or "thermal"; view.range: a thermalRanges entry.
     // Returns the on-screen position of each labeled part for the layer's callouts.
     drawMission(ctx, w, h, state, view = {}) {
@@ -458,6 +461,7 @@ export function createChaseRenderer(options = {}) {
       camera.lookAt(lookAt);
       landscape.setSkyDome(state.edl ? camera.position : null);
       poseArrival(state.edl, camera.position);
+      downwashDust.update(state, craft.position, camera.position);
       renderer.render(scene, camera);
       ctx.drawImage(renderer.domElement, 0, 0, w, h);
     },

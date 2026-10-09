@@ -34,6 +34,36 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-08: Rotor-wash dust and Titan acoustics
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add rotor-wash dust and Titan acoustics"
+- **What changed:**
+  - Dust: the owner asked for landing dust when close to the ground with the throttle up. Hover
+    wash at the ground is about 4.4 m/s [CALC: sqrt(W / 2 rho A) from the published mass,
+    gravity, density and rotor size]; sand moves above about 1 m/s. Dust strength follows
+    rotor speed, fades to zero by about 6 m up, grows with a hard climb, is swept behind in fast
+    flight, and depends on the ground (dune 1.3, interdune 1, outcrop 0.4, damp 0.2, puddle 0).
+    Up to 48 soft sprites roll outward, rise and fade, staying where they were raised; dust
+    between the camera and the vehicle is kept thin. The arrival's touchdown dust is unchanged
+    (nothing replaced, so nothing to archive).
+  - Acoustics, after the owner asked whether Titan would change the sound: speed of sound 194 m/s
+    at the surface [PUB, Huygens Surface Science Package], so arrival thumps are delayed by
+    camera distance / 194 m/s (about 0.6-1 s at 120-190 m); wind noise weighted by Titan's air
+    density (dynamic pressure); a sand hiss with the rotor-wash dust. Pitches set by rotation
+    are unchanged. The ~2.5x sound pressure from denser air (+8 dB) is documented but levels
+    stay artistic.
+- **Files:** `dist/downwash.mjs` (new), `dist/downwash-dust.mjs` (new), `dist/chase-vehicle.mjs`,
+  `dist/sound-mix.mjs`, `dist/ui/sound.mjs`, `tests/downwash.test.mjs` (new),
+  `tests/sound.test.mjs`, `tests/render-smoke.test.mjs`, `README.md`, `ARCHITECTURE.md`
+- **Assumptions:** the 6 m reach, the 1 m/s sand threshold (order of the published Titan
+  threshold wind), the ground factors, particle counts and look are estimates [EST].
+- **Checks:** `node --test tests/*.test.mjs` (84 pass; new tests for the hover wash value, dust
+  only near the ground with the rotors working, more with throttle and climb, less in fast flight,
+  ground kinds, dust appearing and clearing in the renderer, the 194 m/s thump delay, density-
+  weighted wind and the dust hiss). Browser at phone size: dust when hovering at 1.5 m on the
+  interdune and on a dune, none at 30 m; no console errors.
+- **Open / next:** the owner asked for ideas for the Mission diagram backgrounds.
+
 ### 2026-10-08: House rule: archive replaced work
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add the archive-everything house rule"

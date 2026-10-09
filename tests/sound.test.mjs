@@ -25,3 +25,18 @@ test("The arrival roars during entry, flutters under the parachutes and thumps o
   assert.equal(soundMix({ rotorRpm: [], edl: edlStateAt(at("Main parachute") + 0.05) }).thump, "main");
   assert.equal(soundMix({ rotorRpm: [], edl: edlStateAt(at("Main parachute") + 0.5) }).thump, null);
 });
+
+test("Titan's air: thumps arrive at 194 m/s, wind is weighted by density, the wash hisses", async () => {
+  const { titanSoundSpeed } = await import("../dist/sound-mix.mjs");
+  const at = (title) => edlEvents.find(e => e.title === title).t;
+  const main = edlStateAt(at("Main parachute") + 0.05);
+  const mix = soundMix({ rotorRpm: [], edl: main });
+  assert.ok(Math.abs(mix.thumpDelayS - main.cameraDistance / titanSoundSpeed) < 1e-9);
+  assert.ok(mix.thumpDelayS > 0.5, `heard ${mix.thumpDelayS.toFixed(2)} s after it is seen`);
+  const calm = soundMix({ rotorRpm: [], wind: 0.5, speed: 0, edl: null });
+  const breeze = soundMix({ rotorRpm: [], wind: 1.6, speed: 0, edl: null });
+  assert.ok(breeze.windGain > calm.windGain);
+  const hover = soundMix({ rotorRpm: Array(8).fill(780), altitude: 1, speed: 0, verticalSpeed: 0, edl: null });
+  const high = soundMix({ rotorRpm: Array(8).fill(780), altitude: 30, speed: 0, verticalSpeed: 0, edl: null });
+  assert.ok(hover.dustGain > 0.04 && high.dustGain === 0);
+});

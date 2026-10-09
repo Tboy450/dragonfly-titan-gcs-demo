@@ -96,6 +96,25 @@ audio files: the rotors' low chop at the blade-pass frequency (rpm / 60 x 3 blad
 arrival the entry roar, parachute flutter and a thump at each separation. Pitches follow the
 simulation; levels and textures are artistic. Sound pauses when the page is hidden.
 
+**Sound on Titan.** The Huygens probe measured the speed of sound at the surface at about
+194 m/s (Earth: 343 m/s), so sound takes about 1.8 times longer to arrive: in the arrival the
+separation thumps are heard up to about a second after you see them, depending on how far the
+camera is. Titan's air is 4.4 times denser than Earth's, so the same vibrating part radiates
+about 2.5 times the sound pressure (about +8 dB), and wind of a given speed is noisier; the wind
+sound is weighted for that. Pitches set by rotation (rotor chop, motor whine) are the same as on
+Earth; pitches set by air resonance (voices, pipes) would drop to about 0.57 times, but none are
+simulated. A sand hiss joins in when the rotor wash raises dust.
+
+## Rotor-Wash Dust
+
+Near the ground the rotor wash lifts sand. In hover the wash is about 4.4 m/s, calculated from
+the published mass, Titan's gravity and air density and the rotor size, and sand starts moving
+at about 1 m/s. Dust appears when the rotors are working within about 6 m of the ground: more
+with more throttle or a hard climb, swept behind in fast forward flight. It rolls outward from
+under the rotors, rises and fades, and stays where it was raised as the vehicle moves on. Dune
+sand gives the most, the rain-dampened ground and the icy outcrop much less, the puddle none.
+The arrival keeps its own touchdown dust. Reach, rates and the look are estimates.
+
 ## Vehicle Model
 
 The default 3D model follows the NASA/APL 2023 design drawings: long insulated fuselage,

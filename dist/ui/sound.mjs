@@ -77,9 +77,14 @@ function buildAudio() {
   const flutterDepth = gain(0.5);
   flutterRate.connect(flutterDepth).connect(flutterPulse.gain);
   flutterRate.start();
+  // Sand hiss from the rotor wash near the ground.
+  const dustFilter = filter("bandpass", 2600, 0.6);
+  const dustGain = gain();
+  noiseSource(ctx, noise).connect(dustFilter).connect(dustGain).connect(master);
 
-  function thump(kind) {
-    const now = ctx.currentTime;
+  // delay: seconds for the sound to reach the camera through Titan's air (see sound-mix.mjs).
+  function thump(kind, delay = 0) {
+    const now = ctx.currentTime + delay;
     const strength = kind === "drogue" || kind === "main" ? 0.9 : 0.55;
     const body = ctx.createOscillator();
     body.frequency.setValueAtTime(90, now);
@@ -115,6 +120,7 @@ function buildAudio() {
       roarGain.gain.setTargetAtTime(mix.roarGain, at, 0.15);
       flutterRate.frequency.setTargetAtTime(mix.flutterHz, at, 0.2);
       flutterGain.gain.setTargetAtTime(mix.flutterGain, at, 0.2);
+      dustGain.gain.setTargetAtTime(mix.dustGain, at, 0.2);
     },
     thump,
   };
@@ -159,6 +165,6 @@ export function updateSound() {
   if (!enabled || !audio || audio.ctx.state !== "running") return;
   const mix = soundMix(state);
   audio.update(mix);
-  if (mix.thump && mix.thump !== lastThump) audio.thump(mix.thump);
+  if (mix.thump && mix.thump !== lastThump) audio.thump(mix.thump, mix.thumpDelayS);
   lastThump = mix.thump;
 }

@@ -233,3 +233,15 @@ test("On a sloping dune flank the lander settles onto all four skid ends", async
     }
   }
 });
+
+test("Rotor-wash dust appears when hovering low and clears when high", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const chase = createChaseRenderer({ renderer: fakeRenderer() });
+  const state = { ...createFlightState(), vehicleModel: "research", positionX: 0, positionZ: 0, altitude: 1.5, heading: 0, rotorRpm: Array(8).fill(780), missionTime: 0 };
+  for (let frame = 0; frame < 40; frame++) { state.missionTime += 0.05; chase.draw(context2d, 800, 600, state); }
+  assert.ok(chase.downwashDust.activeCount() > 20, `${chase.downwashDust.activeCount()} dust puffs`);
+  state.altitude = 40;
+  for (let frame = 0; frame < 120; frame++) { state.missionTime += 0.05; chase.draw(context2d, 800, 600, state); }
+  assert.equal(chase.downwashDust.activeCount(), 0);
+});
