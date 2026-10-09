@@ -2,7 +2,7 @@
 import { model } from "../flight-model.mjs?v=dev";
 import { thermalRanges } from "../thermal-scale.mjs?v=dev";
 import { $, chaseRenderer, clamp, flightCanvas, state } from "./context.mjs?v=dev";
-import { drawMissionBackdrop, drawMissionBackdropOverlay } from "./mission-backdrop.mjs?v=dev";
+import { backdropInk, drawMissionBackdrop, drawMissionBackdropOverlay } from "./mission-backdrop.mjs?v=dev";
 
 const flightCtx = flightCanvas.getContext("2d");
 
@@ -481,7 +481,7 @@ function drawPartMarkers(ctx, labels) {
     ctx.textBaseline = "alphabetic";
     ctx.font = "800 13px Inter, Arial, sans-serif";
     ctx.fillStyle = "rgba(255, 180, 87, 0.95)";
-    ctx.fillText("MOCK-UP: original demo model, not the real layout", 14, ctx.canvas.height / (window.devicePixelRatio || 1) - 14);
+    ctx.fillText("MOCK-UP: original demo model, not the real layout", 14, ctx.canvas.height / (window.devicePixelRatio || 1) - 58);
   }
   ctx.restore();
 }
@@ -694,11 +694,13 @@ function roundRect(ctx, x, y, width, height, radius) {
 
 function drawHud(ctx, w, h) {
   ctx.save();
-  // A dark halo keeps the readouts legible on light backdrops (the clean room).
-  ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+  // Readout colors follow the backdrop (dark on light grounds, yellow in the yellow modes), with a
+  // contrasting halo.
+  const colors = backdropInk();
+  ctx.shadowColor = colors.halo;
   ctx.shadowBlur = 4;
   ctx.font = "700 12px SFMono-Regular, Consolas, monospace";
-  ctx.fillStyle = "rgba(223, 239, 255, 0.86)";
+  ctx.fillStyle = colors.text;
   ctx.strokeStyle = "rgba(124, 231, 255, 0.55)";
   ctx.lineWidth = 1;
   const centerX = w / 2;

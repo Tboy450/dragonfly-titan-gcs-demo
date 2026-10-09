@@ -17,3 +17,10 @@ for (let x = -tile * 0.2; x < w; x += tile) {
 //    used the thermal scale's exact color for -179 C, so every part at air temperature (rotors,
 //    arms, skids, fins) blended into it. In drawThermalAir():
 const dim = 1; // published: 0.55
+
+// 4. Thermal yellow-grid draft (2026-10-09): thin, faint lines. In mission-backdrop.mjs:
+const paintThermalDark = gridPaper("#050607", "#0d0f11", "rgba(255, 210, 40, 0.07)", "rgba(255, 210, 40, 0.22)");
+// (gridPaper then drew every line 1 px wide.)
+
+// 5. Light-grey thermal draft: the telemetry kept its white text, which washed out. In drawHud():
+ctx.fillStyle = "rgba(223, 239, 255, 0.86)"; // published: backdropInk().text (dark on light grey)

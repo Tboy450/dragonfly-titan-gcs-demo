@@ -195,9 +195,13 @@ buttons at the bottom left of the diagram: (a) the Titan landing area seen from 
 Huygens-image ground, icy pebbles and a dune at the far edge; (b) an assembly clean room, where
 Dragonfly is being built in 2026; (c) a Titan-and-Saturn poster (Saturn cannot be seen through
 the haze from the surface). **Internal** is an engineering blueprint with dimension lines for the
-published 3.85 x 3.85 x 1.75 m envelope and a title block. **Thermal** fills the background with
-the thermal scale's color for Titan's -179 C air, dimmed so parts at air temperature stay
-visible, with cold air drifting past.
+published 3.85 x 3.85 x 1.75 m envelope and a title block; **b** turns it into a black sheet
+with a yellow grid and yellow dimensions, title and readouts. **Thermal** offers (a) Titan's
+-179 C air in the thermal scale's own color, dimmed so parts at air temperature stay visible,
+(b) light grey with a dark grid, like NASA's published thermal-model figures (the default: the
+cold blue parts stand out), and (c) black with a yellow grid. The same a / b / c buttons switch
+the backdrop in every layer, and each layer remembers its choice. Readouts turn dark on light
+backdrops and yellow in the yellow modes.
 
 ## Science Instruments
 

@@ -1,9 +1,12 @@
 // Backdrops behind the Mission view's vehicle diagram, one per layer:
 // - Exterior: a choice of (a) the Titan landing area, (b) an assembly clean room, where Dragonfly is
 //   being built in 2026, or (c) a Titan-and-Saturn poster, picked with the a/b/c buttons.
-// - Internal: an engineering blueprint with the published envelope dimensions.
-// - Thermal: Titan's -179 C air in the thermal scale's own color (dimmed so parts at air
-//   temperature stay visible), with cold air drifting past.
+// - Internal, picked with a / b: (a) an engineering blueprint, (b) black with a yellow grid and
+//   yellow text; both with the published envelope dimensions.
+// - Thermal, also picked with a / b / c: (a) Titan's -179 C air in the thermal scale's own color
+//   (dimmed so parts at air temperature stay visible), (b) light grey with a dark grid, like NASA's
+//   published thermal-model figures (the default: cold blue parts stand out), (c) black with a
+//   yellow grid.
 // The previous single backdrop is archived in archive/mission-grid-backdrop.
 import { systemsModel } from "../mission-systems.mjs?v=dev";
 import { thermalRanges, thermalRgb } from "../thermal-scale.mjs?v=dev";
@@ -15,8 +18,25 @@ export const exteriorBackdrops = Object.freeze([
   { id: "cleanroom", letter: "b", name: "Assembly clean room" },
   { id: "saturn", letter: "c", name: "Titan and Saturn poster (Saturn is hidden by haze from the surface)" },
 ]);
-let exterior = "titan";
-try { const saved = localStorage.getItem(PREF_KEY); if (exteriorBackdrops.some(b => b.id === saved)) exterior = saved; } catch { /* optional */ }
+export const thermalBackdrops = Object.freeze([
+  { id: "air", letter: "a", name: "Titan air, -179 C" },
+  { id: "light", letter: "b", name: "Light grey, like NASA's thermal figures" },
+  { id: "dark", letter: "c", name: "Black with a yellow grid" },
+]);
+export const internalBackdrops = Object.freeze([
+  { id: "blueprint", letter: "a", name: "Blueprint" },
+  { id: "yellow", letter: "b", name: "Black with yellow grid and text" },
+]);
+const THERMAL_PREF_KEY = "dragonfly-thermal-backdrop", INTERNAL_PREF_KEY = "dragonfly-internal-backdrop";
+let exterior = "titan", thermal = "light", internal = "blueprint";
+try {
+  const saved = localStorage.getItem(PREF_KEY);
+  if (exteriorBackdrops.some(b => b.id === saved)) exterior = saved;
+  const savedThermal = localStorage.getItem(THERMAL_PREF_KEY);
+  if (thermalBackdrops.some(b => b.id === savedThermal)) thermal = savedThermal;
+  const savedInternal = localStorage.getItem(INTERNAL_PREF_KEY);
+  if (internalBackdrops.some(b => b.id === savedInternal)) internal = savedInternal;
+} catch { /* optional */ }
 
 const groundImage = new Image();
 groundImage.decoding = "async";
@@ -268,13 +288,59 @@ function drawThermalAir(ctx, w, h) {
   vignette(ctx, w, h, 0.4);
 }
 
-const painters = { titan: paintTitan, cleanroom: paintCleanroom, saturn: paintSaturn, blueprint: paintBlueprint };
+// Plain drafting grids for the Thermal layer, so every color on the scale stands out.
+// lines: [spacing px, color, width px]; frame: optional border color.
+function gridPaper(base, top, lines, frame) {
+  return (c, w, h) => {
+    const paper = c.createLinearGradient(0, 0, 0, h);
+    paper.addColorStop(0, top);
+    paper.addColorStop(1, base);
+    c.fillStyle = paper;
+    c.fillRect(0, 0, w, h);
+    for (const [spacing, color, width] of lines) {
+      c.strokeStyle = color;
+      c.lineWidth = width;
+      const offset = width % 2 ? 0.5 : 0;
+      for (let x = (w / 2) % spacing; x < w; x += spacing) { c.beginPath(); c.moveTo(x + offset, 0); c.lineTo(x + offset, h); c.stroke(); }
+      for (let y = (h / 2) % spacing; y < h; y += spacing) { c.beginPath(); c.moveTo(0, y + offset); c.lineTo(w, y + offset); c.stroke(); }
+    }
+    if (frame) {
+      c.strokeStyle = frame;
+      c.lineWidth = 2;
+      c.strokeRect(8, 8, w - 16, h - 16);
+    }
+  };
+}
+const yellowLines = [[12, "rgba(255, 210, 40, 0.2)", 1], [60, "rgba(255, 210, 40, 0.6)", 2]];
+const paintThermalLight = gridPaper("#c4c9cd", "#dde0e3", [[12, "rgba(20, 24, 28, 0.08)", 1], [60, "rgba(20, 24, 28, 0.24)", 1.5]]);
+const paintThermalDark = gridPaper("#050607", "#0d0f11", yellowLines);
+const paintInternalYellow = gridPaper("#050607", "#0d0f11", yellowLines, "rgba(255, 210, 40, 0.8)");
+
+// Text and line colors for the readouts and drawing marks on each backdrop.
+const ink = {
+  light: { text: "rgba(18, 24, 30, 0.92)", halo: "rgba(255, 255, 255, 0.75)", line: "rgba(18, 24, 30, 0.7)", box: "rgba(226, 230, 233, 0.9)" },
+  yellow: { text: "rgba(255, 214, 48, 0.98)", halo: "rgba(0, 0, 0, 0.9)", line: "rgba(255, 214, 48, 0.95)", box: "rgba(6, 7, 8, 0.92)" },
+  blue: { text: "rgba(210, 236, 255, 0.95)", halo: "rgba(0, 0, 0, 0.8)", line: "rgba(200, 232, 255, 0.85)", box: "rgba(11, 39, 71, 0.9)" },
+  default: { text: "rgba(223, 239, 255, 0.86)", halo: "rgba(0, 0, 0, 0.8)", line: "rgba(200, 232, 255, 0.85)", box: "rgba(11, 39, 71, 0.9)" },
+};
+// Colors for the current backdrop: light (clean room, light grey), yellow (yellow modes), blue (blueprint).
+export function backdropInk() {
+  const layer = state.missionLayer;
+  if (layer === "internal") return internal === "yellow" ? ink.yellow : ink.blue;
+  if (layer === "thermal") return thermal === "light" ? ink.light : thermal === "dark" ? ink.yellow : ink.default;
+  return exterior === "cleanroom" ? ink.light : ink.default;
+}
+
+const painters = {
+  titan: paintTitan, cleanroom: paintCleanroom, saturn: paintSaturn, blueprint: paintBlueprint,
+  "thermal-light": paintThermalLight, "thermal-dark": paintThermalDark, "internal-yellow": paintInternalYellow,
+};
 
 // Behind the vehicle (called before the diagram is drawn).
 export function drawMissionBackdrop(ctx, w, h) {
   const layer = state.missionLayer;
-  if (layer === "thermal") { drawThermalAir(ctx, w, h); return; }
-  const kind = layer === "internal" ? "blueprint" : exterior;
+  if (layer === "thermal" && thermal === "air") { drawThermalAir(ctx, w, h); return; }
+  const kind = layer === "thermal" ? `thermal-${thermal}` : layer === "internal" ? (internal === "yellow" ? "internal-yellow" : "blueprint") : exterior;
   ctx.drawImage(cached(kind, w, h, painters[kind]), 0, 0, w, h);
 }
 
@@ -293,9 +359,10 @@ export function drawMissionBackdropOverlay(ctx, w, h, labels) {
   const layer = state.missionLayer;
   ctx.save();
   if (layer === "internal" && state.vehicleModel !== "original") {
-    ctx.strokeStyle = "rgba(200, 232, 255, 0.85)";
-    ctx.fillStyle = "rgba(200, 232, 255, 0.95)";
-    ctx.lineWidth = 1;
+    const colors = backdropInk();
+    ctx.strokeStyle = colors.line;
+    ctx.fillStyle = colors.line;
+    ctx.lineWidth = internal === "yellow" ? 1.5 : 1;
     for (const dimension of labels?.dimensions || []) {
       for (const [p, q] of dimension.extensions) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke(); }
       const { a, b } = dimension;
@@ -309,51 +376,70 @@ export function drawMissionBackdropOverlay(ctx, w, h, labels) {
       let my = Math.min(h - 14, Math.max(14, (a.y + b.y) / 2));
       // Keep clear of the telemetry readouts at the top left (ALT / V/S / SPD).
       if (mx - width / 2 < 170 && my > 80 && my < 152) my = 160;
-      ctx.fillStyle = "rgba(11, 39, 71, 0.9)";
+      ctx.fillStyle = colors.box;
       ctx.fillRect(mx - width / 2, my - 8, width, 16);
-      ctx.fillStyle = "rgba(200, 232, 255, 0.95)";
+      ctx.fillStyle = colors.text;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(text, mx, my);
+      ctx.fillStyle = colors.line;
     }
-    // Title block, bottom left.
+    // Title block, bottom left, above the a / b picker.
     const lines = ["DRAGONFLY ROTORCRAFT LANDER", "Internal arrangement, 2023 configuration", "Nose left / units m / illustrative", "Envelope 3.85 x 3.85 x 1.75 m (published)"];
     ctx.font = "700 10px SFMono-Regular, Consolas, monospace";
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
     const boxW = Math.max(...lines.map(text => ctx.measureText(text).width)) + 16, boxH = lines.length * 14 + 10;
-    const x = 14, y = h - 14 - boxH;
-    ctx.fillStyle = "rgba(11, 39, 71, 0.85)";
+    const x = 14, y = h - 58 - boxH;
+    ctx.fillStyle = colors.box;
     ctx.fillRect(x, y, boxW, boxH);
-    ctx.strokeStyle = "rgba(190, 225, 255, 0.6)";
+    ctx.strokeStyle = colors.line;
     ctx.strokeRect(x + 0.5, y + 0.5, boxW, boxH);
-    ctx.fillStyle = "rgba(210, 236, 255, 0.95)";
+    ctx.fillStyle = colors.text;
     lines.forEach((text, index) => ctx.fillText(text, x + 8, y + 18 + index * 14));
-  } else if (layer === "thermal") {
+  } else if (layer === "thermal" && thermal === "air") {
+    // Above the a / b / c picker.
     ctx.font = "700 11px Inter, Arial, sans-serif";
     ctx.fillStyle = "rgba(220, 230, 255, 0.85)";
     ctx.textAlign = "left";
-    ctx.fillText(`Background: Titan air ${Math.round(systemsModel.ambientC)} C (dimmed so parts at air temperature stay visible)`, 14, h - 34);
+    ctx.fillText(`Background: Titan air ${Math.round(systemsModel.ambientC)} C (dimmed so parts at air temperature stay visible)`, 14, h - 58);
   }
   ctx.restore();
 }
 
-// a / b / c picker for the Exterior backdrop (bottom left of the vehicle view).
+// a / b / c picker for the Exterior and Thermal backdrops (bottom left of the vehicle view).
 function showPicker() {
   const picker = $("backdrop-picker");
-  picker.hidden = state.view !== "mission" || state.missionLayer !== "exterior";
-  for (const button of picker.querySelectorAll("[data-backdrop]")) {
-    const pressed = button.dataset.backdrop === exterior;
-    button.setAttribute("aria-pressed", String(pressed));
-  }
-  $("backdrop-name").textContent = exteriorBackdrops.find(b => b.id === exterior).name.replace(/ \(.*\)$/, "");
+  const layer = state.missionLayer;
+  picker.hidden = state.view !== "mission";
+  if (picker.hidden) return;
+  const choices = layer === "thermal" ? thermalBackdrops : layer === "internal" ? internalBackdrops : exteriorBackdrops;
+  const current = layer === "thermal" ? thermal : layer === "internal" ? internal : exterior;
+  picker.setAttribute("aria-label", `${layer[0].toUpperCase()}${layer.slice(1)} background`);
+  picker.querySelectorAll("[data-choice]").forEach((button, index) => {
+    const choice = choices[index];
+    button.hidden = !choice;
+    if (!choice) return;
+    button.setAttribute("aria-pressed", String(choice.id === current));
+    button.title = `${choice.letter}: ${choice.name}`;
+  });
+  $("backdrop-name").textContent = choices.find(b => b.id === current).name.replace(/ \(.*\)$/, "");
 }
 
-for (const button of $("backdrop-picker").querySelectorAll("[data-backdrop]")) {
+$("backdrop-picker").querySelectorAll("[data-choice]").forEach((button, index) => {
   button.addEventListener("click", () => {
-    exterior = button.dataset.backdrop;
-    try { localStorage.setItem(PREF_KEY, exterior); } catch { /* optional */ }
+    if (state.missionLayer === "thermal") {
+      thermal = thermalBackdrops[index].id;
+      try { localStorage.setItem(THERMAL_PREF_KEY, thermal); } catch { /* optional */ }
+    } else if (state.missionLayer === "internal") {
+      if (!internalBackdrops[index]) return;
+      internal = internalBackdrops[index].id;
+      try { localStorage.setItem(INTERNAL_PREF_KEY, internal); } catch { /* optional */ }
+    } else {
+      exterior = exteriorBackdrops[index].id;
+      try { localStorage.setItem(PREF_KEY, exterior); } catch { /* optional */ }
+    }
     showPicker();
   });
-}
+});
 export const updateBackdropPicker = showPicker;

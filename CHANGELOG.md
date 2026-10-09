@@ -34,6 +34,32 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-09: Thermal and Internal backdrop choices (light grey, yellow grid)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add light-grey and yellow-grid backdrops for Thermal and Internal"
+- **What changed:** The owner noted that cold (blue) parts are hard to see on the thermal
+  background, and that recoloring them would misstate their temperature. Instead:
+  - Thermal gets the a / b / c picker: (a) Titan air (the previous one), (b) light grey with a
+    dark grid, the style of NASA's published thermal-model figures, now the default, (c) black
+    with a yellow grid, made thicker and brighter at the owner's request (1 px at 20% and 2 px at
+    60% instead of 1 px at 7% and 22%).
+  - Internal gets a / b: (a) the blueprint, (b) black with a yellow grid and yellow dimension
+    lines, labels, title block and readouts.
+  - Readouts (ALT, V/S, SPD, ROLL, PITCH, WIND) take their colors from the backdrop: dark with a
+    light halo on light grounds (light grey, clean room), yellow in the yellow modes.
+  - The picker shows in every layer, hides its third button where there are two choices, and
+    each layer remembers its choice. The title block and the mock-up note moved up above it.
+  - Nothing published was replaced (Titan air stays as option a). The two unpublished drafts
+    (faint yellow grid, white text on light grey) were archived in
+    `archive/mission-backdrop-drafts/` with pictures and code.
+- **Files:** `dist/ui/mission-backdrop.mjs`, `dist/ui/flight-view.mjs`, `dist/index.html`,
+  `dist/styles.css`, `archive/mission-backdrop-drafts/`, `archive/README.md`, `README.md`
+- **Checks:** `node --test tests/*.test.mjs` (86 pass). At 1280x800: Thermal b and c and
+  Internal b render with readable readouts; the Internal picker shows a / b only; no console
+  errors.
+- **Open / next:** the "Reverse (sim)" brake, Titan weather and first expedition still wait on the
+  unmerged branch `tboy450-project-improvement-priorities`.
+
 ### 2026-10-08: Realistic air loop in the Internal diagram
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Show how the warm-air loop moves, is regulated and is measured"
