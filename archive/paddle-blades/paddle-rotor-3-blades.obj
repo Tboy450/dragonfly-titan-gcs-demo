@@ -1,0 +1,27 @@
+# Dragonfly Titan Simulator: archived flat paddle rotor blade (NASA model, until 2026-10-08).
+# Units: metres. Y is up; the blade lies flat in the rotor plane (no thickness, no twist).
+# Radius 0.0675 to 0.675 m from the hub axis; scaled for the published 1.35 m rotor.
+# Original shape in dist/chase-vehicle.mjs (still used by the original demo model).
+# Three blades 120 degrees apart, as on each of the eight rotors.
+o paddle_rotor
+g blade_1
+v 0.06750 0.00000 0.05304
+v 0.66536 0.00000 0.02411
+v 0.67500 0.00000 -0.01929
+v 0.16393 0.00000 -0.11089
+f 1 2 3 4
+f 4 3 2 1
+g blade_2
+v 0.01218 0.00000 -0.08497
+v -0.31180 0.00000 -0.58827
+v -0.35420 0.00000 -0.57492
+v -0.17800 0.00000 -0.08652
+f 5 6 7 8
+f 8 7 6 5
+g blade_3
+v -0.07968 0.00000 0.03194
+v -0.35356 0.00000 0.56416
+v -0.32080 0.00000 0.59421
+v 0.01407 0.00000 0.19741
+f 9 10 11 12
+f 12 11 10 9

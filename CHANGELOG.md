@@ -31,6 +31,18 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-08: Archived the paddle rotor blades as an asset
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Archive the paddle rotor blades as an asset"
+- **What changed:** At the owner's request, the NASA model's former flat "paddle" blades are
+  archived next to the old terrain: `archive/paddle-blades/` with the blade and a three-blade
+  rotor as OBJ files (metres, at the published 1.35 m rotor scale), before/after pictures, and
+  restore steps; git tag `archive/paddle-blades` (commit 775b502, the last version using them on
+  the NASA model). New `archive/README.md` lists every archived item.
+- **Files:** `archive/paddle-blades/` (new), `archive/README.md` (new)
+- **Checks:** OBJ files checked by reading them back; no app code changed.
+- **Open / next:** none.
+
 ### 2026-10-08: Time-scaled Titan day cycle
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add a time-scaled Titan day cycle"
