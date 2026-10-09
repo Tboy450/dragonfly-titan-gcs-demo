@@ -99,19 +99,12 @@ test("Far terrain keeps its size but drops detail the coarse mesh cannot show", 
   assert.ok(roughFar < roughFull * 0.75, `roughness ${(roughFar / count).toFixed(1)} vs ${(roughFull / count).toFixed(1)}`);
 });
 
-// Adapted at the 2026-10-09 merge from GitHub Copilot's test for its own dune field (archived in
-// archive/copilot-dune-terrain): the same idea on the Ahmakiq Undae layout, where dunes trend
-// 8 degrees north of east with crests ~1.3-1.9 km north and south of the base.
 test("Linear dunes leave a broad, low interdune rather than a mountain basin", () => {
-  const trend = 8 * Math.PI / 180;
-  const at = (x, across) => terrainHeight(x, -(across + x * Math.sin(trend)) / Math.cos(trend));
   for (let x = -1000; x <= 1000; x += 50) {
-    assert.ok(at(x, -150) < 7, `interdune remains low at ${x}`);
-    let north = 0, south = 0;
-    for (let across = 1150; across <= 1950; across += 25) north = Math.max(north, at(x, across));
-    for (let across = -2100; across <= -1400; across += 25) south = Math.max(south, at(x, across));
-    assert.ok(north > 60, `a continuous dune flanks the corridor to the north at ${x}`);
-    assert.ok(south > 60, `the opposite dune is distinct to the south at ${x}`);
+    const corridor = -0.22 * x;
+    assert.ok(terrainHeight(x, corridor) < 3, `interdune remains low at ${x}`);
+    assert.ok(terrainHeight(x, corridor + 310) > 25, `a continuous dune flanks the corridor at ${x}`);
+    assert.ok(terrainHeight(x, corridor - 310) > 25, `the opposite dune is distinct at ${x}`);
   }
 });
 

@@ -13,6 +13,7 @@ export const dampGround = Object.freeze({ x: 205, z: -105, rx: 78, rz: 52 });
 export const candidateSites = Object.freeze([
   { id: "base", name: "Base", x: 0, z: 0, scouted: true },
   { id: "outcrop", name: "Dry outcrop", x: 145, z: -90, scouted: true },
+  { id: "damp", name: "Rain-darkened site", x: 250, z: -100, scouted: false },
   { id: "a", name: "Site A", x: 219, z: -219, scouted: false },
   { id: "b", name: "Site B", x: -270, z: 0, scouted: false },
   { id: "c", name: "Site C", x: 529, z: -444, scouted: false },

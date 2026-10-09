@@ -59,6 +59,7 @@ test("The research model matches the published 3.85 x 3.85 x 1.75 m envelope", a
       part.geometry.computeBoundingBox();
       box.union(part.geometry.boundingBox.clone().applyMatrix4(part.matrixWorld).applyMatrix4(inverse));
     });
+
     return box.getSize(new THREE.Vector3());
   };
   let width = 0, length = 0, height = 0;
@@ -70,6 +71,37 @@ test("The research model matches the published 3.85 x 3.85 x 1.75 m envelope", a
   assert.ok(Math.abs(width - 3.85) < 0.12, `width ${width.toFixed(2)} m`);
   assert.ok(Math.abs(length - 3.85) < 0.12, `length ${length.toFixed(2)} m`);
   assert.ok(Math.abs(height - 1.75) < 0.08, `height ${height.toFixed(2)} m`);
+});
+
+test("Weather changes Pilot haze, light and the wet-ground uniform without changing arrival visuals", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { edlStateAt } = await import("../dist/edl.mjs");
+  const chase = createChaseRenderer({ renderer: fakeRenderer() });
+  const s = createFlightState();
+  chase.draw(context2d, 800, 600, s);
+  let scene = chase.models.research;
+  while (scene.parent) scene = scene.parent;
+  const baseline = scene.fog.density;
+  const sunlight = scene.children.find(child => child.isDirectionalLight);
+  const intensity = sunlight.intensity;
+  const ground = scene.getObjectByName("titan-ground");
+  const shader = { uniforms: {}, vertexShader: "#include <common>\n#include <begin_vertex>", fragmentShader: "#include <common>\n#include <map_fragment>\n#include <roughnessmap_fragment>" };
+  ground.material.onBeforeCompile(shader);
+  assert.equal(shader.uniforms.rainWetness.value, 0);
+  s.weather.haze = 1; s.weather.wetness = 0.8;
+  chase.draw(context2d, 800, 600, s);
+  assert.equal(scene.fog.density, baseline * 3.5);
+  assert.ok(sunlight.intensity < intensity);
+  assert.equal(shader.uniforms.rainWetness.value, 0.8);
+  s.edl = edlStateAt(10);
+  chase.draw(context2d, 800, 600, s);
+  assert.equal(scene.fog.density, baseline);
+  assert.equal(sunlight.intensity, intensity);
+  assert.equal(shader.uniforms.rainWetness.value, 0);
+  s.edl = null;
+  chase.draw(context2d, 800, 600, s);
+  assert.equal(shader.uniforms.rainWetness.value, 0.8);
 });
 
 test("Every research-model part belongs to a named subsystem with a thermal zone", async () => {
@@ -142,12 +174,11 @@ test("Interior parts fit inside the insulated cavity of the exterior model", asy
 test("Mission-view layers draw and return callouts for every labeled part", async () => {
   const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
   const { createFlightState } = await import("../dist/flight-model.mjs");
-  const { thermalRanges } = await import("../dist/thermal-scale.mjs");
   const chase = createChaseRenderer({ renderer: fakeRenderer() });
   const state = createFlightState();
   assert.deepEqual(chase.drawMission(context2d, 800, 600, state, { layer: "exterior" }), []);
   for (const layer of ["internal", "thermal"]) {
-    const labels = chase.drawMission(context2d, 800, 600, state, { layer, range: thermalRanges.inside });
+    const labels = chase.drawMission(context2d, 800, 600, state, { layer });
     assert.ok(labels.length >= 15, `${layer}: ${labels.length} callouts`);
     for (const label of labels) {
       assert.ok(Number.isFinite(label.x) && Number.isFinite(label.y) && label.label && label.source && label.zone);
@@ -191,6 +222,36 @@ test("The original model's Internal and Thermal views are labeled mock-ups and f
     });
   }
   assert.equal(chase.mockParts[0].visible, false, "the pilot view hides the mock interior");
+});
+
+test("Thermal mesh colors keep absolute temperature meaning when the legend range changes", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { thermalRgb } = await import("../dist/thermal-scale.mjs");
+  const renderer = fakeRenderer();
+  const chase = createChaseRenderer({ renderer });
+  const state = createFlightState();
+  let currentGroup, renderedColor;
+  const render = renderer.render.bind(renderer);
+  renderer.render = (scene, camera) => {
+    render(scene, camera);
+    currentGroup.traverse(part => { if (part.isMesh) renderedColor = part.material.color.clone(); });
+  };
+  for (const vehicleModel of ["research", "original"]) {
+    state.vehicleModel = vehicleModel;
+    currentGroup = vehicleModel === "research" ? chase.subsystems.battery
+      : chase.mockParts.find(part => part.userData.thermalZone === "battery");
+    for (const batteryC of [-30, 10, 35]) {
+      state.batteryC = batteryC;
+      const rgb = thermalRgb(batteryC);
+      const expected = new THREE.Color().setRGB(...rgb.map(v => v / 255), THREE.SRGBColorSpace);
+      for (const thermalRange of ["full", "inside"]) {
+        state.thermalRange = thermalRange;
+        chase.drawMission(context2d, 800, 600, state, { layer: "thermal" });
+        assert.ok(renderedColor.equals(expected), `${vehicleModel}: ${batteryC} C / ${thermalRange}`);
+      }
+    }
+  }
 });
 
 test("The terrain recenters a few rows per frame, and at once after a jump", async () => {

@@ -9,7 +9,7 @@
 //   yellow grid.
 // The previous single backdrop is archived in archive/mission-grid-backdrop.
 import { systemsModel } from "../mission-systems.mjs?v=dev";
-import { thermalRanges, thermalRgb } from "../thermal-scale.mjs?v=dev";
+import { thermalRgb } from "../thermal-scale.mjs?v=dev";
 import { $, state } from "./context.mjs?v=dev";
 
 const PREF_KEY = "dragonfly-backdrop";
@@ -269,8 +269,8 @@ function paintBlueprint(c, w, h) {
 
 // Thermal: Titan's air in the thermal scale's color for -179 C, dimmed, with drifting cold air.
 function drawThermalAir(ctx, w, h) {
-  const range = thermalRanges[state.thermalRange] || thermalRanges.full;
-  const [r, g, b] = thermalRgb(systemsModel.ambientC, range);
+  // Colors are fixed per temperature (thermal-scale.mjs), so the air's color never depends on the legend range.
+  const [r, g, b] = thermalRgb(systemsModel.ambientC);
   const dim = 0.55;
   ctx.fillStyle = `rgb(${Math.round(r * dim)}, ${Math.round(g * dim)}, ${Math.round(b * dim)})`;
   ctx.fillRect(0, 0, w, h);

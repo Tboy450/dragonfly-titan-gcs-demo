@@ -1,6 +1,8 @@
 import { createSystemsState, guidanceTarget, stepSystems, flightRestriction, overLiquid } from "./mission-systems.mjs?v=dev";
 import { createPlan, stepPlan, planGuidance, updateScouting, abortPlan, estimatePlan } from "./flight-plan.mjs?v=dev";
 import { createScienceState, stepScience } from "./science.mjs?v=dev";
+import { createExpeditionState, stepExpedition } from "./expedition.mjs?v=dev";
+import { createWeatherState, stepWeather, weatherAdvisory, weatherPhase } from "./weather.mjs?v=dev";
 // Environmental values: APL's TFAWS 2024 report. Performance values are demo assumptions.
 export const model = Object.freeze({
   massKg: 875, titanG: 1.352, earthG: 9.80665,
@@ -14,6 +16,8 @@ export const model = Object.freeze({
   // ~3,000 N maximum thrust against ~1,183 N Titan weight leaves limited upward margin, and
   // Titan's 1.35 m/s2 gravity arrests a climb slowly. Both limits are rounded demo values.
   maxClimbAccel: 1.8, maxSinkAccel: 1.2, maxHorizontalAccel: 1.0,
+  // Fictional opt-in reverse-thrust pulse, not a capability of Dragonfly's fixed-pitch rotors.
+  reverseBrakeAccel: 0.2, reverseBrakeRpm: 160, reverseBrakePowerW: 50, reverseBrakeMinAltitude: 1,
   takeoffAltitude: 40, cruiseFloor: 20, cruiseSpeed: 10, liquidClearance: 2,
 });
 
@@ -31,18 +35,19 @@ export const climbForThrottle = (throttle) =>
 const landingClimb = (altitude) => -Math.min(1.3, 0.35 + 0.25 * Math.max(0, altitude));
 const IDLE_THROTTLE = 0.18;
 
-export function createFlightState() {
+export function createFlightState({ weatherSeed = 450 } = {}) {
   return {
     ...createSystemsState(),
     ...createScienceState(),
     mode: "Preflight", auto: true, hold: false, missionTime: 0, autoClock: 0,
     altitude: 0, verticalSpeed: 0, speed: 0, throttle: model.hoverThrottle, altitudeHold: null,
+    reverseBrakeEnabled: false, reverseBrakeActive: false,
     yaw: 0, pitch: 0, roll: 0, yawCmd: 0, pitchCmd: 0, rollCmd: 0,
     heading: 84, positionX: 0, positionZ: 0,
     battery: 96, power: 0, wind: 0.8, payloadDelta: 0,
     distance: 0, chart: [], track: [{ x: 0, z: 0 }], sampleTime: -1,
     rotorRpm: Array(8).fill(0), rotorPhase: Array(8).fill(0),
-    plan: createPlan(), timeWarp: 1,
+    plan: createPlan(), timeWarp: 1, expedition: createExpeditionState(), weather: createWeatherState(weatherSeed),
   };
 }
 
@@ -112,7 +117,7 @@ export function estimateFlightPlan(state) {
 }
 
 // One vertical model for every mode: altitude and climb rate stay continuous across mode changes.
-function stepVertical(state, climbTarget, dt) {
+function stepVertical(state, climbTarget, dt, allowReverseBrake = false) {
   let target = climbTarget;
   // Liquid is a no-landing zone in this training scenario, not a buoyancy simulation.
   if (!state.hibernating && overLiquid(state.positionX, state.positionZ)) {
@@ -126,6 +131,12 @@ function stepVertical(state, climbTarget, dt) {
   }
   const change = (target - state.verticalSpeed) * (1 - Math.exp(-2.5 * dt));
   state.verticalSpeed += clamp(change, -model.maxSinkAccel * dt, model.maxClimbAccel * dt);
+  if (allowReverseBrake && state.throttle === 0 && target < 0 && state.verticalSpeed > 0
+    && state.altitude > model.reverseBrakeMinAltitude && !overLiquid(state.positionX, state.positionZ)) {
+    // Only cancel residual upward motion; the pulse cannot add downward speed.
+    state.verticalSpeed -= Math.min(state.verticalSpeed, model.reverseBrakeAccel * dt);
+    state.reverseBrakeActive = true;
+  }
   state.altitude = Math.max(0, state.altitude + state.verticalSpeed * dt);
   if (state.altitude === 0 && state.verticalSpeed < 0) state.verticalSpeed = 0;
   return target;
@@ -156,6 +167,8 @@ function wantsLiftoff(state) {
 
 export function stepFlight(state, dt) {
   if (state.hold || dt <= 0) return;
+  state.reverseBrakeActive = false;
+  stepWeather(state, dt);
   state.missionTime += dt;
   stepPlan(state, dt);
   const restricted = flightRestriction(state);
@@ -194,6 +207,7 @@ export function stepFlight(state, dt) {
     stepSpeed(state, target.speed, 1.5, dt);
     stepAttitude(state, state.speed / 25, 0, 0, dt);
     showThrottle(state, applied, state.altitude === 0 && target.climb <= 0, dt);
+    if (state.plan.status === "complete") state.throttle = IDLE_THROTTLE;
     state.mode = target.mode;
   } else if (state.mission.guidance) {
     state.altitudeHold = null;
@@ -223,7 +237,8 @@ export function stepFlight(state, dt) {
       climb = state.altitudeHold <= 0 ? landingClimb(state.altitude)
         : clamp((state.altitudeHold - state.altitude) * 0.6, -1.3, 2.2);
     } else climb = climbForThrottle(state.throttle);
-    const applied = stepVertical(state, climb, dt);
+    const applied = stepVertical(state, climb, dt,
+      state.reverseBrakeEnabled && state.altitudeHold === null && state.plan.status !== "uplinking" && !state.edl);
     if (state.altitudeHold !== null) {
       const touchedDown = state.altitudeHold <= 0 && state.altitude === 0;
       showThrottle(state, applied, touchedDown, dt);
@@ -257,7 +272,7 @@ export function stepFlight(state, dt) {
   updateScouting(state);
 
   const stopped = state.altitude === 0 && state.throttle < 0.3;
-  const baseRpm = stopped ? 0 : 780 * Math.sqrt(state.throttle * 2);
+  const baseRpm = state.reverseBrakeActive ? model.reverseBrakeRpm : stopped ? 0 : 780 * Math.sqrt(state.throttle * 2);
   // Order matches the 3D model: left front/rear then right front/rear, lower/upper.
   state.rotorRpm.forEach((rpm, i) => {
     const side = i < 4 ? -1 : 1;
@@ -267,9 +282,10 @@ export function stepFlight(state, dt) {
     state.rotorRpm[i] = follow(rpm, baseRpm * mix, 4, dt);
     state.rotorPhase[i] = (state.rotorPhase[i] + state.rotorRpm[i] * Math.PI / 30 * dt * spin) % (Math.PI * 2);
   });
-  state.power = stopped ? 100 : flightPower(state);
+  state.power = (stopped ? 100 : flightPower(state)) + (state.reverseBrakeActive ? model.reverseBrakePowerW : 0);
   stepScience(state, dt);
   stepSystems(state, dt, model.batteryEnergyKwh);
+  stepExpedition(state, dt);
   if (state.sampleTime < 0 || state.missionTime - state.sampleTime >= 0.5 - 1e-9) {
     state.sampleTime = state.missionTime;
     state.chart.push({ time: state.missionTime, altitude: state.altitude, powerKw: state.power / 1000, speed: state.speed });
@@ -330,9 +346,15 @@ export function advanceRest(state, seconds = 600) {
   let remaining = Math.min(seconds, state.restSeconds);
   while (remaining > 0) {
     const dt = Math.min(1, remaining);
+    const phase = weatherPhase(state);
     stepFlight(state, dt);
     state.restSeconds -= dt;
     remaining -= dt;
+    if (phase !== "warning" && weatherPhase(state) === "warning") {
+      state.restSeconds = 0;
+      state.restNotice = `Accelerated time stopped: ${weatherAdvisory(state)}`;
+      break;
+    }
     // A low charge is a reason to recharge, not a reason to interrupt recharge.
     if (state.coreC > 40 || state.batteryC < 5 || state.batteryC > 35 || state.fanIntegrity < 0.5) {
       state.restSeconds = 0;

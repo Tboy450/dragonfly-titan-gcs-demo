@@ -2,6 +2,7 @@
 import { estimateFlightPlan, model } from "../flight-model.mjs?v=dev";
 import { abortPlan, addWaypoint, clearPlan, isScouted, planActive, planModel, undoWaypoint, uplinkPlan } from "../flight-plan.mjs?v=dev";
 import { candidateSites, dampGround, pools } from "../mission-systems.mjs?v=dev";
+import { terrainHeight } from "../titan-terrain.mjs?v=dev";
 import { $, formatTime, state } from "./context.mjs?v=dev";
 
 // ---- Flight planning (autonomous flights, leapfrog scouting) ----
@@ -9,6 +10,7 @@ const planMap = $("plan-map");
 const svgNS = "http://www.w3.org/2000/svg";
 let planZoomAll = true;
 let planProjection = { cx: 0, cz: 0, scale: 1 };
+let terrainKey = "", terrainTiles = [];
 
 function planBounds() {
   const points = [{ x: state.positionX, z: state.positionZ }, ...state.plan.waypoints];
@@ -36,6 +38,17 @@ function niceDistance(meters) {
 function renderPlanMap() {
   const proj = planProjection = planBounds();
   const nodes = [];
+  const key = `${proj.cx},${proj.cz},${proj.scale}`;
+  if (key !== terrainKey) {
+    terrainKey = key;
+    terrainTiles = [];
+    for (let y = 0; y < 400; y += 16) for (let x = 0; x < 400; x += 16) {
+      const point = fromMap(x + 8, y + 8, proj);
+      const relief = Math.min(1, terrainHeight(point.x, point.z, 16 / proj.scale) / 70);
+      terrainTiles.push({ x, y, width: 16, height: 16, fill: `rgb(${Math.round(37 + relief * 70)}, ${Math.round(35 + relief * 48)}, ${Math.round(29 + relief * 24)})` });
+    }
+  }
+  nodes.push(...terrainTiles.map(tile => svg("rect", tile)));
   const [dx, dy] = toMap(dampGround, proj);
   nodes.push(svg("ellipse", { cx: dx, cy: dy, rx: dampGround.rx * proj.scale, ry: dampGround.rz * proj.scale, fill: "rgba(90, 110, 130, 0.2)", stroke: "rgba(150, 175, 200, 0.35)", "stroke-dasharray": "3 3" }));
   for (const pool of pools) {
@@ -106,6 +119,7 @@ export function updatePlanStrip() {
   $("plan-strip").hidden = plan.status === "draft";
   if (plan.status === "draft") return;
   const active = planActive(state);
+  $("plan-strip").dataset.active = String(active);
   let status = plan.message;
   if (plan.status === "uplinking") status = `Signal in transit: arrives in ${Math.ceil(plan.uplinkRemaining)} s (really 73-90 min one way)`;
   else if (plan.status === "executing") {
@@ -123,11 +137,12 @@ export function updatePlanStrip() {
 }
 
 planModel.altitudeOptions.forEach(option => $("plan-altitude").append(new Option(option.label, option.value)));
-$("plan-button").addEventListener("click", () => {
+export function openPlanPanel() {
   $("plan-altitude").value = state.plan.altitude;
   $("plan-dialog").showModal();
   updatePlanPanel();
-});
+}
+$("plan-button").addEventListener("click", openPlanPanel);
 $("close-plan").addEventListener("click", () => $("plan-dialog").close());
 planMap.addEventListener("click", (event) => {
   if (planActive(state)) return;

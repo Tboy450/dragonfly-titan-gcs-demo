@@ -28,11 +28,51 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   The local branch here is `master` tracking `origin/main`: `git push origin master:main`.
 - Leave every `?v=dev` stamp and the "Build local" label as they are. The publish workflow
   replaces them with the commit hash (see `.github/workflows/pages.yml`).
+- **First, check every branch.** `git fetch --all --prune`, `git branch -r`, then
+  `git log --oneline main..origin/<branch>` for each; merge or raise unmerged work before
+  starting (house rule 7 in ARCHITECTURE.md).
 - **Never throw away replaced work.** Anything replaced (models, terrain, textures, visuals,
   sounds, behavior), even bad or inaccurate versions, goes to `archive/` in the same change,
   with pictures, restore steps and a git tag (house rule 6 in ARCHITECTURE.md).
 
 ## Entries
+
+### 2026-10-09: Merged GitHub Copilot's branch (Reverse brake, weather, first expedition, temperature views)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Merge Copilot's reverse brake, weather, expedition and temperature views"
+- **What changed:** The owner found their "Reverse (sim)" button missing. It was on the unmerged
+  branch `tboy450-project-improvement-priorities` (GitHub Copilot, 2026-10-04, commits 5a5b98e and
+  0c9e506; their entries are below, dated 2026-10-04). At the owner's request the whole branch
+  was merged into `main`: the Reverse (sim) climb brake beside "Throttle: sticky", Titan weather
+  (gusts, methane-rain events with warnings, storm training), the First expedition, fixed
+  temperature colors and the collapsible Component temperatures panel.
+- **Conflict decisions:**
+  - Terrain: kept the published-size Ahmakiq Undae dunes (75-120 m tall, ~3.2 km apart) over
+    Copilot's own dune field (35-60 m, ~620 m apart). Copilot's landscape is archived with
+    pictures and its test in `archive/copilot-dune-terrain/`. Copilot's weather wetness, storm
+    haze, outcrop greying and base landing pad were added to our terrain by hand.
+  - Thermal colors: adopted Copilot's fixed anchors (a temperature keeps its color in every
+    range); the previous range-relative scale and open parts list are archived in
+    `archive/thermal-scale-range-relative/`. The air loop panel sits after the new collapsible
+    panel; the thermal "Titan air" backdrop now uses the fixed color.
+  - Sampling: kept Codex's 2026-10-04 interruption rules (thermal/energy restriction, leaving
+    the target) and added Copilot's battery-margin stop. Saves keep both the day log and the
+    expedition. Landing message mentions both the interdune and the First expedition.
+  - Weather vs. the day cycle: a storm warning now stops "Sleep until morning"; the lander stays
+    asleep and the report says why (new test). The calm-night test uses fixed weather.
+  - Copilot's dune-corridor test was adapted to our layout (its original is archived).
+- **Process lesson:** this week of work on `main` started without checking other branches. A
+  start-of-session branch check is now house rule 7 and in the notes above.
+- **Files:** all of the branch's files, plus `dist/titan-terrain.mjs`, `dist/titan-day.mjs`,
+  `dist/ui/mission-backdrop.mjs`, tests, archives, `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`
+- **Checks:** `node --test tests/*.test.mjs` (115 pass, including Copilot's reverse-brake,
+  weather and expedition tests). Browser: Reverse buttons beside both throttle buttons, weather,
+  expedition, component temperatures, air loop, day strip and sound all present at phone size
+  with no console errors. Same-viewpoint terrain comparison pictures were made for the owner.
+- **Open / next:** the owner asked for a semi-jagged mountain ridge in at least one place on the
+  local map, labeled as not realistically located (see RESEARCH-COMPENDIUM "Future update
+  requests"). Suggested to the owner, awaiting an answer: our dune sizes with Copilot's subdued
+  ground texture and stronger dune contrast.
 
 ### 2026-10-09: Thermal and Internal backdrop choices (light grey, yellow grid)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
@@ -336,6 +376,132 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Assumptions:** The dune layout, sand appearance and camera motion remain illustrative [EST]. The previous mountain-basin map remains archived.
 - **Checks:** The preceding review passed all 68 tests and checked the local browser for rendering errors.
 - **Open / next:** Fix the separate survey/science and sampling/hibernation issues identified in the review.
+### 2026-10-04: Tiny opt-in simulated reverse-thrust climb brake
+- **Signed:** GitHub Copilot (GPT-6.1 Sol / Copilot App)
+- - **Commit:** "Add Titan weather and optional reverse braking"
+- **What changed:** Added synchronized "Reverse (sim)" toggle buttons beside
+  "Throttle: sticky" in Mission and Pilot. Off by default, with off / armed / braking
+  states. At exactly 0% manual throttle while still rising above 1 m, the fictional
+  pulse adds a small downward acceleration to arrest upward momentum sooner. It
+  stops once upward motion is gone; it cannot add downward speed or alter the gentle
+  landing flare. Auto, guidance, flight plans/uplink, altitude hold, safety descent,
+  arrival, liquid avoidance and pause retain their existing behavior. Rotor readings
+  show a small pulse without negative-throttle square roots; the pulse's extra electrical
+  load reaches the energy/thermal model. Landed saves retain the setting, not an active pulse.
+- **Files:** Flight model, save module, controls/readouts, markup/styles,
+  `tests/reverse-brake.test.mjs`, README, architecture and research compendium.
+- **Assumptions:** Explicitly fictional training convenience, not real Dragonfly
+  reverse thrust. Extra braking 0.2 m/s², nominal pulse 160 RPM and extra load 50 W
+  are [EST]. The normal 0-100% throttle range and descent/touchdown limits are unchanged.
+- **Checks:** Flight/save regressions, measured earlier climb arrest and touchdown,
+  finite RPM, bounded acceleration, power cost, all activation gates, multiple frame
+  rates, pause, saved setting and atomic rejection of malformed settings. Real
+  Edge/WebGL checked synchronized buttons, keyboard and stick zero throttle, phone
+  taps, portrait/landscape placement, landing and reload; no browser errors.
+- **Open / next:** Feature-branch change; GitHub Pages is unchanged until merged
+  into `main`.
+
+### 2026-10-04: Titan-inspired gust and methane-rain training weather
+- **Signed:** GitHub Copilot (GPT-6.1 Sol / Copilot App)
+- **Commit:** "Add Titan weather and optional reverse braking"
+- **What changed:** Added seeded occasional gusts and rarer methane-rain scenarios with
+  advance advisories, gradual build/peak/recovery and fixed-wind controls. New missions
+  receive browser-random seeds; old saves retain their fixed wind. Diagnostics offers an
+  explicit stronger methane-storm stress scenario, and new flight plans are NO-GO until
+  it finishes. Existing flights are not automatically aborted. Slider edits select fixed
+  wind, which also ends an active event. Pause freezes weather; accelerated rest stops
+  at a new warning. Landed checkpoints retain the phase, RNG, recent advisories and wetness.
+  Weather drives existing wind/convection/power calculations rather than inventing
+  ambient hot/cold fronts. Pilot haze thickens, lighting dims and the existing damp
+  interdune darkens/glosses after rain; it dries gradually without new puddles or hazards.
+  Added compact Pilot warnings and a short-landscape HUD arrangement to keep the warning
+  and systems readings clear of the flight controls.
+- **Files:** `dist/weather.mjs`, flight model/planner, save module, terrain/renderer,
+  UI controls/readouts/Pilot HUD/fallback, markup/styles, weather and rendering tests,
+  README, architecture and research compendium.
+- **Assumptions:** All event frequencies, wind profiles, warning lead times, compressed
+  durations and visual effects are [EST], clearly labeled. Automatic events stay within
+  1.6 m/s; only explicit strong training reaches up to 4.5 m/s. Cassini's methane-cloud,
+  equatorial rain and inferred dust-storm observations motivate the scenarios, but do not
+  establish local forecasts or those values. Ambient stays -179.15 C. No validated storm
+  aerodynamics, atmospheric fronts, flooding or sample-chemistry changes are claimed.
+- **Checks:** All 96 Node tests pass, including simulation/save/planner/renderer regressions, warning lead,
+  bounded smooth winds, seed continuity, weather-dependent heat rejection, legacy and
+  malformed saves, rain drying, pause/arrival isolation and accelerated-rest warning stop.
+  Real Edge/WebGL exercised controls, warnings/peak, actual shader compilation, fog/wetness,
+  paused/save/restored weather, legacy startup and phone portrait/landscape layouts;
+  higher-priority thermal alerts remain visible alongside weather.
+- **Open / next:** Feature-branch change, not a Pages deployment. Maintained browser CI,
+  portable saves/status and actual landing-hazard assessment remain separate backlog work.
+
+### 2026-10-04: Stable temperature colors when zooming the legend
+- **Signed:** GitHub Copilot (GPT-6.1 Sol / Copilot App)
+- **Commit:** "Add first expedition and improve temperature views"
+- **What changed:** Removed range-relative color normalization. Both readings and the Thermal
+  mesh now use fixed temperature anchors: cold blue, green at 0-20 C, warming yellow and
+  red from 35 C. Whole-lander/inside changes only the visible legend window; its gradient
+  positions follow the same temperature anchors, so a 10 C part stays green in both ranges.
+- **Files:** `dist/thermal-scale.mjs`, layers panel, renderer, flight view, markup, README.
+- **Assumptions:** Green uses the documented landed battery/equipment reference band, not a
+  universal optimum. The panel explicitly explains that exterior parts and MMRTG gas have
+  different targets and that colors are not fault indicators.
+- **Checks:** All 78 Node tests pass, including fixed color anchors, legend positions and
+  actual mesh-material colors for both models. Edge/WebGL verified both panels, both ranges,
+  cold/middle/hot readings and the shared gradient logic.
+
+### 2026-10-04: Shared temperature colors and scale in Internal and Thermal
+- **Signed:** GitHub Copilot (GPT-6.1 Sol / Copilot App)
+- **Commit:** "Add first expedition and improve temperature views"
+- **What changed:** Internal temperature readings now use the same live color mapping as
+  Thermal instead of always-green text. The existing gradient bar and whole-lander/inside
+  range control appear in both expandable panels. The palette, thermal diagram and
+  Internal model materials are unchanged.
+- **Files:** `dist/ui/layers-panel.mjs`, README.
+- **Assumptions:** The shared absolute-temperature scale is not a component-specific
+  optimal/safe operating band.
+
+### 2026-10-04: Expandable component temperatures in Internal and Thermal
+- **Signed:** GitHub Copilot (GPT-6.1 Sol / Copilot App)
+- **Commit:** "Add first expedition and improve temperature views"
+- **What changed:** Live component readings, source details and the Thermal color scale now
+  sit in a native expandable "Component temperatures" panel. It starts collapsed, appears
+  only in Internal/Thermal, and opens when a diagram number is selected. Temperature rows
+  are keyboard-accessible buttons. Both the research and original mock-up models retain
+  their labels, live temperatures and selection behavior.
+- **Files:** `dist/index.html`, `dist/styles.css`, `dist/ui/layers-panel.mjs`, README and architecture.
+- **Assumptions:** No new temperature values or model changes; existing source labels remain.
+- **Checks:** All 74 Node tests pass. Edge/WebGL exercised collapsed/expanded states,
+  both models and layers, live values, scale changes, diagram selection, keyboard controls
+  and phone layout. Research-only placement notes remain hidden for the mock-up model.
+
+### 2026-10-04: First expedition through a dune/interdune landscape
+- **Signed:** GitHub Copilot (GPT-6 Astra / Copilot App)
+- **Commit:** "Add first expedition and improve temperature views"
+- **What changed:** Added a guided dry-sand baseline, scout-and-return flight, rain-darkened
+  site sample, ice-rich outcrop sample, return to base and downlink. Suggested routes are drafts
+  for the existing GO/NO-GO planner, not automatic uplinks. The persistent notebook records
+  site, location, time and illustrative composition; each record tracks its real position in
+  the simulated data queue. The debrief freezes elapsed/flight time, net battery energy used
+  including preheat, and peak battery temperature. Existing saves, manual flight, sampling and
+  the optional quick survey remain available.
+- **Terrain:** Replaced the mountain-basin height field with long dunes, broad interdunes and
+  distant hills; kept continuous mesh sampling, progressive recentering, dry landing circles,
+  the methane puddle and arrival haze. The planning map now shades the shared elevation field.
+- **Related fixes:** An autonomous touchdown now commands rotor idle immediately; otherwise
+  a residual throttle just over 30% could consume flight power on the ground during downlink.
+  Sampling cannot start during an active flight plan or pause, and hibernation cannot bypass
+  its energy cost. Hidden speed controls and completed reports no longer crowd the Pilot view.
+- **Files:** `dist/expedition.mjs`, `dist/ui/expedition-panel.mjs`, flight/science/save modules,
+  terrain, planner, app/UI, expedition and terrain tests, README, architecture and research audit.
+- **Assumptions:** Six-step exercise and suggested routes, dune spacing (~620 m), relief
+  (35-60 m), orientation, hills and site positions are training choices [EST]. Science remains
+  explicitly illustrative. This is not an exact reconstruction of Ahmakiq Undae or a
+  flight-qualified autonomous landing/hazard model.
+- **Checks:** All 74 Node tests pass. Real Edge/WebGL browser exercised arrival/skip, all four
+  expedition flights and three samples, a saved reload, full downlink and debrief; phone
+  portrait and landscape layouts checked without JavaScript or shader errors.
+- **Open / next:** Actual terrain hazard assessment and additional expedition scenarios remain
+  future work. Browser checks used isolated local tooling, not a new build/runtime dependency.
 
 ### 2026-09-30: Archived the mountain-basin map
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)

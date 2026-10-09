@@ -4,7 +4,7 @@
 // temperature, pressure, wind and methane humidity and carries a seismometer; DragonCam images
 // the surface and scouts landing sites. The data volumes, rates, event timing and every
 // "result" below are illustrative examples [EST], not mission data or predictions.
-import { overLiquid, dampGround, surveySite, landed, systemsModel, flightRestriction, targetDistance } from "./mission-systems.mjs?v=dev";
+import { overLiquid, dampGround, surveySite, candidateSites, landed, systemsModel, flightRestriction, targetDistance } from "./mission-systems.mjs?v=dev";
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 const MBIT = 1e6;
@@ -56,6 +56,8 @@ export function gnsUncertainty(state) {
 }
 
 export function canSampleHere(state) {
+  if (state.edl || state.hold) return "Resume the simulation after arrival first.";
+  if (["uplinking", "executing"].includes(state.plan?.status)) return "Finish or stop the flight plan first.";
   if (!landed(state)) return "Land and stop first.";
   if (state.hold) return "Resume the simulation first.";
   if (state.hibernating) return "Wake the lander first.";
@@ -122,7 +124,8 @@ export function stepScience(state, dt) {
   // The mission button requests the same instrument job as "Sample here".
   if (surveying && !s.sampling) beginSample(state);
   if (s.sampling) {
-    const unsafe = state.hibernating || flightRestriction(state);
+    // Stop if unsafe (asleep, thermal/energy restriction, or too little battery margin) or moved.
+    const unsafe = state.hibernating || flightRestriction(state) || state.battery <= systemsModel.reservePercent + 5;
     const leftTarget = surveying && targetDistance(state) > surveySite.radius;
     if (!isLanded || !ground || unsafe || leftTarget) {
       s.sampling = false;
@@ -140,8 +143,14 @@ export function stepScience(state, dt) {
       if (surveying) state.mission.sampleSeconds = s.sampleSeconds;
       if (s.sampleSeconds >= scienceModel.sampleSeconds) {
         s.sampling = false;
-        s.samples.push({ ground: ground.name, result: ground.sample, time: state.elapsed });
         bits += scienceModel.sampleMbit * MBIT;
+        const site = candidateSites.find(site => Math.hypot(site.x - state.positionX, site.z - state.positionZ) <= 10);
+        s.samples.push({
+          ground: ground.name, result: ground.sample, time: state.elapsed,
+          siteId: site?.id ?? null, x: state.positionX, z: state.positionZ, ice: ground.ice, organics: ground.organics,
+          // FIFO data boundary: previously returned bits cannot count as this sample's downlink.
+          downlinkEndBits: state.dataReturnedBits + state.dataStoredBits + bits,
+        });
         logScience(state, `DraMS: ${ground.name} analyzed`);
         if (surveying) {
           state.mission.samples = 1;

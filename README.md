@@ -74,6 +74,15 @@ archived in [archive/](archive/).
   eases between Fixed and Free instead of snapping.
 - Keyboard: W/S throttle, A/D yaw, arrow keys pitch/roll, Space levels off and holds
   altitude.
+- **Reverse (sim)** beside **Throttle: sticky** arms a tiny fictional reverse-thrust
+  brake, off by default. In manual flight, lower the throttle all the way to **0%**
+  while still rising above 1 m: the pulse adds up to 0.2 m/s² of downward braking
+  until upward momentum is gone. It uses a small modeled rotor pulse and 50 W extra
+  electrical load [EST]. Normal descent speed and the gentle touchdown flare stay
+  unchanged. It does not operate in Auto, flight plans, altitude hold, safety descent,
+  arrival or over liquid. Both views show off / armed / braking, and landed saves
+  retain the enabled setting. This is a simulator convenience, **not a capability
+  of the real Dragonfly's fixed-pitch rotors**.
 
 ## Arrival at Titan
 
@@ -126,7 +135,37 @@ Rotor blades are tapered and twisted with a thin cambered section and rounded ti
 and spinning rotors show a faint blur disc that strengthens with rotor speed. Blade chord, twist
 and thickness are estimates from the drawings.
 
-## Missions and Diagnostics
+## First Expedition
+
+**Begin expedition** starts a six-step science exercise across three distinct sites:
+collect a dry-sand baseline at base, scout the rain-darkened interdune and return, fly
+back to sample it, sample the ice-rich outcrop, return to base, and downlink the records.
+The objective explains the next step and its scientific purpose. **Prepare flight**
+creates a suggested 40 m route in the existing planner: review its GO / NO-GO checks,
+then explicitly uplink it. Use 5x / 20x during flight and up to 100x during downlink.
+Recharge or wait for daylight in Diagnostics when necessary; the expedition does not
+bypass the energy, thermal, scouting or radio restrictions.
+
+**Notebook / debrief** keeps one new sample from each expedition site, including its
+location, time, illustrative composition and onboard/returned status. A record is
+returned only after its place in the stored-data queue has actually been transmitted;
+earlier downlinks do not count. The final debrief compares the sites and records
+elapsed time, flight time, battery energy used (net draw plus preheat) and peak battery
+temperature. It remains available after reloading. A reload resumes the last landed
+checkpoint and stops any in-progress sample or downlink; resume these explicitly.
+
+Free flight and **Sample here** remain available and can satisfy expedition objectives.
+Samples collected before beginning do not count toward a new expedition. The original
+short survey is retained under **Optional quick survey / Start over**.
+
+The landscape is an illustrative, compressed-scale interpretation of the Ahmakiq Undae
+landing-area description: long dunes, broad low interdunes and distant hills, not the
+previous mountain basin. Dune spacing (~620 m), heights (35-60 m), orientation and all
+site positions are artistic training choices, not a surveyed elevation model. The
+planning map shades the same terrain, with lighter areas representing higher ground.
+Both the geology and science results are examples, not actual observations from Titan.
+
+## Quick Survey and Diagnostics
 
 Begin the interdune survey, fly to the dry outcrop manually or with guided flight, land,
 collect a sample and return to base. The outcrop sits at the edge of a rain-darkened
@@ -151,6 +190,36 @@ temperatures from explicit assumptions. It is not part of the flight hardware.
 See [the research compendium](RESEARCH-COMPENDIUM.md) and
 [the release reconciliation](RESEARCH-FOLLOWUP.md) for follow-up evidence.
 
+## Titan-inspired Weather
+
+New missions get occasional gradual gust events and rarer methane-rain scenarios.
+Diagnostics offers **Occasional weather events** or **Fixed wind / events off**.
+Moving the surface-wind slider also selects Fixed wind. Automatic events stay within
+the 1.6 m/s design maximum; each starts with a visible 60-simulated-second advisory
+before building, peaking and recovering. Quiet gaps are 10-20 simulated minutes,
+with a 12% rain choice per event. These frequencies and times are **training
+assumptions**, not predictions for Titan. Pause freezes weather, and accelerated
+hibernation stops at a new advisory instead of silently skipping it.
+
+**Run strong methane-storm training** is optional: 120 seconds of warning, a gradual
+build, and gusts up to 4.5 m/s above the flight design envelope. It holds new flight
+plan uplinks through recovery, but does not crash the aircraft or automatically
+abort an existing flight. Land before strong winds. Select Fixed wind to end an
+event; the current wind becomes the fixed setting until you change the slider.
+
+Rain/cloud scenarios gradually thicken the Pilot-view haze, dim the light and add
+darkening/gloss to the existing rain-darkened interdune. Additional wetting fades
+with a two-hour simulated decay time. These are visual training effects: no flooding,
+puddle growth, new landing hazards or altered sample chemistry. Wind feeds the
+existing convection and power calculations, so component temperatures can respond;
+ambient remains -179.15 C, without invented Earth-style hot/cold fronts. Last-landed
+saves preserve event progress, randomness and wetness. Older saves retain fixed wind.
+
+The inspiration is published Cassini observations of [cloud evolution over 11 hours](https://science.nasa.gov/photojournal/pj-watching-summer-clouds-on-titan/),
+[equatorial methane-rain wetting](https://science.nasa.gov/resource/titanic-deluge-annotated/),
+and [inferred organic dust storms](https://science.nasa.gov/solar-system/dust-storms-on-titan-spotted-for-the-first-time/).
+They do not establish these local wind profiles or warning lead times.
+
 ## Flight Planning
 
 Real Dragonfly flights are planned on Earth, uplinked and flown autonomously (signals take
@@ -166,8 +235,10 @@ amber candidate site at 20 m or higher scouts it, so a later flight may land the
 
 Your mission is saved in the browser while the lander is on the ground and whenever you leave
 the page: position, battery and temperatures, the Titan clock, scouted sites, samples, the
-science log and stored data. Coming back resumes where you left off. **Start over** (next to
-Begin survey) clears it and starts again from the landing sequence.
+science log, expedition notebook/debrief and stored data. Coming back resumes the last landed
+checkpoint. **Start over** (under Optional quick survey, or in Diagnostics) clears it and
+starts again from the landing sequence. Existing saves remain compatible; their expedition
+starts unbegun and their earlier samples remain in the Science Payload panel.
 
 ## Vehicle Layers
 
@@ -182,8 +253,17 @@ swing open with the setting. Green dots mark the controller's two temperature in
 MMRTG fin root). A "Warm-air loop" panel under the diagram explains, with live values, how the
 air moves, how it is regulated (trim 0-40% in 2% steps about every 10 minutes) and how it is
 measured. Thermal colors
-every part by its live temperature. Tap a number or a row to see a part's temperature and where
-its placement and value come from. The Pilot view shows the same live battery, temperature,
+every part by its live temperature. In either view, expand **Component temperatures** to
+see the live readings and their sources; it starts collapsed and is hidden in Exterior.
+Tap a diagram number to open the panel and select that part, or select its row by mouse,
+touch or keyboard. Both views color the readings with the same temperature scale, shown
+inside the panel; **Scale** zooms between whole-lander and inside ranges without changing
+the color of any reading or part. Colors are anchored to absolute temperature: blue is cold,
+green is the 0-20 C equipment/battery reference band, yellow is warming, and red is 35 C
+or higher. These are not fault indicators or certified operating bands for every component:
+the cold exterior and hot MMRTG gas have different targets.
+The Internal diagram keeps its component materials; Thermal colors the diagram by temperature.
+The Pilot view shows the same live battery, temperature,
 flight-time, link and plan readouts in a compact strip.
 
 With the **original** model selected, Internal and Thermal show a clearly labeled **mock-up**
@@ -235,8 +315,8 @@ Comms shows how long that will take. Results are illustrative examples, not miss
 Mission and Pilot share the same vehicle mesh, flight state, eight rotor speeds,
 controls and local track. Pause freezes the simulation in both views. The terrain
 and slope-aligned rocks sample the same rendered triangles. Far from the vehicle, where the
-ground mesh is coarse, the terrain drops detail the mesh cannot show and averages ridge shapes
-over each mesh cell, so distant ridges stay natural instead of saw-toothed; the ground the
+ground mesh is coarse, the terrain drops detail the mesh cannot show and averages dune shapes
+around each mesh cell, so distant ridges stay natural instead of saw-toothed; the ground the
 vehicle can reach keeps full detail. When the vehicle flies into a new 400 m square, the
 recentered ground is built a few rows per frame and swapped in when complete.
 

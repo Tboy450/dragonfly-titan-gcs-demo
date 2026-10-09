@@ -3,8 +3,9 @@ import assert from "node:assert/strict";
 import { createFlightState, stepFlight, commandFlight, model, advanceRest } from "../dist/flight-model.mjs";
 import { missionAction, startRest, surveySite, pools, overLiquid, targetDistance, systemsModel, surfaceHeatTransfer, liquidExchangerStudy, stepSystems } from "../dist/mission-systems.mjs";
 import { scienceModel, groundTypes } from "../dist/science.mjs";
+import { setWeatherMode } from "../dist/weather.mjs";
 const advance = (s, seconds, dt = 0.05) => { for (let t = 0; t < seconds; t += dt) stepFlight(s, dt); };
-const grounded = () => { const s = createFlightState(); s.auto = false; s.throttle = 0; return s; };
+const grounded = () => { const s = createFlightState(); s.auto = false; s.throttle = 0; setWeatherMode(s, "fixed"); return s; };
 
 test("Hypothetical liquid exchanger conserves heat and rejects invalid inputs", () => {
   const result = liquidExchangerStudy(40, 5, 40, 30, 0.65);

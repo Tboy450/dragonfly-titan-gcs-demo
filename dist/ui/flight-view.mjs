@@ -1,6 +1,5 @@
 // Draws the Mission and Pilot views into the flight canvas (3D renderer or 2D fallback).
 import { model } from "../flight-model.mjs?v=dev";
-import { thermalRanges } from "../thermal-scale.mjs?v=dev";
 import { $, chaseRenderer, clamp, flightCanvas, state } from "./context.mjs?v=dev";
 import { backdropInk, drawMissionBackdrop, drawMissionBackdropOverlay } from "./mission-backdrop.mjs?v=dev";
 
@@ -183,6 +182,11 @@ function drawRotorWash(ctx, w, h) {
 }
 
 function drawTitanHaze(ctx, w, h, horizon) {
+  const cloud = state.edl ? 0 : state.weather?.haze || 0;
+  if (cloud) {
+    ctx.fillStyle = `rgba(89, 66, 47, ${cloud * 0.5})`;
+    ctx.fillRect(0, 0, w, h);
+  }
   const haze = ctx.createLinearGradient(0, 0, 0, h);
   haze.addColorStop(0, "rgba(255, 205, 106, 0.17)");
   haze.addColorStop(Math.max(0.2, horizon / h), "rgba(235, 145, 61, 0.14)");
@@ -489,7 +493,7 @@ function drawPartMarkers(ctx, labels) {
 function drawVehicle(ctx, w, h) {
   if (chaseRenderer) {
     const layered = state.missionLayer !== "exterior";
-    const labels = chaseRenderer.drawMission(ctx, w, h, state, { layer: state.missionLayer, range: thermalRanges[state.thermalRange] });
+    const labels = chaseRenderer.drawMission(ctx, w, h, state, { layer: state.missionLayer });
     drawMissionBackdropOverlay(ctx, w, h, labels);
     if (layered) drawPartMarkers(ctx, labels);
     else partMarkers = [];

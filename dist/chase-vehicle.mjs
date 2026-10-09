@@ -3,7 +3,7 @@ import { cameraPose } from "./flight-camera.mjs?v=dev";
 import { createTitanTerrain, terrainHeight } from "./titan-terrain.mjs?v=dev";
 import { model } from "./flight-model.mjs?v=dev";
 import { missionTarget, systemsModel, thermalZoneTemps } from "./mission-systems.mjs?v=dev";
-import { thermalRgb, thermalRanges } from "./thermal-scale.mjs?v=dev";
+import { thermalRgb } from "./thermal-scale.mjs?v=dev";
 import { buildResearchModel } from "./vehicle-research.mjs?v=dev";
 import { createArrivalHardware } from "./arrival-hardware.mjs?v=dev";
 import { createDownwashDust } from "./downwash-dust.mjs?v=dev";
@@ -244,19 +244,19 @@ export function createChaseRenderer(options = {}) {
     }
     return part.userData.owner;
   }
-  function thermalMaterial(key, celsius, range, shell) {
+  function thermalMaterial(key, celsius, shell) {
     let material = thermalMaterials.get(key);
     if (!material) {
       material = new THREE.MeshLambertMaterial(shell ? { transparent: true, opacity: 0.22, depthWrite: false } : {});
       thermalMaterials.set(key, material);
     }
-    const [r, g, b] = thermalRgb(celsius, range);
+    const [r, g, b] = thermalRgb(celsius);
     material.color.setRGB(r / 255, g / 255, b / 255, THREE.SRGBColorSpace);
     return material;
   }
   let appliedLayer = "";
   // which: "research" (NASA 2023 design) or "original" (demo model with a labeled mock-up interior).
-  function applyLayer(layer, state, range = thermalRanges.full, which = "research") {
+  function applyLayer(layer, state, which = "research") {
     const key = `${layer}|${which}`;
     if (key === appliedLayer && layer !== "thermal") return;
     appliedLayer = key;
@@ -275,7 +275,7 @@ export function createChaseRenderer(options = {}) {
         const shell = isShell(part, owner);
         if (layer === "internal") { part.material = shell ? ghostShell : base; return; }
         const zone = owner?.userData.thermalZone || "exterior-structure";
-        part.material = thermalMaterial(`${zone}|${shell}`, zones[zone]?.c ?? systemsModel.ambientC, range, shell);
+        part.material = thermalMaterial(`${zone}|${shell}`, zones[zone]?.c ?? systemsModel.ambientC, shell);
       });
     }
     for (const group of Object.values(subsystems)) {
@@ -316,7 +316,7 @@ export function createChaseRenderer(options = {}) {
   return {
     models: { original: classicModel, research: researchModel },
     subsystems, mockParts, downwashDust,
-    // view.layer: "exterior" (default), "internal" or "thermal"; view.range: a thermalRanges entry.
+    // view.layer: "exterior" (default), "internal" or "thermal".
     // Returns the on-screen position of each labeled part for the layer's callouts.
     drawMission(ctx, w, h, state, view = {}) {
       const layer = view.layer || "exterior";
@@ -354,7 +354,7 @@ export function createChaseRenderer(options = {}) {
         trails.forEach((material) => { material.opacity = 0; }); // no rotor blur over the diagram
         rotorDiscMaterial.opacity = 0;
       }
-      applyLayer(layer, state, view.range, which);
+      applyLayer(layer, state, which);
       // The original model's rotors sit on tall posts, so its layered views are framed wider.
       const layeredScale = which === "original" ? 1.25 : 1;
       const halfHeight = layered ? Math.max(1.75, 2.35 * h / w) * layeredScale : Math.max(3.4, 3.0 * h / w);
@@ -429,10 +429,12 @@ export function createChaseRenderer(options = {}) {
       marker.visible = state.mission.phase !== "idle";
       marker.position.set(target.x, landscape.heightAt(target.x, target.z) + 0.08, target.z);
       const sunlight = Math.max(0, Math.cos((state.elapsed || 0) / systemsModel.titanDaySeconds * Math.PI * 2));
+      const lightLevel = sunlight * (1 - (state.edl ? 0 : state.weather?.haze || 0) * 0.3);
       // Day: bright orange sky dome, weak direct beam. Night: faint, dim sky (kept visible for play).
-      ambient.intensity = 0.35 + sunlight * 1.85;
-      sun.intensity = 0.02 + sunlight * 0.95;
-      landscape.setDaylight(sunlight, state.edl?.space || 0);
+      ambient.intensity = 0.35 + lightLevel * 1.85;
+      sun.intensity = 0.02 + lightLevel * 0.95;
+      landscape.setDaylight(lightLevel, state.edl?.space || 0);
+      landscape.setWeather(state.edl ? null : state.weather);
       const altitude = Math.max(0, state.altitude || 0);
       landscape.setHazeAltitude(state.edl ? altitude : 0);
       // Near the ground the vehicle settles onto its skids: the rendered ground under the four skid

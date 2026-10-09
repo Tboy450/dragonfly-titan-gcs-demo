@@ -65,10 +65,19 @@ export function sleepUntilMorning(state) {
 }
 
 // Called each frame: wakes the lander after "Sleep until morning" and writes the morning
-// report. Returns the report text when it wakes, otherwise "".
+// report. If fast-forwarding stopped early (a weather warning or a thermal check), the lander
+// stays asleep and the report says why. Returns the report text, otherwise "".
 export function finishNight(state) {
   if (!state.wakeAtMorning) return "";
-  if (!state.hibernating || state.restNotice) { state.wakeAtMorning = false; return ""; }
+  if (!state.hibernating) { state.wakeAtMorning = false; return ""; }
+  if (state.restNotice) {
+    state.wakeAtMorning = false;
+    const reason = state.restNotice.replace(/^Accelerated time stopped:\s*/, "");
+    const report = `Sleep stopped early: ${reason} The lander is still asleep; wake it or sleep again when ready.`;
+    state.dayReport = report;
+    state.mission.message = report;
+    return report;
+  }
   if (state.restSeconds > 0) return "";
   state.wakeAtMorning = false;
   state.hibernating = false;

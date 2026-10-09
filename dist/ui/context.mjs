@@ -3,7 +3,7 @@ import { createChaseRenderer } from "../chase-vehicle.mjs?v=dev";
 import { createFlightState, deriveFlight } from "../flight-model.mjs?v=dev";
 
 export const state = {
-  ...createFlightState(),
+  ...createFlightState({ weatherSeed: crypto.getRandomValues(new Uint32Array(1))[0] }),
   view: "mission",
   cameraMode: "fixed",
   cameraYaw: 0,

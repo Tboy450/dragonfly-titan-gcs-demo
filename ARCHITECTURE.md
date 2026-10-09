@@ -31,6 +31,11 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
    replaced, in the same change add `archive/<name>/` with the old code or files, pictures of how
    it looked and restore steps, tag the last commit that used it (`archive/<name>`), and add a
    row to `archive/README.md`. Mention it in the change-log entry.
+7. **Start every session by checking all branches.** Before any new work: `git fetch --all
+   --prune`, list `git branch -r`, and for each branch run `git log --oneline main..origin/<branch>`.
+   Read the newest `CHANGELOG.md` entries on every branch with commits not on `main`. Merge or
+   raise that work with the owner first. (Added 2026-10-09 after a week of work on `main` missed
+   GitHub Copilot's unmerged branch.)
 
 ## Files
 
@@ -41,11 +46,13 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/mission-systems.mjs` | Thermal and energy model, comms/downlink and antenna, trim device, hibernation, survey mission, training geography (damp ground, puddle, candidate sites), land-now logic, thermal zone temperatures |
 | `dist/flight-plan.mjs` | Flight plans: waypoints, GO/NO-GO estimate, uplink delay, autopilot guidance, leapfrog scouting |
 | `dist/science.mjs` | Instruments: DragonCam data, DraGMet log and seismometer, DraGNS counting, DrACO/DraMS sampling, ground types |
+| `dist/expedition.mjs` | First expedition objectives, suggested flight drafts, site-linked notebook, FIFO sample downlink status, frozen debrief and validation of the optional save field |
+| `dist/weather.mjs` | Seeded, compressed training gust/rain events, advance advisories, optional strong storm, fixed wind, wetting/drying, plan restrictions and weather save validation |
 | `dist/edl.mjs` | Arrival (entry, descent, landing) timeline from the published EDL figure |
-| `dist/titan-day.mjs` | Time-scaled Titan day cycle: day number, phase, the day's checklist, sleep until dawn and the morning report |
+| `dist/titan-day.mjs` | Time-scaled Titan day cycle: day number, phase, the day's checklist, sleep until morning and the morning report |
 | `dist/downwash.mjs` | Rotor wash at the ground: wash speed and dust strength from rotor speed, height, climb, forward speed and ground kind |
 | `dist/sound-mix.mjs` | Pure mapping from the state to sound levels and pitches (testable without audio) |
-| `dist/thermal-scale.mjs` | Temperature color scale shared by the thermal layer and its legend |
+| `dist/thermal-scale.mjs` | Fixed absolute-temperature colors shared by both reading lists and the Thermal mesh; range selection zooms only the legend, with 0-20 C equipment/battery reference green and 35 C+ red (not universal operating limits) |
 | `dist/flight-camera.mjs` | Chase-camera pose and smoothing |
 | `dist/save-game.mjs` | Which state fields are saved between visits (a whitelist), when saving is allowed (landed, idle), and restoring onto a fresh state |
 
@@ -66,11 +73,12 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `ui/flight-view.mjs` | Draws the Mission and Pilot views (3D, or the 2D fallback without WebGL), part callouts |
 | `ui/chart.mjs` | Flight profile chart |
 | `ui/readouts.mjs` | Status strip, telemetry, rotor tiles, Diagnostics values, local track map |
-| `ui/layers-panel.mjs` | Vehicle Layers panel: layer switch, legend, parts list, selection |
-| `ui/mission-backdrop.mjs` | Mission diagram backdrops per layer (Exterior a/b/c, Internal blueprint with dimensions, Thermal cold air) and the a/b/c picker |
+| `ui/layers-panel.mjs` | Vehicle Layers panel: layer switch, expandable live component temperatures (Internal/Thermal), legend, keyboard-accessible parts list, selection |
+| `ui/mission-backdrop.mjs` | Mission diagram backdrops per layer, picked with the a/b/c buttons (Exterior: Titan / clean room / poster; Internal: blueprint / yellow grid with dimensions; Thermal: Titan air / light grey / yellow grid) and the backdrop-matched readout colors |
 | `ui/pilot-hud.mjs` | Pilot-view systems list (same values as the Mission panels) |
 | `ui/science-panel.mjs` | Science Payload panel and sampling button |
 | `ui/plan-panel.mjs` | Flight Plan dialog, plan status strip, time-speed buttons |
+| `ui/expedition-panel.mjs` | Guided objective and suggested-route actions, persistent notebook and debrief; compact in Pilot view |
 | `ui/controls.mjs` | Flight buttons, sticks, keyboard, camera modes, view switch, other controls |
 | `ui/arrival.mjs` | Arrival sequence: start, step, skip, replay, caption |
 | `ui/day-strip.mjs` | The Mission view's Titan day strip and its "Sleep until dawn" button |
@@ -96,9 +104,12 @@ There is one live `state` object (`ui/context.mjs`). Each part of the simulation
 | Owner | Fields (examples) |
 |---|---|
 | `flight-model.mjs` | `altitude`, `verticalSpeed`, `speed`, `heading`, `pitch`/`roll`/`yaw`, `throttle`, `altitudeHold`, `auto`, `mode`, `rotorRpm`, `missionTime`, `positionX/Z`, `timeWarp` |
+| `flight-model.mjs` (fictional opt-in assist) | `reverseBrakeEnabled` (saved), `reverseBrakeActive` (transient); a zero-throttle upward-momentum brake only in manual flight above 1 m, never a negative throttle value |
 | `mission-systems.mjs` | `battery`, `power`, `coreC`, `batteryC`, `trim`, `fan`, `fault`, `hibernating`, `elapsed` (Titan clock), `downlinkActive`, `antennaDeploy`, `motorsCold`, `flightSeconds`, `scoutedSites`, `rdeC`/`twtaC`, `mission` |
 | `flight-plan.mjs` | `plan` (waypoints, status, phase, estimate, report) |
 | `science.mjs` | `science` (samples, log, counters), `dataStoredBits`, `sciencePowerW` |
+| `expedition.mjs` | `expedition` (status, step, start/end clocks, next sample index, three-site notebook, energy/flight/temperature metrics) |
+| `weather.mjs` | `weather` (seed, mode, clocks, baseline/last wind, event, intensity, haze, rain, wetness, six recent advisories), effective `wind` |
 | `ui/arrival.mjs` | `edl`, `edlTime` (only while the arrival plays) |
 | `ui/*` (page only) | `view`, `cameraMode`, `vehicleModel`, `missionLayer`, `thermalRange`, `selectedPart`, `throttleSpring`, `renderPose` |
 
@@ -115,6 +126,9 @@ should survive a reload, add it there (and bump `SAVE_VERSION` if old saves woul
 
 1. Step the simulation: the arrival sequence, hibernation fast-forward, or `stepFlight()` once per
    time-speed step (1x, or 5x/20x/100x during a flight plan or downlink).
+   `stepFlight()` steps weather before flight/system calculations, then updates expedition progress after the science and systems steps. Weather uses bounded one-second substeps; rest stops at a new warning. The UI seeds new missions with browser randomness; the model factory uses a deterministic default for tests. Sample
+   records have a cumulative `downlinkEndBits` boundary (returned + queued data at collection),
+   so their transmission status is independent of later imagery or weather data.
 2. Every 0.1 s: refresh readouts, track, plan strip, layers panel, Pilot list and chart.
 3. Draw the Mission or Pilot view. The next frame is requested first, so an error in one frame
    cannot stop the app.
@@ -124,14 +138,18 @@ should survive a reload, add it there (and bump `SAVE_VERSION` if old saves woul
 | File | Covers |
 |---|---|
 | `flight-model.test.mjs` | Power, continuous flight model, mode changes without jumps |
+| `reverse-brake.test.mjs` | Earlier climb arrest, bounded tiny pulse, RPM/power accounting, manual-only gates, liquid/flare protections, frame-rate consistency, pause and validated/legacy saves |
 | `mission-systems.test.mjs`, `operations.test.mjs` | Thermal/energy model, survey, hibernation, preheat, downlink, antenna, land-now |
 | `flight-plan.test.mjs` | Plan checks, full autonomous flight, leapfrog, abort, land-now from 400 m |
 | `science.test.mjs` | Instruments, sampling, data store and downlink |
+| `expedition.test.mjs` | Complete multi-flight expedition and radio transfer, sample attribution, interrupted sampling, idle rotors after autonomous landing, legacy save compatibility and persistent debrief |
 | `edl.test.mjs` | Arrival altitudes and ordering |
 | `terrain.test.mjs` | Terrain sampling, damp ground, puddle, level landing sites |
 | `render-smoke.test.mjs` | Whole 3D scene with a stand-in renderer: both models, antenna, day/night, arrival hardware, layers and callouts, the published envelope, subsystem tags, and that every interior part fits inside the foam-lined cavity |
 | `save-game.test.mjs` | Save and restore round trip after a real flight and sample; only landed states; bad saves ignored |
 | `flight-camera.test.mjs`, `cache-version.test.mjs` | Chase camera; `?v=dev` stamps and the build label |
+| `thermal-scale.test.mjs` | Fixed cold/reference/hot colors, continuous interpolation and accurate temperature anchors in both legend windows |
+| `weather.test.mjs` | Seeded scheduling, advance warnings, smooth/bounded gusts, rain and drying, optional strong storm, fixed wind, pause/arrival, real convection, rest warning stop, planner cautions/restrictions, save validation and legacy migration |
 
 ## Local testing tips
 
