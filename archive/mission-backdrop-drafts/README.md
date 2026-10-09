@@ -16,6 +16,22 @@ on-screen caption still reads "dimmed" because only the color was changed for th
 the physically literal version: a real thermal camera shows objects at air temperature in the
 same color as the air.
 
+## Exterior a / b / c, second versions (2026-10-09)
+
+The new, more detailed Exterior backdrops went through two drafts before publishing (the first
+versions they replaced are in `../exterior-backdrops-v1/`).
+
+| Draft | What was wrong | Picture | Published fix |
+|---|---|---|---|
+| Draft 1, clean room (b) | The shipping crate sat under the left telemetry text | `draft-exterior-b-cleanroom-crate-over-text.jpg` | Crate moved lower on the left (`exterior-b-cleanroom-as-shipped.jpg`) |
+| Draft 1, poster (c) | Saturn sat under the right telemetry text (as in the first version) | `draft-exterior-c-saturn-under-telemetry.jpg` | Saturn moved up and left, a little smaller (`exterior-c-saturn-as-shipped.jpg`) |
+| Draft 2, clean room on a phone | The keep-out square nearly fills a phone's width, so the carts, work stand and crate landed on the tape | `draft-exterior-b-cleanroom-phone-gear-on-tape.jpg` | On narrow screens the carts go below the tape, the stand and ladder just inside it, no crate (`exterior-b-cleanroom-as-shipped-phone.jpg`) |
+| Draft 2, poster on a phone | Saturn touched the title and the ROLL readout | `draft-exterior-c-saturn-phone-near-title.jpg` | Smaller and further right on narrow screens (`exterior-c-saturn-as-shipped-phone.jpg`) |
+
+Code: `exterior-v2-draft1.mjs` and `exterior-v2-draft2.mjs` (the whole painter block of each
+draft). To see one, replace the block from `// Soft round blob` up to
+`// Internal: engineering blueprint grid.` in `dist/ui/mission-backdrop.mjs` with it.
+
 ## Files here
 
 - `drafts.mjs`: the draft code for each of the three, as reference copies.

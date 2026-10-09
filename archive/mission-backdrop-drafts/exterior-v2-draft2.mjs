@@ -1,94 +1,7 @@
-// Backdrops behind the Mission view's vehicle diagram, one per layer:
-// - Exterior: a choice of (a) the Titan landing area, (b) an assembly clean room, where Dragonfly is
-//   being built in 2026, or (c) a Titan-and-Saturn poster, picked with the a/b/c buttons.
-// - Internal, picked with a / b: (a) an engineering blueprint, (b) black with a yellow grid and
-//   yellow text; both with the published envelope dimensions.
-// - Thermal, also picked with a / b / c: (a) Titan's -179 C air in the thermal scale's own color
-//   (dimmed so parts at air temperature stay visible), (b) light grey with a dark grid, like NASA's
-//   published thermal-model figures (the default: cold blue parts stand out), (c) black with a
-//   yellow grid.
-// The previous single backdrop is archived in archive/mission-grid-backdrop.
-import { systemsModel } from "../mission-systems.mjs?v=dev";
-import { thermalRgb } from "../thermal-scale.mjs?v=dev";
-import { $, state } from "./context.mjs?v=dev";
-
-const PREF_KEY = "dragonfly-backdrop";
-export const exteriorBackdrops = Object.freeze([
-  { id: "titan", letter: "a", name: "Titan landing area" },
-  { id: "cleanroom", letter: "b", name: "Assembly clean room" },
-  { id: "saturn", letter: "c", name: "Titan and Saturn poster (Saturn is hidden by haze from the surface)" },
-]);
-export const thermalBackdrops = Object.freeze([
-  { id: "air", letter: "a", name: "Titan air, -179 C" },
-  { id: "light", letter: "b", name: "Light grey, like NASA's thermal figures" },
-  { id: "dark", letter: "c", name: "Black with a yellow grid" },
-]);
-export const internalBackdrops = Object.freeze([
-  { id: "blueprint", letter: "a", name: "Blueprint" },
-  { id: "yellow", letter: "b", name: "Black with yellow grid and text" },
-]);
-const THERMAL_PREF_KEY = "dragonfly-thermal-backdrop", INTERNAL_PREF_KEY = "dragonfly-internal-backdrop";
-let exterior = "titan", thermal = "light", internal = "blueprint";
-try {
-  const saved = localStorage.getItem(PREF_KEY);
-  if (exteriorBackdrops.some(b => b.id === saved)) exterior = saved;
-  const savedThermal = localStorage.getItem(THERMAL_PREF_KEY);
-  if (thermalBackdrops.some(b => b.id === savedThermal)) thermal = savedThermal;
-  const savedInternal = localStorage.getItem(INTERNAL_PREF_KEY);
-  if (internalBackdrops.some(b => b.id === savedInternal)) internal = savedInternal;
-} catch { /* optional */ }
-
-const groundImage = new Image();
-groundImage.decoding = "async";
-groundImage.src = "./assets/titan-mountain-reference.jpg";
-
-function seeded(seed) {
-  let s = seed;
-  return () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
-}
-
-// Static backdrops are painted once per size into a cached canvas and copied each frame.
-const cache = { key: "", canvas: null };
-function cached(kind, w, h, paint) {
-  const dpr = window.devicePixelRatio || 1;
-  const ready = kind !== "titan" || (groundImage.complete && groundImage.naturalWidth > 0);
-  const key = `${kind}|${w}|${h}|${dpr}|${ready}`;
-  if (cache.key !== key) {
-    const canvas = cache.canvas || document.createElement("canvas");
-    canvas.width = Math.max(1, Math.round(w * dpr));
-    canvas.height = Math.max(1, Math.round(h * dpr));
-    const c = canvas.getContext("2d");
-    c.setTransform(dpr, 0, 0, dpr, 0, 0);
-    paint(c, w, h);
-    cache.canvas = canvas;
-    cache.key = key;
-  }
-  return cache.canvas;
-}
-
-function vignette(c, w, h, strength) {
-  const shade = c.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.3, w / 2, h / 2, Math.max(w, h) * 0.75);
-  shade.addColorStop(0, "rgba(0, 0, 0, 0)");
-  shade.addColorStop(1, `rgba(0, 0, 0, ${strength})`);
-  c.fillStyle = shade;
-  c.fillRect(0, 0, w, h);
-}
-
-// A soft shadow on the ground under the vehicle (the diagram is seen from above).
-function groundShadow(c, w, h, alpha) {
-  const ppm = h / (2 * Math.max(3.4, 3.0 * h / w));
-  c.save();
-  c.translate(w / 2 + 0.25 * ppm, h / 2 + 0.35 * ppm);
-  c.scale(1.9 * ppm, 1.25 * ppm);
-  const shadow = c.createRadialGradient(0, 0, 0, 0, 0, 1);
-  shadow.addColorStop(0, `rgba(10, 6, 4, ${alpha})`);
-  shadow.addColorStop(1, "rgba(10, 6, 4, 0)");
-  c.fillStyle = shadow;
-  c.beginPath();
-  c.arc(0, 0, 1, 0, Math.PI * 2);
-  c.fill();
-  c.restore();
-}
+// Archived draft (2026-10-09, never published): second version of the new Exterior a/b/c
+// backdrops. Desktop was fixed, but on a phone (b) put the carts, stand and crate on the
+// keep-out tape and (c) Saturn touched the title and the telemetry text. Reference copy of the
+// painter block from dist/ui/mission-backdrop.mjs.
 
 // Soft round blob (for patches, glows and light pools): a radial gradient from color to clear.
 function softBlob(c, x, y, rx, ry, color, alpha, angle = 0) {
@@ -300,46 +213,40 @@ function paintCleanroom(c, w, h) {
     c.fillStyle = top; c.fillRect(x - bw2 / 2, y - bd / 2, bw2, bd);
   };
   const unit = ppm;
-  // Wide screens put the equipment beside the keep-out box. On a phone the box nearly fills the
-  // width, so the carts go below it and the work stand and ladder just inside it.
-  const narrow = cx - bw - tape < unit * 1.1;
-  const belowY = Math.min(h - unit * 0.35, cy + bh + tape + unit * 0.4);
-  // Nitrogen purge cart: cart, green cylinder seen from above, regulator, hose to the vehicle.
-  const [px, py] = narrow ? [w * 0.84, belowY] : [w * 0.86, h * 0.36];
+  // Nitrogen purge cart (upper right): cart, green cylinder seen from above, regulator, hose to the vehicle.
+  const px = w * 0.86, py = h * 0.36;
   box(px, py, unit * 0.9, unit * 0.6, "#8c969e", "#5c656c");
   c.fillStyle = "#2f7d4f"; c.beginPath(); c.arc(px - unit * 0.18, py, unit * 0.2, 0, Math.PI * 2); c.fill();
   c.fillStyle = "rgba(255, 255, 255, 0.35)"; c.beginPath(); c.arc(px - unit * 0.24, py - unit * 0.06, unit * 0.06, 0, Math.PI * 2); c.fill();
   c.fillStyle = "#c9ced2"; c.beginPath(); c.arc(px - unit * 0.18, py, unit * 0.06, 0, Math.PI * 2); c.fill();
   c.strokeStyle = "rgba(30, 60, 140, 0.85)"; c.lineWidth = 3;
-  c.beginPath(); c.moveTo(px - unit * 0.1, py); c.bezierCurveTo(px - unit * 0.9, py + unit * (narrow ? -0.6 : 0.6), cx + bw * 0.8, cy - bh * 0.1, cx + bw * 0.35, cy - bh * 0.05); c.stroke();
+  c.beginPath(); c.moveTo(px - unit * 0.1, py); c.bezierCurveTo(px - unit * 0.9, py + unit * 0.6, cx + bw * 0.8, cy - bh * 0.1, cx + bw * 0.35, cy - bh * 0.05); c.stroke();
   c.fillStyle = "#1d1f22"; c.font = `700 ${Math.max(8, Math.round(unit * 0.12))}px Arial, sans-serif`; c.fillText("GN2", px + unit * 0.22, py + unit * 0.05);
-  // Tool cart: red top, drawers.
-  const [tx, ty] = narrow ? [w * 0.16, belowY] : [w * 0.12, h * 0.78];
+  // Tool cart (lower left): red top, drawers.
+  const tx = w * 0.12, ty = h * 0.78;
   box(tx, ty, unit * 0.8, unit * 0.5, "#b8322c", "#7c1f1b");
   c.strokeStyle = "rgba(255, 255, 255, 0.45)"; c.lineWidth = 1;
   for (let k = 1; k < 4; k += 1) { c.beginPath(); c.moveTo(tx - unit * 0.36, ty - unit * 0.25 + k * unit * 0.12); c.lineTo(tx + unit * 0.36, ty - unit * 0.25 + k * unit * 0.12); c.stroke(); }
-  // Work stand: frame with a top tray and casters.
-  const [sx, sy] = narrow ? [cx - bw + tape + unit * 0.55, cy + bh - tape - unit * 0.5] : [w * 0.13, h * 0.42];
+  // Work stand (left middle): frame with a top tray and casters.
+  const sx = w * 0.13, sy = h * 0.42;
   softBlob(c, sx + unit * 0.1, sy + unit * 0.12, unit * 0.6, unit * 0.45, "30, 38, 46", 0.3);
   c.strokeStyle = "#5d6870"; c.lineWidth = 4; c.strokeRect(sx - unit * 0.42, sy - unit * 0.3, unit * 0.84, unit * 0.6);
   c.fillStyle = "rgba(120, 132, 142, 0.7)"; c.fillRect(sx - unit * 0.3, sy - unit * 0.18, unit * 0.6, unit * 0.36);
   c.fillStyle = "#22272b";
   for (const [ox, oy] of [[-0.42, -0.3], [0.42, -0.3], [-0.42, 0.3], [0.42, 0.3]]) { c.beginPath(); c.arc(sx + ox * unit, sy + oy * unit, 4, 0, Math.PI * 2); c.fill(); }
-  // Platform ladder: rails and treads.
-  const [lx, ly] = narrow ? [cx + bw - tape - unit * 0.35, cy + bh * 0.4] : [w * 0.88, h * 0.74];
+  // Platform ladder (right, lower): rails and treads.
+  const lx = w * 0.88, ly = h * 0.74;
   softBlob(c, lx + unit * 0.08, ly + unit * 0.1, unit * 0.35, unit * 0.7, "30, 38, 46", 0.3);
   c.strokeStyle = "#c9a227"; c.lineWidth = 4;
   c.beginPath(); c.moveTo(lx - unit * 0.18, ly - unit * 0.6); c.lineTo(lx - unit * 0.18, ly + unit * 0.6); c.moveTo(lx + unit * 0.18, ly - unit * 0.6); c.lineTo(lx + unit * 0.18, ly + unit * 0.6); c.stroke();
   c.lineWidth = 3;
   for (let k = -4; k <= 4; k += 1) { c.beginPath(); c.moveTo(lx - unit * 0.18, ly + k * unit * 0.13); c.lineTo(lx + unit * 0.18, ly + k * unit * 0.13); c.stroke(); }
   c.fillStyle = "#9aa4ab"; c.fillRect(lx - unit * 0.24, ly - unit * 0.78, unit * 0.48, unit * 0.2);
-  // Shipping crate (left, wide screens only): plywood with battens.
-  if (!narrow) {
-    const kx = w * 0.12, ky = h * 0.6;
-    box(kx, ky, unit * 1.0, unit * 0.5, "#c8a26c", "#8f6f45");
-    c.strokeStyle = "rgba(90, 64, 34, 0.7)"; c.lineWidth = 2;
-    for (let k = 0; k < 4; k += 1) { c.beginPath(); c.moveTo(kx - unit * 0.5 + k * unit * 0.333, ky - unit * 0.25); c.lineTo(kx - unit * 0.5 + k * unit * 0.333, ky + unit * 0.25); c.stroke(); }
-  }
+  // Shipping crate (top left, far): plywood with battens.
+  const kx = w * 0.12, ky = h * 0.6;
+  box(kx, ky, unit * 1.0, unit * 0.5, "#c8a26c", "#8f6f45");
+  c.strokeStyle = "rgba(90, 64, 34, 0.7)"; c.lineWidth = 2;
+  for (let k = 0; k < 4; k += 1) { c.beginPath(); c.moveTo(kx - unit * 0.5 + k * unit * 0.333, ky - unit * 0.25); c.lineTo(kx - unit * 0.5 + k * unit * 0.333, ky + unit * 0.25); c.stroke(); }
   // Far wall: light panels, observation window, return-air grilles, kick plate.
   c.fillStyle = "#e8ebee"; c.fillRect(0, 0, w, horizonY);
   c.strokeStyle = "rgba(120, 132, 142, 0.5)"; c.lineWidth = 1;
@@ -353,10 +260,8 @@ function paintCleanroom(c, w, h) {
   c.fillStyle = "rgba(110, 122, 132, 0.55)";
   for (const gx of [0.06, 0.8]) for (let x = w * gx; x < w * (gx + 0.14); x += 5) c.fillRect(x, horizonY * 0.3, 2.5, horizonY * 0.32);
   c.fillStyle = "#8f99a2"; c.fillRect(0, horizonY - 8, w, 8);
-  // Wall sign under the window, shortened when the full line will not fit.
-  c.fillStyle = "rgba(40, 50, 60, 0.65)"; c.font = `700 ${Math.max(8, Math.round(horizonY * 0.13))}px Arial, sans-serif`; c.textAlign = "center";
-  const sign = "CLEAN ROOM  \u00B7  ISO 8  \u00B7  GOWNS AND ESD STRAPS REQUIRED";
-  c.fillText(c.measureText(sign).width < w * 0.9 ? sign : "CLEAN ROOM  \u00B7  ISO 8", w / 2, horizonY * 0.8);
+  c.fillStyle = "rgba(40, 50, 60, 0.6)"; c.font = `700 ${Math.max(8, Math.round(horizonY * 0.14))}px Arial, sans-serif`; c.textAlign = "left";
+  c.fillText("CLEAN ROOM  ISO 8  /  GOWNS AND ESD STRAPS REQUIRED", w * 0.06, horizonY * 0.2);
   groundShadow(c, w, h, 0.32);
   vignette(c, w, h, 0.16);
 }
@@ -403,9 +308,8 @@ function paintSaturn(c, w, h) {
     c.beginPath(); c.moveTo(x - size, y); c.lineTo(x + size, y); c.moveTo(x, y - size); c.lineTo(x, y + size); c.stroke();
   }
   // Saturn (upper right): rings behind, globe with bands and the rings' shadow, rings in front.
-  // Placed clear of the telemetry text on the right and the title; smaller on a phone.
-  const wide = w > h;
-  const sx = w * (wide ? 0.74 : 0.78), sy = h * (wide ? 0.11 : 0.085), sr = Math.min(w, h) * (wide ? 0.075 : 0.06), tilt = -0.38, flat = 0.27;
+  // Placed clear of the telemetry text on the right.
+  const sx = w * 0.74, sy = h * 0.11, sr = Math.min(w, h) * 0.075, tilt = -0.38, flat = 0.27;
   const rings = [
     [1.24, 1.52, "rgba(150, 132, 104, 0.25)"], // C ring (faint)
     [1.53, 1.94, "rgba(226, 206, 160, 0.85)"], // B ring (brightest)
@@ -521,205 +425,3 @@ function paintSaturn(c, w, h) {
   vignette(c, w, h, 0.22);
 }
 
-// Internal: engineering blueprint grid.
-function paintBlueprint(c, w, h) {
-  const paper = c.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, Math.max(w, h) * 0.7);
-  paper.addColorStop(0, "#14406b");
-  paper.addColorStop(1, "#0b2747");
-  c.fillStyle = paper;
-  c.fillRect(0, 0, w, h);
-  for (const [spacing, alpha] of [[12, 0.07], [60, 0.16]]) {
-    c.strokeStyle = `rgba(170, 210, 255, ${alpha})`;
-    c.lineWidth = 1;
-    for (let x = (w / 2) % spacing; x < w; x += spacing) { c.beginPath(); c.moveTo(x + 0.5, 0); c.lineTo(x + 0.5, h); c.stroke(); }
-    for (let y = (h / 2) % spacing; y < h; y += spacing) { c.beginPath(); c.moveTo(0, y + 0.5); c.lineTo(w, y + 0.5); c.stroke(); }
-  }
-  c.strokeStyle = "rgba(190, 225, 255, 0.45)";
-  c.lineWidth = 2;
-  c.strokeRect(8, 8, w - 16, h - 16);
-}
-
-// Thermal: Titan's air in the thermal scale's color for -179 C, dimmed, with drifting cold air.
-function drawThermalAir(ctx, w, h) {
-  // Colors are fixed per temperature (thermal-scale.mjs), so the air's color never depends on the legend range.
-  const [r, g, b] = thermalRgb(systemsModel.ambientC);
-  const dim = 0.55;
-  ctx.fillStyle = `rgb(${Math.round(r * dim)}, ${Math.round(g * dim)}, ${Math.round(b * dim)})`;
-  ctx.fillRect(0, 0, w, h);
-  const drift = (state.missionTime || 0) * 14;
-  for (let i = 0; i < 12; i += 1) {
-    const y = ((i * 97) % 100) / 100 * h, length = w * (0.25 + ((i * 37) % 10) / 20);
-    const x = ((drift * (0.6 + (i % 4) * 0.2) + i * 173) % (w + length)) - length;
-    const streak = ctx.createLinearGradient(x, 0, x + length, 0);
-    streak.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0)`);
-    streak.addColorStop(0.5, `rgba(${Math.min(255, r + 40)}, ${Math.min(255, g + 40)}, ${Math.min(255, b + 60)}, 0.18)`);
-    streak.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-    ctx.fillStyle = streak;
-    ctx.fillRect(x, y, length, 3 + (i % 3) * 2);
-  }
-  // White grid at the same weights as the yellow one, so the view keeps its drafting grid.
-  drawGrid(ctx, w, h, whiteLines);
-  vignette(ctx, w, h, 0.4);
-}
-
-// lines: [spacing px, color, width px], centered on the view.
-function drawGrid(c, w, h, lines) {
-  for (const [spacing, color, width] of lines) {
-    c.strokeStyle = color;
-    c.lineWidth = width;
-    const offset = width % 2 ? 0.5 : 0;
-    for (let x = (w / 2) % spacing; x < w; x += spacing) { c.beginPath(); c.moveTo(x + offset, 0); c.lineTo(x + offset, h); c.stroke(); }
-    for (let y = (h / 2) % spacing; y < h; y += spacing) { c.beginPath(); c.moveTo(0, y + offset); c.lineTo(w, y + offset); c.stroke(); }
-  }
-}
-
-// Plain drafting grids for the Thermal layer, so every color on the scale stands out.
-// lines: [spacing px, color, width px]; frame: optional border color.
-function gridPaper(base, top, lines, frame) {
-  return (c, w, h) => {
-    const paper = c.createLinearGradient(0, 0, 0, h);
-    paper.addColorStop(0, top);
-    paper.addColorStop(1, base);
-    c.fillStyle = paper;
-    c.fillRect(0, 0, w, h);
-    drawGrid(c, w, h, lines);
-    if (frame) {
-      c.strokeStyle = frame;
-      c.lineWidth = 2;
-      c.strokeRect(8, 8, w - 16, h - 16);
-    }
-  };
-}
-const yellowLines = [[12, "rgba(255, 210, 40, 0.2)", 1], [60, "rgba(255, 210, 40, 0.6)", 2]];
-const whiteLines = [[12, "rgba(255, 255, 255, 0.2)", 1], [60, "rgba(255, 255, 255, 0.6)", 2]];
-const paintThermalLight = gridPaper("#c4c9cd", "#dde0e3", [[12, "rgba(20, 24, 28, 0.08)", 1], [60, "rgba(20, 24, 28, 0.24)", 1.5]]);
-const paintThermalDark = gridPaper("#050607", "#0d0f11", yellowLines);
-const paintInternalYellow = gridPaper("#050607", "#0d0f11", yellowLines, "rgba(255, 210, 40, 0.8)");
-
-// Text and line colors for the readouts and drawing marks on each backdrop.
-const ink = {
-  light: { text: "rgba(18, 24, 30, 0.92)", halo: "rgba(255, 255, 255, 0.75)", line: "rgba(18, 24, 30, 0.7)", box: "rgba(226, 230, 233, 0.9)" },
-  yellow: { text: "rgba(255, 214, 48, 0.98)", halo: "rgba(0, 0, 0, 0.9)", line: "rgba(255, 214, 48, 0.95)", box: "rgba(6, 7, 8, 0.92)" },
-  blue: { text: "rgba(210, 236, 255, 0.95)", halo: "rgba(0, 0, 0, 0.8)", line: "rgba(200, 232, 255, 0.85)", box: "rgba(11, 39, 71, 0.9)" },
-  default: { text: "rgba(223, 239, 255, 0.86)", halo: "rgba(0, 0, 0, 0.8)", line: "rgba(200, 232, 255, 0.85)", box: "rgba(11, 39, 71, 0.9)" },
-};
-// Colors for the current backdrop: light (clean room, light grey), yellow (yellow modes), blue (blueprint).
-export function backdropInk() {
-  const layer = state.missionLayer;
-  if (layer === "internal") return internal === "yellow" ? ink.yellow : ink.blue;
-  if (layer === "thermal") return thermal === "light" ? ink.light : thermal === "dark" ? ink.yellow : ink.default;
-  return exterior === "cleanroom" ? ink.light : ink.default;
-}
-
-const painters = {
-  titan: paintTitan, cleanroom: paintCleanroom, saturn: paintSaturn, blueprint: paintBlueprint,
-  "thermal-light": paintThermalLight, "thermal-dark": paintThermalDark, "internal-yellow": paintInternalYellow,
-};
-
-// Behind the vehicle (called before the diagram is drawn).
-export function drawMissionBackdrop(ctx, w, h) {
-  const layer = state.missionLayer;
-  if (layer === "thermal" && thermal === "air") { drawThermalAir(ctx, w, h); return; }
-  const kind = layer === "thermal" ? `thermal-${thermal}` : layer === "internal" ? (internal === "yellow" ? "internal-yellow" : "blueprint") : exterior;
-  ctx.drawImage(cached(kind, w, h, painters[kind]), 0, 0, w, h);
-}
-
-function arrow(ctx, from, to, size) {
-  const angle = Math.atan2(to.y - from.y, to.x - from.x);
-  ctx.beginPath();
-  ctx.moveTo(to.x, to.y);
-  ctx.lineTo(to.x - size * Math.cos(angle - 0.4), to.y - size * Math.sin(angle - 0.4));
-  ctx.lineTo(to.x - size * Math.cos(angle + 0.4), to.y - size * Math.sin(angle + 0.4));
-  ctx.closePath();
-  ctx.fill();
-}
-
-// Over the vehicle (called after the diagram): blueprint dimensions and title, thermal note.
-export function drawMissionBackdropOverlay(ctx, w, h, labels) {
-  const layer = state.missionLayer;
-  ctx.save();
-  if (layer === "internal" && state.vehicleModel !== "original") {
-    const colors = backdropInk();
-    ctx.strokeStyle = colors.line;
-    ctx.fillStyle = colors.line;
-    ctx.lineWidth = internal === "yellow" ? 1.5 : 1;
-    for (const dimension of labels?.dimensions || []) {
-      for (const [p, q] of dimension.extensions) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke(); }
-      const { a, b } = dimension;
-      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-      arrow(ctx, b, a, 7);
-      arrow(ctx, a, b, 7);
-      ctx.font = "700 11px SFMono-Regular, Consolas, monospace";
-      const text = dimension.text, width = ctx.measureText(text).width + 8;
-      // Label at the middle of the line, kept inside the frame.
-      const mx = Math.min(w - width / 2 - 6, Math.max(width / 2 + 6, (a.x + b.x) / 2));
-      let my = Math.min(h - 14, Math.max(14, (a.y + b.y) / 2));
-      // Keep clear of the telemetry readouts at the top left (ALT / V/S / SPD).
-      if (mx - width / 2 < 170 && my > 80 && my < 152) my = 160;
-      ctx.fillStyle = colors.box;
-      ctx.fillRect(mx - width / 2, my - 8, width, 16);
-      ctx.fillStyle = colors.text;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(text, mx, my);
-      ctx.fillStyle = colors.line;
-    }
-    // Title block, bottom left, above the a / b picker.
-    const lines = ["DRAGONFLY ROTORCRAFT LANDER", "Internal arrangement, 2023 configuration", "Nose left / units m / illustrative", "Envelope 3.85 x 3.85 x 1.75 m (published)"];
-    ctx.font = "700 10px SFMono-Regular, Consolas, monospace";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "alphabetic";
-    const boxW = Math.max(...lines.map(text => ctx.measureText(text).width)) + 16, boxH = lines.length * 14 + 10;
-    const x = 14, y = h - 58 - boxH;
-    ctx.fillStyle = colors.box;
-    ctx.fillRect(x, y, boxW, boxH);
-    ctx.strokeStyle = colors.line;
-    ctx.strokeRect(x + 0.5, y + 0.5, boxW, boxH);
-    ctx.fillStyle = colors.text;
-    lines.forEach((text, index) => ctx.fillText(text, x + 8, y + 18 + index * 14));
-  } else if (layer === "thermal" && thermal === "air") {
-    // Above the a / b / c picker.
-    ctx.font = "700 11px Inter, Arial, sans-serif";
-    ctx.fillStyle = "rgba(220, 230, 255, 0.85)";
-    ctx.textAlign = "left";
-    ctx.fillText(`Background: Titan air ${Math.round(systemsModel.ambientC)} C (dimmed so parts at air temperature stay visible)`, 14, h - 58);
-  }
-  ctx.restore();
-}
-
-// a / b / c picker for the Exterior and Thermal backdrops (bottom left of the vehicle view).
-function showPicker() {
-  const picker = $("backdrop-picker");
-  const layer = state.missionLayer;
-  picker.hidden = state.view !== "mission";
-  if (picker.hidden) return;
-  const choices = layer === "thermal" ? thermalBackdrops : layer === "internal" ? internalBackdrops : exteriorBackdrops;
-  const current = layer === "thermal" ? thermal : layer === "internal" ? internal : exterior;
-  picker.setAttribute("aria-label", `${layer[0].toUpperCase()}${layer.slice(1)} background`);
-  picker.querySelectorAll("[data-choice]").forEach((button, index) => {
-    const choice = choices[index];
-    button.hidden = !choice;
-    if (!choice) return;
-    button.setAttribute("aria-pressed", String(choice.id === current));
-    button.title = `${choice.letter}: ${choice.name}`;
-  });
-  $("backdrop-name").textContent = choices.find(b => b.id === current).name.replace(/ \(.*\)$/, "");
-}
-
-$("backdrop-picker").querySelectorAll("[data-choice]").forEach((button, index) => {
-  button.addEventListener("click", () => {
-    if (state.missionLayer === "thermal") {
-      thermal = thermalBackdrops[index].id;
-      try { localStorage.setItem(THERMAL_PREF_KEY, thermal); } catch { /* optional */ }
-    } else if (state.missionLayer === "internal") {
-      if (!internalBackdrops[index]) return;
-      internal = internalBackdrops[index].id;
-      try { localStorage.setItem(INTERNAL_PREF_KEY, internal); } catch { /* optional */ }
-    } else {
-      exterior = exteriorBackdrops[index].id;
-      try { localStorage.setItem(PREF_KEY, exterior); } catch { /* optional */ }
-    }
-    showPicker();
-  });
-});
-export const updateBackdropPicker = showPicker;

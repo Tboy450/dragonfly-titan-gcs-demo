@@ -37,6 +37,33 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-09: More detailed Exterior backdrops a / b / c
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Make the Exterior backdrops more detailed"
+- **What changed:** The owner asked for the three Exterior backdrops to be "a lot cooler" with
+  more detail. (a) Titan ground: a lit dune with ripples and a bright crest fading into haze,
+  bright and dark ground patches, wind streaks, gravel, rounded icy cobbles with highlights and
+  shadows, a rain-dampened patch and thin ground fog. (b) Clean room: perforated raised floor
+  with light reflections, striped KEEP OUT tape, a nitrogen purge cart hosed to the vehicle, tool
+  cart, work stand, ladder, crate, cable cover, ESD ground strap, and a wall with an observation
+  window, grilles and a sign; on a phone the equipment moves off the tape. (c) Poster: the Milky
+  Way with dust lanes, colored and spiked stars, Saturn with bands, the C/B/A rings, Cassini
+  Division and Encke Gap and the ring shadow, a small moon, and Titan with haze mottling, methane
+  clouds, the north polar hood, a night side and the detached blue haze layer. Saturn no longer
+  sits under the telemetry text.
+- **Archive:** the first versions are in `archive/exterior-backdrops-v1/` (pictures at desktop
+  and phone size, code, tag `archive/exterior-backdrops-v1` at 3b0dfc3). Two drafts fixed before
+  publishing (gear under the telemetry text; gear on the tape and Saturn by the title on a
+  phone) are in `archive/mission-backdrop-drafts/`.
+- **Files:** `dist/ui/mission-backdrop.mjs`, `archive/exterior-backdrops-v1/` (new),
+  `archive/mission-backdrop-drafts/`, `archive/README.md`, `README.md`
+- **Assumptions:** the clean-room equipment, signs and layout are generic illustrations, not
+  the real Dragonfly facility (no logos). Ground fog and cobble sizes are artistic, based on the
+  Huygens surface images.
+- **Checks:** `node --test tests/*.test.mjs` (115 pass). All three viewed at 1280x800 and phone
+  size (375x812); no console errors from the app.
+- **Open / next:** the semi-jagged mountain ridge request; the hybrid terrain suggestion.
+
 ### 2026-10-09: White grid on the Thermal "Titan air" backdrop
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add a white grid to the Titan-air thermal backdrop"

@@ -271,10 +271,14 @@ interior instead: that model is not based on the real design, so its parts are m
 illustration (their temperatures still come from the simulator).
 
 Each layer has its own backdrop. **Exterior** offers three, switched with the small **a / b / c**
-buttons at the bottom left of the diagram: (a) the Titan landing area seen from above, with the
-Huygens-image ground, icy pebbles and a dune at the far edge; (b) an assembly clean room, where
-Dragonfly is being built in 2026; (c) a Titan-and-Saturn poster (Saturn cannot be seen through
-the haze from the surface). **Internal** is an engineering blueprint with dimension lines for the
+buttons at the bottom left of the diagram: (a) the Titan landing area seen from above: rounded
+icy cobbles like those at the Huygens landing site, gravel, wind streaks, a rain-dampened patch,
+thin ground fog and a rippled dune at the far edge fading into haze; (b) an assembly clean room,
+where Dragonfly is being built in 2026, with a perforated floor, keep-out tape, a nitrogen purge
+cart hosed to the vehicle, a tool cart, work stand, ladder and an observation window; (c) a
+Titan-and-Saturn poster with the Milky Way, Saturn's rings and Cassini Division, and Titan's
+detached blue haze layer, polar hood and clouds (Saturn cannot be seen through the haze from the
+surface). **Internal** is an engineering blueprint with dimension lines for the
 published 3.85 x 3.85 x 1.75 m envelope and a title block; **b** turns it into a black sheet
 with a yellow grid and yellow dimensions, title and readouts. **Thermal** offers (a) Titan's
 -179 C air in the thermal scale's own color, dimmed so parts at air temperature stay visible,
