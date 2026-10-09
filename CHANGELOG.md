@@ -28,8 +28,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   The local branch here is `master` tracking `origin/main`: `git push origin master:main`.
 - Leave every `?v=dev` stamp and the "Build local" label as they are. The publish workflow
   replaces them with the commit hash (see `.github/workflows/pages.yml`).
+- **Never throw away replaced work.** Anything replaced (models, terrain, textures, visuals,
+  sounds, behavior), even bad or inaccurate versions, goes to `archive/` in the same change,
+  with pictures, restore steps and a git tag (house rule 6 in ARCHITECTURE.md).
 
 ## Entries
+
+### 2026-10-08: House rule: archive replaced work
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add the archive-everything house rule"
+- **What changed:** The owner set a standing rule: "we always store replaced assets in archive;
+  we don't throw away digital work, even bad or inaccurate work". Added as house rule 6 in
+  ARCHITECTURE.md, to the notes for every session above, and to `archive/README.md`.
+- **Files:** `ARCHITECTURE.md`, `CHANGELOG.md`, `archive/README.md`
+- **Checks:** documentation only.
+- **Open / next:** earlier replacements that live only in git history could be archived the
+  same way (see the list in `archive/README.md`).
 
 ### 2026-10-08: Lander settles onto sloped ground; sleep until morning
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)

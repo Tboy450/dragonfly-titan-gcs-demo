@@ -26,6 +26,11 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 4. **Don't commit the research PDFs.** They are other people's publications; cite them.
    `RESEARCH-COMPENDIUM.md` records which figure or page each value came from.
 5. **Sign the change log**, including what is estimated and what is still open.
+6. **Never throw away replaced work; archive it.** The owner's rule: digital work is kept, even
+   bad or inaccurate versions. When a model, texture, terrain, visual, sound or behavior is
+   replaced, in the same change add `archive/<name>/` with the old code or files, pictures of how
+   it looked and restore steps, tag the last commit that used it (`archive/<name>`), and add a
+   row to `archive/README.md`. Mention it in the change-log entry.
 
 ## Files
 
