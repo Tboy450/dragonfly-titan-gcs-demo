@@ -6,7 +6,9 @@ files, and steps to bring it back. None of this is published on the website (onl
 **Rule (owner, 2026-10-08):** replaced work is never thrown away, even bad or inaccurate
 versions. Whoever replaces a model, texture, terrain, visual, sound or behavior archives the old
 one here in the same change: a folder with the old code or files, pictures and restore steps, a
-git tag `archive/<name>` on the last commit that used it, and a row in the table below.
+git tag `archive/<name>` on the last commit that used it, and a row in the table below. Drafts
+that were fixed before publishing are kept too, with pictures and their code (no tag, since they
+were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
@@ -14,6 +16,7 @@ git tag `archive/<name>` on the last commit that used it, and a row in the table
 | [mountain-basin-map](mountain-basin-map/README.md) | The mountain-basin map around the base | 2026-10-08 | `archive/mountain-basin-map` |
 | [paddle-blades](paddle-blades/README.md) | Flat paddle rotor blades on the NASA model (with OBJ files) | 2026-10-08 | `archive/paddle-blades` |
 | [mission-grid-backdrop](mission-grid-backdrop/README.md) | The Mission diagram's single grid/horizon backdrop | 2026-10-08 | `archive/mission-grid-backdrop` |
+| [mission-backdrop-drafts](mission-backdrop-drafts/README.md) | Drafts of the new backdrops: cut-off blueprint label, tiled ground seams, true-color thermal where cold parts blend in | 2026-10-08 (never published) | none |
 
 ### Replaced before this rule (in git history only, not yet archived here)
 

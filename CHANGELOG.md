@@ -34,6 +34,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-08: Archived the Mission backdrop drafts
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Archive the Mission backdrop drafts"
+- **What changed:** The owner asked to archive the in-between states of the new backdrops as well.
+  `archive/mission-backdrop-drafts/` keeps the blueprint with its "1.75 m" label cut off, the
+  tiled ground photo with seams, and the true-color thermal background where parts at air
+  temperature blend in (rendered once for the archive, then reverted; never published), each
+  with its code and pictures next to the published versions. The archive rule now says drafts
+  fixed before publishing are kept too.
+- **Files:** `archive/mission-backdrop-drafts/` (new), `archive/README.md`, `CHANGELOG.md`
+- **Checks:** no app code changed (the temporary render setting was reverted; `git diff` clean
+  before this commit).
+- **Open / next:** none.
+
 ### 2026-10-08: Mission diagram backdrops per layer, with an a/b/c picker
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Give each Mission layer its own backdrop"
