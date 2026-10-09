@@ -28,14 +28,29 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   The local branch here is `master` tracking `origin/main`: `git push origin master:main`.
 - Leave every `?v=dev` stamp and the "Build local" label as they are. The publish workflow
   replaces them with the commit hash (see `.github/workflows/pages.yml`).
-- **First, check every branch.** `git fetch --all --prune`, `git branch -r`, then
-  `git log --oneline main..origin/<branch>` for each; merge or raise unmerged work before
-  starting (house rule 7 in ARCHITECTURE.md).
+- **At the start of a session (or after time away),** read the README and these entries, and
+  check every branch for unmerged work: `git fetch origin`, `git branch -r`, then
+  `git log --oneline main..origin/<branch>` (house rule 7 in ARCHITECTURE.md). Once per session.
 - **Never throw away replaced work.** Anything replaced (models, terrain, textures, visuals,
   sounds, behavior), even bad or inaccurate versions, goes to `archive/` in the same change,
   with pictures, restore steps and a git tag (house rule 6 in ARCHITECTURE.md).
 
 ## Entries
+
+### 2026-10-09: White grid on the Thermal "Titan air" backdrop
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a white grid to the Titan-air thermal backdrop"
+- **What changed:** The owner noticed Thermal option a had no visible grid. It now has a white
+  grid at the same weights as the yellow one (1 px at 20% every 12 px, 2 px at 60% every 60 px).
+  The grid drawing is shared by all the grid backdrops. The gridless look is archived in
+  `archive/thermal-air-no-grid/` (tag `archive/thermal-air-no-grid`, commit fb9b232). House rule 7
+  reworded at the owner's request: check the README, change log and branches once at the start
+  of a session or after time away, not before every request.
+- **Files:** `dist/ui/mission-backdrop.mjs`, `archive/thermal-air-no-grid/` (new),
+  `archive/README.md`, `README.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (115 pass). Thermal a viewed at 1280x800; no console
+  errors.
+- **Open / next:** the semi-jagged mountain ridge request; the hybrid terrain suggestion.
 
 ### 2026-10-09: Merged GitHub Copilot's branch (Reverse brake, weather, first expedition, temperature views)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)

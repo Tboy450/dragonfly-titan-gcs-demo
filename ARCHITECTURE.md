@@ -31,10 +31,11 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
    replaced, in the same change add `archive/<name>/` with the old code or files, pictures of how
    it looked and restore steps, tag the last commit that used it (`archive/<name>`), and add a
    row to `archive/README.md`. Mention it in the change-log entry.
-7. **Start every session by checking all branches.** Before any new work: `git fetch --all
-   --prune`, list `git branch -r`, and for each branch run `git log --oneline main..origin/<branch>`.
-   Read the newest `CHANGELOG.md` entries on every branch with commits not on `main`. Merge or
-   raise that work with the owner first. (Added 2026-10-09 after a week of work on `main` missed
+7. **At the start of a session (or after time away), check for other assistants' work.** Read
+   the README and the newest `CHANGELOG.md` entries, then `git fetch origin`, list
+   `git branch -r`, and run `git log --oneline main..origin/<branch>` for each branch. Merge or
+   raise any unmerged work with the owner before starting. Once per session, not before every
+   request. (Added 2026-10-09 after a week of work on `main` missed
    GitHub Copilot's unmerged branch.)
 
 ## Files

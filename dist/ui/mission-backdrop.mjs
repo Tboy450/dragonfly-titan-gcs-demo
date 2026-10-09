@@ -285,7 +285,20 @@ function drawThermalAir(ctx, w, h) {
     ctx.fillStyle = streak;
     ctx.fillRect(x, y, length, 3 + (i % 3) * 2);
   }
+  // White grid at the same weights as the yellow one, so the view keeps its drafting grid.
+  drawGrid(ctx, w, h, whiteLines);
   vignette(ctx, w, h, 0.4);
+}
+
+// lines: [spacing px, color, width px], centered on the view.
+function drawGrid(c, w, h, lines) {
+  for (const [spacing, color, width] of lines) {
+    c.strokeStyle = color;
+    c.lineWidth = width;
+    const offset = width % 2 ? 0.5 : 0;
+    for (let x = (w / 2) % spacing; x < w; x += spacing) { c.beginPath(); c.moveTo(x + offset, 0); c.lineTo(x + offset, h); c.stroke(); }
+    for (let y = (h / 2) % spacing; y < h; y += spacing) { c.beginPath(); c.moveTo(0, y + offset); c.lineTo(w, y + offset); c.stroke(); }
+  }
 }
 
 // Plain drafting grids for the Thermal layer, so every color on the scale stands out.
@@ -297,13 +310,7 @@ function gridPaper(base, top, lines, frame) {
     paper.addColorStop(1, base);
     c.fillStyle = paper;
     c.fillRect(0, 0, w, h);
-    for (const [spacing, color, width] of lines) {
-      c.strokeStyle = color;
-      c.lineWidth = width;
-      const offset = width % 2 ? 0.5 : 0;
-      for (let x = (w / 2) % spacing; x < w; x += spacing) { c.beginPath(); c.moveTo(x + offset, 0); c.lineTo(x + offset, h); c.stroke(); }
-      for (let y = (h / 2) % spacing; y < h; y += spacing) { c.beginPath(); c.moveTo(0, y + offset); c.lineTo(w, y + offset); c.stroke(); }
-    }
+    drawGrid(c, w, h, lines);
     if (frame) {
       c.strokeStyle = frame;
       c.lineWidth = 2;
@@ -312,6 +319,7 @@ function gridPaper(base, top, lines, frame) {
   };
 }
 const yellowLines = [[12, "rgba(255, 210, 40, 0.2)", 1], [60, "rgba(255, 210, 40, 0.6)", 2]];
+const whiteLines = [[12, "rgba(255, 255, 255, 0.2)", 1], [60, "rgba(255, 255, 255, 0.6)", 2]];
 const paintThermalLight = gridPaper("#c4c9cd", "#dde0e3", [[12, "rgba(20, 24, 28, 0.08)", 1], [60, "rgba(20, 24, 28, 0.24)", 1.5]]);
 const paintThermalDark = gridPaper("#050607", "#0d0f11", yellowLines);
 const paintInternalYellow = gridPaper("#050607", "#0d0f11", yellowLines, "rgba(255, 210, 40, 0.8)");

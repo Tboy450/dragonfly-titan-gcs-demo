@@ -278,6 +278,7 @@ the haze from the surface). **Internal** is an engineering blueprint with dimens
 published 3.85 x 3.85 x 1.75 m envelope and a title block; **b** turns it into a black sheet
 with a yellow grid and yellow dimensions, title and readouts. **Thermal** offers (a) Titan's
 -179 C air in the thermal scale's own color, dimmed so parts at air temperature stay visible,
+with a white grid,
 (b) light grey with a dark grid, like NASA's published thermal-model figures (the default: the
 cold blue parts stand out), and (c) black with a yellow grid. The same a / b / c buttons switch
 the backdrop in every layer, and each layer remembers its choice. Readouts turn dark on light

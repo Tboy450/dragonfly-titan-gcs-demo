@@ -19,6 +19,7 @@ were never committed).
 | [airflow-arrows-v1](airflow-arrows-v1/README.md) | First Internal-layer air-flow arrows (one fixed-speed loop) | 2026-10-08 | `archive/airflow-arrows-v1` |
 | [copilot-dune-terrain](copilot-dune-terrain/README.md) | GitHub Copilot's own dune landscape (branch work, never published), with its test | 2026-10-09 (at the merge) | `archive/copilot-dune-terrain` |
 | [thermal-scale-range-relative](thermal-scale-range-relative/README.md) | Range-relative thermal colors and the open parts list | 2026-10-09 | `archive/thermal-scale-range-relative` |
+| [thermal-air-no-grid](thermal-air-no-grid/README.md) | Thermal "Titan air" backdrop before its white grid | 2026-10-09 | `archive/thermal-air-no-grid` |
 | [mission-backdrop-drafts](mission-backdrop-drafts/README.md) | Drafts of the new backdrops: cut-off blueprint label, tiled ground seams, true-color thermal where cold parts blend in, faint yellow grid, white text on light grey | 2026-10-08/09 (never published) | none |
 
 ### Replaced before this rule (in git history only, not yet archived here)
