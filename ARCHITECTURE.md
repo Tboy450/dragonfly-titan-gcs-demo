@@ -67,6 +67,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `ui/chart.mjs` | Flight profile chart |
 | `ui/readouts.mjs` | Status strip, telemetry, rotor tiles, Diagnostics values, local track map |
 | `ui/layers-panel.mjs` | Vehicle Layers panel: layer switch, legend, parts list, selection |
+| `ui/mission-backdrop.mjs` | Mission diagram backdrops per layer (Exterior a/b/c, Internal blueprint with dimensions, Thermal cold air) and the a/b/c picker |
 | `ui/pilot-hud.mjs` | Pilot-view systems list (same values as the Mission panels) |
 | `ui/science-panel.mjs` | Science Payload panel and sampling button |
 | `ui/plan-panel.mjs` | Flight Plan dialog, plan status strip, time-speed buttons |

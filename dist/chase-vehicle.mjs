@@ -377,6 +377,22 @@ export function createChaseRenderer(options = {}) {
             x: (labelPoint.x + 1) / 2 * w, y: (1 - labelPoint.y) / 2 * h,
           });
         }
+        if (which === "research") {
+          // Published envelope dimensions for the blueprint backdrop, as on-screen line ends
+          // (craft frame: x right, y up, -z forward; skids at y -0.86, top at +0.88).
+          const screen = (x, y, z) => {
+            labelPoint.set(x, y, z).applyMatrix4(craft.matrixWorld).project(missionCamera);
+            return { x: (labelPoint.x + 1) / 2 * w, y: (1 - labelPoint.y) / 2 * h };
+          };
+          labels.dimensions = [
+            { text: "3.85 m", a: screen(0, -1.2, -1.93), b: screen(0, -1.2, 1.93),
+              extensions: [[screen(0, -0.9, -1.93), screen(0, -1.28, -1.93)], [screen(0, -0.9, 1.93), screen(0, -1.28, 1.93)]] },
+            { text: "1.75 m", a: screen(0, -0.86, -2.25), b: screen(0, 0.88, -2.25),
+              extensions: [[screen(0, -0.86, -1.95), screen(0, -0.86, -2.33)], [screen(0, 0.88, -1.95), screen(0, 0.88, -2.33)]] },
+            { text: "3.85 m", a: screen(-1.925, -0.86, 2.25), b: screen(1.925, -0.86, 2.25),
+              extensions: [[screen(-1.925, -0.86, 0.98), screen(-1.925, -0.86, 2.33)], [screen(1.925, -0.86, 0.98), screen(1.925, -0.86, 2.33)]] },
+          ];
+        }
       }
       landscape.group.visible = true;
       applyLayer("exterior");

@@ -245,3 +245,18 @@ test("Rotor-wash dust appears when hovering low and clears when high", async () 
   for (let frame = 0; frame < 120; frame++) { state.missionTime += 0.05; chase.draw(context2d, 800, 600, state); }
   assert.equal(chase.downwashDust.activeCount(), 0);
 });
+
+test("The Internal layer returns the published envelope dimensions for the blueprint", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const chase = createChaseRenderer({ renderer: fakeRenderer() });
+  const state = { ...createFlightState(), vehicleModel: "research" };
+  const labels = chase.drawMission(context2d, 800, 600, state, { layer: "internal" });
+  assert.deepEqual(labels.dimensions.map(d => d.text), ["3.85 m", "1.75 m", "3.85 m"]);
+  for (const { a, b, extensions } of labels.dimensions) {
+    for (const p of [a, b, ...extensions.flat()]) assert.ok(Number.isFinite(p.x) && Number.isFinite(p.y));
+    assert.ok(Math.hypot(b.x - a.x, b.y - a.y) > 40, "visible length on screen");
+  }
+  const original = chase.drawMission(context2d, 800, 600, { ...state, vehicleModel: "original" }, { layer: "internal" });
+  assert.equal(original.dimensions, undefined, "the mock-up model has no published dimensions");
+});

@@ -16,6 +16,7 @@ import { stepArrival } from "./ui/arrival.mjs?v=dev";
 import { updateSound } from "./ui/sound.mjs?v=dev";
 import { finishNight, sleepStepSeconds, updateDayLog } from "./titan-day.mjs?v=dev";
 import { updateDayStrip } from "./ui/day-strip.mjs?v=dev";
+import { updateBackdropPicker } from "./ui/mission-backdrop.mjs?v=dev";
 
 let readoutTime = 0;
 let planPanelTime = 0;
@@ -51,6 +52,7 @@ function tick(now) {
     updatePlanStrip();
     updateLayerPanel();
     updateDayStrip();
+    updateBackdropPicker();
     updatePilotHud();
     document.querySelectorAll("[data-warp]").forEach(button => button.setAttribute("aria-pressed", String(Number(button.dataset.warp) === state.timeWarp)));
     if (now - planPanelTime > 300) { updatePlanPanel(); planPanelTime = now; }

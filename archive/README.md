@@ -13,6 +13,7 @@ git tag `archive/<name>` on the last commit that used it, and a row in the table
 | [classic-peaks-terrain](classic-peaks-terrain/README.md) | Sharp saw-tooth far mountain peaks | 2026-09-29 | `archive/classic-peaks-terrain` |
 | [mountain-basin-map](mountain-basin-map/README.md) | The mountain-basin map around the base | 2026-10-08 | `archive/mountain-basin-map` |
 | [paddle-blades](paddle-blades/README.md) | Flat paddle rotor blades on the NASA model (with OBJ files) | 2026-10-08 | `archive/paddle-blades` |
+| [mission-grid-backdrop](mission-grid-backdrop/README.md) | The Mission diagram's single grid/horizon backdrop | 2026-10-08 | `archive/mission-grid-backdrop` |
 
 ### Replaced before this rule (in git history only, not yet archived here)
 

@@ -184,6 +184,15 @@ With the **original** model selected, Internal and Thermal show a clearly labele
 interior instead: that model is not based on the real design, so its parts are made up for
 illustration (their temperatures still come from the simulator).
 
+Each layer has its own backdrop. **Exterior** offers three, switched with the small **a / b / c**
+buttons at the bottom left of the diagram: (a) the Titan landing area seen from above, with the
+Huygens-image ground, icy pebbles and a dune at the far edge; (b) an assembly clean room, where
+Dragonfly is being built in 2026; (c) a Titan-and-Saturn poster (Saturn cannot be seen through
+the haze from the surface). **Internal** is an engineering blueprint with dimension lines for the
+published 3.85 x 3.85 x 1.75 m envelope and a title block. **Thermal** fills the background with
+the thermal scale's color for Titan's -179 C air, dimmed so parts at air temperature stay
+visible, with cold air drifting past.
+
 ## Science Instruments
 
 The Science Payload panel shows each instrument working: DragonCam images in flight,

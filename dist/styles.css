@@ -1569,6 +1569,14 @@ body.arrival .pilot-hud { display: none; }
 }
 
 /* Start over: a quiet secondary button beside the survey action. */
+/* Exterior backdrop picker (a / b / c), bottom left of the Mission view's vehicle canvas. */
+.backdrop-picker { position: absolute; left: 14px; bottom: 14px; z-index: 2; display: flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 8px; background: rgba(4, 12, 19, 0.72); }
+.backdrop-picker[hidden] { display: none; }
+.backdrop-picker button { min-width: 0; width: 28px; min-height: 28px; padding: 0; border-color: transparent; background: transparent; color: var(--muted); font-weight: 800; }
+.backdrop-picker button[aria-pressed="true"] { border-color: rgba(124, 231, 255, 0.6); color: #061019; background: var(--cyan); }
+.backdrop-picker span { padding: 0 6px; color: var(--muted); font-size: 0.72rem; }
+body.pilot-view .backdrop-picker { display: none; }
+
 /* Titan day strip: day number and clock, day/night bar, today's checklist, sleep button. */
 .day-strip { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; align-items: center; padding: 10px 14px; background: #161f2c; border-left: 3px solid var(--amber); }
 .day-clock { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }

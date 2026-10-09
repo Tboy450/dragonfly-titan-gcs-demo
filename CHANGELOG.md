@@ -34,6 +34,35 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-08: Mission diagram backdrops per layer, with an a/b/c picker
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Give each Mission layer its own backdrop"
+- **What changed:** The owner chose new backgrounds behind the vehicle diagram:
+  - Exterior, picked with small a / b / c buttons at the bottom left (choice remembered):
+    (a) Titan landing area from above: Huygens-image ground, icy pebbles, a dune and haze at the
+    far edge, a soft shadow; (b) an assembly clean room (perspective floor tiles, keep-out line,
+    panel wall, work stands; generic, no logos); (c) a Titan-and-Saturn poster, labeled as
+    illustrative because Saturn is hidden by haze from the surface.
+  - Internal: an engineering blueprint grid with dimension lines for the published envelope
+    (3.85 m long, 3.85 m wide, 1.75 m tall), projected from the model so they line up, and a
+    title block. The mock-up original model gets no dimensions.
+  - Thermal: the thermal scale's color for Titan's -179 C air, dimmed so parts at air
+    temperature stay visible (noted on screen), with drifting cold-air streaks.
+  - Telemetry text now has a dark halo so it reads on the light clean-room floor.
+  - Archived first (house rule 6): `archive/mission-grid-backdrop/` with the old drawing code and
+    pictures of all three layers at desktop and phone size; tag `archive/mission-grid-backdrop`
+    (commit 417c91b). The unused grid function was then removed.
+- **Files:** `dist/ui/mission-backdrop.mjs` (new), `dist/ui/flight-view.mjs`,
+  `dist/chase-vehicle.mjs`, `dist/app.js`, `dist/index.html`, `dist/styles.css`,
+  `tests/render-smoke.test.mjs`, `archive/mission-grid-backdrop/` (new), `archive/README.md`,
+  `README.md`, `ARCHITECTURE.md`
+- **Assumptions:** the envelope dimensions are published [PUB]; the scenes are artistic [EST].
+- **Checks:** `node --test tests/*.test.mjs` (85 pass; new test that the Internal layer returns
+  the three published dimensions with visible on-screen lengths, and none for the mock-up model).
+  All five backdrops viewed at 1280x800 and phone size; the picker shows only in the Exterior
+  layer of the Mission view; no console errors.
+- **Open / next:** none.
+
 ### 2026-10-08: Rotor-wash dust and Titan acoustics
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add rotor-wash dust and Titan acoustics"
