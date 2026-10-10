@@ -3,7 +3,6 @@ import { enterFreeCamera, orbitCamera } from "../flight-camera.mjs?v=dev";
 import { commandFlight, model, takeManualControl } from "../flight-model.mjs?v=dev";
 import { missionAction, startRest, toggleDownlink } from "../mission-systems.mjs?v=dev";
 import { setFixedWind, setWeatherMode, startStormTraining } from "../weather.mjs?v=dev";
-import { closePilotFullscreen, updatePilotLayout } from "./pilot-layout.mjs?v=dev";
 import { $, chaseRenderer, clamp, flightCanvas, state } from "./context.mjs?v=dev";
 import { updateReadouts } from "./readouts.mjs?v=dev";
 
@@ -124,7 +123,6 @@ function bindFreeCamera() {
 }
 
 export function setView(view) {
-  if (view !== "pilot") closePilotFullscreen();
   state.view = view;
   document.body.classList.toggle("pilot-view", view === "pilot");
   const missionButton = $("mission-view-button");
@@ -133,7 +131,6 @@ export function setView(view) {
   pilotButton.classList.toggle("active", view === "pilot");
   missionButton.setAttribute("aria-pressed", String(view === "mission"));
   pilotButton.setAttribute("aria-pressed", String(view === "pilot"));
-  updatePilotLayout();
 }
 
 
@@ -183,7 +180,6 @@ bindPilotStick("right-stick", "right");
 bindFreeCamera();
 
 window.addEventListener("keydown", (event) => {
-  if (event.ctrlKey || event.metaKey || event.altKey) return;
   if ($("systems-dialog").open || $("plan-dialog").open) return;
   if (event.target.matches("input, select, textarea, button, a") || event.target.isContentEditable) return;
   const step = event.shiftKey ? 0.08 : 0.04;

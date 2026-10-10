@@ -58,6 +58,11 @@ archived in [archive/](archive/).
 
 ## Flight Controls
 
+- **Pilot** fits the flight box to the available browser height while keeping telemetry,
+  the flight graph, science, mission controls and references on the scrollable page below.
+  The small fullscreen button expands only the flight box; press it again or Escape to exit.
+  Native browser zoom remains available. The reset icon beside **Diagnostics** requires
+  a second tap to confirm; the footer also retains **Start over from the landing**.
 - **Takeoff** climbs to 40 m and hovers. **Cruise** holds altitude (at least 20 m) and
   flies forward at 10 m/s. **Land** descends at up to 1.3 m/s, slows near the ground and
   idles the rotors after touchdown. **Auto** resumes the demo profile from the phase that
@@ -158,10 +163,11 @@ Free flight and **Sample here** remain available and can satisfy expedition obje
 Samples collected before beginning do not count toward a new expedition. The original
 short survey is retained under **Optional quick survey / Start over**.
 
-The landscape is an illustrative, compressed-scale interpretation of the Ahmakiq Undae
-landing-area description: long dunes, broad low interdunes and distant hills, not the
-previous mountain basin. Dune spacing (~620 m), heights (35-60 m), orientation and all
-site positions are artistic training choices, not a surveyed elevation model. The
+The landscape is an illustrative interpretation of the Ahmakiq Undae landing-area
+description: long dunes, broad low interdunes and distant hills, not the previous
+mountain basin. Dune spacing (~3.2 km) and heights (75-120 m) follow the published-size
+terrain retained during the merge; orientation and site positions are artistic
+training choices, not a surveyed elevation model. The
 planning map shades the same terrain, with lighter areas representing higher ground.
 Both the geology and science results are examples, not actual observations from Titan.
 

@@ -307,6 +307,35 @@ test("Rotor-wash dust appears when hovering low and clears when high", async () 
   assert.equal(chase.downwashDust.activeCount(), 0);
 });
 
+test("Dust expires across Mission-view gaps, freezes on pause and clears on a clock reset", async () => {
+  const { createDownwashDust } = await import("../dist/downwash-dust.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const dust = createDownwashDust(new THREE.Group(), () => 0);
+  const state = { ...createFlightState(), altitude: 1.5, rotorRpm: Array(8).fill(780), missionTime: 0 };
+  const origin = new THREE.Vector3(0, 2, 0), eye = new THREE.Vector3(0, 4, 10);
+  const update = dt => { state.missionTime += dt; dust.update(state, origin, eye); };
+  update(0);
+  for (let frame = 0; frame < 40; frame++) update(0.05);
+  const before = dust.activeCount();
+  assert.ok(before > 20);
+  const positions = dust.group.children.map(sprite => sprite.position.toArray());
+  update(0);
+  assert.equal(dust.activeCount(), before, "paused simulation retains dust");
+  assert.deepEqual(dust.group.children.map(sprite => sprite.position.toArray()), positions);
+  state.rotorRpm.fill(0);
+  update(100);
+  assert.equal(dust.activeCount(), 0, "old dust expires while Pilot is not rendering");
+  assert.ok(dust.group.children.every(sprite => !sprite.visible));
+  state.rotorRpm.fill(780);
+  for (let frame = 0; frame < 40; frame++) update(0.05);
+  assert.ok(dust.activeCount() > 20);
+  update(100);
+  assert.ok(dust.activeCount() > 0 && dust.activeCount() <= 4, "only a recent frame of fresh dust is emitted");
+  state.missionTime = 0;
+  update(0);
+  assert.equal(dust.activeCount(), 0, "new mission cannot inherit old dust");
+});
+
 test("The Internal layer returns the published envelope dimensions for the blueprint", async () => {
   const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
   const { createFlightState } = await import("../dist/flight-model.mjs");

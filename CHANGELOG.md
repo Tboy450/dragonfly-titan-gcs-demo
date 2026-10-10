@@ -37,6 +37,33 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-09: Restore scrollable Pilot page and finish reviewed fixes
+- **Signed:** Codex (OpenAI coding agent); clean-room projection by Claude, preserved and reviewed by Codex.
+- **Commit:** "Restore scrollable Pilot page and finish review fixes"
+- **What changed:** Only the Pilot flight box fits the available browser height. All telemetry,
+  live flight graphs, vehicle/environment controls, rotor/science/comms data, mission sections,
+  day checklist and footer remain below it on desktop and mobile. Optional fullscreen expands
+  only the flight box, with an in-tab fallback when the native API is denied. Mission keeps its
+  existing layout. Browser Ctrl/Meta shortcuts bypass flight keys. Reset is visible beside
+  Diagnostics, still uses tap-twice confirmation, and remains available at the footer.
+- **Other fixes:** One flight is counted until actual touchdown, not each low-hover crossing.
+  Dust expires across long gaps outside Pilot without backfilling emissions; pause and clock
+  reset remain correct. Narrow Mission thermal/internal labels and background controls no
+  longer collide. Claude's gentler clean-room floor perspective keeps the detailed tiles and
+  equipment. README's duplicate smaller-dune description was corrected to the retained terrain.
+- **Files:** `dist/ui/pilot-layout.mjs` (new), `dist/styles.css`, `dist/index.html`, `dist/app.js`,
+  `dist/ui/{controls,persistence,chart,mission-backdrop}.mjs`, `dist/titan-day.mjs`,
+  `dist/downwash-dust.mjs`, regression tests, README and archive records.
+- **Assumptions:** No new flight, thermal or environmental assumptions. Existing illustrative
+  backdrops, merged weather/expedition behavior and explicitly fictional reverse brake retained.
+- **Checks:** All 117 Node tests pass. New counter and dust regressions failed before the fixes
+  and pass after them. Browser checks covered desktop and narrow phone Mission labels, fitted
+  Pilot, scrolling to graph and footer, fullscreen entry/exit and switching back to Mission.
+  Reset confirmation was checked without deleting the user's saved progress.
+- **Archive:** `archive/cleanroom-steep-floor/` and `archive/pre-review-fixes-2026-10-09/`,
+  with pictures, restore steps and corresponding tags at `665a669`.
+- **Open / next:** Mountain ridge and mixed-terrain ideas remain pending approval, unchanged.
+
 ### 2026-10-09: More detailed Exterior backdrops a / b / c
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Make the Exterior backdrops more detailed"

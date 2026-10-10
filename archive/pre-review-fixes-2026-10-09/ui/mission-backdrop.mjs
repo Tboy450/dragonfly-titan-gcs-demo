@@ -669,14 +669,13 @@ export function drawMissionBackdropOverlay(ctx, w, h, labels) {
       ctx.fillText(text, mx, my);
       ctx.fillStyle = colors.line;
     }
-    // The dimension callouts retain the envelope on phones; keep the footer clear of Heading.
-    const lines = w < 480 ? ["2023 layout / illustrative / units m"]
-      : ["DRAGONFLY ROTORCRAFT LANDER", "Internal arrangement, 2023 configuration", "Nose left / units m / illustrative", "Envelope 3.85 x 3.85 x 1.75 m (published)"];
+    // Title block, bottom left, above the a / b picker.
+    const lines = ["DRAGONFLY ROTORCRAFT LANDER", "Internal arrangement, 2023 configuration", "Nose left / units m / illustrative", "Envelope 3.85 x 3.85 x 1.75 m (published)"];
     ctx.font = "700 10px SFMono-Regular, Consolas, monospace";
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
     const boxW = Math.max(...lines.map(text => ctx.measureText(text).width)) + 16, boxH = lines.length * 14 + 10;
-    const x = 14, y = h - 84 - boxH;
+    const x = 14, y = h - 58 - boxH;
     ctx.fillStyle = colors.box;
     ctx.fillRect(x, y, boxW, boxH);
     ctx.strokeStyle = colors.line;
@@ -684,11 +683,11 @@ export function drawMissionBackdropOverlay(ctx, w, h, labels) {
     ctx.fillStyle = colors.text;
     lines.forEach((text, index) => ctx.fillText(text, x + 8, y + 18 + index * 14));
   } else if (layer === "thermal" && thermal === "air") {
-    // Above both the picker and the taller heading box, including on narrow phones.
+    // Above the a / b / c picker.
     ctx.font = "700 11px Inter, Arial, sans-serif";
     ctx.fillStyle = "rgba(220, 230, 255, 0.85)";
     ctx.textAlign = "left";
-    ctx.fillText(`Titan air: ${Math.round(systemsModel.ambientC)} C (background dimmed)`, 14, h - 84);
+    ctx.fillText(`Background: Titan air ${Math.round(systemsModel.ambientC)} C (dimmed so parts at air temperature stay visible)`, 14, h - 58);
   }
   ctx.restore();
 }
@@ -709,9 +708,7 @@ function showPicker() {
     button.setAttribute("aria-pressed", String(choice.id === current));
     button.title = `${choice.letter}: ${choice.name}`;
   });
-  const name = choices.find(b => b.id === current).name;
-  $("backdrop-name").textContent = name.replace(/ \(.*\)$/, "");
-  $("backdrop-name").title = name;
+  $("backdrop-name").textContent = choices.find(b => b.id === current).name.replace(/ \(.*\)$/, "");
 }
 
 $("backdrop-picker").querySelectorAll("[data-choice]").forEach((button, index) => {

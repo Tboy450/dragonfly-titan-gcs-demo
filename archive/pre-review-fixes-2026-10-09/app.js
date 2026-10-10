@@ -58,7 +58,7 @@ function tick(now) {
     updateExpeditionPanel();
     document.querySelectorAll("[data-warp]").forEach(button => button.setAttribute("aria-pressed", String(Number(button.dataset.warp) === state.timeWarp)));
     if (now - planPanelTime > 300) { updatePlanPanel(); planPanelTime = now; }
-    drawChart();
+    if (state.view === "mission") drawChart();
     readoutTime = now;
   }
   drawFlight();

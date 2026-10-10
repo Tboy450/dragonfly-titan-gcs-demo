@@ -42,6 +42,23 @@ test("The day checklist counts flights, downlinks and samples, and resets at daw
   assert.ok(!state.dayLog.downlinked && !state.dayLog.sampled);
 });
 
+test("Low hover crossings count as one flight until the lander touches down", () => {
+  const state = landedState();
+  for (const altitude of [0, 1.5, 0.8, 1.5, 0.05, 2]) {
+    state.altitude = altitude;
+    updateDayLog(state);
+  }
+  assert.equal(state.dayLog.flights, 1);
+  assert.equal(state.dayLog.airborne, true);
+  assert.doesNotMatch(operationsAdvisory(state, 5), /one flight per Titan day/);
+  state.altitude = 0;
+  updateDayLog(state);
+  assert.equal(state.dayLog.airborne, false);
+  state.altitude = 1.5;
+  updateDayLog(state);
+  assert.equal(state.dayLog.flights, 2);
+});
+
 test("Sleep until morning recharges, logs the night, wakes at 08:00 and reports", () => {
   const state = landedState();
   setWeatherMode(state, "fixed"); // a calm night (weather can stop fast-forwarding; see below)

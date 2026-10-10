@@ -71,7 +71,6 @@
         <output id="pilot-navigation" aria-label="Local position">N 0 / E 0 m</output>
         <button id="plan-button" type="button">Plan flight</button>
         <button id="systems-button" type="button">Diagnostics</button>
-        <button id="start-over" class="start-over reset-icon" data-reset-icon type="button" aria-label="Reset mission" title="Reset mission from the landing (tap twice)">&#8635;</button>
         <span class="simulation-label">Simulated telemetry</span>
         <span id="vehicle-alert" role="status">Systems nominal</span>
       </section>
@@ -108,11 +107,12 @@
       </section>
 
       <details class="quick-survey">
-        <summary>Optional quick survey</summary>
+        <summary>Optional quick survey / Start over</summary>
       <section class="mission-strip" aria-label="Survey objective">
         <div><strong id="objective-title">Interdune survey</strong><span id="objective-status">Survey the edge of a rain-darkened interdune from dry ground.</span></div>
         <output id="objective-distance">171 m to outcrop</output>
         <button id="mission-action" type="button">Begin survey</button>
+        <button id="start-over" class="start-over" type="button" title="Clear the saved mission and start again from the landing">Start over</button>
       </section>
       </details>
 
@@ -233,7 +233,6 @@
               <strong id="heading-value">084 deg</strong>
             </div>
             <button id="model-toggle" class="model-toggle" type="button" aria-pressed="true" title="Switch between the vehicle model built from NASA/APL 2023 design drawings and the original demo model">Model: NASA 2023</button>
-            <button id="pilot-fullscreen" class="pilot-fullscreen" type="button" aria-label="Enter Pilot fullscreen" aria-pressed="false" title="Enter Pilot fullscreen">&#9974;</button>
             <section id="pilot-hud" class="pilot-hud" aria-label="Vehicle systems">
               <div><span>Battery</span><strong id="hud-battery">96% / 10 C</strong></div>
               <div><span>Bay air</span><strong id="hud-bay">12 C</strong></div>

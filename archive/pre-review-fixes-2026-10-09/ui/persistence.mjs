@@ -44,27 +44,16 @@ function startOver() {
 const confirmWindowMs = 4000;
 function tapTwiceToStartOver(button) {
   const label = button.textContent;
-  const icon = button.hasAttribute("data-reset-icon");
-  const title = button.title;
-  const ariaLabel = button.getAttribute("aria-label");
   let armedUntil = 0, timer = 0;
   button.addEventListener("click", () => {
     if (performance.now() < armedUntil) { startOver(); return; }
     armedUntil = performance.now() + confirmWindowMs;
-    button.textContent = icon ? "?" : "Sure? Tap again";
-    if (icon) {
-      button.title = "Tap again to reset the mission";
-      button.setAttribute("aria-label", "Confirm mission reset: tap again");
-    }
+    button.textContent = "Sure? Tap again";
     button.classList.add("confirming");
     clearTimeout(timer);
     timer = setTimeout(() => {
       armedUntil = 0;
       button.textContent = label;
-      if (icon) {
-        button.title = title;
-        button.setAttribute("aria-label", ariaLabel);
-      }
       button.classList.remove("confirming");
     }, confirmWindowMs);
   });

@@ -66,31 +66,22 @@ export function createDownwashDust(parent, heightAt) {
   // Called once per rendered frame after the vehicle and camera are placed.
   function update(state, origin, eye) {
     const now = state.missionTime || 0;
-    const elapsed = lastTime === null ? 0 : now - lastTime;
-    const dt = Math.max(0, elapsed);
+    const dt = lastTime === null ? 0 : Math.min(0.1, Math.max(0, now - lastTime));
     lastTime = now;
-    if (elapsed < 0 || state.edl) spawnDebt = 0;
-    // Age existing dust through the full gap while Mission view or accelerated rest was active.
-    for (const particle of particles) {
-      if (!particle.alive) continue;
-      particle.age += dt;
-      if (particle.age >= particle.life || elapsed < 0 || state.edl) { particle.alive = false; continue; }
-      const drag = Math.exp(-0.9 * dt);
-      particle.x += particle.vx * (1 - drag) / 0.9;
-      particle.z += particle.vz * (1 - drag) / 0.9;
-      particle.vx *= drag; particle.vz *= drag;
-      const riseDrag = Math.exp(-0.5 * dt);
-      particle.rise += particle.climb * (1 - riseDrag) / 0.5;
-      particle.climb *= riseDrag;
-    }
     const kind = groundKindAt(origin.x, origin.z);
     const { strength } = state.edl ? { strength: 0 } : downwashAtGround(state, kind);
-    // Emit only a recent frame's dust, never backfill the whole gap at the current position.
-    spawnDebt += strength * 36 * Math.min(0.1, dt);
+    spawnDebt += strength * 36 * dt;
     while (spawnDebt >= 1) { spawn(origin, strength, kind); spawnDebt -= 1; }
     for (const particle of particles) {
       const { sprite } = particle;
       if (!particle.alive) { sprite.visible = false; continue; }
+      particle.age += dt;
+      if (particle.age >= particle.life || state.edl) { particle.alive = false; sprite.visible = false; continue; }
+      const drag = Math.exp(-0.9 * dt);
+      particle.vx *= drag; particle.vz *= drag;
+      particle.x += particle.vx * dt; particle.z += particle.vz * dt;
+      particle.rise += particle.climb * dt;
+      particle.climb *= Math.exp(-0.5 * dt);
       const u = particle.age / particle.life;
       const size = particle.size0 + (particle.size1 - particle.size0) * Math.sqrt(u);
       sprite.position.set(particle.x, heightAt(particle.x, particle.z) + size * 0.45 + particle.rise, particle.z);

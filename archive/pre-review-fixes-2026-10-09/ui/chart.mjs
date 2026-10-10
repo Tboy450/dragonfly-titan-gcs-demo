@@ -16,8 +16,7 @@ export function drawChart() {
   ctx.fillStyle = "rgba(255, 255, 255, 0.025)";
   ctx.fillRect(0, 0, w, h);
 
-  const compactLegend = w < 340;
-  const pad = { left: 42, right: 18, top: 14, bottom: compactLegend ? 42 : 24 };
+  const pad = { left: 42, right: 18, top: 14, bottom: 24 };
   const plotW = w - pad.left - pad.right;
   const plotH = h - pad.top - pad.bottom;
   const data = state.chart.length > 1 ? state.chart : [{ time: 0, altitude: 0, powerKw: 0, speed: 0 }];
@@ -56,9 +55,9 @@ export function drawChart() {
 
   ctx.fillStyle = "rgba(223, 239, 255, 0.78)";
   ctx.font = "700 12px Inter, Arial";
-  ctx.fillText(`altitude (0-${altitudeScale} m)`, pad.left, h - (compactLegend ? 24 : 7));
+  ctx.fillText(`altitude (0-${altitudeScale} m)`, pad.left, h - 7);
   ctx.fillStyle = "#ffb457";
-  ctx.fillText("power", pad.left + (compactLegend ? 0 : 142), h - 7);
+  ctx.fillText("power", pad.left + 142, h - 7);
   ctx.fillStyle = "#80f2ae";
-  ctx.fillText("speed", pad.left + (compactLegend ? 72 : 198), h - 7);
+  ctx.fillText("speed", pad.left + 198, h - 7);
 }

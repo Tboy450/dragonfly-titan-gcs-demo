@@ -6,7 +6,7 @@
 // compressed: "Sleep until morning" passes the rest of the day and the night in a few seconds.
 // The operations day runs dawn (06:00 local) to dawn; the simulation starts at local noon. The
 // lander wakes at 08:00, after sunrise, so the scene is lit (the sun is at the horizon at dawn).
-import { landed, startRest, systemsModel, titanLocalHour } from "./mission-systems.mjs?v=dev";
+import { startRest, systemsModel, titanLocalHour } from "./mission-systems.mjs?v=dev";
 
 const dayLength = () => systemsModel.titanDaySeconds;
 export const morningHour = 8;
@@ -47,11 +47,9 @@ export function updateDayLog(state) {
   if (!log || log.day !== day) {
     log = state.dayLog = { day, flights: 0, airborne: false, downlinked: false, sampled: false, returnedAtStart: returned, samplesAtStart: samples };
   }
-  // Keep the liftoff latched through low hovers; only touchdown ends a flight.
-  if (state.altitude > 1 && !log.airborne) {
-    log.flights += 1;
-    log.airborne = true;
-  } else if (landed(state)) log.airborne = false;
+  const airborne = state.altitude > 1;
+  if (airborne && !log.airborne) log.flights += 1;
+  log.airborne = airborne;
   if (returned > log.returnedAtStart) log.downlinked = true;
   if (samples > log.samplesAtStart) log.sampled = true;
   return log;

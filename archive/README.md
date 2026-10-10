@@ -12,6 +12,8 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [cleanroom-steep-floor](cleanroom-steep-floor/README.md) | Detailed clean-room floor before Claude's gentler perspective correction | 2026-10-09 | `archive/cleanroom-steep-floor` |
+| [pre-review-fixes-2026-10-09](pre-review-fixes-2026-10-09/README.md) | Single-screen Pilot layout, overlapping narrow Mission labels, hover counting and dust timing before review fixes | 2026-10-09 | `archive/pre-review-fixes-2026-10-09` |
 | [classic-peaks-terrain](classic-peaks-terrain/README.md) | Sharp saw-tooth far mountain peaks | 2026-09-29 | `archive/classic-peaks-terrain` |
 | [mountain-basin-map](mountain-basin-map/README.md) | The mountain-basin map around the base | 2026-10-08 | `archive/mountain-basin-map` |
 | [paddle-blades](paddle-blades/README.md) | Flat paddle rotor blades on the NASA model (with OBJ files) | 2026-10-08 | `archive/paddle-blades` |
