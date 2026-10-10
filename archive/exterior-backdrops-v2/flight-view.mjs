@@ -724,21 +724,12 @@ function drawHud(ctx, w, h) {
   }
 
   // Left column starts below the "Vehicle / North up" overlay so ALT is never hidden.
-  const readout = (text, x, y) => {
-    if (colors.outline) {
-      ctx.strokeStyle = colors.outline;
-      ctx.lineWidth = 2.5;
-      ctx.lineJoin = "round";
-      ctx.strokeText(text, x, y);
-    }
-    ctx.fillText(text, x, y);
-  };
-  readout(`ALT ${state.altitude.toFixed(1)} m`, 24, 100);
-  readout(`V/S ${state.verticalSpeed.toFixed(2)} m/s`, 24, 120);
-  readout(`SPD ${state.speed.toFixed(1)} m/s`, 24, 140);
+  ctx.fillText(`ALT ${state.altitude.toFixed(1)} m`, 24, 100);
+  ctx.fillText(`V/S ${state.verticalSpeed.toFixed(2)} m/s`, 24, 120);
+  ctx.fillText(`SPD ${state.speed.toFixed(1)} m/s`, 24, 140);
   ctx.textAlign = "right";
-  readout(`ROLL ${(state.roll * 22).toFixed(1)} deg`, w - 24, 74);
-  readout(`PITCH ${(state.pitch * 18).toFixed(1)} deg`, w - 24, 94);
-  readout(`WIND ${state.wind.toFixed(1)} m/s`, w - 24, 114);
+  ctx.fillText(`ROLL ${(state.roll * 22).toFixed(1)} deg`, w - 24, 74);
+  ctx.fillText(`PITCH ${(state.pitch * 18).toFixed(1)} deg`, w - 24, 94);
+  ctx.fillText(`WIND ${state.wind.toFixed(1)} m/s`, w - 24, 114);
   ctx.restore();
 }

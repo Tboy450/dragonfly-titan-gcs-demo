@@ -213,7 +213,7 @@ function paintCleanroom(c, w, h) {
   // Wide screens put the equipment beside the keep-out box. On a phone the box nearly fills the
   // width, so the carts go below it and the work stand and ladder just inside it.
   const narrow = cx - bw - tape < unit * 1.1;
-  const belowY = Math.min(h - 100, cy + bh - unit * 0.7);
+  const belowY = Math.min(h - unit * 0.35, cy + bh + tape + unit * 0.4);
   // Nitrogen purge cart: cart, green cylinder seen from above, regulator, hose to the vehicle.
   const [px, py] = narrow ? [w * 0.84, belowY] : [w * 0.86, h * 0.36];
   box(px, py, unit * 0.9, unit * 0.6, "#8c969e", "#5c656c");
@@ -237,25 +237,21 @@ function paintCleanroom(c, w, h) {
   c.strokeRect(tx - unit * 0.52, ty - unit * 0.19, unit * 0.11, unit * 0.38);
   c.strokeStyle = "rgba(255, 255, 255, 0.45)"; c.lineWidth = 1;
   for (let k = 1; k < 4; k += 1) { c.beginPath(); c.moveTo(tx - unit * 0.36, ty - unit * 0.25 + k * unit * 0.12); c.lineTo(tx + unit * 0.36, ty - unit * 0.25 + k * unit * 0.12); c.stroke(); }
-  // Wide views have room for the work stand; phones keep the two carts clear of the footer.
-  if (!narrow) {
-    const [sx, sy] = [w * 0.13, h * 0.42];
-    softBlob(c, sx + unit * 0.1, sy + unit * 0.12, unit * 0.6, unit * 0.45, "30, 38, 46", 0.3);
-    c.strokeStyle = "#5d6870"; c.lineWidth = 4; c.strokeRect(sx - unit * 0.42, sy - unit * 0.3, unit * 0.84, unit * 0.6);
-    c.fillStyle = "rgba(120, 132, 142, 0.7)"; c.fillRect(sx - unit * 0.3, sy - unit * 0.18, unit * 0.6, unit * 0.36);
-    c.fillStyle = "#22272b";
-    for (const [ox, oy] of [[-0.42, -0.3], [0.42, -0.3], [-0.42, 0.3], [0.42, 0.3]]) { c.beginPath(); c.arc(sx + ox * unit, sy + oy * unit, 4, 0, Math.PI * 2); c.fill(); }
-  }
-  // Keep larger equipment out of the vehicle envelope on narrow views.
-  if (!narrow) {
-    const [lx, ly] = [w * 0.88, h * 0.74];
-    softBlob(c, lx + unit * 0.08, ly + unit * 0.1, unit * 0.35, unit * 0.7, "30, 38, 46", 0.3);
-    c.strokeStyle = "#c9a227"; c.lineWidth = 4;
-    c.beginPath(); c.moveTo(lx - unit * 0.18, ly - unit * 0.6); c.lineTo(lx - unit * 0.18, ly + unit * 0.6); c.moveTo(lx + unit * 0.18, ly - unit * 0.6); c.lineTo(lx + unit * 0.18, ly + unit * 0.6); c.stroke();
-    c.lineWidth = 3;
-    for (let k = -4; k <= 4; k += 1) { c.beginPath(); c.moveTo(lx - unit * 0.18, ly + k * unit * 0.13); c.lineTo(lx + unit * 0.18, ly + k * unit * 0.13); c.stroke(); }
-    c.fillStyle = "#9aa4ab"; c.fillRect(lx - unit * 0.24, ly - unit * 0.78, unit * 0.48, unit * 0.2);
-  }
+  // Work stand: frame with a top tray and casters.
+  const [sx, sy] = narrow ? [cx - bw + tape + unit * 0.55, cy + bh - tape - unit * 0.5] : [w * 0.13, h * 0.42];
+  softBlob(c, sx + unit * 0.1, sy + unit * 0.12, unit * 0.6, unit * 0.45, "30, 38, 46", 0.3);
+  c.strokeStyle = "#5d6870"; c.lineWidth = 4; c.strokeRect(sx - unit * 0.42, sy - unit * 0.3, unit * 0.84, unit * 0.6);
+  c.fillStyle = "rgba(120, 132, 142, 0.7)"; c.fillRect(sx - unit * 0.3, sy - unit * 0.18, unit * 0.6, unit * 0.36);
+  c.fillStyle = "#22272b";
+  for (const [ox, oy] of [[-0.42, -0.3], [0.42, -0.3], [-0.42, 0.3], [0.42, 0.3]]) { c.beginPath(); c.arc(sx + ox * unit, sy + oy * unit, 4, 0, Math.PI * 2); c.fill(); }
+  // Platform ladder: rails and treads.
+  const [lx, ly] = narrow ? [cx + bw - tape - unit * 0.35, cy + bh * 0.4] : [w * 0.88, h * 0.74];
+  softBlob(c, lx + unit * 0.08, ly + unit * 0.1, unit * 0.35, unit * 0.7, "30, 38, 46", 0.3);
+  c.strokeStyle = "#c9a227"; c.lineWidth = 4;
+  c.beginPath(); c.moveTo(lx - unit * 0.18, ly - unit * 0.6); c.lineTo(lx - unit * 0.18, ly + unit * 0.6); c.moveTo(lx + unit * 0.18, ly - unit * 0.6); c.lineTo(lx + unit * 0.18, ly + unit * 0.6); c.stroke();
+  c.lineWidth = 3;
+  for (let k = -4; k <= 4; k += 1) { c.beginPath(); c.moveTo(lx - unit * 0.18, ly + k * unit * 0.13); c.lineTo(lx + unit * 0.18, ly + k * unit * 0.13); c.stroke(); }
+  c.fillStyle = "#9aa4ab"; c.fillRect(lx - unit * 0.24, ly - unit * 0.78, unit * 0.48, unit * 0.2);
   // Shipping crate (left, wide screens only): plywood with battens.
   if (!narrow) {
     const kx = w * 0.12, ky = h * 0.6;
@@ -366,7 +362,6 @@ const paintInternalYellow = gridPaper("#050607", "#0d0f11", yellowLines, "rgba(2
 
 // Text and line colors for the readouts and drawing marks on each backdrop.
 const ink = {
-  photo: { text: "#f1f5f8", halo: "rgba(0,0,0,0.9)", outline: "rgba(16,20,24,0.9)", line: "rgba(200,232,255,0.85)", box: "rgba(11,39,71,0.9)" },
   light: { text: "rgba(18, 24, 30, 0.92)", halo: "rgba(255, 255, 255, 0.75)", line: "rgba(18, 24, 30, 0.7)", box: "rgba(226, 230, 233, 0.9)" },
   yellow: { text: "rgba(255, 214, 48, 0.98)", halo: "rgba(0, 0, 0, 0.9)", line: "rgba(255, 214, 48, 0.95)", box: "rgba(6, 7, 8, 0.92)" },
   blue: { text: "rgba(210, 236, 255, 0.95)", halo: "rgba(0, 0, 0, 0.8)", line: "rgba(200, 232, 255, 0.85)", box: "rgba(11, 39, 71, 0.9)" },
@@ -377,7 +372,7 @@ export function backdropInk() {
   const layer = state.missionLayer;
   if (layer === "internal") return internal === "yellow" ? ink.yellow : ink.blue;
   if (layer === "thermal") return thermal === "light" ? ink.light : thermal === "dark" ? ink.yellow : ink.default;
-  return exterior === "cleanroom" ? ink.light : exterior === "titan" ? ink.photo : ink.default;
+  return exterior === "cleanroom" ? ink.light : ink.default;
 }
 
 const painters = {

@@ -37,6 +37,32 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-09: Replace Exterior A/C with NASA imagery and refine the clean room
+- **Signed:** Codex (OpenAI GPT-6).
+- **Commit:** "Use cinematic NASA imagery for Exterior backdrops"
+- **What changed:** Exterior A now uses a high-resolution still from NASA/APL's Dragonfly
+  dune animation, cropped to exclude the animated aircraft. It preserves the original
+  terrain and lighting and fits without stretching. Exterior C replaces the oversized
+  painted Titan and cartoon Saturn with actual Cassini photographs: the full ring system
+  and a small Titan atmospheric crescent, positioned within the canvas around the live
+  model. The sparse illustrative star field stays within the frame. Exterior B retains
+  the corrected floor perspective and adds projected ceiling-light reflections, epoxy
+  grain, recessed perforation highlights, brushed equipment finishes, a purge gauge and
+  casters. Phone carts stay above the bottom controls; larger equipment is reserved for
+  wider views. Outlined telemetry remains legible against A's bright sky.
+- **Files:** `dist/ui/{mission-backdrop,exterior-scenes,flight-view}.mjs`, `dist/index.html`,
+  `dist/styles.css`, local images/credits in `dist/assets/exterior/`, preparation script and
+  original NASA downloads in `research/`, README, ARCHITECTURE and archives.
+- **Assumptions:** A is explicitly credited as an artist's concept, not a Titan photograph;
+  C is a photographic composite, not to scale, with illustrative stars. B remains an
+  illustrative room, not a real NASA/APL facility. No new simulation assumptions.
+  No image-generation service was used. Images total about 511 KiB, served locally and cached.
+- **Checks:** All 117 Node tests pass. Desktop (1440x900) and phone (390x844) screenshots of
+  each scene reviewed; contrast and phone equipment overlaps corrected. No browser errors.
+- **Archive:** `archive/exterior-backdrops-v2/`, including old code, desktop/phone pictures,
+  intermediate composition checks and restore instructions. Tag at `aaf1349`.
+- **Open / next:** Pilot terrain and mountain-ridge proposals remain unchanged.
+
 ### 2026-10-09: Restore scrollable Pilot page and finish reviewed fixes
 - **Signed:** Codex (OpenAI coding agent); clean-room projection by Claude, preserved and reviewed by Codex.
 - **Commit:** "Restore scrollable Pilot page and finish review fixes"

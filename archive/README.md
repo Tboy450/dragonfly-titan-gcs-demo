@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [exterior-backdrops-v2](exterior-backdrops-v2/README.md) | Procedural rock field, clean-room finish and oversized Titan poster before photographic A/C replacement | 2026-10-09 | `archive/exterior-backdrops-v2` |
 | [cleanroom-steep-floor](cleanroom-steep-floor/README.md) | Detailed clean-room floor before Claude's gentler perspective correction | 2026-10-09 | `archive/cleanroom-steep-floor` |
 | [pre-review-fixes-2026-10-09](pre-review-fixes-2026-10-09/README.md) | Single-screen Pilot layout, overlapping narrow Mission labels, hover counting and dust timing before review fixes | 2026-10-09 | `archive/pre-review-fixes-2026-10-09` |
 | [classic-peaks-terrain](classic-peaks-terrain/README.md) | Sharp saw-tooth far mountain peaks | 2026-09-29 | `archive/classic-peaks-terrain` |

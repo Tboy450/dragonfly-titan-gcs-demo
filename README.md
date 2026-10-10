@@ -277,14 +277,15 @@ interior instead: that model is not based on the real design, so its parts are m
 illustration (their temperatures still come from the simulator).
 
 Each layer has its own backdrop. **Exterior** offers three, switched with the small **a / b / c**
-buttons at the bottom left of the diagram: (a) the Titan landing area seen from above: rounded
-icy cobbles like those at the Huygens landing site, gravel, wind streaks, a rain-dampened patch,
-thin ground fog and a rippled dune at the far edge fading into haze; (b) an assembly clean room,
-where Dragonfly is being built in 2026, with a perforated floor, keep-out tape, a nitrogen purge
-cart hosed to the vehicle, a tool cart, work stand, ladder and an observation window; (c) a
-Titan-and-Saturn poster with the Milky Way, Saturn's rings and Cassini Division, and Titan's
-detached blue haze layer, polar hood and clouds (Saturn cannot be seen through the haze from the
-surface). **Internal** is an engineering blueprint with dimension lines for the
+buttons at the bottom left of the diagram: (a) a cinematic dune panorama cropped from NASA/APL's
+Dragonfly animation, preserving the original terrain, lighting and haze; (b) an illustrative
+assembly clean room with a gently projected perforated floor, rectangular light reflections,
+keep-out tape, purge and tool carts, and larger equipment where space permits; (c) a composite
+of real Cassini Saturn and Titan photographs over a restrained star field. Both planets fit
+within the canvas, with the vehicle centered between them. A is an artist's concept, and C is
+not to scale or a view from Titan's hazy surface. Image credits are linked below the diagram;
+source and processing details are in [the asset notes](dist/assets/exterior/README.md).
+**Internal** is an engineering blueprint with dimension lines for the
 published 3.85 x 3.85 x 1.75 m envelope and a title block; **b** turns it into a black sheet
 with a yellow grid and yellow dimensions, title and readouts. **Thermal** offers (a) Titan's
 -179 C air in the thermal scale's own color, dimmed so parts at air temperature stay visible,

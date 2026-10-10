@@ -1598,6 +1598,8 @@ body.pilot-view .pilot-control .throttle-toggles .throttle-mode { margin: 0; }
 /* Exterior backdrop picker (a / b / c), bottom left of the Mission view's vehicle canvas. */
 .backdrop-picker { position: absolute; left: 14px; bottom: 14px; z-index: 2; display: flex; align-items: center; gap: 4px; max-width: calc(100% - 192px); padding: 4px; border: 1px solid var(--line); border-radius: 8px; background: rgba(4, 12, 19, 0.72); }
 .backdrop-picker[hidden] { display: none; }
+.backdrop-credit { display: inline-block; margin: 0 0 10px; line-height: 1.5; }
+.backdrop-credit[hidden] { display: none; }
 .backdrop-picker button { flex: 0 0 28px; min-width: 0; width: 28px; min-height: 28px; padding: 0; border-color: transparent; background: transparent; color: var(--muted); font-weight: 800; }
 .backdrop-picker button[hidden] { display: none; }
 .backdrop-picker button[aria-pressed="true"] { border-color: rgba(124, 231, 255, 0.6); color: #061019; background: var(--cyan); }

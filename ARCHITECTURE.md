@@ -76,6 +76,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `ui/readouts.mjs` | Status strip, telemetry, rotor tiles, Diagnostics values, local track map |
 | `ui/layers-panel.mjs` | Vehicle Layers panel: layer switch, expandable live component temperatures (Internal/Thermal), legend, keyboard-accessible parts list, selection |
 | `ui/mission-backdrop.mjs` | Mission diagram backdrops per layer, picked with the a/b/c buttons (Exterior: Titan / clean room / poster; Internal: blueprint / yellow grid with dimensions; Thermal: Titan air / light grey / yellow grid) and the backdrop-matched readout colors |
+| `ui/exterior-scenes.mjs` | Cached photo-based Exterior A/C painting: NASA/APL dune panorama and responsively placed Cassini portraits; local images and credits in `dist/assets/exterior/` |
 | `ui/pilot-hud.mjs` | Pilot-view systems list (same values as the Mission panels) |
 | `ui/science-panel.mjs` | Science Payload panel and sampling button |
 | `ui/plan-panel.mjs` | Flight Plan dialog, plan status strip, time-speed buttons |
