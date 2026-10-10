@@ -1,8 +1,7 @@
 // Draws the Mission and Pilot views into the flight canvas (3D renderer or 2D fallback).
 import { model } from "../flight-model.mjs?v=dev";
 import { $, chaseRenderer, clamp, flightCanvas, state } from "./context.mjs?v=dev";
-import { backdropInk, drawMissionBackdrop, drawMissionBackdropOverlay, isCleanroomPortrait } from "./mission-backdrop.mjs?v=dev";
-import { missionVehicleState } from "../vehicle-presentation.mjs?v=dev";
+import { backdropInk, drawMissionBackdrop, drawMissionBackdropOverlay } from "./mission-backdrop.mjs?v=dev";
 
 const flightCtx = flightCanvas.getContext("2d");
 
@@ -492,10 +491,9 @@ function drawPartMarkers(ctx, labels) {
 }
 
 function drawVehicle(ctx, w, h) {
-  const displayState = missionVehicleState(state, isCleanroomPortrait());
   if (chaseRenderer) {
     const layered = state.missionLayer !== "exterior";
-    const labels = chaseRenderer.drawMission(ctx, w, h, displayState, { layer: state.missionLayer, parked: isCleanroomPortrait() });
+    const labels = chaseRenderer.drawMission(ctx, w, h, state, { layer: state.missionLayer });
     drawMissionBackdropOverlay(ctx, w, h, labels);
     if (layered) drawPartMarkers(ctx, labels);
     else partMarkers = [];
@@ -507,8 +505,8 @@ function drawVehicle(ctx, w, h) {
   const rotorRadius = (model.rotorDiameterM / 2) * scale;
   const xOffset = (3.85 / 2 - model.rotorDiameterM / 2) * scale;
   const yOffset = xOffset * 1.16;
-  const t = displayState.missionTime;
-  const loadBase = clamp(0.44 + displayState.throttle * 0.55, 0.25, 1.0);
+  const t = state.missionTime;
+  const loadBase = clamp(0.44 + state.throttle * 0.55, 0.25, 1.0);
   const rotorCenters = [
     [-xOffset, -yOffset],
     [xOffset, -yOffset],
@@ -518,7 +516,7 @@ function drawVehicle(ctx, w, h) {
 
   ctx.save();
   ctx.translate(cx, cy);
-  ctx.rotate(isCleanroomPortrait() ? Math.PI / 2 : ((displayState.heading - 84) * Math.PI) / 180);
+  ctx.rotate(((state.heading - 84) * Math.PI) / 180);
   ctx.globalAlpha = 0.9;
   ctx.strokeStyle = "rgba(154, 171, 176, 0.88)";
   ctx.lineWidth = 5;
@@ -530,7 +528,7 @@ function drawVehicle(ctx, w, h) {
   });
 
   rotorCenters.forEach(([x, y], index) => {
-    const load = clamp(loadBase + Math.sin(t * 3 + index) * 0.06 + Math.abs(displayState.roll) * 0.12, 0.2, 1);
+    const load = clamp(loadBase + Math.sin(t * 3 + index) * 0.06 + Math.abs(state.roll) * 0.12, 0.2, 1);
     drawRotor(ctx, x, y, rotorRadius, t, index, load);
   });
 
@@ -707,12 +705,6 @@ function drawHud(ctx, w, h) {
   ctx.shadowBlur = 4;
   ctx.font = "700 12px SFMono-Regular, Consolas, monospace";
   ctx.fillStyle = colors.text;
-  if (isCleanroomPortrait()) {
-    ctx.fillText("PARKED", 24, 100);
-    ctx.fillText("ROTORS STOPPED", 24, 120);
-    ctx.restore();
-    return;
-  }
   ctx.strokeStyle = "rgba(124, 231, 255, 0.55)";
   ctx.lineWidth = 1;
   const centerX = w / 2;

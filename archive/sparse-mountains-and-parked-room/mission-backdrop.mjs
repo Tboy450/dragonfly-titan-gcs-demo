@@ -30,7 +30,6 @@ export const internalBackdrops = Object.freeze([
 ]);
 const THERMAL_PREF_KEY = "dragonfly-thermal-backdrop", INTERNAL_PREF_KEY = "dragonfly-internal-backdrop";
 let exterior = "titan", thermal = "light", internal = "blueprint";
-export const isCleanroomPortrait = () => state.missionLayer === "exterior" && exterior === "cleanroom";
 try {
   const saved = localStorage.getItem(PREF_KEY);
   if (exteriorBackdrops.some(b => b.id === saved)) exterior = saved;
@@ -226,22 +225,10 @@ function paintCleanroom(c, w, h) {
   c.fillStyle = "rgba(255, 255, 255, 0.35)"; c.beginPath(); c.arc(px - unit * 0.24, py - unit * 0.06, unit * 0.06, 0, Math.PI * 2); c.fill();
   c.fillStyle = "#c9ced2"; c.beginPath(); c.arc(px - unit * 0.18, py, unit * 0.06, 0, Math.PI * 2); c.fill();
   c.fillStyle = "#e7ecee"; c.beginPath(); c.arc(px + unit * 0.1, py - unit * 0.1, unit * 0.075, 0, Math.PI * 2); c.fill();
-  // Retaining band and a shut-off handwheel on the generic purge cart.
-  c.strokeStyle = "#b0b8b9"; c.lineWidth = Math.max(1, unit * 0.035);
-  c.beginPath(); c.arc(px - unit * 0.18, py, unit * 0.16, 0.1, Math.PI * 1.1); c.stroke();
-  c.strokeStyle = "#802d26"; c.lineWidth = 2;
-  c.beginPath(); c.moveTo(px - unit * 0.26, py - unit * 0.03); c.lineTo(px - unit * 0.1, py + unit * 0.03); c.stroke();
   c.strokeStyle = "#24333c"; c.lineWidth = 1;
   c.beginPath(); c.moveTo(px + unit * 0.1, py - unit * 0.1); c.lineTo(px + unit * 0.14, py - unit * 0.15); c.stroke();
   c.strokeStyle = "rgba(30, 60, 140, 0.85)"; c.lineWidth = 3;
   c.beginPath(); c.moveTo(px - unit * 0.1, py); c.bezierCurveTo(px - unit * 0.9, py + unit * (narrow ? -0.6 : 0.6), cx + bw * 0.8, cy - bh * 0.1, cx + bw * 0.35, cy - bh * 0.05); c.stroke();
-  c.strokeStyle = "#c3cbd0"; c.lineWidth = 5;
-  c.beginPath(); c.moveTo(px - unit * 0.1, py); c.lineTo(px - unit * 0.22, py + unit * (narrow ? -0.09 : 0.09)); c.stroke();
-  c.strokeStyle = "#596770"; c.lineWidth = 1;
-  for (let i = 0; i < 3; i++) {
-    const fx = px - unit * (0.13 + i * 0.035), fy = py + unit * (narrow ? -1 : 1) * (0.022 + i * 0.025);
-    c.beginPath(); c.moveTo(fx - 1, fy - 3); c.lineTo(fx + 1, fy + 3); c.stroke();
-  }
   c.fillStyle = "#1d1f22"; c.font = `700 ${Math.max(8, Math.round(unit * 0.12))}px Arial, sans-serif`; c.fillText("GN2", px + unit * 0.22, py + unit * 0.05);
   // Tool cart: red top, drawers.
   const [tx, ty] = narrow ? [w * 0.16, belowY] : [w * 0.12, h * 0.78];
@@ -250,12 +237,6 @@ function paintCleanroom(c, w, h) {
   c.strokeRect(tx - unit * 0.52, ty - unit * 0.19, unit * 0.11, unit * 0.38);
   c.strokeStyle = "rgba(255, 255, 255, 0.45)"; c.lineWidth = 1;
   for (let k = 1; k < 4; k += 1) { c.beginPath(); c.moveTo(tx - unit * 0.36, ty - unit * 0.25 + k * unit * 0.12); c.lineTo(tx + unit * 0.36, ty - unit * 0.25 + k * unit * 0.12); c.stroke(); }
-  // A small dark tool mat and two tools stay within the cart, clear of the vehicle.
-  c.fillStyle = "#303c43"; c.fillRect(tx - unit * 0.3, ty - unit * 0.19, unit * 0.6, unit * 0.16);
-  c.strokeStyle = "#dce3e7"; c.lineWidth = 2;
-  c.beginPath(); c.moveTo(tx - unit * 0.24, ty - unit * 0.1); c.lineTo(tx - unit * 0.04, ty - unit * 0.1); c.stroke();
-  c.fillStyle = "#ddb329"; c.fillRect(tx + unit * 0.07, ty - unit * 0.15, unit * 0.12, unit * 0.05);
-  c.fillStyle = "#c3ccd0"; c.fillRect(tx + unit * 0.19, ty - unit * 0.14, unit * 0.08, unit * 0.025);
   // Wide views have room for the work stand; phones keep the two carts clear of the footer.
   if (!narrow) {
     const [sx, sy] = [w * 0.13, h * 0.42];
@@ -482,9 +463,6 @@ function showPicker() {
   const layer = state.missionLayer;
   picker.hidden = state.view !== "mission";
   if (picker.hidden) return;
-  const parked = isCleanroomPortrait();
-  $("vehicle-view-label").textContent = parked ? "Vehicle / Parked" : "Vehicle / North up";
-  $("vehicle-heading-overlay").hidden = parked;
   const choices = layer === "thermal" ? thermalBackdrops : layer === "internal" ? internalBackdrops : exteriorBackdrops;
   const current = layer === "thermal" ? thermal : layer === "internal" ? internal : exterior;
   picker.setAttribute("aria-label", `${layer[0].toUpperCase()}${layer.slice(1)} background`);

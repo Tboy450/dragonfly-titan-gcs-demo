@@ -37,6 +37,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-10: Sparse mountains and a parked clean-room portrait
+- **Signed:** Codex (OpenAI)
+- **Commit:** Add sparse mountain landmarks and park the clean-room portrait
+- **What changed:** Four isolated mountains, two with pointed summits, retain broad dune corridors
+  and unchanged terrain around all existing landing sites. The same terrain height drives mesh,
+  rocks and collision. Exterior B now shows a level, fixed-heading vehicle with stopped rotors
+  and stowed antenna. Parked labels replace flight telemetry within that portrait only.
+  Added projected skid contact shadows, purge-cart retaining band, handwheel and hose coupling,
+  plus a small tool mat and tools on the red cart. The existing gentle floor perspective stays.
+- **Assumptions:** Mountain positions and heights are illustrative [EST], not surveyed Titan
+  topography. The assembly-room portrait does not pause or alter the live simulation.
+- **Archive:** Previous terrain and live-pose room preserved with pictures and restore steps in
+  `archive/sparse-mountains-and-parked-room`, with a tag at `19c0556`.
+- **Checks:** Terrain footprint and landing-site regression tests; both vehicle models tested
+  for stationary parked rendering and restoration of live attitude on other backdrops.
+  All 119 tests pass. Browser-checked desktop and 390px phone layouts, plus the rendered skyline.
+- **Open / next:** Further scenery adjustments only after reviewing the sparse layout in flight.
+
 ### 2026-10-09: Replace Exterior A/C with NASA imagery and refine the clean room
 - **Signed:** Codex (OpenAI GPT-6).
 - **Commit:** "Use cinematic NASA imagery for Exterior backdrops"

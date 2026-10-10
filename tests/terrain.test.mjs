@@ -1,7 +1,32 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import * as THREE from "../dist/vendor/three/three.module.min.js";
-import { sampleTerrainSurface, terrainHeight } from "../dist/titan-terrain.mjs";
+import { sampleTerrainSurface, terrainHeight, mountainLandmarks, mountainRelief } from "../dist/titan-terrain.mjs";
+
+test("Sparse mountain landmarks leave flight sites and most of the map untouched", async () => {
+  const { candidateSites } = await import("../dist/mission-systems.mjs");
+  assert.equal(mountainLandmarks.length, 4);
+  assert.equal(mountainLandmarks.filter(p => p.pointed).length, 2);
+  for (const peak of mountainLandmarks) {
+    assert.equal(mountainRelief(peak.x, peak.z), peak.height);
+    assert.ok(terrainHeight(peak.x, peak.z, 80) >= peak.height);
+    for (const distance of [0.99, 1, 1.01]) {
+      const x = peak.x + Math.cos(peak.angle) * peak.rx * distance;
+      const z = peak.z + Math.sin(peak.angle) * peak.rx * distance;
+      assert.ok(mountainRelief(x, z) < 1, "smooth toe, no vertical wall at footprint boundary");
+    }
+  }
+  for (const site of candidateSites) {
+    for (let a = 0; a < Math.PI * 2; a += 0.3) {
+      assert.equal(mountainRelief(site.x + Math.cos(a) * 100, site.z + Math.sin(a) * 100), 0, site.name);
+    }
+  }
+  let covered = 0, count = 0;
+  for (let x = -3500; x <= 3500; x += 100) for (let z = -3500; z <= 3500; z += 100) {
+    covered += mountainRelief(x, z) > 1 ? 1 : 0; count++;
+  }
+  assert.ok(covered / count < 0.12, "landmarks do not turn the dune map into a mountain range");
+});
 
 test("Triangle sampling matches the rendered mesh on slopes and after recentering", () => {
   const segments = 24;

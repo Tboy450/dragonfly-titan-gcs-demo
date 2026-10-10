@@ -28,35 +28,6 @@ const duneTrend = 8 * Math.PI / 180, duneCos = Math.cos(duneTrend), duneSin = Ma
 const duneSpacing = 3200, duneCrestNorth = 1450, duneHalfWidth = 600;
 const hillsStart = 2700, hillsFull = 3600;
 
-// [EST] Sparse landmarks, not mapped Titan peaks. Compact footprints leave the base and
-// surveyed flight corridor untouched; only two summits are pointed, not every mesh vertex.
-export const mountainLandmarks = Object.freeze([
-  { x: -1100, z: -2450, height: 370, rx: 690, rz: 570, angle: 0.4, pointed: true },
-  { x: 2650, z: -1100, height: 260, rx: 610, rz: 760, angle: -0.6, pointed: false },
-  { x: -2300, z: 700, height: 290, rx: 700, rz: 590, angle: 0.8, pointed: false },
-  { x: 1550, z: 2600, height: 330, rx: 660, rz: 540, angle: -0.3, pointed: true },
-].map(Object.freeze));
-
-export function mountainRelief(x, z, cell = 0) {
-  let relief = 0;
-  for (const peak of mountainLandmarks) {
-    const dx = x - peak.x, dz = z - peak.z;
-    if (Math.abs(dx) > peak.rx + peak.rz || Math.abs(dz) > peak.rx + peak.rz) continue;
-    const c = Math.cos(peak.angle), s = Math.sin(peak.angle);
-    const u = (dx * c + dz * s) / peak.rx, v = (-dx * s + dz * c) / peak.rz;
-    const r = Math.hypot(u, v);
-    if (r >= 1) continue;
-    const direction = Math.atan2(v, u);
-    // Broad unequal spurs stay resolvable at distance, with a smooth toe into the dunes.
-    const spurs = 1 + 0.16 * Math.sin(direction * 3 + 0.7) * r + 0.09 * Math.cos(direction * 5) * r;
-    const rounding = peak.pointed ? Math.max(0.018, (cell > 20 ? cell * 0.28 : 0) / Math.min(peak.rx, peak.rz)) : 0.24;
-    const radius = (Math.sqrt(r * r + rounding * rounding) - rounding)
-      / (Math.sqrt(1 + rounding * rounding) - rounding);
-    relief += peak.height * (1 - radius) ** 1.65 * (1 + radius * 0.65) * spurs;
-  }
-  return relief;
-}
-
 function duneAxes(x, z) {
   const north = -z;
   return { along: x * duneCos + north * duneSin, across: -x * duneSin + north * duneCos };
@@ -78,8 +49,7 @@ function duneAt(along, across) {
 // Sand cover for ground shading: 1 on dunes, 0 on interdunes and hills.
 export function terrainSand(x, z) {
   const { along, across } = duneAxes(x, z);
-  return duneAt(along, across).sand * (1 - smoothUnit((across - hillsStart) / (hillsFull - hillsStart)))
-    * (1 - smoothUnit(mountainRelief(x, z) / 35));
+  return duneAt(along, across).sand * (1 - smoothUnit((across - hillsStart) / (hillsFull - hillsStart)));
 }
 
 // Far-terrain level of detail. The rendered mesh gets coarser away from its center (up to ~80 m
@@ -125,7 +95,6 @@ function baseHeight(x, z, cell = 0) {
   const hills = smoothUnit((across - hillsStart) / (hillsFull - hillsStart));
   height += duneAt(along, across).height * (1 - hills);
   if (hills > 0) height += hillsAt(x, z, cell, far) * hills;
-  height += mountainRelief(x, z, cell);
   return height;
 }
 

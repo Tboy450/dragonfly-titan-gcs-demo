@@ -364,29 +364,6 @@ export function createChaseRenderer(options = {}) {
       missionCamera.lookAt(0, layered ? (which === "original" ? 0.1 : -0.15) : 0, 0);
       missionCamera.updateProjectionMatrix();
       renderer.render(scene, missionCamera);
-      if (view.parked && !layered) {
-        // Contact shadows use the same projected skid endpoints as the vehicle, so the
-        // parked portrait sits on the floor at any aspect ratio instead of floating.
-        craft.updateMatrixWorld(true);
-        const foot = skidFootprints[which], y = which === "research" ? -0.86 : -0.95;
-        const point = new THREE.Vector3();
-        ctx.save();
-        ctx.strokeStyle = "rgba(30, 38, 43, 0.36)";
-        ctx.lineWidth = Math.max(2, h / (halfHeight * 2) * 0.1);
-        ctx.lineCap = "round";
-        ctx.shadowColor = "rgba(20, 30, 35, 0.5)";
-        ctx.shadowBlur = 7;
-        for (const side of [-1, 1]) {
-          ctx.beginPath();
-          for (const [index, z] of [foot.front, foot.rear].entries()) {
-            point.set(side * foot.halfWidth, y, z).applyMatrix4(craft.matrixWorld).project(missionCamera);
-            const x = (point.x + 1) * w / 2, sy = (1 - point.y) * h / 2;
-            if (index === 0) ctx.moveTo(x, sy); else ctx.lineTo(x, sy);
-          }
-          ctx.stroke();
-        }
-        ctx.restore();
-      }
       ctx.drawImage(renderer.domElement, 0, 0, w, h);
       const labels = [];
       if (layered) {

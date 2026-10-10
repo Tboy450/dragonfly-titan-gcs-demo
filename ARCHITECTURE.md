@@ -55,6 +55,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/sound-mix.mjs` | Pure mapping from the state to sound levels and pitches (testable without audio) |
 | `dist/thermal-scale.mjs` | Fixed absolute-temperature colors shared by both reading lists and the Thermal mesh; range selection zooms only the legend, with 0-20 C equipment/battery reference green and 35 C+ red (not universal operating limits) |
 | `dist/flight-camera.mjs` | Chase-camera pose and smoothing |
+| `dist/vehicle-presentation.mjs` | Pure parked portrait state for the clean room; never changes the simulation |
 | `dist/save-game.mjs` | Which state fields are saved between visits (a whitelist), when saving is allowed (landed, idle), and restoring onto a fresh state |
 
 ### 3D scene (three.js; covered by the render smoke tests with a stand-in renderer)

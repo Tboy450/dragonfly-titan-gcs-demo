@@ -42,6 +42,37 @@ test("The 3D scene builds and draws every view, model and antenna pose without e
   assert.equal(renderer.frames, 24);
 });
 
+test("Clean-room presentation stays parked without changing or freezing live flight state", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { missionVehicleState } = await import("../dist/vehicle-presentation.mjs");
+  const chase = createChaseRenderer({ renderer: fakeRenderer() });
+  for (const vehicleModel of ["research", "original"]) {
+    const state = { ...createFlightState(), vehicleModel, pitch: 0.7, roll: 0.4, heading: 37,
+      missionTime: 140, altitude: 30, rotorRpm: Array(8).fill(800), rotorPhase: Array(8).fill(1.2) };
+    const before = structuredClone(state);
+    const parked = missionVehicleState(state, true);
+    assert.equal(parked.heading, 90);
+    assert.equal(parked.pitch, 0);
+    assert.equal(parked.roll, 0);
+    assert.ok(parked.rotorRpm.every(r => r === 0));
+    const transforms = () => {
+      const values = [];
+      chase.models[vehicleModel].parent.traverse(o => values.push(...o.matrix.elements));
+      return values;
+    };
+    chase.drawMission(context2d, 800, 600, parked, { parked: true });
+    const first = transforms();
+    const later = { ...state, heading: 210, pitch: -0.2, missionTime: 200, rotorPhase: Array(8).fill(3.6) };
+    chase.drawMission(context2d, 800, 600, missionVehicleState(later, true), { parked: true });
+    assert.deepEqual(transforms(), first);
+    assert.deepEqual(state, before);
+    assert.equal(missionVehicleState(later, false), later);
+    chase.drawMission(context2d, 800, 600, missionVehicleState(later, false));
+    assert.notDeepEqual(transforms(), first, "other backdrops keep the live pose");
+  }
+});
+
 test("The research model matches the published 3.85 x 3.85 x 1.75 m envelope", async () => {
   const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
   const { createFlightState } = await import("../dist/flight-model.mjs");
