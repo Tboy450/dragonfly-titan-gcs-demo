@@ -1,5 +1,5 @@
 // Science payload behavior. Instrument roles follow RESEARCH-COMPENDIUM.md §2.3 [PUB]:
-// DrACO drills (one on each skid) feed samples pneumatically to DraMS (laser-desorption and GC
+// Body-side DrACO drills feed samples pneumatically to DraMS (laser-desorption and GC
 // modes); DraGNS measures bulk elemental composition with its own neutron source; DraGMet logs
 // temperature, pressure, wind and methane humidity and carries a seismometer; DragonCam images
 // the surface and scouts landing sites. The data volumes, rates, event timing and every

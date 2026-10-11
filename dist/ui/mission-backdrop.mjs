@@ -453,8 +453,8 @@ export function drawMissionBackdropOverlay(ctx, w, h, labels) {
       ctx.fillStyle = colors.line;
     }
     // The dimension callouts retain the envelope on phones; keep the footer clear of Heading.
-    const lines = w < 480 ? ["2023 layout / illustrative / units m"]
-      : ["DRAGONFLY ROTORCRAFT LANDER", "Internal arrangement, 2023 configuration", "Nose left / units m / illustrative", "Envelope 3.85 x 3.85 x 1.75 m (published)"];
+    const lines = w < 480 ? ["2023 layout + CAD detail / illustrative"]
+      : ["DRAGONFLY ROTORCRAFT LANDER", "2023 thermal layout + CAD refinements", "Nose left / units m / illustrative", "Envelope 3.85 x 3.85 x 1.75 m (published)"];
     ctx.font = "700 10px SFMono-Regular, Consolas, monospace";
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";

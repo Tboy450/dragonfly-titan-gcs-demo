@@ -1,4 +1,5 @@
-// NASA/APL 2023 Dragonfly design: exterior, interior parts and the air-flow arrows.
+// NASA/APL design: 2023 thermal layout, refined against the 2024 CAD visualization
+// and NASA's 2026 printable-model assembly guide. Detail dimensions remain [EST].
 // Built into a group supplied by chase-vehicle.mjs, using its shared part helpers.
 import * as THREE from "./vendor/three/three.module.min.js";
 import { model } from "./flight-model.mjs?v=dev";
@@ -89,20 +90,18 @@ export function buildResearchModel(kit) {
 
   // A side profile (z forward-negative, y up) extruded across the width with rounded edges.
   function profileBody(points, width, material, bevel = 0.05) {
-    const outline = new THREE.Shape();
-    points.forEach(([z, y], index) => (index ? outline.lineTo(z, y) : outline.moveTo(z, y)));
+    const outline = points instanceof THREE.Shape ? points : new THREE.Shape();
+    if (Array.isArray(points)) points.forEach(([z, y], index) => (index ? outline.lineTo(z, y) : outline.moveTo(z, y)));
     outline.closePath();
     const geometry = new THREE.ExtrudeGeometry(outline, {
-      depth: width - 2 * bevel, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 3, curveSegments: 8,
+      depth: width - 2 * bevel, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 5, curveSegments: 18,
     });
     geometry.rotateY(-Math.PI / 2);
     geometry.translate((width - 2 * bevel) / 2, 0, 0);
     return mesh(geometry, material, [0, 0, 0]);
   }
 
-  // Named subsystems prepare the model for the planned Mission-view layers (exterior, thermal,
-  // internal parts; see RESEARCH-COMPENDIUM.md "Future update requests"). Each group records the
-  // thermal zone a thermal view would color it by, so layers can restyle or hide whole systems.
+  // Each subsystem owns a thermal zone so all views share the same geometry and readings.
   const subsystems = {};
   function subsystem(name, thermalZone) {
     if (!subsystems[name]) {
@@ -124,16 +123,23 @@ export function buildResearchModel(kit) {
   // Fuselage: long, with the underside tapering up at the nose and tail.
   subsystem("fuselage", "insulated-shell");
   profileBody([[-1.90, -0.05], [-1.78, -0.27], [-1.48, -0.36], [0.98, -0.36], [1.20, -0.26], [1.24, -0.05], [1.24, 0.10], [-1.83, 0.10]], 0.86, foam);
-  // Attic: the big rounded enclosure over the front of the fuselage.
+  // The rounded forward cover transitions to a low, flat equipment deck. Its silhouette
+  // follows APL's CAD movie and NASA Assembly Guide pp1-3; this is procedural geometry [EST].
   subsystem("attic", "insulated-shell");
-  profileBody([[-1.88, 0.06], [-1.80, 0.38], [-1.58, 0.50], [-0.82, 0.50], [-0.70, 0.38], [-0.70, 0.06]], 0.84, foam, 0.08);
-  const atticPanel = mesh(new THREE.BoxGeometry(0.34, 0.015, 0.42), foamSeam, [0.16, 0.585, -1.5]);
-  atticPanel.rotation.x = 0.22;
+  const atticShape = new THREE.Shape();
+  atticShape.moveTo(-1.87, 0.04);
+  atticShape.bezierCurveTo(-1.90, 0.25, -1.63, 0.51, -1.39, 0.55);
+  atticShape.quadraticCurveTo(-1.10, 0.59, -0.80, 0.56);
+  atticShape.quadraticCurveTo(-0.73, 0.55, -0.73, 0.49);
+  atticShape.lineTo(-0.73, 0.04);
+  profileBody(atticShape, 0.87, foam, 0.055).name = "forward-attic-cover";
   subsystem("fuselage", "insulated-shell");
   for (const z of [-0.45, 0.2, 0.84]) mesh(new THREE.BoxGeometry(0.875, 0.5, 0.018), foamSeam, [0, -0.13, z]);
   subsystem("navigation-sensors", "external-sensors");
   for (const x of [-0.22, 0, 0.22]) {
-    const camera = mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.05, 14), lens, [x, -0.1, -1.97]);
+    mesh(new THREE.BoxGeometry(0.108, 0.10, 0.048), armMaterial, [x, -0.11, -1.93]);
+    mesh(new THREE.BoxGeometry(0.083, 0.075, 0.016), deck, [x, -0.11, -1.96]);
+    const camera = mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.018, 16), lens, [x, -0.11, -1.974]);
     camera.rotation.x = Math.PI / 2;
   }
   for (const side of [-1, 1]) mesh(new THREE.BoxGeometry(0.16, 0.1, 0.16), lens, [side * 0.3, -0.38, -1.78]);
@@ -184,25 +190,44 @@ export function buildResearchModel(kit) {
   mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.08, 10), armMaterial, [0, 0.3, 1.02]);
   mesh(new THREE.SphereGeometry(0.025, 10, 6), armMaterial, [0, 0.35, 1.02]);
 
-  // Thick skids ~1.55 m apart on legs that drop from the arm roots, with a DrACO drill on each.
+  // Flat runners and shaped legs, as in NASA's Assembly Guide pp1-2. The dimensions of
+  // these details are estimated; the footprint and ground-contact height stay unchanged.
   const armRoots = [-0.75, 0.84];
   for (const side of [-1, 1]) {
     subsystem("landing-gear", "exterior-structure");
     const skidX = side * 0.75;
-    strut([skidX, -0.8, -1.3], [skidX, -0.8, 1.02], 0.06, deck);
-    strut([skidX, -0.8, -1.3], [skidX, -0.7, -1.45], 0.05, deck);
-    strut([skidX, -0.8, 1.02], [skidX, -0.72, 1.14], 0.05, deck);
-    // Rounded bends and tips so the skid reads as one bent tube.
-    for (const [z, y, radius] of [[-1.3, -0.8, 0.06], [1.02, -0.8, 0.06], [-1.45, -0.7, 0.05], [1.14, -0.72, 0.05]]) {
-      mesh(new THREE.SphereGeometry(radius, 14, 10), deck, [skidX, y, z]);
-    }
+    const runner = profileBody([[-1.46, -0.73], [-1.28, -0.85], [1.02, -0.85], [1.17, -0.76],
+      [1.15, -0.715], [1.0, -0.785], [-1.27, -0.785], [-1.44, -0.69]], 0.14, armMaterial, 0.009);
+    runner.position.x = skidX;
+    runner.name = side < 0 ? "port-skid" : "starboard-skid";
     for (const z of armRoots) {
-      strut([side * 0.42, -0.3, z], [skidX, -0.76, z], 0.035);
-      strut([side * 0.42, -0.34, z - Math.sign(z) * 0.35], [skidX, -0.76, z], 0.018);
+      const legShape = new THREE.Shape();
+      [[0.39, -0.28], [0.51, -0.34], [0.59, -0.50], [0.57, -0.56], [0.76, -0.78],
+        [0.66, -0.78], [0.50, -0.58], [0.51, -0.51], [0.44, -0.39], [0.37, -0.36]]
+        .forEach(([x, y], i) => i ? legShape.lineTo(side * x, y) : legShape.moveTo(side * x, y));
+      legShape.closePath();
+      mesh(new THREE.ExtrudeGeometry(legShape, { depth: 0.08, bevelEnabled: true,
+        bevelSize: 0.008, bevelThickness: 0.008, bevelSegments: 2 }), metal, [0, 0, z - 0.04]);
+      mesh(new THREE.BoxGeometry(0.12, 0.035, 0.16), gold, [skidX, -0.76, z]);
     }
+    // DrACO's vertical drill/feed assemblies mount beside the body, above the runners.
+    // APL payload cutaway + NASA Assembly Guide p2; two redundant drills are described
+    // by NASA's "Playing Lacrosse on Titan". Stowed bit and tube routing are [EST].
     subsystem("drills", "drills");
-    mesh(new THREE.BoxGeometry(0.12, 0.1, 0.2), metal, [skidX, -0.7, -0.15]);
-    mesh(new THREE.CylinderGeometry(0.02, 0.012, 0.1, 8), metal, [skidX, -0.8, -0.15]);
+    const drillX = side * 0.54, drillZ = -0.43;
+    mesh(new THREE.BoxGeometry(0.14, 0.11, 0.23), armMaterial, [drillX, -0.23, drillZ]);
+    mesh(new THREE.CylinderGeometry(0.052, 0.044, 0.37, 16), metal, [drillX, -0.475, drillZ]);
+    for (const offset of [-0.083, 0.083]) {
+      strut([drillX, -0.28, drillZ + offset], [drillX, -0.73, drillZ + offset], 0.015, metal);
+    }
+    for (const y of [-0.32, -0.39, -0.64]) mesh(new THREE.CylinderGeometry(0.057, 0.057, 0.018, 16), deck, [drillX, y, drillZ]);
+    mesh(new THREE.CylinderGeometry(0.017, 0.012, 0.11, 10), metal, [drillX, -0.72, drillZ]);
+    subsystem("sample-lines", "drills");
+    const sampleLine = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(drillX, -0.23, drillZ), new THREE.Vector3(side * 0.49, -0.06, -0.62),
+      new THREE.Vector3(side * 0.465, -0.02, -1.15), new THREE.Vector3(side * 0.44, 0.16, -1.53),
+    ]);
+    mesh(new THREE.TubeGeometry(sampleLine, 20, 0.014, 6, false), armMaterial, [0, 0, 0]);
   }
 
   // High-gain antenna: a flat 0.874 m radial-line slot disc, stowed flat on top for flight.
@@ -236,13 +261,18 @@ export function buildResearchModel(kit) {
       const hub = [x, 0.02, z];
       const fairingEnd = root.map((value, axis) => value + (hub[axis] - value) * 0.22);
       subsystem("arms", "exterior-structure");
+      mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.075, 20), foamSeam, [side * 0.46, 0.01, armRoots[index]]).rotation.z = Math.PI / 2;
+      mesh(new THREE.CylinderGeometry(0.092, 0.092, 0.085, 20), metal, [side * 0.50, 0.01, armRoots[index]]).rotation.z = Math.PI / 2;
       taper(root, fairingEnd, 0.1, 0.065, armMaterial);
-      strut(fairingEnd, hub, 0.06, armMaterial);
+      strut(fairingEnd, hub, 0.036, armMaterial);
       subsystem("motors", "motors");
-      mesh(new THREE.CylinderGeometry(0.075, 0.075, 0.44, 16), armMaterial, hub);
+      mesh(new THREE.CylinderGeometry(0.043, 0.043, 0.34, 16), metal, hub);
       for (let layer = 0; layer < 2; layer += 1) {
         const y = layer === 0 ? -0.16 : 0.20;
         subsystem("motors", "motors");
+        const motorY = y + (layer === 0 ? 0.055 : -0.055);
+        mesh(new THREE.CylinderGeometry(0.078, 0.078, 0.086, 20), armMaterial, [x, motorY, z]);
+        mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.012, 20), deck, [x, motorY, z]);
         mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.05, 12), gold, [x, y + (layer === 0 ? -0.025 : 0.025), z]);
         subsystem("rotors", "rotors");
         const rotor = new THREE.Group();
@@ -281,6 +311,8 @@ export function buildResearchModel(kit) {
     labeledParts.push(group);
     return new THREE.MeshStandardMaterial({ color, metalness: 0.2, roughness: 0.6 });
   }
+  interiorPart("drills", "drills", "DrACO drill and feed assemblies", "NASA Assembly Guide p2; APL payload cutaway; dimensions illustrative", 0xa9b9b9, "exterior");
+  interiorPart("sample-lines", "drills", "DrACO pneumatic sample-transfer lines", "APL payload cutaway; NASA Playing Lacrosse on Titan; routing illustrative", 0xa9b9b9, "exterior");
   let material = interiorPart("nose-bulkhead", "equipment-bay", "Nose bulkhead", "ICES-2023 p7, fig. 3", 0x9aa6ad);
   mesh(new THREE.BoxGeometry(0.7, 0.4, 0.02), material, [0, -0.13, -1.56]);
   material = interiorPart("nose-cameras-inside", "nose-cameras", "Navigation and forward cameras (no active airflow)", "ICES-2023 p7, fig. 3", 0x3d4a52);
@@ -291,10 +323,13 @@ export function buildResearchModel(kit) {
   mesh(new THREE.BoxGeometry(0.09, 0.09, 0.09), material, [0.25, -0.28, -1.42]);
   mesh(new THREE.BoxGeometry(0.09, 0.09, 0.09), material, [0.25, -0.28, -1.28]);
   material = interiorPart("sample-carousel", "cold-attic", "Cold attic: DrACO sample carousel", "ICES-2023 p2, p7, fig. 3", 0x7fb3c9);
-  mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.04, 28), material, [0, 0.18, -1.52]);
-  for (let i = 0; i < 8; i += 1) {
-    const angle = i / 8 * Math.PI * 2;
-    mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.06, 10), material, [Math.cos(angle) * 0.11, 0.23, -1.52 + Math.sin(angle) * 0.11]);
+  // A taller pan-shaped carousel, as in the 2026 integration photos. Cup count and size
+  // are illustrative; the published system has dozens of cups, not eight.
+  mesh(new THREE.CylinderGeometry(0.20, 0.19, 0.11, 32), material, [0, 0.195, -1.56]);
+  mesh(new THREE.TorusGeometry(0.20, 0.012, 6, 32), material, [0, 0.25, -1.56]).rotation.x = Math.PI / 2;
+  for (let i = 0; i < 24; i += 1) {
+    const angle = i / 24 * Math.PI * 2;
+    mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.04, 8, 1, true), material, [Math.cos(angle) * 0.16, 0.265, -1.56 + Math.sin(angle) * 0.16]);
   }
   material = interiorPart("wonderwall", "cold-attic", "Wonderwall: insulation keeping >100 C between carousel and DraMS", "ICES-2023 p7", 0xe6e0d0);
   mesh(new THREE.BoxGeometry(0.72, 0.38, 0.05), material, [0, 0.28, -1.3]);
@@ -308,10 +343,13 @@ export function buildResearchModel(kit) {
   material = interiorPart("hga-actuators", "cold-actuators", "HGA azimuth/elevation actuators", "ICES-2023 p2, fig. 3", 0x4f7fd1);
   mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.05, 20), material, [0, 0.035, -0.36]);
   mesh(new THREE.BoxGeometry(0.1, 0.07, 0.12), material, [0, -0.02, -0.36]);
-  material = interiorPart("avionics", "equipment-bay", "Avionics, power and radio boxes (PSUs, DPUs, radio)", "ICES-2023 p7, fig. 4", 0x4f9a8f);
+  material = interiorPart("power-units", "equipment-bay", "Two power switching units (PSUs)", "NASA integration update, 10 Mar 2026; ICES-2023 fig. 4; placement illustrative", 0x4f9a8f);
   mesh(new THREE.BoxGeometry(0.2, 0.22, 0.26), material, [-0.22, -0.18, -0.2]);
   mesh(new THREE.BoxGeometry(0.2, 0.22, 0.22), material, [-0.22, -0.18, 0.12]);
+  material = interiorPart("iem", "equipment-bay", "Integrated electronics module (IEM)", "NASA integration update, 10 Mar 2026; APL CAD reference; placement illustrative", 0x579cae);
   mesh(new THREE.BoxGeometry(0.22, 0.18, 0.3), material, [0.2, -0.2, -0.12]);
+  for (let z = -0.24; z < 0.03; z += 0.045) mesh(new THREE.BoxGeometry(0.20, 0.008, 0.008), metal, [0.2, -0.106, z]);
+  material = interiorPart("frontier-radio", "equipment-bay", "Frontier X-band radio", "NASA spacecraft and instruments; ICES-2023 fig. 4; placement illustrative", 0x609a73);
   mesh(new THREE.BoxGeometry(0.18, 0.18, 0.18), material, [0.22, -0.2, 0.2]);
   material = interiorPart("twta", "twta", "TWTA radio amplifier (under the top deck)", "ICES-2023 p7", 0xc0643c);
   mesh(new THREE.BoxGeometry(0.3, 0.07, 0.14), material, [0.05, 0.02, 0.08]);

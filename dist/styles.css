@@ -950,6 +950,31 @@ button:disabled { opacity: 0.5; cursor: default; }
 .airflow-panel dt { color: #ffc89a; font-weight: 700; }
 .airflow-panel dd { margin: 2px 0 0; color: #d7e3ec; }
 .part-detail { margin: 8px 0 0; padding: 8px 10px; border-left: 3px solid var(--cyan); background: rgba(124, 231, 255, 0.07); font-size: 0.82rem; }
+.part-detail h3 { margin: 0 0 8px; font-size: 0.9rem; }
+.part-detail p { margin: 6px 0; line-height: 1.5; }
+.part-detail nav, .print-reference nav { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+.vehicle-references { border-top: 1px solid var(--line); margin-top: 12px; }
+.vehicle-references summary { padding: 12px 0; cursor: pointer; font-size: 0.85rem; font-weight: 700; color: var(--cyan); }
+.vehicle-references summary span { font-size: 0.75rem; font-weight: 400; color: var(--muted); margin-left: 8px; }
+.reference-body { min-width: 0; font-size: 0.82rem; line-height: 1.5; }
+.reference-tabs { display: flex; gap: 4px; margin-bottom: 10px; border-bottom: 1px solid var(--line); }
+.reference-tabs button { flex: 1; min-width: 0; padding: 8px; border-radius: 4px 4px 0 0; font-size: 0.82rem; }
+.reference-tabs [aria-selected="true"] { color: var(--cyan); border-bottom: 2px solid var(--cyan); background: #183039; }
+.reference-media { position: relative; display: grid; place-items: center; width: 100%; aspect-ratio: 16 / 10; background: #e3e3e1; overflow: hidden; }
+.reference-media img, .reference-media video { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; }
+.reference-media video { background: #161b1d; }
+.reference-status { position: absolute; inset: auto 12px; margin: 0; padding: 10px; color: #f0f5f4; background: #263034; text-align: center; font-size: 0.8rem; pointer-events: none; }
+.reference-caption { margin: 8px 0; color: #bfced6; }
+.reference-credit { color: var(--muted); font-size: 0.75rem; margin: 10px 0; }
+.reference-retry { min-height: 32px; padding: 4px 10px; margin-left: 12px; font-size: 0.78rem; }
+.print-reference { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 14px; }
+.print-reference h3 { font-size: 0.88rem; margin: 0; }
+.print-reference h3 span { font-size: 0.75rem; color: var(--muted); font-weight: 400; margin-left: 8px; }
+.print-reference p { margin: 8px 0; }
+.vehicle-references a, .part-detail a { overflow-wrap: anywhere; }
+@media (max-width: 420px) {
+  .vehicle-references summary span { display: block; margin: 4px 0 0; }
+}
 body.pilot-view .layer-panel { display: none; }
 .pilot-hud { display: none; }
 body.pilot-view .pilot-hud {

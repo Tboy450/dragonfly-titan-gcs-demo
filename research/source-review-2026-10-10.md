@@ -95,6 +95,11 @@ no individual creator or permissive asset license was identified on this page.
 
 ## Proposed changes only
 
+**October 11 implementation:** the owner authorized the first inspection update.
+The reference viewer, selected exterior corrections, IEM/PSU/radio separation and
+component readings are implemented in [the follow-up record](vehicle-inspection-2026-10-11.md).
+The dated proposal table below remains the original review; other proposals are still open.
+
 ### Additional reference: NASA printable model
 
 [NASA 3D Resources: Dragonfly](https://science.nasa.gov/3d-resources/dragonfly/)

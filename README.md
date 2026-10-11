@@ -44,9 +44,11 @@ its visitors here.
 
 The [October 10 NASA/APL source review](research/source-review-2026-10-10.md) records
 eight official references, including NASA's printable Dragonfly model, and proposed
-realism changes (not implemented).
+realism changes. The [October 11 inspection update](research/vehicle-inspection-2026-10-11.md)
+implements the reference viewer, selected geometry corrections and component diagnostics.
 [APL model reference assets and credits](research/apl-spacecraft-models/README.md)
-are stored separately from the deployed app.
+preserve the originals; [compact viewing copies](dist/assets/vehicle-references/README.md)
+load on demand in the Mission view.
 
 Three.js 0.180.0 is included under its [MIT license](dist/vendor/three/LICENSE).
 The Titan terrain reference image was supplied for this project. NASA mission
@@ -137,14 +139,28 @@ The arrival keeps its own touchdown dust. Reach, rates and the look are estimate
 
 ## Vehicle Model
 
-The default 3D model follows the NASA/APL 2023 design drawings: long insulated fuselage,
-raised "attic" over the nose, MMRTG between two tail fins, four arms with coaxial three-blade
-rotors, wide skids, and a flat high-gain antenna disc that rises for downlink. The **Model**
+The default 3D model follows the NASA/APL 2023 thermal drawings, with details refined from
+APL's 2024 CAD visualization and NASA's 2026 printable-model assembly guide: a long insulated
+fuselage, rounded forward "attic", MMRTG between two tail fins, four arms with coaxial three-blade
+rotors, flat landing runners, and a high-gain antenna disc that rises for downlink. The **Model**
 button in the vehicle view switches to the original demo model for comparison. Proportions are
 measured from the drawings; the overall size matches the published 3.85 x 3.85 x 1.75 m.
 Rotor blades are tapered and twisted with a thin cambered section and rounded tips, with hub caps,
 and spinning rotors show a faint blur disc that strengthens with rotor speed. Blade chord, twist
 and thickness are estimates from the drawings.
+
+Under **Mission > Vehicle Layers > NASA / APL references**, the payload cutaway and rotating
+CAD movie retain visible credits, source links and design dates. Compact local copies load
+only when opened, and the movie pauses when closed or when switching to Pilot. NASA's
+STL/3MF files and assembly/print guides are linked with Gary Allen Backus / Backus Creative
+Imaging credited. The simulator still uses lightweight procedural geometry, not imported
+flight CAD or the large print meshes.
+
+The updated model has body-side DrACO drill/feed assemblies, estimated pneumatic tube routes,
+flanged rotor-arm roots, separate coaxial motor housings and broad skids with shaped supports.
+Internal and Thermal distinguish the IEM, two PSUs and Frontier radio. Selecting a component
+shows relevant live simulation readings and primary-source links. These share the existing
+thermal/system model; there are no invented independent processor or PSU sensor readings.
 
 ## First Expedition
 

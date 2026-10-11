@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [vehicle-inspection-2026-10-11](vehicle-inspection-2026-10-11/README.md) | Procedural vehicle and temperature-only part details before NASA/APL reference refinements | 2026-10-11 | `archive/vehicle-inspection-2026-10-11` |
 | [sparse-mountains-and-parked-room](sparse-mountains-and-parked-room/README.md) | Wide dunes without isolated mountains; clean-room vehicle following live flight | 2026-10-10 | `archive/sparse-mountains-and-parked-room` |
 | [exterior-backdrops-v2](exterior-backdrops-v2/README.md) | Procedural rock field, clean-room finish and oversized Titan poster before photographic A/C replacement | 2026-10-09 | `archive/exterior-backdrops-v2` |
 | [cleanroom-steep-floor](cleanroom-steep-floor/README.md) | Detailed clean-room floor before Claude's gentler perspective correction | 2026-10-09 | `archive/cleanroom-steep-floor` |

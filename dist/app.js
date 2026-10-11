@@ -8,6 +8,7 @@ import { drawFlight } from "./ui/flight-view.mjs?v=dev";
 import { drawChart } from "./ui/chart.mjs?v=dev";
 import { updateReadouts, updateTrack } from "./ui/readouts.mjs?v=dev";
 import { updateLayerPanel } from "./ui/layers-panel.mjs?v=dev";
+import "./ui/vehicle-references.mjs?v=dev";
 import { updatePilotHud } from "./ui/pilot-hud.mjs?v=dev";
 import { updateExpeditionPanel } from "./ui/expedition-panel.mjs?v=dev";
 import "./ui/science-panel.mjs?v=dev";

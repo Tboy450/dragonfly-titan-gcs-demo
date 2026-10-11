@@ -37,6 +37,34 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-11: Refine the vehicle and add an official-reference viewer
+- **Signed:** Codex (OpenAI GPT-6).
+- **Commit:** `Refine Dragonfly inspection model and add credited references`.
+- **What changed:** Mission now includes a collapsible NASA/APL reference viewer with the
+  payload cutaway, full rotating CAD movie, design-date labels, source credits and NASA
+  STL/3MF/guide links. Compact local viewing copies load on demand (about 4.3 MB total).
+  Refined the curved forward cover, front apertures, arm flanges, coaxial motor housings,
+  flat landing runners and shaped legs. Vertical body-side DrACO/feed assemblies and
+  illustrative pneumatic lines replace the small skid-mounted drill nubs. The carousel
+  now resembles the published pan-shaped assembly. IEM, two PSUs and Frontier radio are
+  separately inspectable, with relevant live readings and primary-source links.
+- **Assumptions:** Detail dimensions, exact placement, routing and 24 drawn carousel cups
+  remain illustrative [EST]. Existing thermal zones provide the readings; no independent
+  processor/PSU temperatures or currents were added. The procedural model was compared
+  with APL references and NASA's assembly guide; no print meshes or flight CAD imported.
+  The animated drill-to-lab sequence remains the next proposed milestone.
+- **Archive:** Previous model, renderer, layer panel and desktop/phone images are in
+  `archive/vehicle-inspection-2026-10-11`, tied to `231b221` and the matching archive tag.
+- **Checks:** All 120 Node tests pass. Desktop/phone browser checks verified nonblank
+  Exterior/Internal/Thermal rendering, framing, rotor movement, component selection,
+  live updates without keyboard-focus loss, no horizontal overflow, lazy media loading,
+  actual image/video decoding, playback pause, retry recovery and mock-model labels.
+  APL browser requests reset during testing, so compact credited copies of the already
+  preserved originals serve the viewer locally. No runtime browser errors.
+- **Files:** `dist/vehicle-research.mjs`, Mission layer/reference UI, `dist/index.html`,
+  `dist/styles.css`, reference assets/preparation script, render regression, research
+  record, README, architecture and archive. No flight/camera/energy/thermal behavior changed.
+
 ### 2026-10-10: Record NASA/APL sources and preserve model reference media
 - **Signed:** GPT/Codex (OpenAI, Codex desktop app)
 - **Commit:** `Record official Dragonfly sources and model references`.

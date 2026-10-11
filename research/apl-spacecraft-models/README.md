@@ -46,9 +46,11 @@ ffmpeg -i Dragonfly_2024_RotatingCADmodel_ver3-slower.mp4 -frames:v 1 -update 1 
 ffmpeg -i Dragonfly_2024_RotatingCADmodel_ver3-slower.mp4 -vf "fps=1/20,scale=480:-1,tile=2x2" -frames:v 1 -update 1 cad-angle-sheet.jpg
 ```
 
-These are research assets outside `dist/`; they are not loaded by the app or deployed.
-The large original video should not be added to the initial application download.
-See [proposed changes](../source-review-2026-10-10.md) before future integration.
+The originals stay outside `dist/`. As of October 11, compact unretouched viewing
+copies are in [the app's reference assets](../../dist/assets/vehicle-references/README.md)
+and load only when the Mission reference viewer is opened. They retain source links
+and visible credit; no permissive license or public-domain status is asserted.
+See the [implementation record](../vehicle-inspection-2026-10-11.md).
 
 ## Related printable geometry
 

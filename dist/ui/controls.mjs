@@ -185,7 +185,7 @@ bindFreeCamera();
 window.addEventListener("keydown", (event) => {
   if (event.ctrlKey || event.metaKey || event.altKey) return;
   if ($("systems-dialog").open || $("plan-dialog").open) return;
-  if (event.target.matches("input, select, textarea, button, a") || event.target.isContentEditable) return;
+  if (event.target.matches("input, select, textarea, button, a, summary, video") || event.target.closest("#vehicle-references") || event.target.isContentEditable) return;
   const step = event.shiftKey ? 0.08 : 0.04;
   const keys = ["w", "a", "s", "d", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "];
   if (!keys.includes(event.key)) return;
@@ -224,7 +224,7 @@ document.querySelectorAll("[data-reverse-brake]").forEach(button => {
 function setVehicleModel(choice) {
   state.vehicleModel = choice;
   try { localStorage.setItem("dragonfly-vehicle-model", choice); } catch { /* preference is optional */ }
-  $("model-toggle").textContent = choice === "research" ? "Model: NASA 2023" : "Model: original";
+  $("model-toggle").textContent = choice === "research" ? "Model: NASA / APL" : "Model: original";
   $("model-toggle").setAttribute("aria-pressed", String(choice === "research"));
 }
 $("model-toggle").addEventListener("click", () => setVehicleModel(state.vehicleModel === "research" ? "original" : "research"));

@@ -3,9 +3,47 @@ import { systemsModel, thermalZoneTemps } from "../mission-systems.mjs?v=dev";
 import { thermalCss, thermalGradientCss, thermalRanges } from "../thermal-scale.mjs?v=dev";
 import { $, flightCanvas, state } from "./context.mjs?v=dev";
 import { partMarkers } from "./flight-view.mjs?v=dev";
+import { scienceModel } from "../science.mjs?v=dev";
+
+const sources = {
+  thermal: ["Thermal layout (ICES 2023)", "https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content"],
+  integration: ["NASA integration update", "https://science.nasa.gov/blogs/dragonfly/2026/03/10/nasas-dragonfly-mission-begins-rotorcraft-integration-testing-stage/"],
+  payload: ["APL payload reference", "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php"],
+  spacecraft: ["NASA spacecraft and instruments", "https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/"],
+  sampling: ["NASA sample-transfer design", "https://science.nasa.gov/science-research/science-enabling-technology/technology-highlights/playing-lacrosse-on-titan/"],
+  carousel: ["NASA carousel integration", "https://science.nasa.gov/blogs/dragonfly/2026/04/23/nasas-dragonfly-rotorcraft-gets-decked-out-tested/"],
+};
+const componentInfo = {
+  iem: ["Runs spacecraft commands and processes vehicle data. Its displayed temperature is the shared bay-air model, not a separately simulated processor sensor.", "integration"],
+  "power-units": ["Two power switching units distribute electrical power. The readings below are for the whole vehicle; separate PSU currents are not modeled.", "integration"],
+  "frontier-radio": ["Frontier provides the X-band communications link. Stored instrument data remain queued until the radio and antenna are ready.", "spacecraft"],
+  twta: ["The traveling-wave tube amplifier supports the Earth downlink. Its temperature is an estimate linked to radio operation.", "spacecraft"],
+  drills: ["DrACO grinds surface material with redundant drills. The reference places the drill/feed hardware beside the body, above the landing runners.", "sampling"],
+  "sample-lines": ["Blowers carry loosened material in Titan gas through transfer tubes into a sample cup. The displayed tube route is illustrative.", "sampling"],
+  "sample-carousel": ["The carousel positions collected material for DraMS. NASA describes dozens of cups; the 24 cups drawn here are illustrative.", "carousel"],
+  drams: ["DraMS analyzes material using laser desorption and gas chromatography. The simulator's shortened sampling job combines collection and analysis.", "carousel"],
+  battery: ["The battery supplies flight power and recharges from the MMRTG. The thermal model includes a phase-change buffer and inhibits charging outside its permitted band.", "thermal"],
+  fan: ["Circulates MMRTG-warmed, nitrogen-rich gas through the under-floor duct and equipment bay.", "thermal"],
+  "underfloor-duct": ["Routes warmed gas forward below the floor before it returns through the equipment bay.", "thermal"],
+  "trim-chimneys": ["Flaps divert a controlled fraction of the circulation through cold ducts to reject heat to Titan's atmosphere.", "thermal"],
+};
+
+function liveComponentReading(name) {
+  if (name === "iem") return `Vehicle mode: ${state.mode}. Flight plan: ${state.plan?.status ?? "none"}.`;
+  if (name === "power-units") return `Vehicle load ${(state.power / 1000).toFixed(2)} kW; MMRTG generation ${state.generatedW.toFixed(0)} W. Modeled totals.`;
+  if (["frontier-radio", "twta", "hga-actuators"].includes(name)) return `${state.downlinkW > 0 ? "Transmitting" : state.downlinkActive ? "Preparing antenna" : "Radio idle"}; ${(state.dataStoredBits / 1e6).toFixed(1)} Mbit queued. Downlink system load ${state.downlinkW.toFixed(0)} W (modeled).`;
+  if (["drills", "sample-lines", "sample-carousel", "drams", "drill-blower"].includes(name)) return state.science.sampling
+    ? `Sampling: ${Math.min(100, state.science.sampleSeconds / scienceModel.sampleSeconds * 100).toFixed(0)}% of the ${scienceModel.sampleSeconds} s demonstration cycle; ${state.sciencePowerW.toFixed(0)} W instrument load (modeled).`
+    : `Sampling idle; ${state.science.samples.length} completed sample records.`;
+  if (["battery", "battery-sensor"].includes(name)) return `Charge ${state.battery.toFixed(1)}%; ${state.chargingBlocked ? "charging inhibited by temperature" : `${Math.abs(state.netBatteryW).toFixed(0)} W ${state.netBatteryW >= 0 ? "charging" : "discharging"}`} (modeled).`;
+  if (["fan", "underfloor-duct", "trim-chimneys"].includes(name)) return `Gas flow ${state.gasFlow.toFixed(3)} kg/s; trim ${(state.effectiveTrim * 100).toFixed(0)}%; cold-duct heat rejection ${state.coldDuctW.toFixed(0)} W (modeled).`;
+  return "";
+}
 
 // ---- Vehicle layers (Mission view) and the shared systems readouts ----
 let partRows = "";
+let detailKey = "";
+const rowElements = new Map();
 export function updateLayerPanel() {
   const layered = state.missionLayer !== "exterior";
   $("component-temperatures").hidden = !layered;
@@ -25,9 +63,10 @@ export function updateLayerPanel() {
   if (!layered) { $("part-detail").hidden = true; return; }
   const zones = thermalZoneTemps(state);
   const markers = partMarkers.length ? partMarkers : [];
-  const rows = `${state.missionLayer}|${state.thermalRange}|` + markers.map(marker => `${marker.index}|${marker.name}|${marker.label}|${zones[marker.zone]?.c.toFixed(0)}|${marker.name === state.selectedPart}`).join(";");
+  const rows = markers.map(marker => `${marker.index}|${marker.name}|${marker.label}`).join(";");
   if (rows !== partRows) {
     partRows = rows;
+    rowElements.clear();
     $("part-list").replaceChildren(...markers.map(marker => {
       const item = document.createElement("li");
       item.dataset.part = marker.name;
@@ -45,14 +84,45 @@ export function updateLayerPanel() {
       if (zone) temp.style.color = thermalCss(zone.c);
       button.append(number, name, temp);
       item.append(button);
+      rowElements.set(marker.name, { item, button, temp });
       return item;
     }));
+  }
+  // Update in place so live telemetry never removes a focused component button.
+  for (const marker of markers) {
+    const { item, button, temp } = rowElements.get(marker.name);
+    const active = marker.name === state.selectedPart;
+    item.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+    const zone = zones[marker.zone];
+    temp.textContent = zone ? `${zone.c.toFixed(0)} C` : "";
+    if (zone) temp.style.color = thermalCss(zone.c);
   }
   const selected = markers.find(marker => marker.name === state.selectedPart);
   $("part-detail").hidden = !selected;
   if (selected) {
     const zone = zones[selected.zone];
-    $("part-detail").textContent = `${selected.index}. ${selected.label}: ${zone ? `${zone.c.toFixed(1)} C (${zone.source})` : "no temperature"}. Placement: ${selected.source}.`;
+    $("part-title").textContent = `${selected.index}. ${selected.label}`;
+    $("part-temperature").textContent = zone ? `${zone.c.toFixed(1)} C - ${zone.source}.` : "No temperature available.";
+    $("part-placement").textContent = `Placement: ${selected.source}.`;
+    const info = selected.mock ? null : componentInfo[selected.name];
+    $("part-role").textContent = info?.[0] ?? "";
+    $("part-role").hidden = !info;
+    const reading = selected.mock ? "" : liveComponentReading(selected.name);
+    $("part-live").textContent = reading;
+    $("part-live").hidden = !reading;
+    const key = `${selected.name}|${selected.mock}`;
+    if (key !== detailKey) {
+      detailKey = key;
+      const entries = selected.mock ? [] : [...new Set([info?.[1] ?? "thermal", "payload"])];
+      $("part-sources").replaceChildren(...entries.map(id => {
+        const link = document.createElement("a");
+        [link.textContent, link.href] = sources[id];
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        return link;
+      }));
+    }
   }
 }
 
@@ -82,7 +152,6 @@ function updateAirflowPanel() {
 function selectPart(name) {
   state.selectedPart = state.selectedPart === name ? null : name;
   if (state.selectedPart) $("component-temperatures").open = true;
-  partRows = "";
   updateLayerPanel();
 }
 

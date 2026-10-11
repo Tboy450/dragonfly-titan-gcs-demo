@@ -232,7 +232,7 @@
               <span>Heading</span>
               <strong id="heading-value">084 deg</strong>
             </div>
-            <button id="model-toggle" class="model-toggle" type="button" aria-pressed="true" title="Switch between the vehicle model built from NASA/APL 2023 design drawings and the original demo model">Model: NASA 2023</button>
+            <button id="model-toggle" class="model-toggle" type="button" aria-pressed="true" title="Research model: 2023 thermal layout, refined from APL CAD and NASA's 2026 print guide. Switch to the original demo model.">Model: NASA / APL</button>
             <button id="pilot-fullscreen" class="pilot-fullscreen" type="button" aria-label="Enter Pilot fullscreen" aria-pressed="false" title="Enter Pilot fullscreen">&#9974;</button>
             <section id="pilot-hud" class="pilot-hud" aria-label="Vehicle systems">
               <div><span>Battery</span><strong id="hud-battery">96% / 10 C</strong></div>
@@ -316,8 +316,8 @@
                 <button type="button" data-layer="thermal" aria-pressed="false">Thermal</button>
               </div>
             </div>
-            <p id="mock-banner" class="mock-banner" hidden>Mock-up views: the original demo model is not based on the real Dragonfly design, so its interior and thermal layout are made up for illustration. Switch <b>Model</b> to NASA 2023 for the research-based views.</p>
-            <p id="layer-hint" class="rest-status">Internal and Thermal show the NASA 2023 design with the foam shell see-through, nose to the left. Expand Component temperatures for live readings, or tap a diagram number to open its details.</p>
+            <p id="mock-banner" class="mock-banner" hidden>Mock-up views: the original demo model is not based on the real Dragonfly design, so its interior and thermal layout are made up for illustration. Switch <b>Model</b> to NASA / APL for the research-based views.</p>
+            <p id="layer-hint" class="rest-status">Research model: 2023 thermal layout, refined with APL CAD and NASA's 2026 print guide. Component shapes and placement are approximate; readings are simulated.</p>
             <a id="backdrop-credit" class="rest-status backdrop-credit" href="https://science.nasa.gov/mission/dragonfly/multimedia/" target="_blank" rel="noopener noreferrer">NASA / Johns Hopkins APL - artist's concept</a>
             <details id="component-temperatures" class="component-temperatures" hidden>
               <summary>Component temperatures <span>Live / illustrative</span></summary>
@@ -327,7 +327,14 @@
               </div>
               <p class="rest-status">Blue = cold; green = 0-20 C equipment/battery reference band; yellow = warming; red = 35 C or above. Range changes only zoom the legend. Cold exterior parts and hot MMRTG gas have different operating targets: these colors are not fault indicators.</p>
               <ol id="part-list" class="part-list" hidden></ol>
-              <p id="part-detail" class="part-detail" hidden></p>
+              <div id="part-detail" class="part-detail" hidden>
+                <h3 id="part-title"></h3>
+                <p id="part-temperature"></p>
+                <p id="part-role"></p>
+                <p id="part-live"></p>
+                <p id="part-placement" class="rest-status"></p>
+                <nav id="part-sources" aria-label="Component sources"></nav>
+              </div>
               <small id="layer-note" class="rest-status" hidden>Placement follows ICES-2023-389 (text and figs. 3-4) and the TFAWS 2023 top view. Temperatures: modeled = the simulator's heat balance; estimate = placed from NASA's published thermal-model figures; published = documented set point.</small>
             </details>
             <section id="airflow-panel" class="airflow-panel" aria-label="Warm-air loop" hidden>
@@ -338,6 +345,44 @@
                 <div><dt>How it is measured</dt><dd id="air-measured">--</dd></div>
               </dl>
             </section>
+            <details id="vehicle-references" class="vehicle-references">
+              <summary>NASA / APL references <span>CAD, payload and print files</span></summary>
+              <div class="reference-body">
+                <div class="reference-tabs" role="tablist" aria-label="Official vehicle reference">
+                  <button id="reference-tab-payload" type="button" role="tab" aria-selected="true" aria-controls="reference-payload" data-reference="payload">Payload cutaway</button>
+                  <button id="reference-tab-cad" type="button" role="tab" aria-selected="false" aria-controls="reference-cad" tabindex="-1" data-reference="cad">CAD rotation</button>
+                </div>
+                <section id="reference-payload" role="tabpanel" aria-labelledby="reference-tab-payload">
+                  <div class="reference-media">
+                    <img id="reference-image" width="1649" height="1001" alt="APL Dragonfly payload cutaway: raised forward instrument bay, central electronics, aft generator, four coaxial rotor pairs and landing skids." />
+                    <p id="reference-image-status" class="reference-status" role="status">Loading APL payload cutaway...</p>
+                  </div>
+                  <p class="reference-caption">Payload layout visualization. The source does not state a revision date. Colors identify instruments, not temperatures.</p>
+                  <a href="./assets/vehicle-references/payload-cutaway.webp?v=dev" target="_blank" rel="noopener noreferrer">Open full-size cutaway &#8599;</a>
+                  <button id="reference-image-retry" class="reference-retry" type="button" hidden>Retry image</button>
+                </section>
+                <section id="reference-cad" role="tabpanel" aria-labelledby="reference-tab-cad" hidden>
+                  <div class="reference-media">
+                    <video id="reference-video" controls playsinline preload="none" aria-label="APL 2024 Dragonfly rotating CAD visualization"></video>
+                    <p id="reference-video-status" class="reference-status" role="status" hidden></p>
+                  </div>
+                  <p class="reference-caption">APL 2024 CAD visualization: internal equipment, structure and exterior. Approximately 84 seconds; reduced-resolution viewing copy.</p>
+                  <a href="https://dragonfly.jhuapl.edu/What-Is-Dragonfly/img/Dragonfly_2024_RotatingCADmodel_ver3-slower.mp4" target="_blank" rel="noopener noreferrer">Open original movie &#8599;</a>
+                  <button id="reference-video-retry" class="reference-retry" type="button" hidden>Retry video</button>
+                </section>
+                <p class="reference-credit">Credit: Johns Hopkins Applied Physics Laboratory. <a href="https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php" target="_blank" rel="noopener noreferrer">Spacecraft and Science Payload &#8599;</a></p>
+                <div class="print-reference">
+                  <h3>NASA printable model <span>August 2026</span></h3>
+                  <p>STL / 3MF parts and assembly guides. A physical display model; some details are adapted for printing.</p>
+                  <nav aria-label="NASA printable model sources">
+                    <a href="https://science.nasa.gov/3d-resources/dragonfly/" target="_blank" rel="noopener noreferrer">Model files &#8599;</a>
+                    <a href="https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/printable/dragonfly/Assembly_Guide.pdf" target="_blank" rel="noopener noreferrer">Assembly guide (PDF) &#8599;</a>
+                    <a href="https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/printable/dragonfly/Print_Guide.pdf" target="_blank" rel="noopener noreferrer">Print guide (PDF) &#8599;</a>
+                  </nav>
+                  <p class="reference-credit">Credit: Gary Allen Backus / Backus Creative Imaging.</p>
+                </div>
+              </div>
+            </details>
           </section>
 
           <section class="telemetry-band" aria-label="Primary telemetry">

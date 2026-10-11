@@ -154,6 +154,36 @@ test("Every research-model part belongs to a named subsystem with a thermal zone
   }
 });
 
+test("Refined drill assemblies clear the landing runners and remain visible in all vehicle layers", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const chase = createChaseRenderer({ renderer: fakeRenderer() });
+  const s = { ...createFlightState(), vehicleModel: "research", heading: 0, pitch: 0, roll: 0 };
+  chase.draw(context2d, 800, 600, s);
+  const research = chase.models.research;
+  const inverse = research.matrixWorld.clone().invert();
+  const bounds = object => new THREE.Box3().setFromObject(object).applyMatrix4(inverse);
+  const drills = bounds(chase.subsystems.drills);
+  const portSkid = bounds(research.getObjectByName("port-skid"));
+  const starboardSkid = bounds(research.getObjectByName("starboard-skid"));
+  assert.ok(drills.min.y > portSkid.min.y + 0.04, "stowed bits clear the ground");
+  assert.ok(drills.max.y - drills.min.y > 0.5, "body-side feeds span the bay-to-ground gap");
+  assert.ok(drills.min.x > portSkid.max.x && drills.max.x < starboardSkid.min.x, "drills sit inboard of the runners");
+  assert.ok(Math.abs(portSkid.min.y + 0.86) < 0.015 && Math.abs(starboardSkid.min.y + 0.86) < 0.015,
+    "the collision footprint still matches the runner contact plane");
+  for (const layer of ["internal", "thermal"]) {
+    const labels = chase.drawMission(context2d, 800, 600, s, { layer });
+    for (const name of ["drills", "sample-lines", "iem", "power-units", "frontier-radio"]) {
+      assert.ok(labels.some(label => label.name === name), `${name} has an inspectable ${layer} callout`);
+    }
+  }
+  chase.draw(context2d, 800, 600, s);
+  assert.equal(chase.subsystems.drills.visible, true);
+  assert.equal(chase.subsystems["sample-lines"].visible, true);
+  assert.equal(chase.subsystems.iem.visible, false);
+  assert.equal(chase.subsystems["power-units"].visible, false);
+});
+
 test("The arrival sequence hardware draws at every phase", async () => {
   const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
   const { createFlightState } = await import("../dist/flight-model.mjs");

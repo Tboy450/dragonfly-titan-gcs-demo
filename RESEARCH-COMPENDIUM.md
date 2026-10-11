@@ -9,6 +9,12 @@ records eight official links, including NASA's printable model, source conflicts
 standalone model media with credits.
 It does not change the historical implementation status below or the running app.
 
+**October 11 implementation:** [vehicle inspection update](research/vehicle-inspection-2026-10-11.md)
+adds an on-demand CAD/payload reference viewer, refines the forward cover, arm/motor
+mounts, skids and body-side drills, and splits IEM, two PSUs and radio into inspectable
+groups with source links and shared live readings. All detail dimensions and routing
+remain [EST]. The original print meshes have not been imported.
+
 - **[PUB]** Published by NASA, APL, a partner or a peer-reviewed or conference paper (the source is linked).
 - **[CALC]** Arithmetic or textbook physics computed from published inputs. The script is summarized in §9.
 - **[EST]** An estimate or interpretation. It is plausible but not published as a Dragonfly figure.
@@ -310,7 +316,7 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 | Area | Research | Status (Sep 28) | Remaining action |
 |---|---|---|---|
 | Mass, size, rotor Ø | 875 kg; 3.85×3.85×1.75 m; 1.35 m [PUB] | **Done** | Optional: show "design max just under 1,000 kg" |
-| Vehicle geometry | labeled 2023 layout (TFAWS 2023 slide 3; ICES-2020/2023 fig. 1) [PUB] | **Done** (Sep 29): research model, measured 3.87 × 3.83 × 1.81 m; original model kept behind a toggle | Layered Mission views (see Future update requests) |
+| Vehicle geometry | 2023 thermal layout plus APL CAD and 2026 NASA assembly guide [PUB references; EST detail dimensions] | **Done**, refined Oct 11: 3.85 x 3.94 x 1.74 m measured envelope, body-side DrACO, flat runners, curved forward cover, motor pods; separate IEM/PSU/radio. Original demo remains available. | Animated drill/transfer/carousel/DraMS stages remain a future update. |
 | Blades | **3 per rotor** (2026) [PUB] | **Done** (`74ed2c4`) | — |
 | Battery | **11.5 kWh** pack, 134 Ah cells [PUB] | **Done** (`74ed2c4`) | — |
 | MMRTG electric | ~70–100 W at Titan, declining ~2.5%/yr [PUB/CALC] | **Done**: 90 W / 70 W options | — |
@@ -363,6 +369,11 @@ Items 1 and 3 and the vortex-ring-state warning are now implemented (see §0). T
 ---
 
 ## Future update requests
+
+- **Vehicle inspection milestone (Oct 11): Done.** Credited CAD/payload viewer, NASA print
+  reference links, selected geometry corrections and live component details are implemented.
+  The next proposed milestone is an animated drill-to-lab sequence synchronized with the
+  existing sampling state; stage timing and hardware motion would need explicit [EST] labels.
 
 - **Semi-jagged mountain ridge on the local map (owner, 2026-10-09):** add another semi-jagged
   mountain ridge in at least one place on the fairly local map (visible from the mission area),
