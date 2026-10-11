@@ -37,6 +37,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-10: Record NASA/APL sources and preserve model reference media
+- **Signed:** GPT/Codex (OpenAI, Codex desktop app)
+- **Commit:** `Record official Dragonfly sources and model references`.
+- **What changed:** Reviewed and indexed all eight owner-supplied links, noted existing
+  citations, source conflicts and prioritized proposed improvements. Saved the APL
+  rotating CAD video and payload PNG independently of the webpage, plus two video
+  previews and attribution/source records. Added NASA's printable STL/3MF model and
+  guides as a credited reference (Gary Allen Backus/Backus Creative Imaging).
+  Added research links to README/compendium. Owner requested commit and push.
+- **Files:** `research/source-review-2026-10-10.md`, `research/apl-spacecraft-models/`,
+  `README.md`, `RESEARCH-COMPENDIUM.md`, `CHANGELOG.md`.
+- **Assumptions:** Media are rendered references, not editable 3D meshes or verified
+  final-flight CAD. No permissive asset license established; review before publishing.
+- **Checks:** Original media opened; video decoded and multi-angle preview inspected;
+  original SHA-256 hashes recorded; `git diff --check` clean and all 119 tests pass.
+  No `dist/` or simulation/test changes.
+- **Open / next:** Owner review of proposed changes; app implementation remains pending.
+
 ### 2026-10-10: Sparse mountains and a parked clean-room portrait
 - **Signed:** Codex (OpenAI)
 - **Commit:** Add sparse mountain landmarks and park the clean-room portrait

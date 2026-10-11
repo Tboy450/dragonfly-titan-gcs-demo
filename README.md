@@ -42,6 +42,12 @@ its visitors here.
 
 ## Assets
 
+The [October 10 NASA/APL source review](research/source-review-2026-10-10.md) records
+eight official references, including NASA's printable Dragonfly model, and proposed
+realism changes (not implemented).
+[APL model reference assets and credits](research/apl-spacecraft-models/README.md)
+are stored separately from the deployed app.
+
 Three.js 0.180.0 is included under its [MIT license](dist/vendor/three/LICENSE).
 The Titan terrain reference image was supplied for this project. NASA mission
 references are linked within the app.

@@ -3,6 +3,12 @@
 Companion to `RESEARCH.md`. It gathers public sources on the real mission and compares them with the simulator's current values. It also sets out the next implementation steps, so another assistant (Codex/GPT) can continue the work.
 
 **How to read the tags**
+
+**October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
+records eight official links, including NASA's printable model, source conflicts and
+standalone model media with credits.
+It does not change the historical implementation status below or the running app.
+
 - **[PUB]** Published by NASA, APL, a partner or a peer-reviewed or conference paper (the source is linked).
 - **[CALC]** Arithmetic or textbook physics computed from published inputs. The script is summarized in §9.
 - **[EST]** An estimate or interpretation. It is plausible but not published as a Dragonfly figure.
