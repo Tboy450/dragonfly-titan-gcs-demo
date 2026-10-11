@@ -3,6 +3,7 @@ import { enterFreeCamera, orbitCamera } from "../flight-camera.mjs?v=dev";
 import { commandFlight, model, takeManualControl } from "../flight-model.mjs?v=dev";
 import { missionAction, startRest, toggleDownlink } from "../mission-systems.mjs?v=dev";
 import { setFixedWind, setWeatherMode, startStormTraining } from "../weather.mjs?v=dev";
+import { samplingSequence } from "../science.mjs?v=dev";
 import { closePilotFullscreen, updatePilotLayout } from "./pilot-layout.mjs?v=dev";
 import { $, chaseRenderer, clamp, flightCanvas, state } from "./context.mjs?v=dev";
 import { updateReadouts } from "./readouts.mjs?v=dev";
@@ -174,6 +175,16 @@ document.querySelectorAll("[data-command]").forEach((button) => {
 });
 $("mission-view-button").addEventListener("click", () => setView("mission"));
 $("pilot-view-button").addEventListener("click", () => setView("pilot"));
+$("inspect-sample").addEventListener("click", () => {
+  state.vehicleModel = "research";
+  state.missionLayer = "internal";
+  state.selectedPart = samplingSequence(state).part;
+  setView("mission");
+  updateReadouts();
+  $("component-temperatures").open = true;
+  flightCanvas.scrollIntoView({ block: "center" });
+  document.querySelector('[data-layer="internal"]').focus({ preventScroll: true });
+});
 $("fixed-camera-button").addEventListener("click", () => setCameraMode("fixed"));
 $("free-camera-button").addEventListener("click", () => setCameraMode("free"));
 bindPilotStick("pilot-left-stick", "left");

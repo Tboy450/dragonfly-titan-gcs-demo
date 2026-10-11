@@ -73,6 +73,60 @@ test("Clean-room presentation stays parked without changing or freezing live fli
   }
 });
 
+test("Sampling poses follow the science clock, with internal-only markers and a stowed clean room", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { missionVehicleState } = await import("../dist/vehicle-presentation.mjs");
+  const chase = createChaseRenderer({ renderer: fakeRenderer() });
+  const s = { ...createFlightState(), vehicleModel: "research", hold: true };
+  const root = chase.models.research;
+  const feed = root.getObjectByName("drill-feed-port");
+  const standby = root.getObjectByName("drill-feed-starboard");
+  const flow = chase.subsystems["sample-flow"];
+  const pan = root.getObjectByName("sample-carousel-pan");
+  const analysis = root.getObjectByName("sample-analysis-marker");
+  const render = (seconds, layer = "internal") => {
+    Object.assign(s.science, {sampling:true, sampleSeconds:seconds});
+    const before = structuredClone(s);
+    chase.drawMission(context2d, 800, 600, s, {layer});
+    assert.deepEqual(s, before);
+  };
+  render(5);
+  assert.ok(feed.position.y < -0.84);
+  assert.equal(standby.position.y, -0.72, "redundant drill stays stowed");
+  assert.equal(flow.visible, false);
+  const rotation = feed.rotation.y;
+  render(5.1);
+  assert.notEqual(feed.rotation.y, rotation);
+  render(12);
+  assert.equal(flow.visible, true);
+  const particle = flow.children[0].position.clone();
+  render(12);
+  assert.deepEqual(flow.children[0].position, particle, "repeated frames do not advance sampling");
+  render(12.5);
+  assert.notDeepEqual(flow.children[0].position, particle);
+  render(12.5, "thermal");
+  assert.equal(flow.visible, false, "thermal colors are not replaced by sample flow cues");
+  render(20);
+  assert.equal(feed.position.y, -0.72);
+  assert.ok(pan.rotation.y > 0 && pan.rotation.y < Math.PI / 2);
+  render(25);
+  assert.equal(analysis.visible, true);
+  assert.equal(pan.rotation.y, Math.PI / 2);
+  const before = structuredClone(s);
+  chase.drawMission(context2d, 800, 600, missionVehicleState(s, true), {parked:true});
+  assert.equal(feed.position.y, -0.72);
+  assert.equal(pan.rotation.y, 0);
+  assert.equal(flow.visible, false);
+  assert.equal(analysis.visible, false);
+  assert.deepEqual(s, before, "parked portrait does not reset the real job");
+  s.science.sampling = false; s.science.sampleSeconds = 0;
+  chase.drawMission(context2d, 800, 600, s, {layer:"internal"});
+  assert.equal(feed.position.y, -0.72);
+  assert.equal(analysis.visible, false);
+  assert.equal(flow.visible, false);
+});
+
 test("The research model matches the published 3.85 x 3.85 x 1.75 m envelope", async () => {
   const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
   const { createFlightState } = await import("../dist/flight-model.mjs");

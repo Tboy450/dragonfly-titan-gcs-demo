@@ -987,6 +987,17 @@ body.pilot-view .pilot-hud strong { font: 700 0.72rem Consolas, monospace; color
 body.arrival .pilot-hud { display: none; }
 .science-log { margin: 8px 0 0; padding-left: 18px; font-size: 0.78rem; color: #bcd0e2; }
 .science-log li { margin: 2px 0; }
+.sampling-sequence { margin: 10px 0; padding: 10px 0; border-block: 1px solid #38474a; }
+.sampling-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; font-size: 0.8rem; }
+.sampling-heading strong { min-width: 0; overflow-wrap: anywhere; }
+.sampling-heading span { flex-shrink: 0; font-variant-numeric: tabular-nums; color: #bcd0e2; }
+.sampling-sequence progress { display: block; width: 100%; height: 6px; margin: 9px 0; accent-color: #70dec4; }
+.sampling-sequence ol { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 0; margin: 0 0 8px; list-style: none; }
+.sampling-sequence li { min-width: 0; border-top: 2px solid #46545a; padding-top: 5px; font-size: 0.72rem; color: #a8b9c3; overflow-wrap: anywhere; }
+.sampling-sequence li[data-done="true"] { border-color: #70dec4; }
+.sampling-sequence li[aria-current="step"] { color: #f8e095; border-color: #f8e095; font-weight: 700; }
+.sampling-sequence small { display: block; color: #bcd0e2; font-size: 0.72rem; line-height: 1.5; }
+.sampling-sequence a { color: #a4ddf3; text-underline-offset: 2px; }
 .plan-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 10px 14px; background: #1b2433; border-left: 3px solid var(--cyan); }
 .plan-strip[hidden] { display: none; }
 .weather-strip { padding: 8px 14px; border-left: 3px solid var(--amber); background: #29251c; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 0.8rem; }

@@ -318,6 +318,7 @@
             </div>
             <p id="mock-banner" class="mock-banner" hidden>Mock-up views: the original demo model is not based on the real Dragonfly design, so its interior and thermal layout are made up for illustration. Switch <b>Model</b> to NASA / APL for the research-based views.</p>
             <p id="layer-hint" class="rest-status">Research model: 2023 thermal layout, refined with APL CAD and NASA's 2026 print guide. Component shapes and placement are approximate; readings are simulated.</p>
+            <p id="vehicle-sample-status" class="rest-status" hidden></p>
             <a id="backdrop-credit" class="rest-status backdrop-credit" href="https://science.nasa.gov/mission/dragonfly/multimedia/" target="_blank" rel="noopener noreferrer">NASA / Johns Hopkins APL - artist's concept</a>
             <details id="component-temperatures" class="component-temperatures" hidden>
               <summary>Component temperatures <span>Live / illustrative</span></summary>
@@ -464,7 +465,15 @@
             <div><span>DrACO drill transfer</span><strong id="draco-state">Stowed</strong></div>
             <div><span>DraGMet weather/seismic</span><strong id="dragmet-state">Logging</strong></div>
           </div>
-          <div class="rest-controls"><button id="sample-here" type="button">Sample here (DrACO + DraMS)</button></div>
+          <div class="rest-controls"><button id="sample-here" type="button">Sample here (DrACO + DraMS)</button><button id="inspect-sample" type="button">Inspect sample</button></div>
+          <div class="sampling-sequence" aria-label="Sample acquisition sequence">
+            <div class="sampling-heading"><strong id="sampling-stage" role="status">Sampling idle</strong><span id="sampling-clock">0 / 30 s</span></div>
+            <progress id="sampling-meter" max="30" value="0" aria-label="Sample acquisition progress"></progress>
+            <ol id="sampling-stages">
+              <li data-stage="drill">Drill</li><li data-stage="transfer">Transfer</li><li data-stage="carousel">Position cup</li><li data-stage="analysis">Analyze</li>
+            </ol>
+            <small>30 s timing, mechanical motion and flow markers are illustrative. <a href="https://science.nasa.gov/science-research/science-enabling-technology/technology-highlights/playing-lacrosse-on-titan/" target="_blank" rel="noopener noreferrer">NASA sampling design</a></small>
+          </div>
           <output id="science-result" class="rest-status">No samples analyzed yet.</output>
           <ol id="science-log" class="science-log" aria-label="Science log"></ol>
           <small class="rest-status">Instrument results are illustrative examples for the kinds of ground expected at Titan, not mission data.</small>

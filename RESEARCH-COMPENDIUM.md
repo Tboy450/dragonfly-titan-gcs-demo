@@ -316,7 +316,7 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 | Area | Research | Status (Sep 28) | Remaining action |
 |---|---|---|---|
 | Mass, size, rotor Ø | 875 kg; 3.85×3.85×1.75 m; 1.35 m [PUB] | **Done** | Optional: show "design max just under 1,000 kg" |
-| Vehicle geometry | 2023 thermal layout plus APL CAD and 2026 NASA assembly guide [PUB references; EST detail dimensions] | **Done**, refined Oct 11: 3.85 x 3.94 x 1.74 m measured envelope, body-side DrACO, flat runners, curved forward cover, motor pods; separate IEM/PSU/radio. Original demo remains available. | Animated drill/transfer/carousel/DraMS stages remain a future update. |
+| Vehicle geometry | 2023 thermal layout plus APL CAD and 2026 NASA assembly guide [PUB references; EST detail dimensions] | **Done**, refined Oct 11: 3.85 x 3.94 x 1.74 m measured envelope, body-side DrACO, flat runners, curved forward cover, motor pods; separate IEM/PSU/radio. Original demo remains available. | Drill/transfer/carousel/DraMS stages now follow the existing sampling clock; motion and stage timing [EST]. |
 | Blades | **3 per rotor** (2026) [PUB] | **Done** (`74ed2c4`) | — |
 | Battery | **11.5 kWh** pack, 134 Ah cells [PUB] | **Done** (`74ed2c4`) | — |
 | MMRTG electric | ~70–100 W at Titan, declining ~2.5%/yr [PUB/CALC] | **Done**: 90 W / 70 W options | — |
@@ -372,8 +372,10 @@ Items 1 and 3 and the vortex-ring-state warning are now implemented (see §0). T
 
 - **Vehicle inspection milestone (Oct 11): Done.** Credited CAD/payload viewer, NASA print
   reference links, selected geometry corrections and live component details are implemented.
-  The next proposed milestone is an animated drill-to-lab sequence synchronized with the
-  existing sampling state; stage timing and hardware motion would need explicit [EST] labels.
+  **Drill-to-lab milestone: Done (Oct 11).** The shared science clock drives drilling,
+  pneumatic-transfer markers, carousel indexing and an analysis cue. Stage timing/motion
+  are explicitly illustrative; the 30 s / 160 W gameplay job remains unchanged. See
+  `research/sampling-sequence-2026-10-11.md` for source review and limitations.
 
 - **Semi-jagged mountain ridge on the local map (owner, 2026-10-09):** add another semi-jagged
   mountain ridge in at least one place on the fairly local map (visible from the mission area),

@@ -3,6 +3,7 @@
 // Built into a group supplied by chase-vehicle.mjs, using its shared part helpers.
 import * as THREE from "./vendor/three/three.module.min.js";
 import { model } from "./flight-model.mjs?v=dev";
+import { samplingSequence } from "./science.mjs?v=dev";
 
 export function buildResearchModel(kit) {
   const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
@@ -12,10 +13,11 @@ export function buildResearchModel(kit) {
   // ICES-2023-389 figure 1). Published: 3.85 x 3.85 x 1.75 m envelope; eight 1.35 m three-blade
   // rotors in four coaxial pairs on side arms, disks R/2 apart; long fuselage with a raised
   // "attic" behind the nose; MMRTG (64 cm across the fins, 66 cm long) at the tail between two
-  // stabilizing fins; 0.874 m HGA disc on top plus LGA and MGA; two skids on legs with a drill on
-  // each skid. Exact proportions and colors are estimated from the drawings.
+  // stabilizing fins; 0.874 m HGA disc on top plus LGA and MGA; two skids on legs. Body-side
+  // drill/feed placement follows the later CAD/print references. Detail dimensions are [EST].
   setBuild(researchModel);
   const researchRotors = [];
+  const drillFeeds = [], transferPaths = [];
   const foam = new THREE.MeshStandardMaterial({ color: 0xdcd3c1, metalness: 0.04, roughness: 0.82 });
   const foamSeam = new THREE.MeshStandardMaterial({ color: 0xaea593, metalness: 0.05, roughness: 0.9 });
   const finMaterial = new THREE.MeshStandardMaterial({ color: 0xb39a48, metalness: 0.35, roughness: 0.5 });
@@ -221,13 +223,27 @@ export function buildResearchModel(kit) {
       strut([drillX, -0.28, drillZ + offset], [drillX, -0.73, drillZ + offset], 0.015, metal);
     }
     for (const y of [-0.32, -0.39, -0.64]) mesh(new THREE.CylinderGeometry(0.057, 0.057, 0.018, 16), deck, [drillX, y, drillZ]);
-    mesh(new THREE.CylinderGeometry(0.017, 0.012, 0.11, 10), metal, [drillX, -0.72, drillZ]);
+    const feed = new THREE.Group();
+    feed.name = side < 0 ? "drill-feed-port" : "drill-feed-starboard";
+    feed.position.set(drillX, -0.72, drillZ);
+    buildTarget.add(feed);
+    mesh(new THREE.CylinderGeometry(0.017, 0.012, 0.11, 10), metal, [0, 0, 0], feed);
+    // Helical flute makes the slowed illustrative rotation legible, not a specified cutter.
+    const flute = new THREE.CatmullRomCurve3(Array.from({ length: 33 }, (_, i) => {
+      const a = i / 32 * Math.PI * 4;
+      return new THREE.Vector3(Math.cos(a) * 0.017, i / 32 * 0.10 - 0.05, Math.sin(a) * 0.017);
+    }));
+    mesh(new THREE.TubeGeometry(flute, 32, 0.003, 4, false), deck, [0, 0, 0], feed);
+    drillFeeds.push(feed);
     subsystem("sample-lines", "drills");
     const sampleLine = new THREE.CatmullRomCurve3([
       new THREE.Vector3(drillX, -0.23, drillZ), new THREE.Vector3(side * 0.49, -0.06, -0.62),
       new THREE.Vector3(side * 0.465, -0.02, -1.15), new THREE.Vector3(side * 0.44, 0.16, -1.53),
     ]);
     mesh(new THREE.TubeGeometry(sampleLine, 20, 0.014, 6, false), armMaterial, [0, 0, 0]);
+    transferPaths.push(new THREE.CatmullRomCurve3([
+      ...sampleLine.points, new THREE.Vector3(side * 0.25, 0.27, -1.53), new THREE.Vector3(0, 0.285, -1.40),
+    ]));
   }
 
   // High-gain antenna: a flat 0.874 m radial-line slot disc, stowed flat on top for flight.
@@ -325,12 +341,21 @@ export function buildResearchModel(kit) {
   material = interiorPart("sample-carousel", "cold-attic", "Cold attic: DrACO sample carousel", "ICES-2023 p2, p7, fig. 3", 0x7fb3c9);
   // A taller pan-shaped carousel, as in the 2026 integration photos. Cup count and size
   // are illustrative; the published system has dozens of cups, not eight.
-  mesh(new THREE.CylinderGeometry(0.20, 0.19, 0.11, 32), material, [0, 0.195, -1.56]);
-  mesh(new THREE.TorusGeometry(0.20, 0.012, 6, 32), material, [0, 0.25, -1.56]).rotation.x = Math.PI / 2;
+  const carousel = new THREE.Group();
+  carousel.name = "sample-carousel-pan";
+  carousel.position.set(0, 0.195, -1.56);
+  buildTarget.add(carousel);
+  mesh(new THREE.CylinderGeometry(0.20, 0.19, 0.11, 32), material, [0, 0, 0], carousel);
+  mesh(new THREE.TorusGeometry(0.20, 0.012, 6, 32), material, [0, 0.055, 0], carousel).rotation.x = Math.PI / 2;
   for (let i = 0; i < 24; i += 1) {
     const angle = i / 24 * Math.PI * 2;
-    mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.04, 8, 1, true), material, [Math.cos(angle) * 0.16, 0.265, -1.56 + Math.sin(angle) * 0.16]);
+    mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.04, 8, 1, true), material, [Math.cos(angle) * 0.16, 0.07, Math.sin(angle) * 0.16], carousel);
   }
+  const sampleMarkerMaterial = new THREE.MeshBasicMaterial({ color: 0x6ef1da, transparent: true, opacity: 0.95, depthTest: false, depthWrite: false });
+  const cupMarker = mesh(new THREE.TorusGeometry(0.022, 0.006, 6, 16), sampleMarkerMaterial, [0, 0.092, 0.16], carousel);
+  cupMarker.name = "sample-cup-marker";
+  cupMarker.rotation.x = Math.PI / 2;
+  cupMarker.renderOrder = 6;
   material = interiorPart("wonderwall", "cold-attic", "Wonderwall: insulation keeping >100 C between carousel and DraMS", "ICES-2023 p7", 0xe6e0d0);
   mesh(new THREE.BoxGeometry(0.72, 0.38, 0.05), material, [0, 0.28, -1.3]);
   material = interiorPart("drams", "equipment-bay", "Warm attic: DraMS mass spectrometer and laser (with fan)", "ICES-2023 p2, p7", 0xb58a4a);
@@ -338,6 +363,10 @@ export function buildResearchModel(kit) {
   mesh(new THREE.BoxGeometry(0.14, 0.1, 0.3), material, [-0.2, 0.18, -1.0]);
   mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.03, 12), material, [-0.2, 0.245, -0.9]);
   mesh(new THREE.BoxGeometry(0.3, 0.18, 0.22), material, [0.06, 0.18, -0.92]);
+  const analysisMarker = mesh(new THREE.TorusGeometry(0.07, 0.009, 6, 24), sampleMarkerMaterial, [0.08, 0.315, -1.16]);
+  analysisMarker.name = "sample-analysis-marker";
+  analysisMarker.rotation.x = Math.PI / 2;
+  analysisMarker.renderOrder = 6;
   material = interiorPart("rde", "rde", "Rotorcraft drive electronics (2 boxes)", "ICES-2023 p5, p7, fig. 4", 0xa34d4d);
   for (const x of [-0.16, 0.16]) mesh(new THREE.BoxGeometry(0.24, 0.22, 0.26), material, [x, -0.18, -0.55]);
   material = interiorPart("hga-actuators", "cold-actuators", "HGA azimuth/elevation actuators", "ICES-2023 p2, fig. 3", 0x4f7fd1);
@@ -468,6 +497,37 @@ export function buildResearchModel(kit) {
     for (const { hinge, side } of trimFlaps) hinge.rotation.z = side * angle;
     return { flow, trim, bypassArrows: perSide * 2, flapDegrees: trim * 24 };
   }
+  subsystem("sample-flow", "drills");
+  subsystems["sample-flow"].userData.layer = "diagram";
+  const sampleParticles = Array.from({ length: 8 }, (_, index) => {
+    const particle = mesh(new THREE.SphereGeometry(0.022, 8, 6), sampleMarkerMaterial, [0, 0, 0]);
+    particle.name = `sample-flow-${index}`;
+    particle.renderOrder = 6;
+    return particle;
+  });
+  function poseSampling(state, layer = "exterior") {
+    const job = samplingSequence(state);
+    // One redundant drill is illustrated; this is not a commanded flight-hardware port choice.
+    drillFeeds.forEach((feed, index) => {
+      feed.position.y = -0.72 - (index === 0 ? job.drillFeed : 0);
+      feed.rotation.y = index === 0 ? job.drillAngle : 0;
+    });
+    carousel.rotation.y = job.carouselAngle;
+    const diagram = layer === "internal";
+    subsystems["sample-flow"].visible = diagram && job.id === "transfer";
+    sampleParticles.forEach((particle, index) => {
+      const u = ((job.elapsed - 10) / 2 + index / sampleParticles.length) % 1;
+      particle.position.copy(transferPaths[0].getPointAt((u + 1) % 1));
+    });
+    cupMarker.visible = diagram && job.active && job.index >= 1;
+    // Keep the receiving cup at the tube outlet before moving it toward analysis.
+    const receivingAngle = -(state.science?.samples.length ?? 0) * Math.PI / 2;
+    cupMarker.position.set(Math.sin(receivingAngle) * 0.16, 0.092, Math.cos(receivingAngle) * 0.16);
+    analysisMarker.visible = diagram && job.id === "analysis";
+    analysisMarker.scale.setScalar(1 + 0.12 * Math.sin(job.elapsed * Math.PI * 2));
+    return job;
+  }
+  poseSampling({});
   kit.setTarget(null);
-  return { researchRotors, researchAntenna, subsystems, labeledParts, poseAirflow, rotorDiscMaterial };
+  return { researchRotors, researchAntenna, subsystems, labeledParts, poseAirflow, poseSampling, rotorDiscMaterial };
 }

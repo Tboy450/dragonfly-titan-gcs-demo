@@ -63,9 +63,9 @@ The procedural model's measured envelope is 3.85 x 3.94 x 1.74 m, within the exi
 around the published 3.85 x 3.85 x 1.75 m. Design epochs are labeled, not merged into an assertion
 of final flight hardware accuracy. No energy, thermal, flight or camera constants changed.
 
-Animated drilling, pneumatic transfer, carousel indexing and DraMS stages remain the next
-proposed milestone. This update reads the existing combined sampling job without changing
-its timing, power accounting, mission progress or saved-state schema.
+Animated drilling, pneumatic transfer, carousel indexing and DraMS stages were implemented
+in the subsequent [sampling milestone](sampling-sequence-2026-10-11.md). It reads the existing
+combined sampling job without changing its power accounting, mission progress or save schema.
 
 ## Verification
 

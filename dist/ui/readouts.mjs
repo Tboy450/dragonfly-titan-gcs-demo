@@ -172,7 +172,6 @@ function updateSystemsReadouts() {
   $("rest-night").disabled = !canRest;
   $("rest-stop").disabled = !state.hibernating;
   $("rest-status").textContent = sampling ? "Sample analysis in progress / hibernation unavailable" : state.restNotice || (state.restSeconds > 0 ? `${(state.restSeconds / 3600).toFixed(1)} h remaining / accelerated surface time` : state.hibernating ? "Hibernating / real-time monitoring" : "Hibernation available after dry-ground landing.");
-  if (m.phase === "sampling") { $("draco-state").textContent = "Survey sample: drilling"; $("drams-state").textContent = "Survey sample: analyzing"; }
 }
 
 function updateExchangerStudy() {

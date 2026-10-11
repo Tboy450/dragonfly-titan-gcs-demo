@@ -37,6 +37,31 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-11: Animate the shared drill-to-lab sampling sequence
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Animate state-linked Dragonfly sampling sequence`.
+- **What changed:** The existing science clock now drives drill feed/rotation, pneumatic
+  flow markers, carousel positioning and a DraMS activity cue. Science readouts identify
+  the current stage instead of showing drilling and analysis simultaneously. Added a
+  four-stage progress strip, pause status and an Inspect sample shortcut to the relevant
+  Internal-view component. Mission and Pilot use the same job; the clean-room portrait
+  stays stowed. Flow/activity markers do not alter Thermal colors.
+- **Research / assumptions:** Rechecked NASA's Playing Lacrosse on Titan and April 2026
+  carousel/DraMS integration report. Acquisition order is sourced; stage durations, cutter
+  shape, 13 cm feed, slowed rotation, quarter-turn and flow markers are [EST]. The app labels
+  these illustrative. The existing 30 s / 160 W job, data award, sampling guards, saved state,
+  thermal model, flight physics and cameras are unchanged. Details and limits are recorded
+  in `research/sampling-sequence-2026-10-11.md`.
+- **Archive:** Prior affected sources and desktop/phone screenshots are in
+  `archive/sampling-sequence-2026-10-11`, at `03ac4cf` and the matching archive tag.
+- **Checks:** All 123 Node tests pass. Edge/Playwright verified actual sampling/inspection
+  controls, pause, each stage via deterministic flight/science stepping, one result, Pilot
+  and Mission access, and 360/390 px phone layouts. Desktop/phone canvas-pixel checks show
+  visible, framed and moving flow markers. Screenshots reviewed; no page errors. Previous
+  model/reference viewer tests also pass, including CAD playback and error/retry behavior.
+- **Open / next:** Separate LD/GC science modes and realistic operation scheduling require
+  additional sourcing; this remains a shortened educational sequence, not flight software.
+
 ### 2026-10-11: Refine the vehicle and add an official-reference viewer
 - **Signed:** Codex (OpenAI GPT-6).
 - **Commit:** `Refine Dragonfly inspection model and add credited references`.

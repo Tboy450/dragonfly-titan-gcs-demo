@@ -17,6 +17,39 @@ export const scienceModel = Object.freeze({
   methaneHumidityPercent: 45,
 });
 
+// [PUB] Order: NASA "Playing Lacrosse on Titan". [EST] Stage boundaries, motion and
+// the existing 30 s / 160 W demonstration budget are not flight-hardware timings.
+export const samplingStages = Object.freeze([
+  Object.freeze({ id: "drill", label: "Drilling", part: "drills", start: 0, end: 10 }),
+  Object.freeze({ id: "transfer", label: "Pneumatic transfer", part: "sample-lines", start: 10, end: 18 }),
+  Object.freeze({ id: "carousel", label: "Positioning cup", part: "sample-carousel", start: 18, end: 22 }),
+  Object.freeze({ id: "analysis", label: "DraMS analysis", part: "drams", start: 22, end: 30 }),
+]);
+
+// A read-only projection of the one science clock: no second job, wall clock or energy charge.
+export function samplingSequence(state) {
+  const s = state.science;
+  const elapsed = clamp(Number.isFinite(s?.sampleSeconds) ? s.sampleSeconds : 0, 0, scienceModel.sampleSeconds);
+  const active = !!s?.sampling;
+  const complete = !active && elapsed === scienceModel.sampleSeconds && s.samples.length > 0;
+  const index = active ? samplingStages.findIndex(stage => elapsed < stage.end) : -1;
+  const stage = active ? samplingStages[index < 0 ? 3 : index] : null;
+  const phase = stage ? clamp((elapsed - stage.start) / (stage.end - stage.start), 0, 1) : 0;
+  const smooth = t => t * t * (3 - 2 * t);
+  const feed = active ? Math.min(smooth(clamp(elapsed / 2, 0, 1)), 1 - smooth(clamp((elapsed - 18) / 2, 0, 1))) : 0;
+  const turn = active ? smooth(clamp((elapsed - 18) / 4, 0, 1)) : 0;
+  return {
+    active, complete, elapsed, index: stage ? samplingStages.indexOf(stage) : -1,
+    id: stage?.id ?? (complete ? "complete" : "idle"),
+    label: stage?.label ?? (complete ? "Sample recorded" : "Sampling idle"),
+    part: stage?.part ?? "drills", phase,
+    progress: active || complete ? elapsed / scienceModel.sampleSeconds : 0,
+    drillFeed: feed * 0.13,
+    drillAngle: active ? Math.min(elapsed, 10) * Math.PI * 8 : 0,
+    carouselAngle: ((s?.samples.length ?? 0) + turn) * Math.PI / 2,
+  };
+}
+
 // Illustrative ground types for this training geography.
 export const groundTypes = Object.freeze({
   outcrop: Object.freeze({ name: "ice-rich outcrop", ice: 60, organics: 40, sample: "Water ice with trapped organics; the GC mode would search the extract for amino acids and other prebiotic molecules." }),
@@ -72,7 +105,7 @@ export function canSampleHere(state) {
 function beginSample(state) {
   state.science.sampling = true;
   state.science.sampleSeconds = 0;
-  logScience(state, "DrACO drilling; sample moving pneumatically to DraMS");
+  logScience(state, "DrACO sample job started: drilling (illustrative sequence)");
 }
 
 export function startSample(state) {

@@ -1,12 +1,60 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createFlightState, stepFlight, commandFlight, advanceRest } from "../dist/flight-model.mjs";
-import { startSample, canSampleHere, groundTypeAt, groundTypes, gnsUncertainty, scienceModel } from "../dist/science.mjs";
+import { startSample, canSampleHere, groundTypeAt, groundTypes, gnsUncertainty, scienceModel, samplingSequence, samplingStages } from "../dist/science.mjs";
 import { toggleDownlink, linkStatus, startRest, missionAction, surveySite, dampGround, pools, systemsModel } from "../dist/mission-systems.mjs";
 import { setWeatherMode } from "../dist/weather.mjs";
 
 const run = (s, seconds, dt = 0.05) => { for (let t = 0; t < seconds; t += dt) stepFlight(s, dt); };
 const grounded = () => { const s = createFlightState(); s.auto = false; s.throttle = 0.18; setWeatherMode(s, "fixed"); run(s, 0.1); return s; };
+
+test("Sampling stages are a pure, bounded projection of the existing science clock", () => {
+  const s = grounded();
+  assert.equal(samplingSequence(s).id, "idle");
+  assert.equal(startSample(s), "");
+  for (const [seconds, id] of [[0,"drill"], [9.999,"drill"], [10,"transfer"], [17.999,"transfer"], [18,"carousel"], [21.999,"carousel"], [22,"analysis"], [30,"analysis"]]) {
+    s.science.sampleSeconds = seconds;
+    const before = structuredClone(s);
+    const job = samplingSequence(s);
+    assert.equal(job.id, id);
+    assert.equal(job.part, samplingStages[job.index].part);
+    assert.ok(job.phase >= 0 && job.phase <= 1);
+    assert.ok(job.drillFeed >= 0 && job.drillFeed <= 0.13);
+    assert.deepEqual(s, before, "view derivation changes no state, energy or data");
+  }
+  s.science.sampleSeconds = 19;
+  assert.ok(samplingSequence(s).drillFeed > 0);
+  s.science.sampleSeconds = 20;
+  assert.equal(samplingSequence(s).drillFeed, 0, "retracted before analysis");
+  s.science.sampleSeconds = -5;
+  assert.equal(samplingSequence(s).elapsed, 0);
+  assert.equal(samplingSequence({}).id, "idle");
+});
+
+test("Sampling visualization freezes on pause and clears on interruption without an extra result", () => {
+  const s = grounded();
+  startSample(s);
+  run(s, 12);
+  s.hold = true;
+  const paused = samplingSequence(s);
+  run(s, 3);
+  assert.deepEqual(samplingSequence(s), paused);
+  s.hold = false;
+  commandFlight(s, "takeoff");
+  run(s, 5);
+  assert.equal(samplingSequence(s).id, "idle");
+  assert.equal(samplingSequence(s).drillFeed, 0);
+  assert.equal(s.science.samples.length, 0);
+  const complete = grounded();
+  startSample(complete);
+  run(complete, 31);
+  assert.equal(samplingSequence(complete).id, "complete");
+  assert.equal(samplingSequence(complete).drillFeed, 0);
+  assert.equal(samplingSequence(complete).carouselAngle, Math.PI / 2);
+  assert.equal(startSample(complete), "");
+  assert.equal(samplingSequence(complete).id, "drill");
+  assert.equal(samplingSequence(complete).carouselAngle, Math.PI / 2, "next sample retains the last indexed position");
+});
 
 test("Ground types follow the training geography", () => {
   assert.equal(groundTypeAt(surveySite.x, surveySite.z), groundTypes.outcrop);
