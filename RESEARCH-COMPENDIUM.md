@@ -4,6 +4,11 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 12 component rebuild:** [DrACO carousel references and scale limits](research/carousel-2026-10-12/README.md)
+records the first archived part replacement. Enclosed cover, cooling fins and underside
+drives follow NASA photos/paper; 0.36 m diameter and installed placement remain [EST].
+The numbered remaining-parts and enclosure-layer queue is in `INTERIOR-REALISM-TODO.md`.
+
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and
 standalone model media with credits.

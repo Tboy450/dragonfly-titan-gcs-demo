@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [sample-carousel-2026-10-12](sample-carousel-2026-10-12/README.md) | Open blue pan, 24 illustrative cups and rotating housing before photo-referenced enclosed SDC | 2026-10-12 | `archive/sample-carousel-2026-10-12` |
 | [operations-queue-2026-10-12](operations-queue-2026-10-12/README.md) | Manual-only science/downlink/recharge orchestration before the local surface queue | 2026-10-12 | `archive/operations-queue-2026-10-12` |
 | [science-profiles-2026-10-12](science-profiles-2026-10-12/README.md) | Single demo sampling profile and earlier notebook/reference layout | 2026-10-12 | `archive/science-profiles-2026-10-12` |
 | [interactive-inspector-2026-10-11](interactive-inspector-2026-10-11/README.md) | Fixed Mission camera, earlier assumptions and upward-only reverse assist before interactive inspection | 2026-10-12 | `archive/interactive-inspector-2026-10-11` |

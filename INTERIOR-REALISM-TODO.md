@@ -9,8 +9,8 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 - [x] Implement the compact, expandable surface operations queue.
 - [x] Review the owner's video `1000046285.mp4` (33.88 s), including frames near 4, 17 and 29 s.
 - [x] Identify a concrete label-layout cause in the code (below).
-- [ ] Correct label anchoring/overlap before starting the asset-by-asset rebuild.
-- [ ] Rebuild the first part: DrACO sample carousel (#6), using public integration photos.
+- [ ] Correct label anchoring/overlap (deferred while beginning parts, per latest owner request).
+- [x] Rebuild the first part: DrACO sample carousel (#6), using public integration photos; estimated scale explicitly labeled.
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## Priority 1: Numbered Callouts
@@ -41,17 +41,24 @@ Markers are a 2D overlay; their current visibility check is not a surface-occlus
 ## Part-by-Part Asset Checklist
 
 Numbers below match the current research-model registration order, not official NASA part
-numbers. IDs are the durable keys. A checked box means reference review, geometry update,
-fit/clearance review, label verification, archive and regression checks are all complete.
-Some numbered groups are exterior-adjacent but are included because the same inspection
-list exposes them. All remain unchecked for this new accuracy pass.
+numbers. IDs are the durable keys. A checked box means this reference-based geometry pass,
+structural fit, stable inspection identity, archive and regression checks are complete;
+it does not mean exact flight dimensions are certified or the global callout defect is fixed.
+Some numbered groups are exterior-adjacent but share this inspection list.
+
+**Owner update, October 12:** archive and replace one clearly referenced part at a time.
+Do not shrink/move an updated part to avoid older placeholder assets. Check collisions
+between the rebuilt parts only as that set grows, while always checking the vehicle's
+structural envelope. Track unresolved legacy interfaces for their own makeover.
+Current rebuilt set: `sample-carousel` only (`carousel-2026-10-12`).
 
 - [ ] **01 DrACO drill/feed assemblies** (`drills`): housings, feed mechanism, attachment and working clearance.
 - [ ] **02 Pneumatic sample-transfer lines** (`sample-lines`): verified endpoints, tube size/routing and bends; avoid routing through solid housings.
 - [ ] **03 Nose bulkhead** (`nose-bulkhead`): profile, thickness, apertures and relation to the forward bay.
 - [ ] **04 Forward/navigation cameras** (`nose-cameras-inside`): individual bodies, lens openings, mounts and actual enclosure boundaries.
 - [ ] **05 IMU/lidar electronics, FEB/MEB** (`nose-electronics`): distinguish boxes and brackets; verify names/locations against current sources.
-- [ ] **06 Cold sample-delivery carousel** (`sample-carousel`): first asset; pan, cover, cups/ports, drive and warm/cold interface. Current 24 visible cups are illustrative, not verified inventory.
+- [x] **06 Cold sample-delivery carousel** (`sample-carousel`): enclosed drum, cooling fins, ports and underside drives; stationary housing, internal indexing cue. [References/limits](research/carousel-2026-10-12/README.md). No exposed invented cup inventory; 0.36 m diameter and placement remain estimates.
+- [ ] **06 dimensional follow-up:** replace proportional scale with an authoritative dimension/CAD if available; reconcile interfaces as #02/#07/#08 are rebuilt. Existing legacy overlap is not corrected by shrinking #06.
 - [ ] **07 Wonderwall thermal barrier** (`wonderwall`): actual shape and sample interfaces; do not reduce it to an unexplained slab or invent layer materials.
 - [ ] **08 DraMS assembly** (`drams`): enclosure and subassemblies; separately research ion-trap mass spectrometer, UV laser/LDMS interface, GC hardware, pyrolysis oven and fan. Do not invent detailed internal geometry where no public view exists.
 - [ ] **09 Rotorcraft drive electronics** (`rde`): both enclosures, mounting/thermal interfaces and cable exits.
@@ -92,7 +99,7 @@ actual geometry, interfaces and materials before extending the model.
   leader lines and a reliable reset to installed positions.
 - [ ] Retain Thermal and airflow views, but distinguish model temperatures, illustrative
   flow paths and real measured values. Current airflow arrows intentionally draw over parts.
-- [ ] Audit mesh-to-mesh intersections and assembly clearances after every part update.
+- [ ] Audit new-to-new part intersections after every update; preserve structural-envelope checks and track legacy neighbors separately.
 - [ ] Keep explanatory text and construction/source notes under expandable sections.
 
 ## Reference Starting Points

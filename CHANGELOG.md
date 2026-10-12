@@ -37,6 +37,27 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-12: Rebuild the first interior part from carousel integration references
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Rebuild sample carousel from NASA integration references`.
+- **What changed:** Part 06 now has an enclosed silver/amber drum, instanced cooling fins,
+  top fittings and warm-side drive bodies. The casing stays fixed while an internal
+  indexing cue follows science. Flow cue endpoint follows the new inlet. Thermal colors
+  distinguish the cold assembly from warm drives without changing simulation physics.
+- **Files:** `dist/sample-carousel.mjs`, `dist/vehicle-research.mjs`, `dist/ui/layers-panel.mjs`,
+  carousel tests, research notes/photos and `INTERIOR-REALISM-TODO.md`.
+- **Assumptions:** Photo-referenced procedural geometry, not imported CAD. No public
+  dimensioned SDC drawing found; 0.36 m drum, fittings and location remain labeled estimates.
+  Legacy Wonderwall/DraMS/transfer-line interfaces await separate replacement. No resizing
+  to avoid legacy placeholders; structural envelope checked. Large ground-handling frame omitted.
+- **Archive:** `archive/sample-carousel-2026-10-12`, exact previous source, desktop/phone
+  and multi-angle screenshots, restore instructions and tag at `0886e40`.
+- **Checks:** 151 Node tests passed. Playwright Internal/Thermal pixel checks across three
+  angles at desktop/phone sizes; no clipping, overflow or browser exceptions. Reference,
+  isolated and installed-context images visually inspected.
+- **Open / next:** Only this part rebuilt. Research #07 Wonderwall/interface next; keep
+  exact-scale verification, global callout layout and enclosure-layer views on the checklist.
+
 ### 2026-10-12: Add a surface operations queue and record the interior rebuild plan
 - **Signed:** Codex (OpenAI).
 - **Commit:** `Add surface operations queue and interior realism checklist`.

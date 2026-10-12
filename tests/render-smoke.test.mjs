@@ -83,7 +83,10 @@ test("Sampling poses follow the science clock, with internal-only markers and a 
   const feed = root.getObjectByName("drill-feed-port");
   const standby = root.getObjectByName("drill-feed-starboard");
   const flow = chase.subsystems["sample-flow"];
-  const pan = root.getObjectByName("sample-carousel-pan");
+  const pan = root.getObjectByName("sample-carousel-carrier");
+  const housing = root.getObjectByName("sample-carousel-housing");
+  housing.updateMatrix();
+  const fixedPose = housing.matrix.clone();
   const analysis = root.getObjectByName("sample-analysis-marker");
   const render = (seconds, layer = "internal") => {
     Object.assign(s.science, {sampling:true, sampleSeconds:seconds});
@@ -113,6 +116,7 @@ test("Sampling poses follow the science clock, with internal-only markers and a 
   render(25);
   assert.equal(analysis.visible, true);
   assert.equal(pan.rotation.y, Math.PI / 2);
+  assert.deepEqual(housing.matrix, fixedPose, "indexing does not rotate the sealed casing, ports or fins");
   const before = structuredClone(s);
   chase.drawMission(context2d, 800, 600, missionVehicleState(s, true), {parked:true});
   assert.equal(feed.position.y, -0.72);

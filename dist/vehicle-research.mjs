@@ -4,6 +4,7 @@
 import * as THREE from "./vendor/three/three.module.min.js";
 import { model } from "./flight-model.mjs?v=dev";
 import { samplingSequence } from "./science.mjs?v=dev";
+import { buildSampleCarousel } from "./sample-carousel.mjs?v=dev";
 
 export function buildResearchModel(kit) {
   const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
@@ -338,21 +339,15 @@ export function buildResearchModel(kit) {
   mesh(new THREE.BoxGeometry(0.14, 0.1, 0.14), material, [0.07, -0.27, -1.38]);
   mesh(new THREE.BoxGeometry(0.09, 0.09, 0.09), material, [0.25, -0.28, -1.42]);
   mesh(new THREE.BoxGeometry(0.09, 0.09, 0.09), material, [0.25, -0.28, -1.28]);
-  material = interiorPart("sample-carousel", "cold-attic", "Cold attic: DrACO sample carousel", "ICES-2023 p2, p7, fig. 3", 0x7fb3c9);
-  // A taller pan-shaped carousel, as in the 2026 integration photos. Cup count and size
-  // are illustrative; the published system has dozens of cups, not eight.
-  const carousel = new THREE.Group();
-  carousel.name = "sample-carousel-pan";
-  carousel.position.set(0, 0.195, -1.56);
-  buildTarget.add(carousel);
-  mesh(new THREE.CylinderGeometry(0.20, 0.19, 0.11, 32), material, [0, 0, 0], carousel);
-  mesh(new THREE.TorusGeometry(0.20, 0.012, 6, 32), material, [0, 0.055, 0], carousel).rotation.x = Math.PI / 2;
-  for (let i = 0; i < 24; i += 1) {
-    const angle = i / 24 * Math.PI * 2;
-    mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.04, 8, 1, true), material, [Math.cos(angle) * 0.16, 0.07, Math.sin(angle) * 0.16], carousel);
+  interiorPart("sample-carousel", "cold-attic", "Cold attic: DrACO sample carousel", "NASA SVS 15003; SciTech 2024 figs. 1-2; 0.36 m drum and placement estimated", 0x7fb3c9);
+  const carousel = buildSampleCarousel({ parent: buildTarget, mesh });
+  // Only the illustrative flow endpoint changes; the older transfer-line asset is queued separately.
+  for (const path of transferPaths) {
+    path.points[path.points.length - 1].copy(carousel.inletWorld);
+    path.updateArcLengths();
   }
   const sampleMarkerMaterial = new THREE.MeshBasicMaterial({ color: 0x6ef1da, transparent: true, opacity: 0.95, depthTest: false, depthWrite: false });
-  const cupMarker = mesh(new THREE.TorusGeometry(0.022, 0.006, 6, 16), sampleMarkerMaterial, [0, 0.092, 0.16], carousel);
+  const cupMarker = mesh(new THREE.TorusGeometry(0.022, 0.006, 6, 16), sampleMarkerMaterial, [0, 0, 0], carousel.carrier);
   cupMarker.name = "sample-cup-marker";
   cupMarker.rotation.x = Math.PI / 2;
   cupMarker.renderOrder = 6;
@@ -512,7 +507,7 @@ export function buildResearchModel(kit) {
       feed.position.y = -0.72 - (index === 0 ? job.drillFeed : 0);
       feed.rotation.y = index === 0 ? job.drillAngle : 0;
     });
-    carousel.rotation.y = job.carouselAngle;
+    carousel.carrier.rotation.y = job.carouselAngle;
     const diagram = layer === "internal";
     subsystems["sample-flow"].visible = diagram && job.id === "transfer";
     sampleParticles.forEach((particle, index) => {
@@ -522,7 +517,8 @@ export function buildResearchModel(kit) {
     cupMarker.visible = diagram && job.active && job.index >= 1;
     // Keep the receiving cup at the tube outlet before moving it toward analysis.
     const receivingAngle = -(state.science?.samples.length ?? 0) * Math.PI / 2;
-    cupMarker.position.set(Math.sin(receivingAngle) * 0.16, 0.092, Math.cos(receivingAngle) * 0.16);
+    const inlet = carousel.inletWorld.clone().sub(carousel.assembly.position);
+    cupMarker.position.copy(inlet.applyAxisAngle(upAxis, receivingAngle));
     analysisMarker.visible = diagram && job.id === "analysis";
     analysisMarker.scale.setScalar(1 + 0.12 * Math.sin(job.elapsed * Math.PI * 2));
     return job;

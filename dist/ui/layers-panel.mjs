@@ -14,6 +14,8 @@ const sources = {
   spacecraft: ["NASA spacecraft and instruments", "https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/"],
   sampling: ["NASA sample-transfer design", "https://science.nasa.gov/science-research/science-enabling-technology/technology-highlights/playing-lacrosse-on-titan/"],
   carousel: ["NASA carousel integration", "https://science.nasa.gov/blogs/dragonfly/2026/04/23/nasas-dragonfly-rotorcraft-gets-decked-out-tested/"],
+  carouselPhotos: ["Carousel photos: NASA/Mike Guinto", "https://svs.gsfc.nasa.gov/15003"],
+  carouselDesign: ["NASA carousel thermal-interface design (2024)", "https://ntrs.nasa.gov/api/citations/20230017316/downloads/AIAA_SCITECH2024_final_proof.pdf"],
 };
 const componentInfo = {
   iem: ["Runs spacecraft commands and processes vehicle data. Its displayed temperature is the shared bay-air model, not a separately simulated processor sensor.", "integration"],
@@ -22,7 +24,7 @@ const componentInfo = {
   twta: ["The traveling-wave tube amplifier supports the Earth downlink. Its temperature is an estimate linked to radio operation.", "spacecraft"],
   drills: ["DrACO grinds surface material with redundant drills. The reference places the drill/feed hardware beside the body, above the landing runners.", "sampling"],
   "sample-lines": ["Blowers carry loosened material in Titan gas through transfer tubes into a sample cup. The displayed tube route is illustrative.", "sampling"],
-  "sample-carousel": ["The carousel positions collected material for DraMS. NASA describes dozens of cups; the 24 cups drawn here are illustrative.", "carousel"],
+  "sample-carousel": ["Photo-referenced casing and cooling fins surround the sample cups; the drives sit below. The housing stays fixed. The indexing ring is a diagram cue, not visible flight hardware. Drum diameter (0.36 m), fittings and placement are estimates, not flight CAD. Thermal uses cold-attic temperature above and bay temperature for the drives; no separate sensor or fin-gradient simulation.", "carouselPhotos"],
   drams: ["DraMS analyzes material using laser desorption and gas chromatography. The simulator's shortened sampling job combines collection and analysis.", "carousel"],
   battery: ["The battery supplies flight power and recharges from the MMRTG. The thermal model includes a phase-change buffer and inhibits charging outside its permitted band.", "thermal"],
   fan: ["Circulates MMRTG-warmed, nitrogen-rich gas through the under-floor duct and equipment bay.", "thermal"],
@@ -117,7 +119,7 @@ export function updateLayerPanel() {
     const key = `${selected.name}|${selected.mock}`;
     if (key !== detailKey) {
       detailKey = key;
-      const entries = selected.mock ? [] : [...new Set([info?.[1] ?? "thermal", "payload"])];
+      const entries = selected.mock ? [] : [...new Set([info?.[1] ?? "thermal", ...(selected.name === "sample-carousel" ? ["carouselDesign"] : []), "payload"])];
       $("part-sources").replaceChildren(...entries.map(id => {
         const link = document.createElement("a");
         [link.textContent, link.href] = sources[id];
