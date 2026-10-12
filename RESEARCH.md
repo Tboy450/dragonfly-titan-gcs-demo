@@ -45,6 +45,11 @@ Liquid-to-liquid shell-and-tube hardware remains a plausible hypothetical engine
 - Eight rotors each have three blades, per the [June 2026 lead rotor engineer interview](https://www.planetary.org/planetary-radio/2026-engineering-of-dragonfly). The ambiguous 150 RPM transcription is not used.
 - Reduced circulation and insulation damage are selectable training faults, not failures claimed to have occurred on the real vehicle.
 - Hibernation integrates the same energy and thermal equations at one-second substeps. Time compression never accelerates flight and stops on a thermal warning.
-- Sampling takes 30 seconds for gameplay. One returned sample is a mission objective, not a simulated scientific discovery. Aircraft guidance, terrain-following altitude and protective liquid avoidance remain simplified.
+- Sampling retains the 30-second demo and now offers estimated 10/30-minute LDMS/GCMS
+  training profiles. Stage loads, bay heat fractions and data sizes are not flight values.
+  The [October 12 source review](research/science-profiles-2026-10-12.md) records NASA's
+  mode distinctions and thermal evidence, implementation assumptions and remaining limits.
+  One returned sample is a mission objective, not a scientific discovery. Guidance,
+  terrain-following altitude and protective liquid avoidance remain simplified.
 
 The quoted recommendation to install Kerbal Space Program is background discussion, not an instruction to install software or a source for Dragonfly parameters.

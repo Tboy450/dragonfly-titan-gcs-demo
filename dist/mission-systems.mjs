@@ -293,7 +293,10 @@ export function stepSystems(state, dt, batteryEnergyKwh) {
   state.warmGasC = (state.rtgHeatW + gasCapacityRate * state.coreC + generatorUA * systemsModel.ambientC) / (gasCapacityRate + generatorUA);
   state.generatorToBayW = gasCapacityRate * (state.warmGasC - state.coreC);
   state.generatorRejectedW = generatorUA * (state.warmGasC - systemsModel.ambientC);
-  state.heatInW = state.generatorToBayW + Math.min(600, state.power * 0.025);
+  // [EST] Extended science profiles deposit a specified fraction of instrument load into
+  // the shared bay. Exclude that load from the generic term to avoid double counting.
+  state.heatInW = state.generatorToBayW + Math.min(600, Math.max(0, state.power - (state.sciencePowerW || 0)) * 0.025)
+    + (state.scienceHeatW ?? (state.sciencePowerW || 0) * 0.025);
   const batteryExchange = 8 * (state.coreC - state.batteryC);
   const closedDuctUA = 36 / 194.15;
   const fullTrimW = transfer.ductUA * delta;

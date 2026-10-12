@@ -1000,6 +1000,14 @@ body.arrival .pilot-hud { display: none; }
 .sampling-sequence a { color: #a4ddf3; text-underline-offset: 2px; }
 .vehicle-inspector { display: flex; flex-wrap: wrap; align-items: end; gap: 10px 14px; padding: 0 0 12px; margin-bottom: 12px; border-bottom: 1px solid #38474a; }
 .vehicle-inspector[hidden] { display: none; }
+.science-program-label { display: grid; gap: 6px; margin: 10px 0; min-width: 0; color: #bcd0e2; font-size: 0.8rem; }
+.science-program-label select { width: 100%; min-width: 0; min-height: 36px; padding: 6px; background: #112029; color: #e9f2ff; border: 1px solid #46545a; border-radius: 4px; font: inherit; }
+.science-details { padding: 10px 0; border-top: 1px solid var(--line-strong); font-size: 0.8rem; line-height: 1.5; overflow-wrap: anywhere; }
+.science-details summary { cursor: pointer; color: var(--cyan); }
+.science-details p { margin: 10px 0; }
+#science-record-count { color: #bcd0e2; margin-left: 6px; }
+#science-warp { margin-top: 8px; }
+#sampling-stages { grid-template-columns: repeat(auto-fit, minmax(66px, 1fr)); }
 .inspection-select { display: grid; flex: 1 1 200px; min-width: 0; gap: 4px; color: #bcd0e2; font-size: 0.75rem; }
 .inspection-select select { width: 100%; min-width: 0; height: 36px; padding: 0 8px; color: #e9f2ff; background: #112029; border: 1px solid #46545a; border-radius: 4px; font: inherit; }
 .inspection-tools { display: flex; align-items: center; gap: 4px; }
@@ -1703,7 +1711,13 @@ body.pilot-view .day-strip { display: none; }
 #expedition-hint, .expedition-disclaimer { font-size: 0.8rem; color: #bcd0e2; }
 #expedition-feedback:empty { display: none; }
 #expedition-feedback { color: var(--amber); }
-#expedition-notebook { margin-top: 16px; border-top: 1px solid var(--line); }
+#expedition-notebook { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+#expedition-notebook > summary { cursor: pointer; color: var(--cyan); font-size: 0.85rem; line-height: 1.5; }
+#expedition-notebook-count, #engineering-title span { color: var(--muted); font-size: 0.75rem; margin-left: 8px; display: inline-block; }
+.section-nav { display: flex; flex-wrap: wrap; gap: 4px 18px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.section-nav a { color: var(--cyan); font-size: 0.8rem; padding: 4px 0; text-underline-offset: 3px; }
+#science-section, #expedition-notebook-button, #engineering-title { scroll-margin-top: 12px; }
+.engineering-reference > summary { margin-bottom: 12px; }
 #expedition-records { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 #expedition-records article { padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: #101d27; }
 #expedition-records h3 { margin: 0; color: var(--green); font-size: 1rem; }

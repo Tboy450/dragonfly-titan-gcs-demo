@@ -193,7 +193,7 @@ then explicitly uplink it. Use 5x / 20x during flight and up to 100x during down
 Recharge or wait for daylight in Diagnostics when necessary; the expedition does not
 bypass the energy, thermal, scouting or radio restrictions.
 
-**Notebook / debrief** keeps one new sample from each expedition site, including its
+**Science notebook and debrief** is expandable in Mission and Pilot and keeps one new sample from each expedition site, including its
 location, time, illustrative composition and onboard/returned status. A record is
 returned only after its place in the stored-data queue has actually been transmitted;
 earlier downlinks do not count. The final debrief compares the sites and records
@@ -214,6 +214,19 @@ planning map shades the same terrain, with lighter areas representing higher gro
 Both the geology and science results are examples, not actual observations from Titan.
 
 ## Quick Survey and Diagnostics
+
+Science Payload retains the **30-second demo** and offers **LDMS training (10 min)** and
+**GCMS training (30 min)**. Extended profiles have distinct stages, instrument loads and
+heat coupling to the shared bay; all timings and budgets are **estimates, not flight
+procedures**. Their instrument energy is approximately 25.7/129.8 Wh, plus vehicle and
+radio loads. Run them at 1x/20x/100x, pause or cancel. Unsafe conditions interrupt the job;
+completed records include their mode, site, budget and actual simulated downlink progress.
+Reloads stop unfinished jobs without awarding a result.
+
+**Methods, budgets & sources**, **Sample records**, **Science notebook and debrief** and
+**Engineering references** are expandable. Section links jump to Flight, Objectives,
+Science, Notebook and References without removing any page content. See the
+[science-profile source review and limitations](research/science-profiles-2026-10-12.md).
 
 Begin the interdune survey, fly to the dry outcrop manually or with guided flight, land,
 collect a sample and return to base. The outcrop sits at the edge of a rain-darkened
@@ -361,8 +374,8 @@ Comms shows how long that will take. Results are illustrative examples, not miss
   send data home, one flight, sample science, then night (recharge, seismic and weather work).
   **Sleep until morning** fast-forwards the rest of the day and the night in a few seconds,
   wakes the lander at 08:00 local (after sunrise, so the scene is lit) and posts a morning report. A real Titan day lasts 382.7 hours (about 16
-  Earth days) with about one flight per day; here flights, sampling and downlinks play in real
-  time and only waiting is compressed. A second flight in one Titan day is allowed but flagged.
+  Earth days) with about one flight per day. Plans, sampling and downlinks can accelerate the
+  shared simulation clock; rest is time-compressed too. A second flight in one Titan day is allowed but flagged.
 
 ## Engineering Context
 

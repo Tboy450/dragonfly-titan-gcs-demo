@@ -45,4 +45,4 @@ window.addEventListener("keydown", event => {
 });
 window.addEventListener("resize", updatePilotLayout);
 const topControls = new ResizeObserver(updatePilotLayout);
-document.querySelectorAll(".topbar, .flight-bar, #weather-strip, #plan-strip").forEach(element => topControls.observe(element));
+document.querySelectorAll(".topbar, .flight-bar, .section-nav, #weather-strip, #plan-strip").forEach(element => topControls.observe(element));

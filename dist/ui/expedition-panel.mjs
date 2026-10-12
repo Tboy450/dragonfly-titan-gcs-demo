@@ -2,9 +2,9 @@ import { atExpeditionSite, beginExpedition, expeditionSites, expeditionStages, p
 import { planActive } from "../flight-plan.mjs?v=dev";
 import { landed, linkStatus, toggleDownlink } from "../mission-systems.mjs?v=dev";
 import { canSampleHere, startSample } from "../science.mjs?v=dev";
+import { currentScienceProgram } from "../science-programs.mjs?v=dev";
 import { $, formatTime, state } from "./context.mjs?v=dev";
 import { openPlanPanel } from "./plan-panel.mjs?v=dev";
-import { setView } from "./controls.mjs?v=dev";
 
 function action() {
   const e = state.expedition, stage = expeditionStages[e.step];
@@ -28,9 +28,7 @@ function action() {
 }
 
 function showNotebook() {
-  setView("mission");
-  $("expedition-notebook").hidden = false;
-  $("expedition-notebook-button").setAttribute("aria-expanded", "true");
+  $("expedition-notebook").open = true;
   updateExpeditionPanel();
   $("expedition-notebook").scrollIntoView({ behavior: "auto", block: "nearest" });
 }
@@ -72,13 +70,14 @@ export function updateExpeditionPanel() {
   $("expedition-why").textContent = e.status === "idle" ? "Compare dry organic sand, rain-darkened ground and an ice-rich outcrop. Scout, sample and send the evidence home. Free flight remains available." : e.status === "complete" ? "Your site-linked notebook and debrief are saved with the last landed checkpoint. Continue exploring in free flight." : stage.why;
   $("expedition-hint").textContent = next.blocked || (next.kind === "route"
     ? "Prepares a suggested route. Review GO/NO-GO in Plan flight, then uplink. Recharge in Diagnostics if the margins are low."
-    : next.kind === "sample" ? "Sampling takes 30 simulated seconds. The site record stays onboard until downlinked."
+    : next.kind === "sample" ? `${currentScienceProgram(state.science).label}: ${formatTime(currentScienceProgram(state.science).seconds)} simulated time (estimated). The site record stays onboard until downlinked.`
     : "Progress is saved on the ground. You can also fly and sample manually.");
   $("expedition-action").textContent = next.label;
   $("expedition-action").disabled = !!next.blocked;
   $("expedition-action").title = next.blocked || next.label;
   $("expedition-downlink-speed").hidden = !state.downlinkActive || e.status !== "active";
-  if (!$("expedition-notebook").hidden) updateNotebook();
+  $("expedition-notebook-count").textContent = `${e.notebook.length} / 3 sites`;
+  if ($("expedition-notebook").open) updateNotebook();
 }
 
 $("expedition-action").addEventListener("click", () => {
@@ -98,10 +97,4 @@ $("expedition-action").addEventListener("click", () => {
   $("expedition-feedback").textContent = error;
   updateExpeditionPanel();
 });
-$("expedition-notebook-button").addEventListener("click", () => {
-  if ($("expedition-notebook").hidden || state.view === "pilot") showNotebook();
-  else {
-    $("expedition-notebook").hidden = true;
-    $("expedition-notebook-button").setAttribute("aria-expanded", "false");
-  }
-});
+$("expedition-notebook").addEventListener("toggle", () => { if ($("expedition-notebook").open) updateNotebook(); });

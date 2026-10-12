@@ -37,6 +37,30 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-12: Add science training profiles and compact mission sections
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Add science profiles and expandable mission sections`.
+- **What changed:** Retained the 30-second demo and added selectable LDMS/GCMS training
+  profiles with staged power, shared thermal coupling, cancel, bounded time acceleration,
+  component-follow progression and persistent per-sample budgets/downlink status.
+- **Layout:** Science notebook and debrief is a native expandable section in both views.
+  Records, methods/budgets and engineering references start collapsed. Page-section links
+  improve navigation without removing controls/content or changing normal page scrolling.
+  Opening the notebook no longer changes Pilot to Mission; flight auto-fit includes the nav.
+- **Files:** `science-programs.mjs`, `science.mjs`, `mission-systems.mjs`, `save-game.mjs`,
+  `app.js`, science/expedition/inspection readouts, markup/styles, tests and research notes.
+- **Assumptions:** 10/30-minute timelines, stage loads, heat fractions and 40 Mbit record
+  sizes are estimated training settings, not flight procedures. No chemistry, cup inventory
+  or resolved oven temperature is claimed. See `research/science-profiles-2026-10-12.md`.
+- **Archive:** Affected a115d4a files and desktop/phone screenshots preserved under
+  `archive/science-profiles-2026-10-12` with matching tag.
+- **Checks:** 137 Node tests including new UI syntax coverage. Browser checks at 1440,
+  390 and 360 px cover real accelerated LDMS completion, bounded GCMS stages, one record
+  per run, energy accounting, save/reload, collapsed defaults, keyboard notebook access,
+  unique IDs and page overflow. No page errors in the profile workflow.
+- **Open / next:** Verified full science schedules, cup inventory and an operations queue
+  remain future work. Do not present solver compute times as real sample-processing times.
+
 ### 2026-10-12: Add interactive inspection and clarify simulation assumptions
 - **Signed:** Codex (OpenAI).
 - **Commit:** `Add interactive inspection and bounded reverse assist`.

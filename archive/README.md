@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [science-profiles-2026-10-12](science-profiles-2026-10-12/README.md) | Single demo sampling profile and earlier notebook/reference layout | 2026-10-12 | `archive/science-profiles-2026-10-12` |
 | [interactive-inspector-2026-10-11](interactive-inspector-2026-10-11/README.md) | Fixed Mission camera, earlier assumptions and upward-only reverse assist before interactive inspection | 2026-10-12 | `archive/interactive-inspector-2026-10-11` |
 | [sampling-sequence-2026-10-11](sampling-sequence-2026-10-11/README.md) | Static sampling hardware and combined DrACO/DraMS readouts before the state-linked sequence | 2026-10-11 | `archive/sampling-sequence-2026-10-11` |
 | [vehicle-inspection-2026-10-11](vehicle-inspection-2026-10-11/README.md) | Procedural vehicle and temperature-only part details before NASA/APL reference refinements | 2026-10-11 | `archive/vehicle-inspection-2026-10-11` |

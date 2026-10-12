@@ -76,6 +76,10 @@
         <span id="vehicle-alert" role="status">Systems nominal</span>
       </section>
 
+      <nav class="section-nav" aria-label="Page sections">
+        <a href="#flight-canvas">Flight</a><a href="#expedition-title">Objectives</a><a href="#science-section">Science</a><a href="#expedition-notebook-button">Notebook</a><a href="#engineering-title">References</a>
+      </nav>
+
       <section id="weather-strip" class="weather-strip" role="status" hidden>
         <strong id="weather-title">Weather advisory</strong>
         <span id="weather-strip-status"></span>
@@ -87,7 +91,6 @@
           <div><span id="expedition-step">3 sites / 1 science story</span><h2 id="expedition-title">First expedition</h2></div>
           <div class="expedition-actions">
             <button id="expedition-action" class="primary" type="button">Begin expedition</button>
-            <button id="expedition-notebook-button" type="button" aria-expanded="false" aria-controls="expedition-notebook">Notebook / debrief</button>
           </div>
         </div>
         <p id="expedition-why">Compare three sites, scout a new landing area and send the evidence home.</p>
@@ -98,13 +101,13 @@
           <button type="button" data-warp="20" aria-pressed="false">20x</button>
           <button type="button" data-warp="100" aria-pressed="false">100x</button>
         </div>
-        <div id="expedition-notebook" hidden>
-          <h2>Science notebook and debrief</h2>
+        <details id="expedition-notebook">
+          <summary id="expedition-notebook-button">Science notebook and debrief <span id="expedition-notebook-count">0 / 3 sites</span></summary>
           <p id="expedition-summary"></p>
           <div id="expedition-records"></div>
           <p id="expedition-comparison"></p>
           <p class="expedition-disclaimer">Illustrative, compressed-scale dune/interdune terrain inspired by the Ahmakiq Undae landing-area description. Not a surveyed map, flight-qualified planner or real science data.</p>
-        </div>
+        </details>
       </section>
 
       <details class="quick-survey">
@@ -126,7 +129,7 @@
           <li class="night-task">Night: recharge, seismic and weather</li>
         </ul>
         <button id="day-sleep" type="button">Sleep until morning</button>
-        <p class="day-scale">Time scale: a real Titan day lasts 382.7 hours (about 16 Earth days), with about one flight per day. Here, flights, sampling and downlinks play in real time (sampling shortened to 30 s), and sleeping through the rest of the day and the night takes a few seconds.</p>
+        <p class="day-scale">Time scale: a real Titan day lasts 382.7 hours (about 16 Earth days), with about one flight per day. Sampling offers a 30 s demo or estimated extended profiles. Accelerated operations advance the shared simulation clock; sleeping through the rest of the day and night takes a few seconds.</p>
       </section>
 
       <section id="plan-strip" class="plan-strip" aria-label="Autonomous flight" hidden>
@@ -432,11 +435,8 @@
             <canvas id="chart-canvas" aria-label="Altitude, power, and speed over time"></canvas>
           </section>
 
-          <section class="engineering-reference" aria-labelledby="engineering-title">
-            <div class="panel-heading">
-              <span id="engineering-title">Engineering References</span>
-              <strong>Published test context</strong>
-            </div>
+          <details class="engineering-reference" id="engineering-reference">
+            <summary id="engineering-title">Engineering references <span>Published test context</span></summary>
             <div class="engineering-columns">
               <div>
                 <h2>APL TITAN Chamber</h2>
@@ -471,13 +471,13 @@
               <h3>Deliberate simulation additions</h3>
               <ul>
                 <li>Reverse (sim) is fictional and off by default. At zero manual throttle above 1 m, it adds up to 0.2 m/s2 downward acceleration until reaching 0.6 m/s descent, with an estimated 50 W extra load and reversed rotor animation. It is disabled over liquid and in automated flight. These are gameplay settings, not Dragonfly capabilities.</li>
-                <li>The combined 30-second, 160 W sampling job, staged drill/transfer/carousel motion, colored flow markers and example chemical results are illustrative. No real drill-force, sample-cup capacity or detailed LD/GC process is simulated.</li>
+                <li>The 30-second, 160 W sampling demo and longer LDMS/GCMS training profiles use estimated stage durations, loads, heat coupling and data volumes, not flight procedures. Drill/transfer/carousel motion, flow markers and example chemical results are illustrative. No real drill-force, cup capacity, spectra, retention times or detailed oven temperatures are simulated.</li>
                 <li>Transparent cutaways, thermal colors, isolated parts and the sampling-follow camera are inspection aids, not onboard camera imagery. Pausing freezes the simulation, not just the display.</li>
                 <li>Accelerated rest, time warp, shortened objectives and liquid no-landing protection are training conveniences. Communications and energy costs are modeled estimates, not a prediction of mission performance.</li>
               </ul>
               <p><a href="https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/" target="_blank" rel="noreferrer">NASA spacecraft and instruments</a> &middot; <a href="https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php" target="_blank" rel="noreferrer">APL model references</a> &middot; <a href="https://github.com/Tboy450/dragonfly-titan-gcs-demo/blob/main/RESEARCH-COMPENDIUM.md" target="_blank" rel="noreferrer">Project research and assumptions</a></p>
             </details>
-          </section>
+          </details>
         </section>
 
         <aside class="panel stack right-rail" aria-label="Detailed telemetry">
@@ -487,7 +487,7 @@
           </div>
           <div id="rotor-grid" class="rotor-grid"></div>
 
-          <div class="panel-heading">
+          <div class="panel-heading" id="science-section" tabindex="-1">
             <span>Science Payload</span>
             <strong>Instrument State</strong>
           </div>
@@ -498,18 +498,39 @@
             <div><span>DrACO drill transfer</span><strong id="draco-state">Stowed</strong></div>
             <div><span>DraGMet weather/seismic</span><strong id="dragmet-state">Logging</strong></div>
           </div>
-          <div class="rest-controls"><button id="sample-here" type="button">Sample here (DrACO + DraMS)</button><button id="inspect-sample" type="button">Inspect sample</button></div>
+          <label class="science-program-label" for="science-program">Analysis profile
+            <select id="science-program"><option value="demo">Quick demo / 30 s</option><option value="ldms">LDMS training / 10 min (est.)</option><option value="gcms">GCMS training / 30 min (est.)</option></select>
+          </label>
+          <div class="rest-controls"><button id="sample-here" type="button">Sample here (DrACO + DraMS)</button><button id="inspect-sample" type="button">Inspect sample</button><button id="sample-cancel" type="button" hidden>Cancel sample</button></div>
+          <output id="science-readiness" class="rest-status" role="status">Ready</output>
           <div class="sampling-sequence" aria-label="Sample acquisition sequence">
             <div class="sampling-heading"><strong id="sampling-stage" role="status">Sampling idle</strong><span id="sampling-clock">0 / 30 s</span></div>
             <progress id="sampling-meter" max="30" value="0" aria-label="Sample acquisition progress"></progress>
             <ol id="sampling-stages">
               <li data-stage="drill">Drill</li><li data-stage="transfer">Transfer</li><li data-stage="carousel">Position cup</li><li data-stage="analysis">Analyze</li>
             </ol>
-            <small>30 s timing, mechanical motion and flow markers are illustrative. <a href="https://science.nasa.gov/science-research/science-enabling-technology/technology-highlights/playing-lacrosse-on-titan/" target="_blank" rel="noopener noreferrer">NASA sampling design</a></small>
+            <small>Training profile / illustrative motion and results</small>
+            <div id="science-warp" class="warp-switch" role="group" aria-label="Science simulation speed" hidden>
+              <button type="button" data-warp="1" aria-pressed="true">1x</button><button type="button" data-warp="20" aria-pressed="false">20x</button><button type="button" data-warp="100" aria-pressed="false">100x</button>
+            </div>
           </div>
-          <output id="science-result" class="rest-status">No samples analyzed yet.</output>
-          <ol id="science-log" class="science-log" aria-label="Science log"></ol>
-          <small class="rest-status">Instrument results are illustrative examples for the kinds of ground expected at Titan, not mission data.</small>
+          <details class="science-details" id="science-methods">
+            <summary>Methods, budgets &amp; sources</summary>
+            <p id="science-budget"></p>
+            <p>LDMS uses laser pulses to examine material in a sample cup. GCMS uses heated preparation and gas separation before mass analysis; pyrolysis and derivatization are distinct possible treatments. These profiles do not simulate molecular chemistry.</p>
+            <p>The 10/30-minute timelines, stage wattages, 40 Mbit result size and 80% heat coupling to the shared equipment bay are estimates, not published flight schedules. Cooldown is a timed training stage, not a measured oven temperature. Preparation, cooling, battery use and downlink all use the same clock. Low energy, unsafe temperatures or movement interrupt the job; recharge or restore thermal margins before restarting.</p>
+            <p>Each run collects a new sample. There is no modeled cup inventory or automatic LDMS-to-GCMS handoff. Example compositions are not detections or evidence of life.</p>
+            <p><a href="https://ntrs.nasa.gov/api/citations/20210011122/downloads/Trainer_DraMS_Update_LPSC21_1532.pdf" target="_blank" rel="noopener noreferrer">NASA DraMS modes (2021)</a> &middot; <a href="https://ntrs.nasa.gov/api/citations/20240005590/downloads/ICES-2024-103-Final.pdf" target="_blank" rel="noopener noreferrer">DraMS thermal study (2024)</a> &middot; <a href="https://svs.gsfc.nasa.gov/vis/a010000/a013500/a013562/13562_DragonflyScience_Transcript.html" target="_blank" rel="noopener noreferrer">NASA sample workflow</a></p>
+          </details>
+          <details class="science-details" id="science-records">
+            <summary>Sample records <span id="science-record-count">0</span></summary>
+            <label class="science-program-label" for="science-record">Sample<select id="science-record" disabled><option>No records</option></select></label>
+            <output id="science-record-meta" class="rest-status"></output>
+            <output id="science-record-transmission" class="rest-status"></output>
+            <output id="science-result" class="rest-status">No samples analyzed yet.</output>
+            <output id="science-interpretation" class="rest-status"></output>
+            <ol id="science-log" class="science-log" aria-label="Science log"></ol>
+          </details>
 
           <div class="panel-heading">
             <span>Comms</span>

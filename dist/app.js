@@ -2,6 +2,7 @@
 import { smoothCameraPose } from "./flight-camera.mjs?v=dev";
 import { advanceRest, stepFlight } from "./flight-model.mjs?v=dev";
 import { planActive } from "./flight-plan.mjs?v=dev";
+import { canAccelerateScience } from "./science.mjs?v=dev";
 import { state } from "./ui/context.mjs?v=dev";
 import "./ui/persistence.mjs?v=dev";
 import { drawFlight } from "./ui/flight-view.mjs?v=dev";
@@ -35,13 +36,16 @@ function tick(now) {
   scheduleFrame();
   const dt = Math.min(0.05, (now - state.lastTick) / 1000);
   state.lastTick = now;
-  // Time compression is offered only while the lander flies a plan on its own or runs a downlink.
-  if (!planActive(state) && !state.downlinkActive) state.timeWarp = 1;
+  // Accelerated science uses ordinary physics steps, including heat, energy and weather.
+  if (!planActive(state) && !state.downlinkActive && !canAccelerateScience(state)) state.timeWarp = 1;
   if (state.edl) {
     stepArrival(dt);
   } else if (state.restSeconds > 0 && !state.hold) {
     advanceRest(state, state.wakeAtMorning ? sleepStepSeconds : undefined);
-  } else for (let step = 0; step < state.timeWarp; step += 1) stepFlight(state, dt);
+  } else for (let step = 0; step < state.timeWarp; step += 1) {
+    stepFlight(state, dt);
+    if (!planActive(state) && !state.downlinkActive && !canAccelerateScience(state)) { state.timeWarp = 1; break; }
+  }
   if (!state.edl) { updateDayLog(state); finishNight(state); }
   smoothCameraPose(state, dt);
   if (state.edl) {

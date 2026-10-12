@@ -3,6 +3,7 @@
 import { createPlan } from "./flight-plan.mjs?v=dev";
 import { validExpedition } from "./expedition.mjs?v=dev";
 import { createWeatherState, setFixedWind, validWeather } from "./weather.mjs?v=dev";
+import { validScienceExtension } from "./science-programs.mjs?v=dev";
 
 export const SAVE_VERSION = 1;
 export const SAVE_KEY = "dragonfly-save-v1";
@@ -44,6 +45,7 @@ export function restoreState(state, snapshot) {
   if (values.expedition !== undefined && !validExpedition(values.expedition)) return false;
   if (values.weather !== undefined && (!validWeather(values.weather) || values.wind !== values.weather.lastWind)) return false;
   if (values.reverseBrakeEnabled !== undefined && typeof values.reverseBrakeEnabled !== "boolean") return false;
+  if (values.science !== undefined && !validScienceExtension(values.science)) return false;
   for (const key of persistent) if (values[key] !== undefined) state[key] = copy(values[key]);
   if (values.weather === undefined) {
     state.weather = createWeatherState();
@@ -58,7 +60,13 @@ export function restoreState(state, snapshot) {
   });
   state.mission.guidance = false;
   if (state.mission.phase === "sampling") { state.mission.phase = "sample"; state.mission.sampleSeconds = 0; }
-  if (state.science) state.science.sampling = false;
+  if (state.science) {
+    if (state.science.sampling) state.science.sampleSeconds = 0;
+    Object.assign(state.science, { sampling: false, sampleOrigin: null });
+    state.science.programId ??= "demo";
+  }
+  state.sciencePowerW = 0;
+  state.scienceHeatW = 0;
   state.plan = createPlan();
   if (values.planDraft) Object.assign(state.plan, copy(values.planDraft));
   return true;

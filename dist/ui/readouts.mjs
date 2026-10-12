@@ -4,6 +4,7 @@ import { dampGround, flightEndurance, landed, linkStatus, liquidExchangerStudy, 
 import { $, clamp, derived, formatTime, state, stickPitch, stickRoll, stickYaw } from "./context.mjs?v=dev";
 import { updateScience } from "./science-panel.mjs?v=dev";
 import { weatherAdvisory, weatherPhase } from "../weather.mjs?v=dev";
+import { currentScienceProgram } from "../science-programs.mjs?v=dev";
 
 const rotorGrid = $("rotor-grid");
 const pilotRotorGrid = $("pilot-rotor-grid");
@@ -164,7 +165,8 @@ function updateSystemsReadouts() {
   $("motor-preheat").textContent = state.motorsCold ? `Cold / ${systemsModel.preheatWh} Wh at next takeoff` : `Warm / ${state.preheats} preheat${state.preheats === 1 ? "" : "s"}, ${Math.round(state.preheatWh)} Wh used`;
   $("surface-elapsed").textContent = `${(state.elapsed / 3600).toFixed(2)} h`;
   $("systems-objective").textContent = m.phase;
-  $("sample-progress").textContent = `${Math.min(30, m.sampleSeconds).toFixed(0)} / 30 s`;
+  const sampleDuration = currentScienceProgram(state.science).seconds;
+  $("sample-progress").textContent = `${Math.min(sampleDuration, m.sampleSeconds).toFixed(0)} / ${sampleDuration} s`;
   $("sample-count").textContent = m.samples;
   const sampling = m.phase === "sampling" || state.science.sampling;
   const canRest = landed(state) && !overLiquid(state.positionX, state.positionZ) && !state.hold && !sampling && state.restSeconds === 0;

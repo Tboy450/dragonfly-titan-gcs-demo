@@ -47,6 +47,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/mission-systems.mjs` | Thermal and energy model, comms/downlink and antenna, trim device, hibernation, survey mission, training geography (damp ground, puddle, candidate sites), land-now logic, thermal zone temperatures |
 | `dist/flight-plan.mjs` | Flight plans: waypoints, GO/NO-GO estimate, uplink delay, autopilot guidance, leapfrog scouting |
 | `dist/science.mjs` | Instruments: DragonCam data, DraGMet log and seismometer, DraGNS counting, DrACO/DraMS sampling, ground types; pure `samplingSequence()` projects the existing job clock into illustrative drill/transfer/carousel/analysis stages |
+| `dist/science-programs.mjs` | Estimated demo/LDMS/GCMS stage profiles, exact stage energy integration and validation of added save fields; separate from DOM and hardware geometry |
 | `dist/expedition.mjs` | First expedition objectives, suggested flight drafts, site-linked notebook, FIFO sample downlink status, frozen debrief and validation of the optional save field |
 | `dist/weather.mjs` | Seeded, compressed training gust/rain events, advance advisories, optional strong storm, fixed wind, wetting/drying, plan restrictions and weather save validation |
 | `dist/edl.mjs` | Arrival (entry, descent, landing) timeline from the published EDL figure |
@@ -113,7 +114,7 @@ There is one live `state` object (`ui/context.mjs`). Each part of the simulation
 | `flight-model.mjs` (fictional opt-in assist) | `reverseBrakeEnabled` (saved), `reverseBrakeActive` (transient); a zero-throttle upward-momentum brake only in manual flight above 1 m, never a negative throttle value |
 | `mission-systems.mjs` | `battery`, `power`, `coreC`, `batteryC`, `trim`, `fan`, `fault`, `hibernating`, `elapsed` (Titan clock), `downlinkActive`, `antennaDeploy`, `motorsCold`, `flightSeconds`, `scoutedSites`, `rdeC`/`twtaC`, `mission` |
 | `flight-plan.mjs` | `plan` (waypoints, status, phase, estimate, report) |
-| `science.mjs` | `science` (samples, log, counters), `dataStoredBits`, `sciencePowerW` |
+| `science.mjs` | `science` (samples, log, counters, selected/active profile, job energy), `dataStoredBits`, `sciencePowerW`, `scienceHeatW` |
 | `expedition.mjs` | `expedition` (status, step, start/end clocks, next sample index, three-site notebook, energy/flight/temperature metrics) |
 | `weather.mjs` | `weather` (seed, mode, clocks, baseline/last wind, event, intensity, haze, rain, wetness, six recent advisories), effective `wind` |
 | `ui/arrival.mjs` | `edl`, `edlTime` (only while the arrival plays) |

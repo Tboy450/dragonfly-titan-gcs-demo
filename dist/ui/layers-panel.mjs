@@ -3,7 +3,7 @@ import { systemsModel, thermalZoneTemps } from "../mission-systems.mjs?v=dev";
 import { thermalCss, thermalGradientCss, thermalRanges } from "../thermal-scale.mjs?v=dev";
 import { $, flightCanvas, state } from "./context.mjs?v=dev";
 import { partMarkers } from "./flight-view.mjs?v=dev";
-import { scienceModel, samplingSequence } from "../science.mjs?v=dev";
+import { samplingSequence } from "../science.mjs?v=dev";
 import { updateInspectorUI } from "./vehicle-inspector.mjs?v=dev";
 import { focusInspector } from "../vehicle-inspector.mjs?v=dev";
 
@@ -35,7 +35,7 @@ function liveComponentReading(name) {
   if (name === "power-units") return `Vehicle load ${(state.power / 1000).toFixed(2)} kW; MMRTG generation ${state.generatedW.toFixed(0)} W. Modeled totals.`;
   if (["frontier-radio", "twta", "hga-actuators"].includes(name)) return `${state.downlinkW > 0 ? "Transmitting" : state.downlinkActive ? "Preparing antenna" : "Radio idle"}; ${(state.dataStoredBits / 1e6).toFixed(1)} Mbit queued. Downlink system load ${state.downlinkW.toFixed(0)} W (modeled).`;
   if (["drills", "sample-lines", "sample-carousel", "drams", "drill-blower"].includes(name)) return state.science.sampling
-    ? `${samplingSequence(state).label}${state.hold ? " / paused" : ""}: ${Math.min(100, state.science.sampleSeconds / scienceModel.sampleSeconds * 100).toFixed(0)}% of the ${scienceModel.sampleSeconds} s demonstration cycle; ${state.sciencePowerW.toFixed(0)} W instrument load (modeled).`
+    ? `${samplingSequence(state).label}${state.hold ? " / paused" : ""}: ${(samplingSequence(state).progress * 100).toFixed(0)}% of the ${samplingSequence(state).duration} s training cycle; ${state.sciencePowerW.toFixed(0)} W instrument load (modeled).`
     : `Sampling idle; ${state.science.samples.length} completed sample records.`;
   if (["battery", "battery-sensor"].includes(name)) return `Charge ${state.battery.toFixed(1)}%; ${state.chargingBlocked ? "charging inhibited by temperature" : `${Math.abs(state.netBatteryW).toFixed(0)} W ${state.netBatteryW >= 0 ? "charging" : "discharging"}`} (modeled).`;
   if (["fan", "underfloor-duct", "trim-chimneys"].includes(name)) return `Gas flow ${state.gasFlow.toFixed(3)} kg/s; trim ${(state.effectiveTrim * 100).toFixed(0)}%; cold-duct heat rejection ${state.coldDuctW.toFixed(0)} W (modeled).`;
