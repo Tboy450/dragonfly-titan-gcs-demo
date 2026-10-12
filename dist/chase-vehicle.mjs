@@ -1,4 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js";
+import { inspectionGroups, inspectionModified } from "./vehicle-inspector.mjs?v=dev";
 import { cameraPose } from "./flight-camera.mjs?v=dev";
 import { createTitanTerrain, terrainHeight } from "./titan-terrain.mjs?v=dev";
 import { model } from "./flight-model.mjs?v=dev";
@@ -293,6 +294,8 @@ export function createChaseRenderer(options = {}) {
   let width = 0;
   let height = 0;
   let renderView = "";
+  const inspectionCenter = new THREE.Vector3(0, -0.15, 0);
+  let inspectionHeight = null, inspectionTime = null, inspectionReset = -1;
   // Where each model's skids touch the ground (craft frame: x right, -z forward), for slopes.
   const skidFootprints = {
     research: { halfWidth: 0.75, front: -1.3, rear: 1.02 },
@@ -359,11 +362,53 @@ export function createChaseRenderer(options = {}) {
       poseSampling(state, which === "research" ? layer : "exterior");
       // The original model's rotors sit on tall posts, so its layered views are framed wider.
       const layeredScale = which === "original" ? 1.25 : 1;
-      const halfHeight = layered ? Math.max(1.75, 2.35 * h / w) * layeredScale : Math.max(3.4, 3.0 * h / w);
+      let halfHeight = layered ? Math.max(1.75, 2.35 * h / w) * layeredScale : Math.max(3.4, 3.0 * h / w);
+      const inspector = layered && which === "research" ? view.inspector : null;
+      const focusName = inspector && subsystems[view.focusPart] ? view.focusPart : null;
+      const modified = inspector && inspectionModified(inspector, focusName);
+      const visibility = new Map();
+      if (inspector) {
+        craft.updateMatrixWorld(true);
+        const center = new THREE.Vector3(0, -0.15, 0);
+        const groups = inspectionGroups(focusName);
+        if (focusName) {
+          const bounds = new THREE.Box3();
+          for (const name of groups) if (subsystems[name]) bounds.union(new THREE.Box3().setFromObject(subsystems[name]));
+          bounds.getCenter(center);
+          // A bounding sphere keeps the entire selected assembly framed at every orbit angle.
+          const radius = Math.max(0.22, bounds.getSize(new THREE.Vector3()).length() / 2);
+          halfHeight = radius * 1.35 * Math.max(1, h / w);
+        }
+        halfHeight /= inspector.zoom;
+        const now = view.now ?? 0;
+        const dt = inspectionTime === null ? 0 : Math.max(0, Math.min(0.1, (now - inspectionTime) / 1000));
+        inspectionTime = now;
+        if (inspectionHeight === null || inspectionReset !== inspector.resetSerial || view.reduceMotion) {
+          inspectionCenter.copy(center);
+          inspectionHeight = halfHeight;
+        } else {
+          const amount = 1 - Math.exp(-dt * 10);
+          inspectionCenter.lerp(center, amount);
+          inspectionHeight += (halfHeight - inspectionHeight) * amount;
+        }
+        inspectionReset = inspector.resetSerial;
+        halfHeight = inspectionHeight;
+        if (focusName && inspector.isolate) {
+          for (const group of Object.values(subsystems)) {
+            visibility.set(group, group.visible);
+            group.visible = group.visible && groups.includes(group.name);
+          }
+        }
+      } else { inspectionHeight = null; inspectionTime = null; }
       Object.assign(missionCamera, { left: -halfHeight * w / h, right: halfHeight * w / h, top: halfHeight, bottom: -halfHeight });
       if (layered) missionCamera.position.set(1.6, 5.2, 7.2);
       else missionCamera.position.set(0, 8, 3.5);
       missionCamera.lookAt(0, layered ? (which === "original" ? 0.1 : -0.15) : 0, 0);
+      if (inspector) {
+        const horizontal = Math.cos(inspector.elevation) * 9.12;
+        missionCamera.position.set(Math.sin(inspector.azimuth) * horizontal, Math.sin(inspector.elevation) * 9.12, Math.cos(inspector.azimuth) * horizontal).add(inspectionCenter);
+        missionCamera.lookAt(inspectionCenter);
+      }
       missionCamera.updateProjectionMatrix();
       renderer.render(scene, missionCamera);
       if (view.parked && !layered) {
@@ -391,6 +436,7 @@ export function createChaseRenderer(options = {}) {
       }
       ctx.drawImage(renderer.domElement, 0, 0, w, h);
       const labels = [];
+      if (modified || (inspector && (inspectionCenter.distanceTo(new THREE.Vector3(0, -0.15, 0)) > 0.01))) labels.inspection = true;
       if (layered) {
         craft.updateMatrixWorld(true);
         for (const group of which === "research" ? labeledParts : mockParts) {
@@ -400,9 +446,10 @@ export function createChaseRenderer(options = {}) {
             name: group.name, label: group.userData.label, source: group.userData.source,
             zone: group.userData.thermalZone, color: group.userData.color, mock: !!group.userData.mock,
             x: (labelPoint.x + 1) / 2 * w, y: (1 - labelPoint.y) / 2 * h,
+            onCanvas: (!focusName || group.name === focusName) && labelPoint.z >= -1 && labelPoint.z <= 1,
           });
         }
-        if (which === "research") {
+        if (which === "research" && !labels.inspection) {
           // Published envelope dimensions for the blueprint backdrop, as on-screen line ends
           // (craft frame: x right, y up, -z forward; skids at y -0.86, top at +0.88).
           const screen = (x, y, z) => {
@@ -420,6 +467,7 @@ export function createChaseRenderer(options = {}) {
         }
       }
       landscape.group.visible = true;
+      for (const [group, visible] of visibility) group.visible = visible;
       applyLayer("exterior");
       ambient.color.copy(titanSky); ambient.groundColor.copy(titanGround); sun.color.copy(titanSun);
       fill.intensity = 0;

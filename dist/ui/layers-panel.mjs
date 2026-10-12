@@ -4,6 +4,8 @@ import { thermalCss, thermalGradientCss, thermalRanges } from "../thermal-scale.
 import { $, flightCanvas, state } from "./context.mjs?v=dev";
 import { partMarkers } from "./flight-view.mjs?v=dev";
 import { scienceModel, samplingSequence } from "../science.mjs?v=dev";
+import { updateInspectorUI } from "./vehicle-inspector.mjs?v=dev";
+import { focusInspector } from "../vehicle-inspector.mjs?v=dev";
 
 const sources = {
   thermal: ["Thermal layout (ICES 2023)", "https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content"],
@@ -45,6 +47,7 @@ let partRows = "";
 let detailKey = "";
 const rowElements = new Map();
 export function updateLayerPanel() {
+  updateInspectorUI();
   const layered = state.missionLayer !== "exterior";
   $("component-temperatures").hidden = !layered;
   document.querySelectorAll("[data-layer]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.layer === state.missionLayer)));
@@ -151,6 +154,7 @@ function updateAirflowPanel() {
 
 function selectPart(name) {
   state.selectedPart = state.selectedPart === name ? null : name;
+  if (state.inspector.focusPart || state.inspector.followSampling || state.inspector.isolate) focusInspector(state, state.selectedPart);
   if (state.selectedPart) $("component-temperatures").open = true;
   updateLayerPanel();
 }
@@ -176,7 +180,7 @@ flightCanvas.addEventListener("click", (event) => {
   const x = event.clientX - rect.left, y = event.clientY - rect.top;
   const hit = partMarkers.reduce((best, marker) => {
     const distance = Math.hypot(marker.x - x, marker.y - y);
-    return distance < 18 && (!best || distance < best.distance) ? { marker, distance } : best;
+    return marker.drawn && distance < 18 && (!best || distance < best.distance) ? { marker, distance } : best;
   }, null);
   if (hit) selectPart(hit.marker.name);
 });

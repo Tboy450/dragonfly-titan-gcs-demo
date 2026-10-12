@@ -56,6 +56,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/thermal-scale.mjs` | Fixed absolute-temperature colors shared by both reading lists and the Thermal mesh; range selection zooms only the legend, with 0-20 C equipment/battery reference green and 35 C+ red (not universal operating limits) |
 | `dist/flight-camera.mjs` | Chase-camera pose and smoothing |
 | `dist/vehicle-presentation.mjs` | Pure parked portrait state for the clean room; never changes the simulation |
+| `dist/vehicle-inspector.mjs` | Mission-only orbit/zoom limits, focus/reset, assembly membership and follow target from the shared sampling clock; no flight or saved-state changes |
 | `dist/save-game.mjs` | Which state fields are saved between visits (a whitelist), when saving is allowed (landed, idle), and restoring onto a fresh state |
 
 ### 3D scene (three.js; covered by the render smoke tests with a stand-in renderer)
@@ -77,6 +78,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `ui/readouts.mjs` | Status strip, telemetry, rotor tiles, Diagnostics values, local track map |
 | `ui/layers-panel.mjs` | Vehicle Layers panel: layer switch, expandable live component temperatures (Internal/Thermal), legend, keyboard-accessible parts list, selection |
 | `ui/vehicle-references.mjs` | On-demand APL payload/CAD viewer with keyboard tabs, retry states, source credits and video pause on closing/hiding. Compact assets are in `dist/assets/vehicle-references/`; originals stay in `research/` |
+| `ui/vehicle-inspector.mjs` | Internal/Thermal inspection controls, opt-in pointer rotation, keyboard orbit, zoom/focus/isolation, sampling follow and shared pause; native browser zoom and default scrolling preserved |
 | `ui/mission-backdrop.mjs` | Mission diagram backdrops per layer, picked with the a/b/c buttons (Exterior: Titan / clean room / poster; Internal: blueprint / yellow grid with dimensions; Thermal: Titan air / light grey / yellow grid) and the backdrop-matched readout colors |
 | `ui/exterior-scenes.mjs` | Cached photo-based Exterior A/C painting: NASA/APL dune panorama and responsively placed Cassini portraits; local images and credits in `dist/assets/exterior/` |
 | `ui/pilot-hud.mjs` | Pilot-view systems list (same values as the Mission panels) |

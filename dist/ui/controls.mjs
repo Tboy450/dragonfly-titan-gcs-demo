@@ -4,9 +4,11 @@ import { commandFlight, model, takeManualControl } from "../flight-model.mjs?v=d
 import { missionAction, startRest, toggleDownlink } from "../mission-systems.mjs?v=dev";
 import { setFixedWind, setWeatherMode, startStormTraining } from "../weather.mjs?v=dev";
 import { samplingSequence } from "../science.mjs?v=dev";
+import { focusInspector, inspectionAvailable } from "../vehicle-inspector.mjs?v=dev";
 import { closePilotFullscreen, updatePilotLayout } from "./pilot-layout.mjs?v=dev";
 import { $, chaseRenderer, clamp, flightCanvas, state } from "./context.mjs?v=dev";
 import { updateReadouts } from "./readouts.mjs?v=dev";
+import { updateLayerPanel } from "./layers-panel.mjs?v=dev";
 
 function setMode(mode) {
   commandFlight(state, mode);
@@ -179,8 +181,10 @@ $("inspect-sample").addEventListener("click", () => {
   state.vehicleModel = "research";
   state.missionLayer = "internal";
   state.selectedPart = samplingSequence(state).part;
+  focusInspector(state, state.selectedPart);
   setView("mission");
   updateReadouts();
+  updateLayerPanel();
   $("component-temperatures").open = true;
   flightCanvas.scrollIntoView({ block: "center" });
   document.querySelector('[data-layer="internal"]').focus({ preventScroll: true });
@@ -195,6 +199,7 @@ bindFreeCamera();
 
 window.addEventListener("keydown", (event) => {
   if (event.ctrlKey || event.metaKey || event.altKey) return;
+  if (event.target === flightCanvas && inspectionAvailable(state)) return;
   if ($("systems-dialog").open || $("plan-dialog").open) return;
   if (event.target.matches("input, select, textarea, button, a, summary, video") || event.target.closest("#vehicle-references") || event.target.isContentEditable) return;
   const step = event.shiftKey ? 0.08 : 0.04;

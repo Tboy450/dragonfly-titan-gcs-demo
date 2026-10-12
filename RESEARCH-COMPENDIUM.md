@@ -324,7 +324,7 @@ Convective heat-transfer coefficient h (W/m²·K) for a 1 m surface:
 | Hover / cruise power | 4.5–6 kW cruise, with a minimum near 6–10 m/s [PUB/CALC] | **Done**: induced + profile + parasite + climb curve | — |
 | Mode transitions | real aircraft cannot teleport; Titan's weak gravity arrests a climb slowly [PUB §2.1] | **Done** (this session): rate-limited vertical, attitude and speed; Auto re-phasing; no mesh-induced jumps | — |
 | Throttle / sticks | Dragonfly is RPM-controlled, fixed pitch [PUB] | **Done** (this session): sticky climb-rate throttle, optional centering, relative stick drag | — |
-| Fictional reverse-thrust brake | Real fixed-pitch Dragonfly rotors do not provide the modeled reverse-thrust capability | **Done** (Oct 4): explicit opt-in simulation toggle beside sticky throttle; tiny pulse only at zero manual throttle while rising above 1 m; normal descent/flare preserved | Extra 0.2 m/s² braking, 160 RPM pulse and 50 W load are [EST] convenience values, not mission hardware/performance. No negative throttle or full reverse-flight mode. |
+| Fictional reverse-thrust brake | Real fixed-pitch Dragonfly rotors do not provide the modeled reverse-thrust capability | **Updated Oct 12:** explicit opt-in simulation toggle; zero manual throttle above 1 m adds a gentle downward pulse through the apex, releasing at 0.6 m/s descent; ordinary sink limit/flare preserved | Extra 0.2 m/s² acceleration, 160 RPM reverse animation and 50 W load are [EST] convenience values, not mission hardware/performance. No negative throttle or full reverse-flight mode. |
 | Flight altitude | nominal ~400 m; profiles 0.5–4 km; ceiling 4 km [PUB] | **Done** (Sep 28): flight plans offer 40 m hop, 150 m scouting and 400 m cruise; the Auto demo stays at ~46 m | Optional: higher profiles (0.5–4 km) |
 | Flight duration | ≤ ~30 min; battery +10 °C per 30 min; 35 °C cap [PUB] | **Done** (Sep 28): 35 °C guard, flight-time estimate, 30 min timer, "land now" advisories | Optional: automatic landing on "land now" |
 | Descent | avoid steep, fast descents (vortex ring state) [PUB] | **Partial**: advisory from `74ed2c4`; Land now flares at ≤ 1.3 m/s | Optional: slanted approach in Auto |
@@ -369,6 +369,13 @@ Items 1 and 3 and the vortex-ring-state warning are now implemented (see §0). T
 ---
 
 ## Future update requests
+
+- **Interactive inspection milestone (Oct 12): Done.** Mission Internal/Thermal component
+  focus, zoom, opt-in rotation, isolation and shared-clock sampling follow. Camera controls
+  stay separate from flight; pause freezes the full simulation. Model assumptions now
+  explicitly records procedural geometry, invented terrain/mountains/puddle, illustrative
+  scenery, simplified engineering and fictional gameplay additions. See
+  `research/interactive-inspector-2026-10-12.md` for scope and verification.
 
 - **Vehicle inspection milestone (Oct 11): Done.** Credited CAD/payload viewer, NASA print
   reference links, selected geometry corrections and live component details are implemented.

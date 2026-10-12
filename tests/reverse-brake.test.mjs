@@ -23,7 +23,7 @@ test("A tiny opt-in reverse pulse measurably arrests upward momentum sooner", ()
   }
   assert.ok(normalStop - brakeStop >= 0.2 && normalStop - brakeStop < 0.5, `${normalStop} vs ${brakeStop} s`);
   assert.ok(normalPeak - brakePeak > 0.3 && normalPeak - brakePeak < 0.9, `${normalPeak} vs ${brakePeak} m`);
-  assert.equal(brake.reverseBrakeActive, false, "pulse ends once upward momentum is gone");
+  assert.equal(brake.reverseBrakeActive, false, "pulse ends after entering the bounded shallow descent");
   assert.equal(brake.throttle, 0, "the throttle itself never goes negative");
 });
 
@@ -39,12 +39,12 @@ test("Reverse braking uses a small rotor pulse and additional battery power, nev
   assert.equal(brake.reverseBrakeActive, false);
 });
 
-test("The pulse cannot activate above zero throttle, while descending, near touchdown or over liquid", () => {
+test("The pulse cannot activate above zero throttle, beyond its sink gate, near touchdown or over liquid", () => {
   for (const setup of [
     s => { s.throttle = 0.01; },
-    s => { s.verticalSpeed = -0.5; },
-    s => { s.verticalSpeed = 0; },
+    s => { s.verticalSpeed = -model.reverseBrakeMaxSink; },
     s => { s.altitude = 0.5; },
+    s => { s.altitude = 1; },
     s => { s.altitude = 0; s.verticalSpeed = 0; },
     s => { s.positionX = pools[0].x; s.positionZ = pools[0].z; },
     s => { s.altitudeHold = 0; },
@@ -61,6 +61,24 @@ test("The pulse cannot activate above zero throttle, while descending, near touc
     assert.equal(brake.altitude, normal.altitude);
     assert.equal(brake.verticalSpeed, normal.verticalSpeed);
     assert.equal(brake.power, normal.power);
+  }
+});
+
+test("Reverse thrust continues through the apex and adds a small actual downward velocity", () => {
+  for (const dt of [1 / 120, 1 / 60, 0.05]) {
+    for (const velocity of [0.03, 0, -0.3]) {
+      const normal = climbing(false), reverse = climbing(true);
+      normal.verticalSpeed = reverse.verticalSpeed = velocity;
+      stepFlight(normal, dt); stepFlight(reverse, dt);
+      assert.equal(reverse.reverseBrakeActive, true);
+      if (velocity <= 0) assert.ok(reverse.verticalSpeed < 0);
+      assert.ok(Math.abs(normal.verticalSpeed - reverse.verticalSpeed - model.reverseBrakeAccel * dt) < 1e-10);
+      assert.ok(reverse.altitude < normal.altitude);
+      assert.ok(reverse.rotorPhase[0] < 0, "fictional reverse rotation is visible");
+      for (let frame = 0; reverse.verticalSpeed > 0 && frame < 10; frame++) stepFlight(reverse, dt);
+      assert.ok(reverse.verticalSpeed < 0, "the pulse continues through the climb apex");
+      assert.equal(reverse.reverseBrakeActive, true);
+    }
   }
 });
 

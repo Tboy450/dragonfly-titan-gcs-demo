@@ -1,6 +1,7 @@
 // Shared live state, page helpers and the 3D renderer used by every panel.
 import { createChaseRenderer } from "../chase-vehicle.mjs?v=dev";
 import { createFlightState, deriveFlight } from "../flight-model.mjs?v=dev";
+import { createInspector } from "../vehicle-inspector.mjs?v=dev";
 
 export const state = {
   ...createFlightState({ weatherSeed: crypto.getRandomValues(new Uint32Array(1))[0] }),
@@ -11,6 +12,7 @@ export const state = {
   throttleSpring: readThrottlePreference(),
   vehicleModel: readVehicleModelPreference(),
   missionLayer: "exterior", thermalRange: "full", selectedPart: null,
+  inspector: createInspector(),
   lastTick: performance.now(),
 };
 

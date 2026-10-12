@@ -3,8 +3,10 @@ import { model } from "../flight-model.mjs?v=dev";
 import { $, chaseRenderer, clamp, flightCanvas, state } from "./context.mjs?v=dev";
 import { backdropInk, drawMissionBackdrop, drawMissionBackdropOverlay, isCleanroomPortrait } from "./mission-backdrop.mjs?v=dev";
 import { missionVehicleState } from "../vehicle-presentation.mjs?v=dev";
+import { inspectionTarget } from "../vehicle-inspector.mjs?v=dev";
 
 const flightCtx = flightCanvas.getContext("2d");
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const titanMountainImage = new Image();
 titanMountainImage.decoding = "async";
@@ -464,13 +466,16 @@ function drawPartMarkers(ctx, labels) {
   for (const [index, label] of labels.entries()) {
     let { x, y } = label;
     for (let tries = 0; tries < 12 && partMarkers.some(m => Math.hypot(m.x - x, m.y - y) < 20); tries += 1) y += 14;
-    partMarkers.push({ ...label, index: index + 1, x, y });
+    const width = ctx.canvas.width / (window.devicePixelRatio || 1), height = ctx.canvas.height / (window.devicePixelRatio || 1);
+    const drawn = label.onCanvas !== false && x > 14 && x < width - 14 && y > 14 && y < height - 14;
+    partMarkers.push({ ...label, index: index + 1, x, y, drawn });
   }
   ctx.save();
   ctx.font = "800 11px Inter, Arial, sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   for (const marker of partMarkers) {
+    if (!marker.drawn) continue;
     const selected = marker.name === state.selectedPart;
     ctx.beginPath();
     ctx.arc(marker.x, marker.y, selected ? 12 : 9, 0, Math.PI * 2);
@@ -495,7 +500,10 @@ function drawVehicle(ctx, w, h) {
   const displayState = missionVehicleState(state, isCleanroomPortrait());
   if (chaseRenderer) {
     const layered = state.missionLayer !== "exterior";
-    const labels = chaseRenderer.drawMission(ctx, w, h, displayState, { layer: state.missionLayer, parked: isCleanroomPortrait() });
+    const labels = chaseRenderer.drawMission(ctx, w, h, displayState, {
+      layer: state.missionLayer, parked: isCleanroomPortrait(), inspector: state.inspector,
+      focusPart: inspectionTarget(state), now: state.lastTick, reduceMotion: reducedMotion.matches,
+    });
     drawMissionBackdropOverlay(ctx, w, h, labels);
     if (layered) drawPartMarkers(ctx, labels);
     else partMarkers = [];

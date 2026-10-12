@@ -998,6 +998,22 @@ body.arrival .pilot-hud { display: none; }
 .sampling-sequence li[aria-current="step"] { color: #f8e095; border-color: #f8e095; font-weight: 700; }
 .sampling-sequence small { display: block; color: #bcd0e2; font-size: 0.72rem; line-height: 1.5; }
 .sampling-sequence a { color: #a4ddf3; text-underline-offset: 2px; }
+.vehicle-inspector { display: flex; flex-wrap: wrap; align-items: end; gap: 10px 14px; padding: 0 0 12px; margin-bottom: 12px; border-bottom: 1px solid #38474a; }
+.vehicle-inspector[hidden] { display: none; }
+.inspection-select { display: grid; flex: 1 1 200px; min-width: 0; gap: 4px; color: #bcd0e2; font-size: 0.75rem; }
+.inspection-select select { width: 100%; min-width: 0; height: 36px; padding: 0 8px; color: #e9f2ff; background: #112029; border: 1px solid #46545a; border-radius: 4px; font: inherit; }
+.inspection-tools { display: flex; align-items: center; gap: 4px; }
+.inspection-tools button { display: grid; place-items: center; flex: 0 0 36px; width: 36px; height: 36px; min-height: 36px; padding: 0; border-radius: 4px; }
+.inspection-tools img { width: 19px; height: 19px; filter: invert(1); pointer-events: none; }
+.inspection-tools button[aria-pressed="true"] { background: #246958; border-color: #70dec4; }
+.inspection-tools output { width: 42px; text-align: center; font: 0.75rem Consolas, monospace; }
+.inspection-options { display: flex; flex: 1 0 100%; min-width: 0; flex-wrap: wrap; align-items: center; gap: 8px 18px; font-size: 0.75rem; color: #d5e1e7; }
+.inspection-options label { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; }
+.inspection-options input { width: 16px; height: 16px; margin: 0; accent-color: #70dec4; }
+.inspection-options output { color: #f8e095; min-width: 0; overflow-wrap: anywhere; }
+body.inspection-rotate:not(.pilot-view) #flight-canvas { touch-action: none; cursor: grab; }
+body.inspection-rotate:not(.pilot-view) #flight-canvas:active { cursor: grabbing; }
+#flight-canvas:focus-visible { outline: 2px solid #70dec4; outline-offset: -3px; }
 .plan-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 10px 14px; background: #1b2433; border-left: 3px solid var(--cyan); }
 .plan-strip[hidden] { display: none; }
 .weather-strip { padding: 8px 14px; border-left: 3px solid var(--amber); background: #29251c; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 0.8rem; }

@@ -466,6 +466,59 @@ test("The Internal layer returns the published envelope dimensions for the bluep
   assert.equal(original.dimensions, undefined, "the mock-up model has no published dimensions");
 });
 
+test("Inspector frames isolated assemblies at every angle and restores the ordinary model", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { createInspector, inspectionGroups, resetInspector } = await import("../dist/vehicle-inspector.mjs");
+  const renderer = fakeRenderer(), chase = createChaseRenderer({ renderer });
+  const s = { ...createFlightState(), vehicleModel: "research", hold: true };
+  const before = structuredClone(s), inspector = createInspector();
+  inspector.isolate = true;
+  let focus, camera;
+  const render = renderer.render.bind(renderer);
+  renderer.render = (scene, cam) => {
+    render(scene, cam); camera = cam;
+    if (!focus) return;
+    const allowed = inspectionGroups(focus);
+    for (const group of Object.values(chase.subsystems)) {
+      if (!allowed.includes(group.name)) assert.equal(group.visible, false, `${group.name} hidden`);
+    }
+    for (const name of allowed) {
+      const group = chase.subsystems[name];
+      if (!group.visible) continue;
+      const box = new THREE.Box3().setFromObject(group);
+      for (const x of [box.min.x, box.max.x]) for (const y of [box.min.y, box.max.y]) for (const z of [box.min.z, box.max.z]) {
+        const p = new THREE.Vector3(x, y, z).project(cam);
+        assert.ok(Math.abs(p.x) < 0.99 && Math.abs(p.y) < 0.99 && Math.abs(p.z) < 1, `${name} framed`);
+      }
+    }
+  };
+  for (const [w, h] of [[900, 600], [360, 460]]) {
+    for (const name of ["battery", "drills", "sample-lines", "sample-carousel", "drams", "mmrtg"]) {
+      focus = name;
+      for (const azimuth of [0, 1.5, 3, 4.5]) {
+        inspector.azimuth = azimuth;
+        const labels = chase.drawMission(context2d, w, h, s, { layer: "internal", inspector, focusPart: focus, reduceMotion: true });
+        assert.equal(labels.inspection, true);
+        assert.equal(labels.dimensions, undefined);
+        assert.deepEqual(labels.filter(l => l.onCanvas).map(l => l.name), chase.subsystems[name].userData.label ? [name] : []);
+      }
+    }
+  }
+  assert.deepEqual(s, before, "inspection is presentation-only");
+  focus = null;
+  resetInspector(inspector);
+  const labels = chase.drawMission(context2d, 900, 600, s, { layer: "internal", inspector, reduceMotion: true });
+  assert.equal(labels.inspection, undefined);
+  assert.equal(labels.dimensions.length, 3);
+  const start = camera.position.clone();
+  chase.drawMission(context2d, 900, 600, s, { layer: "internal", inspector, focusPart: "battery", now: 16 });
+  assert.ok(camera.position.distanceTo(start) > 0, "camera moves even with paused science");
+  chase.draw(context2d, 900, 600, s);
+  for (const name of ["fuselage", "arms", "motors", "rotors", "landing-gear"]) assert.equal(chase.subsystems[name].visible, true);
+  assert.equal(chase.subsystems.battery.visible, false);
+});
+
 test("The air loop follows the fan and the trim flaps", async () => {
   const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
   const { createFlightState } = await import("../dist/flight-model.mjs");

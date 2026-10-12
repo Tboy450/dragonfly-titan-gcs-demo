@@ -51,6 +51,7 @@ preserve the originals; [compact viewing copies](dist/assets/vehicle-references/
 load on demand in the Mission view.
 
 Three.js 0.180.0 is included under its [MIT license](dist/vendor/three/LICENSE).
+Inspection toolbar icons are from [Lucide](dist/vendor/lucide/README.md), with their license included.
 The Titan terrain reference image was supplied for this project. NASA mission
 references are linked within the app.
 
@@ -89,13 +90,32 @@ archived in [archive/](archive/).
   altitude.
 - **Reverse (sim)** beside **Throttle: sticky** arms a tiny fictional reverse-thrust
   brake, off by default. In manual flight, lower the throttle all the way to **0%**
-  while still rising above 1 m: the pulse adds up to 0.2 m/s² of downward braking
-  until upward momentum is gone. It uses a small modeled rotor pulse and 50 W extra
+  above 1 m: the pulse adds up to 0.2 m/s² of downward acceleration, continuing
+  through the climb apex until reaching 0.6 m/s descent. It uses a small modeled rotor
+  pulse, reversed rotor animation and 50 W extra
   electrical load [EST]. Normal descent speed and the gentle touchdown flare stay
   unchanged. It does not operate in Auto, flight plans, altitude hold, safety descent,
-  arrival or over liquid. Both views show off / armed / braking, and landed saves
+  arrival or over liquid. Both views show off / armed / down thrust, and landed saves
   retain the enabled setting. This is a simulator convenience, **not a capability
   of the real Dragonfly's fixed-pitch rotors**.
+
+## Vehicle Inspection
+
+Mission's **Internal** and **Thermal** layers have an inspection toolbar for the research
+model. Choose a component to frame it, optionally isolate its assembly, zoom, or enable
+drag rotation. With the canvas focused, arrow keys orbit, +/- zoom and Home resets the
+view. These inputs do not steer the vehicle. Native Ctrl browser zoom and page scrolling
+remain available; touch rotation is opt-in. The original mock-up keeps its existing view.
+
+**Follow sampling** tracks the shared drill, transfer, carousel and DraMS stages. Manual
+component selection ends follow mode. The pause icon pauses the whole simulation, so the
+science clock, power and sample results cannot drift apart; the inspection camera remains
+usable. Reset restores the whole model. Geometry, stage timing and visual flow markers
+are illustrative, not flight CAD or onboard imagery.
+
+**Model assumptions** now separates sourced design references, approximate geometry,
+invented training geography, simplified engineering and deliberate simulation additions.
+Implementation and limitations: [interactive inspection notes](research/interactive-inspector-2026-10-12.md).
 
 ## Arrival at Titan
 

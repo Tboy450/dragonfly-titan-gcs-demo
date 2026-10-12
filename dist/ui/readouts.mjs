@@ -84,7 +84,7 @@ export function updateReadouts() {
   document.querySelectorAll("[data-reverse-brake]").forEach(button => {
     const active = state.reverseBrakeActive && !state.hold && !state.edl;
     button.setAttribute("aria-pressed", String(state.reverseBrakeEnabled));
-    button.textContent = `Reverse (sim): ${!state.reverseBrakeEnabled ? "off" : active ? "braking" : "armed"}`;
+    button.textContent = `Reverse (sim): ${!state.reverseBrakeEnabled ? "off" : active ? "down thrust" : "armed"}`;
   });
 
   rotorTiles.forEach((tile, index) => {

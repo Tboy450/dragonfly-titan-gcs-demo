@@ -37,6 +37,33 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-12: Add interactive inspection and clarify simulation assumptions
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Add interactive inspection and bounded reverse assist`.
+- **What changed:** Mission Internal/Thermal now supports component focus, bounded zoom,
+  opt-in orbit, assembly isolation and reset. Sampling-follow tracks the existing four
+  science stages; pause uses the shared simulation hold. Camera controls do not steer the
+  aircraft and the full model returns in Pilot/Exterior. Touch rotation is opt-in and
+  native page scrolling/browser zoom remain available. Added local, credited Lucide icons.
+- **Owner additions:** Expanded Model assumptions into sourced/approximate geometry,
+  illustrative environment, simplified engineering and deliberate simulation additions.
+  Corrected the fictional reverse assist to add a slight downward push through the climb
+  apex, with reversed rotor animation. The extra acceleration is bounded at 0.2 m/s2 and
+  cuts off at 0.6 m/s descent or below the existing 1 m clearance gate. The existing 50 W
+  extra load and other manual-flight guards are retained; the ordinary landing flare stays.
+- **Assumptions:** Inspection geometry and sample motion remain illustrative, not flight
+  CAD or onboard imagery. Reverse assist remains explicitly fictional and off by default.
+  No new science/thermal performance values or duplicate sampling clocks were introduced.
+  Details: `research/interactive-inspector-2026-10-12.md`.
+- **Archive:** Prior affected sources and desktop/phone screenshots preserved under
+  `archive/interactive-inspector-2026-10-11`, from `8b12b3c` with matching archive tag.
+- **Checks:** All 129 Node tests pass. Edge/Playwright checks cover desktop and 360/390 px
+  phones, real canvas pixels/framing/orbit, isolation restoration, shared pause/follow,
+  keyboard/pointer separation from flight, Ctrl zoom passthrough, icons and page errors.
+  Screenshot review also removed the irrelevant rotor-diameter caption from close-ups.
+- **Open / next:** Separately sourced LD/GC modes and realistic science scheduling remain
+  future work; this milestone keeps the existing short educational sampling job.
+
 ### 2026-10-11: Animate the shared drill-to-lab sampling sequence
 - **Signed:** Codex (OpenAI).
 - **Commit:** `Animate state-linked Dragonfly sampling sequence`.

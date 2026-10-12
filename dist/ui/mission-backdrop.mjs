@@ -424,6 +424,7 @@ function arrow(ctx, from, to, size) {
 
 // Over the vehicle (called after the diagram): blueprint dimensions and title, thermal note.
 export function drawMissionBackdropOverlay(ctx, w, h, labels) {
+  if (labels?.inspection) return;
   const layer = state.missionLayer;
   ctx.save();
   if (layer === "internal" && state.vehicleModel !== "original") {
@@ -483,7 +484,9 @@ function showPicker() {
   picker.hidden = state.view !== "mission";
   if (picker.hidden) return;
   const parked = isCleanroomPortrait();
-  $("vehicle-view-label").textContent = parked ? "Vehicle / Parked" : "Vehicle / North up";
+  $("vehicle-view-label").textContent = parked ? "Vehicle / Parked" : layer !== "exterior" ? "Vehicle / Inspection" : "Vehicle / North up";
+  $("vehicle-view-reference").textContent = layer !== "exterior" && state.vehicleModel !== "original" && (state.inspector.focusPart || state.inspector.followSampling)
+    ? "Illustrative assembly" : "Rotor diameter 1.35 m";
   $("vehicle-heading-overlay").hidden = parked;
   const choices = layer === "thermal" ? thermalBackdrops : layer === "internal" ? internalBackdrops : exteriorBackdrops;
   const current = layer === "thermal" ? thermal : layer === "internal" ? internal : exterior;

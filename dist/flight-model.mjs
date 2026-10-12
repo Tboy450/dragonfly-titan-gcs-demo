@@ -17,7 +17,7 @@ export const model = Object.freeze({
   // Titan's 1.35 m/s2 gravity arrests a climb slowly. Both limits are rounded demo values.
   maxClimbAccel: 1.8, maxSinkAccel: 1.2, maxHorizontalAccel: 1.0,
   // Fictional opt-in reverse-thrust pulse, not a capability of Dragonfly's fixed-pitch rotors.
-  reverseBrakeAccel: 0.2, reverseBrakeRpm: 160, reverseBrakePowerW: 50, reverseBrakeMinAltitude: 1,
+  reverseBrakeAccel: 0.2, reverseBrakeRpm: 160, reverseBrakePowerW: 50, reverseBrakeMinAltitude: 1, reverseBrakeMaxSink: 0.6,
   takeoffAltitude: 40, cruiseFloor: 20, cruiseSpeed: 10, liquidClearance: 2,
 });
 
@@ -131,10 +131,11 @@ function stepVertical(state, climbTarget, dt, allowReverseBrake = false) {
   }
   const change = (target - state.verticalSpeed) * (1 - Math.exp(-2.5 * dt));
   state.verticalSpeed += clamp(change, -model.maxSinkAccel * dt, model.maxClimbAccel * dt);
-  if (allowReverseBrake && state.throttle === 0 && target < 0 && state.verticalSpeed > 0
+  if (allowReverseBrake && state.throttle === 0 && target < 0 && state.verticalSpeed > -model.reverseBrakeMaxSink
     && state.altitude > model.reverseBrakeMinAltitude && !overLiquid(state.positionX, state.positionZ)) {
-    // Only cancel residual upward motion; the pulse cannot add downward speed.
-    state.verticalSpeed -= Math.min(state.verticalSpeed, model.reverseBrakeAccel * dt);
+    // Fictional [EST]: continue gently through the apex into a shallow descent, then release.
+    // Normal landing flare remains in control below the clearance gate.
+    state.verticalSpeed -= Math.min(state.verticalSpeed + model.reverseBrakeMaxSink, model.reverseBrakeAccel * dt);
     state.reverseBrakeActive = true;
   }
   state.altitude = Math.max(0, state.altitude + state.verticalSpeed * dt);
@@ -280,7 +281,7 @@ export function stepFlight(state, dt) {
     const spin = i % 2 === 0 ? 1 : -1;
     const mix = 1 + front * state.pitch * 0.07 - side * state.roll * 0.08 + spin * state.yaw * 0.04;
     state.rotorRpm[i] = follow(rpm, baseRpm * mix, 4, dt);
-    state.rotorPhase[i] = (state.rotorPhase[i] + state.rotorRpm[i] * Math.PI / 30 * dt * spin) % (Math.PI * 2);
+    state.rotorPhase[i] = (state.rotorPhase[i] + state.rotorRpm[i] * Math.PI / 30 * dt * spin * (state.reverseBrakeActive ? -1 : 1)) % (Math.PI * 2);
   });
   state.power = (stopped ? 100 : flightPower(state)) + (state.reverseBrakeActive ? model.reverseBrakePowerW : 0);
   stepScience(state, dt);
