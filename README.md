@@ -9,6 +9,8 @@ NASA flight product or a validated flight dynamics model.
 
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
+The next visual milestone is tracked part by part in
+[Interior realism checklist](INTERIOR-REALISM-TODO.md), starting with numbered callouts.
 
 ## Run Locally
 
@@ -214,6 +216,18 @@ planning map shades the same terrain, with lighter areas representing higher gro
 Both the geology and science results are examples, not actual observations from Titan.
 
 ## Quick Survey and Diagnostics
+
+**Surface operations queue** is expandable beneath Science Payload in both views. Queue
+up to 12 fresh-sample, downlink or recharge steps, reorder/remove pending steps, then Run.
+The queue stays at its starting landing site. Each sample includes acquisition and analysis;
+downlink sends the data present when its step begins; recharge hibernates to the chosen
+battery percentage using the existing power/thermal model. 1x/20x/100x use the shared clock.
+
+Unsafe conditions, manual takeover or interrupted work stop the queue for explicit review
+and Resume. Global Pause freezes the existing job; Stop queue cancels unfinished sampling
+without refund. Reloads preserve the plan/completed steps but never start it automatically.
+This is training automation, not official flight software. Extended samples still use
+estimated timelines. Clear the queue to plan operations at a different landing site.
 
 Science Payload retains the **30-second demo** and offers **LDMS training (10 min)** and
 **GCMS training (30 min)**. Extended profiles have distinct stages, instrument loads and

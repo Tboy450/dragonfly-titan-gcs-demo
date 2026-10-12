@@ -131,7 +131,7 @@ export function updatePlanStrip() {
   } else if (plan.report) status = planSummary(plan.report);
   $("plan-strip-title").textContent = active ? "Autonomous flight" : plan.status === "complete" ? "Flight complete" : "Flight plan stopped";
   $("plan-strip-status").textContent = status;
-  document.querySelector(".warp-switch").hidden = !active;
+  document.querySelector("#plan-strip .warp-switch").hidden = !active;
   $("plan-abort").hidden = !active;
   $("plan-dismiss").hidden = active;
 }

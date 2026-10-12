@@ -370,6 +370,14 @@ Items 1 and 3 and the vortex-ring-state warning are now implemented (see §0). T
 
 ## Future update requests
 
+- **Interior rebuild / callout correction (owner, Oct 12):** tracked in
+  `INTERIOR-REALISM-TODO.md`, with all 24 numbered assemblies, video/code diagnosis,
+  per-part acceptance criteria and shell/casing/insulation research. Labels first, then
+  one asset at a time. Do not assume a continuous inner liner without public evidence.
+- **Surface operations queue (Oct 12): Done as training automation.** Reuses existing
+  science, radio and hibernation models; explicit resume after interruption/reload. This
+  does not establish real mission procedure timings or add a cup inventory.
+
 - **Interactive inspection milestone (Oct 12): Done.** Mission Internal/Thermal component
   focus, zoom, opt-in rotation, isolation and shared-clock sampling follow. Camera controls
   stay separate from flight; pause freezes the full simulation. Model assumptions now

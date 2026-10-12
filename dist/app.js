@@ -3,6 +3,7 @@ import { smoothCameraPose } from "./flight-camera.mjs?v=dev";
 import { advanceRest, stepFlight } from "./flight-model.mjs?v=dev";
 import { planActive } from "./flight-plan.mjs?v=dev";
 import { canAccelerateScience } from "./science.mjs?v=dev";
+import { canAccelerateOperations } from "./operations.mjs?v=dev";
 import { state } from "./ui/context.mjs?v=dev";
 import "./ui/persistence.mjs?v=dev";
 import { drawFlight } from "./ui/flight-view.mjs?v=dev";
@@ -13,6 +14,7 @@ import "./ui/vehicle-references.mjs?v=dev";
 import { updatePilotHud } from "./ui/pilot-hud.mjs?v=dev";
 import { updateExpeditionPanel } from "./ui/expedition-panel.mjs?v=dev";
 import "./ui/science-panel.mjs?v=dev";
+import { updateOperationsPanel } from "./ui/operations-panel.mjs?v=dev";
 import { updatePlanPanel, updatePlanStrip } from "./ui/plan-panel.mjs?v=dev";
 import "./ui/controls.mjs?v=dev";
 import { stepArrival } from "./ui/arrival.mjs?v=dev";
@@ -37,14 +39,14 @@ function tick(now) {
   const dt = Math.min(0.05, (now - state.lastTick) / 1000);
   state.lastTick = now;
   // Accelerated science uses ordinary physics steps, including heat, energy and weather.
-  if (!planActive(state) && !state.downlinkActive && !canAccelerateScience(state)) state.timeWarp = 1;
+  if (!planActive(state) && !state.downlinkActive && !canAccelerateScience(state) && !canAccelerateOperations(state)) state.timeWarp = 1;
   if (state.edl) {
     stepArrival(dt);
   } else if (state.restSeconds > 0 && !state.hold) {
     advanceRest(state, state.wakeAtMorning ? sleepStepSeconds : undefined);
   } else for (let step = 0; step < state.timeWarp; step += 1) {
     stepFlight(state, dt);
-    if (!planActive(state) && !state.downlinkActive && !canAccelerateScience(state)) { state.timeWarp = 1; break; }
+    if (!planActive(state) && !state.downlinkActive && !canAccelerateScience(state) && !canAccelerateOperations(state)) { state.timeWarp = 1; break; }
   }
   if (!state.edl) { updateDayLog(state); finishNight(state); }
   smoothCameraPose(state, dt);
@@ -61,6 +63,7 @@ function tick(now) {
     updateBackdropPicker();
     updatePilotHud();
     updateExpeditionPanel();
+    updateOperationsPanel();
     document.querySelectorAll("[data-warp]").forEach(button => button.setAttribute("aria-pressed", String(Number(button.dataset.warp) === state.timeWarp)));
     if (now - planPanelTime > 300) { updatePlanPanel(); planPanelTime = now; }
     drawChart();

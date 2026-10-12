@@ -4,6 +4,7 @@ import { createPlan } from "./flight-plan.mjs?v=dev";
 import { validExpedition } from "./expedition.mjs?v=dev";
 import { createWeatherState, setFixedWind, validWeather } from "./weather.mjs?v=dev";
 import { validScienceExtension } from "./science-programs.mjs?v=dev";
+import { savedOperations, validOperations } from "./operations.mjs?v=dev";
 
 export const SAVE_VERSION = 1;
 export const SAVE_KEY = "dragonfly-save-v1";
@@ -17,7 +18,7 @@ const persistent = [
   "thermalAuto", "fan", "fault", "arrivalElectricW", "wind", "payloadDelta", "weather", "reverseBrakeEnabled",
   "motorsCold", "motorCoolClock", "preheatWh", "preheats",
   // Mission, scouting, science and data
-  "mission", "scoutedSites", "scoutLog", "science", "dataStoredBits", "dataReturnedBits", "expedition",
+  "mission", "scoutedSites", "scoutLog", "science", "dataStoredBits", "dataReturnedBits", "expedition", "operations",
   // Today's operations checklist (Titan day cycle)
   "dayLog",
 ];
@@ -32,6 +33,7 @@ export function canSave(state) {
 export function snapshotState(state, savedAt = Date.now()) {
   const values = {};
   for (const key of persistent) if (state[key] !== undefined) values[key] = copy(state[key]);
+  if (state.operations) values.operations = savedOperations(state.operations);
   if (state.plan?.status === "draft") values.planDraft = { waypoints: copy(state.plan.waypoints), altitude: state.plan.altitude };
   return { version: SAVE_VERSION, savedAt, values };
 }
@@ -46,6 +48,7 @@ export function restoreState(state, snapshot) {
   if (values.weather !== undefined && (!validWeather(values.weather) || values.wind !== values.weather.lastWind)) return false;
   if (values.reverseBrakeEnabled !== undefined && typeof values.reverseBrakeEnabled !== "boolean") return false;
   if (values.science !== undefined && !validScienceExtension(values.science)) return false;
+  if (values.operations !== undefined && !validOperations(values.operations)) return false;
   for (const key of persistent) if (values[key] !== undefined) state[key] = copy(values[key]);
   if (values.weather === undefined) {
     state.weather = createWeatherState();

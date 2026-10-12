@@ -3,6 +3,7 @@ import { createPlan, stepPlan, planGuidance, updateScouting, abortPlan, estimate
 import { createScienceState, stepScience } from "./science.mjs?v=dev";
 import { createExpeditionState, stepExpedition } from "./expedition.mjs?v=dev";
 import { createWeatherState, stepWeather, weatherAdvisory, weatherPhase } from "./weather.mjs?v=dev";
+import { createOperations, pauseOperations, stepOperations } from "./operations.mjs?v=dev";
 // Environmental values: APL's TFAWS 2024 report. Performance values are demo assumptions.
 export const model = Object.freeze({
   massKg: 875, titanG: 1.352, earthG: 9.80665,
@@ -39,6 +40,7 @@ export function createFlightState({ weatherSeed = 450 } = {}) {
   return {
     ...createSystemsState(),
     ...createScienceState(),
+    operations: createOperations(),
     mode: "Preflight", auto: true, hold: false, missionTime: 0, autoClock: 0,
     altitude: 0, verticalSpeed: 0, speed: 0, throttle: model.hoverThrottle, altitudeHold: null,
     reverseBrakeEnabled: false, reverseBrakeActive: false,
@@ -170,6 +172,7 @@ export function stepFlight(state, dt) {
   if (state.hold || dt <= 0) return;
   state.reverseBrakeActive = false;
   stepWeather(state, dt);
+  stepOperations(state);
   state.missionTime += dt;
   stepPlan(state, dt);
   const restricted = flightRestriction(state);
@@ -287,6 +290,7 @@ export function stepFlight(state, dt) {
   stepScience(state, dt);
   stepSystems(state, dt, model.batteryEnergyKwh);
   stepExpedition(state, dt);
+  stepOperations(state);
   if (state.sampleTime < 0 || state.missionTime - state.sampleTime >= 0.5 - 1e-9) {
     state.sampleTime = state.missionTime;
     state.chart.push({ time: state.missionTime, altitude: state.altitude, powerKw: state.power / 1000, speed: state.speed });
@@ -301,6 +305,7 @@ export function stepFlight(state, dt) {
 
 // Hand control to the pilot without changing what the aircraft is currently doing.
 export function takeManualControl(state) {
+  pauseOperations(state, "Pilot took manual control; review the queue before resuming");
   abortPlan(state, "Flight plan stopped: pilot took manual control");
   if (state.auto || state.mission.guidance) {
     state.throttle = throttleForClimb(state.verticalSpeed);
@@ -314,6 +319,7 @@ export function takeManualControl(state) {
 
 export function commandFlight(state, mode) {
   if (mode === "hold") { state.hold = !state.hold; return; }
+  pauseOperations(state, "Flight command took control; review the queue before resuming");
   abortPlan(state, "Flight plan stopped by a flight command");
   state.restSeconds = 0;
   state.hibernating = false;

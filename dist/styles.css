@@ -1005,6 +1005,18 @@ body.arrival .pilot-hud { display: none; }
 .science-details { padding: 10px 0; border-top: 1px solid var(--line-strong); font-size: 0.8rem; line-height: 1.5; overflow-wrap: anywhere; }
 .science-details summary { cursor: pointer; color: var(--cyan); }
 .science-details p { margin: 10px 0; }
+.science-program-label[hidden] { display: none; }
+.operations-controls, .operations-item-actions { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.operations-controls button { display: inline-flex; align-items: center; gap: 6px; }
+.operations-controls img { width: 16px; height: 16px; filter: invert(1); }
+#operations-list { padding-left: 20px; }
+#operations-list li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+#operations-list li > span { display: block; color: var(--muted); }
+#operations-list li[data-status="running"] > strong { color: var(--amber); }
+#operations-list li[data-status="done"] > strong { color: var(--green); }
+.operations-item-actions button { padding: 5px 8px; font-size: 0.75rem; }
+#operations-count { color: var(--muted); margin-left: 6px; }
+#operations-title { scroll-margin-top: 12px; }
 #science-record-count { color: #bcd0e2; margin-left: 6px; }
 #science-warp { margin-top: 8px; }
 #sampling-stages { grid-template-columns: repeat(auto-fit, minmax(66px, 1fr)); }

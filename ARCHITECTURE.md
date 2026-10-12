@@ -48,6 +48,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/flight-plan.mjs` | Flight plans: waypoints, GO/NO-GO estimate, uplink delay, autopilot guidance, leapfrog scouting |
 | `dist/science.mjs` | Instruments: DragonCam data, DraGMet log and seismometer, DraGNS counting, DrACO/DraMS sampling, ground types; pure `samplingSequence()` projects the existing job clock into illustrative drill/transfer/carousel/analysis stages |
 | `dist/science-programs.mjs` | Estimated demo/LDMS/GCMS stage profiles, exact stage energy integration and validation of added save fields; separate from DOM and hardware geometry |
+| `dist/operations.mjs` | Stationary surface queue: existing sample/radio/hibernation orchestration, explicit manual interruption, FIFO completion, bounded editing and paused save normalization; never advances time or adds energy |
 | `dist/expedition.mjs` | First expedition objectives, suggested flight drafts, site-linked notebook, FIFO sample downlink status, frozen debrief and validation of the optional save field |
 | `dist/weather.mjs` | Seeded, compressed training gust/rain events, advance advisories, optional strong storm, fixed wind, wetting/drying, plan restrictions and weather save validation |
 | `dist/edl.mjs` | Arrival (entry, descent, landing) timeline from the published EDL figure |
@@ -84,6 +85,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `ui/exterior-scenes.mjs` | Cached photo-based Exterior A/C painting: NASA/APL dune panorama and responsively placed Cassini portraits; local images and credits in `dist/assets/exterior/` |
 | `ui/pilot-hud.mjs` | Pilot-view systems list (same values as the Mission panels) |
 | `ui/science-panel.mjs` | Science Payload panel and sampling button |
+| `ui/operations-panel.mjs` | Expandable queue editor, status, run/stop, recharge estimate and manual-command handoff |
 | `ui/plan-panel.mjs` | Flight Plan dialog, plan status strip, time-speed buttons |
 | `ui/expedition-panel.mjs` | Guided objective and suggested-route actions, persistent notebook and debrief; compact in Pilot view |
 | `ui/controls.mjs` | Flight buttons, sticks, keyboard, camera modes, view switch, other controls |
@@ -97,6 +99,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | File | What it is |
 |---|---|
 | `CHANGELOG.md` | Signed record of every change (newest first) |
+| `INTERIOR-REALISM-TODO.md` | Owner-requested callout fix, numbered part-by-part asset rebuild and enclosure/insulation views; persistent handoff checklist |
 | `RESEARCH-COMPENDIUM.md` | Research reference: sources, values with tags, implementation status (§7), next steps (§8), future requests |
 | `RESEARCH.md`, `RESEARCH-FOLLOWUP.md` | Earlier source audit and GPT/Codex review notes |
 | `research/titan_physics.py` | Script behind the [CALC] values |
@@ -115,6 +118,7 @@ There is one live `state` object (`ui/context.mjs`). Each part of the simulation
 | `mission-systems.mjs` | `battery`, `power`, `coreC`, `batteryC`, `trim`, `fan`, `fault`, `hibernating`, `elapsed` (Titan clock), `downlinkActive`, `antennaDeploy`, `motorsCold`, `flightSeconds`, `scoutedSites`, `rdeC`/`twtaC`, `mission` |
 | `flight-plan.mjs` | `plan` (waypoints, status, phase, estimate, report) |
 | `science.mjs` | `science` (samples, log, counters, selected/active profile, job energy), `dataStoredBits`, `sciencePowerW`, `scienceHeatW` |
+| `operations.mjs` | `operations` (ordered items, cursor, anchored landing site, execution state and transient ownership); saved without active execution |
 | `expedition.mjs` | `expedition` (status, step, start/end clocks, next sample index, three-site notebook, energy/flight/temperature metrics) |
 | `weather.mjs` | `weather` (seed, mode, clocks, baseline/last wind, event, intensity, haze, rain, wetness, six recent advisories), effective `wind` |
 | `ui/arrival.mjs` | `edl`, `edlTime` (only while the arrival plays) |

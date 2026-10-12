@@ -37,6 +37,29 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-12: Add a surface operations queue and record the interior rebuild plan
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Add surface operations queue and interior realism checklist`.
+- **What changed:** Expandable queue for up to 12 fresh-sample, downlink and recharge steps;
+  add/reorder/remove, explicit run/resume/stop, shared physics and time acceleration.
+  Radio steps drain their starting FIFO boundary, recharge uses real simulated net power,
+  and finished/remaining steps survive landed checkpoints without unattended restart.
+- **Safety behavior:** Manual flight/competing commands and unsafe conditions stop the queue.
+  Ordinary weather warnings slow it to 1x; recharge and strong-storm warnings stop for review.
+  Global Pause preserves the job. Stop queue cancels an unfinished sample without refund.
+- **Assumptions:** This is local training automation, not flight software or a verified
+  uploaded schedule. Existing science timing/thermal assumptions remain unchanged.
+- **Owner follow-up:** Reviewed `1000046285.mp4`; numbered markers visibly stack while
+  orbiting. Code confirms one-axis screen-Y collision nudges without anchor leaders.
+  `INTERIOR-REALISM-TODO.md` records the label fix, all 24 numbered assemblies, enclosure/
+  insulation research and future layered views. No asset rebuild or label fix claimed yet.
+- **Archive:** Prior 1ab20bc files/screenshots in `archive/operations-queue-2026-10-12`.
+- **Checks:** All 148 Node tests pass, including 11 queue tests and existing motor/radio/
+  endurance tests. Browser checks cover queue ordering, actual sampling, downlink manual
+  stop, real recharge, pause/reload and 1440/390/360 px layouts with no page errors.
+- **Next:** Fix annotation anchoring/occlusion first, then rebuild the carousel and remaining
+  assemblies one at a time, with sourced casing and construction detail.
+
 ### 2026-10-12: Add science training profiles and compact mission sections
 - **Signed:** Codex (OpenAI).
 - **Commit:** `Add science profiles and expandable mission sections`.

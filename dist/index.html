@@ -77,7 +77,7 @@
       </section>
 
       <nav class="section-nav" aria-label="Page sections">
-        <a href="#flight-canvas">Flight</a><a href="#expedition-title">Objectives</a><a href="#science-section">Science</a><a href="#expedition-notebook-button">Notebook</a><a href="#engineering-title">References</a>
+        <a href="#flight-canvas">Flight</a><a href="#expedition-title">Objectives</a><a href="#science-section">Science</a><a href="#operations-title">Operations</a><a href="#expedition-notebook-button">Notebook</a><a href="#engineering-title">References</a>
       </nav>
 
       <section id="weather-strip" class="weather-strip" role="status" hidden>
@@ -531,6 +531,35 @@
             <output id="science-interpretation" class="rest-status"></output>
             <ol id="science-log" class="science-log" aria-label="Science log"></ol>
           </details>
+
+          <details class="science-details" id="operations-panel">
+            <summary id="operations-title">Surface operations queue <span id="operations-count">0 / 0</span></summary>
+            <div class="operations-entry">
+              <label class="science-program-label" for="operation-kind">Operation
+                <select id="operation-kind"><option value="demo">Quick sample / 30 s</option><option value="ldms">LDMS sample / 10 min (est.)</option><option value="gcms">GCMS sample / 30 min (est.)</option><option value="downlink">Downlink stored data</option><option value="recharge">Recharge</option></select>
+              </label>
+              <label class="science-program-label" id="operation-target-label" for="operation-target" hidden>Battery target
+                <select id="operation-target"><option value="50">50%</option><option value="80" selected>80%</option><option value="95">95%</option><option value="100">100%</option></select>
+              </label>
+              <button id="operation-add" type="button">Add operation</button>
+            </div>
+            <ol id="operations-list" aria-label="Queued operations"></ol>
+            <div class="operations-controls">
+              <button id="operations-run" type="button"><img src="./vendor/lucide/play.svg?v=dev" alt="">Run queue</button>
+              <button id="operations-pause" type="button"><img src="./vendor/lucide/pause.svg?v=dev" alt="">Stop queue</button>
+              <button id="operations-clear" type="button">Clear queue</button>
+            </div>
+            <div id="operations-warp" class="warp-switch" role="group" aria-label="Operations simulation speed" hidden>
+              <button type="button" data-warp="1" aria-pressed="true">1x</button><button type="button" data-warp="20" aria-pressed="false">20x</button><button type="button" data-warp="100" aria-pressed="false">100x</button>
+            </div>
+            <details class="science-details">
+              <summary>Queue behavior &amp; assumptions</summary>
+              <p>Local training automation, not flight software or an uploaded mission schedule. Up to 12 operations run at this landing site. Each sample entry collects a fresh sample and includes analysis; there is no cup inventory or automatic reuse for a different method.</p>
+              <p>Downlink sends the data present when that step begins. Recharge hibernates using the shared generator, battery and thermal model. Its duration depends on net power, not an instant refill. Time acceleration also advances weather and temperatures.</p>
+              <p>Manual flight, competing commands and unsafe conditions stop the queue for review. Weather warnings return to 1x; during recharge or a strong storm warning they stop the queue. Resume is explicit. Stop queue cancels unfinished sampling; spent energy is not refunded. Global Pause instead freezes the current operation. Reloads keep the plan and completed steps but stop execution. Clear the queue to use a different landing site.</p>
+            </details>
+          </details>
+          <output id="operations-status" class="rest-status" role="status">No operations queued</output>
 
           <div class="panel-heading">
             <span>Comms</span>
