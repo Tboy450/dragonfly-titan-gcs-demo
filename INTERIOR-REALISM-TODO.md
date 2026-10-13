@@ -64,6 +64,12 @@ assistant can continue the same way. Every step happens in the same change as th
    nose bulkhead -1.56, aft bulkhead +1.08). Stay inside the structural envelope. Check
    clearance only against the already-rebuilt set; never shrink or move a correct part to dodge
    an old placeholder. Record legacy overlaps as follow-ups for that neighbor's own pass.
+   **True scale and placement (owner, October 13):** where possible, where a part sits and how
+   big it is come from sources too, not only its shape, so that every part fits together like
+   the real vehicle. Use layout sources (cutaway and CAD figures, installation photos, test-article
+   sections, published dimensions) to place each part. Where no source gives the position,
+   mark it [EST] in the code and app text, list it in the placement table below, and revisit it
+   when a layout source turns up.
 7. **Honesty in the app.** Update the part's text in `dist/ui/layers-panel.mjs`
    (`componentInfo`, `sources`) to say what is published and what is estimated. Never draw
    invented hidden internals; enclosure-level is fine when that is all the sources show.
@@ -80,6 +86,26 @@ assistant can continue the same way. Every step happens in the same change as th
     changed; tick the box below with links to the research notes and what remains estimated.
 12. **Publish.** Commit with the assistant's co-author trailer, `git push origin master:main`
     plus the archive tag, then confirm the GitHub Pages run and the live build stamp.
+
+## Placement Status of Rebuilt Parts
+
+Size and position basis for each rebuilt part (October 13, 2026). [PUB] published, [EST]
+estimated. Parts with an estimated position need a layout pass against the sources below.
+
+| Part | Size | Position |
+|---|---|---|
+| 06 Sample carousel | [EST] 0.36 m drum from SciTech 2024 fig. 2 proportions | [EST] attic, from SciTech 2024 figs. 1-2 schematic |
+| 07 Wonderwall | [EST] | [EST] attic, from SciTech 2024 figs. 2 and 11 |
+| 08 DraMS | [EST] | [EST] keyed to the Wonderwall opening |
+| 13 Frontier radio | [PUB] 4 x 6 in slices; width [EST] from the photo | [EST] the old placeholder's spot on the starboard floor |
+| 12 IEM | [EST] from standard Micro-D sizes in the photos | [EST] port wall; photo shows it on a wall panel beside a PSU |
+| 11 PSUs | [EST] from standard D-sub sizes in the photo | PSU 1 beside the IEM as photographed (absolute position [EST]); PSU 2 [EST] |
+| Drills (not yet rebuilt) | | Fore-aft position cross-checks with DragonCam fig. 3 |
+
+Layout sources to use for the placement pass: DragonCam paper fig. 2 (lander CAD with internal
+boxes), DrACO LPSC 2022 fig. 1, SciTech 2024 fig. 1, ICES-2020-160 fig. 4, ICES-2023-389
+figs. 3-4, TFAWS 2024 slide 7 (full-scale test article section with component mock-up boxes),
+APL's rotating CAD video, NASA/APL integration photos.
 
 ## Handoff Notes (for Claude and other assistants)
 

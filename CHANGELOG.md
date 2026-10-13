@@ -39,6 +39,19 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-13: Process notes: detail capture, true scale and placement
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commits:** "Describe detail capture as the goal, with techniques as examples" and
+  "Add the placement rule and placement status table"
+- **What changed:** In `INTERIOR-REALISM-TODO.md`, process step 3 now states the goal (capture
+  what the sources show and replicate it, so parts look as distinct or alike as the real
+  hardware), with the IEM/PSU techniques given as examples rather than fixed steps. Step 6 adds
+  the owner's rule that, where possible, scale and placement also come from sources so parts
+  fit together like the real vehicle; positions without a source are marked [EST]. A new
+  "Placement Status of Rebuilt Parts" table lists the size and position basis of parts 06, 07,
+  08, 11, 12 and 13 and the layout sources for a placement pass. Documentation only.
+- **Files:** `INTERIOR-REALISM-TODO.md`, `CHANGELOG.md`
+
 ### 2026-10-13: Correct the IEM and PSUs from the full-resolution photos
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Correct the IEM and PSUs from full-resolution photos and connector standards"
