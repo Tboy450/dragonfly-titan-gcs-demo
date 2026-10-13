@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [side-cameras-2026-10-13](side-cameras-2026-10-13/README.md) | Two plain boxes for the side camera suites before the DragonCam cameras | 2026-10-13 | `archive/side-cameras-2026-10-13` |
 | [iem-v1-2026-10-13](iem-v1-2026-10-13/README.md) | First photo-based IEM (fins front to back, gold connectors in even rows), before the full-resolution correction | 2026-10-13 | `archive/iem-v1-2026-10-13` |
 | [power-units-v1-2026-10-13](power-units-v1-2026-10-13/README.md) | First photo-based PSUs (even connector rows, both on the port side), before the full-resolution correction | 2026-10-13 | `archive/power-units-v1-2026-10-13` |
 | [power-units-2026-10-13](power-units-2026-10-13/README.md) | Two plain green boxes for the PSUs before the photo-based sliced, connector-faced pair | 2026-10-13 | `archive/power-units-2026-10-13` |

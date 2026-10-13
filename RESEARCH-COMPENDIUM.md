@@ -21,6 +21,9 @@ The [IEM pass](research/iem-2026-10-13/README.md) follows NASA/APL's March 2026 
 photos; with no published size, its dimensions are scaled from the photos [EST].
 The [PSU pass](research/power-units-2026-10-13/README.md) draws the two published units from the
 same testing photo; size and placement [EST].
+The [lower-camera pass](research/side-cameras-2026-10-13/README.md) uses the 2026 DragonCam paper:
+the Microscopic Camera is 105 x 155 x 90 mm and images the drill site from 986 mm at 52 degrees
+[PUB]; Down Camera positions [EST].
 
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and

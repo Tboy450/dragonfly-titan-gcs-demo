@@ -7,16 +7,17 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Current Milestone
 
-- [x] Implement the compact, expandable surface operations queue.
-- [x] Review the owner's video `1000046285.mp4` (33.88 s), including frames near 4, 17 and 29 s.
-- [x] Identify a concrete label-layout cause in the code (below).
+- [x] **Codex:** Implement the compact, expandable surface operations queue.
+- [x] **Codex:** Review the owner's video `1000046285.mp4` (33.88 s), including frames near 4, 17 and 29 s.
+- [x] **Codex:** Identify a concrete label-layout cause in the code (below).
 - [ ] Correct label anchoring/overlap (deferred while beginning parts, per latest owner request).
-- [x] Rebuild the first part: DrACO sample carousel (#6), using public integration photos; estimated scale explicitly labeled.
-- [x] Rebuild the second part: Wonderwall interface (#7); contour, openings and independently grouped faces/core/mounts, all detail dimensions estimated.
-- [x] Rebuild #8 DraMS at enclosure level; separate cases/covers, mounting frame and a simplified aligned interface. Detailed internals remain open.
-- [x] Rebuild #13 Frontier radio from APL's photo and published slice size (Claude, October 13).
-- [x] Rebuild #12 IEM from NASA/APL's integration photos (Claude, October 13).
-- [x] Rebuild #11 power switching units from NASA/APL's testing photo (Claude, October 13).
+- [x] **Codex:** Rebuild the first part: DrACO sample carousel (#6), using public integration photos; estimated scale explicitly labeled.
+- [x] **Codex:** Rebuild the second part: Wonderwall interface (#7); contour, openings and independently grouped faces/core/mounts, all detail dimensions estimated.
+- [x] **Codex:** Rebuild #8 DraMS at enclosure level; separate cases/covers, mounting frame and a simplified aligned interface. Detailed internals remain open.
+- [x] **Claude:** Rebuild #13 Frontier radio from APL's photo and published slice size (October 13).
+- [x] **Claude:** Rebuild #12 IEM from NASA/APL's integration photos (October 13).
+- [x] **Claude:** Rebuild #11 power switching units from NASA/APL's testing photo (October 13).
+- [x] **Claude:** Rebuild #23 lower DragonCam cameras from the 2026 DragonCam paper (October 13).
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## The Process (one part per pass)
@@ -100,6 +101,7 @@ estimated. Parts with an estimated position need a layout pass against the sourc
 | 13 Frontier radio | [PUB] 4 x 6 in slices; width [EST] from the photo | [EST] the old placeholder's spot on the starboard floor |
 | 12 IEM | [EST] from standard Micro-D sizes in the photos | [EST] port wall; photo shows it on a wall panel beside a PSU |
 | 11 PSUs | [EST] from standard D-sub sizes in the photo | PSU 1 beside the IEM as photographed (absolute position [EST]); PSU 2 [EST] |
+| 23 Lower cameras | Microscopic Camera [PUB] 105 x 155 x 90 mm; ECAM-P50 heads [EST] | Microscopic Camera [PUB] 986 mm at 52 degrees from the port drill site; Down Cameras [EST] mid-body per DragonCam figs. 2-3 |
 | Drills (not yet rebuilt) | | Fore-aft position cross-checks with DragonCam fig. 3 |
 
 Layout sources to use for the placement pass: DragonCam paper fig. 2 (lander CAD with internal
@@ -115,13 +117,17 @@ APL's rotating CAD video, NASA/APL integration photos.
 - **Rebuilt-set assets to test against:** `carouselAsset` (`dist/sample-carousel.mjs`),
   `wonderwallAsset` (`dist/wonderwall.mjs`), `dramsAsset` (`dist/drams-assembly.mjs`),
   `frontierRadioAsset` (`dist/frontier-radio.mjs`), `iemAsset` (`dist/iem.mjs`),
-  `powerUnitsAsset` (`dist/power-units.mjs`). Add each
+  `powerUnitsAsset` (`dist/power-units.mjs`), `sideCamerasAsset` (`dist/side-cameras.mjs`). Add each
   new part to this list and to the clearance tests of the parts it neighbors.
-- **Suggested order next:** #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
+- **Suggested order next:** #04 nose cameras (same DragonCam paper, figs. 1-2; reuse `dist/ecam.mjs`), #01 drills, #02 sample lines and #24 blowers (DrACO LPSC 2022 figs. 1-3, Honeybee slides), #19 trim device, #17 fan and #18 duct (TFAWS 2024 test-article slides), #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
   references each time; reorder if a clearer source turns up.
 - **Viewing locally:** Codex used Playwright scripts outside the repo; Claude uses the desktop
   app's browser pane with a no-cache static server for `dist/`. Debug hooks on localhost:
   `window.dragonflyState`, `window.dragonflyRenderer`, `window.dragonflyTick(now)`.
+- **Checklist attribution (owner, October 13):** mark every checked item with who did it,
+  **Codex** or **Claude**, as it is checked.
+- **Overlaps:** fix overlaps between rebuilt parts by correcting the layout; overlaps with parts
+  not yet redrawn are only noted in that part's follow-up and fixed when it is redrawn.
 - **Owner preferences that apply here:** realism is the goal, but keep it easy to operate;
   keep the light visible; never throw work away; archive pictures with every replacement; sign
   every change. The owner often checks on a phone, so always check phone width.
@@ -168,7 +174,7 @@ structural envelope. Track unresolved legacy interfaces for their own makeover.
 Current rebuilt set: `sample-carousel` (`carousel-2026-10-12`) and `wonderwall`
 (`wonderwall-2026-10-12`) and `drams` (`drams-2026-10-12`) and `frontier-radio`
 (`frontier-radio-2026-10-13`) and `iem` (`iem-2026-10-13`) and `power-units`
-(`power-units-2026-10-13`). Their installed bounds and clearance are tested together; the
+(`power-units-2026-10-13`) and `side-cameras` (`side-cameras-2026-10-13`). Their installed bounds and clearance are tested together; the
 DraMS neck intentionally passes through the wall aperture.
 
 - [ ] **01 DrACO drill/feed assemblies** (`drills`): housings, feed mechanism, attachment and working clearance.
@@ -176,19 +182,19 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **03 Nose bulkhead** (`nose-bulkhead`): profile, thickness, apertures and relation to the forward bay.
 - [ ] **04 Forward/navigation cameras** (`nose-cameras-inside`): individual bodies, lens openings, mounts and actual enclosure boundaries.
 - [ ] **05 IMU/lidar electronics, FEB/MEB** (`nose-electronics`): distinguish boxes and brackets; verify names/locations against current sources.
-- [x] **06 Cold sample-delivery carousel** (`sample-carousel`): enclosed drum, cooling fins, ports and underside drives; stationary housing, internal indexing cue. [References/limits](research/carousel-2026-10-12/README.md). No exposed invented cup inventory; 0.36 m diameter and placement remain estimates.
+- [x] **Codex:** **06 Cold sample-delivery carousel** (`sample-carousel`): enclosed drum, cooling fins, ports and underside drives; stationary housing, internal indexing cue. [References/limits](research/carousel-2026-10-12/README.md). No exposed invented cup inventory; 0.36 m diameter and placement remain estimates.
 - [ ] **06 dimensional follow-up:** replace proportional scale with an authoritative dimension/CAD if available; reconcile interfaces as #02/#07/#08 are rebuilt. Existing legacy overlap is not corrected by shrinking #06.
-- [x] **07 Wonderwall thermal barrier** (`wonderwall`): contoured reference-based warm/cold partition, interface openings and separate face/core/mount groups. [References and limits](research/wonderwall-2026-10-12.md). Not a verified flight material stack.
+- [x] **Codex:** **07 Wonderwall thermal barrier** (`wonderwall`): contoured reference-based warm/cold partition, interface openings and separate face/core/mount groups. [References and limits](research/wonderwall-2026-10-12.md). Not a verified flight material stack.
 - [ ] **07 dimensional/interface follow-up:** authoritative wall thickness, material stack and real sealed instrument penetrations; reconcile with #08. Published ~5 cm instrument separation is not wall thickness.
-- [x] **08 DraMS assembly** (`drams`): first enclosure-level pass, with separate covers/casings/frame and simplified connection through #07. [References/limits](research/drams-2026-10-12/README.md). Dimensions and details remain estimated.
+- [x] **Codex:** **08 DraMS assembly** (`drams`): first enclosure-level pass, with separate covers/casings/frame and simplified connection through #07. [References/limits](research/drams-2026-10-12/README.md). Dimensions and details remain estimated.
 - [ ] **08 detailed follow-up:** independently source ITMS electrodes, UV laser/LDMS interface, GC hardware, carousel-side pyrolysis oven, fan and actual seals/transfer paths. Do not invent hidden internals or treat the current casings as flight CAD.
 - [ ] **09 Rotorcraft drive electronics** (`rde`): both enclosures, mounting/thermal interfaces and cable exits.
 - [ ] **10 HGA azimuth/elevation actuators** (`hga-actuators`): motors, bearings, bracket geometry and relationship to the antenna mechanism.
-- [x] **11 Power switching units** (`power-units`): two units [PUB]; face mapped connector by connector from the full-resolution testing photo and checked by overlay (eight slices, two ribs, seven 25-way D-subs, small cluster, uncapped port, empty upper right); size from standard D-sub sizes, about 20 x 24 x 19 cm [EST]; PSU 1 beside the IEM on its wall as photographed. [References/limits](research/power-units-2026-10-13/README.md). Corrected October 13 (first version archived).
+- [x] **Claude:** **11 Power switching units** (`power-units`): two units [PUB]; face mapped connector by connector from the full-resolution testing photo and checked by overlay (eight slices, two ribs, seven 25-way D-subs, small cluster, uncapped port, empty upper right); size from standard D-sub sizes, about 20 x 24 x 19 cm [EST]; PSU 1 beside the IEM on its wall as photographed. [References/limits](research/power-units-2026-10-13/README.md). Corrected October 13 (first version archived).
 - [ ] **11 follow-up:** a photo of the second PSU (drawn the same) and of the flight units' real wall positions; separate PSU currents if the power model ever splits them.
-- [x] **12 Integrated electronics module** (`iem`): from the full-resolution photos: black heat-sink top with fins parallel to the face and fastener rows, copper ground strap, bolted face plate with two rows of connector windows over eight columns, mated and labeled Micro-Ds, yellow tape; back to a wall panel beside PSU 1. Size from standard Micro-D sizes, about 28 x 28 x 22 cm [EST]. [References/limits](research/iem-2026-10-13/README.md). Corrected October 13 (first version archived).
+- [x] **Claude:** **12 Integrated electronics module** (`iem`): from the full-resolution photos: black heat-sink top with fins parallel to the face and fastener rows, copper ground strap, bolted face plate with two rows of connector windows over eight columns, mated and labeled Micro-Ds, yellow tape; back to a wall panel beside PSU 1. Size from standard Micro-D sizes, about 28 x 28 x 22 cm [EST]. [References/limits](research/iem-2026-10-13/README.md). Corrected October 13 (first version archived).
 - [ ] **12 follow-up:** an uncovered view of the face to map the windows exactly; real wall position; the wall panel itself once the open-frame structure is modeled; harness routes to the PSUs, radio and instruments. The old HGA-actuator placeholder (#10) currently sits in front of it.
-- [x] **13 Frontier X-band radio** (`frontier-radio`): four black slices on bolted feet, labeled connectors J11-J32, top semi-rigid coax, from APL's photo; 4 x 6 in slice size [PUB], stack width from the photo [EST]. [References/limits](research/frontier-radio-2026-10-13/README.md).
+- [x] **Claude:** **13 Frontier X-band radio** (`frontier-radio`): four black slices on bolted feet, labeled connectors J11-J32, top semi-rigid coax, from APL's photo; 4 x 6 in slice size [PUB], stack width from the photo [EST]. [References/limits](research/frontier-radio-2026-10-13/README.md).
 - [ ] **13 follow-up:** one radio or two (redundancy); real bay location and cable runs to the IEM, TWTA and antennas; reconcile with #12 and #14 when they are rebuilt.
 - [ ] **14 TWTA amplifier** (`twta`): housing and top-deck mounting/heat path; avoid intersecting nearby hardware.
 - [ ] **15 Battery and thermal buffer** (`battery`): outer pack casing first; then sourced heat-pipe/PCM arrangement and optional cutaway, not generic exposed cells.
@@ -199,7 +205,8 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **20 Battery temperature sensor** (`battery-sensor`): verify installation; distinguish an actual sensor body from a diagram marker.
 - [ ] **21 MMRTG fin-root sensor** (`mmrtg-sensor`): same distinction, with verified placement rather than a floating green sphere.
 - [ ] **22 Nose methane/E-field instruments** (`nose-sensors`): individual housings, supports and wire exits.
-- [ ] **23 Side camera suites** (`side-cameras`): both sides, downward camera/micro-imager/LED apertures, mounts and insulation openings.
+- [x] **Claude:** **23 Lower DragonCam cameras** (`side-cameras`): Microscopic Camera on the port side placed from its published 986 mm range at 52 degrees to the port drill site, APL's LED array beside it (365 nm UV emitter), a Down Camera on each side; Malin ECAM heads drawn from the paper's figures (shared `dist/ecam.mjs`); each in a foam cavity behind a 3 mm window, brackets on the bay wall's outer face, harness through the wall. [References/limits](research/side-cameras-2026-10-13/README.md).
+- [ ] **23 follow-up:** the foam blister the Microscopic Camera needs (it is thicker than the 7.62 cm average foam); Down Cameras' exact position; the camera electronics box (ECAM-DVR8P) inside the bay; overlap with the old trim-chimney placeholder (#19) to settle when #19 is redrawn (TFAWS 2024 puts the trim device under the belly).
 - [ ] **24 DrACO blower** (`drill-blower`): housing, inlet/outlet, tube connections and mounting behind the arm.
 
 ## Shell, Insulation and Layered Views
@@ -224,7 +231,7 @@ actual geometry, interfaces and materials before extending the model.
 - [ ] Include restore-all/reset, keyboard/touch access and desktop/mobile checks. Existing
   isolated-part inspection remains available. Wonderwall's named groups prepare this work;
   no new layer-hiding UI has shipped yet.
-- [x] Keep isolated DraMS unobstructed by neighboring carousel/partition; full context returns
+- [x] **Codex:** Keep isolated DraMS unobstructed by neighboring carousel/partition; full context returns
   when isolation is off. DraMS covers/casings/mounts are separately grouped for future controls.
 - [ ] Add an **insulation/construction view** with independently selectable skin, insulation,
   bulkheads/deck and equipment housings, only where supported by references.

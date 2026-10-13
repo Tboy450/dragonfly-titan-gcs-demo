@@ -39,6 +39,34 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-13: Rebuild part 23, the lower DragonCam cameras, from the 2026 camera paper
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Rebuild the lower DragonCam cameras from the 2026 camera paper"
+- **What changed:** The two placeholder boxes are replaced by the cameras in Malin's 2026
+  DragonCam paper: the Microscopic Camera on the port side, placed from its published geometry
+  (986 mm from the drill site at 52 degrees to the surface, lens aimed at it; 105 x 155 x 90 mm),
+  APL's LED array beside it with a 365 nm UV emitter, and a Down Camera on each side looking
+  straight down. Camera heads (new shared `dist/ecam.mjs`) follow the paper's figures: stacked
+  black housing, orange side panels, feet, top connector with flex lead, stepped black lens
+  with an orange ring; the Microscopic Camera adds its focus motor. Each sits in a foam cavity
+  behind a 3 mm window, with its bracket on the bay wall's outer face and its harness passing
+  through. The paper's side view also confirms the model's drill position.
+- **Checklist:** every checked item now names who did it (Codex or Claude), as the owner asked;
+  handoff notes record that and the overlap rule (fix overlaps between rebuilt parts; only note
+  overlaps with parts not yet redrawn).
+- **Sources saved:** DragonCam paper pages, DrACO LPSC 2022, Honeybee KISS slides 20-22, TFAWS
+  2024 test-article slides (`research/sources/`), for this part and the next ones.
+- **Assumptions:** Down Camera position, head size, brackets and harness [EST]. The Microscopic
+  Camera is thicker than the average foam, so the foam must be locally thicker; no blister is
+  drawn. Noted, not fixed: overlap with the old trim-chimney placeholder (#19).
+- **Archive:** `archive/side-cameras-2026-10-13/` (tag at `d40180f`).
+- **Files:** `dist/ecam.mjs`, `dist/side-cameras.mjs` (new), `dist/vehicle-research.mjs`,
+  `dist/ui/layers-panel.mjs`, `tests/side-cameras.test.mjs` (new), `research/`, `archive/`,
+  `INTERIOR-REALISM-TODO.md`, `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`
+- **Checks:** `node --test tests/*.test.mjs` (167 pass, 3 new). Internal and Thermal close-ups and
+  installed views; 375 px phone width; no console errors.
+- **Open / next:** #04 nose cameras from the same paper.
+
 ### 2026-10-13: Process notes: detail capture, true scale and placement
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commits:** "Describe detail capture as the goal, with techniques as examples" and

@@ -10,6 +10,7 @@ import { buildDramsAssembly, dramsAsset } from "./drams-assembly.mjs?v=dev";
 import { buildFrontierRadio } from "./frontier-radio.mjs?v=dev";
 import { buildIem } from "./iem.mjs?v=dev";
 import { buildPowerUnits } from "./power-units.mjs?v=dev";
+import { buildSideCameras } from "./side-cameras.mjs?v=dev";
 
 export function buildResearchModel(kit) {
   const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
@@ -408,8 +409,8 @@ export function buildResearchModel(kit) {
   material = interiorPart("nose-sensors", "external-sensors", "METHAN sensor with the E-field sensor above (starboard nose)", "ICES-2023 p2", 0x6b7278, "exterior");
   mesh(new THREE.BoxGeometry(0.05, 0.07, 0.09), material, [0.455, -0.12, -1.66]);
   mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.1, 8), material, [0.455, 0.02, -1.66]);
-  material = interiorPart("side-cameras", "cold-actuators", "Side camera suites: down camera, micro-imager, LED (under foam, both sides)", "ICES-2023 p2, fig. 3", 0xbfb8aa, "exterior");
-  for (const side of [-1, 1]) mesh(new THREE.BoxGeometry(0.07, 0.12, 0.16), material, [side * 0.455, -0.24, 0.62]);
+  interiorPart("side-cameras", "cold-actuators", "DragonCam lower cameras: Microscopic Camera, LED array, two Down Cameras (in foam cavities)", "DragonCam paper (Clark et al. 2026) figs. 1-3, 5, 12, table 1; brackets and down-camera position estimated", 0xbfb8aa, "exterior");
+  buildSideCameras({ parent: buildTarget, mesh });
   material = interiorPart("drill-blower", "drills", "DrACO sample blower (behind the port forward arm)", "ICES-2023 p5, p7", 0x8c8f93, "exterior");
   mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.1, 12), material, [-0.455, -0.2, -0.56]).rotation.z = Math.PI / 2;
 
