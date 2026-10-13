@@ -23,8 +23,9 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
    says "illustrative", "estimate" or "modeled" wherever a value is not published.
 3. **Keep logic testable.** Simulation code lives in plain modules with no DOM access and gets
    tests; `ui/` modules only read state and update the page.
-4. **Don't commit the research PDFs.** They are other people's publications; cite them.
-   `RESEARCH-COMPENDIUM.md` records which figure or page each value came from.
+4. **Link research PDFs as sources.** Each source README in `research/sources/` gives the PDF
+   link and saves the pages a part was built from as images; `research/PART-SOURCES.md` lists
+   them per part. `RESEARCH-COMPENDIUM.md` records which figure or page each value came from.
 5. **Sign the change log**, including what is estimated and what is still open.
 6. **Never throw away replaced work; archive it.** The owner's rule: digital work is kept, even
    bad or inaccurate versions. When a model, texture, terrain, visual, sound or behavior is

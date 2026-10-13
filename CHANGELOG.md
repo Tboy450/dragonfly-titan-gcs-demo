@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-13: Reword house rule 4 on research PDFs
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Reword the research-PDF house rule"
+- **What changed:** House rule 4 in `ARCHITECTURE.md` said "Don't commit the research PDFs. They
+  are other people's publications". It was written by an assistant on 2026-09-29, not requested
+  by the owner, and its wording implied a problem that did not exist. It now reads "Link
+  research PDFs as sources": the PDF links are the sources, and the pages a part is built from
+  are saved as images in `research/sources/`. Documentation only.
+- **Files:** `ARCHITECTURE.md`, `CHANGELOG.md`
+
 ### 2026-10-13: Rebuild part 12, the Integrated Electronics Module, from NASA/APL photos
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Rebuild the IEM from NASA/APL integration photos"
