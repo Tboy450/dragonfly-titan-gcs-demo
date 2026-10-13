@@ -1,5 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js";
-import { buildEcamHead } from "./ecam.mjs?v=dev";
+import { mountEcam } from "./ecam.mjs?v=dev";
 
 // Part 23: the DragonCam cameras on the lower body (Clark et al., "Optomechanical design of the
 // DragonCam Microscopic Camera", 2026, figs. 1-3, 5, 12 and table 1):
@@ -12,8 +12,10 @@ import { buildEcamHead } from "./ecam.mjs?v=dev";
 //   Microscopic Camera is thicker than the 7.62 cm average foam, so the foam must be locally
 //   thicker there; the camera is drawn feet-in against the structure panel, bulging outward,
 //   without a drawn foam blister [EST].
-// The drill's fore-aft position in this model matches fig. 3, which places the Microscopic
-// Camera from the drill site. Camera bodies follow ecam.mjs. Brackets and harness stubs [EST].
+// DragonCam fig. 3, scaled from the nose tip to the MMRTG end, puts the drill about 0.36 m
+// forward of center; this model's (not yet redrawn) drill is at 0.43 m. The Microscopic Camera
+// is placed from the model's drill site, so it moves with the drill when part 01 is redrawn.
+// Camera bodies follow ecam.mjs. Brackets and harness stubs [EST].
 const drillSite = [-0.54, -0.85, -0.43]; // port drill bit at the ground (skid contact plane)
 // The cameras sit in the foam outside the bay wall: brackets bolt to the wall's outer face (|x| about
 // 0.362) and the harness passes through it [EST]. Nothing reaches into the bay.
@@ -50,22 +52,10 @@ export function buildSideCameras({ parent, mesh }) {
   const ledColors = [0x7a3cff, 0x3a6dff, 0x3fd06a, 0xffb02e, 0xe0302a, 0x7a1010];
   const cameras = [];
   // Each camera's "up" (its connector side) points outboard, so its feet bolt to the inner panel.
-  const local = new THREE.Matrix4(), outboard = side => new THREE.Vector3(side, 0, 0);
+  const outboard = side => new THREE.Vector3(side, 0, 0);
 
   function camera(name, kind, position, target, up) {
-    const g = new THREE.Group();
-    g.name = name;
-    g.position.fromArray(position);
-    local.lookAt(new THREE.Vector3(...target), g.position, up); // +z (the lens) toward the target
-    g.quaternion.setFromRotationMatrix(local);
-    assembly.add(g);
-    const layer = (n, inspectionLayer) => {
-      const l = new THREE.Group(); l.name = `${name}-${n}`; l.userData.inspectionLayer = inspectionLayer; g.add(l); return l;
-    };
-    const parts = { group: g, casing: layer("casing", "equipment-casings"), mounts: layer("mounts", "mounts"),
-      connectors: layer("connectors", "interfaces"), harness: layer("harness", "harnesses"),
-      window: layer("window", "equipment-covers"), cavity: layer("cavity", "insulation") };
-    parts.size = kind ? buildEcamHead({ mesh, kind, ...parts }) : null;
+    const parts = mountEcam({ mesh, parent: assembly, name, kind, position, target, up });
     cameras.push(parts);
     return parts;
   }

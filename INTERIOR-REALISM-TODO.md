@@ -18,6 +18,7 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 - [x] **Claude:** Rebuild #12 IEM from NASA/APL's integration photos (October 13).
 - [x] **Claude:** Rebuild #11 power switching units from NASA/APL's testing photo (October 13).
 - [x] **Claude:** Rebuild #23 lower DragonCam cameras from the 2026 DragonCam paper (October 13).
+- [x] **Claude:** Rebuild #04 nose cameras from the same paper (October 13).
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## The Process (one part per pass)
@@ -104,7 +105,8 @@ estimated. Parts with an estimated position need a layout pass against the sourc
 | 12 IEM | [EST] from standard Micro-D sizes in the photos | [EST] port wall; photo shows it on a wall panel beside a PSU |
 | 11 PSUs | [EST] from standard D-sub sizes in the photo | PSU 1 beside the IEM as photographed (absolute position [EST]); PSU 2 [EST] |
 | 23 Lower cameras | Microscopic Camera [PUB] 105 x 155 x 90 mm; ECAM-P50 heads [EST] | Microscopic Camera [PUB] 986 mm at 52 degrees from the port drill site; Down Cameras [EST] mid-body per DragonCam figs. 2-3 |
-| Drills (not yet rebuilt) | | Fore-aft position cross-checks with DragonCam fig. 3 |
+| 04 Nose cameras | [PUB] camera types; heads as part 23 | [EST] from DragonCam figs. 2-3 (camera panel at z -1.665) |
+| Drills (not yet rebuilt) | | DragonCam fig. 3 puts them about 0.36 m forward of center; model 0.43 m (correction: an earlier note said they matched) |
 
 Layout sources to use for the placement pass: DragonCam paper fig. 2 (lander CAD with internal
 boxes), DrACO LPSC 2022 fig. 1, SciTech 2024 fig. 1, ICES-2020-160 fig. 4, ICES-2023-389
@@ -119,9 +121,10 @@ APL's rotating CAD video, NASA/APL integration photos.
 - **Rebuilt-set assets to test against:** `carouselAsset` (`dist/sample-carousel.mjs`),
   `wonderwallAsset` (`dist/wonderwall.mjs`), `dramsAsset` (`dist/drams-assembly.mjs`),
   `frontierRadioAsset` (`dist/frontier-radio.mjs`), `iemAsset` (`dist/iem.mjs`),
-  `powerUnitsAsset` (`dist/power-units.mjs`), `sideCamerasAsset` (`dist/side-cameras.mjs`). Add each
+  `powerUnitsAsset` (`dist/power-units.mjs`), `sideCamerasAsset` (`dist/side-cameras.mjs`),
+  `noseCamerasAsset` (`dist/nose-cameras.mjs`). Add each
   new part to this list and to the clearance tests of the parts it neighbors.
-- **Suggested order next:** #04 nose cameras (same DragonCam paper, figs. 1-2; reuse `dist/ecam.mjs`), #01 drills, #02 sample lines and #24 blowers (DrACO LPSC 2022 figs. 1-3, Honeybee slides), #19 trim device, #17 fan and #18 duct (TFAWS 2024 test-article slides), #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
+- **Suggested order next:** #01 drills, #02 sample lines and #24 blowers (DrACO LPSC 2022 figs. 1-3, Honeybee slides), #19 trim device, #17 fan and #18 duct (TFAWS 2024 test-article slides), #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
   references each time; reorder if a clearer source turns up.
 - **Viewing locally:** Codex used Playwright scripts outside the repo; Claude uses the desktop
   app's browser pane with a no-cache static server for `dist/`. Debug hooks on localhost:
@@ -176,13 +179,15 @@ structural envelope. Track unresolved legacy interfaces for their own makeover.
 Current rebuilt set: `sample-carousel` (`carousel-2026-10-12`) and `wonderwall`
 (`wonderwall-2026-10-12`) and `drams` (`drams-2026-10-12`) and `frontier-radio`
 (`frontier-radio-2026-10-13`) and `iem` (`iem-2026-10-13`) and `power-units`
-(`power-units-2026-10-13`) and `side-cameras` (`side-cameras-2026-10-13`). Their installed bounds and clearance are tested together; the
+(`power-units-2026-10-13`) and `side-cameras` (`side-cameras-2026-10-13`) and `nose-cameras-inside`
+(`nose-cameras-2026-10-13`). Their installed bounds and clearance are tested together; the
 DraMS neck intentionally passes through the wall aperture.
 
 - [ ] **01 DrACO drill/feed assemblies** (`drills`): housings, feed mechanism, attachment and working clearance.
 - [ ] **02 Pneumatic sample-transfer lines** (`sample-lines`): verified endpoints, tube size/routing and bends; avoid routing through solid housings.
 - [ ] **03 Nose bulkhead** (`nose-bulkhead`): profile, thickness, apertures and relation to the forward bay.
-- [ ] **04 Forward/navigation cameras** (`nose-cameras-inside`): individual bodies, lens openings, mounts and actual enclosure boundaries.
+- [x] **Claude:** **04 Nose cameras** (`nose-cameras-inside`): Forward MAC (hooded lens), Forward WAC, two Side Cameras and two NavCams (yellow top plates) on a camera panel behind the nose cap, each behind a window; same ECAM body throughout, differences from DragonCam fig. 1; positions from figs. 2-3. [References/limits](research/nose-cameras-2026-10-13/README.md).
+- [ ] **04 follow-up:** pointing angles and which low unit is the WAC or the NavCams; the fuller 2026 chin (the low cameras stand out of the older nose shell, noted for the fuselage nose redraw).
 - [ ] **05 IMU/lidar electronics, FEB/MEB** (`nose-electronics`): distinguish boxes and brackets; verify names/locations against current sources.
 - [x] **Codex:** **06 Cold sample-delivery carousel** (`sample-carousel`): enclosed drum, cooling fins, ports and underside drives; stationary housing, internal indexing cue. [References/limits](research/carousel-2026-10-12/README.md). No exposed invented cup inventory; 0.36 m diameter and placement remain estimates.
 - [ ] **06 dimensional follow-up:** replace proportional scale with an authoritative dimension/CAD if available; reconcile interfaces as #02/#07/#08 are rebuilt. Existing legacy overlap is not corrected by shrinking #06.

@@ -11,6 +11,7 @@ import { buildFrontierRadio } from "./frontier-radio.mjs?v=dev";
 import { buildIem } from "./iem.mjs?v=dev";
 import { buildPowerUnits } from "./power-units.mjs?v=dev";
 import { buildSideCameras } from "./side-cameras.mjs?v=dev";
+import { buildNoseCameras } from "./nose-cameras.mjs?v=dev";
 
 export function buildResearchModel(kit) {
   const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
@@ -338,8 +339,8 @@ export function buildResearchModel(kit) {
   interiorPart("sample-lines", "drills", "DrACO pneumatic sample-transfer lines", "APL payload cutaway; NASA Playing Lacrosse on Titan; routing illustrative", 0xa9b9b9, "exterior");
   let material = interiorPart("nose-bulkhead", "equipment-bay", "Nose bulkhead", "ICES-2023 p7, fig. 3", 0x9aa6ad);
   mesh(new THREE.BoxGeometry(0.7, 0.4, 0.02), material, [0, -0.13, -1.56]);
-  material = interiorPart("nose-cameras-inside", "nose-cameras", "Navigation and forward cameras (no active airflow)", "ICES-2023 p7, fig. 3", 0x3d4a52);
-  for (const x of [-0.22, 0, 0.22]) mesh(new THREE.BoxGeometry(0.09, 0.09, 0.12), material, [x, -0.1, -1.8]);
+  interiorPart("nose-cameras-inside", "nose-cameras", "Nose cameras: Forward MAC, Forward WAC, two Side Cameras, two NavCams (no active airflow)", "DragonCam paper (Clark et al. 2026) figs. 1-3; ICES-2023 p7; positions and pointing estimated", 0x3d4a52);
+  buildNoseCameras({ parent: buildTarget, mesh });
   material = interiorPart("nose-electronics", "nose-electronics", "IMUs and lidar electronics (FEB, MEB)", "ICES-2023 p7 (base of the nose), fig. 4", 0x5f8fa3);
   mesh(new THREE.BoxGeometry(0.22, 0.12, 0.2), material, [-0.15, -0.26, -1.36]);
   mesh(new THREE.BoxGeometry(0.14, 0.1, 0.14), material, [0.07, -0.27, -1.38]);

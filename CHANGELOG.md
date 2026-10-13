@@ -39,6 +39,35 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-13: Rebuild part 04, the nose cameras, from the DragonCam paper
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Rebuild the nose cameras from the DragonCam paper"
+- **What changed:** The three placeholder boxes are replaced by the six nose cameras the paper
+  names and places in the nose: Forward MAC (12.6 mm lens), Forward WAC and two Side Cameras
+  (5.8 mm lenses), and two redundant NavCams, on a camera panel behind the nose cap, each behind
+  a window. With the lower three, the model now has the paper's nine cameras. At the owner's
+  question, fig. 1 was checked camera by camera: it is a CGI image of one body seen from
+  different angles; the only real differences are one hooded lens (drawn on the Forward MAC, the
+  one camera with a different lens: an inference) and the NavCams' yellow top plates. The shared
+  camera code (`dist/ecam.mjs`) gains those two variants and a `mountEcam` helper.
+- **Correction:** the previous entry said the paper's side view confirms the model's drill
+  position. Scaled properly (nose tip to MMRTG end), fig. 3 puts the drill about 0.36 m forward
+  of center, about 7 cm aft of the model's 0.43 m. Fixed in the code comment, the part-23 notes
+  and the placement table; the Microscopic Camera follows the drill when part 01 is redrawn.
+- **Assumptions:** positions read from figs. 2-3; pointing angles, which low unit is the WAC or
+  the NavCams, panel size, windows and harness [EST]. Noted, not fixed: the 2026 CAD's chin is
+  fuller than the model's older nose shell, so the low cameras stand out of it.
+- **App text:** Model assumptions and Vehicle part references updated (nose cameras redrawn);
+  README matches.
+- **Archive:** `archive/nose-cameras-2026-10-13/` (tag at `8dfe691`).
+- **Files:** `dist/nose-cameras.mjs` (new), `dist/ecam.mjs`, `dist/side-cameras.mjs`,
+  `dist/vehicle-research.mjs`, `dist/ui/layers-panel.mjs`, `dist/index.html`,
+  `tests/nose-cameras.test.mjs` (new), `research/`, `archive/`, `INTERIOR-REALISM-TODO.md`,
+  `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`, `README.md`
+- **Checks:** `node --test tests/*.test.mjs` (170 pass, 3 new). Internal and Thermal views of the
+  camera panel and installed nose; phone width; no console errors.
+- **Open / next:** #01 drills (DrACO paper figures; the drill position correction above).
+
 ### 2026-10-13: Update the model assumptions, footer and engineering references
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Update model assumptions, footer and part references"
@@ -69,7 +98,8 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   black housing, orange side panels, feet, top connector with flex lead, stepped black lens
   with an orange ring; the Microscopic Camera adds its focus motor. Each sits in a foam cavity
   behind a 3 mm window, with its bracket on the bay wall's outer face and its harness passing
-  through. The paper's side view also confirms the model's drill position.
+  through. (Corrected in the next entry: the paper's side view puts the drill about 7 cm aft of
+  the model's, not exactly at it.)
 - **Checklist:** every checked item now names who did it (Codex or Claude), as the owner asked;
   handoff notes record that and the overlap rule (fix overlaps between rebuilt parts; only note
   overlaps with parts not yet redrawn).

@@ -25,8 +25,13 @@ Pages saved in [`../sources/dragoncam-2026/`](../sources/dragoncam-2026/README.m
 | Each camera in a foam cavity behind a 3 mm window | text [PUB] |
 | Brackets on the bay wall's outer face, harness through the wall to the camera electronics inside | [EST] |
 
-The paper's fig. 3 also cross-checks the model's drill position: measured against the rotor
-pods, the drill sits about 0.43 m forward of center, where the model already had it.
+**Correction (October 13):** this note first said fig. 3 confirms the model's drill position.
+That came from a rough scale taken off the rotor pods. Scaled properly from the nose tip to the
+MMRTG end, fig. 3 puts the drill about 0.36 m forward of center; the model's drill (part 01, not
+yet redrawn) is at 0.43 m, about 7 cm further forward. The Microscopic Camera is placed from the
+model's drill site and will move with the drill when part 01 is redrawn. Fig. 3 by itself puts
+the camera at about z +0.47, y -0.26 m in the model frame (published geometry from the model's
+drill site gives z +0.34, y -0.24).
 
 ## Not known / not modeled
 

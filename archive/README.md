@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [nose-cameras-2026-10-13](nose-cameras-2026-10-13/README.md) | Three dark boxes for the nose cameras before the six DragonCam nose cameras | 2026-10-13 | `archive/nose-cameras-2026-10-13` |
 | [app-text-2026-10-13](app-text-2026-10-13/README.md) | Model assumptions, footer, engineering references and README wording before the part-references update | 2026-10-13 | none (commit `439f044`) |
 | [side-cameras-2026-10-13](side-cameras-2026-10-13/README.md) | Two plain boxes for the side camera suites before the DragonCam cameras | 2026-10-13 | `archive/side-cameras-2026-10-13` |
 | [iem-v1-2026-10-13](iem-v1-2026-10-13/README.md) | First photo-based IEM (fins front to back, gold connectors in even rows), before the full-resolution correction | 2026-10-13 | `archive/iem-v1-2026-10-13` |

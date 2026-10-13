@@ -24,6 +24,9 @@ same testing photo; size and placement [EST].
 The [lower-camera pass](research/side-cameras-2026-10-13/README.md) uses the 2026 DragonCam paper:
 the Microscopic Camera is 105 x 155 x 90 mm and images the drill site from 986 mm at 52 degrees
 [PUB]; Down Camera positions [EST].
+The [nose-camera pass](research/nose-cameras-2026-10-13/README.md) draws the published camera types
+(Forward MAC, Forward WAC, two Side Cameras, two NavCams) where the paper's 2026 CAD puts them;
+pointing and which low unit is which are [EST].
 
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and
