@@ -11,7 +11,8 @@ New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 The interior is being redrawn part by part from sources, tracked in the
 [Interior realism checklist](INTERIOR-REALISM-TODO.md); every photo, paper page and patent
-behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.md).
+behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.md). The
+numbered-callout fix is still first on that checklist.
 
 ## Run Locally
 

@@ -51,7 +51,10 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   photo, iCubeSat paper and patent, ICES-2023, TFAWS 2023 and 2024, and the top-deck fit check,
   with links to the part-sources list and the rebuild checklist. The **footer** adds APL's
   Dragonfly site and "Part sources & credits". README's intro and Vehicle Layers text match.
-  Process step 11 now keeps these current with every part.
+  Process step 11 now keeps these current with every part. Follow-up: the original
+  approximations sentence (dimensions, placement, tube routing, cutter shape) and the README's
+  numbered-callout note were restored, and the exact earlier wording is archived in
+  `archive/app-text-2026-10-13/` so nothing from the original is lost.
 - **Files:** `dist/index.html`, `dist/styles.css`, `README.md`, `CHANGELOG.md`
 - **Checks:** all tests; page checked at desktop and phone width.
 
