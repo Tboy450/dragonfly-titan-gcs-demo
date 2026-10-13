@@ -39,6 +39,31 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-13: Rebuild part 12, the Integrated Electronics Module, from NASA/APL photos
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Rebuild the IEM from NASA/APL integration photos"
+- **What changed:** The teal placeholder box is replaced by the IEM as photographed during
+  integration in March 2026: a dark chassis with a black finned top, nine silver card fronts
+  with gold micro-D connectors and captive screws, a mated harness backshell on every
+  connector with silver-wrapped cables dropping to the floor and gathering at one end
+  (Kapton-taped ties), and bolted base flanges. Its own module with separate casing, mounts,
+  connectors and harness groups for the future hide/show controls. Part text and source links
+  updated. Physics unchanged.
+- **Sources:** two NASA/APL photos (engineering model on the harness; IEM and PSU testing) and
+  APL's video cover, saved in `research/iem-2026-10-13/`.
+- **Assumptions:** no size is published; about 26 x 22 x 24 cm scaled from the engineers' hands
+  [EST]. Card count, connectors, cable routes, flanges and placement (old center, on the floor,
+  card face inboard) are estimates. The photos show it fastened to a vertical structural panel
+  that the model does not have yet. Red handling handles left out.
+- **Archive:** `archive/iem-2026-10-13/` (old code, eight angle pictures, context view; tag at
+  `1820799`).
+- **Files:** `dist/iem.mjs` (new), `dist/vehicle-research.mjs`, `dist/ui/layers-panel.mjs`,
+  `tests/iem.test.mjs` (new), `research/iem-2026-10-13/`, `research/PART-SOURCES.md`,
+  `archive/`, `INTERIOR-REALISM-TODO.md`, `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`
+- **Checks:** `node --test tests/*.test.mjs` (162 pass, 2 new). Internal and Thermal isolated at
+  four angles and in context; 375 px phone width; no console errors, no sideways scrolling.
+- **Open / next:** #11 power switching units.
+
 ### 2026-10-13: Save every photo, figure and patent used for the rebuilt parts
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Save the paper figures and patent drawings behind the rebuilt parts"

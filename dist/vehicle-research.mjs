@@ -8,6 +8,7 @@ import { buildSampleCarousel } from "./sample-carousel.mjs?v=dev";
 import { buildWonderwall } from "./wonderwall.mjs?v=dev";
 import { buildDramsAssembly, dramsAsset } from "./drams-assembly.mjs?v=dev";
 import { buildFrontierRadio } from "./frontier-radio.mjs?v=dev";
+import { buildIem } from "./iem.mjs?v=dev";
 
 export function buildResearchModel(kit) {
   const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
@@ -370,9 +371,8 @@ export function buildResearchModel(kit) {
   material = interiorPart("power-units", "equipment-bay", "Two power switching units (PSUs)", "NASA integration update, 10 Mar 2026; ICES-2023 fig. 4; placement illustrative", 0x4f9a8f);
   mesh(new THREE.BoxGeometry(0.2, 0.22, 0.26), material, [-0.22, -0.18, -0.2]);
   mesh(new THREE.BoxGeometry(0.2, 0.22, 0.22), material, [-0.22, -0.18, 0.12]);
-  material = interiorPart("iem", "equipment-bay", "Integrated electronics module (IEM)", "NASA integration update, 10 Mar 2026; APL CAD reference; placement illustrative", 0x579cae);
-  mesh(new THREE.BoxGeometry(0.22, 0.18, 0.3), material, [0.2, -0.2, -0.12]);
-  for (let z = -0.24; z < 0.03; z += 0.045) mesh(new THREE.BoxGeometry(0.20, 0.008, 0.008), metal, [0.2, -0.106, z]);
+  interiorPart("iem", "equipment-bay", "Integrated electronics module (IEM)", "NASA/APL integration photos, Mar 2026; size scaled from the photos and placement estimated", 0x579cae);
+  buildIem({ parent: buildTarget, mesh });
   interiorPart("frontier-radio", "equipment-bay", "Frontier X-band radio", "APL photo on NASA's Dragonfly pages; APL papers: 4 x 6 in slices, 2.1 kg; stack width and placement estimated", 0x609a73);
   buildFrontierRadio({ parent: buildTarget, mesh });
   material = interiorPart("twta", "twta", "TWTA radio amplifier (under the top deck)", "ICES-2023 p7", 0xc0643c);
