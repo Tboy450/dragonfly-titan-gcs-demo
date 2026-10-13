@@ -82,7 +82,9 @@ assistant can continue the same way. Every step happens in the same change as th
    `node --test tests/*.test.mjs`.
 10. **Look at it.** Mission -> Internal and Thermal -> pick the part -> Isolate, at several
     orbit angles, desktop and phone width (360-390 px). No console errors, nothing clipped.
-11. **Write it up.** Signed `CHANGELOG.md` entry; research README; `RESEARCH-COMPENDIUM.md`
+11. **Write it up.** In the app, keep **Model assumptions** (which parts are redrawn, what is
+    still a placeholder) and **Engineering references > Vehicle part references** current, and
+    the footer's part-sources link working (`dist/index.html`). Signed `CHANGELOG.md` entry; research README; `RESEARCH-COMPENDIUM.md`
     note; `ARCHITECTURE.md` file-table row for the new module; README if user-visible text
     changed; tick the box below with links to the research notes and what remains estimated.
 12. **Publish.** Commit with the assistant's co-author trailer, `git push origin master:main`
