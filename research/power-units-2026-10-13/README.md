@@ -1,49 +1,41 @@
-# Part 11: Power Switching Units (PSUs), Enclosure-Level Rebuild
+# Part 11: Power Switching Units (PSUs)
 
-Implemented October 13, 2026 by Claude (Anthropic Claude Opus 5.5). Revision
-`power-units-2026-10-13`. Source: `dist/power-units.mjs`. An **educational reconstruction from a
-photograph**; no PSU drawing or dimension has been published.
+Revision `power-units-2026-10-13b` (Claude, Anthropic Claude Opus 5.5), October 13, 2026.
+Source: `dist/power-units.mjs`. An **educational reconstruction from a photograph**; no PSU
+drawing or size has been published. The first version (`power-units-2026-10-13`) is archived in
+[`archive/power-units-v1-2026-10-13`](../../archive/power-units-v1-2026-10-13/README.md).
 
 ## Sources
 
 | File / link | What it gives | Credit |
 |---|---|---|
-| `nasa-apl-psu-iem-testing.jpg` | Carlisa Drew, Seth Harvey, Anthony Fanelli, Emory Toomey and TJ Lee test the IEM and a PSU in APL's clean room | NASA/Johns Hopkins APL/Ed Whitman |
-| `psu-detail-crop.jpg` | Crop of the PSU from that photo | same |
-| [NASA March 10, 2026 blog](https://science.nasa.gov/blogs/dragonfly/2026/03/10/nasas-dragonfly-mission-begins-rotorcraft-integration-testing-stage/) | "The IEM and both PSUs were connected to Dragonfly's wiring system and passed their first power-service checks"; PSUs "control the flow of power to Dragonfly's instruments and systems" | NASA |
-| [APL March 12, 2026 release](https://www.jhuapl.edu/news/news-releases/260312-dragonfly-integration-begins) | same photo and captions | Johns Hopkins APL |
+| `nasa-apl-psu-iem-testing-full.jpg` (6723 x 4480) and the 1280 px copy | IEM and a PSU in testing; the face of one PSU in detail | NASA/Johns Hopkins APL/Ed Whitman |
+| `psu-detail-crop.jpg` | Crop of the PSU | same |
+| `face-map-overlay.jpg` | The model's connector map (green), slice dividers (blue) and ribs (yellow) drawn over the photo, to check placement | Claude, over the NASA/APL photo |
+| [NASA March 10, 2026 blog](https://science.nasa.gov/blogs/dragonfly/2026/03/10/nasas-dragonfly-mission-begins-rotorcraft-integration-testing-stage/) | "The IEM and both PSUs were connected to Dragonfly's wiring system"; PSUs "control the flow of power" | NASA |
+| [APL March 12, 2026 release](https://www.jhuapl.edu/news/news-releases/260312-dragonfly-integration-begins) | Same photo; video caption: engineers install the IEM and PSU on the open-frame lander structure | Johns Hopkins APL |
+| [`../sources/connector-standards/`](../sources/connector-standards/README.md) | D-sub sizes used as the ruler | |
 
-The IEM photos in [`../iem-2026-10-13/`](../iem-2026-10-13/README.md) show the same scene.
-
-## What Was Built
+## What was drawn
 
 | Feature | Basis |
 |---|---|
 | Two units | [PUB] "both PSUs" |
-| Silver connector face built from four horizontal slices with dark seams | photo; slice heights [EST] |
-| Rows of tall connectors: six on the upper row, three in the middle, six lower; face screws | photo; exact count [EST]. In the photo they carry pink test caps; here they are mated to the harness |
-| Black top and black side covers | photo |
-| A backshell on every connector; silver-wrapped cables drop and gather toward the gap between the two units, with Kapton-taped ties | photo style; routes [EST] |
-| Bolted base flanges | [EST] |
-| About 24 cm wide, 22 cm tall, 20 cm deep each | [EST] scaled from the gloved hands in the photo |
-| Port bay floor at the old placeholders' centers, connector faces inboard (facing the IEM and radio across the bay) | [EST] |
+| Eight vertical slices; a rib across the face and a shorter rib over its left part | photo |
+| Large connectors stacked two-high on the two left slices; a cluster of small connectors next to them; three large connectors and an uncapped silver port along the lower right; empty upper right; screw posts on the middle dividers | photo, mapped connector by connector and checked by overlay |
+| Large = 25-way D-sub (shell B, 53 mm), medium = 9-way (shell E, 31 mm) | standard sizes matched to the photo |
+| Black top band, top and side covers | photo |
+| About 20 cm wide, 24 cm tall, 19 cm deep | [EST]: two 53 mm D-sub flanges stacked between the ribs need a face about 21.5 cm tall; the photo's proportions then give the width |
+| Every connector mated to a silver-wrapped cable (pink test caps in the photo) | [EST] flight configuration |
+| PSU 1 on the port wall, beside the IEM and on its left as seen from inside | photo arrangement; wall [EST] |
+| PSU 2 on the starboard wall, drawn the same as PSU 1 | [EST]: only one PSU is photographed |
 
-Mesh groups per unit: `psu-N-casing` (equipment-casings), `psu-N-mounts` (mounts),
-`psu-N-connectors` (interfaces), `psu-N-harness` (harnesses). The red handles in the photo
-are ground handling gear and are left out. No circuit boards are drawn.
-
-## Not Known / Not Modeled
-
-- Real dimensions, slice count and connector types; whether both units look alike.
-- Where they mount in the flight lander (the photo shows the testing setup next to the IEM).
-- Separate PSU currents: the simulator models whole-vehicle power only.
+Red handling handles are left out. No circuit boards are drawn.
 
 ## Checks
 
-`tests/power-units.test.mjs`: two units, four slice faces each, at least twelve connectors each
-with a mated backshell, independent layers, inside the allowance and the bay, casings on the
-floor and apart, faces inboard, clear of the carousel, Wonderwall, DraMS, radio and IEM. All
-164 tests pass. Internal and Thermal isolated at four angles, a face-on view and in context;
-375 px phone width; no console errors. `model-vs-photo.jpg` compares them.
-
-Previous placeholders and restore steps: [`archive/power-units-2026-10-13`](../../archive/power-units-2026-10-13/README.md).
+`tests/power-units.test.mjs`: two units, eight slices, two ribs, seven 25-way D-subs, one
+uncapped port, every other connector mated, nothing in the empty upper right, independent
+layers, on the floor inside the walls, faces inboard, PSU 1 on the IEM's wall 1-12 cm from it,
+both clear of the rebuilt set and the IEM. `model-vs-photo-v2.jpg` shows the overlay, a close
+view and the installed bay; `model-vs-photo.jpg` is the first version.

@@ -39,6 +39,38 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-13: Correct the IEM and PSUs from the full-resolution photos
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Correct the IEM and PSUs from full-resolution photos and connector standards"
+- **Why:** The owner noticed the new IEM and PSUs looked like copies of each other, with the same
+  evenly spaced connector rows, and asked for more sources and for details captured properly.
+  NASA's image server has the testing photo at 6723 x 4480 and the harness photo at 3000 x 3996;
+  the first versions were drawn from 1280-pixel copies.
+- **IEM:** heat-sink fins now run parallel to the face, with rows of fasteners; copper ground
+  strap; silver face plate bolted round its edge; black connector windows in two rows across
+  eight columns; Micro-D connectors at standard sizes, each mated to a labeled, thicker
+  silver-wrapped cable; yellow tape strips; mounted with its back to the port wall. About
+  28 x 28 x 22 cm, scaled from the Micro-D plugs (was 26 x 22 x 24).
+- **PSUs:** the face is mapped connector by connector from the photo and checked by drawing the
+  map over it: eight slices, two ribs, seven 25-way D-subs (four left, three lower right), a small
+  cluster, an uncapped port, screw posts, an empty upper right. About 20 x 24 x 19 cm from the
+  D-sub sizes (was 24 x 22 x 20). PSU 1 now sits beside the IEM on the same wall, on its left as
+  seen from inside, as photographed; PSU 2 is on the starboard wall, drawn the same (only one
+  PSU is photographed).
+- **New sources saved:** full-resolution photos; connector standards
+  (`research/sources/connector-standards/`); the April 2026 top-deck fit-check photo
+  (`research/lander-structure-2026/`) for later structure work. `research/PART-SOURCES.md` and
+  process step 3 updated (full resolution, standard parts as rulers, overlay check).
+- **Archive:** both first versions in `archive/iem-v1-2026-10-13/` and
+  `archive/power-units-v1-2026-10-13/` with pictures; tags at `c36db54`.
+- **Files:** `dist/iem.mjs`, `dist/power-units.mjs`, `dist/ui/layers-panel.mjs`,
+  `dist/vehicle-research.mjs`, `tests/iem.test.mjs`, `tests/power-units.test.mjs`, `research/`,
+  `archive/`, `INTERIOR-REALISM-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (164 pass). Face, close and installed views in
+  Internal and Thermal; overlay of the PSU map on the photo; 375 px phone width; no console
+  errors.
+- **Open / next:** an uncovered view of the IEM face; the second PSU; #14 TWTA.
+
 ### 2026-10-13: Rebuild part 11, the two power switching units, from NASA/APL's photo
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Rebuild the power switching units from NASA/APL's testing photo"

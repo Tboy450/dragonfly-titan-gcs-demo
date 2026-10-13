@@ -31,13 +31,20 @@ assistant can continue the same way. Every step happens in the same change as th
    (photograph, labeled figure or published dimension). Skip parts whose only source is a
    vague diagram until one turns up. Work on one part at a time; finish, verify and publish it
    before starting the next.
-3. **Research and credit; save everything used.** Save every photo, paper figure and patent
+3. **Research and credit; save everything used.** Look for every view of the part and of the
+   parts it is made of, and use the **full-resolution** originals (NASA's image server often
+   has 4-7k pixel versions behind the page copy). Standard parts in a photo (connectors,
+   fasteners) have published sizes: use them as a ruler for scale and as real proportions.
+   Map visible details one by one (positions, sizes, types, empty areas) and check the map by
+   drawing it over the photo; matching or mirrored units are fine only when the sources show
+   them that way.
+   Save every photo, paper figure and patent
    drawing the part is built from in the project: photos in `research/<part>-<date>/`, paper
    pages and patent sheets as images in `research/sources/<source>/` (shared between parts),
    each with a README giving citation, link, credit and what it constrains. Add the part's row
    to `research/PART-SOURCES.md`. Search patents too (Google Patents): they can help with
    design choices. Tag every number [PUB] (published), [CALC] (derived) or [EST] (estimated).
-   Never use image generation. Keep PDFs out of the project; save page images instead.
+   Never use image generation. Link the PDFs as sources and save the pages used as images.
 4. **Archive before replacing (house rule 6).** `archive/<part>-<date>/` holds exact copies
    of every file the change replaces, angle-matched screenshots of the old part (Internal and
    Thermal, several orbit angles, desktop and phone UI), and a README with restore steps.
@@ -151,10 +158,10 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **08 detailed follow-up:** independently source ITMS electrodes, UV laser/LDMS interface, GC hardware, carousel-side pyrolysis oven, fan and actual seals/transfer paths. Do not invent hidden internals or treat the current casings as flight CAD.
 - [ ] **09 Rotorcraft drive electronics** (`rde`): both enclosures, mounting/thermal interfaces and cable exits.
 - [ ] **10 HGA azimuth/elevation actuators** (`hga-actuators`): motors, bearings, bracket geometry and relationship to the antenna mechanism.
-- [x] **11 Power switching units** (`power-units`): two units [PUB], each with a silver face of four horizontal slices, rows of mated connectors and harness, black top and side covers, bolted flanges; from NASA/APL's March 2026 testing photo. [References/limits](research/power-units-2026-10-13/README.md). No published size: about 24 x 22 x 20 cm each [EST].
-- [ ] **11 follow-up:** real size and connectors; actual mounting location; separate PSU currents if the power model ever splits them.
-- [x] **12 Integrated electronics module** (`iem`): finned black top, nine silver card fronts with gold micro-D connectors, a backshell and silver-wrapped cable on every connector, bolted base flanges; from NASA/APL's March 2026 photos. [References/limits](research/iem-2026-10-13/README.md). No published size: about 26 x 22 x 24 cm scaled from the photos [EST].
-- [ ] **12 follow-up:** real size and card count; mount it on the vertical structural panel the photos show once the open-frame structure is modeled; route its harness to the PSUs, radio and instruments.
+- [x] **11 Power switching units** (`power-units`): two units [PUB]; face mapped connector by connector from the full-resolution testing photo and checked by overlay (eight slices, two ribs, seven 25-way D-subs, small cluster, uncapped port, empty upper right); size from standard D-sub sizes, about 20 x 24 x 19 cm [EST]; PSU 1 beside the IEM on its wall as photographed. [References/limits](research/power-units-2026-10-13/README.md). Corrected October 13 (first version archived).
+- [ ] **11 follow-up:** a photo of the second PSU (drawn the same) and of the flight units' real wall positions; separate PSU currents if the power model ever splits them.
+- [x] **12 Integrated electronics module** (`iem`): from the full-resolution photos: black heat-sink top with fins parallel to the face and fastener rows, copper ground strap, bolted face plate with two rows of connector windows over eight columns, mated and labeled Micro-Ds, yellow tape; back to a wall panel beside PSU 1. Size from standard Micro-D sizes, about 28 x 28 x 22 cm [EST]. [References/limits](research/iem-2026-10-13/README.md). Corrected October 13 (first version archived).
+- [ ] **12 follow-up:** an uncovered view of the face to map the windows exactly; real wall position; the wall panel itself once the open-frame structure is modeled; harness routes to the PSUs, radio and instruments. The old HGA-actuator placeholder (#10) currently sits in front of it.
 - [x] **13 Frontier X-band radio** (`frontier-radio`): four black slices on bolted feet, labeled connectors J11-J32, top semi-rigid coax, from APL's photo; 4 x 6 in slice size [PUB], stack width from the photo [EST]. [References/limits](research/frontier-radio-2026-10-13/README.md).
 - [ ] **13 follow-up:** one radio or two (redundancy); real bay location and cable runs to the IEM, TWTA and antennas; reconcile with #12 and #14 when they are rebuilt.
 - [ ] **14 TWTA amplifier** (`twta`): housing and top-deck mounting/heat path; avoid intersecting nearby hardware.
