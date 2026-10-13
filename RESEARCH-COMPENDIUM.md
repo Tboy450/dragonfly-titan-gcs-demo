@@ -19,6 +19,8 @@ APL's photo and the published 4 x 6 in slice size [PUB]; stack width, connectors
 are [EST]. Whether Dragonfly flies one radio or two is not published.
 The [IEM pass](research/iem-2026-10-13/README.md) follows NASA/APL's March 2026 integration
 photos; with no published size, its dimensions are scaled from the photos [EST].
+The [PSU pass](research/power-units-2026-10-13/README.md) draws the two published units from the
+same testing photo; size and placement [EST].
 
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and

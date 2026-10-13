@@ -39,6 +39,31 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-13: Rebuild part 11, the two power switching units, from NASA/APL's photo
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Rebuild the power switching units from NASA/APL's testing photo"
+- **What changed:** The two green placeholder boxes are replaced by the two PSUs as
+  photographed in March 2026 testing: a silver connector face built from four horizontal
+  slices with rows of connectors (mated to the harness; the photo shows pink test caps), black
+  top and side covers, a backshell and silver-wrapped cable on every connector gathering
+  toward the gap between the units, Kapton-taped ties and bolted base flanges. Own module with
+  per-unit casing, mounts, connectors and harness groups. Part text and source links updated.
+  Physics unchanged.
+- **Sources:** NASA/APL testing photo (Ed Whitman) and a PSU crop in
+  `research/power-units-2026-10-13/`; NASA's March 2026 blog ("both PSUs").
+- **Assumptions:** two units [PUB]; size about 24 x 22 x 20 cm each scaled from the photo [EST];
+  slice heights, connector rows, cable routes, flanges and placement (old centers, on the floor,
+  faces inboard) [EST]. Red handling handles left out.
+- **Archive:** `archive/power-units-2026-10-13/` (old code, eight angle pictures, context view;
+  tag at `c36db54`).
+- **Files:** `dist/power-units.mjs` (new), `dist/vehicle-research.mjs`,
+  `dist/ui/layers-panel.mjs`, `tests/power-units.test.mjs` (new),
+  `research/power-units-2026-10-13/`, `research/PART-SOURCES.md`, `archive/`,
+  `INTERIOR-REALISM-TODO.md`, `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`
+- **Checks:** `node --test tests/*.test.mjs` (164 pass, 2 new). Internal and Thermal isolated at
+  four angles, face-on and in context; 375 px phone width; no console errors.
+- **Open / next:** #14 TWTA.
+
 ### 2026-10-13: Reword house rule 4 on research PDFs
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Reword the research-PDF house rule"

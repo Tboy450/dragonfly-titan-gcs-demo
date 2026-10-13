@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [power-units-2026-10-13](power-units-2026-10-13/README.md) | Two plain green boxes for the PSUs before the photo-based sliced, connector-faced pair | 2026-10-13 | `archive/power-units-2026-10-13` |
 | [iem-2026-10-13](iem-2026-10-13/README.md) | Teal box with seven bars for the IEM before the photo-based finned, card-faced IEM | 2026-10-13 | `archive/iem-2026-10-13` |
 | [frontier-radio-2026-10-13](frontier-radio-2026-10-13/README.md) | Green 0.18 m cube for the Frontier radio before the photo-referenced four-slice radio; also two unpublished drafts (mirrored face, stack too wide) | 2026-10-13 | `archive/frontier-radio-2026-10-13` |
 | [drams-2026-10-12](drams-2026-10-12/README.md) | Generic DraMS blocks and marker before casing/interface reconstruction; also saves an obscured-isolation draft | 2026-10-12 | `archive/drams-2026-10-12` |

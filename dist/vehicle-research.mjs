@@ -9,6 +9,7 @@ import { buildWonderwall } from "./wonderwall.mjs?v=dev";
 import { buildDramsAssembly, dramsAsset } from "./drams-assembly.mjs?v=dev";
 import { buildFrontierRadio } from "./frontier-radio.mjs?v=dev";
 import { buildIem } from "./iem.mjs?v=dev";
+import { buildPowerUnits } from "./power-units.mjs?v=dev";
 
 export function buildResearchModel(kit) {
   const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
@@ -368,9 +369,8 @@ export function buildResearchModel(kit) {
   material = interiorPart("hga-actuators", "cold-actuators", "HGA azimuth/elevation actuators", "ICES-2023 p2, fig. 3", 0x4f7fd1);
   mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.05, 20), material, [0, 0.035, -0.36]);
   mesh(new THREE.BoxGeometry(0.1, 0.07, 0.12), material, [0, -0.02, -0.36]);
-  material = interiorPart("power-units", "equipment-bay", "Two power switching units (PSUs)", "NASA integration update, 10 Mar 2026; ICES-2023 fig. 4; placement illustrative", 0x4f9a8f);
-  mesh(new THREE.BoxGeometry(0.2, 0.22, 0.26), material, [-0.22, -0.18, -0.2]);
-  mesh(new THREE.BoxGeometry(0.2, 0.22, 0.22), material, [-0.22, -0.18, 0.12]);
+  interiorPart("power-units", "equipment-bay", "Two power switching units (PSUs)", "NASA/APL testing photo, Mar 2026 (two units published); size scaled from the photo and placement estimated", 0x4f9a8f);
+  buildPowerUnits({ parent: buildTarget, mesh });
   interiorPart("iem", "equipment-bay", "Integrated electronics module (IEM)", "NASA/APL integration photos, Mar 2026; size scaled from the photos and placement estimated", 0x579cae);
   buildIem({ parent: buildTarget, mesh });
   interiorPart("frontier-radio", "equipment-bay", "Frontier X-band radio", "APL photo on NASA's Dragonfly pages; APL papers: 4 x 6 in slices, 2.1 kg; stack width and placement estimated", 0x609a73);

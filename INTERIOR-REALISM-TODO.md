@@ -16,6 +16,7 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 - [x] Rebuild #8 DraMS at enclosure level; separate cases/covers, mounting frame and a simplified aligned interface. Detailed internals remain open.
 - [x] Rebuild #13 Frontier radio from APL's photo and published slice size (Claude, October 13).
 - [x] Rebuild #12 IEM from NASA/APL's integration photos (Claude, October 13).
+- [x] Rebuild #11 power switching units from NASA/APL's testing photo (Claude, October 13).
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## The Process (one part per pass)
@@ -75,15 +76,15 @@ assistant can continue the same way. Every step happens in the same change as th
 
 ## Handoff Notes (for Claude and other assistants)
 
-- **State on October 13, 2026:** parts 06, 07, 08 (Codex), 13 and 12 (Claude) are rebuilt
-  and live; 162 tests pass. Codex was stopped by a usage limit while writing this section; Claude
+- **State on October 13, 2026:** parts 06, 07, 08 (Codex), 13, 12 and 11 (Claude) are
+  rebuilt and live; 164 tests pass. Codex was stopped by a usage limit while writing this section; Claude
   completed it.
 - **Rebuilt-set assets to test against:** `carouselAsset` (`dist/sample-carousel.mjs`),
   `wonderwallAsset` (`dist/wonderwall.mjs`), `dramsAsset` (`dist/drams-assembly.mjs`),
-  `frontierRadioAsset` (`dist/frontier-radio.mjs`), `iemAsset` (`dist/iem.mjs`). Add each
+  `frontierRadioAsset` (`dist/frontier-radio.mjs`), `iemAsset` (`dist/iem.mjs`),
+  `powerUnitsAsset` (`dist/power-units.mjs`). Add each
   new part to this list and to the clearance tests of the parts it neighbors.
-- **Suggested order next:** #11 power switching units (one appears in NASA's March 2026
-  testing photo beside the IEM), #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
+- **Suggested order next:** #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
   references each time; reorder if a clearer source turns up.
 - **Viewing locally:** Codex used Playwright scripts outside the repo; Claude uses the desktop
   app's browser pane with a no-cache static server for `dist/`. Debug hooks on localhost:
@@ -133,7 +134,8 @@ between the rebuilt parts only as that set grows, while always checking the vehi
 structural envelope. Track unresolved legacy interfaces for their own makeover.
 Current rebuilt set: `sample-carousel` (`carousel-2026-10-12`) and `wonderwall`
 (`wonderwall-2026-10-12`) and `drams` (`drams-2026-10-12`) and `frontier-radio`
-(`frontier-radio-2026-10-13`) and `iem` (`iem-2026-10-13`). Their installed bounds and clearance are tested together; the
+(`frontier-radio-2026-10-13`) and `iem` (`iem-2026-10-13`) and `power-units`
+(`power-units-2026-10-13`). Their installed bounds and clearance are tested together; the
 DraMS neck intentionally passes through the wall aperture.
 
 - [ ] **01 DrACO drill/feed assemblies** (`drills`): housings, feed mechanism, attachment and working clearance.
@@ -149,7 +151,8 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **08 detailed follow-up:** independently source ITMS electrodes, UV laser/LDMS interface, GC hardware, carousel-side pyrolysis oven, fan and actual seals/transfer paths. Do not invent hidden internals or treat the current casings as flight CAD.
 - [ ] **09 Rotorcraft drive electronics** (`rde`): both enclosures, mounting/thermal interfaces and cable exits.
 - [ ] **10 HGA azimuth/elevation actuators** (`hga-actuators`): motors, bearings, bracket geometry and relationship to the antenna mechanism.
-- [ ] **11 Power switching units** (`power-units`): both casings, connectors and mounting surfaces.
+- [x] **11 Power switching units** (`power-units`): two units [PUB], each with a silver face of four horizontal slices, rows of mated connectors and harness, black top and side covers, bolted flanges; from NASA/APL's March 2026 testing photo. [References/limits](research/power-units-2026-10-13/README.md). No published size: about 24 x 22 x 20 cm each [EST].
+- [ ] **11 follow-up:** real size and connectors; actual mounting location; separate PSU currents if the power model ever splits them.
 - [x] **12 Integrated electronics module** (`iem`): finned black top, nine silver card fronts with gold micro-D connectors, a backshell and silver-wrapped cable on every connector, bolted base flanges; from NASA/APL's March 2026 photos. [References/limits](research/iem-2026-10-13/README.md). No published size: about 26 x 22 x 24 cm scaled from the photos [EST].
 - [ ] **12 follow-up:** real size and card count; mount it on the vertical structural panel the photos show once the open-frame structure is modeled; route its harness to the PSUs, radio and instruments.
 - [x] **13 Frontier X-band radio** (`frontier-radio`): four black slices on bolted feet, labeled connectors J11-J32, top semi-rigid coax, from APL's photo; 4 x 6 in slice size [PUB], stack width from the photo [EST]. [References/limits](research/frontier-radio-2026-10-13/README.md).
