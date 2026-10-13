@@ -40,6 +40,8 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 ### 2026-10-12: Rebuild DraMS enclosures and align the warm-side interface
 - **Signed:** Codex (OpenAI).
 - **Commit:** `Rebuild DraMS enclosures and aligned inspection interface`.
+- **Reference follow-up:** `Refresh rebuilt instrument neighbor notes` removes stale
+  descriptions of the now-replaced adjacent DraMS placeholders; no geometry changes.
 - **What changed:** Part 08 replaces generic blocks with a cylindrical analyzer illustration,
   enclosed electronics/laser/GC units, frame, local lines, separate service covers and a
   schematic fan casing. Interface follows the Wonderwall aperture; analysis cue follows

@@ -52,11 +52,11 @@ ring follow the existing sample index animation. The illustrative flow endpoint 
 the new inlet. The physical transfer-line model remains unchanged and needs its own rebuild.
 
 Per the owner's latest instruction, do not resize or displace this assembly to avoid
-legacy placeholders. The old transverse Wonderwall and DraMS arrangement still need
-reconciliation with the side-by-side interface in figure 2. They may intersect this asset.
-The subsequent [Wonderwall pass](../wonderwall-2026-10-12.md) replaces the transverse
-placeholder and tests clearance against this carousel without changing its geometry.
-Other legacy interfaces remain pending. Structural envelope checks still apply.
+legacy placeholders. At the end of this first pass, the old Wonderwall and DraMS could
+intersect this asset. The subsequent [Wonderwall pass](../wonderwall-2026-10-12.md) and
+[DraMS pass](../drams-2026-10-12/README.md) replaced those placeholders and now test
+clearance against this carousel without changing its geometry. Exact sealed flight
+connections and the older physical transfer lines remain pending.
 
 Before version, source and matched-angle screenshots:
 [`archive/sample-carousel-2026-10-12`](../../archive/sample-carousel-2026-10-12/README.md).
