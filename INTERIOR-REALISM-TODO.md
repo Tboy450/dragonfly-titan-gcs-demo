@@ -12,6 +12,7 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 - [ ] Correct label anchoring/overlap (deferred while beginning parts, per latest owner request).
 - [x] Rebuild the first part: DrACO sample carousel (#6), using public integration photos; estimated scale explicitly labeled.
 - [x] Rebuild the second part: Wonderwall interface (#7); contour, openings and independently grouped faces/core/mounts, all detail dimensions estimated.
+- [x] Rebuild #8 DraMS at enclosure level; separate cases/covers, mounting frame and a simplified aligned interface. Detailed internals remain open.
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## Priority 1: Numbered Callouts
@@ -52,7 +53,8 @@ Do not shrink/move an updated part to avoid older placeholder assets. Check coll
 between the rebuilt parts only as that set grows, while always checking the vehicle's
 structural envelope. Track unresolved legacy interfaces for their own makeover.
 Current rebuilt set: `sample-carousel` (`carousel-2026-10-12`) and `wonderwall`
-(`wonderwall-2026-10-12`). Their installed bounds and clearance are tested together.
+(`wonderwall-2026-10-12`) and `drams` (`drams-2026-10-12`). Their installed bounds and
+clearance are tested together; the DraMS neck intentionally passes through the wall aperture.
 
 - [ ] **01 DrACO drill/feed assemblies** (`drills`): housings, feed mechanism, attachment and working clearance.
 - [ ] **02 Pneumatic sample-transfer lines** (`sample-lines`): verified endpoints, tube size/routing and bends; avoid routing through solid housings.
@@ -63,7 +65,8 @@ Current rebuilt set: `sample-carousel` (`carousel-2026-10-12`) and `wonderwall`
 - [ ] **06 dimensional follow-up:** replace proportional scale with an authoritative dimension/CAD if available; reconcile interfaces as #02/#07/#08 are rebuilt. Existing legacy overlap is not corrected by shrinking #06.
 - [x] **07 Wonderwall thermal barrier** (`wonderwall`): contoured reference-based warm/cold partition, interface openings and separate face/core/mount groups. [References and limits](research/wonderwall-2026-10-12.md). Not a verified flight material stack.
 - [ ] **07 dimensional/interface follow-up:** authoritative wall thickness, material stack and real sealed instrument penetrations; reconcile with #08. Published ~5 cm instrument separation is not wall thickness.
-- [ ] **08 DraMS assembly** (`drams`): enclosure and subassemblies; separately research ion-trap mass spectrometer, UV laser/LDMS interface, GC hardware, pyrolysis oven and fan. Do not invent detailed internal geometry where no public view exists.
+- [x] **08 DraMS assembly** (`drams`): first enclosure-level pass, with separate covers/casings/frame and simplified connection through #07. [References/limits](research/drams-2026-10-12/README.md). Dimensions and details remain estimated.
+- [ ] **08 detailed follow-up:** independently source ITMS electrodes, UV laser/LDMS interface, GC hardware, carousel-side pyrolysis oven, fan and actual seals/transfer paths. Do not invent hidden internals or treat the current casings as flight CAD.
 - [ ] **09 Rotorcraft drive electronics** (`rde`): both enclosures, mounting/thermal interfaces and cable exits.
 - [ ] **10 HGA azimuth/elevation actuators** (`hga-actuators`): motors, bearings, bracket geometry and relationship to the antenna mechanism.
 - [ ] **11 Power switching units** (`power-units`): both casings, connectors and mounting surfaces.
@@ -103,6 +106,8 @@ actual geometry, interfaces and materials before extending the model.
 - [ ] Include restore-all/reset, keyboard/touch access and desktop/mobile checks. Existing
   isolated-part inspection remains available. Wonderwall's named groups prepare this work;
   no new layer-hiding UI has shipped yet.
+- [x] Keep isolated DraMS unobstructed by neighboring carousel/partition; full context returns
+  when isolation is off. DraMS covers/casings/mounts are separately grouped for future controls.
 - [ ] Add an **insulation/construction view** with independently selectable skin, insulation,
   bulkheads/deck and equipment housings, only where supported by references.
 - [ ] Consider a **section-plane cutaway** rather than making all materials transparent at once.

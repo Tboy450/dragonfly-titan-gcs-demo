@@ -37,6 +37,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-12: Rebuild DraMS enclosures and align the warm-side interface
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Rebuild DraMS enclosures and aligned inspection interface`.
+- **What changed:** Part 08 replaces generic blocks with a cylindrical analyzer illustration,
+  enclosed electronics/laser/GC units, frame, local lines, separate service covers and a
+  schematic fan casing. Interface follows the Wonderwall aperture; analysis cue follows
+  the new analyzer. Isolated DraMS no longer includes obscuring neighboring parts.
+- **Assumptions:** Educational reconstruction, not flight CAD. Dimensions/finishes/routes
+  remain estimates; hidden electrodes, optics, columns, oven and exact seals are unmodeled.
+  No physics changes and no movement/rescaling of the previously rebuilt carousel or wall.
+- **Archive:** `archive/drams-2026-10-12`, tag at `ade916f`, old source/tests and matched
+  screenshots. An unpublished occluded-isolation draft is also preserved with pictures.
+- **Checks:** 157 Node tests passed; three-part clearance, aperture fit, layer separation,
+  analyzer marker and existing rendering/simulation checks. Playwright desktop/360 px,
+  four angles Internal/Thermal, framed nonblank pixels, no overflow or browser exceptions.
+- **Open / next:** Exact dimensions and instrument internals; independent layer controls
+  and label stacking remain tracked. Frontier radio has a useful official photo for the next pass.
+
 ### 2026-10-12: Rebuild the Wonderwall interface and preserve removable-layer boundaries
 - **Signed:** Codex (OpenAI).
 - **Commit:** `Rebuild Wonderwall interface with separate inspection layers`.

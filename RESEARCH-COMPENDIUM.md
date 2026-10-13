@@ -11,6 +11,9 @@ The numbered remaining-parts and enclosure-layer queue is in `INTERIOR-REALISM-T
 The [second component pass](research/wonderwall-2026-10-12.md) replaces the Wonderwall
 slab with a contoured interface and records the future removable shell/foam/casing controls.
 Its thickness and construction layers remain [EST], not a published material stack.
+The [DraMS enclosure pass](research/drams-2026-10-12/README.md) adds separately grouped
+casings/covers and an aperture-aligned connection, with estimated dimensions and documented
+unmodeled internals. Clearance tests now cover all three updated assemblies.
 
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and

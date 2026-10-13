@@ -6,6 +6,7 @@ import { model } from "./flight-model.mjs?v=dev";
 import { samplingSequence } from "./science.mjs?v=dev";
 import { buildSampleCarousel } from "./sample-carousel.mjs?v=dev";
 import { buildWonderwall } from "./wonderwall.mjs?v=dev";
+import { buildDramsAssembly, dramsAsset } from "./drams-assembly.mjs?v=dev";
 
 export function buildResearchModel(kit) {
   const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
@@ -354,14 +355,11 @@ export function buildResearchModel(kit) {
   cupMarker.renderOrder = 6;
   interiorPart("wonderwall", "cold-attic", "Wonderwall: warm/cold attic interface", "ICES-2023 p7; SciTech 2024 figs. 2, 11; detailed shape and layers estimated", 0xe6e0d0);
   buildWonderwall({ parent: buildTarget, mesh });
-  material = interiorPart("drams", "equipment-bay", "Warm attic: DraMS mass spectrometer and laser (with fan)", "ICES-2023 p2, p7", 0xb58a4a);
-  mesh(new THREE.BoxGeometry(0.22, 0.2, 0.18), material, [0.08, 0.2, -1.16]);
-  mesh(new THREE.BoxGeometry(0.14, 0.1, 0.3), material, [-0.2, 0.18, -1.0]);
-  mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.03, 12), material, [-0.2, 0.245, -0.9]);
-  mesh(new THREE.BoxGeometry(0.3, 0.18, 0.22), material, [0.06, 0.18, -0.92]);
-  const analysisMarker = mesh(new THREE.TorusGeometry(0.07, 0.009, 6, 24), sampleMarkerMaterial, [0.08, 0.315, -1.16]);
+  interiorPart("drams", "equipment-bay", "Warm attic: DraMS instrument assembly", "NASA SVS 15003; SciTech 2024 figs. 1-2; casing dimensions and internals estimated", 0xb58a4a);
+  buildDramsAssembly({ parent: buildTarget, mesh });
+  const analysisMarker = mesh(new THREE.TorusGeometry(0.064, 0.006, 6, 24), sampleMarkerMaterial, dramsAsset.analysisAnchor);
   analysisMarker.name = "sample-analysis-marker";
-  analysisMarker.rotation.x = Math.PI / 2;
+  analysisMarker.rotation.y = Math.PI / 2;
   analysisMarker.renderOrder = 6;
   material = interiorPart("rde", "rde", "Rotorcraft drive electronics (2 boxes)", "ICES-2023 p5, p7, fig. 4", 0xa34d4d);
   for (const x of [-0.16, 0.16]) mesh(new THREE.BoxGeometry(0.24, 0.22, 0.26), material, [x, -0.18, -0.55]);

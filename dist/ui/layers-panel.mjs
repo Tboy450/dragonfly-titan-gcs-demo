@@ -26,7 +26,7 @@ const componentInfo = {
   "sample-lines": ["Blowers carry loosened material in Titan gas through transfer tubes into a sample cup. The displayed tube route is illustrative.", "sampling"],
   "sample-carousel": ["Photo-referenced casing and cooling fins surround the sample cups; the drives sit below. The housing stays fixed. The indexing ring is a diagram cue, not visible flight hardware. Drum diameter (0.36 m), fittings and placement are estimates, not flight CAD. Thermal uses cold-attic temperature above and bay temperature for the drives; no separate sensor or fin-gradient simulation.", "carouselPhotos"],
   wonderwall: ["Separates the cold carousel region from warm DraMS. The published roughly 5 cm instrument separation is not wall thickness. This contoured interface, apertures and facing/core construction are estimates, not a verified flight material stack. Thermal colors use shared warm/cold nodes, not a solved temperature gradient. The adjacent older DraMS geometry remains provisional.", "carouselDesign"],
-  drams: ["DraMS analyzes material using laser desorption and gas chromatography. The simulator's shortened sampling job combines collection and analysis.", "carousel"],
+  drams: ["DraMS analyzes samples by laser desorption or gas chromatography/mass spectrometry. This warm-side reconstruction has enclosed instrument bodies, separate covers and an interface through the modeled Wonderwall opening. Dimensions, enclosure details, routes and fan geometry are estimates, not flight CAD. Hidden electrodes, GC columns, laser optics and the sample oven are not reconstructed. Temperature is the shared bay model, not measured hardware telemetry.", "carouselDesign"],
   battery: ["The battery supplies flight power and recharges from the MMRTG. The thermal model includes a phase-change buffer and inhibits charging outside its permitted band.", "thermal"],
   fan: ["Circulates MMRTG-warmed, nitrogen-rich gas through the under-floor duct and equipment bay.", "thermal"],
   "underfloor-duct": ["Routes warmed gas forward below the floor before it returns through the equipment bay.", "thermal"],
@@ -120,7 +120,7 @@ export function updateLayerPanel() {
     const key = `${selected.name}|${selected.mock}`;
     if (key !== detailKey) {
       detailKey = key;
-      const entries = selected.mock ? [] : [...new Set([info?.[1] ?? "thermal", ...(selected.name === "sample-carousel" ? ["carouselDesign"] : selected.name === "wonderwall" ? ["carouselPhotos", "thermal"] : []), "payload"])];
+      const entries = selected.mock ? [] : [...new Set([info?.[1] ?? "thermal", ...(selected.name === "sample-carousel" ? ["carouselDesign"] : ["wonderwall", "drams"].includes(selected.name) ? ["carouselPhotos", "thermal"] : []), "payload"])];
       $("part-sources").replaceChildren(...entries.map(id => {
         const link = document.createElement("a");
         [link.textContent, link.href] = sources[id];

@@ -59,5 +59,6 @@ framed geometry, no horizontal overflow or browser exceptions. Both faces and in
 context visually inspected. Previous source and screenshots are in
 [`archive/wonderwall-2026-10-12`](../archive/wonderwall-2026-10-12/README.md).
 
-Next part: #08 DraMS assembly, especially actual casing and interface connections.
-Exact dimensions/material stack remain an open research item.
+Follow-up: the [DraMS enclosure pass](drams-2026-10-12/README.md) now fits an estimated
+neck through this aperture and checks clearance. Exact dimensions, material stack and
+actual sealed flight interfaces remain open research items.
