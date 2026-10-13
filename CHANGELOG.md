@@ -39,6 +39,21 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-13: Update the model assumptions, footer and engineering references
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Update model assumptions, footer and part references"
+- **What changed:** At the owner's request, before the next part: the app's **Model assumptions**
+  no longer mention the replaced 24-cup carousel; they explain the part-by-part rebuild (which
+  parts are redrawn and by whom, what their sizes come from, that positions are mostly
+  estimated, which parts are still placeholders). **Engineering references** gains a "Vehicle
+  part references" list: DragonCam paper, DrACO LPSC 2022, SciTech 2024 interface paper and NASA
+  integration photos, the March 2026 electronics photos and connector standards, the Frontier
+  photo, iCubeSat paper and patent, ICES-2023, TFAWS 2023 and 2024, and the top-deck fit check,
+  with links to the part-sources list and the rebuild checklist. The **footer** adds APL's
+  Dragonfly site and "Part sources & credits". README's intro and Vehicle Layers text match.
+- **Files:** `dist/index.html`, `dist/styles.css`, `README.md`, `CHANGELOG.md`
+- **Checks:** all tests; page checked at desktop and phone width.
+
 ### 2026-10-13: Rebuild part 23, the lower DragonCam cameras, from the 2026 camera paper
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Rebuild the lower DragonCam cameras from the 2026 camera paper"

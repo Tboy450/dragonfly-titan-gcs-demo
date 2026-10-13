@@ -1122,6 +1122,9 @@ body.pilot-view .weather-strip strong, body.pilot-view .weather-strip small { di
 .engineering-reference dd { margin: 0; text-align: right; }
 .engineering-reference details { margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px; }
 .engineering-reference summary { cursor: pointer; color: var(--cyan); font-size: 0.85rem; }
+.engineering-reference details summary span { font-size: 0.75rem; color: var(--muted); margin-left: 8px; }
+.engineering-reference li { color: #b9cad5; font-size: 0.85rem; line-height: 1.55; margin-bottom: 6px; }
+.engineering-reference li strong { color: var(--text, #e6eef3); font-weight: 600; }
 .engineering-reference { overflow-wrap: anywhere; }
 
 @media (max-width: 720px) {

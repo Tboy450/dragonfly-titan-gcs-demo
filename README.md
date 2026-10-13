@@ -9,8 +9,9 @@ NASA flight product or a validated flight dynamics model.
 
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
-The next visual milestone is tracked part by part in
-[Interior realism checklist](INTERIOR-REALISM-TODO.md), starting with numbered callouts.
+The interior is being redrawn part by part from sources, tracked in the
+[Interior realism checklist](INTERIOR-REALISM-TODO.md); every photo, paper page and patent
+behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.md).
 
 ## Run Locally
 
@@ -318,8 +319,12 @@ starts unbegun and their earlier samples remain in the Science Payload panel.
 ## Vehicle Layers
 
 Under the Mission diagram, **Exterior / Internal / Thermal** switches the vehicle view. Internal
-makes the foam shell see-through and shows the parts NASA's thermal papers describe, placed where
-their figures put them: the cold attic with the sample carousel, DraMS, the battery at the aft
+makes the foam shell see-through. Parts already redrawn from their own photos and papers: the
+sample carousel, Wonderwall and DraMS in the attic, the Frontier radio, the integrated
+electronics module, the two power switching units, and the lower DragonCam cameras (Microscopic
+Camera, LED array and Down Cameras in foam cavities); their positions are mostly estimated. The
+rest are still placeholder blocks from NASA's thermal papers, placed where their figures put
+them: the cold attic with the sample carousel, DraMS, the battery at the aft
 end, the drive electronics, avionics, radio amplifier, circulation fan, under-floor duct and the
 trim-device chimneys, with arrows following the warm-air loop from the MMRTG. The loop is live:
 its arrows move with the fan's flow and go from MMRTG-warm to bay-cool; when the trim flaps open,
