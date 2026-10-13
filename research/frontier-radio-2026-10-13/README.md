@@ -20,6 +20,10 @@ reconstruction from a photograph and published sizes**, not CAD and not the flig
   [PDF](https://icubesat.org/wp-content/uploads/2019/05/b.2.3.201905241642-paper.pdf); repeated by
   [eoPortal](https://www.eoportal.org/satellite-missions/frontier-radio), table 2). A "1.8 kg single
   band" figure seen in a search summary could not be confirmed and is not used.
+- **Patent:** US 8,417,859 B2 (Johns Hopkins University, 2013), slice-based modular
+  software-defined radio; drawing sheets saved in
+  [`../sources/patent-us8417859-jhu-sdr/`](../sources/patent-us8417859-jhu-sdr/README.md).
+  The size table page is saved in [`../sources/icubesat2019-frontier-radio/`](../sources/icubesat2019-frontier-radio/README.md).
 - **Role:** [NASA, March 2026 integration update](https://science.nasa.gov/blogs/dragonfly/2026/03/10/nasas-dragonfly-mission-begins-rotorcraft-integration-testing-stage/)
   (the flight radio has been delivered); [NASA spacecraft and instruments](https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/).
 

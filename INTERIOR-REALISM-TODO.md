@@ -29,10 +29,13 @@ assistant can continue the same way. Every step happens in the same change as th
    (photograph, labeled figure or published dimension). Skip parts whose only source is a
    vague diagram until one turns up. Work on one part at a time; finish, verify and publish it
    before starting the next.
-3. **Research and credit.** Save usable reference images in `research/<part>-<date>/` with a
-   README: URL, credit, date, what each source constrains, and what stays unknown. Tag every
-   number [PUB] (published), [CALC] (derived) or [EST] (estimated). Never use image
-   generation. Do not commit the owner's research PDFs; cite them by URL/page instead.
+3. **Research and credit; save everything used.** Save every photo, paper figure and patent
+   drawing the part is built from in the project: photos in `research/<part>-<date>/`, paper
+   pages and patent sheets as images in `research/sources/<source>/` (shared between parts),
+   each with a README giving citation, link, credit and what it constrains. Add the part's row
+   to `research/PART-SOURCES.md`. Search patents too (Google Patents): they can help with
+   design choices. Tag every number [PUB] (published), [CALC] (derived) or [EST] (estimated).
+   Never use image generation. Keep PDFs out of the project; save page images instead.
 4. **Archive before replacing (house rule 6).** `archive/<part>-<date>/` holds exact copies
    of every file the change replaces, angle-matched screenshots of the old part (Internal and
    Thermal, several orbit angles, desktop and phone UI), and a README with restore steps.

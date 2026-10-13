@@ -31,11 +31,29 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **At the start of a session (or after time away),** read the README and these entries, and
   check every branch for unmerged work: `git fetch origin`, `git branch -r`, then
   `git log --oneline main..origin/<branch>` (house rule 7 in ARCHITECTURE.md). Once per session.
+- **Save every source a part is built from** (photos, paper pages, patent drawings) in the
+  project with credits, and list it in `research/PART-SOURCES.md`. Page images, not PDFs.
 - **Never throw away replaced work.** Anything replaced (models, terrain, textures, visuals,
   sounds, behavior), even bad or inaccurate versions, goes to `archive/` in the same change,
   with pictures, restore steps and a git tag (house rule 6 in ARCHITECTURE.md).
 
 ## Entries
+
+### 2026-10-13: Save every photo, figure and patent used for the rebuilt parts
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Save the paper figures and patent drawings behind the rebuilt parts"
+- **What changed:** The owner asked that all photos and sources used for each part be saved in
+  the project. Photos for parts 06, 08 and 13 were already saved; the paper figures that parts
+  06, 07 and 08 were built from (and the coordinate calibration slide) were only linked. Now
+  saved as page images in `research/sources/`: SciTech 2024 (pp. 2, 3, 5, 7, 8), ICES-2023-389
+  (pp. 3, 5, 6, 7), TFAWS 2023 slide 3, iCubeSat 2019 p. 2, and the drawing sheets of patent
+  US 8,417,859 (Johns Hopkins University's slice-based software-defined radio, for part 13).
+  New index `research/PART-SOURCES.md` lists, for each part, its saved photos, figures,
+  patents and link-only sources, plus patent leads. Process step 3 now requires this.
+- **Files:** `research/sources/` (new), `research/PART-SOURCES.md` (new),
+  `research/frontier-radio-2026-10-13/README.md`, `INTERIOR-REALISM-TODO.md`, `CHANGELOG.md`
+- **Checks:** documentation and reference images only.
+- **Open / next:** #12 IEM and #11 power switching units.
 
 ### 2026-10-13: Rebuild part 13, the Frontier radio, from APL's photo
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
