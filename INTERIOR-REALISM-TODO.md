@@ -11,6 +11,7 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 - [x] Identify a concrete label-layout cause in the code (below).
 - [ ] Correct label anchoring/overlap (deferred while beginning parts, per latest owner request).
 - [x] Rebuild the first part: DrACO sample carousel (#6), using public integration photos; estimated scale explicitly labeled.
+- [x] Rebuild the second part: Wonderwall interface (#7); contour, openings and independently grouped faces/core/mounts, all detail dimensions estimated.
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## Priority 1: Numbered Callouts
@@ -50,7 +51,8 @@ Some numbered groups are exterior-adjacent but share this inspection list.
 Do not shrink/move an updated part to avoid older placeholder assets. Check collisions
 between the rebuilt parts only as that set grows, while always checking the vehicle's
 structural envelope. Track unresolved legacy interfaces for their own makeover.
-Current rebuilt set: `sample-carousel` only (`carousel-2026-10-12`).
+Current rebuilt set: `sample-carousel` (`carousel-2026-10-12`) and `wonderwall`
+(`wonderwall-2026-10-12`). Their installed bounds and clearance are tested together.
 
 - [ ] **01 DrACO drill/feed assemblies** (`drills`): housings, feed mechanism, attachment and working clearance.
 - [ ] **02 Pneumatic sample-transfer lines** (`sample-lines`): verified endpoints, tube size/routing and bends; avoid routing through solid housings.
@@ -59,7 +61,8 @@ Current rebuilt set: `sample-carousel` only (`carousel-2026-10-12`).
 - [ ] **05 IMU/lidar electronics, FEB/MEB** (`nose-electronics`): distinguish boxes and brackets; verify names/locations against current sources.
 - [x] **06 Cold sample-delivery carousel** (`sample-carousel`): enclosed drum, cooling fins, ports and underside drives; stationary housing, internal indexing cue. [References/limits](research/carousel-2026-10-12/README.md). No exposed invented cup inventory; 0.36 m diameter and placement remain estimates.
 - [ ] **06 dimensional follow-up:** replace proportional scale with an authoritative dimension/CAD if available; reconcile interfaces as #02/#07/#08 are rebuilt. Existing legacy overlap is not corrected by shrinking #06.
-- [ ] **07 Wonderwall thermal barrier** (`wonderwall`): actual shape and sample interfaces; do not reduce it to an unexplained slab or invent layer materials.
+- [x] **07 Wonderwall thermal barrier** (`wonderwall`): contoured reference-based warm/cold partition, interface openings and separate face/core/mount groups. [References and limits](research/wonderwall-2026-10-12.md). Not a verified flight material stack.
+- [ ] **07 dimensional/interface follow-up:** authoritative wall thickness, material stack and real sealed instrument penetrations; reconcile with #08. Published ~5 cm instrument separation is not wall thickness.
 - [ ] **08 DraMS assembly** (`drams`): enclosure and subassemblies; separately research ion-trap mass spectrometer, UV laser/LDMS interface, GC hardware, pyrolysis oven and fan. Do not invent detailed internal geometry where no public view exists.
 - [ ] **09 Rotorcraft drive electronics** (`rde`): both enclosures, mounting/thermal interfaces and cable exits.
 - [ ] **10 HGA azimuth/elevation actuators** (`hga-actuators`): motors, bearings, bracket geometry and relationship to the antenna mechanism.
@@ -92,6 +95,14 @@ actual geometry, interfaces and materials before extending the model.
   compartment walls and service penetrations. Do not assume a continuous inner metal liner.
 - [ ] Review harnesses, brackets and plumbing where photos show them; retain confidence/source notes.
 - [ ] Add an **assembled enclosure view** with casings and covers in place.
+- [ ] **Owner reminder, October 12:** independent hide/show controls for outer/attic shell,
+  structural facing, insulating foam, compartment/interface panels and individual equipment
+  casings when they obstruct inspection. Put them in a compact expandable Layers section.
+- [ ] Keep hidden layers physically installed: no position/scale changes, flight effects or
+  unintended camera re-centering. Retain part identity and make hidden/selected state clear.
+- [ ] Include restore-all/reset, keyboard/touch access and desktop/mobile checks. Existing
+  isolated-part inspection remains available. Wonderwall's named groups prepare this work;
+  no new layer-hiding UI has shipped yet.
 - [ ] Add an **insulation/construction view** with independently selectable skin, insulation,
   bulkheads/deck and equipment housings, only where supported by references.
 - [ ] Consider a **section-plane cutaway** rather than making all materials transparent at once.

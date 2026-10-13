@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [wonderwall-2026-10-12](wonderwall-2026-10-12/README.md) | Broad transverse slab before contoured, separately grouped warm/cold interface | 2026-10-12 | `archive/wonderwall-2026-10-12` |
 | [sample-carousel-2026-10-12](sample-carousel-2026-10-12/README.md) | Open blue pan, 24 illustrative cups and rotating housing before photo-referenced enclosed SDC | 2026-10-12 | `archive/sample-carousel-2026-10-12` |
 | [operations-queue-2026-10-12](operations-queue-2026-10-12/README.md) | Manual-only science/downlink/recharge orchestration before the local surface queue | 2026-10-12 | `archive/operations-queue-2026-10-12` |
 | [science-profiles-2026-10-12](science-profiles-2026-10-12/README.md) | Single demo sampling profile and earlier notebook/reference layout | 2026-10-12 | `archive/science-profiles-2026-10-12` |

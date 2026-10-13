@@ -8,6 +8,9 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 records the first archived part replacement. Enclosed cover, cooling fins and underside
 drives follow NASA photos/paper; 0.36 m diameter and installed placement remain [EST].
 The numbered remaining-parts and enclosure-layer queue is in `INTERIOR-REALISM-TODO.md`.
+The [second component pass](research/wonderwall-2026-10-12.md) replaces the Wonderwall
+slab with a contoured interface and records the future removable shell/foam/casing controls.
+Its thickness and construction layers remain [EST], not a published material stack.
 
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and

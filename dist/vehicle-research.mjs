@@ -5,6 +5,7 @@ import * as THREE from "./vendor/three/three.module.min.js";
 import { model } from "./flight-model.mjs?v=dev";
 import { samplingSequence } from "./science.mjs?v=dev";
 import { buildSampleCarousel } from "./sample-carousel.mjs?v=dev";
+import { buildWonderwall } from "./wonderwall.mjs?v=dev";
 
 export function buildResearchModel(kit) {
   const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
@@ -351,8 +352,8 @@ export function buildResearchModel(kit) {
   cupMarker.name = "sample-cup-marker";
   cupMarker.rotation.x = Math.PI / 2;
   cupMarker.renderOrder = 6;
-  material = interiorPart("wonderwall", "cold-attic", "Wonderwall: insulation keeping >100 C between carousel and DraMS", "ICES-2023 p7", 0xe6e0d0);
-  mesh(new THREE.BoxGeometry(0.72, 0.38, 0.05), material, [0, 0.28, -1.3]);
+  interiorPart("wonderwall", "cold-attic", "Wonderwall: warm/cold attic interface", "ICES-2023 p7; SciTech 2024 figs. 2, 11; detailed shape and layers estimated", 0xe6e0d0);
+  buildWonderwall({ parent: buildTarget, mesh });
   material = interiorPart("drams", "equipment-bay", "Warm attic: DraMS mass spectrometer and laser (with fan)", "ICES-2023 p2, p7", 0xb58a4a);
   mesh(new THREE.BoxGeometry(0.22, 0.2, 0.18), material, [0.08, 0.2, -1.16]);
   mesh(new THREE.BoxGeometry(0.14, 0.1, 0.3), material, [-0.2, 0.18, -1.0]);

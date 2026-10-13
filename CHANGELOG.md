@@ -37,6 +37,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-12: Rebuild the Wonderwall interface and preserve removable-layer boundaries
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Rebuild Wonderwall interface with separate inspection layers`.
+- **What changed:** Part 07 is now a contoured longitudinal warm/cold interface with true
+  geometry openings, facings, an estimated core and mounts. Removed the old transverse
+  slab that overlapped the updated carousel. No carousel, flight or science changes.
+- **Assumptions:** Detail geometry and material appearances remain estimated. ICES-2023's
+  approximately 5 cm instrument separation is not wall thickness. The displayed apertures
+  do not imply unsealed flight penetrations; actual connectors await the DraMS pass.
+- **Layers:** Separate faces/core/mount groups prepare independent visibility controls;
+  the owner's shell/foam/casing hide/show reminder is explicitly tracked, not yet shipped as UI.
+- **Archive:** `archive/wonderwall-2026-10-12` contains exact previous code, desktop/phone,
+  four-angle images and restore instructions; tag at `3387a30`.
+- **Checks:** 154 Node tests passed; modeled attic envelope and rebuilt-carousel clearance,
+  aperture ray tests, independent layer groups. Playwright desktop/mobile and multi-angle
+  Internal/Thermal renders, pixel bounds, no overflow/errors; both faces and context inspected.
+- **Open / next:** #08 DraMS casing/interfaces. Exact component dimensions/materials,
+  independent layer UI and the global callout layout remain on the checklist.
+
 ### 2026-10-12: Rebuild the first interior part from carousel integration references
 - **Signed:** Codex (OpenAI).
 - **Commit:** `Rebuild sample carousel from NASA integration references`.
