@@ -37,6 +37,34 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-13: Rebuild part 13, the Frontier radio, from APL's photo
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Rebuild the Frontier radio from APL's photo and published slice size"
+- **What changed:** The green 0.18 m cube is replaced by APL's Frontier software-defined radio
+  as photographed: a black anodized stack of four slices on bolted feet, connectors J11 to J32
+  where the photo shows them (D-subs, SMA ports, a capped port on a chain), staked screws and
+  semi-rigid coax on top, one run wrapped in foil. About 10 x 10 x 15 cm instead of 18 cm on
+  every side. Its own module with separate casing, mounts, connectors and coax groups for the
+  future hide/show controls. Part text and source links updated. Physics unchanged.
+- **Sources:** APL photo on NASA's Dragonfly pages; "four or more 4 x 6 inch packaged slices"
+  (O'Neill et al., SmallSat 2016); 2,050 cm3 and 2.1 kg (APL, iCubeSat 2019; eoPortal).
+- **Assumptions:** stack width (about 4 in) and slice split read from the photo; connector
+  sizes, coax routes, rear feet and placement (old spot, on the floor, connectors inboard) are
+  estimates. One radio drawn; a second unit is not confirmed. The photo may show a Frontier
+  unit from another mission.
+- **Archive:** `archive/frontier-radio-2026-10-13/` (old code, eight angle pictures, context
+  and phone views; tag at `abba3af`). Two unpublished drafts kept with pictures: a mirrored
+  connector face and a stack sized from the 2,050 cm3 figure (13.2 cm, too wide for the photo).
+- **Files:** `dist/frontier-radio.mjs` (new), `dist/vehicle-research.mjs`,
+  `dist/ui/layers-panel.mjs`, `tests/frontier-radio.test.mjs` (new),
+  `research/frontier-radio-2026-10-13/`, `archive/`, `INTERIOR-REALISM-TODO.md`,
+  `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`
+- **Checks:** `node --test tests/*.test.mjs` (160 pass, 3 new). Internal and Thermal, isolated
+  at four angles and in context, 1280 x 800 and 375 px phone width; no console errors, no
+  sideways scrolling.
+- **Open / next:** #12 IEM and #11 power switching units (NASA's March 2026 photos); radio
+  count, real location and cable runs.
+
 ### 2026-10-13: Write down the part-rebuild process and the Claude handoff
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Record the interior part-rebuild process and handoff notes"

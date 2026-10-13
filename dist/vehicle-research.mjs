@@ -7,6 +7,7 @@ import { samplingSequence } from "./science.mjs?v=dev";
 import { buildSampleCarousel } from "./sample-carousel.mjs?v=dev";
 import { buildWonderwall } from "./wonderwall.mjs?v=dev";
 import { buildDramsAssembly, dramsAsset } from "./drams-assembly.mjs?v=dev";
+import { buildFrontierRadio } from "./frontier-radio.mjs?v=dev";
 
 export function buildResearchModel(kit) {
   const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
@@ -372,8 +373,8 @@ export function buildResearchModel(kit) {
   material = interiorPart("iem", "equipment-bay", "Integrated electronics module (IEM)", "NASA integration update, 10 Mar 2026; APL CAD reference; placement illustrative", 0x579cae);
   mesh(new THREE.BoxGeometry(0.22, 0.18, 0.3), material, [0.2, -0.2, -0.12]);
   for (let z = -0.24; z < 0.03; z += 0.045) mesh(new THREE.BoxGeometry(0.20, 0.008, 0.008), metal, [0.2, -0.106, z]);
-  material = interiorPart("frontier-radio", "equipment-bay", "Frontier X-band radio", "NASA spacecraft and instruments; ICES-2023 fig. 4; placement illustrative", 0x609a73);
-  mesh(new THREE.BoxGeometry(0.18, 0.18, 0.18), material, [0.22, -0.2, 0.2]);
+  interiorPart("frontier-radio", "equipment-bay", "Frontier X-band radio", "APL photo on NASA's Dragonfly pages; APL papers: 4 x 6 in slices, 2.1 kg; stack width and placement estimated", 0x609a73);
+  buildFrontierRadio({ parent: buildTarget, mesh });
   material = interiorPart("twta", "twta", "TWTA radio amplifier (under the top deck)", "ICES-2023 p7", 0xc0643c);
   mesh(new THREE.BoxGeometry(0.3, 0.07, 0.14), material, [0.05, 0.02, 0.08]);
   material = interiorPart("battery", "battery", "Battery: 11.5 kWh, 7.5 kg phase-change wax, heat pipes", "ICES-2023 p5, figs. 3-4", 0x6f7d58);

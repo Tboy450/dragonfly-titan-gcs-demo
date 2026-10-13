@@ -14,6 +14,9 @@ Its thickness and construction layers remain [EST], not a published material sta
 The [DraMS enclosure pass](research/drams-2026-10-12/README.md) adds separately grouped
 casings/covers and an aperture-aligned connection, with estimated dimensions and documented
 unmodeled internals. Clearance tests now cover all three updated assemblies.
+The [Frontier radio pass](research/frontier-radio-2026-10-13/README.md) (October 13) follows
+APL's photo and the published 4 x 6 in slice size [PUB]; stack width, connectors and placement
+are [EST]. Whether Dragonfly flies one radio or two is not published.
 
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and

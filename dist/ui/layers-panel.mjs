@@ -16,11 +16,13 @@ const sources = {
   carousel: ["NASA carousel integration", "https://science.nasa.gov/blogs/dragonfly/2026/04/23/nasas-dragonfly-rotorcraft-gets-decked-out-tested/"],
   carouselPhotos: ["Carousel photos: NASA/Mike Guinto", "https://svs.gsfc.nasa.gov/15003"],
   carouselDesign: ["NASA carousel thermal-interface design (2024)", "https://ntrs.nasa.gov/api/citations/20230017316/downloads/AIAA_SCITECH2024_final_proof.pdf"],
+  frontierPhoto: ["Frontier radio photo: Johns Hopkins APL", "https://science.nasa.gov/image-detail/amf-48b4901b-44b0-4c89-802b-0c615842aa09/"],
+  frontierSpecs: ["Frontier radio specifications (eoPortal)", "https://www.eoportal.org/satellite-missions/frontier-radio"],
 };
 const componentInfo = {
   iem: ["Runs spacecraft commands and processes vehicle data. Its displayed temperature is the shared bay-air model, not a separately simulated processor sensor.", "integration"],
   "power-units": ["Two power switching units distribute electrical power. The readings below are for the whole vehicle; separate PSU currents are not modeled.", "integration"],
-  "frontier-radio": ["Frontier provides the X-band communications link. Stored instrument data remain queued until the radio and antenna are ready.", "spacecraft"],
+  "frontier-radio": ["APL's Frontier software-defined radio receives commands and sends data over X-band; stored instrument data stay queued until the radio and antenna are ready. Drawn from APL's photo: a black stack of four slices with labeled connectors, bolted feet and semi-rigid coax on top. Each slice is Frontier's published 4 x 6 inch package; APL lists the radio at 2.1 kg; the stack width, slice split, connector details, routes and its place on the bay floor are estimates from the photo. Whether Dragonfly flies a second unit is not published. Temperature is the shared bay model.", "frontierPhoto"],
   twta: ["The traveling-wave tube amplifier supports the Earth downlink. Its temperature is an estimate linked to radio operation.", "spacecraft"],
   drills: ["DrACO grinds surface material with redundant drills. The reference places the drill/feed hardware beside the body, above the landing runners.", "sampling"],
   "sample-lines": ["Blowers carry loosened material in Titan gas through transfer tubes into a sample cup. The displayed tube route is illustrative.", "sampling"],
@@ -120,7 +122,7 @@ export function updateLayerPanel() {
     const key = `${selected.name}|${selected.mock}`;
     if (key !== detailKey) {
       detailKey = key;
-      const entries = selected.mock ? [] : [...new Set([info?.[1] ?? "thermal", ...(selected.name === "sample-carousel" ? ["carouselDesign"] : ["wonderwall", "drams"].includes(selected.name) ? ["carouselPhotos", "thermal"] : []), "payload"])];
+      const entries = selected.mock ? [] : [...new Set([info?.[1] ?? "thermal", ...(selected.name === "sample-carousel" ? ["carouselDesign"] : ["wonderwall", "drams"].includes(selected.name) ? ["carouselPhotos", "thermal"] : selected.name === "frontier-radio" ? ["frontierSpecs", "spacecraft"] : []), "payload"])];
       $("part-sources").replaceChildren(...entries.map(id => {
         const link = document.createElement("a");
         [link.textContent, link.href] = sources[id];

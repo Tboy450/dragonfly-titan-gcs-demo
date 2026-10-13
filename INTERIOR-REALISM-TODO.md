@@ -14,6 +14,7 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 - [x] Rebuild the first part: DrACO sample carousel (#6), using public integration photos; estimated scale explicitly labeled.
 - [x] Rebuild the second part: Wonderwall interface (#7); contour, openings and independently grouped faces/core/mounts, all detail dimensions estimated.
 - [x] Rebuild #8 DraMS at enclosure level; separate cases/covers, mounting frame and a simplified aligned interface. Detailed internals remain open.
+- [x] Rebuild #13 Frontier radio from APL's photo and published slice size (Claude, October 13).
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## The Process (one part per pass)
@@ -70,13 +71,14 @@ assistant can continue the same way. Every step happens in the same change as th
 
 ## Handoff Notes (for Claude and other assistants)
 
-- **State on October 13, 2026:** parts 06, 07 and 08 are rebuilt and live (build 80242ee);
-  157 tests pass. Codex was stopped by a usage limit while writing this section; Claude
-  completed it and continues with #13.
+- **State on October 13, 2026:** parts 06, 07, 08 (Codex) and 13 (Claude) are rebuilt and
+  live; 160 tests pass. Codex was stopped by a usage limit while writing this section; Claude
+  completed it.
 - **Rebuilt-set assets to test against:** `carouselAsset` (`dist/sample-carousel.mjs`),
-  `wonderwallAsset` (`dist/wonderwall.mjs`), `dramsAsset` (`dist/drams-assembly.mjs`). Add each
+  `wonderwallAsset` (`dist/wonderwall.mjs`), `dramsAsset` (`dist/drams-assembly.mjs`),
+  `frontierRadioAsset` (`dist/frontier-radio.mjs`). Add each
   new part to this list and to the clearance tests of the parts it neighbors.
-- **Suggested order after #13:** #12 IEM and #11 power switching units (NASA's March 2026
+- **Suggested order next:** #12 IEM and #11 power switching units (NASA's March 2026
   integration photos show both), #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
   references each time; reorder if a clearer source turns up.
 - **Viewing locally:** Codex used Playwright scripts outside the repo; Claude uses the desktop
@@ -126,8 +128,9 @@ Do not shrink/move an updated part to avoid older placeholder assets. Check coll
 between the rebuilt parts only as that set grows, while always checking the vehicle's
 structural envelope. Track unresolved legacy interfaces for their own makeover.
 Current rebuilt set: `sample-carousel` (`carousel-2026-10-12`) and `wonderwall`
-(`wonderwall-2026-10-12`) and `drams` (`drams-2026-10-12`). Their installed bounds and
-clearance are tested together; the DraMS neck intentionally passes through the wall aperture.
+(`wonderwall-2026-10-12`) and `drams` (`drams-2026-10-12`) and `frontier-radio`
+(`frontier-radio-2026-10-13`). Their installed bounds and clearance are tested together; the
+DraMS neck intentionally passes through the wall aperture.
 
 - [ ] **01 DrACO drill/feed assemblies** (`drills`): housings, feed mechanism, attachment and working clearance.
 - [ ] **02 Pneumatic sample-transfer lines** (`sample-lines`): verified endpoints, tube size/routing and bends; avoid routing through solid housings.
@@ -144,7 +147,8 @@ clearance are tested together; the DraMS neck intentionally passes through the w
 - [ ] **10 HGA azimuth/elevation actuators** (`hga-actuators`): motors, bearings, bracket geometry and relationship to the antenna mechanism.
 - [ ] **11 Power switching units** (`power-units`): both casings, connectors and mounting surfaces.
 - [ ] **12 Integrated electronics module** (`iem`): reference casing, panel seams, connectors and mounting, not exposed decorative boards.
-- [ ] **13 Frontier X-band radio** (`frontier-radio`): enclosure, connectors and clearances.
+- [x] **13 Frontier X-band radio** (`frontier-radio`): four black slices on bolted feet, labeled connectors J11-J32, top semi-rigid coax, from APL's photo; 4 x 6 in slice size [PUB], stack width from the photo [EST]. [References/limits](research/frontier-radio-2026-10-13/README.md).
+- [ ] **13 follow-up:** one radio or two (redundancy); real bay location and cable runs to the IEM, TWTA and antennas; reconcile with #12 and #14 when they are rebuilt.
 - [ ] **14 TWTA amplifier** (`twta`): housing and top-deck mounting/heat path; avoid intersecting nearby hardware.
 - [ ] **15 Battery and thermal buffer** (`battery`): outer pack casing first; then sourced heat-pipe/PCM arrangement and optional cutaway, not generic exposed cells.
 - [ ] **16 Aft bulkhead** (`aft-bulkhead`): profile, penetrations and attachment to the generator/fan region.

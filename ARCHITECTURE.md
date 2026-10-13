@@ -66,6 +66,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 |---|---|
 | `dist/sample-carousel.mjs` | First individually rebuilt interior asset: NASA-photo-referenced SDC casing/fins/ports/drives, explicit estimated scale, stationary enclosure and internal indexing pivot |
 | `dist/wonderwall.mjs` | Estimated contoured warm/cold partition, real geometry openings and separate faces/core/mount groups for future inspection layer controls; clears the rebuilt carousel |
+| `dist/frontier-radio.mjs` | Part 13: APL Frontier radio from APL's photo and published 4 x 6 in slice size; four slices, labeled connectors, feet and top coax in separate inspection-layer groups; placement estimated |
 | `dist/drams-assembly.mjs` | Estimated warm-side DraMS casings, covers, frame and interface keyed to Wonderwall's aperture; no invented hidden instrument internals |
 | `dist/chase-vehicle.mjs` | Renderer, lights, the original demo model and its labeled mock-up interior, shared part helpers, Mission-view layers (exterior / internal / thermal) for whichever model is selected, `draw()` for the Pilot view and `drawMission()` for the Mission diagram |
 | `dist/vehicle-research.mjs` | NASA/APL 2023 thermal layout refined with APL CAD and NASA's 2026 print guide: rounded attic, body-side DrACO, flat skids, motor pods and separate IEM/PSU/radio groups. Parts own a thermal zone, label and source. The drawing-to-model mapping (327 px/m from TFAWS 2023) is in its comments |
