@@ -1,6 +1,7 @@
 # Interior Realism Checklist
 
 Owner request recorded October 12, 2026. Maintainer for this entry: Codex (OpenAI).
+Process and handoff notes added October 13, 2026 by Claude (Anthropic Claude Opus 5.5).
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
@@ -14,6 +15,78 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 - [x] Rebuild the second part: Wonderwall interface (#7); contour, openings and independently grouped faces/core/mounts, all detail dimensions estimated.
 - [x] Rebuild #8 DraMS at enclosure level; separate cases/covers, mounting frame and a simplified aligned interface. Detailed internals remain open.
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
+
+## The Process (one part per pass)
+
+Written down October 13, 2026 from how parts 06, 07 and 08 were rebuilt (Codex) so any
+assistant can continue the same way. Every step happens in the same change as the part.
+
+1. **Start of session only:** read the README, the newest `CHANGELOG.md` entries and this file;
+   `git fetch origin`, `git branch -r`, `git log --oneline main..origin/<branch>` for each
+   branch (house rule 7). Once per session, not before every request.
+2. **Pick the part.** Next in order is the part with the clearest public reference
+   (photograph, labeled figure or published dimension). Skip parts whose only source is a
+   vague diagram until one turns up. Work on one part at a time; finish, verify and publish it
+   before starting the next.
+3. **Research and credit.** Save usable reference images in `research/<part>-<date>/` with a
+   README: URL, credit, date, what each source constrains, and what stays unknown. Tag every
+   number [PUB] (published), [CALC] (derived) or [EST] (estimated). Never use image
+   generation. Do not commit the owner's research PDFs; cite them by URL/page instead.
+4. **Archive before replacing (house rule 6).** `archive/<part>-<date>/` holds exact copies
+   of every file the change replaces, angle-matched screenshots of the old part (Internal and
+   Thermal, several orbit angles, desktop and phone UI), and a README with restore steps.
+   Tag `archive/<part>-<date>` on the last commit with the old part; add a row to
+   `archive/README.md`. Drafts fixed before publishing go in a subfolder with pictures, no tag.
+5. **Build it as its own module.** `dist/<part>.mjs` exports a frozen `<part>Asset`
+   (revision such as `frontier-radio-2026-10-13`, key bounds, anchors, interface points) and
+   `build<Part>({ parent, mesh })`. Set `parent.userData.assetRevision` and
+   `dimensionConfidence`. Put meshes in named sub-groups tagged `userData.inspectionLayer`
+   from the shared vocabulary: `mounts`, `equipment-casings`, `equipment-covers`,
+   `interfaces`, `harnesses`, `insulation`, `interface-faces`. These are what the future
+   shell/foam/casing hide/show controls will toggle, so hidden layers never move parts.
+   Local imports keep `?v=dev`. Register it in `dist/vehicle-research.mjs` with
+   `interiorPart(id, thermalZone, label, source, color)` and keep the durable ID.
+6. **Fit rules (owner, October 12).** Model frame: x across (cavity about +/-0.36 m), y up
+   (bay floor about -0.29, cavity to +0.07, attic to +0.5), z along the body (nose negative,
+   nose bulkhead -1.56, aft bulkhead +1.08). Stay inside the structural envelope. Check
+   clearance only against the already-rebuilt set; never shrink or move a correct part to dodge
+   an old placeholder. Record legacy overlaps as follow-ups for that neighbor's own pass.
+7. **Honesty in the app.** Update the part's text in `dist/ui/layers-panel.mjs`
+   (`componentInfo`, `sources`) to say what is published and what is estimated. Never draw
+   invented hidden internals; enclosure-level is fine when that is all the sources show.
+8. **Inspector.** Check `inspectionGroups()` in `dist/vehicle-inspector.mjs`: isolating the
+   part must show it unobstructed; turning isolation off restores the installed context.
+9. **Tests.** `tests/<part>.test.mjs`: groups and inspection layers exist, hiding a layer does
+   not move the assembly, bounds stay in the envelope, no overlap with the rebuilt set,
+   anchors sit on the new geometry, revision/confidence are set. Then run all tests:
+   `node --test tests/*.test.mjs`.
+10. **Look at it.** Mission -> Internal and Thermal -> pick the part -> Isolate, at several
+    orbit angles, desktop and phone width (360-390 px). No console errors, nothing clipped.
+11. **Write it up.** Signed `CHANGELOG.md` entry; research README; `RESEARCH-COMPENDIUM.md`
+    note; `ARCHITECTURE.md` file-table row for the new module; README if user-visible text
+    changed; tick the box below with links to the research notes and what remains estimated.
+12. **Publish.** Commit with the assistant's co-author trailer, `git push origin master:main`
+    plus the archive tag, then confirm the GitHub Pages run and the live build stamp.
+
+## Handoff Notes (for Claude and other assistants)
+
+- **State on October 13, 2026:** parts 06, 07 and 08 are rebuilt and live (build 80242ee);
+  157 tests pass. Codex was stopped by a usage limit while writing this section; Claude
+  completed it and continues with #13.
+- **Rebuilt-set assets to test against:** `carouselAsset` (`dist/sample-carousel.mjs`),
+  `wonderwallAsset` (`dist/wonderwall.mjs`), `dramsAsset` (`dist/drams-assembly.mjs`). Add each
+  new part to this list and to the clearance tests of the parts it neighbors.
+- **Suggested order after #13:** #12 IEM and #11 power switching units (NASA's March 2026
+  integration photos show both), #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
+  references each time; reorder if a clearer source turns up.
+- **Viewing locally:** Codex used Playwright scripts outside the repo; Claude uses the desktop
+  app's browser pane with a no-cache static server for `dist/`. Debug hooks on localhost:
+  `window.dragonflyState`, `window.dragonflyRenderer`, `window.dragonflyTick(now)`.
+- **Owner preferences that apply here:** realism is the goal, but keep it easy to operate;
+  keep the light visible; never throw work away; archive pictures with every replacement; sign
+  every change. The owner often checks on a phone, so always check phone width.
+- **Still open across all parts:** the numbered-callout layout defect (Priority 1 below), the
+  shell/foam/casing hide/show controls, and authoritative dimensions for every rebuilt part.
 
 ## Priority 1: Numbered Callouts
 

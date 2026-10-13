@@ -37,6 +37,21 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-13: Write down the part-rebuild process and the Claude handoff
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Record the interior part-rebuild process and handoff notes"
+- **What changed:** The owner asked Codex to write the process used for the interior part
+  rebuilds into the checklist, tick what is done and leave handoff notes for Claude; Codex hit
+  a usage limit before saving it. `INTERIOR-REALISM-TODO.md` now has "The Process (one part
+  per pass)", twelve steps taken from how parts 06-08 were built (research and credit,
+  archive first, one module per part with inspection-layer groups, fit rules, honesty in the
+  app text, inspector, tests, visual checks, write-up, publish), and "Handoff Notes" (current
+  state, rebuilt-set assets, suggested order, local viewing, owner preferences, open items).
+  Parts 06, 07 and 08 were already ticked. Documentation only.
+- **Files:** `INTERIOR-REALISM-TODO.md`, `CHANGELOG.md`
+- **Checks:** none needed (no code changes).
+- **Open / next:** #13 Frontier radio, using the official APL photo.
+
 ### 2026-10-12: Rebuild DraMS enclosures and align the warm-side interface
 - **Signed:** Codex (OpenAI).
 - **Commit:** `Rebuild DraMS enclosures and aligned inspection interface`.
