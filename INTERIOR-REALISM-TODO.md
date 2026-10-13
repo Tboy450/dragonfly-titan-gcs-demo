@@ -31,13 +31,13 @@ assistant can continue the same way. Every step happens in the same change as th
    (photograph, labeled figure or published dimension). Skip parts whose only source is a
    vague diagram until one turns up. Work on one part at a time; finish, verify and publish it
    before starting the next.
-3. **Research and credit; save everything used.** Look for every view of the part and of the
-   parts it is made of, and use the **full-resolution** originals (NASA's image server often
-   has 4-7k pixel versions behind the page copy). Standard parts in a photo (connectors,
-   fasteners) have published sizes: use them as a ruler for scale and as real proportions.
-   Map visible details one by one (positions, sizes, types, empty areas) and check the map by
-   drawing it over the photo; matching or mirrored units are fine only when the sources show
-   them that way.
+3. **Capture the detail; research and credit; save everything used.** The goal is to capture
+   what the sources really show and replicate it, so each part looks as distinct (or as alike)
+   as the real hardware. Gather every view of the part and of the parts it is made of. How to
+   capture and draw it is chosen per part; there are several ways. Examples that worked for
+   the IEM and PSUs: full-resolution originals (NASA's image server often has 4-7k pixel
+   versions behind the page copy), standard parts such as connectors used as rulers and drawn
+   at their published sizes, and tracing details then checking the trace over the photo.
    Save every photo, paper figure and patent
    drawing the part is built from in the project: photos in `research/<part>-<date>/`, paper
    pages and patent sheets as images in `research/sources/<source>/` (shared between parts),
