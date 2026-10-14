@@ -27,6 +27,9 @@ the Microscopic Camera is 105 x 155 x 90 mm and images the drill site from 986 m
 The [nose-camera pass](research/nose-cameras-2026-10-13/README.md) draws the published camera types
 (Forward MAC, Forward WAC, two Side Cameras, two NavCams) where the paper's 2026 CAD puts them;
 pointing and which low unit is which are [EST].
+The [drill pass](research/drills-2026-10-13/README.md) follows DrACO LPSC 2022 fig. 2; a full stroke
+stays within the published 6 cm depth; sizes [EST]; placement 0.34-0.45 m forward of center in
+the sources, kept at 0.43 m.
 
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and

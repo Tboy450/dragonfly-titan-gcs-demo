@@ -39,6 +39,32 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-13: Rebuild part 01, the DrACO drills, from the 2022 DrACO paper
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Rebuild the DrACO drills from the LPSC 2022 drill figure"
+- **What changed:** Codex's simplified drills are replaced by the Sample Acquisition Drill in
+  the DrACO paper's fig. 2: a gold drill head with percussion (top) and rotation (front)
+  actuators and the percussion spring, riding a red Z-stage rail with its motor, lead screw and
+  lower bracket; a swivel with an angled pneumatic port; and a hollow bit with a side opening and
+  a slotted crown. While drilling, the whole head now slides down the rail and only the bit
+  turns (before, the feed group spun as one piece); the sampling animation and Codex's sampling
+  test were updated for this. A full stroke drills 5.8 cm, inside the published 6 cm.
+- **Placement check:** the APL cutaway, NASA's printable model (assembly step 3) and DragonCam
+  fig. 3 all put the drill just aft of the forward leg, 0.34-0.45 m forward of center; the model
+  keeps 0.43 m.
+- **Sources saved:** DrACO test-hardware photos from Tighe Costa's portfolio (metadata removed),
+  NASA's lab photo and print-model page (`research/drills-2026-10-13/`); no drill patent found.
+- **Noted, not fixed:** the old transfer line (#02) still starts at the old head position.
+- **App text:** Model assumptions, Vehicle part references and the drill's Component text
+  updated; README matches.
+- **Archive:** `archive/drills-2026-10-13/` (old code, sampling test, pictures; tag at `16b1f10`).
+- **Files:** `dist/drills.mjs` (new), `dist/vehicle-research.mjs`, `dist/ui/layers-panel.mjs`,
+  `dist/index.html`, `tests/drills.test.mjs` (new), `tests/render-smoke.test.mjs`, `research/`,
+  `archive/`, `INTERIOR-REALISM-TODO.md`, `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`, `README.md`
+- **Checks:** `node --test tests/*.test.mjs` (174 pass, 4 new). Close views, mid-drilling view,
+  Thermal; phone width; no console errors.
+- **Open / next:** #02 sample lines and #24 blowers.
+
 ### 2026-10-13: Rebuild part 04, the nose cameras, from the DragonCam paper
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Rebuild the nose cameras from the DragonCam paper"

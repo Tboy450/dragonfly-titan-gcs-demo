@@ -12,6 +12,7 @@ import { buildIem } from "./iem.mjs?v=dev";
 import { buildPowerUnits } from "./power-units.mjs?v=dev";
 import { buildSideCameras } from "./side-cameras.mjs?v=dev";
 import { buildNoseCameras } from "./nose-cameras.mjs?v=dev";
+import { buildDrill, drillAsset } from "./drills.mjs?v=dev";
 
 export function buildResearchModel(kit) {
   const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
@@ -223,26 +224,11 @@ export function buildResearchModel(kit) {
     // DrACO's vertical drill/feed assemblies mount beside the body, above the runners.
     // APL payload cutaway + NASA Assembly Guide p2; two redundant drills are described
     // by NASA's "Playing Lacrosse on Titan". Stowed bit and tube routing are [EST].
+    // DrACO Sample Acquisition Drills: see drills.mjs (LPSC 2022 fig. 2; placement from the APL
+    // cutaway, NASA printable model and DragonCam fig. 3).
     subsystem("drills", "drills");
-    const drillX = side * 0.54, drillZ = -0.43;
-    mesh(new THREE.BoxGeometry(0.14, 0.11, 0.23), armMaterial, [drillX, -0.23, drillZ]);
-    mesh(new THREE.CylinderGeometry(0.052, 0.044, 0.37, 16), metal, [drillX, -0.475, drillZ]);
-    for (const offset of [-0.083, 0.083]) {
-      strut([drillX, -0.28, drillZ + offset], [drillX, -0.73, drillZ + offset], 0.015, metal);
-    }
-    for (const y of [-0.32, -0.39, -0.64]) mesh(new THREE.CylinderGeometry(0.057, 0.057, 0.018, 16), deck, [drillX, y, drillZ]);
-    const feed = new THREE.Group();
-    feed.name = side < 0 ? "drill-feed-port" : "drill-feed-starboard";
-    feed.position.set(drillX, -0.72, drillZ);
-    buildTarget.add(feed);
-    mesh(new THREE.CylinderGeometry(0.017, 0.012, 0.11, 10), metal, [0, 0, 0], feed);
-    // Helical flute makes the slowed illustrative rotation legible, not a specified cutter.
-    const flute = new THREE.CatmullRomCurve3(Array.from({ length: 33 }, (_, i) => {
-      const a = i / 32 * Math.PI * 4;
-      return new THREE.Vector3(Math.cos(a) * 0.017, i / 32 * 0.10 - 0.05, Math.sin(a) * 0.017);
-    }));
-    mesh(new THREE.TubeGeometry(flute, 32, 0.003, 4, false), deck, [0, 0, 0], feed);
-    drillFeeds.push(feed);
+    const drillX = side * drillAsset.lateralM, drillZ = drillAsset.foreAftM;
+    drillFeeds.push(buildDrill({ parent: buildTarget, mesh, side }).carriage);
     subsystem("sample-lines", "drills");
     const sampleLine = new THREE.CatmullRomCurve3([
       new THREE.Vector3(drillX, -0.23, drillZ), new THREE.Vector3(side * 0.49, -0.06, -0.62),
@@ -506,8 +492,9 @@ export function buildResearchModel(kit) {
     const job = samplingSequence(state);
     // One redundant drill is illustrated; this is not a commanded flight-hardware port choice.
     drillFeeds.forEach((feed, index) => {
-      feed.position.y = -0.72 - (index === 0 ? job.drillFeed : 0);
-      feed.rotation.y = index === 0 ? job.drillAngle : 0;
+      // The carriage slides down the Z-stage; only the bit turns.
+      feed.position.y = drillAsset.stowedY - (index === 0 ? job.drillFeed : 0);
+      feed.userData.bit.rotation.y = index === 0 ? job.drillAngle : 0;
     });
     carousel.carrier.rotation.y = job.carouselAngle;
     const diagram = layer === "internal";

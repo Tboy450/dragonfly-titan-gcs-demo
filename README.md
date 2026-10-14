@@ -324,7 +324,9 @@ makes the foam shell see-through. Parts already redrawn from their own photos an
 sample carousel, Wonderwall and DraMS in the attic, the Frontier radio, the integrated
 electronics module, the two power switching units, and the lower DragonCam cameras (Microscopic
 Camera, LED array and Down Cameras in foam cavities), and the nose cameras (Forward MAC and WAC,
-two Side Cameras, two NavCams on a camera panel); their positions are mostly estimated. The
+two Side Cameras, two NavCams on a camera panel), and the DrACO drills (gold head with percussion
+and rotation actuators on a Z-stage rail; the head slides down while only the bit turns); their
+positions are mostly estimated. The
 rest are still placeholder blocks from NASA's thermal papers, placed where their figures put
 them: the cold attic with the sample carousel, DraMS, the battery at the aft
 end, the drive electronics, avionics, radio amplifier, circulation fan, under-floor duct and the

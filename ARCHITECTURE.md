@@ -68,6 +68,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/sample-carousel.mjs` | First individually rebuilt interior asset: NASA-photo-referenced SDC casing/fins/ports/drives, explicit estimated scale, stationary enclosure and internal indexing pivot |
 | `dist/wonderwall.mjs` | Estimated contoured warm/cold partition, real geometry openings and separate faces/core/mount groups for future inspection layer controls; clears the rebuilt carousel |
 | `dist/ecam.mjs` | Shared Malin ECAM camera heads from the DragonCam paper's figures (P50 wide, P50 Forward MAC with lens hood, NavCam with top plate, L50 Microscopic Camera) and `mountEcam` to place and aim one |
+| `dist/drills.mjs` | Part 01: DrACO drills from LPSC 2022 fig. 2 (gold head, percussion and rotation actuators, Z-stage rail and motor, swivel port, hollow bit); the carriage slides for drilling and only the bit turns (`carriage.userData.bit`) |
 | `dist/nose-cameras.mjs` | Part 04: Forward MAC, Forward WAC, two Side Cameras and two NavCams on a camera panel behind the nose cap, positioned from DragonCam figs. 2-3 |
 | `dist/side-cameras.mjs` | Part 23: Microscopic Camera placed from its published 986 mm / 52 degree geometry to the port drill site, LED array, two Down Cameras, windows and foam cavities, in inspection-layer groups |
 | `dist/power-units.mjs` | Part 11: the two PSUs from NASA/APL's March 2026 testing photo; sliced silver connector faces, mated harness, black covers, mounts, in separate inspection-layer groups per unit; size scaled from the photo |

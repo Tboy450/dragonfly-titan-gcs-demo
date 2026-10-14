@@ -98,9 +98,11 @@ test("Sampling poses follow the science clock, with internal-only markers and a 
   assert.ok(feed.position.y < -0.84);
   assert.equal(standby.position.y, -0.72, "redundant drill stays stowed");
   assert.equal(flow.visible, false);
-  const rotation = feed.rotation.y;
+  // The carriage slides; only the bit turns (DrACO LPSC 2022 fig. 2).
+  const rotation = feed.userData.bit.rotation.y;
   render(5.1);
-  assert.notEqual(feed.rotation.y, rotation);
+  assert.notEqual(feed.userData.bit.rotation.y, rotation);
+  assert.equal(feed.rotation.y, 0, "the drill head does not spin");
   render(12);
   assert.equal(flow.visible, true);
   const particle = flow.children[0].position.clone();
