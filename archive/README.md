@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [thermal-loop-2026-10-14](thermal-loop-2026-10-14/README.md) | One fan, a duct box and the side-chimney trim device (ICES-2023 concept) before the two fans, warm duct and belly cold duct | 2026-10-14 | `archive/thermal-loop-2026-10-14` |
 | [draco-plumbing-2026-10-14](draco-plumbing-2026-10-14/README.md) | One tube per side and a single-cylinder blower before the DrACO pneumatic transport (hoses, tubes, flow diverters, two blowers) | 2026-10-14 | `archive/draco-plumbing-2026-10-14` |
 | [drills-2026-10-13](drills-2026-10-13/README.md) | Codex's simplified drills (box head, tube, struts, fluted bit spinning with the feed) before the LPSC fig. 2 drill | 2026-10-13 | `archive/drills-2026-10-13` |
 | [nose-cameras-2026-10-13](nose-cameras-2026-10-13/README.md) | Three dark boxes for the nose cameras before the six DragonCam nose cameras | 2026-10-13 | `archive/nose-cameras-2026-10-13` |

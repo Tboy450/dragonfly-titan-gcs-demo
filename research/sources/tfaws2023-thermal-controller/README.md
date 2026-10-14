@@ -9,4 +9,5 @@ in the project).
 
 | File | Content | Used for |
 |---|---|---|
+| `tfaws23-at-14-slide04.jpg` | Slide 4: thermal control architecture: fan, ducting, cold duct and fore/aft gas diverter valves | 17, 18, 19 |
 | `tfaws23-at-14-slide03.jpg` | Slide 3: lander overview with labeled parts and the top view with ducting and fans | model coordinates for every part (scale 327 px/m, see `dist/vehicle-research.mjs`) |

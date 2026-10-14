@@ -78,13 +78,14 @@ export function buildSampleLines({ parent, mesh, carouselInlet }) {
   };
   const clamp = (at, toward, name = "draco-tube-clamp") => {
     // A band round the tube and a short tab to the structure.
+    // Oriented with explicit math (Object3D.lookAt would depend on the parents' world transform).
+    const t = new THREE.Vector3(...toward), dir = t.clone().normalize();
     const band = mesh(new THREE.TorusGeometry(TUBE + 0.002, 0.0018, 6, 14), valve, at, clamps);
     band.name = name;
-    band.lookAt(new THREE.Vector3(...at).add(new THREE.Vector3(...toward).normalize().multiplyScalar(0.01)));
-    const end = new THREE.Vector3(...at).add(new THREE.Vector3(...toward));
-    const mid = new THREE.Vector3(...at).lerp(end, 0.5);
-    const tab = mesh(new THREE.BoxGeometry(0.012, 0.003, new THREE.Vector3(...toward).length()), valve, mid.toArray(), clamps);
-    tab.lookAt(end); tab.name = "draco-clamp-tab";
+    band.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir);
+    const mid = new THREE.Vector3(...at).addScaledVector(t, 0.5);
+    const tab = mesh(new THREE.BoxGeometry(0.012, 0.003, t.length()), valve, mid.toArray(), clamps);
+    tab.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir); tab.name = "draco-clamp-tab";
   };
 
   const paths = [];

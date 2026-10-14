@@ -39,6 +39,35 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-14: Rebuild parts 17-19: circulation fans, warm duct and the cold-duct trim device
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Rebuild the fans, warm duct and trim device from the TFAWS thermal talks"
+- **What changed:** The one fan cylinder, the duct box and the side "chimneys" are replaced by the
+  air loop in NASA/APL's TFAWS 2023 and 2024 talks: two fans (A and B) side by side at the MMRTG
+  end, with rotors that turn with the flow; a warm duct 0.14 m wide on the centerline (scaled from
+  the 2023 plan view) from the fan transition to the nose, turning up into the body below the
+  nose; and the trim device as a cold bypass duct under the belly, outside the foam, between fore
+  and aft diverter flaps in foam-wrapped housings, opening up to 24 degrees with the trim setting.
+  The flow arrows now run through the fans and duct and, at trim, forward through the cold duct.
+- **Why the trim device changed shape:** ICES-2023 describes side chimneys with foam caps; the
+  later TFAWS 2023 and 2024 talks describe and test a cold duct with fore and aft diverters. The
+  newer design is drawn; the chimney drawing is archived. The part keeps its durable id.
+- **Also:** the "Warm-air loop" panel says "two fans" and "fore and aft diverter flaps ... under
+  the belly"; its duct-speed estimate uses the 0.14 m width. Clamps in `draco-plumbing.mjs` and the
+  new tapers are oriented with explicit math instead of `lookAt`. A compendium line about side
+  flaps on linear actuators is kept with a note that its source was not found.
+- **Sources saved:** TFAWS 2023 slide 4 and the slide 3 plan view; TFAWS 2024 slides 13, 15, 16.
+- **Noted, not fixed:** old drive-electronics, battery, nose-electronics and aft-bulkhead blocks
+  reach into the duct zone.
+- **Archive:** `archive/thermal-loop-2026-10-14/` (tag at `cceb29a`).
+- **Files:** `dist/thermal-loop.mjs` (new), `dist/vehicle-research.mjs`, `dist/draco-plumbing.mjs`,
+  `dist/ui/layers-panel.mjs`, `dist/index.html`, `tests/thermal-loop.test.mjs` (new),
+  `tests/render-smoke.test.mjs`, `research/`, `archive/`, `INTERIOR-REALISM-TODO.md`,
+  `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`, `README.md`
+- **Checks:** `node --test tests/*.test.mjs` (183 pass, 5 new). Isolated and installed views, trim
+  open; phone width; no console errors.
+- **Open / next:** #14 TWTA.
+
 ### 2026-10-14: Rebuild parts 02 and 24, the DrACO sample lines and blowers
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Rebuild the DrACO sample lines and blowers from the DrACO layout figure"

@@ -21,6 +21,7 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 - [x] **Claude:** Rebuild #04 nose cameras from the same paper (October 13).
 - [x] **Claude:** Rebuild #01 DrACO drills from LPSC 2022 fig. 2 (October 13).
 - [x] **Claude:** Rebuild #02 sample lines and #24 blowers from DrACO fig. 1 (October 14).
+- [x] **Claude:** Rebuild #17 fans, #18 warm duct and #19 trim device from TFAWS 2023/2024 (October 14).
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## The Process (one part per pass)
@@ -125,9 +126,9 @@ APL's rotating CAD video, NASA/APL integration photos.
   `frontierRadioAsset` (`dist/frontier-radio.mjs`), `iemAsset` (`dist/iem.mjs`),
   `powerUnitsAsset` (`dist/power-units.mjs`), `sideCamerasAsset` (`dist/side-cameras.mjs`),
   `noseCamerasAsset` (`dist/nose-cameras.mjs`), `drillAsset` (`dist/drills.mjs`),
-  `dracoPlumbingAsset` (`dist/draco-plumbing.mjs`). Add each
+  `dracoPlumbingAsset` (`dist/draco-plumbing.mjs`), `thermalLoopAsset` (`dist/thermal-loop.mjs`). Add each
   new part to this list and to the clearance tests of the parts it neighbors.
-- **Suggested order next:** #19 trim device, #17 fan and #18 duct (TFAWS 2024 test-article slides, ICES-2023), #14 TWTA, #02 sample lines and #24 blowers (DrACO LPSC 2022 figs. 1-3, Honeybee slides), #19 trim device, #17 fan and #18 duct (TFAWS 2024 test-article slides), #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
+- **Suggested order next:** #14 TWTA, #02 sample lines and #24 blowers (DrACO LPSC 2022 figs. 1-3, Honeybee slides), #19 trim device, #17 fan and #18 duct (TFAWS 2024 test-article slides), #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
   references each time; reorder if a clearer source turns up.
 - **Viewing locally:** Codex used Playwright scripts outside the repo; Claude uses the desktop
   app's browser pane with a no-cache static server for `dist/`. Debug hooks on localhost:
@@ -185,7 +186,8 @@ Current rebuilt set: `sample-carousel` (`carousel-2026-10-12`) and `wonderwall`
 (`wonderwall-2026-10-12`) and `drams` (`drams-2026-10-12`) and `frontier-radio`
 (`frontier-radio-2026-10-13`) and `iem` (`iem-2026-10-13`) and `power-units`
 (`power-units-2026-10-13`) and `side-cameras` (`side-cameras-2026-10-13`) and `nose-cameras-inside`
-(`nose-cameras-2026-10-13`) and `drills` (`drills-2026-10-13`) and `sample-lines`/`drill-blower` (`draco-plumbing-2026-10-14`). Their installed bounds and clearance are tested together; the
+(`nose-cameras-2026-10-13`) and `drills` (`drills-2026-10-13`) and `sample-lines`/`drill-blower` (`draco-plumbing-2026-10-14`) and `fan`/`underfloor-duct`/`trim-chimneys`
+(`thermal-loop-2026-10-14`). Their installed bounds and clearance are tested together; the
 DraMS neck intentionally passes through the wall aperture.
 
 - [x] **Claude:** **01 DrACO drills** (`drills`): gold head with percussion and rotation actuators and the percussion spring, red Z-stage rail with motor, lead screw and lower bracket, swivel with pneumatic port, hollow bit with side opening and slotted crown; the carriage slides while drilling and only the bit turns; a full stroke drills 5.8 cm (6 cm published limit). [References/limits](research/drills-2026-10-13/README.md).
@@ -213,9 +215,11 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **14 TWTA amplifier** (`twta`): housing and top-deck mounting/heat path; avoid intersecting nearby hardware.
 - [ ] **15 Battery and thermal buffer** (`battery`): outer pack casing first; then sourced heat-pipe/PCM arrangement and optional cutaway, not generic exposed cells.
 - [ ] **16 Aft bulkhead** (`aft-bulkhead`): profile, penetrations and attachment to the generator/fan region.
-- [ ] **17 Circulation fan** (`fan`): casing, inlet/outlet, impeller visibility and duct connections.
-- [ ] **18 Under-floor warm-gas duct** (`underfloor-duct`): channel cross-section, cover/floor interface, openings and bends.
-- [ ] **19 Trim chimneys/flaps** (`trim-chimneys`): both ducts, insulation-covered flaps, hinges and actuator linkage; check motion clearance.
+- [x] **Claude:** **17 Circulation fans** (`fan`): Fan-A and Fan-B side by side in housings at the MMRTG end, with rotors that turn with the flow and an adapter to the MMRTG; TFAWS 2023 slides 3, 7, 8 and TFAWS 2024 slide 14; size from the plan view. [References/limits](research/thermal-loop-2026-10-14/README.md).
+- [x] **Claude:** **18 Under-floor warm duct** (`underfloor-duct`): 0.14 m wide on the centerline from the fan transition to the nose, turning up into the body below the nose, with flanges; TFAWS 2023 slides 3-4, ICES-2023. [References/limits](research/thermal-loop-2026-10-14/README.md).
+- [ ] **18 follow-up:** real duct height; the round perforated feature on the duct in the slide 3 plan view; old drive-electronics, battery, nose-electronics and aft-bulkhead placeholders reach into the duct zone (fix with those parts).
+- [x] **Claude:** **19 Trim device** (`trim-chimneys`, durable id kept): the cold bypass duct under the belly, outside the foam, with fore and aft diverter flaps in foam-wrapped housings that open with the trim setting; TFAWS 2023 slides 4, 7, 8 and TFAWS 2024. ICES-2023's side-chimney concept archived. [References/limits](research/thermal-loop-2026-10-14/README.md).
+- [ ] **19 follow-up:** the cold duct's real section and the meaning of the "split cold duct" (TFAWS 2024); flap hinge sides and actuators.
 - [ ] **20 Battery temperature sensor** (`battery-sensor`): verify installation; distinguish an actual sensor body from a diagram marker.
 - [ ] **21 MMRTG fin-root sensor** (`mmrtg-sensor`): same distinction, with verified placement rather than a floating green sphere.
 - [ ] **22 Nose methane/E-field instruments** (`nose-sensors`): individual housings, supports and wire exits.

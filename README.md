@@ -331,11 +331,13 @@ a return line to two blowers behind the port forward arm); their
 positions are mostly estimated. The
 rest are still placeholder blocks from NASA's thermal papers, placed where their figures put
 them: the cold attic with the sample carousel, DraMS, the battery at the aft
-end, the drive electronics, avionics, radio amplifier, circulation fan, under-floor duct and the
-trim-device chimneys, with arrows following the warm-air loop from the MMRTG. The loop is live:
-its arrows move with the fan's flow and go from MMRTG-warm to bay-cool; when the trim flaps open,
-a share of the flow (blue) runs through the exposed cold duct in each side chimney, and the flaps
-swing open with the setting. Green dots mark the controller's two temperature inputs (battery and
+end, the drive electronics, avionics and radio amplifier. The air loop was redrawn from NASA/APL's
+thermal talks: two circulation fans at the MMRTG end, the warm duct forward under the floor into
+the nose, and the trim device, a cold bypass duct under the belly between fore and aft diverter
+flaps (an earlier side-chimney concept is archived). Arrows follow the warm-air loop from the
+MMRTG. The loop is live: its arrows move with the fans' flow and go from MMRTG-warm to bay-cool;
+when the diverter flaps open, a share of the flow (blue) runs forward through the exposed cold
+duct, and the flaps swing open with the setting. Green dots mark the controller's two temperature inputs (battery and
 MMRTG fin root). A "Warm-air loop" panel under the diagram explains, with live values, how the
 air moves, how it is regulated (trim 0-40% in 2% steps about every 10 minutes) and how it is
 measured. Thermal colors

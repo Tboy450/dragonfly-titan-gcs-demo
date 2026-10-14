@@ -37,9 +37,9 @@ const componentInfo = {
   drams: ["DraMS analyzes samples by laser desorption or gas chromatography/mass spectrometry. This warm-side reconstruction has enclosed instrument bodies, separate covers and an interface through the modeled Wonderwall opening. Dimensions, enclosure details, routes and fan geometry are estimates, not flight CAD. Hidden electrodes, GC columns, laser optics and the sample oven are not reconstructed. Temperature is the shared bay model, not measured hardware telemetry.", "carouselDesign"],
   "drill-blower": ["DrACO's two redundant centrifugal blowers (forward and aft), with impellers designed for Titan air, behind the port forward arm and exposed to Titan (ICES-2023). An inlet flow diverter picks which blower pulls the air; each exhausts outboard and down. Sizes and shapes are estimates.", "dracoPaper"],
   battery: ["The battery supplies flight power and recharges from the MMRTG. The thermal model includes a phase-change buffer and inhibits charging outside its permitted band.", "thermal"],
-  fan: ["Circulates MMRTG-warmed, nitrogen-rich gas through the under-floor duct and equipment bay.", "thermal"],
-  "underfloor-duct": ["Routes warmed gas forward below the floor before it returns through the equipment bay.", "thermal"],
-  "trim-chimneys": ["Flaps divert a controlled fraction of the circulation through cold ducts to reject heat to Titan's atmosphere.", "thermal"],
+  fan: ["Two circulation fans (Fan-A and Fan-B) at the MMRTG end pull its waste-heat-warmed, nitrogen-rich gas into the duct: 0.052 kg/s by design, within a 15 W allocation; their speed also controls the MMRTG fin-root temperature. Drawn from NASA/APL's 2023 thermal talk (plan view and controller diagram); size scaled from the plan view, housings estimated. A flight-like fan was tested at 5,000-6,200 rpm in the 2024 full-scale test.", "thermal"],
+  "underfloor-duct": ["The warm duct runs forward under the equipment floor on the centerline, about 14 cm wide (scaled from the 2023 plan view), and turns up into the body below the nose; the gas then returns aft through the bay to the MMRTG. Its height is an estimate.", "thermal"],
+  "trim-chimneys": ["The trim device, as in NASA/APL's 2023 and 2024 thermal talks: a cold bypass duct under the belly, outside the foam and exposed to Titan, between fore and aft diverter flaps. Opening the flaps sends 0-40% of the warm flow forward through the cold duct (in 2% steps, about every 10 minutes) to dump heat to Titan; a full-scale test reached 245.7 W at a 23.7-degree flap angle with a non-flight test duct. Duct section, housings and actuators are estimates. An earlier concept with a chimney in each side wall (ICES-2023) is archived.", "thermal"],
 };
 
 function liveComponentReading(name) {
@@ -146,16 +146,16 @@ function updateAirflowPanel() {
   const flow = state.gasFlow ?? systemsModel.gasMassFlow;
   const fan = Math.round((state.fan ?? 1) * 100);
   // Gas speed in the under-floor duct: density of the warm N2-rich gas at 146 kPa, divided into
-  // the modeled duct's 16 x 4.5 cm section [EST].
+  // the modeled duct's 14 x 4.5 cm section (width from the TFAWS 2023 plan view, height [EST]).
   const density = 146000 * 0.028 / (8.314 * (273.15 + (state.coreC ?? 12)));
-  const ductSpeed = flow / density / (0.16 * 0.045);
+  const ductSpeed = flow / density / (0.14 * 0.045);
   const trim = Math.round((state.effectiveTrim ?? 0) * 100);
   const next = Math.max(0, state.trimClock ?? 0);
   const clock = `${Math.floor(next / 60)}:${String(Math.floor(next % 60)).padStart(2, "0")}`;
-  $("air-moves").textContent = `The fan (${fan}%${state.fanIntegrity < 1 ? ", restricted" : ""}) moves ${flow.toFixed(3)} kg/s `
+  $("air-moves").textContent = `The two fans (${fan}%${state.fanIntegrity < 1 ? ", restricted" : ""}) moves ${flow.toFixed(3)} kg/s `
     + `(design 0.052 kg/s) of nitrogen-rich Titan gas, warmed to ${(state.warmGasC ?? 0).toFixed(0)} C by the MMRTG's waste heat, `
     + `forward through the under-floor duct (about ${ductSpeed.toFixed(1)} m/s, estimate) and back through the bay at ${(state.coreC ?? 0).toFixed(0)} C.`;
-  $("air-regulated").textContent = `The trim flaps send ${trim}% of the flow through the exposed cold duct on each side (0-40% in 2% steps), `
+  $("air-regulated").textContent = `The fore and aft diverter flaps send ${trim}% of the flow through the exposed cold duct under the belly (0-40% in 2% steps), `
     + `dumping ${(state.coldDuctW ?? 0).toFixed(0)} W to Titan. `
     + (state.trimFlightLocked ? "Held closed in flight. " : state.thermalAuto ? `Automatic; next adjustment in ${clock}. ` : "Manual setting. ")
     + "Dragonfly uses two controllers taking turns, on battery and MMRTG fin-root temperature, about every 10 minutes; this simulator uses one simplified loop on battery and bay temperature.";

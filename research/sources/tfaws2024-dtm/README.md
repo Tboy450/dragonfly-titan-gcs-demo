@@ -10,7 +10,10 @@ owner's downloaded copy.
 | `tfaws2024-at-02-slide05.jpg` | The full-scale thermal mock-up: 80/20 frame, honeycomb panels, foam, internal boxes and printed parts standing in for components | structure, layout pass |
 | `tfaws2024-at-02-slide07.jpg` | Side section with the airflow loop, trim device, cold duct and instrument positions | 17, 18, 19, layout pass |
 | `tfaws2024-at-02-slide09.jpg` | Trim device CAD and photo | 19 |
+| `tfaws2024-at-02-slide13.jpg` | Cold duct flap angle vs heat rejection | 19 |
 | `tfaws2024-at-02-slide14.jpg` | Fan cooling: fan speed vs heater temperature | 17 |
+| `tfaws2024-at-02-slide15.jpg` | Pressure drop across the fan zone, ducting and body vs flap angle; section of the forward duct end | 18, 19 |
+| `tfaws2024-at-02-slide16.jpg` | Transient cold duct flow on opening the aft and front flaps | 19 |
 
 The test article is not flight hardware ("3D-printed Ultem duct", "not flight-like" heater);
 use it for arrangement, not for exact flight shapes.

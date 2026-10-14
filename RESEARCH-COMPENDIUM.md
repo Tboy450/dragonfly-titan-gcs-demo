@@ -33,6 +33,9 @@ the sources, kept at 0.43 m.
 The [sample-line and blower pass](research/draco-plumbing-2026-10-14/README.md) follows DrACO
 fig. 1's cross-strapped flow (drills -> diverters -> carousel -> diverters -> two blowers ->
 exhaust), with the blowers behind the port forward arm (ICES-2023); routes and sizes [EST].
+The [air-loop pass](research/thermal-loop-2026-10-14/README.md) draws two fans, the warm duct and
+the cold bypass duct under the belly with fore and aft diverter flaps (TFAWS 2023/2024); ICES-2023's
+side-chimney trim concept is archived.
 
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and
@@ -210,6 +213,9 @@ Source: [PUB] [SciTech 2025 EDL overview](https://ntrs.nasa.gov/api/citations/20
 - **Titan surface (dense cold N₂)** [PUB] TFAWS 2023/2024; ICES-2020/2023:
   - Fans pull warm MMRTG air through a **warm-duct** network.
   - Two **thermal trim devices** (aluminum flaps covered in foam, one on each side at the aft end, driven by linear actuators) divert warm air to an exposed **cold duct**. They can be offset from each other to bias the MMRTG warmer or colder.
+    *Note (2026-10-14): the saved TFAWS 2023/2024 pages describe the diverters as fore and aft of
+    the ducting with a cold duct along the belly (drawn that way since part 19's rebuild); the
+    source for "one on each side" and "linear actuators" was not found in the saved papers.*
   - The lander is wrapped in **Rohacell 31 HF foam**: 5 cm in the 2020 design, 7–7.62 cm later. Conductivity is ≤0.035 W/m·K between 0 and −179 °C and ~0.01 W/m·K at Titan temperature. The skin is aluminized Kapton.
   - The battery has aluminum fin extrusions between cell stacks with small fans, plus **7.5 kg of paraffin phase-change material (melting at 22.5 °C)** and constant-conductance heat pipes.
 

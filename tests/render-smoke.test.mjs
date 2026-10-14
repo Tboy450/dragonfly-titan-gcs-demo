@@ -525,21 +525,22 @@ test("Inspector frames isolated assemblies at every angle and restores the ordin
   assert.equal(chase.subsystems.battery.visible, false);
 });
 
-test("The air loop follows the fan and the trim flaps", async () => {
+test("The air loop follows the fans and the cold-duct diverter flaps", async () => {
   const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
   const { createFlightState } = await import("../dist/flight-model.mjs");
   const chase = createChaseRenderer({ renderer: fakeRenderer() });
   const research = chase.models.research;
   const coldArrows = research.getObjectByName("cold-duct-arrows"), warmArrows = research.getObjectByName("warm-loop-arrows");
-  const flap = research.getObjectByName("trim-flap-starboard");
+  const flap = research.getObjectByName("trim-flap-aft"), front = research.getObjectByName("trim-flap-front");
   const state = { ...createFlightState(), vehicleModel: "research", gasFlow: 0.052, effectiveTrim: 0, missionTime: 0 };
   chase.drawMission(context2d, 800, 600, state, { layer: "internal" });
   assert.equal(coldArrows.count, 0, "flaps closed: no cold-duct flow");
-  assert.equal(flap.rotation.z, 0);
+  assert.equal(flap.rotation.x, 0);
   Object.assign(state, { effectiveTrim: 0.4, missionTime: 1 });
   chase.drawMission(context2d, 800, 600, state, { layer: "internal" });
-  assert.equal(coldArrows.count, 20, "fully open: ten arrows through each side");
-  assert.ok(Math.abs(flap.rotation.z - 24 * Math.PI / 180) < 1e-9, "flap opens about 24 degrees");
+  assert.equal(coldArrows.count, 20, "fully open: twenty arrows through the cold duct");
+  assert.ok(Math.abs(Math.abs(flap.rotation.x) - 24 * Math.PI / 180) < 1e-9, "aft flap opens about 24 degrees");
+  assert.ok(Math.abs(Math.abs(front.rotation.x) - 24 * Math.PI / 180) < 1e-9, "front flap opens with it");
   Object.assign(state, { gasFlow: 0, missionTime: 2 });
   chase.drawMission(context2d, 800, 600, state, { layer: "internal" });
   assert.equal(warmArrows.visible, false, "fan stopped: no loop");

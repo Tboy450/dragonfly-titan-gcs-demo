@@ -14,6 +14,7 @@ import { buildSideCameras } from "./side-cameras.mjs?v=dev";
 import { buildNoseCameras } from "./nose-cameras.mjs?v=dev";
 import { buildDrill, drillAsset } from "./drills.mjs?v=dev";
 import { buildSampleLines, buildBlowers } from "./draco-plumbing.mjs?v=dev";
+import { buildFans, buildWarmDuct, buildTrimDevice, airLoopPaths, thermalLoopAsset } from "./thermal-loop.mjs?v=dev";
 
 export function buildResearchModel(kit) {
   const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
@@ -365,25 +366,14 @@ export function buildResearchModel(kit) {
   mesh(new THREE.BoxGeometry(0.6, 0.3, 0.52), material, [0, -0.15, 0.72]);
   material = interiorPart("aft-bulkhead", "equipment-bay", "Aft bulkhead", "ICES-2023 fig. 4", 0x9aa6ad);
   mesh(new THREE.BoxGeometry(0.7, 0.4, 0.02), material, [0, -0.13, 1.08]);
-  material = interiorPart("fan", "warm-duct", "Circulation fan: 0.052 kg/s of MMRTG-warmed air, 10-15 W", "ICES-2023 p6; TFAWS 2023 slide 3", 0xd9823f);
-  mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.12, 20), material, [0, -0.12, 1.18]).rotation.x = Math.PI / 2;
-  material = interiorPart("underfloor-duct", "warm-duct", "Under-floor duct: warm air runs forward to the nose", "ICES-2023 p2-p3; TFAWS 2023 slide 3", 0xc9794a);
-  mesh(new THREE.BoxGeometry(0.16, 0.045, 2.6), material, [0, -0.305, -0.13]);
-  material = interiorPart("trim-chimneys", "trim-device", "Trim device: 43 x 34 cm chimney on each side, with its flap", "ICES-2023 p7, fig. 1; TFAWS 2023 (flaps)", 0xb04a9a);
-  for (const side of [-1, 1]) mesh(new THREE.BoxGeometry(0.025, 0.43, 0.34), material, [side * 0.44, -0.13, 0.45]);
-  // Trim flaps: foam-covered aluminum flaps on linear actuators that divert warm air into the
-  // exposed cold duct [PUB, TFAWS 2023]. Hinged at the top of each chimney's inner face; the
-  // opening angle follows the trim setting (40% flow at about 24 degrees [EST]; the 2024 test
-  // rejected 245.7 W at a 23.7 degree flap angle [PUB]).
-  const flapMaterial = new THREE.MeshStandardMaterial({ color: 0xc8ccc8, metalness: 0.5, roughness: 0.4 });
-  const trimFlaps = [-1, 1].map((side) => {
-    const hinge = new THREE.Group();
-    hinge.name = side < 0 ? "trim-flap-port" : "trim-flap-starboard";
-    hinge.position.set(side * 0.415, 0.06, 0.45);
-    buildTarget.add(hinge);
-    mesh(new THREE.BoxGeometry(0.012, 0.3, 0.3), flapMaterial, [0, -0.15, 0], hinge);
-    return { hinge, side };
-  });
+  // Titan air loop (thermal-loop.mjs; TFAWS 2023 slides 3-4 and 7-8, TFAWS 2024, ICES-2023).
+  interiorPart("fan", "warm-duct", "Circulation fans A and B: MMRTG-warmed air into the duct, 0.052 kg/s, 15 W allocation", "TFAWS 2023 slides 3, 4, 7, 8; TFAWS 2024 slide 14; ICES-2023 p6; sizes estimated", 0xd9823f);
+  const fans = buildFans({ parent: buildTarget, mesh });
+  interiorPart("underfloor-duct", "warm-duct", "Under-floor warm duct: fans to the nose, opening into the body below the nose", "TFAWS 2023 slides 3-4; ICES-2023 p2-p3; width from the slide 3 plan view", 0xc9794a);
+  buildWarmDuct({ parent: buildTarget, mesh });
+  // The durable id stays "trim-chimneys"; the device drawn is the later cold bypass duct.
+  interiorPart("trim-chimneys", "trim-device", "Trim device: cold bypass duct under the belly with fore and aft diverter flaps", "TFAWS 2023 slides 4, 7, 8; TFAWS 2024 slides 6-16; section and flap details estimated", 0xb04a9a, "exterior");
+  const trimDevice = buildTrimDevice({ parent: buildTarget, mesh });
   material = interiorPart("battery-sensor", "battery", "Battery temperature sensor: an input to the thermal controller", "TFAWS 2023 (controller inputs); placement illustrative", 0x9fe870);
   mesh(new THREE.SphereGeometry(0.022, 12, 8), material, [0.2, 0.02, 0.72]);
   material = interiorPart("mmrtg-sensor", "mmrtg", "MMRTG fin-root temperature sensor: the other controller input", "TFAWS 2023 (controller inputs); placement illustrative", 0x9fe870, "exterior");
@@ -400,28 +390,17 @@ export function buildResearchModel(kit) {
   // Circulation loop (ICES-2023 p2-p3): MMRTG -> fan -> under-floor duct forward -> into the body
   // below the nose -> aft through the bay -> back into the MMRTG. Arrows move along it at a speed
   // that follows the fan's flow, colored from MMRTG-warm to bay-cool. A share of the flow set by
-  // the trim flaps goes out through each side chimney's exposed cold duct and comes back cold.
+  // the diverter flaps runs through the exposed cold duct under the belly and comes back cold.
   // The archived first version is in archive/airflow-arrows-v1.
-  const airPath = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(0, 0.05, 1.6), new THREE.Vector3(0, -0.1, 1.24), new THREE.Vector3(0, -0.3, 1.1),
-    new THREE.Vector3(0, -0.3, 0), new THREE.Vector3(0, -0.3, -1.3), new THREE.Vector3(0, -0.18, -1.47),
-    new THREE.Vector3(0, -0.02, -1.25), new THREE.Vector3(0.05, -0.02, -0.5), new THREE.Vector3(0.05, 0.04, 0.3),
-    new THREE.Vector3(0, 0.045, 0.95), new THREE.Vector3(0, 0.08, 1.3),
-  ], true, "catmullrom", 0.2);
-  // Bypass through each side's trim chimney (path illustrative [EST]): from the aft bay out to the
-  // chimney, down the exposed cold duct, and back into the under-floor duct.
-  const bypassPaths = [-1, 1].map((side) => new THREE.CatmullRomCurve3([
-    new THREE.Vector3(0, 0.03, 1.0), new THREE.Vector3(side * 0.25, 0.05, 0.7), new THREE.Vector3(side * 0.38, 0.03, 0.5),
-    new THREE.Vector3(side * 0.4, -0.15, 0.43), new THREE.Vector3(side * 0.38, -0.3, 0.36), new THREE.Vector3(side * 0.18, -0.3, 0.15),
-    new THREE.Vector3(0, -0.3, -0.05),
-  ], false, "catmullrom", 0.3));
+  // Paths follow the fans, warm duct and cold bypass duct (thermal-loop.mjs).
+  const { main: airPath, bypass: bypassPath } = airLoopPaths();
   subsystem("airflow", "warm-duct");
   subsystems.airflow.userData.layer = "interior";
   const arrowGeometry = new THREE.ConeGeometry(0.028, 0.08, 8);
   const mainArrows = new THREE.InstancedMesh(arrowGeometry, new THREE.MeshBasicMaterial({ color: 0xffffff }), 40);
   mainArrows.name = "warm-loop-arrows";
-  const bypassPerSide = 10;
-  const bypassArrows = new THREE.InstancedMesh(new THREE.ConeGeometry(0.034, 0.095, 8), new THREE.MeshBasicMaterial({ color: 0xffffff }), bypassPerSide * 2);
+  const bypassMax = 20;
+  const bypassArrows = new THREE.InstancedMesh(new THREE.ConeGeometry(0.034, 0.095, 8), new THREE.MeshBasicMaterial({ color: 0xffffff }), bypassMax);
   bypassArrows.name = "cold-duct-arrows";
   // Drawn over the parts, as on a flow diagram, so the paths through boxes and chimneys show.
   for (const arrows of [mainArrows, bypassArrows]) {
@@ -439,7 +418,7 @@ export function buildResearchModel(kit) {
     arrowQuaternion.setFromUnitVectors(upAxis, arrowTangent);
     arrows.setMatrixAt(index, arrowMatrix.compose(arrowPoint, arrowQuaternion, arrowScale));
   }
-  let lastTime = null, mainPhase = 0, bypassPhase = 0;
+  let lastTime = null, mainPhase = 0, bypassPhase = 0, fanPhase = 0;
   // state: gasFlow (kg/s; design 0.052) and effectiveTrim (0-0.4) from mission-systems.mjs. Arrows
   // are slowed for viewing: one lap of the loop takes about 12 s at full flow.
   function poseAirflow(time, state = {}) {
@@ -459,22 +438,22 @@ export function buildResearchModel(kit) {
     mainArrows.instanceMatrix.needsUpdate = true;
     mainArrows.instanceColor.needsUpdate = true;
     // Bypass: more arrows the further the flaps are open; they turn cold in the exposed duct.
-    const perSide = flow > 0.02 ? Math.round(bypassPerSide * trim) : 0;
-    bypassArrows.count = perSide * 2;
-    bypassArrows.visible = perSide > 0;
-    bypassPaths.forEach((curve, side) => {
-      for (let k = 0; k < perSide; k += 1) {
-        const index = side * perSide + k, u = (k / perSide + bypassPhase) % 1;
-        placeArrow(bypassArrows, index, curve, u);
-        bypassArrows.setColorAt(index, arrowColor.copy(warm).lerp(cold, Math.min(1, Math.max(0, (u - 0.35) / 0.3))));
-      }
-    });
+    const count = flow > 0.02 ? Math.round(bypassMax * trim) : 0;
+    bypassArrows.count = count;
+    bypassArrows.visible = count > 0;
+    for (let k = 0; k < count; k += 1) {
+      const u = (k / count + bypassPhase) % 1;
+      placeArrow(bypassArrows, k, bypassPath, u);
+      bypassArrows.setColorAt(k, arrowColor.copy(warm).lerp(cold, Math.min(1, Math.max(0, (u - 0.15) / 0.3))));
+    }
     bypassArrows.instanceMatrix.needsUpdate = true;
     if (bypassArrows.instanceColor) bypassArrows.instanceColor.needsUpdate = true;
-    // Flaps open with the trim setting.
-    const angle = trim * 24 * Math.PI / 180;
-    for (const { hinge, side } of trimFlaps) hinge.rotation.z = side * angle;
-    return { flow, trim, bypassArrows: perSide * 2, flapDegrees: trim * 24 };
+    // Diverter flaps open with the trim setting; fan rotors turn with the flow (slowed for viewing).
+    const angle = trim * thermalLoopAsset.maxFlapDeg * Math.PI / 180;
+    for (const { hinge, dir } of trimDevice.flaps) hinge.rotation.x = dir * angle;
+    fanPhase = (fanPhase + dt * 6 * flow) % (Math.PI * 2);
+    fans.rotors.forEach((rotor, i) => { rotor.rotation.z = (i ? -1 : 1) * fanPhase; });
+    return { flow, trim, bypassArrows: count, flapDegrees: trim * thermalLoopAsset.maxFlapDeg };
   }
   subsystem("sample-flow", "drills");
   subsystems["sample-flow"].userData.layer = "diagram";
