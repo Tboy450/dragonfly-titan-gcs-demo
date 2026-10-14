@@ -39,6 +39,34 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-14: Rebuild parts 02 and 24, the DrACO sample lines and blowers
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Rebuild the DrACO sample lines and blowers from the DrACO layout figure"
+- **What changed:** The single tube per side and the one-cylinder blower are replaced by the
+  cross-strapped pneumatic transport in the DrACO paper's fig. 1: a flexible hose from each
+  drill's pneumatic port (it now follows the drill head down while drilling), rigid tubes
+  forward under the body edges and up the nose into the cold attic, a flow-diverter manifold on
+  the carousel's sample inlet, a return line down the port side, an inlet flow diverter and the
+  forward and aft centrifugal blowers behind the port forward arm (ICES-2023), exhausting
+  outboard and down. The sampling particles follow the new route. Isolating the lines now shows
+  the blowers too.
+- **Sources:** DrACO LPSC 2022 fig. 1 and schematic, Honeybee slides, NASA "Playing Lacrosse",
+  ICES-2023 p. 4-7 (page 4 saved). At the owner's direction, APL's cutaway and 2024 CAD movie
+  frames are saved only as a cross-reference (`research/draco-plumbing-2026-10-14/`).
+- **Assumptions:** routes, the 13 mm tube size, clamps, diverter and blower shapes [EST]; the
+  carousel's single inlet stands in for the LDMS and GCMS elevators.
+- **App text:** Model assumptions, Vehicle part references and both Component texts updated;
+  README matches. Local frame-capture tooling for the video lives outside the repo.
+- **Archive:** `archive/draco-plumbing-2026-10-14/` (tag at `7a78f8f`).
+- **Files:** `dist/draco-plumbing.mjs` (new), `dist/drills.mjs` (hose attach point),
+  `dist/vehicle-research.mjs`, `dist/vehicle-inspector.mjs`, `dist/ui/layers-panel.mjs`,
+  `dist/index.html`, `tests/draco-plumbing.test.mjs` (new), `tests/vehicle-inspector.test.mjs`,
+  `research/`, `archive/`, `INTERIOR-REALISM-TODO.md`, `ARCHITECTURE.md`,
+  `RESEARCH-COMPENDIUM.md`, `README.md`
+- **Checks:** `node --test tests/*.test.mjs` (178 pass, 4 new). Isolated, close, blower, installed
+  and exterior views; phone width; no console errors.
+- **Open / next:** #19 trim device, #17 fan, #18 duct.
+
 ### 2026-10-13: Rebuild part 01, the DrACO drills, from the 2022 DrACO paper
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Rebuild the DrACO drills from the LPSC 2022 drill figure"

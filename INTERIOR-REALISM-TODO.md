@@ -20,6 +20,7 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 - [x] **Claude:** Rebuild #23 lower DragonCam cameras from the 2026 DragonCam paper (October 13).
 - [x] **Claude:** Rebuild #04 nose cameras from the same paper (October 13).
 - [x] **Claude:** Rebuild #01 DrACO drills from LPSC 2022 fig. 2 (October 13).
+- [x] **Claude:** Rebuild #02 sample lines and #24 blowers from DrACO fig. 1 (October 14).
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## The Process (one part per pass)
@@ -123,15 +124,18 @@ APL's rotating CAD video, NASA/APL integration photos.
   `wonderwallAsset` (`dist/wonderwall.mjs`), `dramsAsset` (`dist/drams-assembly.mjs`),
   `frontierRadioAsset` (`dist/frontier-radio.mjs`), `iemAsset` (`dist/iem.mjs`),
   `powerUnitsAsset` (`dist/power-units.mjs`), `sideCamerasAsset` (`dist/side-cameras.mjs`),
-  `noseCamerasAsset` (`dist/nose-cameras.mjs`), `drillAsset` (`dist/drills.mjs`). Add each
+  `noseCamerasAsset` (`dist/nose-cameras.mjs`), `drillAsset` (`dist/drills.mjs`),
+  `dracoPlumbingAsset` (`dist/draco-plumbing.mjs`). Add each
   new part to this list and to the clearance tests of the parts it neighbors.
-- **Suggested order next:** #02 sample lines and #24 blowers (DrACO LPSC 2022 fig. 1, Honeybee slides; start the lines at the new drill swivel ports), #02 sample lines and #24 blowers (DrACO LPSC 2022 figs. 1-3, Honeybee slides), #19 trim device, #17 fan and #18 duct (TFAWS 2024 test-article slides), #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
+- **Suggested order next:** #19 trim device, #17 fan and #18 duct (TFAWS 2024 test-article slides, ICES-2023), #14 TWTA, #02 sample lines and #24 blowers (DrACO LPSC 2022 figs. 1-3, Honeybee slides), #19 trim device, #17 fan and #18 duct (TFAWS 2024 test-article slides), #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
   references each time; reorder if a clearer source turns up.
 - **Viewing locally:** Codex used Playwright scripts outside the repo; Claude uses the desktop
   app's browser pane with a no-cache static server for `dist/`. Debug hooks on localhost:
   `window.dragonflyState`, `window.dragonflyRenderer`, `window.dragonflyTick(now)`.
 - **Checklist attribution (owner, October 13):** mark every checked item with who did it,
   **Codex** or **Claude**, as it is checked.
+- **Sources (owner, October 14):** published papers, figures and photos are the drawing sources;
+  APL's CAD movie and cutaway are a cross-reference where nothing else shows a detail.
 - **Overlaps:** fix overlaps between rebuilt parts by correcting the layout; overlaps with parts
   not yet redrawn are only noted in that part's follow-up and fixed when it is redrawn.
 - **Owner preferences that apply here:** realism is the goal, but keep it easy to operate;
@@ -181,12 +185,13 @@ Current rebuilt set: `sample-carousel` (`carousel-2026-10-12`) and `wonderwall`
 (`wonderwall-2026-10-12`) and `drams` (`drams-2026-10-12`) and `frontier-radio`
 (`frontier-radio-2026-10-13`) and `iem` (`iem-2026-10-13`) and `power-units`
 (`power-units-2026-10-13`) and `side-cameras` (`side-cameras-2026-10-13`) and `nose-cameras-inside`
-(`nose-cameras-2026-10-13`) and `drills` (`drills-2026-10-13`). Their installed bounds and clearance are tested together; the
+(`nose-cameras-2026-10-13`) and `drills` (`drills-2026-10-13`) and `sample-lines`/`drill-blower` (`draco-plumbing-2026-10-14`). Their installed bounds and clearance are tested together; the
 DraMS neck intentionally passes through the wall aperture.
 
 - [x] **Claude:** **01 DrACO drills** (`drills`): gold head with percussion and rotation actuators and the percussion spring, red Z-stage rail with motor, lead screw and lower bracket, swivel with pneumatic port, hollow bit with side opening and slotted crown; the carriage slides while drilling and only the bit turns; a full stroke drills 5.8 cm (6 cm published limit). [References/limits](research/drills-2026-10-13/README.md).
 - [ ] **01 follow-up:** real part sizes; exact fore-aft position (sources span 0.34-0.45 m forward of center; model 0.43 m); the transfer line (#02) must start at the new swivel port.
-- [ ] **02 Pneumatic sample-transfer lines** (`sample-lines`): verified endpoints, tube size/routing and bends; avoid routing through solid housings.
+- [x] **Claude:** **02 Sample-transfer lines** (`sample-lines`): flexible hose from each drill's port (follows the drill down), rigid tubes forward under the body edges and up into the attic, flow-diverter manifold on the carousel inlet, return tube down the port side to the blowers; topology from DrACO fig. 1, routes and the 13 mm size [EST]. [References/limits](research/draco-plumbing-2026-10-14/README.md).
+- [ ] **02 follow-up:** real tube sizes and routes; separate LDMS and GCMS elevators at the carousel (the carousel models one inlet).
 - [ ] **03 Nose bulkhead** (`nose-bulkhead`): profile, thickness, apertures and relation to the forward bay.
 - [x] **Claude:** **04 Nose cameras** (`nose-cameras-inside`): Forward MAC (hooded lens), Forward WAC, two Side Cameras and two NavCams (yellow top plates) on a camera panel behind the nose cap, each behind a window; same ECAM body throughout, differences from DragonCam fig. 1; positions from figs. 2-3. [References/limits](research/nose-cameras-2026-10-13/README.md).
 - [ ] **04 follow-up:** pointing angles and which low unit is the WAC or the NavCams; the fuller 2026 chin (the low cameras stand out of the older nose shell, noted for the fuselage nose redraw).
@@ -216,7 +221,8 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **22 Nose methane/E-field instruments** (`nose-sensors`): individual housings, supports and wire exits.
 - [x] **Claude:** **23 Lower DragonCam cameras** (`side-cameras`): Microscopic Camera on the port side placed from its published 986 mm range at 52 degrees to the port drill site, APL's LED array beside it (365 nm UV emitter), a Down Camera on each side; Malin ECAM heads drawn from the paper's figures (shared `dist/ecam.mjs`); each in a foam cavity behind a 3 mm window, brackets on the bay wall's outer face, harness through the wall. [References/limits](research/side-cameras-2026-10-13/README.md).
 - [ ] **23 follow-up:** the foam blister the Microscopic Camera needs (it is thicker than the 7.62 cm average foam); Down Cameras' exact position; the camera electronics box (ECAM-DVR8P) inside the bay; overlap with the old trim-chimney placeholder (#19) to settle when #19 is redrawn (TFAWS 2024 puts the trim device under the belly).
-- [ ] **24 DrACO blower** (`drill-blower`): housing, inlet/outlet, tube connections and mounting behind the arm.
+- [x] **Claude:** **24 DrACO blowers** (`drill-blower`): forward and aft centrifugal blowers (volute, motor, axial inlet, tangential exhaust out and down) behind the port forward arm, fed by an inlet flow diverter; per DrACO fig. 1 and ICES-2023. [References/limits](research/draco-plumbing-2026-10-14/README.md).
+- [ ] **24 follow-up:** real blower size and shape; the unidentified cylinder-and-cone unit under the port attic seen in APL's CAD movie.
 
 ## Shell, Insulation and Layered Views
 

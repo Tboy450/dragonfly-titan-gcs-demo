@@ -13,6 +13,7 @@ import { buildPowerUnits } from "./power-units.mjs?v=dev";
 import { buildSideCameras } from "./side-cameras.mjs?v=dev";
 import { buildNoseCameras } from "./nose-cameras.mjs?v=dev";
 import { buildDrill, drillAsset } from "./drills.mjs?v=dev";
+import { buildSampleLines, buildBlowers } from "./draco-plumbing.mjs?v=dev";
 
 export function buildResearchModel(kit) {
   const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
@@ -227,18 +228,13 @@ export function buildResearchModel(kit) {
     // DrACO Sample Acquisition Drills: see drills.mjs (LPSC 2022 fig. 2; placement from the APL
     // cutaway, NASA printable model and DragonCam fig. 3).
     subsystem("drills", "drills");
-    const drillX = side * drillAsset.lateralM, drillZ = drillAsset.foreAftM;
     drillFeeds.push(buildDrill({ parent: buildTarget, mesh, side }).carriage);
-    subsystem("sample-lines", "drills");
-    const sampleLine = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(drillX, -0.23, drillZ), new THREE.Vector3(side * 0.49, -0.06, -0.62),
-      new THREE.Vector3(side * 0.465, -0.02, -1.15), new THREE.Vector3(side * 0.44, 0.16, -1.53),
-    ]);
-    mesh(new THREE.TubeGeometry(sampleLine, 20, 0.014, 6, false), armMaterial, [0, 0, 0]);
-    transferPaths.push(new THREE.CatmullRomCurve3([
-      ...sampleLine.points, new THREE.Vector3(side * 0.25, 0.27, -1.53), new THREE.Vector3(0, 0.285, -1.40),
-    ]));
   }
+  // DrACO pneumatic transport: hoses, transfer tubes, carousel flow diverter and return line
+  // (draco-plumbing.mjs; LPSC 2022 fig. 1 and schematic). The blowers are built with part 24.
+  subsystem("sample-lines", "drills");
+  const sampleLines = buildSampleLines({ parent: buildTarget, mesh });
+  transferPaths.push(...sampleLines.paths);
 
   // High-gain antenna: a flat 0.874 m radial-line slot disc, stowed flat on top for flight.
   const slotCanvas = document.createElement("canvas");
@@ -322,7 +318,7 @@ export function buildResearchModel(kit) {
     return new THREE.MeshStandardMaterial({ color, metalness: 0.2, roughness: 0.6 });
   }
   interiorPart("drills", "drills", "DrACO drill and feed assemblies", "NASA Assembly Guide p2; APL payload cutaway; dimensions illustrative", 0xa9b9b9, "exterior");
-  interiorPart("sample-lines", "drills", "DrACO pneumatic sample-transfer lines", "APL payload cutaway; NASA Playing Lacrosse on Titan; routing illustrative", 0xa9b9b9, "exterior");
+  interiorPart("sample-lines", "drills", "DrACO sample-transfer lines: hoses, tubes, flow diverter and return to the blowers", "LPSC 2022 fig. 1 and schematic; NASA Playing Lacrosse on Titan; routes estimated", 0xa9b9b9, "exterior");
   let material = interiorPart("nose-bulkhead", "equipment-bay", "Nose bulkhead", "ICES-2023 p7, fig. 3", 0x9aa6ad);
   mesh(new THREE.BoxGeometry(0.7, 0.4, 0.02), material, [0, -0.13, -1.56]);
   interiorPart("nose-cameras-inside", "nose-cameras", "Nose cameras: Forward MAC, Forward WAC, two Side Cameras, two NavCams (no active airflow)", "DragonCam paper (Clark et al. 2026) figs. 1-3; ICES-2023 p7; positions and pointing estimated", 0x3d4a52);
@@ -398,8 +394,8 @@ export function buildResearchModel(kit) {
   mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.1, 8), material, [0.455, 0.02, -1.66]);
   interiorPart("side-cameras", "cold-actuators", "DragonCam lower cameras: Microscopic Camera, LED array, two Down Cameras (in foam cavities)", "DragonCam paper (Clark et al. 2026) figs. 1-3, 5, 12, table 1; brackets and down-camera position estimated", 0xbfb8aa, "exterior");
   buildSideCameras({ parent: buildTarget, mesh });
-  material = interiorPart("drill-blower", "drills", "DrACO sample blower (behind the port forward arm)", "ICES-2023 p5, p7", 0x8c8f93, "exterior");
-  mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.1, 12), material, [-0.455, -0.2, -0.56]).rotation.z = Math.PI / 2;
+  interiorPart("drill-blower", "drills", "DrACO blowers: forward and aft centrifugal blowers behind the port forward arm", "LPSC 2022 fig. 1 and schematic; ICES-2023 p5, p7; sizes and layout estimated", 0x8c8f93, "exterior");
+  buildBlowers({ parent: buildTarget, mesh });
 
   // Circulation loop (ICES-2023 p2-p3): MMRTG -> fan -> under-floor duct forward -> into the body
   // below the nose -> aft through the bay -> back into the MMRTG. Arrows move along it at a speed
@@ -495,6 +491,7 @@ export function buildResearchModel(kit) {
       // The carriage slides down the Z-stage; only the bit turns.
       feed.position.y = drillAsset.stowedY - (index === 0 ? job.drillFeed : 0);
       feed.userData.bit.rotation.y = index === 0 ? job.drillAngle : 0;
+      sampleLines.hoseParts[index].setFeed(index === 0 ? job.drillFeed : 0);
     });
     carousel.carrier.rotation.y = job.carouselAngle;
     const diagram = layer === "internal";

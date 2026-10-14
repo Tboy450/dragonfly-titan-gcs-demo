@@ -35,7 +35,7 @@ export function focusInspector(state, name) {
 }
 export function inspectionGroups(name) {
   const related = {
-    "sample-lines": ["drills", "sample-lines", "sample-flow", "sample-carousel"],
+    "sample-lines": ["drills", "sample-lines", "sample-flow", "sample-carousel", "drill-blower"],
     drams: ["drams"],
     battery: ["battery", "battery-sensor"],
   };

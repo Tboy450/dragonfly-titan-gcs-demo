@@ -22,6 +22,9 @@ export const drillAsset = Object.freeze({
   maxDepthM: 0.06,
   bodyOuterX: 0.43,
   rail: Object.freeze({ top: -0.28, bottom: -0.76 }),
+  // Where the transfer hose attaches: the outer pneumatic-port fitting, carriage-local
+  // (inboard offset, height above the carriage origin, fore-aft offset).
+  portLocal: Object.freeze([0.072, 0.118, 0]),
 });
 
 export function buildDrill({ parent, mesh, side }) {

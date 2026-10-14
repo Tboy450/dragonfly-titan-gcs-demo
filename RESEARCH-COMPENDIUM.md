@@ -30,6 +30,9 @@ pointing and which low unit is which are [EST].
 The [drill pass](research/drills-2026-10-13/README.md) follows DrACO LPSC 2022 fig. 2; a full stroke
 stays within the published 6 cm depth; sizes [EST]; placement 0.34-0.45 m forward of center in
 the sources, kept at 0.43 m.
+The [sample-line and blower pass](research/draco-plumbing-2026-10-14/README.md) follows DrACO
+fig. 1's cross-strapped flow (drills -> diverters -> carousel -> diverters -> two blowers ->
+exhaust), with the blowers behind the port forward arm (ICES-2023); routes and sizes [EST].
 
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and
