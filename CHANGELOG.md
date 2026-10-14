@@ -39,6 +39,43 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-14: Rebuild part 14, the 100 W X-band TWTA under the top deck
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Rebuild the TWTA after published flight amplifiers"
+- **What changed:** The orange placeholder box is replaced by a traveling-wave tube amplifier
+  drawn like published flight TWTAs, because Dragonfly's own unit is not pictured or sized in any
+  source found. Published for Dragonfly: one 100 W TWTA (NASA's spacecraft page; ICES-2023), on
+  the underside of the top deck with heat going into the deck (ICES-2020, ICES-2023). Drawn: a
+  black conduction-cooled tube on a wider silver baseplate with eight bolted ears per side, red
+  staked screws and the label set seen on LRO's flight tube (NASA/TM-2010-216262 fig. 1); a
+  separate power conditioner (EPC) with corner ears, a bus D-sub and a high-voltage gland; a
+  braided umbilical between them (LRO and Stellant photos); a WR-112 waveguide from the
+  collector end up through the deck toward the antenna; an input coax down to the radio's J31;
+  the EPC harness to the starboard wall. Thermal pads sit between both units and the deck.
+- **Sizes:** tube 33 x 7.5 x 7.5 cm and EPC 21 x 7.5 x 11 cm [EST], scaled from LRO's units
+  (37 x 9 x 9 cm, 1.5 kg; 20 x 7 x 11 cm, 1.3 kg) to the X-band masses of MRO (two tubes 1.9 kg,
+  two EPCs 3.0 kg) and Stellant (895 g tube).
+- **Placement:** under the starboard deck above the Frontier radio and aft of PSU 2, near the
+  antenna mast [EST]. ICES-2020 says "TWTAs"; one is drawn, as NASA and ICES-2023 name one.
+- **Also:** the part's panel text keeps its two earlier sentences and adds what is published and
+  estimated, with links to ICES 2020, the LRO report, the MRO telecom report and Stellant. The
+  sampled-tube clearance helper in `tests/thermal-loop.test.mjs` and `tests/draco-plumbing.test.mjs`
+  now applies each mesh's world transform (cables inside rotated parts were checked in local
+  coordinates); both tests still pass. The checklist's suggested order is rewritten without the
+  parts already done, with a note.
+- **Sources saved:** ICES-2020-160 pp. 1, 4, 5; NASA/TM-2010-216262 pp. 5-6; DESCANSO MRO pp. 2,
+  25, 27, 32, 33; Stellant sheet pp. 1-2 and brochure p. 2; patent US 11,854,759 B2 (Thales,
+  background); photo crops and a model-vs-sources sheet in `research/twta-2026-10-14/`.
+- **Archive:** `archive/twta-2026-10-14/` (tag at `caec79e`), including the old app text.
+- **Files:** `dist/twta.mjs` (new), `dist/vehicle-research.mjs`, `dist/ui/layers-panel.mjs`,
+  `dist/index.html`, `tests/twta.test.mjs` (new), `tests/thermal-loop.test.mjs`,
+  `tests/draco-plumbing.test.mjs`, `research/`, `archive/`, `INTERIOR-REALISM-TODO.md`,
+  `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`, `README.md`
+- **Checks:** `node --test tests/*.test.mjs` (188 pass, 5 new). Isolated views at four angles in
+  Internal and Thermal, four views from below, installed view; phone width (375 px, no sideways
+  scroll); the panel text and its six source links render.
+- **Open / next:** #10 HGA actuators (the waveguide stops at the deck where the gimbal would be).
+
 ### 2026-10-14: Rebuild parts 17-19: circulation fans, warm duct and the cold-duct trim device
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Rebuild the fans, warm duct and trim device from the TFAWS thermal talks"

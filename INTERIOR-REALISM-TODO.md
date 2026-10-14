@@ -22,6 +22,7 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 - [x] **Claude:** Rebuild #01 DrACO drills from LPSC 2022 fig. 2 (October 13).
 - [x] **Claude:** Rebuild #02 sample lines and #24 blowers from DrACO fig. 1 (October 14).
 - [x] **Claude:** Rebuild #17 fans, #18 warm duct and #19 trim device from TFAWS 2023/2024 (October 14).
+- [x] **Claude:** Rebuild #14 TWTA after published flight TWTAs (LRO, MRO, Stellant) and the Dragonfly thermal papers (October 14).
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## The Process (one part per pass)
@@ -109,6 +110,7 @@ estimated. Parts with an estimated position need a layout pass against the sourc
 | 11 PSUs | [EST] from standard D-sub sizes in the photo | PSU 1 beside the IEM as photographed (absolute position [EST]); PSU 2 [EST] |
 | 23 Lower cameras | Microscopic Camera [PUB] 105 x 155 x 90 mm; ECAM-P50 heads [EST] | Microscopic Camera [PUB] 986 mm at 52 degrees from the port drill site; Down Cameras [EST] mid-body per DragonCam figs. 2-3 |
 | 04 Nose cameras | [PUB] camera types; heads as part 23 | [EST] from DragonCam figs. 2-3 (camera panel at z -1.665) |
+| 14 TWTA | [EST] scaled from published LRO, MRO and Stellant units | [PUB] underside of the top deck; [EST] starboard, above the radio |
 | 01 Drills | [EST] proportioned from LPSC fig. 2, about 0.7 m tall per DragonCam fig. 3 | [EST] 0.43 m forward of center, within the sources' 0.34-0.45 m (NASA print model, DragonCam fig. 3, APL cutaway) |
 
 Layout sources to use for the placement pass: DragonCam paper fig. 2 (lander CAD with internal
@@ -126,10 +128,16 @@ APL's rotating CAD video, NASA/APL integration photos.
   `frontierRadioAsset` (`dist/frontier-radio.mjs`), `iemAsset` (`dist/iem.mjs`),
   `powerUnitsAsset` (`dist/power-units.mjs`), `sideCamerasAsset` (`dist/side-cameras.mjs`),
   `noseCamerasAsset` (`dist/nose-cameras.mjs`), `drillAsset` (`dist/drills.mjs`),
-  `dracoPlumbingAsset` (`dist/draco-plumbing.mjs`), `thermalLoopAsset` (`dist/thermal-loop.mjs`). Add each
-  new part to this list and to the clearance tests of the parts it neighbors.
-- **Suggested order next:** #14 TWTA, #02 sample lines and #24 blowers (DrACO LPSC 2022 figs. 1-3, Honeybee slides), #19 trim device, #17 fan and #18 duct (TFAWS 2024 test-article slides), #14 TWTA, #17 circulation fan, #15 battery casing. Recheck
-  references each time; reorder if a clearer source turns up.
+  `dracoPlumbingAsset` (`dist/draco-plumbing.mjs`), `thermalLoopAsset` (`dist/thermal-loop.mjs`), `twtaAsset` (`dist/twta.mjs`). Add each
+  new part to this list and to the clearance tests of the parts it neighbors. Tests that
+  compare whole-part boxes are too coarse for parts with long cables (the TWTA's coax reaches
+  the radio); check those piece by piece, with tubes sampled along their paths in world
+  coordinates (`tests/twta.test.mjs`).
+- **Suggested order next:** #10 HGA actuators (ICES-2020 p. 5 gimbal text; pairs with the TWTA's
+  waveguide), #15 battery casing, #09 drive electronics, #05 nose electronics, #03 and #16
+  bulkheads (NASA/APL top-deck fit-check photo), #20-#22 sensors. Recheck references each time;
+  reorder if a clearer source turns up. (Taken off this line October 14 because they are done:
+  #02, #24, #17, #18, #19 and #14.)
 - **Viewing locally:** Codex used Playwright scripts outside the repo; Claude uses the desktop
   app's browser pane with a no-cache static server for `dist/`. Debug hooks on localhost:
   `window.dragonflyState`, `window.dragonflyRenderer`, `window.dragonflyTick(now)`.
@@ -212,7 +220,8 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **12 follow-up:** an uncovered view of the face to map the windows exactly; real wall position; the wall panel itself once the open-frame structure is modeled; harness routes to the PSUs, radio and instruments. The old HGA-actuator placeholder (#10) currently sits in front of it.
 - [x] **Claude:** **13 Frontier X-band radio** (`frontier-radio`): four black slices on bolted feet, labeled connectors J11-J32, top semi-rigid coax, from APL's photo; 4 x 6 in slice size [PUB], stack width from the photo [EST]. [References/limits](research/frontier-radio-2026-10-13/README.md).
 - [ ] **13 follow-up:** one radio or two (redundancy); real bay location and cable runs to the IEM, TWTA and antennas; reconcile with #12 and #14 when they are rebuilt.
-- [ ] **14 TWTA amplifier** (`twta`): housing and top-deck mounting/heat path; avoid intersecting nearby hardware.
+- [x] **Claude:** **14 TWTA amplifier** (`twta`): one 100 W X-band TWTA [PUB] on the underside of the top deck [PUB]: a conduction-cooled tube on a flanged baseplate and a separate EPC joined by a braided high-voltage umbilical, drawn after NASA's photo of LRO's TWTA and Stellant's space-tube photos; sizes scaled from LRO, MRO and Stellant units [EST]; WR-112 waveguide up through the deck, input coax to the radio, EPC harness to the wall [EST]; under the starboard deck above the radio [EST]. [References/limits](research/twta-2026-10-14/README.md).
+- [ ] **14 follow-up:** the Dragonfly unit's real size, ports and maker; one or two units (ICES-2020 says "TWTAs"); its exact deck position; the RF chain to the antenna (isolator, diplexer, switches, rotary joints) and the radio port that feeds it; draw the top-deck panel itself once the shell layers are modeled.
 - [ ] **15 Battery and thermal buffer** (`battery`): outer pack casing first; then sourced heat-pipe/PCM arrangement and optional cutaway, not generic exposed cells.
 - [ ] **16 Aft bulkhead** (`aft-bulkhead`): profile, penetrations and attachment to the generator/fan region.
 - [x] **Claude:** **17 Circulation fans** (`fan`): Fan-A and Fan-B side by side in housings at the MMRTG end, with rotors that turn with the flow and an adapter to the MMRTG; TFAWS 2023 slides 3, 7, 8 and TFAWS 2024 slide 14; size from the plan view. [References/limits](research/thermal-loop-2026-10-14/README.md).

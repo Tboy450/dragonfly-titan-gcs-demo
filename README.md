@@ -327,11 +327,12 @@ Camera, LED array and Down Cameras in foam cavities), and the nose cameras (Forw
 two Side Cameras, two NavCams on a camera panel), and the DrACO drills (gold head with percussion
 and rotation actuators on a Z-stage rail; the head slides down while only the bit turns), and the
 sample-transfer system (flexible hoses, tubes into the attic, a flow diverter on the carousel and
-a return line to two blowers behind the port forward arm); their
-positions are mostly estimated. The
+a return line to two blowers behind the port forward arm), and the 100 W radio amplifier (TWTA:
+a tube and its power conditioner under the top deck, drawn like published flight TWTAs because
+Dragonfly's is not pictured); their positions are mostly estimated. The
 rest are still placeholder blocks from NASA's thermal papers, placed where their figures put
 them: the cold attic with the sample carousel, DraMS, the battery at the aft
-end, the drive electronics, avionics and radio amplifier. The air loop was redrawn from NASA/APL's
+end, the drive electronics and avionics. The air loop was redrawn from NASA/APL's
 thermal talks: two circulation fans at the MMRTG end, the warm duct forward under the floor into
 the nose, and the trim device, a cold bypass duct under the belly between fore and aft diverter
 flaps (an earlier side-chimney concept is archived). Arrows follow the warm-air loop from the

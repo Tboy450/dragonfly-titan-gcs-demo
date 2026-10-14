@@ -36,6 +36,10 @@ exhaust), with the blowers behind the port forward arm (ICES-2023); routes and s
 The [air-loop pass](research/thermal-loop-2026-10-14/README.md) draws two fans, the warm duct and
 the cold bypass duct under the belly with fore and aft diverter flaps (TFAWS 2023/2024); ICES-2023's
 side-chimney trim concept is archived.
+The [TWTA pass](research/twta-2026-10-14/README.md) (October 14) draws the one 100 W X-band TWTA
+[PUB] on the underside of the top deck [PUB] (ICES-2020, ICES-2023). Dragonfly's unit is not
+pictured or sized anywhere found, so the tube, power conditioner and umbilical follow published
+flight TWTAs (LRO photo, MRO masses, Stellant listing); sizes and placement [EST].
 
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and
@@ -75,7 +79,7 @@ remain [EST]. The original print meshes have not been imported.
   - **Tests.** 33 tests pass, including regressions for every jump found.
 - **Operations and energy realism (Claude, September 28):**
   - **Motor preheat.** 60 Wh (8 × 90 W × 5 min) is charged once per cold start at liftoff; the 5 minutes are time-compressed. The motors count as cold again after 30 min on the ground [EST].
-  - **Direct-to-Earth comms.** The link is available only when landed, awake and in daylight; the antenna is stowed in flight. A manual downlink session draws 200 W [EST DC draw for the 100 W TWTA] and returns data at ~5 mJ/bit/AU [PUB concept] at an assumed 9.5 AU (≈4.2 kbit/s). It stops automatically at takeoff, at night, in hibernation or below 30% battery.
+  - **Direct-to-Earth comms.** The link is available only when landed, awake and in daylight; the antenna is stowed in flight. A manual downlink session draws 200 W [EST DC draw for the 100 W TWTA; for comparison, MRO's 100 W X-band TWTA drew 172 W, PUB DESCANSO table 2-1] and returns data at ~5 mJ/bit/AU [PUB concept] at an assumed 9.5 AU (≈4.2 kbit/s). It stops automatically at takeoff, at night, in hibernation or below 30% battery.
   - **Flight endurance and "land now".** Minutes left are the lesser of the energy to the 15% reserve and the time to the 35 °C battery cap at the documented +10 °C per 30 min. Advisories: under 3 min to either limit, the 30 min flight plan exceeded, or flying at night. These are advisories, not automatic landings.
   - **Wind.** Values above the 1.6 m/s design maximum are labeled as stress tests.
   - **Tests.** 36 tests pass (`tests/operations.test.mjs` added).

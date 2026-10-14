@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [twta-2026-10-14](twta-2026-10-14/README.md) | Orange 0.30 x 0.07 x 0.14 m box for the TWTA at mid-deck before the tube, power conditioner and cables drawn after published flight TWTAs | 2026-10-14 | `archive/twta-2026-10-14` |
 | [thermal-loop-2026-10-14](thermal-loop-2026-10-14/README.md) | One fan, a duct box and the side-chimney trim device (ICES-2023 concept) before the two fans, warm duct and belly cold duct | 2026-10-14 | `archive/thermal-loop-2026-10-14` |
 | [draco-plumbing-2026-10-14](draco-plumbing-2026-10-14/README.md) | One tube per side and a single-cylinder blower before the DrACO pneumatic transport (hoses, tubes, flow diverters, two blowers) | 2026-10-14 | `archive/draco-plumbing-2026-10-14` |
 | [drills-2026-10-13](drills-2026-10-13/README.md) | Codex's simplified drills (box head, tube, struts, fluted bit spinning with the feed) before the LPSC fig. 2 drill | 2026-10-13 | `archive/drills-2026-10-13` |

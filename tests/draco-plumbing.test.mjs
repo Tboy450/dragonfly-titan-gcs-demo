@@ -101,7 +101,7 @@ test("Lines and blowers clear every rebuilt part", () => {
   for (const t of tubeMeshes) {
     const path = t.geometry.parameters.path, r = t.geometry.parameters.radius;
     for (let i = 0; i <= 200; i += 1) {
-      const p = path.getPoint(i / 200);
+      const p = path.getPoint(i / 200).applyMatrix4(t.matrixWorld);
       for (const [name, other] of others) {
         const hit = other.find(([, b]) => b.clone().expandByScalar(r * 0.9).containsPoint(p));
         // Allowed contacts: each hose's end on its drill's port fitting (the connection itself).

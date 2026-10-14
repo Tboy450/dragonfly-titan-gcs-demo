@@ -12,6 +12,7 @@ import { buildIem } from "../dist/iem.mjs";
 import { buildFrontierRadio } from "../dist/frontier-radio.mjs";
 import { buildDramsAssembly } from "../dist/drams-assembly.mjs";
 import { buildWonderwall } from "../dist/wonderwall.mjs";
+import { buildTwta } from "../dist/twta.mjs";
 
 function mesh(geometry, material, position, parent) {
   const part = new THREE.Mesh(geometry, material); part.position.fromArray(position); parent.add(part); return part;
@@ -23,7 +24,7 @@ const boxes = group => {
   group.traverse(o => {
     if (!o.isMesh) return;
     const path = o.geometry.parameters?.path;
-    if (path) for (let i = 0; i <= 200; i += 1) out.push([o.name, new THREE.Box3().setFromCenterAndSize(path.getPoint(i / 200), new THREE.Vector3(1, 1, 1).multiplyScalar(2 * o.geometry.parameters.radius))]);
+    if (path) for (let i = 0; i <= 200; i += 1) out.push([o.name, new THREE.Box3().setFromCenterAndSize(path.getPoint(i / 200).applyMatrix4(o.matrixWorld), new THREE.Vector3(1, 1, 1).multiplyScalar(2 * o.geometry.parameters.radius))]);
     else out.push([o.name, new THREE.Box3().setFromObject(o)]);
   });
   return out;
@@ -81,7 +82,7 @@ test("Air paths: the main loop passes the fans and duct; the bypass runs forward
 test("Fans, ducts and trim device clear every rebuilt part", () => {
   const { parent } = build();
   const mine = boxes(parent);
-  const builders = [buildSampleCarousel, buildWonderwall, buildDramsAssembly, buildFrontierRadio, buildIem, buildPowerUnits, buildSideCameras, buildNoseCameras];
+  const builders = [buildSampleCarousel, buildWonderwall, buildDramsAssembly, buildFrontierRadio, buildIem, buildPowerUnits, buildSideCameras, buildNoseCameras, buildTwta];
   const others = builders.map(b => { const g = new THREE.Group(); b({ parent: g, mesh }); return [b.name, boxes(g)]; });
   const d = new THREE.Group(); for (const side of [-1, 1]) buildDrill({ parent: d, mesh, side }); others.push(["buildDrill", boxes(d)]);
   const p = new THREE.Group(); buildSampleLines({ parent: p, mesh }); buildBlowers({ parent: p, mesh }); others.push(["draco-plumbing", boxes(p)]);
