@@ -152,7 +152,7 @@ function updateAirflowPanel() {
   const trim = Math.round((state.effectiveTrim ?? 0) * 100);
   const next = Math.max(0, state.trimClock ?? 0);
   const clock = `${Math.floor(next / 60)}:${String(Math.floor(next % 60)).padStart(2, "0")}`;
-  $("air-moves").textContent = `The two fans (${fan}%${state.fanIntegrity < 1 ? ", restricted" : ""}) moves ${flow.toFixed(3)} kg/s `
+  $("air-moves").textContent = `The two fans (${fan}%${state.fanIntegrity < 1 ? ", restricted" : ""}) move ${flow.toFixed(3)} kg/s `
     + `(design 0.052 kg/s) of nitrogen-rich Titan gas, warmed to ${(state.warmGasC ?? 0).toFixed(0)} C by the MMRTG's waste heat, `
     + `forward through the under-floor duct (about ${ductSpeed.toFixed(1)} m/s, estimate) and back through the bay at ${(state.coreC ?? 0).toFixed(0)} C.`;
   $("air-regulated").textContent = `The fore and aft diverter flaps send ${trim}% of the flow through the exposed cold duct under the belly (0-40% in 2% steps), `
