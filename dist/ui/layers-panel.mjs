@@ -17,6 +17,7 @@ const sources = {
   carouselPhotos: ["Carousel photos: NASA/Mike Guinto", "https://svs.gsfc.nasa.gov/15003"],
   carouselDesign: ["NASA carousel thermal-interface design (2024)", "https://ntrs.nasa.gov/api/citations/20230017316/downloads/AIAA_SCITECH2024_final_proof.pdf"],
   dragonCam: ["DragonCam Microscopic Camera paper (MSSS, 2026)", "https://arxiv.org/abs/2601.13221"],
+  dracoPaper: ["DrACO drill design (Honeybee, APL, Goddard; LPSC 2022)", "https://www.hou.usra.edu/meetings/lpsc2022/pdf/1069.pdf"],
   psuPhoto: ["PSU testing photo: NASA/Johns Hopkins APL/Ed Whitman", "https://www.jhuapl.edu/news/news-releases/260312-dragonfly-integration-begins"],
   iemPhotos: ["IEM integration photos: NASA/Johns Hopkins APL", "https://www.jhuapl.edu/news/news-releases/260312-dragonfly-integration-begins"],
   frontierPhoto: ["Frontier radio photo: Johns Hopkins APL", "https://science.nasa.gov/image-detail/amf-48b4901b-44b0-4c89-802b-0c615842aa09/"],
@@ -127,7 +128,7 @@ export function updateLayerPanel() {
     const key = `${selected.name}|${selected.mock}`;
     if (key !== detailKey) {
       detailKey = key;
-      const entries = selected.mock ? [] : [...new Set([info?.[1] ?? "thermal", ...(selected.name === "sample-carousel" ? ["carouselDesign"] : ["wonderwall", "drams"].includes(selected.name) ? ["carouselPhotos", "thermal"] : selected.name === "frontier-radio" ? ["frontierSpecs", "spacecraft"] : ["iem", "power-units"].includes(selected.name) ? ["integration"] : ["side-cameras", "nose-cameras-inside"].includes(selected.name) ? ["spacecraft"] : []), "payload"])];
+      const entries = selected.mock ? [] : [...new Set([info?.[1] ?? "thermal", ...(selected.name === "sample-carousel" ? ["carouselDesign"] : ["wonderwall", "drams"].includes(selected.name) ? ["carouselPhotos", "thermal"] : selected.name === "frontier-radio" ? ["frontierSpecs", "spacecraft"] : ["iem", "power-units"].includes(selected.name) ? ["integration"] : ["side-cameras", "nose-cameras-inside"].includes(selected.name) ? ["spacecraft"] : selected.name === "drills" ? ["dracoPaper"] : []), "payload"])];
       $("part-sources").replaceChildren(...entries.map(id => {
         const link = document.createElement("a");
         [link.textContent, link.href] = sources[id];

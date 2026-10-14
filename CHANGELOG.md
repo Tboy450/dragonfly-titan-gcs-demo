@@ -57,6 +57,7 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Noted, not fixed:** the old transfer line (#02) still starts at the old head position.
 - **App text:** Model assumptions, Vehicle part references and the drill's Component text
   updated; README matches.
+  The drill's Component sources also link the DrACO paper.
 - **Archive:** `archive/drills-2026-10-13/` (old code, sampling test, pictures; tag at `16b1f10`).
 - **Files:** `dist/drills.mjs` (new), `dist/vehicle-research.mjs`, `dist/ui/layers-panel.mjs`,
   `dist/index.html`, `tests/drills.test.mjs` (new), `tests/render-smoke.test.mjs`, `research/`,
