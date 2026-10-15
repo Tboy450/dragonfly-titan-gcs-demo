@@ -2,8 +2,97 @@
 
 Owner request recorded October 12, 2026. Maintainer for this entry: Codex (OpenAI).
 Process and handoff notes added October 13, 2026 by Claude (Anthropic Claude Opus 5.5).
+Context reconciled October 15, 2026 by Codex (OpenAI), including Claude's interrupted battery pass.
+Battery pass finished and Codex's RDE pass reviewed October 15, 2026 by Claude (Anthropic Claude Opus 5.5).
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
+
+## Resume Here: October 15 Context
+
+**Update (Claude, October 15, after this snapshot):** the owner asked Claude to look at Codex's
+work and continue. Claude finished #15 (all items below ticked) and reviewed Codex's #09 pass
+(review notes under the #09 follow-up). Both are committed together and published; see
+CHANGELOG. Completed count: **17 of 24** (3 Codex, 14 Claude). Tests: 207 pass. Since Codex's
+snapshot the battery look was also reworked to follow the real test photos (owner's real-photo
+rule), and its center moved to z 0.565 (see the parameters below). Codex's snapshot follows as
+written.
+
+**Later owner direction:** skip #15 battery for now; preserve it without finishing or publishing
+it. Codex proceeded with #09 research and a provisional enclosure illustration, not a completed
+photo-referenced rebuild. [RDE status and sources](research/rde-2026-10-15/README.md).
+The 16-part completed count is unchanged. The battery completion tasks below remain deferred.
+After the RDE illustration: 207 Node tests pass; desktop/360 px and four-angle Internal/Thermal
+WebGL checks pass. Old blocks and the clearance-fix draft are archived with pictures; local
+tag `archive/rde-2026-10-15` points to `b2ac24a`. No commit/push of this mixed working tree.
+
+This snapshot supersedes the older handoff status, not the research qualifications below.
+
+- **Committed baseline:** `b2ac24a`, antenna surface filtering/roughness/bump refinement.
+  Local `master` and freshly fetched `origin/main` match. The improvement branch and the
+  locally recorded `sites/main` have no commits ahead of `origin/main`. GitHub Pages deployment
+  was not rechecked in this documentation pass; matching Git commits alone is not a live-site check.
+- **Completed checklist:** 16 of 24 initial part passes: 01, 02, 04, 06, 07, 08, 10, 11,
+  12, 13, 14, 17, 18, 19, 23, 24. Three are credited to Codex and thirteen to Claude.
+  Completion does not certify exact flight dimensions or close the listed follow-ups.
+- **Current work is #15, not a fresh start.** Claude's battery model, tests, research and
+  archive folders are on disk but uncommitted. `dist/vehicle-research.mjs` already imports
+  `dist/battery.mjs`; `dist/thermal-loop.mjs` contains the companion duct adjustment.
+  Do not discard these changes, recreate the part, or publish only the two tracked files:
+  the new module must accompany its import.
+- **Checks:** Codex reran `node --test tests/*.test.mjs` on October 15: **203 passed, 0 failed**,
+  including the five battery tests. Claude reports rendered Internal/Thermal views and saved
+  comparison images; Codex has not independently repeated that browser inspection this pass.
+- **Release gap:** the app still describes the battery as a placeholder and counts 16 parts.
+  Passing tests do not prove those descriptions match the new, uncommitted geometry.
+  Keep #15 unchecked until the completion tasks below are done.
+
+### Finish the Interrupted Battery Pass
+
+- [x] **Claude:** Create `dist/battery.mjs` and integrate it in the research model; add
+  `tests/battery.test.mjs`. Preserve the existing 11.5 kWh simulation, rather than replacing it
+  with the inferred cells' 11.9 kWh nameplate sum.
+- [x] **Claude:** Save [battery research and limitations](research/battery-2026-10-15/README.md),
+  source pages in `research/sources/ices2022-256-battery-module/` and
+  `research/sources/gs-yuasa-lse-gen3/`, and comparison/render images.
+- [x] **Claude:** Create [battery archive](archive/battery-2026-10-15/README.md) and
+  [previous duct-position archive](archive/warm-duct-v1-2026-10-15/README.md).
+  Folder existence is not completion of the archive index/tag steps.
+- [x] **Codex:** Confirm the current working tree passes all 203 tests (October 15).
+- [x] **Claude:** Recheck the source distinction before release: the LSE134 cell identification is inferred,
+  and the nine-cell test module's fan counts/layout are not proof of the 24-cell flight pack's
+  layout. Show those limits in the app as well as the research note. PCM location is unknown;
+  do not invent a wax compartment. Do not infer exact flight hardware from test equipment.
+  (Done: the panel text, Vehicle part assumptions and research note say all four. The look now
+  follows the test module's real photos, figs. 10, 11, 13, not its CAD figure.)
+- [x] **Claude:** Update `dist/ui/layers-panel.mjs` battery description and sources; update
+  `dist/index.html` Model assumptions, Vehicle part references and Vehicle part assumptions.
+  Only on completion change the total to 17 of 24 (3 Codex, 14 Claude), remove battery from
+  the placeholder list, and check off #15 here in the same change.
+- [x] **Claude:** Add battery/source rows to `research/PART-SOURCES.md`, both archive rows to
+  `archive/README.md`, the module to `ARCHITECTURE.md`, and the status to
+  `RESEARCH-COMPENDIUM.md`; review README wording and sign the battery CHANGELOG entry as Claude's
+  implementation, crediting any subsequent finisher separately.
+- [x] **Claude:** Verify archive contents and restore steps; create the two missing archive tags on the
+  pre-replacement commit `b2ac24a` after confirming it is the recorded original. No October 15
+  archive tags were present when Codex checked. (`b2ac24a` is the last commit with the old
+  battery box and duct height; both tags created and pushed with Codex's `archive/rde-2026-10-15`.)
+- [x] **Claude:** Inspect installed and isolated battery at multiple angles in Internal/Thermal, desktop
+  and 360/390 px widths, with real WebGL screenshots/pixel checks. Check lid visibility,
+  framing, console errors and new-to-new clearance; retain #20 sensor overlap as its follow-up.
+  (Done at 1280 and 390 px; a flange-to-TWTA-cable contact found by the clearance test was fixed
+  by moving the battery 1 cm aft.)
+- [x] **Claude:** Rerun all tests after text/checklist edits, check the diff, commit the complete battery
+  change, push with its archive tags, and verify Pages success and the live build stamp.
+  This documentation-only context update does not publish or complete the battery pass.
+
+**Parameters to preserve while resuming (model meters, +Y up, nose toward -Z):**
+`batteryAsset` revision `battery-2026-10-15`; center is **[x,z] = [0,0.565]** (was 0.555 when
+Codex wrote this), not XYZ; enclosure width 0.62, depth 0.40, bottom Y -0.27, flange (split)
+Y 0.006, top Y 0.064 (was 0.04 before the real-photo rework); floor Y -0.284.
+The 4-by-6 arrangement, enclosure and installed placement are estimates. The warm duct's
+center Y changed from -0.305 to -0.3125 (7.5 mm lower), revision `thermal-loop-2026-10-15`.
+Read the exported asset constants rather than duplicating them. Keep tube-clearance tests
+in world coordinates; don't use a whole cable-inclusive box to judge enclosure placement.
 
 ## Current Milestone
 
@@ -24,6 +113,7 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 - [x] **Claude:** Rebuild #17 fans, #18 warm duct and #19 trim device from TFAWS 2023/2024 (October 14).
 - [x] **Claude:** Rebuild #14 TWTA after published flight TWTAs (LRO, MRO, Stellant) and the Dragonfly thermal papers (October 14).
 - [x] **Claude:** Rebuild #10 HGA gimbal (actuators, motorized arm, locks) from ICES-2023/2020 and APL's arm photo; the dish now rises on the arm (October 14).
+- [x] **Claude:** Rebuild #15 battery: 24 cells, fins, heat pipes, fans; look from real photos of APL's test module (October 15).
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## The Process (one part per pass)
@@ -38,7 +128,12 @@ assistant can continue the same way. Every step happens in the same change as th
    (photograph, labeled figure or published dimension). Skip parts whose only source is a
    vague diagram until one turns up. Work on one part at a time; finish, verify and publish it
    before starting the next.
-3. **Capture the detail; research and credit; save everything used.** The goal is to capture
+3. **Capture the detail; research and credit; save everything used.**
+   **Owner clarification, October 15:** prioritize real hardware photos and documented physical
+   examples for appearance. Use CGI/CAD primarily for dimensions/placement where real examples
+   are unavailable; only fall back to CGI appearance when necessary, and state that limitation.
+   Keep test fixtures separate from flight hardware. An illustrative draft is not a checked-off
+   reference-based asset. The goal is to capture
    what the sources really show and replicate it, so each part looks as distinct (or as alike)
    as the real hardware. Gather every view of the part and of the parts it is made of. How to
    capture and draw it is chosen per part; there are several ways. Examples that worked for
@@ -115,6 +210,7 @@ estimated. Parts with an estimated position need a layout pass against the sourc
 | 23 Lower cameras | Microscopic Camera [PUB] 105 x 155 x 90 mm; ECAM-P50 heads [EST] | Microscopic Camera [PUB] 986 mm at 52 degrees from the port drill site; Down Cameras [EST] mid-body per DragonCam figs. 2-3 |
 | 04 Nose cameras | [PUB] camera types; heads as part 23 | [EST] from DragonCam figs. 2-3 (camera panel at z -1.665) |
 | 10 HGA gimbal | [EST] arm 0.6 m measured on ICES-2023 fig. 1 against the 87.4 cm dish [PUB]; actuators sized from fig. 3 | [PUB] forward of the stowed dish, under foam, internal portion under the deck; [EST] hinge at z -0.55 |
+| 15 Battery | [PUB] 24 cells; [EST] GS Yuasa LSE134 cells (130 x 50 x 271 mm, inferred), 4 x 6 layout, 0.62 x 0.40 x 0.33 m enclosure | [EST] center z 0.565 inside the TFAWS 2023 plan-view block (z 0.34-0.77), on pads over the warm duct |
 | 14 TWTA | [EST] scaled from published LRO, MRO and Stellant units | [PUB] underside of the top deck; [EST] starboard, above the radio |
 | 01 Drills | [EST] proportioned from LPSC fig. 2, about 0.7 m tall per DragonCam fig. 3 | [EST] 0.43 m forward of center, within the sources' 0.34-0.45 m (NASA print model, DragonCam fig. 3, APL cutaway) |
 
@@ -125,20 +221,20 @@ APL's rotating CAD video, NASA/APL integration photos.
 
 ## Handoff Notes (for Claude and other assistants)
 
-- **State on October 13, 2026:** parts 06, 07, 08 (Codex), 13, 12 and 11 (Claude) are
-  rebuilt and live; 164 tests pass. Codex was stopped by a usage limit while writing this section; Claude
-  completed it.
+- **Current state:** use the October 15 snapshot and battery completion checklist above.
+  The earlier October 13 baseline of six rebuilt parts / 164 tests is historical, not current.
 - **Rebuilt-set assets to test against:** `carouselAsset` (`dist/sample-carousel.mjs`),
   `wonderwallAsset` (`dist/wonderwall.mjs`), `dramsAsset` (`dist/drams-assembly.mjs`),
   `frontierRadioAsset` (`dist/frontier-radio.mjs`), `iemAsset` (`dist/iem.mjs`),
   `powerUnitsAsset` (`dist/power-units.mjs`), `sideCamerasAsset` (`dist/side-cameras.mjs`),
   `noseCamerasAsset` (`dist/nose-cameras.mjs`), `drillAsset` (`dist/drills.mjs`),
-  `dracoPlumbingAsset` (`dist/draco-plumbing.mjs`), `thermalLoopAsset` (`dist/thermal-loop.mjs`), `twtaAsset` (`dist/twta.mjs`), `hgaAsset` (`dist/hga-gimbal.mjs`). Add each
+  `dracoPlumbingAsset` (`dist/draco-plumbing.mjs`), `thermalLoopAsset` (`dist/thermal-loop.mjs`), `twtaAsset` (`dist/twta.mjs`), `hgaAsset` (`dist/hga-gimbal.mjs`), `batteryAsset` (`dist/battery.mjs`), `rdeAsset` (`dist/rotor-drive-electronics.mjs`, provisional). Add each
   new part to this list and to the clearance tests of the parts it neighbors. Tests that
   compare whole-part boxes are too coarse for parts with long cables (the TWTA's coax reaches
   the radio); check those piece by piece, with tubes sampled along their paths in world
   coordinates (`tests/twta.test.mjs`).
-- **Suggested order next:** #15 battery casing, #09 drive electronics, #05 nose electronics, #03 and #16
+- **Suggested order next (owner update October 15):** #15 is now done (Claude); seek clearer #09 hardware
+  references after the provisional enclosure pass, then #05 nose electronics, #03 and #16
   bulkheads (NASA/APL top-deck fit-check photo), #20-#22 sensors. Recheck references each time;
   reorder if a clearer source turns up. (Taken off this line October 14 because they are done:
   #02, #24, #17, #18, #19, #14 and #10.)
@@ -154,10 +250,16 @@ APL's rotating CAD video, NASA/APL integration photos.
 - **Owner preferences that apply here:** realism is the goal, but keep it easy to operate;
   keep the light visible; never throw work away; archive pictures with every replacement; sign
   every change. The owner often checks on a phone, so always check phone width.
-- **Still open across all parts:** the numbered-callout layout defect (Priority 1 below), the
-  shell/foam/casing hide/show controls, and authoritative dimensions for every rebuilt part.
+- **Still open across all parts:** the deferred numbered-callout layout defect, independent
+  shell/foam/casing hide/show controls, and the remaining estimated dimensions/placements.
+  Existing ghosted shells and named inspection groups are not a finished layer-toggle UI.
+- **Handoff safety:** inspect `git status` before editing and preserve other assistants' work.
+  Use `apply_patch` for manual edits. Do not reset the tree or silently merge unrelated work.
+  Keep durable part IDs, the shared sampling clock, simulation behavior and saved-state
+  contracts unchanged during asset passes. Keep long text expandable, normal page scrolling
+  and browser Ctrl zoom intact. Never use or suggest an image-generation service.
 
-## Priority 1: Numbered Callouts
+## Numbered Callouts (Deferred During Part Rebuilds)
 
 The video shows labels forming a vertical chain and changing apparent attachment while
 the model rotates. `dist/ui/flight-view.mjs`, `drawPartMarkers()`, resolves collisions by
@@ -199,11 +301,13 @@ Current rebuilt set: `sample-carousel` (`carousel-2026-10-12`) and `wonderwall`
 (`frontier-radio-2026-10-13`) and `iem` (`iem-2026-10-13`) and `power-units`
 (`power-units-2026-10-13`) and `side-cameras` (`side-cameras-2026-10-13`) and `nose-cameras-inside`
 (`nose-cameras-2026-10-13`) and `drills` (`drills-2026-10-13`) and `sample-lines`/`drill-blower` (`draco-plumbing-2026-10-14`) and `fan`/`underfloor-duct`/`trim-chimneys`
-(`thermal-loop-2026-10-14`). Their installed bounds and clearance are tested together; the
+(`thermal-loop-2026-10-14`), `twta` (`twta-2026-10-14b`) and `hga-actuators`
+(`hga-gimbal-2026-10-14`). The working tree additionally contains the unfinished battery pass and
+thermal-loop revision `thermal-loop-2026-10-15`; see the snapshot above. Installed bounds and clearance are tested together; the
 DraMS neck intentionally passes through the wall aperture.
 
 - [x] **Claude:** **01 DrACO drills** (`drills`): gold head with percussion and rotation actuators and the percussion spring, red Z-stage rail with motor, lead screw and lower bracket, swivel with pneumatic port, hollow bit with side opening and slotted crown; the carriage slides while drilling and only the bit turns; a full stroke drills 5.8 cm (6 cm published limit). [References/limits](research/drills-2026-10-13/README.md).
-- [ ] **01 follow-up:** real part sizes; exact fore-aft position (sources span 0.34-0.45 m forward of center; model 0.43 m); the transfer line (#02) must start at the new swivel port.
+- [ ] **01 follow-up:** real part sizes; exact fore-aft position (sources span 0.34-0.45 m forward of center; model 0.43 m). The #02 pass now connects to the moving swivel port; preserve that connection through the full drill stroke.
 - [x] **Claude:** **02 Sample-transfer lines** (`sample-lines`): flexible hose from each drill's port (follows the drill down), rigid tubes forward under the body edges and up into the attic, flow-diverter manifold on the carousel inlet, return tube down the port side to the blowers; topology from DrACO fig. 1, routes and the 13 mm size [EST]. [References/limits](research/draco-plumbing-2026-10-14/README.md).
 - [ ] **02 follow-up:** real tube sizes and routes; separate LDMS and GCMS elevators at the carousel (the carousel models one inlet).
 - [ ] **03 Nose bulkhead** (`nose-bulkhead`): profile, thickness, apertures and relation to the forward bay.
@@ -211,34 +315,43 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **04 follow-up:** pointing angles and which low unit is the WAC or the NavCams; the fuller 2026 chin (the low cameras stand out of the older nose shell, noted for the fuselage nose redraw).
 - [ ] **05 IMU/lidar electronics, FEB/MEB** (`nose-electronics`): distinguish boxes and brackets; verify names/locations against current sources.
 - [x] **Codex:** **06 Cold sample-delivery carousel** (`sample-carousel`): enclosed drum, cooling fins, ports and underside drives; stationary housing, internal indexing cue. [References/limits](research/carousel-2026-10-12/README.md). No exposed invented cup inventory; 0.36 m diameter and placement remain estimates.
-- [ ] **06 dimensional follow-up:** replace proportional scale with an authoritative dimension/CAD if available; reconcile interfaces as #02/#07/#08 are rebuilt. Existing legacy overlap is not corrected by shrinking #06.
+- [ ] **06 dimensional follow-up:** replace proportional scale with an authoritative dimension/CAD if available; #02/#07/#08 now have approximate integrated interfaces, but real sealed transfer paths remain unverified. Existing legacy overlap is not corrected by shrinking #06.
 - [x] **Codex:** **07 Wonderwall thermal barrier** (`wonderwall`): contoured reference-based warm/cold partition, interface openings and separate face/core/mount groups. [References and limits](research/wonderwall-2026-10-12.md). Not a verified flight material stack.
-- [ ] **07 dimensional/interface follow-up:** authoritative wall thickness, material stack and real sealed instrument penetrations; reconcile with #08. Published ~5 cm instrument separation is not wall thickness.
+- [ ] **07 dimensional/interface follow-up:** authoritative wall thickness, material stack and real sealed instrument penetrations. The #08 neck now aligns with the modeled opening; that is not confirmation of the real seal design. Published ~5 cm instrument separation is not wall thickness.
 - [x] **Codex:** **08 DraMS assembly** (`drams`): first enclosure-level pass, with separate covers/casings/frame and simplified connection through #07. [References/limits](research/drams-2026-10-12/README.md). Dimensions and details remain estimated.
 - [ ] **08 detailed follow-up:** independently source ITMS electrodes, UV laser/LDMS interface, GC hardware, carousel-side pyrolysis oven, fan and actual seals/transfer paths. Do not invent hidden internals or treat the current casings as flight CAD.
-- [ ] **09 Rotorcraft drive electronics** (`rde`): both enclosures, mounting/thermal interfaces and cable exits.
+- [ ] **09 Rotorcraft drive electronics** (`rde`): Codex provisional enclosure pass October 15;
+  two hollow cases, separate lids/mounts, illustrative internal fans and real vent openings.
+  Remains unchecked: no clear flight-hardware photo or dimensions found. [Sources/limits](research/rde-2026-10-15/README.md).
+- [ ] **09 follow-up (Claude's review, October 15):** sources and labels check out; APL's gallery and
+  NASA's pages still have no RDE photo. ICES-2023 fig. 4 places the two hot RDE boxes just aft of
+  the attic, as drawn, but they appear side by side on one side of the bay rather than split across
+  the centerline; settle the arrangement with the next reference. The HGA gimbal's under-deck drive
+  sits about 3.5 cm above the port box. Vent guards, fan count and finish remain invented.
 - [x] **Claude:** **10 HGA azimuth/elevation actuators** (`hga-actuators`, durable id kept; the whole gimbal): internal portion under the deck (azimuth bearing, drive, rotary joint) and, above it under a 5 cm Rohacell dome, a stacked turntable and a gold elevation drum, just aft of the attic and forward of the stowed dish [PUB, ICES-2023 p. 2, figs. 1, 3; ICES-2020 p. 5]; the motorized arm, gray truss pedestal, thermal isolator and flexible feed from APL's July 2026 photo; launch lock under the dish's aft rim and a flight lock either side [PUB positions, shapes EST]; the dish now rises on the arm and points at Earth (azimuth limited to keep it out of the attic [EST]); orange slotted dish face from NASA's chamber photo; TWTA waveguide rerouted to the rotary joint. Arm 0.6 m and hinge at z -0.55 measured on ICES-2023 fig. 1 [EST]. [References/limits](research/hga-actuators-2026-10-14/README.md).
 - [ ] **10 follow-up:** the flight pedestal is taller than drawn (APL photo); real actuator sizes and the azimuth/elevation ranges; what the tall gold-and-orange tower beside the dish in APL's photo is; the RF chain through the gimbal (rotary joints or cable wrap); the medium-gain antenna.
 - [x] **Claude:** **11 Power switching units** (`power-units`): two units [PUB]; face mapped connector by connector from the full-resolution testing photo and checked by overlay (eight slices, two ribs, seven 25-way D-subs, small cluster, uncapped port, empty upper right); size from standard D-sub sizes, about 20 x 24 x 19 cm [EST]; PSU 1 beside the IEM on its wall as photographed. [References/limits](research/power-units-2026-10-13/README.md). Corrected October 13 (first version archived).
 - [ ] **11 follow-up:** a photo of the second PSU (drawn the same) and of the flight units' real wall positions; separate PSU currents if the power model ever splits them.
 - [x] **Claude:** **12 Integrated electronics module** (`iem`): from the full-resolution photos: black heat-sink top with fins parallel to the face and fastener rows, copper ground strap, bolted face plate with two rows of connector windows over eight columns, mated and labeled Micro-Ds, yellow tape; back to a wall panel beside PSU 1. Size from standard Micro-D sizes, about 28 x 28 x 22 cm [EST]. [References/limits](research/iem-2026-10-13/README.md). Corrected October 13 (first version archived).
-- [ ] **12 follow-up:** an uncovered view of the face to map the windows exactly; real wall position; the wall panel itself once the open-frame structure is modeled; harness routes to the PSUs, radio and instruments. The old HGA-actuator placeholder (#10) currently sits in front of it.
+- [ ] **12 follow-up:** an uncovered view of the face to map the windows exactly; real wall position; the wall panel itself once the open-frame structure is modeled; harness routes to the PSUs, radio and instruments. The old HGA-actuator placeholder has been replaced by the #10 pass.
 - [x] **Claude:** **13 Frontier X-band radio** (`frontier-radio`): four black slices on bolted feet, labeled connectors J11-J32, top semi-rigid coax, from APL's photo; 4 x 6 in slice size [PUB], stack width from the photo [EST]. [References/limits](research/frontier-radio-2026-10-13/README.md).
-- [ ] **13 follow-up:** one radio or two (redundancy); real bay location and cable runs to the IEM, TWTA and antennas; reconcile with #12 and #14 when they are rebuilt.
+- [ ] **13 follow-up:** one radio or two (redundancy); real bay location and cable runs to the IEM, TWTA and antennas. #12/#14 are rebuilt and the modeled TWTA coax reaches J31; actual flight routing/port assignment remains unverified.
 - [x] **Claude:** **14 TWTA amplifier** (`twta`): one 100 W X-band TWTA [PUB] on the underside of the top deck [PUB]: a conduction-cooled tube on a flanged baseplate and a separate EPC joined by a braided high-voltage umbilical, drawn after NASA's photo of LRO's TWTA and Stellant's space-tube photos; sizes scaled from LRO, MRO and Stellant units [EST]; WR-112 waveguide up through the deck, input coax to the radio, EPC harness to the wall [EST]; under the starboard deck above the radio [EST]. [References/limits](research/twta-2026-10-14/README.md).
 - [ ] **14 follow-up:** the Dragonfly unit's real size, ports and maker; one or two units (ICES-2020 says "TWTAs"); its exact deck position; the RF chain to the antenna (isolator, diplexer, switches, rotary joints) and the radio port that feeds it; draw the top-deck panel itself once the shell layers are modeled.
-- [ ] **15 Battery and thermal buffer** (`battery`): outer pack casing first; then sourced heat-pipe/PCM arrangement and optional cutaway, not generic exposed cells.
+- [x] **Claude:** **15 Battery and thermal buffer** (`battery`): 24 upright cells [PUB count] of GS Yuasa's 134 Ah LSE134 [EST, inferred], 4 x 6, with fin plates, copper heat pipes in three directions and series bus straps; enclosure look from the real photos of APL's 9-cell test module (cream ribbed lower section, flange, bare aluminum upper housing with three 2 in fans per end, 1 in fans on the lower walls, round connectors including a large four-pin); on pads over the warm duct, center z 0.565 from the TFAWS 2023 plan view [EST]; the wax is not drawn (location unpublished). [References/limits](research/battery-2026-10-15/README.md). (Codex's handoff: "in progress/uncommitted" until this pass.)
+- [ ] **15 follow-up:** verify flight cell model, enclosure size, cell/fan arrangement, real
+  mounting and PCM location. Keep #20's sensor-placeholder/lid overlap for the sensor rebuild.
 - [ ] **16 Aft bulkhead** (`aft-bulkhead`): profile, penetrations and attachment to the generator/fan region.
 - [x] **Claude:** **17 Circulation fans** (`fan`): Fan-A and Fan-B side by side in housings at the MMRTG end, with rotors that turn with the flow and an adapter to the MMRTG; TFAWS 2023 slides 3, 7, 8 and TFAWS 2024 slide 14; size from the plan view. [References/limits](research/thermal-loop-2026-10-14/README.md).
 - [x] **Claude:** **18 Under-floor warm duct** (`underfloor-duct`): 0.14 m wide on the centerline from the fan transition to the nose, turning up into the body below the nose, with flanges; TFAWS 2023 slides 3-4, ICES-2023. [References/limits](research/thermal-loop-2026-10-14/README.md).
-- [ ] **18 follow-up:** real duct height; the round perforated feature on the duct in the slide 3 plan view; old drive-electronics, battery, nose-electronics and aft-bulkhead placeholders reach into the duct zone (fix with those parts).
+- [ ] **18 follow-up:** real duct height; the round perforated feature on the duct in the slide 3 plan view; old drive-electronics, nose-electronics and aft-bulkhead placeholders reach into the duct zone (fix with those parts). Battery clearance is covered by the October 15 duct adjustment (duct 7.5 mm lower), released with the battery.
 - [x] **Claude:** **19 Trim device** (`trim-chimneys`, durable id kept): the cold bypass duct under the belly, outside the foam, with fore and aft diverter flaps in foam-wrapped housings that open with the trim setting; TFAWS 2023 slides 4, 7, 8 and TFAWS 2024. ICES-2023's side-chimney concept archived. [References/limits](research/thermal-loop-2026-10-14/README.md).
 - [ ] **19 follow-up:** the cold duct's real section and the meaning of the "split cold duct" (TFAWS 2024); flap hinge sides and actuators.
 - [ ] **20 Battery temperature sensor** (`battery-sensor`): verify installation; distinguish an actual sensor body from a diagram marker.
 - [ ] **21 MMRTG fin-root sensor** (`mmrtg-sensor`): same distinction, with verified placement rather than a floating green sphere.
 - [ ] **22 Nose methane/E-field instruments** (`nose-sensors`): individual housings, supports and wire exits.
 - [x] **Claude:** **23 Lower DragonCam cameras** (`side-cameras`): Microscopic Camera on the port side placed from its published 986 mm range at 52 degrees to the port drill site, APL's LED array beside it (365 nm UV emitter), a Down Camera on each side; Malin ECAM heads drawn from the paper's figures (shared `dist/ecam.mjs`); each in a foam cavity behind a 3 mm window, brackets on the bay wall's outer face, harness through the wall. [References/limits](research/side-cameras-2026-10-13/README.md).
-- [ ] **23 follow-up:** the foam blister the Microscopic Camera needs (it is thicker than the 7.62 cm average foam); Down Cameras' exact position; the camera electronics box (ECAM-DVR8P) inside the bay; overlap with the old trim-chimney placeholder (#19) to settle when #19 is redrawn (TFAWS 2024 puts the trim device under the belly).
+- [ ] **23 follow-up:** the foam blister the Microscopic Camera needs (it is thicker than the 7.62 cm average foam); Down Cameras' exact position; the camera electronics box (ECAM-DVR8P) inside the bay. #19 has replaced the old side-chimney placeholder with the under-belly trim device; retain the rebuilt-set clearance checks.
 - [x] **Claude:** **24 DrACO blowers** (`drill-blower`): forward and aft centrifugal blowers (volute, motor, axial inlet, tangential exhaust out and down) behind the port forward arm, fed by an inlet flow diverter; per DrACO fig. 1 and ICES-2023. [References/limits](research/draco-plumbing-2026-10-14/README.md).
 - [ ] **24 follow-up:** real blower size and shape; the unidentified cylinder-and-cone unit under the port attic seen in APL's CAD movie.
 

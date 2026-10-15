@@ -17,8 +17,10 @@ import * as THREE from "./vendor/three/three.module.min.js";
 // wide, from z -1.18 to +0.93, widening to the fans; fans about 0.13 m, near z +1.2. Duct height,
 // cold-duct section, housing shapes, flap hinge sides and the actuators are [EST].
 export const thermalLoopAsset = Object.freeze({
-  revision: "thermal-loop-2026-10-14",
-  duct: Object.freeze({ width: 0.14, height: 0.045, y: -0.305, front: -1.175, back: 0.93 }),
+  revision: "thermal-loop-2026-10-15",
+  // y lowered 7.5 mm on Oct 15 so the duct and its joint flanges sit fully under the bay floor
+  // (y -0.284), inside the foam; the first position is archived (archive/warm-duct-v1-2026-10-15).
+  duct: Object.freeze({ width: 0.14, height: 0.045, y: -0.3125, front: -1.175, back: 0.93 }),
   fans: Object.freeze({ diameter: 0.115, centers: Object.freeze([Object.freeze([-0.068, -0.19, 1.16]), Object.freeze([0.068, -0.19, 1.16])]) }),
   coldDuct: Object.freeze({ width: 0.14, height: 0.035, y: -0.3775, front: -0.56, back: 0.6 }),
   diverters: Object.freeze({ front: -0.61, aft: 0.67 }),

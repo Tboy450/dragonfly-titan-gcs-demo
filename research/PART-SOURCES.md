@@ -22,6 +22,8 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 | [`sources/descanso-mro-telecom-2006`](sources/descanso-mro-telecom-2006/README.md) | Taylor, Lee, Shambayati (JPL), *Mars Reconnaissance Orbiter Telecommunications*, DESCANSO Article 12 | pp. 2, 25, 27, 32, 33 (100 W X-band TWTA; table 2-1 masses; fig. 2-5 TWTA panel) | 14 |
 | [`sources/stellant-space-twt`](sources/stellant-space-twt/README.md) | Stellant Systems, space TWT product sheet (2024) and space brochure (2023) | sheet pp. 1-2 (tube photos; X-band 86160Hx 895 g); brochure p. 2 (EPC and TWTA photos) | 14 |
 | [`sources/patent-us11854759-thales-cc-twt`](sources/patent-us11854759-thales-cc-twt/README.md) | US 11,854,759 B2, *Arrangement of conduction-cooled travelling wave tubes*, Thales Deutschland, 2023 | front page and both drawing sheets | 14 (background) |
+| [`sources/ices2022-256-battery-module`](sources/ices2022-256-battery-module/README.md) | Balakrishnan, Holtzman et al. (APL), *Designing for Powered Flight on Titan: ... the Dragonfly Battery Module*, ICES-2022-256 | pp. 1-4, 6, 7 (24 cells; test module figures and real test photos) | 15 |
+| [`sources/gs-yuasa-lse-gen3`](sources/gs-yuasa-lse-gen3/README.md) | GS Yuasa, LSE Gen III power-type cells datasheet | p. 1 (LSE134 size, mass, photo) | 15 |
 | [`sources/patent-us8417859-jhu-sdr`](sources/patent-us8417859-jhu-sdr/README.md) | US 8,417,859 B2, *Low power, low mass, modular, multi-band software-defined radios*, Haskins and Millard, Johns Hopkins University, 2013 | front page and all 8 drawing sheets | 13 |
 
 ## By part
@@ -38,11 +40,20 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 | **01 Drills** | [`drills-2026-10-13/`](drills-2026-10-13/README.md): Costa portfolio photos (2018-19 test hardware), NASA lab photo, NASA print-model assembly page | DrACO LPSC 2022 figs. 1-2; Honeybee slides; DragonCam fig. 3; APL cutaway | [Costa portfolio](https://www.tighecosta.com/draco), [NASA Playing Lacrosse on Titan](https://science.nasa.gov/science-research/science-enabling-technology/technology-highlights/playing-lacrosse-on-titan/) | No drill patent found; sizes proportioned [EST] |
 | **04 Nose cameras** | [`nose-cameras-2026-10-13/`](nose-cameras-2026-10-13/README.md): fig. 1 camera-difference crops | DragonCam paper pages | [arXiv 2601.13221](https://arxiv.org/abs/2601.13221) | Camera types published; positions and pointing from figs. 2-3 [EST] |
 | **23 Lower cameras** | none (CAD figures and a prototype photo are in the paper) | DragonCam paper pages | [arXiv 2601.13221](https://arxiv.org/abs/2601.13221) | Microscopic Camera geometry published; Down Camera position estimated |
+| **15 Battery** | [`battery-2026-10-15/`](battery-2026-10-15/README.md): real photos of APL's 9-cell test module (ICES-2022 figs. 10A, 11, 13B), GS Yuasa cell photo, CAD figure crops (arrangement only), TFAWS 2023 plan-view crops | ICES-2022-256 pp. 1-4, 6-7; GS Yuasa datasheet; ICES-2020 p. 4; ICES-2023 p. 5; TFAWS 2023 slide 3 | [Aerospace America 2022](https://aerospaceamerica.aiaa.org/features/designing-dragonfly-nasas-titan-explorer/), [APL spacecraft page](https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php) | No battery patent found; cell model inferred; enclosure look from the test module [EST] |
 | **10 HGA gimbal** | [`hga-actuators-2026-10-14/`](hga-actuators-2026-10-14/README.md): APL arm photo (NASA/Johns Hopkins APL/Ed Whitman, July 2026), NASA test-chamber photo of the HGA (same credit, June 2026), ICES-2023 fig. 1 and 3 crops; NASA printable-model guide pages as cross-reference only | ICES-2023-389 p. 2, figs. 1, 3; ICES-2020-160 p. 5; TFAWS 2023 slide 3 | [APL July 2026 release](https://www.jhuapl.edu/news/news-releases/260709-dragonfly-clears-key-tests-as-assembly-comes-together), [NASA June 2026 blog](https://science.nasa.gov/blogs/dragonfly/2026/06/01/nasas-dragonfly-flight-system-faces-heat/), [NASA 3D resources](https://science.nasa.gov/3d-resources/dragonfly/) | No gimbal patent found; arm length and hinge measured on ICES-2023 fig. 1 [EST] |
 | **14 TWTA** | [`twta-2026-10-14/`](twta-2026-10-14/README.md): LRO TWTA photo crop (NASA/TM-2010-216262), Stellant tube, TWTA and EPC photo crops, MRO TWTA-panel figure crop, model-vs-sources sheet | ICES-2020-160 p. 5; ICES-2023-389 pp. 5-7; DESCANSO MRO table 2-1 and fig. 2-5; Stellant listing; patent US 11,854,759 B2 (background) | [NASA spacecraft page](https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/) ("a 100-watt traveling-wave tube amplifier") | Dragonfly's unit is not pictured or sized in any source found; drawn like published flight TWTAs, sizes scaled [EST] |
 | **13 Frontier radio** | [`frontier-radio-2026-10-13/`](frontier-radio-2026-10-13/README.md): `nasa-apl-frontier-radio.jpg` (Johns Hopkins APL) | iCubeSat 2019 p. 2; patent US 8,417,859 (slice architecture) | [SmallSat 2016 SSC16-VII-2](https://digitalcommons.usu.edu/cgi/viewcontent.cgi?article=3383&context=smallsat) ("four or more 4 x 6 inch packaged slices"; the site blocks automated download), [eoPortal](https://www.eoportal.org/satellite-missions/frontier-radio) | |
 
 ## Leads not yet used
+
+### Part 09 Provisional Pass (Not Checked Off)
+
+[RDE research notes](rde-2026-10-15/README.md): saved CAPS 2024 slide 27 contains a real but
+obscured thermal-test photograph (Elizabeth Turtle / Johns Hopkins APL). Existing ICES-2023
+pp. 5/7 support two boxes with internal fans; its figure is used only for approximate layout.
+The Harsono cooling-paper DOI is a lead, not an inspected figure source. Enclosure detail
+remains illustrative; no assertion of photo-matched flight geometry.
 
 - US 11,827,388 B2, *Sample collection system for interplanetary vehicle* (Honeybee Robotics,
   2023, [Google Patents](https://patents.google.com/patent/US11827388B2/en)): a footpad sampler

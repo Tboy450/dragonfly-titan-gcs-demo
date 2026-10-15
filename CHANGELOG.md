@@ -39,6 +39,78 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-15: Rebuild part 15, the battery; review and publish Codex's provisional RDE pass
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Rebuild the battery from APL's test-module photos; add Codex's provisional RDE enclosures"
+- **What changed:** The olive battery box is replaced by `dist/battery.mjs`: 24 upright cells
+  (published count) of GS Yuasa's 134 Ah LSE134 (inferred from 134 Ah, GS Yuasa and 24 cells;
+  130 x 50 x 271 mm), four across and six deep, with aluminum fin plates, copper heat pipes in
+  three directions and series bus straps, in an enclosure whose look follows the **real photos**
+  of APL's 9-cell thermal test module (ICES-2022 figs. 10, 11, 13): a cream ribbed lower section,
+  a flange, a bare aluminum upper housing with three 2 in fans on each end, 1 in fans on the
+  lower walls, and round connectors including a large four-pin one. The paper's CAD figures are
+  used only for the internal arrangement (owner's rule today: real photos first, CGI mainly for
+  dimensions and placement). Placed from the TFAWS 2023 plan view on pads over the warm duct.
+- **Estimated:** the cell model, 4 x 6 layout, enclosure size, fan and connector positions,
+  placement. The test module is not flight hardware. The phase-change wax is not drawn (its place
+  is not published). The simulator keeps the published 11.5 kWh (24 x 496 Wh would be 11.9).
+- **Also:** the warm duct is 7.5 mm lower (its joint flanges were above the floor line, where one
+  met the battery base); the battery sits 1 cm further aft than the first draft so its flange
+  clears the TWTA's high-voltage cable. The unpublished first draft (CAD look) is archived.
+- **Codex's work:** Codex's provisional RDE enclosures (part 09, entries below) are included in
+  this commit unchanged, with Codex's attribution; part 09 stays unchecked. Claude's review: the
+  sources and labels hold; no RDE photo exists in APL's gallery or NASA's pages; ICES-2023 fig. 4
+  shows the two hot boxes side by side on one side, not split across the centerline (noted as a
+  follow-up, not changed).
+- **Sources saved:** ICES-2022-256 pp. 1-4, 6-7 (real test photos); GS Yuasa LSE Gen III
+  datasheet; photo crops and a model-vs-sources sheet in `research/battery-2026-10-15/`.
+- **Archive:** `archive/battery-2026-10-15/` (with the CAD-look draft) and
+  `archive/warm-duct-v1-2026-10-15/`, both tagged at `b2ac24a`; Codex's `archive/rde-2026-10-15`
+  tag pushed with them.
+- **Files:** `dist/battery.mjs` (new), `dist/thermal-loop.mjs`, `dist/vehicle-research.mjs`,
+  `dist/ui/layers-panel.mjs`, `dist/index.html`, `tests/battery.test.mjs` (new), plus Codex's
+  `dist/rotor-drive-electronics.mjs` and `tests/rotor-drive-electronics.test.mjs`; `research/`,
+  `archive/`, `INTERIOR-REALISM-TODO.md`, `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`, `README.md`
+- **Checks:** `node --test tests/*.test.mjs` (207 pass). Internal isolated and installed, Thermal,
+  at 1280 and 390 px; no console errors; no sideways scroll.
+- **Open / next:** the owner's request to redraw the rotor arms from the "Revolutionary Rotors"
+  video; scroll/pinch zoom for the pilot view.
+
+### 2026-10-15: Provisional RDE enclosures while deferring the battery
+- **Signed:** Codex (OpenAI).
+- **Status:** Local working update; not committed or published. Battery module, test,
+  research and thermal-loop changes from Claude are preserved unchanged.
+- **What changed:** Part 09's two solid blocks now have hollow casings, separate lids/mounts,
+  open vents and illustrative internal fans. Stable `rde` identity and existing thermal model
+  retained. Source limitations are visible in the component description and expandable assumptions.
+- **Evidence/limits:** ICES-2023 documents two boxes with internal fans. Saved the real RDE
+  test photograph on CAPS 2024 slide 27, but it is obscured; appearance/dimensions remain
+  estimates, not a hardware replica. No CGI appearance copied, no boards or pinout invented.
+  The owner's real-photo-first rule is recorded. Part 09 remains unchecked; 16 completed passes.
+- **Archive:** `archive/rde-2026-10-15`, baseline tag at `b2ac24a`, pre-change working copies
+  and desktop/mobile/multi-angle images. An unpublished lid/waveguide-overlap draft is preserved.
+  Snapshot contains pre-existing battery integration; restore notes warn against whole-file rollback.
+- **Checks:** 207 Node tests passed, including four RDE tests. Per-mesh and sampled-tube
+  clearance against rebuilt parts and pending battery. Playwright desktop/360 px, four angles
+  Internal/Thermal, nonblank/framed canvas pixels, no horizontal overflow or page exceptions;
+  rendered desktop and phone images inspected. `git diff --check` passed.
+- **Open / next:** Clear RDE flight/engineering-model photo and dimensions; otherwise move to
+  another better-documented part. Battery remains deferred per owner; no mixed unfinished publish.
+
+### 2026-10-15: Refresh interior context and interrupted battery handoff
+- **Signed:** Codex (OpenAI).
+- **Status:** Documentation update only; no application changes or publication in this pass.
+- **What changed:** Reconciled the checklist with 16 committed part passes and Claude's
+  uncommitted battery/duct work. Recorded completed artifacts, exact resume parameters,
+  remaining app text/source/archive/release tasks, and deferred label/layer controls.
+  Preserved Claude's implementation and attribution; the battery remains unchecked.
+- **Files:** `INTERIOR-REALISM-TODO.md`, `README.md`, `CHANGELOG.md`.
+- **Checks:** Fresh origin fetch; HEAD and origin/main both `b2ac24a`; inspected branch
+  differences and working changes. Current working tree: 203 tests passed, zero failed.
+  No independent browser or live-deployment verification in this documentation pass.
+- **Open / next:** Finish battery disclosure/indexing and visual verification, then commit
+  and publish the complete battery change. Exact flight configuration remains unverified.
+
 ### 2026-10-14: HGA dish face: sheen and sharper slots at grazing angles
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Give the antenna face a Kapton sheen and keep its slots sharp at grazing angles"

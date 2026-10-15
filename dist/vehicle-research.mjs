@@ -10,6 +10,8 @@ import { buildDramsAssembly, dramsAsset } from "./drams-assembly.mjs?v=dev";
 import { buildFrontierRadio } from "./frontier-radio.mjs?v=dev";
 import { buildTwta } from "./twta.mjs?v=dev";
 import { buildHgaGimbal, hgaAsset } from "./hga-gimbal.mjs?v=dev";
+import { buildBattery } from "./battery.mjs?v=dev";
+import { buildRotorDriveElectronics } from "./rotor-drive-electronics.mjs?v=dev";
 import { buildIem } from "./iem.mjs?v=dev";
 import { buildPowerUnits } from "./power-units.mjs?v=dev";
 import { buildSideCameras } from "./side-cameras.mjs?v=dev";
@@ -412,8 +414,8 @@ export function buildResearchModel(kit) {
   analysisMarker.name = "sample-analysis-marker";
   analysisMarker.rotation.y = Math.PI / 2;
   analysisMarker.renderOrder = 6;
-  material = interiorPart("rde", "rde", "Rotorcraft drive electronics (2 boxes)", "ICES-2023 p5, p7, fig. 4", 0xa34d4d);
-  for (const x of [-0.16, 0.16]) mesh(new THREE.BoxGeometry(0.24, 0.22, 0.26), material, [x, -0.18, -0.55]);
+  interiorPart("rde", "rde", "Rotor drive electronics: provisional enclosure illustration", "ICES-2023 pp5/7: two boxes with internal fans; dimensions, finish, vents and placement estimated; not a flight-hardware replica", 0xa34d4d);
+  buildRotorDriveElectronics({ parent: buildTarget, mesh });
   // The durable id stays "hga-actuators"; the part is the whole gimbal: drive, actuators, arm, locks.
   interiorPart("hga-actuators", "cold-actuators", "HGA gimbal: azimuth and elevation actuators, motorized arm and stow locks", "ICES-2023 p2, figs. 1, 3; ICES-2020 p5; APL arm photo, Jul 2026; sizes, arm length and lock positions estimated", 0x4f7fd1, "exterior");
   hgaGimbal = buildHgaGimbal({ parent: buildTarget, mesh, head: hgaHead });
@@ -425,8 +427,8 @@ export function buildResearchModel(kit) {
   buildFrontierRadio({ parent: buildTarget, mesh });
   interiorPart("twta", "twta", "100 W X-band TWTA: tube and power conditioner under the top deck", "NASA Dragonfly spacecraft page; ICES-2020 p5; ICES-2023 p7; look and size from published flight TWTAs (NASA/TM-2010-216262, DESCANSO MRO, Stellant); placement estimated", 0xc0643c);
   buildTwta({ parent: buildTarget, mesh });
-  material = interiorPart("battery", "battery", "Battery: 11.5 kWh, 7.5 kg phase-change wax, heat pipes", "ICES-2023 p5, figs. 3-4", 0x6f7d58);
-  mesh(new THREE.BoxGeometry(0.6, 0.3, 0.52), material, [0, -0.15, 0.72]);
+  interiorPart("battery", "battery", "Battery: 11.5 kWh, 24 cells (GS Yuasa), heat pipes, fans and a phase-change buffer", "Aerospace America 2022; APL; ICES-2022-256 figs. 2-6; ICES-2020 p4; ICES-2023 p5; TFAWS 2023 plan view; cell model, layout and size estimated", 0x6f7d58);
+  buildBattery({ parent: buildTarget, mesh });
   material = interiorPart("aft-bulkhead", "equipment-bay", "Aft bulkhead", "ICES-2023 fig. 4", 0x9aa6ad);
   mesh(new THREE.BoxGeometry(0.7, 0.4, 0.02), material, [0, -0.13, 1.08]);
   // Titan air loop (thermal-loop.mjs; TFAWS 2023 slides 3-4 and 7-8, TFAWS 2024, ICES-2023).

@@ -66,6 +66,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | File | What it does |
 |---|---|
 | `dist/sample-carousel.mjs` | First individually rebuilt interior asset: NASA-photo-referenced SDC casing/fins/ports/drives, explicit estimated scale, stationary enclosure and internal indexing pivot |
+| `dist/rotor-drive-electronics.mjs` | Provisional two-box RDE enclosure illustration with separate casing/cover/mount groups and open vents; appearance is estimated, not a completed hardware-photo reconstruction |
 | `dist/wonderwall.mjs` | Estimated contoured warm/cold partition, real geometry openings and separate faces/core/mount groups for future inspection layer controls; clears the rebuilt carousel |
 | `dist/ecam.mjs` | Shared Malin ECAM camera heads from the DragonCam paper's figures (P50 wide, P50 Forward MAC with lens hood, NavCam with top plate, L50 Microscopic Camera) and `mountEcam` to place and aim one |
 | `dist/thermal-loop.mjs` | Parts 17-19: two circulation fans, the warm under-floor duct and the cold bypass duct under the belly with fore and aft diverter flaps (TFAWS 2023/2024); supplies the air-loop arrow paths |
@@ -75,6 +76,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/side-cameras.mjs` | Part 23: Microscopic Camera placed from its published 986 mm / 52 degree geometry to the port drill site, LED array, two Down Cameras, windows and foam cavities, in inspection-layer groups |
 | `dist/power-units.mjs` | Part 11: the two PSUs from NASA/APL's March 2026 testing photo; sliced silver connector faces, mated harness, black covers, mounts, in separate inspection-layer groups per unit; size scaled from the photo |
 | `dist/iem.mjs` | Part 12: IEM from NASA/APL's March 2026 photos; finned top, nine card fronts with micro-D connectors, plugged-in harness, mounts, in separate inspection-layer groups; size scaled from the photos |
+| `dist/battery.mjs` | Part 15: the battery: 24 upright cells (GS Yuasa 134 Ah, inferred), fins, heat pipes in three directions and bus straps in a ribbed lower section with a bare aluminum upper housing, fans and round connectors, its look from real photos of APL's test module (ICES-2022); layout and placement estimated |
 | `dist/hga-gimbal.mjs` | Part 10: the high-gain antenna gimbal: under-deck azimuth drive and rotary joint, turntable and elevation drum under a foam dome, motorized arm and pedestal, launch and flight locks; poses the dish (azimuth/elevation toward Earth, kept out of the attic) for the research model (ICES-2023/2020, APL arm photo) |
 | `dist/twta.mjs` | Part 14: the 100 W X-band TWTA under the top deck: conduction-cooled tube, EPC, high-voltage umbilical, waveguide forward under the deck to the antenna gimbal's rotary joint, input coax and bus harness, drawn after published flight TWTAs (LRO, MRO, Stellant); sizes scaled and placement estimated |
 | `dist/frontier-radio.mjs` | Part 13: APL Frontier radio from APL's photo and published 4 x 6 in slice size; four slices, labeled connectors, feet and top coax in separate inspection-layer groups; placement estimated |

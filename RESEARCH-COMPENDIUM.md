@@ -4,6 +4,11 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 15 provisional RDE pass:** [evidence and limits](research/rde-2026-10-15/README.md).
+Two boxes and internal fans are documented; casing/vent/fan details remain illustrative [EST].
+Real hardware photos take priority over CGI for appearance. Part 09 stays unchecked; the
+owner requested skipping the interrupted battery pass, whose files remain untouched.
+
 **October 12 component rebuild:** [DrACO carousel references and scale limits](research/carousel-2026-10-12/README.md)
 records the first archived part replacement. Enclosed cover, cooling fins and underside
 drives follow NASA photos/paper; 0.36 m diameter and installed placement remain [EST].
@@ -45,6 +50,11 @@ azimuth/elevation gimbal forward of the stowed dish under a 5 cm foam dome, with
 portion under the deck and launch and flight locks under the dish [PUB, ICES-2023/2020], and the
 motorized arm and pedestal from APL's July 2026 photo; the dish now rises on the arm. Arm length,
 hinge position and the azimuth limit near the attic are [EST].
+The [battery pass](research/battery-2026-10-15/README.md) (October 15) draws 24 upright cells
+[PUB count] of GS Yuasa's 134 Ah LSE134 [EST, inferred from 134 Ah, GS Yuasa and 24 cells; 24 x
+496 Wh = 11.9 kWh against the published 11.5 kWh], with fins, heat pipes in three directions and
+fans [PUB], in an enclosure whose look follows real photos of APL's 9-cell test module (ICES-2022);
+layout, enclosure and placement [EST]. The simulator keeps the published 11.5 kWh.
 
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and

@@ -12,7 +12,7 @@ rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 The interior is being redrawn part by part from sources, tracked in the
 [Interior realism checklist](INTERIOR-REALISM-TODO.md); every photo, paper page and patent
 behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.md). The
-numbered-callout fix is still first on that checklist.
+numbered-callout fix remains tracked there, deferred while individual parts are rebuilt.
 
 ## Run Locally
 
@@ -332,9 +332,11 @@ a return line to two blowers behind the port forward arm), and the 100 W radio a
 a tube and its power conditioner under the top deck, drawn like published flight TWTAs because
 Dragonfly's is not pictured), and the high-gain antenna's gimbal (azimuth turntable and elevation
 drum under a foam dome just aft of the attic, the motorized arm and pedestal that raise the dish,
-and the launch and flight locks); their positions are mostly estimated. The
-rest are still placeholder blocks from NASA's thermal papers, placed where their figures put
-them: the battery at the aft end, the drive electronics, the nose avionics, the bulkheads and
+and the launch and flight locks), and the battery (24 upright cells in a ribbed enclosure with an
+aluminum upper housing, fans and heat pipes, its look from real photos of APL's test module);
+their positions are mostly estimated. The rotor drive electronics are a provisional enclosure
+illustration (Codex) until a clear photo turns up. The rest are still placeholder blocks from
+NASA's thermal papers, placed where their figures put them: the nose avionics, the bulkheads and
 the sensors. The air loop was redrawn from NASA/APL's
 thermal talks: two circulation fans at the MMRTG end, the warm duct forward under the floor into
 the nose, and the trim device, a cold bypass duct under the belly between fore and aft diverter

@@ -12,6 +12,9 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [battery-2026-10-15](battery-2026-10-15/README.md) | Olive 0.60 x 0.30 x 0.52 m battery box before the 24-cell battery; also the unpublished CAD-look draft | 2026-10-15 | `archive/battery-2026-10-15` |
+| [warm-duct-v1-2026-10-15](warm-duct-v1-2026-10-15/README.md) | The warm duct 7.5 mm higher, its joint flanges above the floor line | 2026-10-15 | `archive/warm-duct-v1-2026-10-15` |
+| [rde-2026-10-15](rde-2026-10-15/README.md) | RDE placeholders and unpublished clearance draft; working snapshot includes pending battery integration, see restore notes | 2026-10-15 | `archive/rde-2026-10-15` |
 | [hga-dish-rings-2026-10-14](hga-dish-rings-2026-10-14/README.md) | The HGA's first orange face, touching V-shaped slot pairs on rings, before the spiral layout read from NASA's photo | 2026-10-14 | `archive/hga-dish-rings-2026-10-14` |
 | [hga-actuators-2026-10-14](hga-actuators-2026-10-14/README.md) | Blue cylinder-and-box HGA actuator placeholder, the dish on a vertical pole, and the dark dotted dish face, before the gimbal, arm and locks and the orange slotted face | 2026-10-14 | `archive/hga-actuators-2026-10-14` |
 | [twta-waveguide-v1-2026-10-14](twta-waveguide-v1-2026-10-14/README.md) | The TWTA's first waveguide route, bending straight up into the deck, before it ran to the antenna gimbal | 2026-10-14 | `archive/twta-waveguide-v1-2026-10-14` |
