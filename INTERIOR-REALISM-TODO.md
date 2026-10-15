@@ -355,6 +355,20 @@ DraMS neck intentionally passes through the wall aperture.
 - [x] **Claude:** **24 DrACO blowers** (`drill-blower`): forward and aft centrifugal blowers (volute, motor, axial inlet, tangential exhaust out and down) behind the port forward arm, fed by an inlet flow diverter; per DrACO fig. 1 and ICES-2023. [References/limits](research/draco-plumbing-2026-10-14/README.md).
 - [ ] **24 follow-up:** real blower size and shape; the unidentified cylinder-and-cone unit under the port attic seen in APL's CAD movie.
 
+## Exterior: Rotor Arms and Heads
+
+- [x] **Claude:** Rotor heads (October 15): coaxial motor stacks (collar with arm clamp between
+  upper and lower machined motor drums) and bolted hub plates, from APL/NASA's *Revolutionary
+  Rotors* video, NASA's tunnel photos and the flight lander-frame photo.
+  [References/limits](research/rotor-heads-2026-10-15/README.md).
+- [ ] **Arm shoulder joint (owner, October 15, future update):** the arm does not go straight into
+  the body; at the shoulder it meets a small hexagonal fitting. Redraw the shoulder (now a round
+  foam ring and a round metal flange) from the real photos: the flight lander-frame tap-test photo
+  (`research/rotor-heads-2026-10-15/nasa-apl-lander-frame-tap-test-2026-05.jpg`, the arm root at
+  the body side) and the *Revolutionary Rotors* frames.
+- [ ] **Arm follow-up:** the bare flight arm (a round tube with fittings in the frame photo) under
+  its foam cover; the harness along the arm.
+
 ## Shell, Insulation and Layered Views
 
 The owner's enclosure/inner-plating suggestion is a research question, not a confirmed

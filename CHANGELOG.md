@@ -60,7 +60,9 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   `tests/rotor-heads.test.mjs` (new), `research/`, `archive/`, `ARCHITECTURE.md`, `README.md`
 - **Checks:** `node --test tests/*.test.mjs` (213 pass, 4 new). Pilot view at four angles and
   Fixed; Exterior B; no console errors.
-- **Open / next:** the bare flight arm and its harness; interior parts 03, 05, 16, 20-22.
+- **Open / next:** the bare flight arm and its harness; the owner's note that the arm meets a small
+  hexagonal fitting at the shoulder rather than going straight in (recorded in the checklist as a
+  future update); interior parts 03, 05, 16, 20-22.
 
 ### 2026-10-15: Zoom for the pilot view's free camera
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
