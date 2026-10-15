@@ -38,6 +38,7 @@ export function inspectionGroups(name) {
     "sample-lines": ["drills", "sample-lines", "sample-flow", "sample-carousel", "drill-blower"],
     drams: ["drams"],
     battery: ["battery", "battery-sensor"],
+    "hga-actuators": ["hga-actuators", "high-gain-antenna"],
   };
   return related[name] ?? (name ? [name] : []);
 }

@@ -23,6 +23,7 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 - [x] **Claude:** Rebuild #02 sample lines and #24 blowers from DrACO fig. 1 (October 14).
 - [x] **Claude:** Rebuild #17 fans, #18 warm duct and #19 trim device from TFAWS 2023/2024 (October 14).
 - [x] **Claude:** Rebuild #14 TWTA after published flight TWTAs (LRO, MRO, Stellant) and the Dragonfly thermal papers (October 14).
+- [x] **Claude:** Rebuild #10 HGA gimbal (actuators, motorized arm, locks) from ICES-2023/2020 and APL's arm photo; the dish now rises on the arm (October 14).
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## The Process (one part per pass)
@@ -113,6 +114,7 @@ estimated. Parts with an estimated position need a layout pass against the sourc
 | 11 PSUs | [EST] from standard D-sub sizes in the photo | PSU 1 beside the IEM as photographed (absolute position [EST]); PSU 2 [EST] |
 | 23 Lower cameras | Microscopic Camera [PUB] 105 x 155 x 90 mm; ECAM-P50 heads [EST] | Microscopic Camera [PUB] 986 mm at 52 degrees from the port drill site; Down Cameras [EST] mid-body per DragonCam figs. 2-3 |
 | 04 Nose cameras | [PUB] camera types; heads as part 23 | [EST] from DragonCam figs. 2-3 (camera panel at z -1.665) |
+| 10 HGA gimbal | [EST] arm 0.6 m measured on ICES-2023 fig. 1 against the 87.4 cm dish [PUB]; actuators sized from fig. 3 | [PUB] forward of the stowed dish, under foam, internal portion under the deck; [EST] hinge at z -0.55 |
 | 14 TWTA | [EST] scaled from published LRO, MRO and Stellant units | [PUB] underside of the top deck; [EST] starboard, above the radio |
 | 01 Drills | [EST] proportioned from LPSC fig. 2, about 0.7 m tall per DragonCam fig. 3 | [EST] 0.43 m forward of center, within the sources' 0.34-0.45 m (NASA print model, DragonCam fig. 3, APL cutaway) |
 
@@ -131,16 +133,15 @@ APL's rotating CAD video, NASA/APL integration photos.
   `frontierRadioAsset` (`dist/frontier-radio.mjs`), `iemAsset` (`dist/iem.mjs`),
   `powerUnitsAsset` (`dist/power-units.mjs`), `sideCamerasAsset` (`dist/side-cameras.mjs`),
   `noseCamerasAsset` (`dist/nose-cameras.mjs`), `drillAsset` (`dist/drills.mjs`),
-  `dracoPlumbingAsset` (`dist/draco-plumbing.mjs`), `thermalLoopAsset` (`dist/thermal-loop.mjs`), `twtaAsset` (`dist/twta.mjs`). Add each
+  `dracoPlumbingAsset` (`dist/draco-plumbing.mjs`), `thermalLoopAsset` (`dist/thermal-loop.mjs`), `twtaAsset` (`dist/twta.mjs`), `hgaAsset` (`dist/hga-gimbal.mjs`). Add each
   new part to this list and to the clearance tests of the parts it neighbors. Tests that
   compare whole-part boxes are too coarse for parts with long cables (the TWTA's coax reaches
   the radio); check those piece by piece, with tubes sampled along their paths in world
   coordinates (`tests/twta.test.mjs`).
-- **Suggested order next:** #10 HGA actuators (ICES-2020 p. 5 gimbal text; pairs with the TWTA's
-  waveguide), #15 battery casing, #09 drive electronics, #05 nose electronics, #03 and #16
+- **Suggested order next:** #15 battery casing, #09 drive electronics, #05 nose electronics, #03 and #16
   bulkheads (NASA/APL top-deck fit-check photo), #20-#22 sensors. Recheck references each time;
   reorder if a clearer source turns up. (Taken off this line October 14 because they are done:
-  #02, #24, #17, #18, #19 and #14.)
+  #02, #24, #17, #18, #19, #14 and #10.)
 - **Viewing locally:** Codex used Playwright scripts outside the repo; Claude uses the desktop
   app's browser pane with a no-cache static server for `dist/`. Debug hooks on localhost:
   `window.dragonflyState`, `window.dragonflyRenderer`, `window.dragonflyTick(now)`.
@@ -216,7 +217,8 @@ DraMS neck intentionally passes through the wall aperture.
 - [x] **Codex:** **08 DraMS assembly** (`drams`): first enclosure-level pass, with separate covers/casings/frame and simplified connection through #07. [References/limits](research/drams-2026-10-12/README.md). Dimensions and details remain estimated.
 - [ ] **08 detailed follow-up:** independently source ITMS electrodes, UV laser/LDMS interface, GC hardware, carousel-side pyrolysis oven, fan and actual seals/transfer paths. Do not invent hidden internals or treat the current casings as flight CAD.
 - [ ] **09 Rotorcraft drive electronics** (`rde`): both enclosures, mounting/thermal interfaces and cable exits.
-- [ ] **10 HGA azimuth/elevation actuators** (`hga-actuators`): motors, bearings, bracket geometry and relationship to the antenna mechanism.
+- [x] **Claude:** **10 HGA azimuth/elevation actuators** (`hga-actuators`, durable id kept; the whole gimbal): internal portion under the deck (azimuth bearing, drive, rotary joint) and, above it under a 5 cm Rohacell dome, a stacked turntable and a gold elevation drum, just aft of the attic and forward of the stowed dish [PUB, ICES-2023 p. 2, figs. 1, 3; ICES-2020 p. 5]; the motorized arm, gray truss pedestal, thermal isolator and flexible feed from APL's July 2026 photo; launch lock under the dish's aft rim and a flight lock either side [PUB positions, shapes EST]; the dish now rises on the arm and points at Earth (azimuth limited to keep it out of the attic [EST]); orange slotted dish face from NASA's chamber photo; TWTA waveguide rerouted to the rotary joint. Arm 0.6 m and hinge at z -0.55 measured on ICES-2023 fig. 1 [EST]. [References/limits](research/hga-actuators-2026-10-14/README.md).
+- [ ] **10 follow-up:** the flight pedestal is taller than drawn (APL photo); real actuator sizes and the azimuth/elevation ranges; what the tall gold-and-orange tower beside the dish in APL's photo is; the RF chain through the gimbal (rotary joints or cable wrap); the medium-gain antenna.
 - [x] **Claude:** **11 Power switching units** (`power-units`): two units [PUB]; face mapped connector by connector from the full-resolution testing photo and checked by overlay (eight slices, two ribs, seven 25-way D-subs, small cluster, uncapped port, empty upper right); size from standard D-sub sizes, about 20 x 24 x 19 cm [EST]; PSU 1 beside the IEM on its wall as photographed. [References/limits](research/power-units-2026-10-13/README.md). Corrected October 13 (first version archived).
 - [ ] **11 follow-up:** a photo of the second PSU (drawn the same) and of the flight units' real wall positions; separate PSU currents if the power model ever splits them.
 - [x] **Claude:** **12 Integrated electronics module** (`iem`): from the full-resolution photos: black heat-sink top with fins parallel to the face and fastener rows, copper ground strap, bolted face plate with two rows of connector windows over eight columns, mated and labeled Micro-Ds, yellow tape; back to a wall panel beside PSU 1. Size from standard Micro-D sizes, about 28 x 28 x 22 cm [EST]. [References/limits](research/iem-2026-10-13/README.md). Corrected October 13 (first version archived).

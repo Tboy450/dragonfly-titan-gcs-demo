@@ -43,7 +43,7 @@ Dragonfly's TWTA supplier is not named in any source found.
 | Baseplates bolted up to the underside of the top deck through thermal pads, face pointing down | [PUB] deck mounting and conduction to the deck; thermal pads [EST] |
 | Face details: red staked screws at the corners and beside the input, test point, labels for maker, high voltage, input, part number and beryllia warning, two side labels | LRO photo; sizes [EST] |
 | RF input: SMA on a small square flange a quarter of the way from the gun end; coax down to the radio's J31 SMA | [EST]: which radio port feeds the TWTA is not published |
-| RF output: WR-112 (standard X-band) waveguide flange on the collector end, a short run forward and a bend up through the deck toward the high-gain antenna | Stellant photo (output on the collector end); WR-112 standard size; route [EST] |
+| RF output: WR-112 (standard X-band) waveguide flange on the collector end, then runs with mitered corners forward under the deck, down clear of PSU 2, forward and inboard to the high-gain antenna gimbal's rotary joint (revision `twta-2026-10-14b`); flanges and two deck hangers | Stellant photo (output on the collector end); WR-112 standard size; route [EST]. The first version bent straight up into the deck; it is archived in `archive/twta-waveguide-v1-2026-10-14` |
 | EPC: staked screws, labels, gold bus D-sub with backshell on the face, high-voltage gland on a square flange at the aft end | LRO and Stellant photos; sizes [EST] |
 | EPC bus harness outboard to the starboard wall and forward toward the power units, ending at a tie | [EST] |
 | Under the starboard top deck, x 0.115 (tube) and 0.255 (EPC), z -0.05 to 0.28, above the Frontier radio and aft of PSU 2, near the antenna mast (z 0.05) | [EST]; replaces the old placeholder's mid-deck spot |
@@ -58,7 +58,8 @@ internals (gun, helix, magnets, collector stages) are drawn.
 - The Dragonfly unit's maker, size, mass, ports and connectors; whether it is one TWTA or a
   redundant pair.
 - Its exact place on the deck underside, and the RF chain between it and the antenna
-  (isolator, diplexer, switches, rotary joints); the waveguide stops at the deck.
+  (isolator, diplexer, switches, rotary joints); the waveguide stops at the gimbal's under-deck
+  rotary joint (part 10).
 - Which radio port feeds it and how the EPC is powered (bus harness route).
 - The deck panel itself is not drawn as a separate part yet (see the shell and layered-views
   items in `INTERIOR-REALISM-TODO.md`).

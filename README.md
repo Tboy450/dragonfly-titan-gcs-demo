@@ -166,7 +166,8 @@ The arrival keeps its own touchdown dust. Reach, rates and the look are estimate
 The default 3D model follows the NASA/APL 2023 thermal drawings, with details refined from
 APL's 2024 CAD visualization and NASA's 2026 printable-model assembly guide: a long insulated
 fuselage, rounded forward "attic", MMRTG between two tail fins, four arms with coaxial three-blade
-rotors, flat landing runners, and a high-gain antenna disc that rises for downlink. The **Model**
+rotors, flat landing runners, and a high-gain antenna disc that rises for downlink on its motorized
+arm and azimuth/elevation gimbal. The **Model**
 button in the vehicle view switches to the original demo model for comparison. Proportions are
 measured from the drawings; the overall size matches the published 3.85 x 3.85 x 1.75 m.
 Rotor blades are tapered and twisted with a thin cambered section and rounded tips, with hub caps,
@@ -329,10 +330,12 @@ and rotation actuators on a Z-stage rail; the head slides down while only the bi
 sample-transfer system (flexible hoses, tubes into the attic, a flow diverter on the carousel and
 a return line to two blowers behind the port forward arm), and the 100 W radio amplifier (TWTA:
 a tube and its power conditioner under the top deck, drawn like published flight TWTAs because
-Dragonfly's is not pictured); their positions are mostly estimated. The
+Dragonfly's is not pictured), and the high-gain antenna's gimbal (azimuth turntable and elevation
+drum under a foam dome just aft of the attic, the motorized arm and pedestal that raise the dish,
+and the launch and flight locks); their positions are mostly estimated. The
 rest are still placeholder blocks from NASA's thermal papers, placed where their figures put
-them: the cold attic with the sample carousel, DraMS, the battery at the aft
-end, the drive electronics and avionics. The air loop was redrawn from NASA/APL's
+them: the battery at the aft end, the drive electronics, the nose avionics, the bulkheads and
+the sensors. The air loop was redrawn from NASA/APL's
 thermal talks: two circulation fans at the MMRTG end, the warm duct forward under the floor into
 the nose, and the trim device, a cold bypass duct under the belly between fore and aft diverter
 flaps (an earlier side-chimney concept is archived). Arrows follow the warm-air loop from the

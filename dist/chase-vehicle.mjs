@@ -230,6 +230,8 @@ export function createChaseRenderer(options = {}) {
   const { researchRotors, researchAntenna, subsystems, labeledParts, poseAirflow, poseSampling, rotorDiscMaterial } = buildResearchModel({
     group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis,
     setTarget: (group) => { buildTarget = group || classicModel; },
+    // Earth's direction in the craft frame, for pointing the research model's antenna gimbal.
+    earthLocal: (out) => out.copy(earthDirection).applyQuaternion(craftInverse.copy(craft.quaternion).invert()),
   });
   buildTarget = classicModel;
 
@@ -263,7 +265,7 @@ export function createChaseRenderer(options = {}) {
     appliedLayer = key;
     const zones = layer === "thermal" ? thermalZoneTemps(state) : null;
     const models = [
-      [researchModel, which === "research", (part, owner) => !!owner && shellNames.has(owner.name)],
+      [researchModel, which === "research", (part, owner) => !!part.userData.shell || (!!owner && shellNames.has(owner.name))],
       [classicModel, which === "original", (part) => !!part.userData.classicShell],
     ];
     for (const [root, active, isShell] of models) {

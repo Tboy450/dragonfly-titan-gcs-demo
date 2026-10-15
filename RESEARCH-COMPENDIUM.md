@@ -40,6 +40,11 @@ The [TWTA pass](research/twta-2026-10-14/README.md) (October 14) draws the one 1
 [PUB] on the underside of the top deck [PUB] (ICES-2020, ICES-2023). Dragonfly's unit is not
 pictured or sized anywhere found, so the tube, power conditioner and umbilical follow published
 flight TWTAs (LRO photo, MRO masses, Stellant listing); sizes and placement [EST].
+The [HGA gimbal pass](research/hga-actuators-2026-10-14/README.md) (October 14) draws the
+azimuth/elevation gimbal forward of the stowed dish under a 5 cm foam dome, with its internal
+portion under the deck and launch and flight locks under the dish [PUB, ICES-2023/2020], and the
+motorized arm and pedestal from APL's July 2026 photo; the dish now rises on the arm. Arm length,
+hinge position and the azimuth limit near the attic are [EST].
 
 **October 10 supplement:** [NASA/APL source review and proposed changes](research/source-review-2026-10-10.md)
 records eight official links, including NASA's printable model, source conflicts and

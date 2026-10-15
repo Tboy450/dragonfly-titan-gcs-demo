@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import * as THREE from "../dist/vendor/three/three.module.min.js";
 import { buildTwta, twtaAsset } from "../dist/twta.mjs";
+import { buildHgaGimbal, hgaAsset } from "../dist/hga-gimbal.mjs";
 import { buildFrontierRadio } from "../dist/frontier-radio.mjs";
 import { buildIem } from "../dist/iem.mjs";
 import { buildPowerUnits } from "../dist/power-units.mjs";
@@ -61,13 +62,18 @@ test("Mounted to the underside of the top deck through thermal pads", () => {
   for (const name of ["twta-tube-thermal-pad", "twta-epc-thermal-pad"]) assert.ok(Math.abs(boxOf(find(parent, name)).max.y - twtaAsset.deckY) < 1e-6, `${name} against the deck`);
   const plate = boxOf(find(parent, "twta-tube-baseplate")), body = boxOf(find(parent, "twta-tube-body"));
   assert.ok(plate.min.y >= body.max.y - 1e-6 && plate.max.x - plate.min.x > body.max.x - body.min.x, "the wider baseplate is above the tube, against the deck");
-  assert.ok(all.min.x > 0 && all.max.x < 0.36, "starboard half of the cavity, inside the wall");
+  const units = new THREE.Box3().setFromObject(find(parent, "twta-tube-body")).union(new THREE.Box3().setFromObject(find(parent, "twta-epc-body")));
+  assert.ok(units.min.x > 0 && all.max.x < 0.36, "tube and EPC in the starboard half of the cavity, inside the wall");
 });
 
-test("RF: output waveguide rises into the deck from the collector end; input coax runs down to the radio", () => {
+test("RF: output waveguide runs under the deck to the antenna gimbal's rotary joint; input coax runs down to the radio", () => {
   const { parent, twta } = build();
-  const riser = boxOf(find(parent, "twta-waveguide-riser"));
-  assert.ok(Math.abs(riser.max.y - twtaAsset.deckY) < 1e-6 && riser.max.z < twtaAsset.tube.front, "waveguide reaches the deck ahead of the tube");
+  const route = twtaAsset.waveguideRoute;
+  assert.ok(Math.abs(route[0][2] - (twtaAsset.tube.front - 0.012)) < 1e-9, "starts at the collector-end output flange");
+  const joint = hgaAsset.rotaryJoint, end = route.at(-1);
+  assert.ok(Math.abs(end[0] - joint[0]) < 1e-9 && Math.abs(end[2] - joint[2]) < 1e-9 && Math.abs(end[1] - (joint[1] - 0.003)) < 1e-9, "ends on the gimbal's rotary-joint flange");
+  let runs = 0; parent.traverse(o => { if (o.name === "twta-waveguide-run") { runs += 1; assert.ok(new THREE.Box3().setFromObject(o).max.y < twtaAsset.deckY, "under the deck"); } });
+  assert.equal(runs, route.length - 1);
   const path = twta.coax.geometry.parameters.path;
   const input = boxOf(find(parent, "twta-rf-input-plug")).getCenter(new THREE.Vector3());
   assert.ok(path.getPoint(0).distanceTo(input) < 0.01, "coax starts at the tube's input");
@@ -83,16 +89,18 @@ test("Inspection layers", () => {
     ["equipment-casings", "mounts", "interfaces", "harnesses"]);
 });
 
-test("The TWTA clears every rebuilt part (the coax plug meets only the radio's J31)", () => {
+test("The TWTA clears every rebuilt part (only the coax plug at the radio's J31 and the waveguide at the gimbal's rotary joint touch)", () => {
   const { parent } = build();
   const mine = boxes(parent);
   const builders = [buildFrontierRadio, buildIem, buildPowerUnits, buildSideCameras, buildNoseCameras, buildSampleCarousel, buildDramsAssembly, buildWonderwall, buildFans, buildWarmDuct, buildTrimDevice, buildBlowers, buildSampleLines];
   const others = builders.map(b => { const g = new THREE.Group(); b({ parent: g, mesh }); return [b.name, boxes(g)]; });
+  const gimbal = new THREE.Group(); buildHgaGimbal({ parent: gimbal, mesh }); others.push(["buildHgaGimbal", boxes(gimbal)]);
   const d = new THREE.Group(); for (const side of [-1, 1]) buildDrill({ parent: d, mesh, side }); others.push(["buildDrill", boxes(d)]);
   for (const [name, other] of others) {
     for (const [mn, mb, t] of mine) {
       const hits = other.filter(([, b]) => b.intersectsBox(mb));
-      const allowed = hits.every(([on]) => on === "frontier-radio-J31" && (mn === "twta-rf-input-coax-plug" || (mn === "twta-rf-input-coax" && t > 0.97)));
+      const allowed = hits.every(([on]) => (on === "frontier-radio-J31" && (mn === "twta-rf-input-coax-plug" || (mn === "twta-rf-input-coax" && t > 0.97)))
+        || (on === "hga-rotary-joint-flange" && /twta-waveguide-(run|mitered-bend|joint-flange)/.test(mn)));
       assert.ok(allowed, `${mn} clears ${name}${hits.length ? ` (${hits.map(h => h[0]).join(", ")})` : ""}`);
     }
   }

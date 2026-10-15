@@ -1,4 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js";
+import { hgaAsset } from "./hga-gimbal.mjs?v=dev";
 
 // Part 14: the 100 W X-band traveling-wave tube amplifier (TWTA). Published for Dragonfly: a
 // 100-watt TWTA with the Frontier X-band radio (NASA's Dragonfly spacecraft page), "mounted
@@ -14,11 +15,13 @@ import * as THREE from "./vendor/three/three.module.min.js";
 // 1.5 kg and its EPC 20 x 7 x 11 cm at 1.3 kg; MRO's two 100 W X-band tubes total 1.9 kg and
 // their EPCs 3.0 kg (DESCANSO MRO table 2-1); Stellant lists its conduction-cooled X-band tube
 // (40-160 W, 7.0-8.5 GHz) at 895 g. Port layout, labels, screws, cable routes and the place
-// under the starboard deck above the radio are [EST].
+// under the starboard deck above the radio are [EST]. The output waveguide runs forward under the
+// deck to the rotary joint under the high-gain antenna gimbal (hga-gimbal.mjs); the route is
+// [EST]. The first version stopped at the deck (archive/twta-waveguide-v1-2026-10-14).
 const deckY = 0.07; // underside of the top deck (cavity top in the fit rules)
 const timM = 0.001, plateM = 0.006;
 export const twtaAsset = Object.freeze({
-  revision: "twta-2026-10-14",
+  revision: "twta-2026-10-14b",
   deckY,
   publishedRfW: 100,
   // Tube: length along the body (z), collector end forward; baseplate up against the deck.
@@ -31,6 +34,13 @@ export const twtaAsset = Object.freeze({
   waveguide: Object.freeze({ broadM: 0.0318, narrowM: 0.0159, flangeM: 0.048 }),
   // The radio connector the input coax is drawn to (Frontier J31, an SMA); not published [EST].
   inputTarget: Object.freeze([0.1303, -0.21, 0.238]),
+  // Output waveguide route: forward from the collector end, down under the deck clear of the
+  // power unit, forward and inboard to the antenna gimbal's rotary joint [EST].
+  waveguideRoute: Object.freeze([
+    [0.115, 0.0255, -0.062], [0.115, 0.0255, -0.385], [0.115, -0.05, -0.385],
+    [0.115, -0.05, hgaAsset.rotaryJoint[2]], [hgaAsset.rotaryJoint[0], -0.05, hgaAsset.rotaryJoint[2]],
+    [hgaAsset.rotaryJoint[0], hgaAsset.rotaryJoint[1] - 0.003, hgaAsset.rotaryJoint[2]],
+  ].map(p => Object.freeze(p))),
 });
 
 export function buildTwta({ parent, mesh }) {
@@ -119,20 +129,23 @@ export function buildTwta({ parent, mesh }) {
   box([0.022, 0.003, 0.022], [T.x, tubeFace - 0.0015, inZ], gold, ports, "twta-rf-input-flange");
   rod(0.0028, 0.009, [T.x, tubeFace - 0.0075, inZ], gold, ports, "y", "twta-rf-input-sma");
   rod(0.0045, 0.01, [T.x, tubeFace - 0.017, inZ], steel, ports, "y", "twta-rf-input-plug", 6);
-  // RF output: WR-112 waveguide flange on the collector end, a short run forward and a mitered
-  // bend up through the deck toward the high-gain antenna (route beyond the deck not drawn).
+  // RF output: WR-112 waveguide flange on the collector end, then runs with mitered corners
+  // forward under the deck to the antenna gimbal's rotary joint, with flanges and deck hangers.
   const outY = tubeTop - T.heightM / 2;
   for (const [z, name] of [[T.front - 0.003, "twta-rf-output-flange"], [T.front - 0.009, "twta-waveguide-mating-flange"]]) {
     box([WG.flangeM, WG.flangeM, 0.006], [T.x, outY, z], copper, ports, name);
   }
-  const bendZ = T.front - 0.045;
-  // Broad wall vertical along the run, so the bend up is in the broad (H) plane; the riser's
-  // broad wall then runs along the body.
-  const runFrom = T.front - 0.012, runTo = bendZ - WG.broadM / 2;
-  box([WG.narrowM, WG.broadM, runFrom - runTo], [T.x, outY, (runFrom + runTo) / 2], copper, ports, "twta-waveguide-run");
-  box([WG.narrowM, deckY - (outY - WG.broadM / 2), WG.broadM], [T.x, (deckY + outY - WG.broadM / 2) / 2, bendZ], copper, ports, "twta-waveguide-riser");
-  box([0.05, 0.004, 0.05], [T.x, deckY - 0.002, bendZ], copper, ports, "twta-waveguide-deck-flange");
-  for (const dx of [-0.019, 0.019]) for (const dz of [-0.019, 0.019]) rod(0.003, 0.003, [T.x + dx, deckY - 0.0055, bendZ + dz], steel, ports, "y", "twta-waveguide-deck-bolt", 6);
+  const route = twtaAsset.waveguideRoute;
+  for (let i = 1; i < route.length; i += 1) {
+    const [a, b] = [route[i - 1], route[i]], axis = [0, 1, 2].find(k => Math.abs(b[k] - a[k]) > 1e-9);
+    const length = Math.abs(b[axis] - a[axis]), mid = a.map((v, k) => (v + b[k]) / 2);
+    const size = axis === 2 ? [WG.narrowM, WG.broadM, length] : axis === 1 ? [WG.narrowM, length, WG.broadM] : [length, WG.broadM, WG.narrowM];
+    box(size, mid, copper, ports, "twta-waveguide-run");
+    if (i < route.length - 1) box([WG.broadM, WG.broadM, WG.broadM], b, copper, ports, "twta-waveguide-mitered-bend");
+  }
+  for (const [y, z] of [[outY, -0.22], [route[2][1], -0.47]]) box([WG.flangeM, WG.flangeM, 0.006], [T.x, y, z], copper, ports, "twta-waveguide-flange");
+  box([WG.flangeM, 0.006, WG.flangeM], [route.at(-1)[0], route.at(-1)[1] - 0.003, route.at(-1)[2]], copper, ports, "twta-waveguide-joint-flange");
+  for (const z of [-0.16, -0.3]) box([0.03, deckY - (outY + WG.broadM / 2), 0.006], [T.x, (deckY + outY + WG.broadM / 2) / 2, z], steel, mounts, "twta-waveguide-hanger");
 
   // ---- EPC: black box hung by four corner ears through its own thermal pad; staked screws,
   // labels, the bus connector on the face and the high-voltage gland at the aft end.

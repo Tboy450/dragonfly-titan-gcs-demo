@@ -9,6 +9,7 @@ import { buildWonderwall } from "./wonderwall.mjs?v=dev";
 import { buildDramsAssembly, dramsAsset } from "./drams-assembly.mjs?v=dev";
 import { buildFrontierRadio } from "./frontier-radio.mjs?v=dev";
 import { buildTwta } from "./twta.mjs?v=dev";
+import { buildHgaGimbal, hgaAsset } from "./hga-gimbal.mjs?v=dev";
 import { buildIem } from "./iem.mjs?v=dev";
 import { buildPowerUnits } from "./power-units.mjs?v=dev";
 import { buildSideCameras } from "./side-cameras.mjs?v=dev";
@@ -18,7 +19,7 @@ import { buildSampleLines, buildBlowers } from "./draco-plumbing.mjs?v=dev";
 import { buildFans, buildWarmDuct, buildTrimDevice, airLoopPaths, thermalLoopAsset } from "./thermal-loop.mjs?v=dev";
 
 export function buildResearchModel(kit) {
-  const { group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis } = kit;
+  const { group: researchModel, mesh, strut, metal, deck, gold, upAxis } = kit;
   let buildTarget = researchModel;
   const setBuild = (group) => { buildTarget = group; kit.setTarget(group); };
   // ---- Research model: NASA/APL 2023 lander overview (TFAWS 2023 slide 3; ICES-2020-160 and
@@ -238,26 +239,49 @@ export function buildResearchModel(kit) {
   const sampleLines = buildSampleLines({ parent: buildTarget, mesh });
   transferPaths.push(...sampleLines.paths);
 
-  // High-gain antenna: a flat 0.874 m radial-line slot disc, stowed flat on top for flight.
+  // High-gain antenna: a flat 0.874 m radial-line slot disc, stowed flat on top for flight. Its
+  // slotted face is covered in orange Kapton with pairs of slots in rings (NASA's June 2026 test-
+  // chamber photo; APL's July 2026 arm photo). It rides the gimbal's arm (hga-gimbal.mjs, part 10),
+  // which raises it and points it at Earth. The slot count and spacing are drawn, not measured.
   const slotCanvas = document.createElement("canvas");
-  slotCanvas.width = slotCanvas.height = 256;
+  slotCanvas.width = slotCanvas.height = 512;
   const slots = slotCanvas.getContext("2d");
-  slots.fillStyle = "#1f2638";
-  slots.fillRect(0, 0, 256, 256);
-  slots.fillStyle = "#6a7896";
-  for (let ring = 10; ring < 126; ring += 7) {
-    const count = Math.floor(2 * Math.PI * ring / 7);
+  slots.fillStyle = "#c9762e";
+  slots.fillRect(0, 0, 512, 512);
+  slots.strokeStyle = "#6b3410";
+  slots.lineWidth = 1.6;
+  for (let ring = 34; ring < 250; ring += 11) {
+    const count = Math.floor(2 * Math.PI * ring / 13);
     for (let k = 0; k < count; k += 1) {
-      const a = k / count * Math.PI * 2 + ring;
-      slots.fillRect(128 + Math.cos(a) * ring - 1.2, 128 + Math.sin(a) * ring - 1.2, 2.4, 2.4);
+      const a = k / count * Math.PI * 2 + ring * 0.07;
+      const cx = 256 + Math.cos(a) * ring, cy = 256 + Math.sin(a) * ring;
+      for (const tilt of [Math.PI / 4, -Math.PI / 4]) {
+        const d = a + tilt, ox = Math.cos(a + Math.PI / 2) * (tilt > 0 ? 2.2 : -2.2), oy = Math.sin(a + Math.PI / 2) * (tilt > 0 ? 2.2 : -2.2);
+        slots.beginPath();
+        slots.moveTo(cx + ox - Math.cos(d) * 3, cy + oy - Math.sin(d) * 3);
+        slots.lineTo(cx + ox + Math.cos(d) * 3, cy + oy + Math.sin(d) * 3);
+        slots.stroke();
+      }
     }
   }
+  slots.fillStyle = "#8a4a1c";
+  for (let k = 0; k < 9; k += 1) slots.fillRect(256 + Math.cos(k * 0.7) * (k * 2.4) - 2, 256 + Math.sin(k * 0.7) * (k * 2.4) - 2, 4, 4);
   const slotTexture = new THREE.CanvasTexture(slotCanvas);
   slotTexture.colorSpace = THREE.SRGBColorSpace;
-  const slotFace = new THREE.MeshStandardMaterial({ map: slotTexture, metalness: 0.45, roughness: 0.45 });
+  const slotFace = new THREE.MeshStandardMaterial({ map: slotTexture, metalness: 0.35, roughness: 0.5 });
+  const dishEdge = new THREE.MeshStandardMaterial({ color: 0xd99a3a, metalness: 0.6, roughness: 0.4 });
   subsystem("high-gain-antenna", "antennas");
-  const researchAntenna = buildAntenna([0, 0.15, 0.05], 0.04, 0.52, 0.03);
-  mesh(new THREE.CylinderGeometry(0.437, 0.437, 0.03, 48), [metal, slotFace, metal], [0, 0.02, 0], researchAntenna.head);
+  const hgaHead = new THREE.Group();
+  hgaHead.name = "hga-dish-head";
+  buildTarget.add(hgaHead);
+  const dishR = hgaAsset.dishDiameterM / 2;
+  mesh(new THREE.CylinderGeometry(dishR, dishR, hgaAsset.dishThicknessM, 64), [dishEdge, slotFace, metal], [0, 0, 0], hgaHead).name = "hga-dish";
+  // Launch-lock pin under the dish's aft rim, seated in the lock's cup when stowed.
+  const pinLocal = [hgaAsset.launchLock[0], -hgaAsset.dishThicknessM / 2 - 0.01, hgaAsset.launchLock[1] - hgaAsset.stowedDishCenter[2]];
+  mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.02, 10), metal, pinLocal, hgaHead).name = "hga-launch-lock-pin";
+  let hgaGimbal = null;
+  const earthLocal = new THREE.Vector3();
+  const researchAntenna = { head: hgaHead, pose: (deployed) => hgaGimbal?.pose(deployed, kit.earthLocal ? kit.earthLocal(earthLocal) : null) };
 
   // Arms run out from the arm roots, angled slightly toward the ends, to the rotor hubs, where
   // motor pods carry the coaxial rotors (upper and lower disks 0.36 m apart, about R/2).
@@ -352,9 +376,9 @@ export function buildResearchModel(kit) {
   analysisMarker.renderOrder = 6;
   material = interiorPart("rde", "rde", "Rotorcraft drive electronics (2 boxes)", "ICES-2023 p5, p7, fig. 4", 0xa34d4d);
   for (const x of [-0.16, 0.16]) mesh(new THREE.BoxGeometry(0.24, 0.22, 0.26), material, [x, -0.18, -0.55]);
-  material = interiorPart("hga-actuators", "cold-actuators", "HGA azimuth/elevation actuators", "ICES-2023 p2, fig. 3", 0x4f7fd1);
-  mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.05, 20), material, [0, 0.035, -0.36]);
-  mesh(new THREE.BoxGeometry(0.1, 0.07, 0.12), material, [0, -0.02, -0.36]);
+  // The durable id stays "hga-actuators"; the part is the whole gimbal: drive, actuators, arm, locks.
+  interiorPart("hga-actuators", "cold-actuators", "HGA gimbal: azimuth and elevation actuators, motorized arm and stow locks", "ICES-2023 p2, figs. 1, 3; ICES-2020 p5; APL arm photo, Jul 2026; sizes, arm length and lock positions estimated", 0x4f7fd1, "exterior");
+  hgaGimbal = buildHgaGimbal({ parent: buildTarget, mesh, head: hgaHead });
   interiorPart("power-units", "equipment-bay", "Two power switching units (PSUs)", "NASA/APL testing photo, Mar 2026 (two units published); face mapped from the photo, size from standard D-sub sizes, placement estimated", 0x4f9a8f);
   buildPowerUnits({ parent: buildTarget, mesh });
   interiorPart("iem", "equipment-bay", "Integrated electronics module (IEM)", "NASA/APL integration photos, Mar 2026; size from standard Micro-D sizes in the photos, placement estimated", 0x579cae);

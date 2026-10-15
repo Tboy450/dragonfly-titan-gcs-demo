@@ -39,6 +39,41 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-14: Rebuild part 10, the high-gain antenna gimbal; the dish rises on its arm
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Rebuild the antenna gimbal and arm from the thermal papers and APL's arm photo"
+- **What changed:** The blue actuator placeholder under the deck and the dish's vertical pole are
+  replaced by the gimbal the sources describe (`dist/hga-gimbal.mjs`): an internal portion under
+  the deck (azimuth bearing, drive, rotary joint) and, above it under a 5 cm Rohacell dome, a
+  stacked turntable and a gold elevation drum, just aft of the attic and forward of the stowed
+  dish (ICES-2023 p. 2, figs. 1 and 3; ICES-2020 p. 5); the motorized arm, a gray truss pedestal,
+  thermal isolator and flexible feed to the dish center (APL's July 2026 photo); a launch lock
+  under the dish's aft rim and a flight lock either side. The dish now rises on the arm and turns
+  in azimuth to point at Earth. Its face is orange Kapton with slot pairs (NASA's June 2026
+  test-chamber photo) and it sits 4 cm higher, on the pedestal.
+- **Estimated:** sizes; the 0.6 m arm and the hinge at z -0.55 (measured on ICES-2023 fig. 1
+  with the dish's 87.4 cm as the ruler); lock shapes and colors; the pedestal height (the flight
+  one is taller). The azimuth range is not published: here the dish stops before it would swing
+  into the attic, so at the simulator's 55-degree Earth elevation it points straight at Earth only
+  when Earth is roughly ahead of the nose. Downlink rate does not depend on pointing.
+- **Also:** the TWTA's output waveguide now runs forward under the deck to the gimbal's rotary
+  joint instead of bending up into the deck (revision `twta-2026-10-14b`; first route archived).
+  The foam dome is see-through in Internal (`applyLayer` now also ghosts parts marked
+  `userData.shell`). Isolating part 10 shows the dish too. The README's Vehicle Layers paragraph
+  no longer lists the sample carousel and DraMS as placeholders (Codex redrew them October 12);
+  the dropped clause is archived. Vehicle part assumptions gains part 10 (16 of 24).
+- **Sources saved:** APL arm photo, NASA test-chamber photo (2048 px; full size linked), ICES-2023
+  fig. 1 and 3 crops; NASA printable-model guide pages as cross-reference only.
+- **Archive:** `archive/hga-actuators-2026-10-14/` and `archive/twta-waveguide-v1-2026-10-14/`
+  (both tagged at `e43fc85`).
+- **Files:** `dist/hga-gimbal.mjs` (new), `dist/vehicle-research.mjs`, `dist/chase-vehicle.mjs`,
+  `dist/twta.mjs`, `dist/vehicle-inspector.mjs`, `dist/ui/layers-panel.mjs`, `dist/index.html`,
+  `tests/hga-gimbal.test.mjs` (new), `tests/twta.test.mjs`, `research/`, `archive/`,
+  `INTERIOR-REALISM-TODO.md`, `ARCHITECTURE.md`, `RESEARCH-COMPENDIUM.md`, `README.md`
+- **Checks:** `node --test tests/*.test.mjs` (198 pass, 7 new). Internal isolated, stowed, raised
+  and half-raised; installed; Exterior stowed and raised; pilot view raised; phone width.
+- **Open / next:** #15 battery casing.
+
 ### 2026-10-14: Add Vehicle part assumptions, the part-by-part list
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add a part-by-part assumptions list to the engineering references"

@@ -12,6 +12,8 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [hga-actuators-2026-10-14](hga-actuators-2026-10-14/README.md) | Blue cylinder-and-box HGA actuator placeholder, the dish on a vertical pole, and the dark dotted dish face, before the gimbal, arm and locks and the orange slotted face | 2026-10-14 | `archive/hga-actuators-2026-10-14` |
+| [twta-waveguide-v1-2026-10-14](twta-waveguide-v1-2026-10-14/README.md) | The TWTA's first waveguide route, bending straight up into the deck, before it ran to the antenna gimbal | 2026-10-14 | `archive/twta-waveguide-v1-2026-10-14` |
 | [twta-2026-10-14](twta-2026-10-14/README.md) | Orange 0.30 x 0.07 x 0.14 m box for the TWTA at mid-deck before the tube, power conditioner and cables drawn after published flight TWTAs | 2026-10-14 | `archive/twta-2026-10-14` |
 | [thermal-loop-2026-10-14](thermal-loop-2026-10-14/README.md) | One fan, a duct box and the side-chimney trim device (ICES-2023 concept) before the two fans, warm duct and belly cold duct | 2026-10-14 | `archive/thermal-loop-2026-10-14` |
 | [draco-plumbing-2026-10-14](draco-plumbing-2026-10-14/README.md) | One tube per side and a single-cylinder blower before the DrACO pneumatic transport (hoses, tubes, flow diverters, two blowers) | 2026-10-14 | `archive/draco-plumbing-2026-10-14` |
