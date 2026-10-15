@@ -39,6 +39,18 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-14: HGA dish face: sheen and sharper slots at grazing angles
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Give the antenna face a Kapton sheen and keep its slots sharp at grazing angles"
+- **What changed:** At the owner's request (seeing the detail in the pilot view as the view turns),
+  the dish face gets a roughness map (glossy Kapton, matte slots) and a slight bump map (slots
+  recessed), drawn from the same slot layout, and anisotropic filtering on all three maps.
+- **Limit:** at the pilot camera's distance the dish is about 70 px across and each slot is under
+  a pixel, so the pattern still reads as a solid orange disc there; it shows when the view is close.
+- **Files:** `dist/vehicle-research.mjs`
+- **Checks:** 198 tests pass; pilot view in fixed and free camera, stowed and raised.
+- **Open / next:** #15 battery casing.
+
 ### 2026-10-14: HGA dish face: the spiral slot layout from NASA's photo
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Draw the antenna's spiral slot pattern from NASA's test-chamber photo"

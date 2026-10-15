@@ -266,12 +266,26 @@ export function buildResearchModel(kit) {
   }
   slots.globalAlpha = 1;
   slots.fillStyle = "#93501a";
+  // Companion maps drawn with the same slots: roughness (glossy Kapton, matte slots, so the pattern
+  // glints as the view turns) and bump (slots slightly recessed).
+  const surfaceMap = (background, mark) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 1024;
+    const g = canvas.getContext("2d");
+    g.fillStyle = background;
+    g.fillRect(0, 0, 1024, 1024);
+    g.fillStyle = mark;
+    return g;
+  };
+  const roughness = surfaceMap("#5a5a5a", "#e6e6e6"), bump = surfaceMap("#ffffff", "#3c3c3c");
   const slot = (x, y, angle, length) => {
-    slots.save();
-    slots.translate(x, y);
-    slots.rotate(angle);
-    slots.fillRect(-length / 2, -1.9, length, 3.8);
-    slots.restore();
+    for (const g of [slots, roughness, bump]) {
+      g.save();
+      g.translate(x, y);
+      g.rotate(angle);
+      g.fillRect(-length / 2, -1.9, length, 3.8);
+      g.restore();
+    }
   };
   for (let phi = 0, r = 0.052 * pxPerM; r < 0.428 * pxPerM; ) {
     const t = (r / pxPerM - 0.05) / 0.38, length = (0.009 + 0.008 * t) * pxPerM, spacing = (0.026 + 0.008 * t) * pxPerM;
@@ -289,7 +303,10 @@ export function buildResearchModel(kit) {
   for (let k = 0; k < 18; k += 1) spot(k * 2.4, 0.11 + (k % 6) * 0.055, 6);
   const slotTexture = new THREE.CanvasTexture(slotCanvas);
   slotTexture.colorSpace = THREE.SRGBColorSpace;
-  const slotFace = new THREE.MeshStandardMaterial({ map: slotTexture, metalness: 0.35, roughness: 0.5 });
+  const roughnessTexture = new THREE.CanvasTexture(roughness.canvas), bumpTexture = new THREE.CanvasTexture(bump.canvas);
+  // Anisotropic filtering keeps the slots sharp at grazing angles (three.js clamps to the GPU limit).
+  for (const texture of [slotTexture, roughnessTexture, bumpTexture]) texture.anisotropy = 16;
+  const slotFace = new THREE.MeshStandardMaterial({ map: slotTexture, roughnessMap: roughnessTexture, bumpMap: bumpTexture, bumpScale: 0.6, metalness: 0.4, roughness: 1 });
   const dishEdge = new THREE.MeshStandardMaterial({ color: 0xd99a3a, metalness: 0.6, roughness: 0.4 });
   subsystem("high-gain-antenna", "antennas");
   const hgaHead = new THREE.Group();
