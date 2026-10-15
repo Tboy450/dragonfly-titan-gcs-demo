@@ -39,6 +39,29 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-15: Rotor heads redrawn from the "Revolutionary Rotors" video
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Redraw the rotor heads from the Revolutionary Rotors video"
+- **What changed:** At the owner's request, the motor stacks and rotor hubs at the four arm ends
+  follow real footage: APL/NASA's *Revolutionary Rotors* video (the full-scale wind-tunnel model
+  with flight-like rotors at NASA Langley and the spin test at APL), NASA's tunnel photos, and
+  NASA/APL's May 2026 photo of the flight lander frame. Each head is now a collar with an arm
+  clamp between an upper and a lower machined aluminum motor drum (groove, band of radial holes,
+  notch screws, spoked face toward the rotor), and each rotor bolts on with a flat hub plate; the
+  white pods, gold hub cylinders and spinner domes are archived. Blades are bright machined
+  aluminum (each rotor is machined from one block). Visible in the pilot view (now zoomable) and
+  the Exterior views, including B.
+- **Estimated:** drum size (about 0.24 m across, scaled from the video against the 1.35 m rotor),
+  hole and spoke counts, clamp shape. The arms keep their foam-covered shape (ICES-2023).
+- **Sources saved:** video frames and contact sheets (the 500 MB video is linked, not kept), NASA
+  photos, the flight-frame photo, a model-vs-sources sheet: `research/rotor-heads-2026-10-15/`.
+- **Archive:** `archive/rotor-heads-2026-10-15/` (tag at `92ab0c4`).
+- **Files:** `dist/rotor-heads.mjs` (new), `dist/vehicle-research.mjs`, `dist/index.html`,
+  `tests/rotor-heads.test.mjs` (new), `research/`, `archive/`, `ARCHITECTURE.md`, `README.md`
+- **Checks:** `node --test tests/*.test.mjs` (213 pass, 4 new). Pilot view at four angles and
+  Fixed; Exterior B; no console errors.
+- **Open / next:** the bare flight arm and its harness; interior parts 03, 05, 16, 20-22.
+
 ### 2026-10-15: Zoom for the pilot view's free camera
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add scroll, pinch and button zoom to the pilot view's free camera"

@@ -11,6 +11,7 @@ import { buildFrontierRadio } from "./frontier-radio.mjs?v=dev";
 import { buildTwta } from "./twta.mjs?v=dev";
 import { buildHgaGimbal, hgaAsset } from "./hga-gimbal.mjs?v=dev";
 import { buildBattery } from "./battery.mjs?v=dev";
+import { buildRotorHead, buildHubPlate, rotorHeadAsset } from "./rotor-heads.mjs?v=dev";
 import { buildRotorDriveElectronics } from "./rotor-drive-electronics.mjs?v=dev";
 import { buildIem } from "./iem.mjs?v=dev";
 import { buildPowerUnits } from "./power-units.mjs?v=dev";
@@ -77,7 +78,9 @@ export function buildResearchModel(kit) {
     return geometry;
   }
   const researchBlade = bladeGeometry();
-  const bladeMaterial = new THREE.MeshStandardMaterial({ color: 0xbfc4bd, metalness: 0.3, roughness: 0.42, side: THREE.DoubleSide });
+  // Each rotor is machined in one piece from aluminum (APL; "Revolutionary Rotors" video), so the
+  // blades read as bright machined metal.
+  const bladeMaterial = new THREE.MeshStandardMaterial({ color: 0xd6d9dc, metalness: 0.5, roughness: 0.33, side: THREE.DoubleSide });
   // Spinning rotors read as a faint disc, denser toward the tips; opacity follows rotor speed.
   const discCanvas = document.createElement("canvas");
   discCanvas.width = discCanvas.height = 256;
@@ -95,7 +98,6 @@ export function buildResearchModel(kit) {
   const rotorDiscMaterial = new THREE.MeshBasicMaterial({ map: discTexture, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide });
   const rotorDiscGeometry = new THREE.RingGeometry(0.06, 0.70, 64, 1);
   rotorDiscGeometry.rotateX(-Math.PI / 2);
-  const spinnerGeometry = new THREE.SphereGeometry(0.075, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2);
 
   function taper(from, to, radiusFrom, radiusTo, material) {
     const start = new THREE.Vector3(...from), end = new THREE.Vector3(...to);
@@ -323,8 +325,11 @@ export function buildResearchModel(kit) {
   const earthLocal = new THREE.Vector3();
   const researchAntenna = { head: hgaHead, pose: (deployed) => hgaGimbal?.pose(deployed, kit.earthLocal ? kit.earthLocal(earthLocal) : null) };
 
-  // Arms run out from the arm roots, angled slightly toward the ends, to the rotor hubs, where
-  // motor pods carry the coaxial rotors (upper and lower disks 0.36 m apart, about R/2).
+  // Arms run out from the arm roots, angled slightly toward the ends, to the rotor heads, where a
+  // coaxial motor stack (rotor-heads.mjs, from the "Revolutionary Rotors" video and NASA/APL's
+  // May 2026 lander-frame photo) carries the upper and lower rotors, 0.36 m apart (about R/2).
+  // The first heads (white pods, gold hubs, spinner domes) are archived in
+  // archive/rotor-heads-2026-10-15.
   const researchBladeScale = model.rotorDiameterM / 2 / 0.70;
   for (const x of [-1.25, 1.25]) {
     const side = Math.sign(x);
@@ -338,14 +343,9 @@ export function buildResearchModel(kit) {
       taper(root, fairingEnd, 0.1, 0.065, armMaterial);
       strut(fairingEnd, hub, 0.036, armMaterial);
       subsystem("motors", "motors");
-      mesh(new THREE.CylinderGeometry(0.043, 0.043, 0.34, 16), metal, hub);
+      buildRotorHead({ parent: buildTarget, mesh, x, z, armRoot: root });
       for (let layer = 0; layer < 2; layer += 1) {
-        const y = layer === 0 ? -0.16 : 0.20;
-        subsystem("motors", "motors");
-        const motorY = y + (layer === 0 ? 0.055 : -0.055);
-        mesh(new THREE.CylinderGeometry(0.078, 0.078, 0.086, 20), armMaterial, [x, motorY, z]);
-        mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.012, 20), deck, [x, motorY, z]);
-        mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.05, 12), gold, [x, y + (layer === 0 ? -0.025 : 0.025), z]);
+        const y = rotorHeadAsset.rotorY[layer];
         subsystem("rotors", "rotors");
         const rotor = new THREE.Group();
         rotor.position.set(x, y, z);
@@ -357,9 +357,8 @@ export function buildResearchModel(kit) {
           solid.rotation.y = blade * Math.PI * 2 / model.bladesPerRotor;
           solid.scale.z = direction; // the leading edge leads in this rotor's direction of turn
         }
-        // Hub spinner facing away from the motor, and the blur disc.
-        const spinner = mesh(spinnerGeometry, armMaterial, [0, 0, 0], rotor);
-        if (layer === 0) spinner.rotation.x = Math.PI;
+        // The rotor's bolted hub plate (one piece with the blades), and the blur disc.
+        buildHubPlate({ parent: rotor, mesh, scale: researchBladeScale, material: bladeMaterial });
         mesh(rotorDiscGeometry, rotorDiscMaterial, [0, 0, 0], rotor);
         researchRotors.push({ rotor, direction, phase: researchRotors.length * 0.63 });
       }

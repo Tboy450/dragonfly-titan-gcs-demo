@@ -168,7 +168,7 @@ The arrival keeps its own touchdown dust. Reach, rates and the look are estimate
 The default 3D model follows the NASA/APL 2023 thermal drawings, with details refined from
 APL's 2024 CAD visualization and NASA's 2026 printable-model assembly guide: a long insulated
 fuselage, rounded forward "attic", MMRTG between two tail fins, four arms with coaxial three-blade
-rotors, flat landing runners, and a high-gain antenna disc that rises for downlink on its motorized
+rotors on machined motor stacks (drawn from APL/NASA's "Revolutionary Rotors" wind-tunnel video), flat landing runners, and a high-gain antenna disc that rises for downlink on its motorized
 arm and azimuth/elevation gimbal. The **Model**
 button in the vehicle view switches to the original demo model for comparison. Proportions are
 measured from the drawings; the overall size matches the published 3.85 x 3.85 x 1.75 m.

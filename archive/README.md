@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [rotor-heads-2026-10-15](rotor-heads-2026-10-15/README.md) | White motor pods, gold hub cylinders and spinner domes at the arm ends, before the coaxial motor stacks from the Revolutionary Rotors video | 2026-10-15 | `archive/rotor-heads-2026-10-15` |
 | [battery-2026-10-15](battery-2026-10-15/README.md) | Olive 0.60 x 0.30 x 0.52 m battery box before the 24-cell battery; also the unpublished CAD-look draft | 2026-10-15 | `archive/battery-2026-10-15` |
 | [warm-duct-v1-2026-10-15](warm-duct-v1-2026-10-15/README.md) | The warm duct 7.5 mm higher, its joint flanges above the floor line | 2026-10-15 | `archive/warm-duct-v1-2026-10-15` |
 | [rde-2026-10-15](rde-2026-10-15/README.md) | RDE placeholders and unpublished clearance draft; working snapshot includes pending battery integration, see restore notes | 2026-10-15 | `archive/rde-2026-10-15` |
