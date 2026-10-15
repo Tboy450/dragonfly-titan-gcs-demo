@@ -240,32 +240,53 @@ export function buildResearchModel(kit) {
   transferPaths.push(...sampleLines.paths);
 
   // High-gain antenna: a flat 0.874 m radial-line slot disc, stowed flat on top for flight. Its
-  // slotted face is covered in orange Kapton with pairs of slots in rings (NASA's June 2026 test-
-  // chamber photo; APL's July 2026 arm photo). It rides the gimbal's arm (hga-gimbal.mjs, part 10),
-  // which raises it and points it at Earth. The slot count and spacing are drawn, not measured.
+  // slotted face is orange Kapton over the slot plate (NASA's June 2026 test-chamber photo; APL's
+  // July 2026 arm photo). Read from the full-resolution photo: perpendicular slot pairs on one
+  // continuous spiral about 2.7 cm per turn (about 16 turns), each pair turned by half its angle
+  // around the disc (theta = phi/2 + 45 degrees to the radius, the classic circularly polarized
+  // radial-line-slot layout), so pairs read as L and T shapes on one axis and diagonals on the
+  // other, with a herringbone near the rim; slots grow from about 0.9 to 1.7 cm toward the edge; a
+  // ring of seven round spots around the feed and a few more scattered (fasteners under the Kapton,
+  // [EST]). The two slots of a pair sit side by side along the spiral, which makes the herringbone.
+  // Slot count and exact spacing are measured on the photo, not published. It rides the
+  // gimbal's arm (hga-gimbal.mjs, part 10), which raises it and points it at Earth.
   const slotCanvas = document.createElement("canvas");
-  slotCanvas.width = slotCanvas.height = 512;
+  slotCanvas.width = slotCanvas.height = 1024;
   const slots = slotCanvas.getContext("2d");
-  slots.fillStyle = "#c9762e";
-  slots.fillRect(0, 0, 512, 512);
-  slots.strokeStyle = "#6b3410";
-  slots.lineWidth = 1.6;
-  for (let ring = 34; ring < 250; ring += 11) {
-    const count = Math.floor(2 * Math.PI * ring / 13);
-    for (let k = 0; k < count; k += 1) {
-      const a = k / count * Math.PI * 2 + ring * 0.07;
-      const cx = 256 + Math.cos(a) * ring, cy = 256 + Math.sin(a) * ring;
-      for (const tilt of [Math.PI / 4, -Math.PI / 4]) {
-        const d = a + tilt, ox = Math.cos(a + Math.PI / 2) * (tilt > 0 ? 2.2 : -2.2), oy = Math.sin(a + Math.PI / 2) * (tilt > 0 ? 2.2 : -2.2);
-        slots.beginPath();
-        slots.moveTo(cx + ox - Math.cos(d) * 3, cy + oy - Math.sin(d) * 3);
-        slots.lineTo(cx + ox + Math.cos(d) * 3, cy + oy + Math.sin(d) * 3);
-        slots.stroke();
-      }
-    }
+  const pxPerM = 512 / 0.437, pitch = 0.027 * pxPerM;
+  slots.fillStyle = "#cf7d22";
+  slots.fillRect(0, 0, 1024, 1024);
+  slots.fillStyle = "#b8691a";
+  for (let ring = 0; ring < 6; ring += 1) {
+    slots.globalAlpha = 0.08;
+    slots.beginPath();
+    slots.arc(512, 512, 120 + ring * 70, 0, Math.PI * 2);
+    slots.arc(512, 512, 150 + ring * 70, 0, Math.PI * 2, true);
+    slots.fill();
   }
-  slots.fillStyle = "#8a4a1c";
-  for (let k = 0; k < 9; k += 1) slots.fillRect(256 + Math.cos(k * 0.7) * (k * 2.4) - 2, 256 + Math.sin(k * 0.7) * (k * 2.4) - 2, 4, 4);
+  slots.globalAlpha = 1;
+  slots.fillStyle = "#93501a";
+  const slot = (x, y, angle, length) => {
+    slots.save();
+    slots.translate(x, y);
+    slots.rotate(angle);
+    slots.fillRect(-length / 2, -1.9, length, 3.8);
+    slots.restore();
+  };
+  for (let phi = 0, r = 0.052 * pxPerM; r < 0.428 * pxPerM; ) {
+    const t = (r / pxPerM - 0.05) / 0.38, length = (0.009 + 0.008 * t) * pxPerM, spacing = (0.026 + 0.008 * t) * pxPerM;
+    const tilt = phi / 2 + Math.PI / 4;
+    for (const [along, out, extra] of [[0, 0, 0], [spacing / 2, pitch / 4, Math.PI / 2]]) {
+      const a = phi + along / r, rr = r + out;
+      slot(512 + Math.cos(a) * rr, 512 + Math.sin(a) * rr, a + tilt + extra, length);
+    }
+    phi += spacing / r;
+    r = 0.052 * pxPerM + pitch * phi / (Math.PI * 2);
+  }
+  slots.fillStyle = "#a05c22";
+  const spot = (a, rM, size) => { slots.beginPath(); slots.arc(512 + Math.cos(a) * rM * pxPerM, 512 + Math.sin(a) * rM * pxPerM, size, 0, Math.PI * 2); slots.fill(); };
+  for (let k = 0; k < 7; k += 1) spot(k / 7 * Math.PI * 2 + 0.3, 0.043, 13);
+  for (let k = 0; k < 18; k += 1) spot(k * 2.4, 0.11 + (k % 6) * 0.055, 6);
   const slotTexture = new THREE.CanvasTexture(slotCanvas);
   slotTexture.colorSpace = THREE.SRGBColorSpace;
   const slotFace = new THREE.MeshStandardMaterial({ map: slotTexture, metalness: 0.35, roughness: 0.5 });

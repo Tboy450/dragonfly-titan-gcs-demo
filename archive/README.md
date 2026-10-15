@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [hga-dish-rings-2026-10-14](hga-dish-rings-2026-10-14/README.md) | The HGA's first orange face, touching V-shaped slot pairs on rings, before the spiral layout read from NASA's photo | 2026-10-14 | `archive/hga-dish-rings-2026-10-14` |
 | [hga-actuators-2026-10-14](hga-actuators-2026-10-14/README.md) | Blue cylinder-and-box HGA actuator placeholder, the dish on a vertical pole, and the dark dotted dish face, before the gimbal, arm and locks and the orange slotted face | 2026-10-14 | `archive/hga-actuators-2026-10-14` |
 | [twta-waveguide-v1-2026-10-14](twta-waveguide-v1-2026-10-14/README.md) | The TWTA's first waveguide route, bending straight up into the deck, before it ran to the antenna gimbal | 2026-10-14 | `archive/twta-waveguide-v1-2026-10-14` |
 | [twta-2026-10-14](twta-2026-10-14/README.md) | Orange 0.30 x 0.07 x 0.14 m box for the TWTA at mid-deck before the tube, power conditioner and cables drawn after published flight TWTAs | 2026-10-14 | `archive/twta-2026-10-14` |

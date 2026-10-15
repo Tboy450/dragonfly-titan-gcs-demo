@@ -39,6 +39,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-14: HGA dish face: the spiral slot layout from NASA's photo
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Draw the antenna's spiral slot pattern from NASA's test-chamber photo"
+- **What changed:** At the owner's request, the dish face now follows the slot layout read from
+  NASA's full-resolution test-chamber photo instead of rings of touching V pairs: one continuous
+  spiral about 2.7 cm per turn (about 16 turns), perpendicular slot pairs turned by half their
+  angle around the disc (the classic circularly polarized radial-line-slot layout), the two slots
+  of each pair side by side along the spiral (the herringbone near the rim), slots growing from
+  about 0.9 to 1.7 cm, seven round spots around the feed. Drawn on a 1,024 px canvas.
+- **Estimated:** counts and spacing are measured on the photo (the dish's 87.4 cm as the scale);
+  Dragonfly's slot design is not published. The spots are read as fasteners under the Kapton.
+- **Archive:** `archive/hga-dish-rings-2026-10-14/` (tag at `f20648c`).
+- **Files:** `dist/vehicle-research.mjs`, `research/hga-actuators-2026-10-14/`, `archive/`
+- **Checks:** `node --test tests/*.test.mjs` (198 pass); texture compared side by side with the
+  photo; Exterior view renders; no console errors.
+- **Open / next:** #15 battery casing.
+
 ### 2026-10-14: Rebuild part 10, the high-gain antenna gimbal; the dish rises on its arm
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Rebuild the antenna gimbal and arm from the thermal papers and APL's arm photo"
