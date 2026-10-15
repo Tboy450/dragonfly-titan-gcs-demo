@@ -259,7 +259,7 @@ APL's rotating CAD video, NASA/APL integration photos.
   contracts unchanged during asset passes. Keep long text expandable, normal page scrolling
   and browser Ctrl zoom intact. Never use or suggest an image-generation service.
 
-## Numbered Callouts (Deferred During Part Rebuilds)
+## Numbered Callouts (Fixed October 15, Claude)
 
 The video shows labels forming a vertical chain and changing apparent attachment while
 the model rotates. `dist/ui/flight-view.mjs`, `drawPartMarkers()`, resolves collisions by
@@ -272,17 +272,26 @@ that this is the only cause.
 containing two separated parts can therefore have an anchor in empty space between them.
 Markers are a 2D overlay; their current visibility check is not a surface-occlusion test.
 
-- [ ] Preserve a stable part ID and number across rotation, zoom, filtering and layer changes.
-- [ ] Give each assembly a deliberate local 3D anchor; validate mirrored/multi-part groups.
-- [ ] Keep projected anchor coordinates separate from the displayed label position.
-- [ ] Resolve dense labels in both screen axes, with short leader lines when displaced.
-- [ ] Keep labels within the viewport and out of telemetry, titles and inspector controls.
+**Done October 15 at the owner's request ('fix that aggressive part number jumping').** Each
+number sits on a fixed anchor on its part's own hardware (`dist/chase-vehicle.mjs`,
+`labelAnchor`); `dist/ui/part-label-layout.mjs` moves a crowded number to the nearest free spot
+with a leader, keeps it while free and eases there. Over a full turn, jumps over 12 px fell from
+263 to 12 (worst 150 px to 19 px). Old code and pictures: `archive/part-labels-2026-10-15`.
+
+- [x] **Claude:** Preserve a stable part ID and number across rotation, zoom, filtering and layer changes.
+- [x] **Claude:** Give each assembly a deliberate local 3D anchor; validate mirrored/multi-part groups. (The part's middle if it lies on a mesh, else its largest mesh; computed once in the craft frame.)
+- [x] **Claude:** Keep projected anchor coordinates separate from the displayed label position.
+- [x] **Claude:** Resolve dense labels in both screen axes, with short leader lines when displaced.
+- [x] **Claude:** Keep labels within the viewport and out of telemetry, titles and inspector controls. (Viewport and the ALT/ROLL readouts; the inspector controls are outside the canvas.)
 - [ ] Define visible/hidden-part behavior: hide, ghost or expose on selection rather than
-  presenting every rear-side component as if it were on the front surface.
-- [ ] Exclude non-drawn markers from collision placement; keep selection and click targets aligned.
-- [ ] Test full orbit, elevation changes, close-ups, isolate/reset, both models, Internal
+  presenting every rear-side component as if it were on the front surface. (Still open: numbers
+  for parts on the far side are drawn like the rest; nearer parts win crowded spots.)
+- [x] **Claude:** Exclude non-drawn markers from collision placement; keep selection and click targets aligned.
+- [x] **Claude:** Test full orbit, elevation changes, close-ups, isolate/reset, both models, Internal
   and Thermal, and desktop/360/390 px layouts. No screen-axis label chains or detached IDs.
-- [ ] Archive previous label code and angle-matched screenshots before replacement.
+  (Full orbits measured in Internal, Thermal from above, close and low, and at 390 px;
+  `tests/part-label-layout.test.mjs`. The original demo model uses the same code path.)
+- [x] **Claude:** Archive previous label code and angle-matched screenshots before replacement.
 
 ## Part-by-Part Asset Checklist
 

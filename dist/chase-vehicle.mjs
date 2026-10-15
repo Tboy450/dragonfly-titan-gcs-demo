@@ -289,6 +289,28 @@ export function createChaseRenderer(options = {}) {
   }
   applyLayer("exterior");
   const labelBox = new THREE.Box3(), labelPoint = new THREE.Vector3();
+  // Each labeled part gets one fixed anchor in the craft's frame, on its own hardware: the middle of
+  // the part if that falls on a mesh, else the middle of its largest mesh (so a pair of units, or a
+  // part with separated pieces, is numbered on a real piece rather than empty space between them).
+  // Computed once, so the number stays pinned to the same spot as the view or the part moves.
+  const meshBox = new THREE.Box3(), craftInverse4 = new THREE.Matrix4();
+  function labelAnchor(group) {
+    craft.updateMatrixWorld(true);
+    labelBox.setFromObject(group);
+    const center = labelBox.getCenter(new THREE.Vector3());
+    let onMesh = false, largest = null, largestVolume = -1;
+    group.traverse((part) => {
+      if (!part.isMesh) return;
+      meshBox.setFromObject(part);
+      if (meshBox.isEmpty()) return;
+      if (meshBox.clone().expandByScalar(0.02).containsPoint(center)) onMesh = true;
+      const size = meshBox.getSize(labelPoint);
+      const volume = Math.max(size.x, 0.01) * Math.max(size.y, 0.01) * Math.max(size.z, 0.01);
+      if (volume > largestVolume) { largestVolume = volume; largest = meshBox.getCenter(new THREE.Vector3()); }
+    });
+    const anchor = onMesh || !largest ? center : largest;
+    return anchor.applyMatrix4(craftInverse4.copy(craft.matrixWorld).invert());
+  }
 
   // Arrival-sequence hardware: see arrival-hardware.mjs.
   const { group: edlGroup, pose: poseArrival } = createArrivalHardware(scene, craft, upAxis);
@@ -442,12 +464,12 @@ export function createChaseRenderer(options = {}) {
       if (layered) {
         craft.updateMatrixWorld(true);
         for (const group of which === "research" ? labeledParts : mockParts) {
-          labelBox.setFromObject(group);
-          labelBox.getCenter(labelPoint).project(missionCamera);
+          group.userData.labelAnchor ??= labelAnchor(group);
+          labelPoint.copy(group.userData.labelAnchor).applyMatrix4(craft.matrixWorld).project(missionCamera);
           labels.push({
             name: group.name, label: group.userData.label, source: group.userData.source,
             zone: group.userData.thermalZone, color: group.userData.color, mock: !!group.userData.mock,
-            x: (labelPoint.x + 1) / 2 * w, y: (1 - labelPoint.y) / 2 * h,
+            x: (labelPoint.x + 1) / 2 * w, y: (1 - labelPoint.y) / 2 * h, depth: labelPoint.z,
             onCanvas: (!focusName || group.name === focusName) && labelPoint.z >= -1 && labelPoint.z <= 1,
           });
         }

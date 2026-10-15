@@ -2,6 +2,7 @@
 import { model } from "../flight-model.mjs?v=dev";
 import { $, chaseRenderer, clamp, flightCanvas, state } from "./context.mjs?v=dev";
 import { backdropInk, drawMissionBackdrop, drawMissionBackdropOverlay, isCleanroomPortrait } from "./mission-backdrop.mjs?v=dev";
+import { layoutPartLabels } from "./part-label-layout.mjs?v=dev";
 import { missionVehicleState } from "../vehicle-presentation.mjs?v=dev";
 import { inspectionTarget } from "../vehicle-inspector.mjs?v=dev";
 
@@ -461,24 +462,40 @@ function drawCoaxialRotor(ctx, x, y, radius, spin, index) {
 
 // Numbered callouts for the Internal and Thermal layers; nudged apart so none overlap.
 export let partMarkers = [];
+// Numbers stay on their parts' fixed anchors (part-label-layout.mjs); a crowded number moves to a
+// nearby free spot with a leader line and keeps it while it stays free.
+const labelMemory = new Map();
 function drawPartMarkers(ctx, labels) {
-  partMarkers = [];
-  for (const [index, label] of labels.entries()) {
-    let { x, y } = label;
-    for (let tries = 0; tries < 12 && partMarkers.some(m => Math.hypot(m.x - x, m.y - y) < 20); tries += 1) y += 14;
-    const width = ctx.canvas.width / (window.devicePixelRatio || 1), height = ctx.canvas.height / (window.devicePixelRatio || 1);
-    const drawn = label.onCanvas !== false && x > 14 && x < width - 14 && y > 14 && y < height - 14;
-    partMarkers.push({ ...label, index: index + 1, x, y, drawn });
-  }
+  const width = ctx.canvas.width / (window.devicePixelRatio || 1), height = ctx.canvas.height / (window.devicePixelRatio || 1);
+  // Keep clear of the ALT/V/S/SPD and ROLL/PITCH/WIND readouts (drawHud).
+  const avoid = [{ x: 14, y: 84, w: 150, h: 66 }, { x: width - 184, y: 58, w: 170, h: 66 }];
+  // Phones draw slightly smaller circles and pack them closer.
+  const compact = width < 500, scale = compact ? 0.86 : 1, radius = compact ? 8 : 9;
+  partMarkers = layoutPartLabels(labels, { width, height, selected: state.selectedPart, memory: labelMemory, now: performance.now(), avoid, scale });
   ctx.save();
-  ctx.font = "800 11px Inter, Arial, sans-serif";
+  ctx.font = compact ? "800 10px Inter, Arial, sans-serif" : "800 11px Inter, Arial, sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
+  for (const marker of partMarkers) {
+    if (!marker.drawn || !marker.displaced) continue;
+    // Leader from the part's anchor to its displaced number.
+    const dx = marker.x - marker.anchorX, dy = marker.y - marker.anchorY, d = Math.hypot(dx, dy);
+    ctx.beginPath();
+    ctx.moveTo(marker.anchorX, marker.anchorY);
+    ctx.lineTo(marker.x - dx / d * radius, marker.y - dy / d * radius);
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = "rgba(223, 239, 255, 0.85)";
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(marker.anchorX, marker.anchorY, 2.5, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(223, 239, 255, 0.95)";
+    ctx.fill();
+  }
   for (const marker of partMarkers) {
     if (!marker.drawn) continue;
     const selected = marker.name === state.selectedPart;
     ctx.beginPath();
-    ctx.arc(marker.x, marker.y, selected ? 12 : 9, 0, Math.PI * 2);
+    ctx.arc(marker.x, marker.y, selected ? radius + 3 : radius, 0, Math.PI * 2);
     ctx.fillStyle = selected ? "#7ce7ff" : "rgba(223, 239, 255, 0.92)";
     ctx.fill();
     if (selected) { ctx.lineWidth = 2; ctx.strokeStyle = "#06121a"; ctx.stroke(); }

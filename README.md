@@ -12,7 +12,8 @@ rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 The interior is being redrawn part by part from sources, tracked in the
 [Interior realism checklist](INTERIOR-REALISM-TODO.md); every photo, paper page and patent
 behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.md). The
-numbered-callout fix remains tracked there, deferred while individual parts are rebuilt.
+part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
+crowded number moves to a nearby spot with a short leader line back to its part.
 
 ## Run Locally
 

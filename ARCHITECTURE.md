@@ -96,6 +96,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `ui/flight-view.mjs` | Draws the Mission and Pilot views (3D, or the 2D fallback without WebGL), part callouts |
 | `ui/chart.mjs` | Flight profile chart |
 | `ui/readouts.mjs` | Status strip, telemetry, rotor tiles, Diagnostics values, local track map |
+| `ui/part-label-layout.mjs` | Mission-view part numbers: each on its part's fixed anchor; crowded numbers move to the nearest free spot with a leader and keep it while free, easing there; keeps clear of the readouts |
 | `ui/layers-panel.mjs` | Vehicle Layers panel: layer switch, expandable live component temperatures (Internal/Thermal), legend, keyboard-accessible parts list, selection |
 | `ui/vehicle-references.mjs` | On-demand APL payload/CAD viewer with keyboard tabs, retry states, source credits and video pause on closing/hiding. Compact assets are in `dist/assets/vehicle-references/`; originals stay in `research/` |
 | `ui/vehicle-inspector.mjs` | Internal/Thermal inspection controls, opt-in pointer rotation, keyboard orbit, zoom/focus/isolation, sampling follow and shared pause; native browser zoom and default scrolling preserved |

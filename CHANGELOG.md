@@ -39,6 +39,27 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-15: Part numbers stay on their parts as the view turns
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Pin the part numbers to their parts and stop them jumping as the view turns"
+- **What changed:** At the owner's request, the Internal/Thermal part numbers no longer chain and
+  jump. Each number sits on a fixed anchor on its part's own hardware (computed once; a part with
+  separated pieces is numbered on its largest piece, not the empty space between them). When
+  numbers would overlap, the farther one moves to the nearest free spot around its anchor with a
+  short leader line back, keeps that spot while it stays free, and eases there; the selected part
+  keeps its anchor; the ALT/V/S/SPD and ROLL/PITCH/WIND readouts are kept clear; phones use
+  slightly smaller circles. Clicking a number still selects its part.
+- **Measured** over a full turn in 2-degree steps: jumps over 12 px 263 -> 12 (Internal), 202 -> 19
+  (Thermal from above); largest 150 -> 19 px. At 390 px: 11 jumps, largest 17 px.
+- **Open:** numbers for parts on the far side are still drawn like the rest (checklist item).
+- **Archive:** `archive/part-labels-2026-10-15/` (tag at `f1e9072`), with before/after pictures.
+- **Files:** `dist/ui/part-label-layout.mjs` (new), `dist/ui/flight-view.mjs`,
+  `dist/chase-vehicle.mjs`, `tests/part-label-layout.test.mjs` (new), `ARCHITECTURE.md`,
+  `README.md`, `INTERIOR-REALISM-TODO.md`, `archive/`
+- **Checks:** `node --test tests/*.test.mjs` (220 pass, 7 new); full-orbit measurements above;
+  settled frames at several angles; phone width; click-to-select on a displaced number.
+- **Open / next:** continue the interior parts (03, 05, 16, 20-22).
+
 ### 2026-10-15: Rotor heads redrawn from the "Revolutionary Rotors" video
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Redraw the rotor heads from the Revolutionary Rotors video"
