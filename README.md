@@ -15,9 +15,42 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
+## Swarmfall: Drone Invasion (game)
+
+[Play Swarmfall](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/) (its own page,
+`dist/invasion/`; the simulator above is unchanged). A strategy game built from the simulator's
+best parts: drop drone swarms on planet after planet in a campaign galaxy and take each world by
+force or by quiet control.
+
+- **Campaign:** seven planets invaded in order, from Titan (an empty practice planet on the
+  simulator's real Ahmakiq Undae terrain) through rising society levels (tribal, agrarian,
+  industrial, networked, spacefaring) and threat levels. Each win opens the next planet and pays
+  matter, new drone types or bigger drop pods.
+- **Drops:** pods come down with the simulator's aeroshell, heat shield and parachutes; one pod
+  carries a whole squad, sized by pod slots and paid for with **matter** (the resource). Zones
+  you hold pay matter over time and become landing zones.
+- **Damage or control:** Strikers and Breachers destroy defenses (salvage pays matter, but the
+  public's alarm rises); Links capture under fire, calm the public and turn standing defenses to
+  your side. High alarm brings militia raids, stronger defenses and artillery.
+- **Hazards:** methane rain, gust fronts, dust storms, acid rain, blizzards, ash clouds,
+  eruptions, lightning and solar flares, each announced before it starts. Zones you hold give
+  shelter.
+- **The Dragonfly** is an unlockable drone: recover NASA's lander from its landing site on Titan
+  and it joins every later drop (the simulator's research model, interior removed).
+- **Objectives and achievements:** two optional goals per planet (three stars) and twelve
+  campaign achievements, saved in the browser.
+- **Controls:** tap a squad card or a drone to select, tap the ground to move, a ring to
+  capture, a defender to attack. Drag to move the view, scroll or pinch to zoom, right-drag or
+  Q/E to turn; WASD/arrows pan, 1-9 select squads, 0 all, H hold, B drop pod, Space pause.
+
+All game numbers, the invented worlds and the drone and defender models are gameplay choices,
+not physics. Rules are in plain modules with tests (`tests/invasion-*.test.mjs`); see
+ARCHITECTURE.md. Later ideas from the owner: a free mode with a galaxy of planets to pick from,
+and a local versus mode where players race to take the same planet with drone-vs-drone weapons.
+
 ## Run Locally
 
-Serve the `dist` folder over HTTP, then open the local URL:
+Serve the `dist` folder over HTTP, then open the local URL (the game is at `/invasion/`):
 
 ```sh
 python -m http.server 4176 --directory dist

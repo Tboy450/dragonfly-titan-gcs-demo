@@ -39,6 +39,37 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-15: Swarmfall, a drone invasion game built from the simulator
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add Swarmfall, a drone invasion campaign game built from the simulator"
+- **What changed:** At the owner's request, a new game on its own page (`dist/invasion/`, its own
+  public link once published). It reuses the Titan terrain, the arrival hardware (every drop pod
+  comes down under the simulator's aeroshell and parachutes) and the research model. A campaign
+  galaxy of seven planets is invaded in order: Titan is an empty practice planet, then tribal,
+  agrarian, industrial (two), networked and spacefaring worlds with rising threat. Pods drop
+  whole squads paid for in matter. Zones fall by damage (Strikers and Breachers, salvage, rising
+  public alarm) or by control (Links capture under fire, calm the public and turn defenses).
+  Alarm brings militia raids, stronger defenses and artillery. There are nine environmental
+  hazards, each with a warning, and shelter in held zones. The Dragonfly is unlockable by
+  recovering it on Titan. Two optional objectives per planet (stars), twelve achievements and
+  saved progress. Weapons are defined per target class, ready for the owner's later
+  drone-vs-drone versus mode.
+- **Simulator change:** `titan-terrain.mjs` now resolves its ground texture from the module's
+  own URL (same file, same result for the simulator) so the game's subfolder page finds it.
+- **Assumptions:** everything in the game is a gameplay choice [EST]: the invented worlds,
+  societies, drone and defender models (drawn about 4x life size for the strategy camera) and all
+  numbers. Titan's terrain and the Dragonfly model are the simulator's own.
+- **Files:** `dist/invasion/*` (new), `dist/titan-terrain.mjs`, `.github/workflows/pages.yml`
+  (stamps the game's build label), `tests/invasion-battle.test.mjs`,
+  `tests/invasion-campaign.test.mjs` (new), `README.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test` on the committed tree (16 new tests); a scripted bot won all seven
+  planets on first tries after balance passes; played in the browser: title, galaxy, Titan drop
+  under parachute, capture, Dragonfly recovery and drop, Kepra tower attack in a dust storm,
+  retreat and debrief, Velm, Ashfall, Halcyon and Aurex scenes, phone layout.
+- **Open / next:** real playtesting and balance (Aurex is hardest); sound; free mode with a
+  galaxy to pick from; local versus mode with drone-vs-drone weapons; terrain-aware paths for
+  troops (they stop at shorelines for now).
+
 ### 2026-10-15: Part numbers stay on their parts as the view turns
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Pin the part numbers to their parts and stop them jumping as the view turns"

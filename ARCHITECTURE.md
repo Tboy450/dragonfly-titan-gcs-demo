@@ -114,6 +114,28 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `ui/persistence.mjs` | Saves progress in the browser (every 5 s while landed and when the page is left), restores it on load, "Start a new mission" |
 | `dist/index.html`, `dist/styles.css` | Markup and styles. The phone Pilot-view overrides are in the last section of `styles.css` |
 
+### Swarmfall drone invasion game (`dist/invasion/`, its own page)
+A strategy game that reuses the simulator's Titan terrain, arrival hardware and research model.
+It imports those modules read-only and never touches the simulator's state. Rules follow the
+same split as the simulator: plain modules with tests, plus a page layer.
+| File | What it does |
+|---|---|
+| `invasion/units.mjs` | Drone, defender and society types; weapons per target class (ground, structure, air) so drones can later carry different arms against rival drones; pod slots and costs |
+| `invasion/campaign.mjs` | The seven planets in campaign order, rewards, per-planet supply, saved progress (validated field by field) and `applyMissionResult` |
+| `invasion/battle.mjs` | One mission: zones, drops, orders (group pace, attack-move), movement, combat, capture (damage or control path, converted defenses), public alarm, reinforcements, artillery, income, objectives, stars, outcome |
+| `invasion/hazards.mjs` | Seeded environmental threats with advance warning; shelter in held zones |
+| `invasion/achievements.mjs` | Twelve campaign achievements, checked live and at the end of a mission |
+| `invasion/planet-terrain.mjs` | Ground height per planet: Titan reuses `terrainHeight`; the other worlds are invented noise landscapes with liquid levels and level zone pads |
+| `invasion/random.mjs` | Seeded random numbers stored on the battle (reproducible missions) |
+| `invasion/models.mjs` | Procedural drone, defender, structure and building geometry (vertex colors, merged for instancing) and the compacted Dragonfly research model |
+| `invasion/scene.mjs` | three.js view: planet ground/sky/liquid/decor (Titan via `createTitanTerrain`), zone rings, instanced units, shots, explosions, strike markers, weather particles, pods via `createArrivalHardware` + `edlStateAt` |
+| `invasion/galaxy.mjs` | The campaign galaxy drawing |
+| `invasion/main.mjs` | Screens, saving, the mission loop, camera and touch controls, selection, orders, drop panel, HUD, minimap, debrief |
+| `invasion/index.html`, `invasion/invasion.css` | Markup and styles (phone layout in the last section) |
+
+Balance was checked with a scripted bot that plays the whole campaign (all seven planets won on
+first tries, losses rising from 0 to about 150 drones); real playtesting is still needed.
+
 ### Documents and tooling
 | File | What it is |
 |---|---|
@@ -180,6 +202,7 @@ should survive a reload, add it there (and bump `SAVE_VERSION` if old saves woul
 | `flight-camera.test.mjs`, `cache-version.test.mjs` | Chase camera; `?v=dev` stamps and the build label |
 | `thermal-scale.test.mjs` | Fixed cold/reference/hot colors, continuous interpolation and accurate temperature anchors in both legend windows |
 | `weather.test.mjs` | Seeded scheduling, advance warnings, smooth/bounded gusts, rain and drying, optional strong storm, fixed wind, pause/arrival, real convection, rest warning stop, planner cautions/restrictions, save validation and legacy migration |
+| `invasion-battle.test.mjs`, `invasion-campaign.test.mjs` | Swarmfall: practice win and Dragonfly recovery, drop checks, damage and control paths, hazard warnings, lightning, solar flares, loss and retreat, generated planets on dry level ground, determinism, campaign order and rewards, save validation, achievements, page stamps |
 
 ## Local testing tips
 

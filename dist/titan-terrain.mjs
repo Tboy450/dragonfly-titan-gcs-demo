@@ -263,7 +263,8 @@ export function createTitanTerrain(scene, renderer) {
   let daylight = "";
   setDaylight(1);
 
-  const reference = new THREE.TextureLoader().load("./assets/titan-mountain-reference.jpg");
+  // Resolved from this module, so pages in subfolders (the invasion game) find the same image.
+  const reference = new THREE.TextureLoader().load(new URL("./assets/titan-mountain-reference.jpg", import.meta.url).href);
   reference.colorSpace = THREE.SRGBColorSpace;
   reference.wrapS = reference.wrapT = THREE.ClampToEdgeWrapping;
   reference.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());

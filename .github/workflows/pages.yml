@@ -32,8 +32,9 @@ jobs:
           short="${GITHUB_SHA::7}"
           stamp="$(TZ=America/New_York date +%Y-%m-%d)"
           grep -rlF '?v=dev' dist --include='*.html' --include='*.js' --include='*.mjs' | xargs sed -i "s/?v=dev/?v=${short}/g"
-          sed -i "s|data-build-stamp>Build local<|data-build-stamp>Build ${short} · ${stamp}<|" dist/index.html
+          sed -i "s|data-build-stamp>Build local<|data-build-stamp>Build ${short} · ${stamp}<|" dist/index.html dist/invasion/index.html
           grep -qF "Build ${short}" dist/index.html
+          grep -qF "Build ${short}" dist/invasion/index.html
           ! grep -rqF '?v=dev' dist --include='*.html' --include='*.js' --include='*.mjs'
       - name: Configure Pages
         uses: actions/configure-pages@v5
