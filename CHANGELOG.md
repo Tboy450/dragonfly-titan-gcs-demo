@@ -39,6 +39,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-14: Add Vehicle part assumptions, the part-by-part list
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a part-by-part assumptions list to the engineering references"
+- **What changed:** At the owner's request, the app now has both a summary and the full list.
+  A new **Vehicle part assumptions** section under Engineering references (next to Vehicle part
+  references) gives one entry per redrawn part (15 of 24: 3 by Codex, 12 by Claude), each saying
+  what is published and what is estimated, plus a line for the parts not yet redrawn. **Model
+  assumptions** stays the summary and now points to it, with the count. Nothing was removed.
+- **Files:** `dist/index.html`, `tests/part-assumptions.test.mjs` (new),
+  `INTERIOR-REALISM-TODO.md` (process step 11), `CHANGELOG.md`
+- **Checks:** `node --test tests/*.test.mjs` (191 pass, 3 new: the list matches the checklist's
+  ticked parts and credits, counts agree, placeholders list the rest). Viewed at narrow width.
+- **Open / next:** #10 HGA actuators.
+
 ### 2026-10-14: Rebuild part 14, the 100 W X-band TWTA under the top deck
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Rebuild the TWTA after published flight amplifiers"
