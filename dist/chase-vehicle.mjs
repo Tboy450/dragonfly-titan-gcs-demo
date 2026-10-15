@@ -535,7 +535,8 @@ export function createChaseRenderer(options = {}) {
       const availableHeight = w <= 720 ? Math.max(100, h - 293) : h;
       const baseDistance = Math.max(11.7, 6.4 / camera.aspect, h / availableHeight * 5.5);
       // During the arrival sequence the camera pulls back to frame the aeroshell and parachutes.
-      const distance = state.edl ? Math.max(baseDistance, state.edl.cameraDistance) : baseDistance;
+      // The free camera's zoom (flight-camera.mjs) scales the distance; the arrival sequence keeps its own.
+      const distance = state.edl ? Math.max(baseDistance, state.edl.cameraDistance) : baseDistance * (pose.zoom ?? 1);
       const lookAt = craft.position.clone();
       if (state.edl) lookAt.y += state.edl.lookUp;
       if (state.edl?.pyro) {

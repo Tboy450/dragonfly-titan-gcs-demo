@@ -720,6 +720,16 @@ body.pilot-view.free-camera #flight-canvas {
   touch-action: none;
 }
 
+/* Zoom buttons appear with the free camera. */
+.camera-switch .camera-zoom {
+  display: none;
+  min-width: 2.2em;
+}
+
+body.pilot-view.free-camera .camera-switch .camera-zoom {
+  display: inline-block;
+}
+
 body.pilot-view.free-camera #flight-canvas:active {
   cursor: grabbing;
 }

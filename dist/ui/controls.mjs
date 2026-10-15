@@ -1,5 +1,5 @@
 // Flight buttons, sticks, keyboard, camera modes, view switch and the other form controls.
-import { enterFreeCamera, orbitCamera } from "../flight-camera.mjs?v=dev";
+import { enterFreeCamera, orbitCamera, zoomCamera } from "../flight-camera.mjs?v=dev";
 import { commandFlight, model, takeManualControl } from "../flight-model.mjs?v=dev";
 import { missionAction, startRest, toggleDownlink } from "../mission-systems.mjs?v=dev";
 import { setFixedWind, setWeatherMode, startStormTraining } from "../weather.mjs?v=dev";
@@ -99,9 +99,19 @@ function bindFreeCamera() {
   let activePointer = null;
   let lastX = 0;
   let lastY = 0;
+  // Two fingers on the canvas pinch-zoom; one finger (or the mouse) orbits.
+  const touches = new Map();
+  let pinchSpan = 0;
+  const span = () => { const [a, b] = [...touches.values()]; return Math.hypot(a.x - b.x, a.y - b.y); };
+  const freeView = () => state.view === "pilot" && state.cameraMode === "free";
 
   flightCanvas.addEventListener("pointerdown", (event) => {
-    if (state.view !== "pilot" || state.cameraMode !== "free" || activePointer !== null) return;
+    if (!freeView()) return;
+    if (event.pointerType === "touch") {
+      touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      if (touches.size === 2) { activePointer = null; pinchSpan = span(); return; }
+    }
+    if (activePointer !== null || touches.size > 1) return;
     if (event.pointerType === "mouse" && event.button !== 0) return;
     activePointer = event.pointerId;
     lastX = event.clientX;
@@ -110,14 +120,29 @@ function bindFreeCamera() {
   });
 
   flightCanvas.addEventListener("pointermove", (event) => {
-    if (event.pointerId !== activePointer || state.cameraMode !== "free" || state.view !== "pilot") return;
+    if (touches.has(event.pointerId)) touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (touches.size === 2 && freeView()) {
+      const now = span();
+      if (pinchSpan > 0 && now > 0) zoomCamera(state, pinchSpan / now);
+      pinchSpan = now;
+      return;
+    }
+    if (event.pointerId !== activePointer || !freeView()) return;
     const rect = flightCanvas.getBoundingClientRect();
     orbitCamera(state, event.clientX - lastX, event.clientY - lastY, rect.width, rect.height);
     lastX = event.clientX;
     lastY = event.clientY;
   });
 
+  flightCanvas.addEventListener("wheel", (event) => {
+    if (!freeView()) return;
+    event.preventDefault();
+    zoomCamera(state, Math.exp(Math.max(-200, Math.min(200, event.deltaY)) * 0.0015));
+  }, { passive: false });
+
   const release = (event) => {
+    touches.delete(event.pointerId);
+    if (touches.size < 2) pinchSpan = 0;
     if (event.pointerId === activePointer) activePointer = null;
   };
 
@@ -191,6 +216,8 @@ $("inspect-sample").addEventListener("click", () => {
 });
 $("fixed-camera-button").addEventListener("click", () => setCameraMode("fixed"));
 $("free-camera-button").addEventListener("click", () => setCameraMode("free"));
+$("zoom-in-button").addEventListener("click", () => zoomCamera(state, 1 / 1.35));
+$("zoom-out-button").addEventListener("click", () => zoomCamera(state, 1.35));
 bindPilotStick("pilot-left-stick", "left");
 bindPilotStick("pilot-right-stick", "right");
 bindPilotStick("left-stick", "left");

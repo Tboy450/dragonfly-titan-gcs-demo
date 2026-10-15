@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { cameraPose, enterFreeCamera, orbitCamera, smoothCameraPose, wrapAngle } from "../dist/flight-camera.mjs";
+import { cameraPose, cameraZoomRange, enterFreeCamera, orbitCamera, smoothCameraPose, wrapAngle, zoomCamera } from "../dist/flight-camera.mjs";
 
 const fixture = () => ({ heading: 84, cameraMode: "fixed", cameraYaw: 0, cameraPitch: 0.38 });
 const near = (a, b) => assert.ok(Math.abs(wrapAngle(a - b)) < 1e-10, `${a} differs from ${b}`);
@@ -85,4 +85,34 @@ test("Rendered camera eases between Free and Fixed instead of teleporting", () =
   state.cameraMode = "free";
   enterFreeCamera(state);
   near(state.cameraYaw, state.renderPose.azimuth);
+});
+
+test("Free camera zooms in to about 2 m and back; Fixed always uses the default distance", () => {
+  const state = fixture();
+  enterFreeCamera(state);
+  state.cameraMode = "free";
+  assert.equal(cameraPose(state).zoom, 1);
+  for (let i = 0; i < 40; i++) zoomCamera(state, 0.8);
+  assert.equal(cameraPose(state).zoom, cameraZoomRange.min);
+  assert.ok(11.7 * cameraZoomRange.min < 2.1, "close enough to see the antenna's slots");
+  for (let i = 0; i < 40; i++) zoomCamera(state, 1.25);
+  assert.equal(cameraPose(state).zoom, cameraZoomRange.max);
+  state.cameraMode = "fixed";
+  assert.equal(cameraPose(state).zoom, 1, "Fixed ignores the free zoom");
+});
+
+test("Zoom eases without jumping", () => {
+  const state = fixture();
+  enterFreeCamera(state);
+  state.cameraMode = "free";
+  smoothCameraPose(state, 1 / 60);
+  zoomCamera(state, 0.2);
+  let previous = state.renderPose.zoom, largest = 0;
+  for (let i = 0; i < 120; i++) {
+    smoothCameraPose(state, 1 / 60);
+    largest = Math.max(largest, Math.abs(Math.log(state.renderPose.zoom / previous)));
+    previous = state.renderPose.zoom;
+  }
+  assert.ok(largest < 0.5, `zoom jumped by a factor of ${Math.exp(largest).toFixed(2)} in one frame`);
+  assert.ok(Math.abs(state.renderPose.zoom - cameraPose(state).zoom) < 1e-3);
 });

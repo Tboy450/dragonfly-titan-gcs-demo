@@ -39,6 +39,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-15: Zoom for the pilot view's free camera
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add scroll, pinch and button zoom to the pilot view's free camera"
+- **What changed:** At the owner's request (seeing the antenna's detail in the pilot view), the
+  free camera now zooms: mouse wheel, two-finger pinch on the flight view, or new **+** / **−**
+  buttons beside Fixed/Free (shown only in Free). It moves in to 0.17 of the chase distance
+  (about 2 m) and out to 1.6x, easing like the orbit. Fixed mode and the arrival sequence keep
+  their distances. Nothing is saved; the simulation is unchanged.
+- **Files:** `dist/flight-camera.mjs`, `dist/chase-vehicle.mjs`, `dist/ui/controls.mjs`,
+  `dist/index.html`, `dist/styles.css`, `tests/flight-camera.test.mjs`, `README.md`
+- **Checks:** 209 tests pass (2 new: zoom range and Fixed ignoring it; easing without jumps).
+  Pilot view zoomed in on the antenna shows the spiral slot pattern; buttons appear in Free.
+- **Open / next:** rotor arms from the "Revolutionary Rotors" video.
+
 ### 2026-10-15: Rebuild part 15, the battery; review and publish Codex's provisional RDE pass
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Rebuild the battery from APL's test-module photos; add Codex's provisional RDE enclosures"

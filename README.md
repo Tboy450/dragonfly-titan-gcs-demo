@@ -74,7 +74,9 @@ archived in [archive/](archive/).
 - **Pilot** fits the flight box to the available browser height while keeping telemetry,
   the flight graph, science, mission controls and references on the scrollable page below.
   The small fullscreen button expands only the flight box; press it again or Escape to exit.
-  Native browser zoom remains available. The reset icon beside **Diagnostics** requires
+  Native browser zoom remains available. In **Free** camera, drag to orbit and scroll, pinch or
+  use the **+** / **−** buttons to move the camera in (to about 2 m, close enough to see the
+  antenna's slots) or out; **Fixed** always uses the normal chase distance. The reset icon beside **Diagnostics** requires
   a second tap to confirm; the footer also retains **Start over from the landing**.
 - **Takeoff** climbs to 40 m and hovers. **Cruise** holds altitude (at least 20 m) and
   flies forward at 10 m/s. **Land** descends at up to 1.3 m/s, slows near the ground and
