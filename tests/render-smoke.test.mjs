@@ -546,3 +546,62 @@ test("The air loop follows the fans and the cold-duct diverter flaps", async () 
   assert.equal(warmArrows.visible, false, "fan stopped: no loop");
   assert.equal(coldArrows.count, 0);
 });
+
+test("Inspection masks hide existing layers without moving the camera, renumbering parts or leaking into other views", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { createInspector } = await import("../dist/vehicle-inspector.mjs");
+  const { setInspectionLayer } = await import("../dist/inspection-visibility.mjs");
+  const renderer = fakeRenderer(), chase = createChaseRenderer({ renderer });
+  const s = { ...createFlightState(), vehicleModel: "research" }, inspector = createInspector();
+  const before = structuredClone(s), poses = new Map(), flags = new Map();
+  chase.models.research.traverse(o => { poses.set(o, o.position.toArray()); flags.set(o, o.visible); });
+  const frames = [], render = renderer.render.bind(renderer);
+  renderer.render = (scene, camera) => {
+    render(scene, camera);
+    const names = []; scene.traverseVisible(o => { if (o.isMesh) names.push(o.name); });
+    frames.push({ names, pose: camera.position.toArray(), projection: camera.projectionMatrix.toArray() });
+  };
+  const draw = (layer = "internal", focusPart = null) => chase.drawMission(context2d, 900, 600, s,
+    { layer, inspector, focusPart, reduceMotion: true });
+  const baseline = draw();
+  for (const [id, part] of [["attic-shell", null], ["insulation", null], ["partitions", null], ["flow-markers", null],
+    ["equipment-covers", "drams"]]) setInspectionLayer(inspector, id, false, part);
+  const masked = draw();
+  assert.deepEqual(masked.map(l => l.name), baseline.map(l => l.name), "numbering order retained");
+  assert.equal(masked.find(l => l.name === "aft-bulkhead").onCanvas, false);
+  assert.ok(frames[1].names.length < frames[0].names.length);
+  assert.deepEqual(frames[1].pose, frames[0].pose);
+  assert.deepEqual(frames[1].projection, frames[0].projection);
+  const covers = chase.models.research.getObjectByName("drams-service-covers");
+  assert.equal(covers.visible, flags.get(covers), "nested cover mask restored after rendering");
+  inspector.isolate = true;
+  draw("thermal", "drams");
+  assert.equal(covers.visible, flags.get(covers), "isolation and nested masks restore together");
+  draw("exterior");
+  assert.ok(chase.subsystems.attic.visible);
+  chase.draw(context2d, 900, 600, s);
+  assert.ok(chase.subsystems.fuselage.visible && chase.subsystems.attic.visible);
+  for (const [o, position] of poses) assert.deepEqual(o.position.toArray(), position, o.name);
+  assert.deepEqual(s, before);
+});
+
+test("An interrupted inspection render restores masks and ordinary scene settings", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { createInspector } = await import("../dist/vehicle-inspector.mjs");
+  const { setInspectionLayer } = await import("../dist/inspection-visibility.mjs");
+  const renderer = fakeRenderer(), chase = createChaseRenderer({ renderer }), inspector = createInspector();
+  setInspectionLayer(inspector, "body-shell", false);
+  setInspectionLayer(inspector, "equipment-covers", false, "drams");
+  inspector.isolate = true;
+  const render = renderer.render;
+  renderer.render = () => { throw new Error("interrupted frame"); };
+  assert.throws(() => chase.drawMission(context2d, 900, 600, createFlightState(),
+    { layer: "thermal", inspector, focusPart: "drams" }), /interrupted frame/);
+  assert.ok(chase.subsystems.fuselage.visible);
+  assert.ok(chase.models.research.getObjectByName("drams-service-covers").visible);
+  assert.equal(renderer.shadowMap.enabled, true);
+  renderer.render = render;
+  chase.draw(context2d, 900, 600, createFlightState());
+});

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { createFlightState } from "../dist/flight-model.mjs";
 import { createInspector, inspectionDefaults, inspectionAvailable, inspectionTarget, resetInspector,
   rotateInspector, zoomInspector, focusInspector, inspectionGroups, inspectionModified } from "../dist/vehicle-inspector.mjs";
+import { setInspectionLayer, inspectionLayerVisible, restoreInspectionLayers, hiddenInspectionCount } from "../dist/inspection-visibility.mjs";
 
 const state = () => ({ ...createFlightState(), view: "mission", missionLayer: "internal", vehicleModel: "research", inspector: createInspector() });
 
@@ -71,4 +72,30 @@ test("Isolation includes the related transfer and sensor assemblies", () => {
   assert.deepEqual(inspectionGroups("drams"), ["drams"], "neighboring covers must not obscure an isolated instrument");
   assert.deepEqual(inspectionGroups("mmrtg"), ["mmrtg"]);
   assert.deepEqual(inspectionGroups(null), []);
+});
+
+test("Layer masks stay per component, reset independently of the camera, and never share defaults", () => {
+  const s = state(), other = createInspector(), flight = structuredClone(s);
+  focusInspector(s, "drams");
+  zoomInspector(s.inspector, 1.5);
+  rotateInspector(s.inspector, 130, 15, 600, 600);
+  const pose = [s.inspector.azimuth, s.inspector.elevation, s.inspector.zoom, s.inspector.focusPart];
+  setInspectionLayer(s.inspector, "equipment-covers", false, "drams");
+  setInspectionLayer(s.inspector, "equipment-casings", false, "frontier-radio");
+  setInspectionLayer(s.inspector, "attic-shell", false);
+  setInspectionLayer(s.inspector, "attic-shell", false);
+  assert.equal(hiddenInspectionCount(s.inspector), 3, "repeated changes do not accumulate");
+  assert.equal(inspectionLayerVisible(s.inspector, "equipment-covers", "drams"), false);
+  assert.equal(inspectionLayerVisible(s.inspector, "equipment-covers", "frontier-radio"), true);
+  assert.equal(hiddenInspectionCount(other), 0);
+  setInspectionLayer(s.inspector, "unknown-layer", false);
+  assert.equal(hiddenInspectionCount(s.inspector), 3);
+  restoreInspectionLayers(s.inspector);
+  assert.deepEqual([s.inspector.azimuth, s.inspector.elevation, s.inspector.zoom, s.inspector.focusPart], pose);
+  assert.equal(hiddenInspectionCount(s.inspector), 0);
+  setInspectionLayer(s.inspector, "body-shell", false);
+  resetInspector(s.inspector);
+  assert.deepEqual(s.inspector, { ...inspectionDefaults, resetSerial: 1 });
+  delete s.inspector; delete s.selectedPart; delete flight.inspector;
+  assert.deepEqual(s, flight, "viewing leaves all simulation values unchanged");
 });

@@ -1041,6 +1041,17 @@ body.arrival .pilot-hud { display: none; }
 .inspection-options label { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; }
 .inspection-options input { width: 16px; height: 16px; margin: 0; accent-color: #70dec4; }
 .inspection-options output { color: #f8e095; min-width: 0; overflow-wrap: anywhere; }
+.inspection-layers { flex: 1 0 100%; min-width: 0; border-top: 1px solid var(--line); padding-top: 8px; font-size: 0.75rem; }
+.inspection-layers summary { cursor: pointer; color: var(--cyan); min-height: 28px; }
+.inspection-layers summary span { margin-left: 8px; color: var(--muted); }
+.inspection-layer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 12px 20px; margin: 8px 0; }
+.inspection-layer-grid fieldset { min-width: 0; padding: 0; margin: 0; border: 0; }
+.inspection-layer-grid legend { padding: 0 0 6px; color: #bcd0e2; overflow-wrap: anywhere; }
+.inspection-layer-grid label { display: flex; align-items: center; gap: 8px; min-height: 32px; overflow-wrap: anywhere; }
+.inspection-layer-grid label:has(input:disabled) { color: var(--muted); }
+.inspection-layer-grid input { flex: 0 0 16px; width: 16px; height: 16px; margin: 0; accent-color: #70dec4; }
+.inspection-restore { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 4px 8px; font: inherit; }
+.inspection-restore img { width: 16px; height: 16px; filter: invert(1); }
 body.inspection-rotate:not(.pilot-view) #flight-canvas { touch-action: none; cursor: grab; }
 body.inspection-rotate:not(.pilot-view) #flight-canvas:active { cursor: grabbing; }
 #flight-canvas:focus-visible { outline: 2px solid #70dec4; outline-offset: -3px; }

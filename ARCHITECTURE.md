@@ -60,6 +60,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 | `dist/flight-camera.mjs` | Chase-camera pose and smoothing |
 | `dist/vehicle-presentation.mjs` | Pure parked portrait state for the clean room; never changes the simulation |
 | `dist/vehicle-inspector.mjs` | Mission-only orbit/zoom limits, focus/reset, assembly membership and follow target from the shared sampling clock; no flight or saved-state changes |
+| `dist/inspection-visibility.mjs` | Indexed visibility masks for existing shell/foam/panel meshes and per-component casing/cover/mount/interface/harness groups; draw-time restoration, stable framing and shared UI definitions |
 | `dist/save-game.mjs` | Which state fields are saved between visits (a whitelist), when saving is allowed (landed, idle), and restoring onto a fresh state |
 
 ### 3D scene (three.js; covered by the render smoke tests with a stand-in renderer)
@@ -67,6 +68,7 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 |---|---|
 | `dist/sample-carousel.mjs` | First individually rebuilt interior asset: NASA-photo-referenced SDC casing/fins/ports/drives, explicit estimated scale, stationary enclosure and internal indexing pivot |
 | `dist/rotor-drive-electronics.mjs` | Provisional two-box RDE enclosure illustration with separate casing/cover/mount groups and open vents; appearance is estimated, not a completed hardware-photo reconstruction |
+| `dist/aft-bulkhead.mjs` | Claude's photo-referenced canted aft plate, generator-interface detail and estimated 25-degree MMRTG pose; shared constants keep aft foam, fan collar and airflow aligned |
 | `dist/wonderwall.mjs` | Estimated contoured warm/cold partition, real geometry openings and separate faces/core/mount groups for future inspection layer controls; clears the rebuilt carousel |
 | `dist/ecam.mjs` | Shared Malin ECAM camera heads from the DragonCam paper's figures (P50 wide, P50 Forward MAC with lens hood, NavCam with top plate, L50 Microscopic Camera) and `mountEcam` to place and aim one |
 | `dist/thermal-loop.mjs` | Parts 17-19: two circulation fans, the warm under-floor duct and the cold bypass duct under the belly with fore and aft diverter flaps (TFAWS 2023/2024); supplies the air-loop arrow paths |

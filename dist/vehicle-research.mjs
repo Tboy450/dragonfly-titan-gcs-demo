@@ -11,6 +11,7 @@ import { buildFrontierRadio } from "./frontier-radio.mjs?v=dev";
 import { buildTwta } from "./twta.mjs?v=dev";
 import { buildHgaGimbal, hgaAsset } from "./hga-gimbal.mjs?v=dev";
 import { buildBattery } from "./battery.mjs?v=dev";
+import { buildAftBulkhead, aftBulkheadAsset, aftFaceZ, poseMmrtg } from "./aft-bulkhead.mjs?v=dev";
 import { buildRotorHead, buildHubPlate, rotorHeadAsset } from "./rotor-heads.mjs?v=dev";
 import { buildRotorDriveElectronics } from "./rotor-drive-electronics.mjs?v=dev";
 import { buildIem } from "./iem.mjs?v=dev";
@@ -141,7 +142,10 @@ export function buildResearchModel(kit) {
   // arm roots at z -0.75 / +0.84, rotor hubs at z -/+0.98 and x -/+1.25, skids at x -/+0.75.
   // Fuselage: long, with the underside tapering up at the nose and tail.
   subsystem("fuselage", "insulated-shell");
-  profileBody([[-1.90, -0.05], [-1.78, -0.27], [-1.48, -0.36], [0.98, -0.36], [1.20, -0.26], [1.24, -0.05], [1.24, 0.10], [-1.83, 0.10]], 0.86, foam);
+  // The aft end follows the canted aft bulkhead (aft-bulkhead.mjs, part 16): the foam face leans
+  // forward toward the top, parallel to the bulkhead the MMRTG bolts to. The first profile ended in
+  // a near-vertical face at z 1.24 (archived in archive/aft-bulkhead-2026-10-15).
+  profileBody([[-1.90, -0.05], [-1.78, -0.27], [-1.48, -0.36], [aftFaceZ(-0.36), -0.36], [aftFaceZ(0.10), 0.10], [-1.83, 0.10]], 0.86, foam);
   // The rounded forward cover transitions to a low, flat equipment deck. Its silhouette
   // follows APL's CAD movie and NASA Assembly Guide pp1-3; this is procedural geometry [EST].
   subsystem("attic", "insulated-shell");
@@ -169,10 +173,11 @@ export function buildResearchModel(kit) {
   strut([0.43, 0.1, 1.08], [0.64, 0.36, 1.3], 0.012, metal);
   mesh(new THREE.SphereGeometry(0.03, 12, 8), metal, [0.64, 0.36, 1.3]);
 
-  // MMRTG at the tail: core cylinder with eight radial fins, axis along the fuselage.
+  // MMRTG at the tail: core cylinder with eight radial fins, bolted to the canted aft bulkhead and
+  // pointing aft and up about 25 degrees (aft-bulkhead.mjs; NASA/APL 2026 photos, APL 2024 CAD).
+  // It was level at (0, 0.05, 1.6) before October 15.
   subsystem("mmrtg", "mmrtg");
-  const generator = new THREE.Group();
-  generator.position.set(0, 0.05, 1.6);
+  const generator = poseMmrtg(new THREE.Group());
   buildTarget.add(generator);
   mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.66, 24), rtgMaterial, [0, 0, 0], generator).rotation.x = Math.PI / 2;
   for (let i = 0; i < 8; i += 1) {
@@ -203,11 +208,12 @@ export function buildResearchModel(kit) {
       mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.02, 16), gold, [0.06, 0.5, 0.3], hinge).rotation.z = Math.PI / 2; // MGA
     }
   }
-  // Low-gain antenna on a boss just ahead of the MMRTG.
+  // Low-gain antenna on a boss just ahead of the MMRTG (moved 9 cm forward from z 1.02 on Oct 15
+  // so it stays ahead of the tilted MMRTG; position [EST]).
   subsystem("antennas", "antennas");
-  mesh(new THREE.CylinderGeometry(0.1, 0.11, 0.12, 16), foam, [0, 0.2, 1.02]);
-  mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.08, 10), armMaterial, [0, 0.3, 1.02]);
-  mesh(new THREE.SphereGeometry(0.025, 10, 6), armMaterial, [0, 0.35, 1.02]);
+  mesh(new THREE.CylinderGeometry(0.1, 0.11, 0.12, 16), foam, [0, 0.2, 0.93]);
+  mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.08, 10), armMaterial, [0, 0.3, 0.93]);
+  mesh(new THREE.SphereGeometry(0.025, 10, 6), armMaterial, [0, 0.35, 0.93]);
 
   // Flat runners and shaped legs, as in NASA's Assembly Guide pp1-2. The dimensions of
   // these details are estimated; the footprint and ground-contact height stay unchanged.
@@ -428,8 +434,8 @@ export function buildResearchModel(kit) {
   buildTwta({ parent: buildTarget, mesh });
   interiorPart("battery", "battery", "Battery: 11.5 kWh, 24 cells (GS Yuasa), heat pipes, fans and a phase-change buffer", "Aerospace America 2022; APL; ICES-2022-256 figs. 2-6; ICES-2020 p4; ICES-2023 p5; TFAWS 2023 plan view; cell model, layout and size estimated", 0x6f7d58);
   buildBattery({ parent: buildTarget, mesh });
-  material = interiorPart("aft-bulkhead", "equipment-bay", "Aft bulkhead", "ICES-2023 fig. 4", 0x9aa6ad);
-  mesh(new THREE.BoxGeometry(0.7, 0.4, 0.02), material, [0, -0.13, 1.08]);
+  interiorPart("aft-bulkhead", "equipment-bay", "Aft bulkhead: canted gold end bulkhead with the MMRTG interface", "NASA/APL photos, Apr and Jun 2026; APL 2024 CAD (cross-reference); tilt measured on the June photo; sizes and pocket layout estimated", 0x9aa6ad);
+  buildAftBulkhead({ parent: buildTarget, mesh });
   // Titan air loop (thermal-loop.mjs; TFAWS 2023 slides 3-4 and 7-8, TFAWS 2024, ICES-2023).
   interiorPart("fan", "warm-duct", "Circulation fans A and B: MMRTG-warmed air into the duct, 0.052 kg/s, 15 W allocation", "TFAWS 2023 slides 3, 4, 7, 8; TFAWS 2024 slide 14; ICES-2023 p6; sizes estimated", 0xd9823f);
   const fans = buildFans({ parent: buildTarget, mesh });
@@ -441,7 +447,8 @@ export function buildResearchModel(kit) {
   material = interiorPart("battery-sensor", "battery", "Battery temperature sensor: an input to the thermal controller", "TFAWS 2023 (controller inputs); placement illustrative", 0x9fe870);
   mesh(new THREE.SphereGeometry(0.022, 12, 8), material, [0.2, 0.02, 0.72]);
   material = interiorPart("mmrtg-sensor", "mmrtg", "MMRTG fin-root temperature sensor: the other controller input", "TFAWS 2023 (controller inputs); placement illustrative", 0x9fe870, "exterior");
-  mesh(new THREE.SphereGeometry(0.022, 12, 8), material, [0, 0.27, 1.6]);
+  // Kept on the MMRTG's top fin root when the MMRTG was tilted (part 16); still a placeholder.
+  mesh(new THREE.SphereGeometry(0.022, 12, 8), material, new THREE.Vector3(0, 0.22, 0).applyEuler(generator.rotation).add(generator.position).toArray());
   // Externally mounted items described in the same paper, visible in every layer.
   material = interiorPart("nose-sensors", "external-sensors", "METHAN sensor with the E-field sensor above (starboard nose)", "ICES-2023 p2", 0x6b7278, "exterior");
   mesh(new THREE.BoxGeometry(0.05, 0.07, 0.09), material, [0.455, -0.12, -1.66]);

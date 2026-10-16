@@ -12,6 +12,10 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [aft-bulkhead-2026-10-15](aft-bulkhead-2026-10-15/README.md) | Rectangular aft panel, level MMRTG, old aft body/antenna and coupled fan layout before Claude's canted interface; exact originals and before pictures | 2026-10-16 | `archive/aft-bulkhead-2026-10-15` |
+| [fans-v1-2026-10-15](fans-v1-2026-10-15/README.md) | Fans at z 1.16 and old adapter/flow path before fitting the canted aft panel; pictures shared with the full aft archive | 2026-10-16 | `archive/fans-v1-2026-10-15` |
+| [inspection-visibility-2026-10-16](inspection-visibility-2026-10-16/README.md) | Mission inspector before independent shell, insulation, panel and equipment layer masks; working snapshot includes the pending aft-bulkhead membership line | 2026-10-16 | `archive/inspection-visibility-2026-10-16` |
+| [aft-bulkhead review draft](aft-bulkhead-2026-10-15/review-draft/README.md) | Claude's unpublished tilted-panel draft and test before correcting its doubled bounding-box expansion | 2026-10-16 | none (uncommitted draft) |
 | [swarmfall-mission-save-2026-10-16](swarmfall-mission-save-2026-10-16/README.md) | Game page before active-mission saving and title-screen Resume | 2026-10-16 | `archive/swarmfall-mission-save-2026-10-16` |
 | [part-labels-2026-10-15](part-labels-2026-10-15/README.md) | Part numbers pushed down the screen on overlap (chains and jumps as the view turned), before fixed anchors with leaders | 2026-10-15 | `archive/part-labels-2026-10-15` |
 | [rotor-heads-2026-10-15](rotor-heads-2026-10-15/README.md) | White motor pods, gold hub cylinders and spinner domes at the arm ends, before the coaxial motor stacks from the Revolutionary Rotors video | 2026-10-15 | `archive/rotor-heads-2026-10-15` |

@@ -7,7 +7,38 @@ Battery pass finished and Codex's RDE pass reviewed October 15, 2026 by Claude (
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: October 15 Context
+## Resume Here: October 16 Context
+
+**Current closeout:** Claude's #16 aft bulkhead is complete as an approximate photo-referenced
+asset. Codex preserved the geometry, confirmed NASA/APL's explicit inverted-fixture caption,
+corrected the clearance-test false positive, archived the previous model and completed source,
+app and release records. Completed count: **18 of 24** (3 Codex, 15 Claude); #09 stays provisional.
+
+Codex has now finished the previously queued **Inspection layers** controls:
+body/attic shells, separately modeled foam, compartment panels, flow markers, and per-component
+casings/covers/mounts/interfaces/harnesses. Restore Layers preserves the camera; camera reset
+restores all masks. Hidden component settings are marked in the component menu. Internal and
+Thermal share masks; Pilot, Exterior and the original model keep their ordinary presentation.
+No new material stack or hidden hardware has been invented. See
+[verification and limitations](research/inspection-visibility-2026-10-16/README.md).
+
+**Keep #16 together:** `aft-bulkhead.mjs` is imported by `vehicle-research.mjs` and
+`thermal-loop.mjs`. Interface center [0,-0.1,1.106] m; tilt 25 degrees; width 0.7 m;
+thickness 0.012 m, all [EST]. Fans now sit at z 1.04 m (formerly 1.16); their collar clears
+the panel by 2 mm. The low-gain antenna moved 9 cm forward. Body aft foam, generator pose,
+MMRTG sensor and illustrative airflow follow the tilted interface. Physics constants remain
+unchanged. Coating, exact flight tilt/configuration and the real air passage remain unknown.
+Source and verification notes:
+[aft-bulkhead](research/aft-bulkhead-2026-10-15/README.md).
+
+Another session is also updating Swarmfall independently. Preserve its files and any new commits when
+staging simulator work. Keep unrelated pending game/city changes out of this release commit.
+Verification on October 16: **248 Node tests pass**, plus desktop/390/360 px real WebGL checks.
+Release includes this closeout, the inspection controls and their three archive tags. For
+subsequent handoffs, compare current GitHub Pages success/build with `origin/main` rather than
+assuming that matching local files or this historical test count proves the current live build.
+
+## October 15 Context (Historical)
 
 **Update (Claude, October 15, after this snapshot):** the owner asked Claude to look at Codex's
 work and continue. Claude finished #15 (all items below ticked) and reviewed Codex's #09 pass
@@ -99,7 +130,7 @@ in world coordinates; don't use a whole cable-inclusive box to judge enclosure p
 - [x] **Codex:** Implement the compact, expandable surface operations queue.
 - [x] **Codex:** Review the owner's video `1000046285.mp4` (33.88 s), including frames near 4, 17 and 29 s.
 - [x] **Codex:** Identify a concrete label-layout cause in the code (below).
-- [ ] Correct label anchoring/overlap (deferred while beginning parts, per latest owner request).
+- [x] **Claude:** Correct label anchoring/overlap (October 15); far-side occlusion remains open.
 - [x] **Codex:** Rebuild the first part: DrACO sample carousel (#6), using public integration photos; estimated scale explicitly labeled.
 - [x] **Codex:** Rebuild the second part: Wonderwall interface (#7); contour, openings and independently grouped faces/core/mounts, all detail dimensions estimated.
 - [x] **Codex:** Rebuild #8 DraMS at enclosure level; separate cases/covers, mounting frame and a simplified aligned interface. Detailed internals remain open.
@@ -114,6 +145,9 @@ in world coordinates; don't use a whole cable-inclusive box to judge enclosure p
 - [x] **Claude:** Rebuild #14 TWTA after published flight TWTAs (LRO, MRO, Stellant) and the Dragonfly thermal papers (October 14).
 - [x] **Claude:** Rebuild #10 HGA gimbal (actuators, motorized arm, locks) from ICES-2023/2020 and APL's arm photo; the dish now rises on the arm (October 14).
 - [x] **Claude:** Rebuild #15 battery: 24 cells, fins, heat pipes, fans; look from real photos of APL's test module (October 15).
+- [x] **Claude:** Rebuild #16 aft bulkhead, canted generator interface and matching fan/duct placement
+  (October 15); **Codex:** source verification, corrected clearance test, archives and release
+  closeout (October 16). Exact dimensions and 25-degree angle remain estimates.
 - [ ] Continue the remaining parts individually; no unverified internals presented as CAD.
 
 ## The Process (one part per pass)
@@ -158,7 +192,7 @@ assistant can continue the same way. Every step happens in the same change as th
    `dimensionConfidence`. Put meshes in named sub-groups tagged `userData.inspectionLayer`
    from the shared vocabulary: `mounts`, `equipment-casings`, `equipment-covers`,
    `interfaces`, `harnesses`, `insulation`, `interface-faces`. These are what the future
-   shell/foam/casing hide/show controls will toggle, so hidden layers never move parts.
+   shell/foam/casing hide/show controls toggle, so hidden layers never move parts.
    Local imports keep `?v=dev`. Register it in `dist/vehicle-research.mjs` with
    `interiorPart(id, thermalZone, label, source, color)` and keep the durable ID.
 6. **Fit rules (owner, October 12).** Model frame: x across (cavity about +/-0.36 m), y up
@@ -250,9 +284,9 @@ APL's rotating CAD video, NASA/APL integration photos.
 - **Owner preferences that apply here:** realism is the goal, but keep it easy to operate;
   keep the light visible; never throw work away; archive pictures with every replacement; sign
   every change. The owner often checks on a phone, so always check phone width.
-- **Still open across all parts:** the deferred numbered-callout layout defect, independent
-  shell/foam/casing hide/show controls, and the remaining estimated dimensions/placements.
-  Existing ghosted shells and named inspection groups are not a finished layer-toggle UI.
+- **Still open across all parts:** far-side label occlusion, source-backed construction layers,
+  and the remaining estimated dimensions/placements. Independent visibility controls are now
+  implemented locally; they operate on existing geometry only.
 - **Handoff safety:** inspect `git status` before editing and preserve other assistants' work.
   Use `apply_patch` for manual edits. Do not reset the tree or silently merge unrelated work.
   Keep durable part IDs, the shared sampling clock, simulation behavior and saved-state
@@ -350,10 +384,17 @@ DraMS neck intentionally passes through the wall aperture.
 - [x] **Claude:** **15 Battery and thermal buffer** (`battery`): 24 upright cells [PUB count] of GS Yuasa's 134 Ah LSE134 [EST, inferred], 4 x 6, with fin plates, copper heat pipes in three directions and series bus straps; enclosure look from the real photos of APL's 9-cell test module (cream ribbed lower section, flange, bare aluminum upper housing with three 2 in fans per end, 1 in fans on the lower walls, round connectors including a large four-pin); on pads over the warm duct, center z 0.565 from the TFAWS 2023 plan view [EST]; the wax is not drawn (location unpublished). [References/limits](research/battery-2026-10-15/README.md). (Codex's handoff: "in progress/uncommitted" until this pass.)
 - [ ] **15 follow-up:** verify flight cell model, enclosure size, cell/fan arrangement, real
   mounting and PCM location. Keep #20's sensor-placeholder/lid overlap for the sensor rebuild.
-- [ ] **16 Aft bulkhead** (`aft-bulkhead`): profile, penetrations and attachment to the generator/fan region.
+- [x] **Claude:** **16 Aft bulkhead** (`aft-bulkhead`): gold-colored face, pocketed rim and ribbed circular
+  generator interface from real NASA/APL structure photos; canted body face and aft/up MMRTG
+  pose, fans and short collar. **Codex:** verified the explicit inverted-fixture caption,
+  corrected the bounding-box test, archived the preceding geometry and completed release records.
+  [Sources, estimated dimensions and checks](research/aft-bulkhead-2026-10-15/README.md).
+- [ ] **16 follow-up:** exact flight angle, panel dimensions/material/coating and final revision;
+  actual MMRTG attachment and gas passage. The 25-degree tilt, collar and 2 mm model clearance
+  are illustrative geometry, not validated flight specifications.
 - [x] **Claude:** **17 Circulation fans** (`fan`): Fan-A and Fan-B side by side in housings at the MMRTG end, with rotors that turn with the flow and an adapter to the MMRTG; TFAWS 2023 slides 3, 7, 8 and TFAWS 2024 slide 14; size from the plan view. [References/limits](research/thermal-loop-2026-10-14/README.md).
 - [x] **Claude:** **18 Under-floor warm duct** (`underfloor-duct`): 0.14 m wide on the centerline from the fan transition to the nose, turning up into the body below the nose, with flanges; TFAWS 2023 slides 3-4, ICES-2023. [References/limits](research/thermal-loop-2026-10-14/README.md).
-- [ ] **18 follow-up:** real duct height; the round perforated feature on the duct in the slide 3 plan view; old drive-electronics, nose-electronics and aft-bulkhead placeholders reach into the duct zone (fix with those parts). Battery clearance is covered by the October 15 duct adjustment (duct 7.5 mm lower), released with the battery.
+- [ ] **18 follow-up:** real duct height; the round perforated feature on the duct in the slide 3 plan view; old nose-electronics placeholder reaches into the duct zone (fix with that part). Battery clearance is covered by the October 15 duct adjustment (duct 7.5 mm lower); #16 now clears the duct/fans with an estimated collar.
 - [x] **Claude:** **19 Trim device** (`trim-chimneys`, durable id kept): the cold bypass duct under the belly, outside the foam, with fore and aft diverter flaps in foam-wrapped housings that open with the trim setting; TFAWS 2023 slides 4, 7, 8 and TFAWS 2024. ICES-2023's side-chimney concept archived. [References/limits](research/thermal-loop-2026-10-14/README.md).
 - [ ] **19 follow-up:** the cold duct's real section and the meaning of the "split cold duct" (TFAWS 2024); flap hinge sides and actuators.
 - [ ] **20 Battery temperature sensor** (`battery-sensor`): verify installation; distinguish an actual sensor body from a diagram marker.
@@ -392,14 +433,15 @@ actual geometry, interfaces and materials before extending the model.
   compartment walls and service penetrations. Do not assume a continuous inner metal liner.
 - [ ] Review harnesses, brackets and plumbing where photos show them; retain confidence/source notes.
 - [ ] Add an **assembled enclosure view** with casings and covers in place.
-- [ ] **Owner reminder, October 12:** independent hide/show controls for outer/attic shell,
+- [x] **Codex, October 16:** independent hide/show controls for outer/attic shell,
   structural facing, insulating foam, compartment/interface panels and individual equipment
-  casings when they obstruct inspection. Put them in a compact expandable Layers section.
-- [ ] Keep hidden layers physically installed: no position/scale changes, flight effects or
+  casings when they obstruct inspection, in compact expandable Inspection layers. Body/attic
+  skins and foam are still combined geometry; their true construction layers remain open.
+- [x] **Codex:** Keep hidden layers physically installed: no position/scale changes, flight effects or
   unintended camera re-centering. Retain part identity and make hidden/selected state clear.
-- [ ] Include restore-all/reset, keyboard/touch access and desktop/mobile checks. Existing
-  isolated-part inspection remains available. Wonderwall's named groups prepare this work;
-  no new layer-hiding UI has shipped yet.
+- [x] **Codex:** Include restore-all/reset, keyboard/touch access and desktop/mobile checks.
+  Existing isolated-part inspection remains available. Verified locally at 1440, 390 and
+  360 px; released with the part 16 closeout.
 - [x] **Codex:** Keep isolated DraMS unobstructed by neighboring carousel/partition; full context returns
   when isolation is off. DraMS covers/casings/mounts are separately grouped for future controls.
 - [ ] Add an **insulation/construction view** with independently selectable skin, insulation,

@@ -4,6 +4,15 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 16 inspection controls:** [behavior, checks and construction limits](research/inspection-visibility-2026-10-16/README.md).
+Existing shell/foam/panel and equipment groups can now be hidden independently for inspection.
+This adds no physical construction assumptions. Claude's completed battery pass is published;
+the older RDE note below predates that completion. His aft-bulkhead geometry is now closed out
+by Codex, with [sources, model comparison and the corrected clearance check](research/aft-bulkhead-2026-10-15/README.md).
+NASA/APL's July caption explicitly confirms the inverted test fixture; upright aft/up orientation
+agrees with the APL CAD cross-reference. The 25-degree angle, panel sizes/coating and actual air
+passage remain [EST] or unknown. Counts now 18 of 24 (3 Codex, 15 Claude); no thermal constants changed.
+
 **October 15 provisional RDE pass:** [evidence and limits](research/rde-2026-10-15/README.md).
 Two boxes and internal fans are documented; casing/vent/fan details remain illustrative [EST].
 Real hardware photos take priority over CGI for appearance. Part 09 stays unchecked; the

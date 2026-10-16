@@ -159,6 +159,18 @@ science clock, power and sample results cannot drift apart; the inspection camer
 usable. Reset restores the whole model. Geometry, stage timing and visual flow markers
 are illustrative, not flight CAD or onboard imagery.
 
+The expandable **Inspection layers** section hides the body/attic shells, separately modeled
+foam, compartment panels and flow markers. Component casings, covers, mounts, interfaces and
+harnesses can be hidden independently where modeled; the component menu marks hidden settings.
+**Restore layers** keeps the current camera and selection; the camera reset restores everything.
+These are viewing masks on existing geometry, not a verified structural layer stack.
+
+The [aft bulkhead](research/aft-bulkhead-2026-10-15/README.md) follows NASA/APL's real structure
+photos: gold-colored face, ribbed circular generator interface and pocketed rim. The generator
+rises aft at an estimated 25 degrees; the fan collar and aft body profile follow the same
+interface. Exact dimensions, coating and internal air passage remain unverified. The source
+fixture is explicitly inverted in NASA/APL's caption. Geometry: Claude; closeout: Codex.
+
 **Model assumptions** now separates sourced design references, approximate geometry,
 invented training geography, simplified engineering and deliberate simulation additions.
 Implementation and limitations: [interactive inspection notes](research/interactive-inspector-2026-10-12.md).

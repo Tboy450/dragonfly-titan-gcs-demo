@@ -1,0 +1,79 @@
+{
+  "mode": "before",
+  "base": "f216162",
+  "checks": [
+    {
+      "layer": "internal",
+      "azimuth": 0,
+      "pixels": 3080,
+      "l": 445,
+      "r": 454,
+      "t": 146,
+      "b": 453
+    },
+    {
+      "layer": "internal",
+      "azimuth": 1.5,
+      "pixels": 83388,
+      "l": 257,
+      "r": 642,
+      "t": 189,
+      "b": 410
+    },
+    {
+      "layer": "internal",
+      "azimuth": 3.1,
+      "pixels": 6560,
+      "l": 437,
+      "r": 462,
+      "t": 146,
+      "b": 453
+    },
+    {
+      "layer": "internal",
+      "azimuth": 4.7,
+      "pixels": 83412,
+      "l": 257,
+      "r": 642,
+      "t": 191,
+      "b": 408
+    },
+    {
+      "layer": "thermal",
+      "azimuth": 0,
+      "pixels": 3080,
+      "l": 445,
+      "r": 454,
+      "t": 146,
+      "b": 453
+    },
+    {
+      "layer": "thermal",
+      "azimuth": 1.5,
+      "pixels": 83388,
+      "l": 257,
+      "r": 642,
+      "t": 189,
+      "b": 410
+    },
+    {
+      "layer": "thermal",
+      "azimuth": 3.1,
+      "pixels": 6560,
+      "l": 437,
+      "r": 462,
+      "t": 146,
+      "b": 453
+    },
+    {
+      "layer": "thermal",
+      "azimuth": 4.7,
+      "pixels": 83412,
+      "l": 257,
+      "r": 642,
+      "t": 191,
+      "b": 408
+    }
+  ],
+  "errors": []
+}

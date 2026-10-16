@@ -1,5 +1,6 @@
 import * as THREE from "./vendor/three/three.module.min.js";
 import { inspectionGroups, inspectionModified } from "./vehicle-inspector.mjs?v=dev";
+import { createInspectionVisibility, visibleInspectionHardware } from "./inspection-visibility.mjs?v=dev";
 import { cameraPose } from "./flight-camera.mjs?v=dev";
 import { createTitanTerrain, terrainHeight } from "./titan-terrain.mjs?v=dev";
 import { model } from "./flight-model.mjs?v=dev";
@@ -237,6 +238,7 @@ export function createChaseRenderer(options = {}) {
 
   // ---- Mission-view layers: exterior, internal (see-through shell) and thermal (live colors) ----
   const shellNames = new Set(["fuselage", "attic", "high-gain-antenna"]);
+  const inspectionLayers = createInspectionVisibility(subsystems);
   const ghostShell = new THREE.MeshStandardMaterial({ color: 0xd8e3ea, transparent: true, opacity: 0.13, depthWrite: false, roughness: 0.9 });
   const thermalMaterials = new Map();
   function ownerOf(part) {
@@ -343,7 +345,7 @@ export function createChaseRenderer(options = {}) {
   }
   return {
     models: { original: classicModel, research: researchModel },
-    subsystems, mockParts, downwashDust,
+    subsystems, mockParts, downwashDust, inspectionLayers,
     // view.layer: "exterior" (default), "internal" or "thermal".
     // Returns the on-screen position of each labeled part for the layer's callouts.
     drawMission(ctx, w, h, state, view = {}) {
@@ -434,71 +436,75 @@ export function createChaseRenderer(options = {}) {
         missionCamera.lookAt(inspectionCenter);
       }
       missionCamera.updateProjectionMatrix();
-      renderer.render(scene, missionCamera);
-      if (view.parked && !layered) {
-        // Contact shadows use the same projected skid endpoints as the vehicle, so the
-        // parked portrait sits on the floor at any aspect ratio instead of floating.
-        craft.updateMatrixWorld(true);
-        const foot = skidFootprints[which], y = which === "research" ? -0.86 : -0.95;
-        const point = new THREE.Vector3();
-        ctx.save();
-        ctx.strokeStyle = "rgba(30, 38, 43, 0.36)";
-        ctx.lineWidth = Math.max(2, h / (halfHeight * 2) * 0.1);
-        ctx.lineCap = "round";
-        ctx.shadowColor = "rgba(20, 30, 35, 0.5)";
-        ctx.shadowBlur = 7;
-        for (const side of [-1, 1]) {
-          ctx.beginPath();
-          for (const [index, z] of [foot.front, foot.rear].entries()) {
-            point.set(side * foot.halfWidth, y, z).applyMatrix4(craft.matrixWorld).project(missionCamera);
-            const x = (point.x + 1) * w / 2, sy = (1 - point.y) * h / 2;
-            if (index === 0) ctx.moveTo(x, sy); else ctx.lineTo(x, sy);
+      if (inspector) inspectionLayers.apply(inspector, visibility);
+      try {
+        renderer.render(scene, missionCamera);
+        if (view.parked && !layered) {
+          // Contact shadows use the same projected skid endpoints as the vehicle, so the
+          // parked portrait sits on the floor at any aspect ratio instead of floating.
+          craft.updateMatrixWorld(true);
+          const foot = skidFootprints[which], y = which === "research" ? -0.86 : -0.95;
+          const point = new THREE.Vector3();
+          ctx.save();
+          ctx.strokeStyle = "rgba(30, 38, 43, 0.36)";
+          ctx.lineWidth = Math.max(2, h / (halfHeight * 2) * 0.1);
+          ctx.lineCap = "round";
+          ctx.shadowColor = "rgba(20, 30, 35, 0.5)";
+          ctx.shadowBlur = 7;
+          for (const side of [-1, 1]) {
+            ctx.beginPath();
+            for (const [index, z] of [foot.front, foot.rear].entries()) {
+              point.set(side * foot.halfWidth, y, z).applyMatrix4(craft.matrixWorld).project(missionCamera);
+              const x = (point.x + 1) * w / 2, sy = (1 - point.y) * h / 2;
+              if (index === 0) ctx.moveTo(x, sy); else ctx.lineTo(x, sy);
+            }
+            ctx.stroke();
           }
-          ctx.stroke();
+          ctx.restore();
         }
-        ctx.restore();
+        ctx.drawImage(renderer.domElement, 0, 0, w, h);
+        const labels = [];
+        if (modified || (inspector && (inspectionCenter.distanceTo(new THREE.Vector3(0, -0.15, 0)) > 0.01))) labels.inspection = true;
+        if (layered) {
+          craft.updateMatrixWorld(true);
+          for (const group of which === "research" ? labeledParts : mockParts) {
+            group.userData.labelAnchor ??= labelAnchor(group);
+            labelPoint.copy(group.userData.labelAnchor).applyMatrix4(craft.matrixWorld).project(missionCamera);
+            labels.push({
+              name: group.name, label: group.userData.label, source: group.userData.source,
+              zone: group.userData.thermalZone, color: group.userData.color, mock: !!group.userData.mock,
+              x: (labelPoint.x + 1) / 2 * w, y: (1 - labelPoint.y) / 2 * h, depth: labelPoint.z,
+              onCanvas: visibleInspectionHardware(group) && (!focusName || group.name === focusName) && labelPoint.z >= -1 && labelPoint.z <= 1,
+            });
+          }
+          if (which === "research" && !labels.inspection) {
+            // Published envelope dimensions for the blueprint backdrop, as on-screen line ends
+            // (craft frame: x right, y up, -z forward; skids at y -0.86, top at +0.88).
+            const screen = (x, y, z) => {
+              labelPoint.set(x, y, z).applyMatrix4(craft.matrixWorld).project(missionCamera);
+              return { x: (labelPoint.x + 1) / 2 * w, y: (1 - labelPoint.y) / 2 * h };
+            };
+            labels.dimensions = [
+              { text: "3.85 m", a: screen(0, -1.2, -1.93), b: screen(0, -1.2, 1.93),
+                extensions: [[screen(0, -0.9, -1.93), screen(0, -1.28, -1.93)], [screen(0, -0.9, 1.93), screen(0, -1.28, 1.93)]] },
+              { text: "1.75 m", a: screen(0, -0.86, -2.25), b: screen(0, 0.88, -2.25),
+                extensions: [[screen(0, -0.86, -1.95), screen(0, -0.86, -2.33)], [screen(0, 0.88, -1.95), screen(0, 0.88, -2.33)]] },
+              { text: "3.85 m", a: screen(-1.925, -0.86, 2.25), b: screen(1.925, -0.86, 2.25),
+                extensions: [[screen(-1.925, -0.86, 0.98), screen(-1.925, -0.86, 2.33)], [screen(1.925, -0.86, 0.98), screen(1.925, -0.86, 2.33)]] },
+            ];
+          }
+        }
+        return labels;
+      } finally {
+        landscape.group.visible = true;
+        for (const [group, visible] of visibility) group.visible = visible;
+        applyLayer("exterior");
+        ambient.color.copy(titanSky); ambient.groundColor.copy(titanGround); sun.color.copy(titanSun);
+        fill.intensity = 0;
+        scene.background = background;
+        scene.fog = fog;
+        renderer.shadowMap.enabled = true;
       }
-      ctx.drawImage(renderer.domElement, 0, 0, w, h);
-      const labels = [];
-      if (modified || (inspector && (inspectionCenter.distanceTo(new THREE.Vector3(0, -0.15, 0)) > 0.01))) labels.inspection = true;
-      if (layered) {
-        craft.updateMatrixWorld(true);
-        for (const group of which === "research" ? labeledParts : mockParts) {
-          group.userData.labelAnchor ??= labelAnchor(group);
-          labelPoint.copy(group.userData.labelAnchor).applyMatrix4(craft.matrixWorld).project(missionCamera);
-          labels.push({
-            name: group.name, label: group.userData.label, source: group.userData.source,
-            zone: group.userData.thermalZone, color: group.userData.color, mock: !!group.userData.mock,
-            x: (labelPoint.x + 1) / 2 * w, y: (1 - labelPoint.y) / 2 * h, depth: labelPoint.z,
-            onCanvas: (!focusName || group.name === focusName) && labelPoint.z >= -1 && labelPoint.z <= 1,
-          });
-        }
-        if (which === "research" && !labels.inspection) {
-          // Published envelope dimensions for the blueprint backdrop, as on-screen line ends
-          // (craft frame: x right, y up, -z forward; skids at y -0.86, top at +0.88).
-          const screen = (x, y, z) => {
-            labelPoint.set(x, y, z).applyMatrix4(craft.matrixWorld).project(missionCamera);
-            return { x: (labelPoint.x + 1) / 2 * w, y: (1 - labelPoint.y) / 2 * h };
-          };
-          labels.dimensions = [
-            { text: "3.85 m", a: screen(0, -1.2, -1.93), b: screen(0, -1.2, 1.93),
-              extensions: [[screen(0, -0.9, -1.93), screen(0, -1.28, -1.93)], [screen(0, -0.9, 1.93), screen(0, -1.28, 1.93)]] },
-            { text: "1.75 m", a: screen(0, -0.86, -2.25), b: screen(0, 0.88, -2.25),
-              extensions: [[screen(0, -0.86, -1.95), screen(0, -0.86, -2.33)], [screen(0, 0.88, -1.95), screen(0, 0.88, -2.33)]] },
-            { text: "3.85 m", a: screen(-1.925, -0.86, 2.25), b: screen(1.925, -0.86, 2.25),
-              extensions: [[screen(-1.925, -0.86, 0.98), screen(-1.925, -0.86, 2.33)], [screen(1.925, -0.86, 0.98), screen(1.925, -0.86, 2.33)]] },
-          ];
-        }
-      }
-      landscape.group.visible = true;
-      for (const [group, visible] of visibility) group.visible = visible;
-      applyLayer("exterior");
-      ambient.color.copy(titanSky); ambient.groundColor.copy(titanGround); sun.color.copy(titanSun);
-      fill.intensity = 0;
-      scene.background = background;
-      scene.fog = fog;
-      renderer.shadowMap.enabled = true;
-      return labels;
     },
     draw(ctx, w, h, state) {
       const framing = state.edl ? "arrival" : "pilot";

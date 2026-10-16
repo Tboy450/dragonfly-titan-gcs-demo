@@ -6,6 +6,14 @@ Implemented October 14, 2026 by Claude (Anthropic Claude Opus 5.5). Revision
 side "chimneys" with flaps, archived in
 [`archive/thermal-loop-2026-10-14`](../../archive/thermal-loop-2026-10-14/README.md).
 
+**October 16 closeout of Claude's #16 update:** revision `thermal-loop-2026-10-15b` retains
+the battery pass's lower duct and moves the fans from z 1.16 to 1.04 m [EST] to fit the canted
+aft panel. The short adapter collar ends 2 mm before its forward face; actual gas penetration
+is unknown. Duct transition and visual airflow follow the new layout; thermal/flow/power
+constants are unchanged. Sources and verification:
+[`../aft-bulkhead-2026-10-15/`](../aft-bulkhead-2026-10-15/README.md).
+Previous fan placement: `archive/fans-v1-2026-10-15/`.
+
 ## Sources (all published)
 
 | Source | What it gives |

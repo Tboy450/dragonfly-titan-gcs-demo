@@ -1,4 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js";
+import { aftBulkheadAsset } from "./aft-bulkhead.mjs?v=dev";
 
 // Parts 17, 18 and 19: the Titan-surface air loop. Published layout [PUB]:
 // - TFAWS 2023 (Holtzman and Castano, APL) slide 4: fan and ducting at the MMRTG; warm ducted
@@ -17,11 +18,13 @@ import * as THREE from "./vendor/three/three.module.min.js";
 // wide, from z -1.18 to +0.93, widening to the fans; fans about 0.13 m, near z +1.2. Duct height,
 // cold-duct section, housing shapes, flap hinge sides and the actuators are [EST].
 export const thermalLoopAsset = Object.freeze({
-  revision: "thermal-loop-2026-10-15",
+  revision: "thermal-loop-2026-10-15b",
   // y lowered 7.5 mm on Oct 15 so the duct and its joint flanges sit fully under the bay floor
   // (y -0.284), inside the foam; the first position is archived (archive/warm-duct-v1-2026-10-15).
   duct: Object.freeze({ width: 0.14, height: 0.045, y: -0.3125, front: -1.175, back: 0.93 }),
-  fans: Object.freeze({ diameter: 0.115, centers: Object.freeze([Object.freeze([-0.068, -0.19, 1.16]), Object.freeze([0.068, -0.19, 1.16])]) }),
+  // Fans moved 12 cm forward on Oct 15 to clear the canted aft bulkhead (part 16); first position
+  // z 1.16, archived in archive/fans-v1-2026-10-15.
+  fans: Object.freeze({ diameter: 0.115, centers: Object.freeze([Object.freeze([-0.068, -0.19, 1.04]), Object.freeze([0.068, -0.19, 1.04])]) }),
   coldDuct: Object.freeze({ width: 0.14, height: 0.035, y: -0.3775, front: -0.56, back: 0.6 }),
   diverters: Object.freeze({ front: -0.61, aft: 0.67 }),
   maxFlapDeg: 24,
@@ -115,9 +118,14 @@ export function buildFans({ parent, mesh }) {
     const motor = mesh(new THREE.CylinderGeometry(0.024, 0.024, 0.04, 16), dark, [x, y, z + 0.005], casings); motor.rotation.x = Math.PI / 2; motor.name = `${name}-motor`;
     fanRotors.push(rotor);
   });
-  // Adapter from the fans back to the MMRTG's housing (the grey part in the plan view) [EST].
+  // Adapter collar from the fans aft to the forward face of the canted aft bulkhead (part 16),
+  // behind the MMRTG interface: the grey part in the plan view. How the air crosses the bulkhead
+  // to the MMRTG's housing is not published [EST].
   const [, y0, z0] = thermalLoopAsset.fans.centers[0];
-  const adapter = taperBetween(mesh, [0, y0 + 0.015, z0 + 0.038], [0, y0 + 0.015, 1.24], 0.27, 0.13, 0.3, 0.16, grey, adapters);
+  const B = aftBulkheadAsset, start = new THREE.Vector3(0, y0 + 0.015, z0 + 0.038);
+  const depth = new THREE.Vector3(...B.normal).dot(start.clone().sub(new THREE.Vector3(...B.interfaceCenter)));
+  const end = start.clone().addScaledVector(new THREE.Vector3(...B.normal), -depth - B.plate.thickness - 0.002);
+  const adapter = taperBetween(mesh, start.toArray(), end.toArray(), 0.27, 0.13, 0.25, 0.12, grey, adapters);
   adapter.name = "fan-mmrtg-adapter-duct";
   return { group, casings, rotors: fanRotors, adapters };
 }
@@ -164,9 +172,11 @@ export function buildTrimDevice({ parent, mesh }) {
 export function airLoopPaths() {
   const d = thermalLoopAsset.duct, c = thermalLoopAsset.coldDuct, v = thermalLoopAsset.diverters;
   const [, fy, fz] = thermalLoopAsset.fans.centers[0];
+  // Through the tilted MMRTG (aft-bulkhead.mjs), out its base and down the adapter to the fans.
+  const [, my, mz] = aftBulkheadAsset.mmrtgCenter, [, iy, iz] = aftBulkheadAsset.interfaceCenter;
   const main = new THREE.CatmullRomCurve3([
-    [0, 0.05, 1.6], [0, -0.1, 1.3], [0, fy, fz], [0, -0.27, 1.0], [0, d.y, 0.85], [0, d.y, 0], [0, d.y, -1.1],
-    [0, -0.24, -1.27], [0, -0.12, -1.36], [0, -0.02, -1.25], [0.05, -0.02, -0.5], [0.05, 0.04, 0.3], [0, 0.045, 0.95], [0, 0.08, 1.3],
+    [0, my, mz], [0, -0.16, 1.14], [0, fy, fz], [0, -0.27, 0.97], [0, d.y, 0.85], [0, d.y, 0], [0, d.y, -1.1],
+    [0, -0.24, -1.27], [0, -0.12, -1.36], [0, -0.02, -1.25], [0.05, -0.02, -0.5], [0.05, 0.04, 0.3], [0, 0.03, 0.92], [0, iy + 0.06, iz - 0.04],
   ].map(p => new THREE.Vector3(...p)), true, "catmullrom", 0.2);
   const bypass = new THREE.CatmullRomCurve3([
     [0, d.y, v.aft + 0.1], [0, -0.33, v.aft], [0, c.y, c.back], [0, c.y, 0], [0, c.y, c.front], [0, -0.33, v.front], [0, d.y, v.front - 0.1],

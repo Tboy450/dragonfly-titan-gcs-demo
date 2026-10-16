@@ -39,6 +39,54 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-16: Close out Claude's aft bulkhead and publish inspection layers
+- **Signed:** Claude (Anthropic Claude Opus 5.5), geometry; Codex (OpenAI), verification,
+  archive, documentation and release closeout.
+- **Commit:** "Complete Claude's aft bulkhead and independent inspection layers"
+- **What changed:** Preserved Claude's gold-colored aft panel, pocketed rim, ribbed generator
+  interface, estimated 25-degree aft/up MMRTG, matching aft foam, forward fans and short collar.
+  NASA/APL's July caption explicitly confirms the test structure was inverted. A full-resolution
+  photo, credits and model comparison are saved. Updated component sources/assumptions and the
+  checklist to 18 of 24 (3 Codex, 15 Claude). Inspection controls from the earlier local entry
+  are included in this release; that entry's pending #16 status is superseded here.
+- **Assumptions:** Real photos inform appearance; CAD cross-checks orientation/layout only.
+  Angle, sizes, coating, final flight configuration and gas passage remain estimated/unknown.
+  No invented opening, hidden generator channel, new physics or thermal constants. No imagegen.
+- **Archive:** Previous panel, level generator, aft body and fan layout saved with exact originals,
+  before pictures and restore guides at `archive/aft-bulkhead-2026-10-15/` and
+  `archive/fans-v1-2026-10-15/`; tags at `f216162`. Inspection baseline/tag at `8b2399b`.
+  Unpublished draft retained separately. Claude retains part #16 checklist credit.
+- **Checks:** All 248 Node tests; source/checklist attribution and counts; installed and isolated
+  Internal/Thermal at four angles, 1440/390/360 px, rendered-pixel framing and no script errors.
+  New-to-new clearance uses the tilted plate frame; the adapter has 2 mm model clearance.
+- **Next:** Parts 03, 05, 09 and 20-22 remain open. Choose a clear real hardware reference;
+  retain construction-layer and far-side label follow-ups. Unrelated pending game/city files
+  and their new change-log entries are excluded from this simulator commit.
+
+### 2026-10-16: Finish independent inspection layer controls and review the pending bulkhead
+- **Signed:** Codex (OpenAI)
+- **What changed:** Compact expandable Inspection layers controls for body/attic shells,
+  existing foam, compartment panels and flow markers; per-component casings, covers, mounts,
+  interfaces and harnesses. Component choices are retained and marked in the menu. Restore
+  Layers keeps the camera; camera reset restores all layers. Masks are restored after every
+  draw, including errors, and hidden hardware keeps its original number without a marker.
+- **Review:** Claude's battery, rotor heads, pilot zoom and label fixes are committed. The
+  local aft-bulkhead draft is still unfinished. Its adapter's actual 2 mm clearance was
+  rejected by a test that expanded a bounding box twice; the corrected test uses mesh vertices
+  in the plate frame. No geometry was moved. Source qualifications and completion tasks recorded.
+- **Assumptions:** Existing geometry only; body/attic skins and foam are not separated into
+  a verified construction stack. Removing cases does not reconstruct undisclosed internals.
+  #16 remains unchecked and the completed count stays 17; no publication in this continuation.
+- **Files:** `inspection-visibility.mjs` (new), inspector state/UI, Mission renderer, HTML/CSS,
+  relevant tests, README, architecture, checklist, research/archives.
+- **Archive:** `archive/inspection-visibility-2026-10-16/` with code, screenshots and local
+  tag at `8b2399b`; unpublished bulkhead review draft retained separately.
+- **Checks:** All 248 Node tests pass, including new mask independence, framing, identity,
+  unchanged state and error-cleanup cases. Edge/WebGL: four-angle Internal/Thermal screenshots,
+  rendered-pixel changes, keyboard controls and 1440/390/360 px layouts, no script errors.
+- **Open / next:** Complete the aft-bulkhead source/orientation, archive and app documentation;
+  actual structural construction layers and far-side label occlusion remain open.
+
 ### 2026-10-16: Resume active Swarmfall missions and record the next campaign requests
 - **Signed:** Codex (OpenAI)
 - **Commit:** "Save and resume Swarmfall missions and expand campaign checklist"
