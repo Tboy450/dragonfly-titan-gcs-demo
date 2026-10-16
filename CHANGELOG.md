@@ -39,6 +39,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-16: Swarmfall Environment Lab, first version (Codex)
+- **Signed:** Codex (OpenAI), the work; recorded by Claude (Anthropic Claude Opus 5.5), because
+  Codex reached its usage limit before logging or committing it.
+- **Commit:** "Add Codex's Swarmfall Environment Lab and city research"
+- **What changed:** At the owner's request for links to environment tests, a separate gallery at
+  `dist/invasion/environments/` with three visual studies: Alien arcology (original procedural
+  towers, rings, bridges), Metropolis (five Quaternius Downtown City MegaKit models, CC0, with
+  textures reduced to 512 px, on an original street grid) and Tidal citadel (Kenney Fantasy Town
+  Kit wall pieces, CC0, in original terraces and spires). Orbit, pilot, flyover and dusk
+  controls; a light render mode; phone layout. Unchanged three.js r180 addons (GLTFLoader,
+  OrbitControls, BufferGeometryUtils, MIT) added under `dist/vendor/three/addons/`. Codex's city
+  research, asset catalog scripts and the extracted Kenney kit are in
+  `research/fantasy-city-2026-10-16/`; the large source backups stay in the owner's local
+  `Documents/Game Asset Library`.
+- **Assumptions:** all compositions are invented visual studies with no collision or game rules.
+- **Files:** `dist/invasion/environments/`, `dist/vendor/three/addons/`, `dist/vendor/three/README.md`,
+  `research/fantasy-city-2026-10-16/`, `.gitignore` (keeps the duplicate Kenney zip and the
+  three.js npm package local), `SWARMFALL-TODO.md`
+- **Checks (Claude's review):** all 248 tests pass with these files; licenses in the asset
+  folders read CC0; each test loads with no console errors.
+- **Open / next:** Claude's expansion of the lab follows in the next entry.
+
 ### 2026-10-16: Close out Claude's aft bulkhead and publish inspection layers
 - **Signed:** Claude (Anthropic Claude Opus 5.5), geometry; Codex (OpenAI), verification,
   archive, documentation and release closeout.
@@ -63,6 +85,35 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   retain construction-layer and far-side label follow-ups. Unrelated pending game/city files
   and their new change-log entries are excluded from this simulator commit.
 
+### 2026-10-16: Refine the city shortlist toward intricate editable scenes
+- **Signed:** Codex (OpenAI)
+- **What changed:** Recorded the owner's higher complexity target and why Elven Realm reads
+  as elaborate. Added a separate shortlist of complete city scenes and a reusable architecture
+  inventory, with inspected previews for cyberpunk City, drone City, City 1 and Elven Realm.
+  Added VIS-12 and revised the earlier basic-kit ranking's status.
+- **Sources / limits:** CC0/CC-BY sources distinguished from paid examples, noncommercial
+  assets, license-conflicted listings and inaccessible downloads. No source scene imported yet.
+- **Files:** `research/fantasy-city-2026-10-16/COMPLEX-SCENES.md`, research index/previews,
+  `SWARMFALL-TODO.md`, `CHANGELOG.md`.
+- **Checks:** Creator descriptions, licenses and available previews reviewed; documentation
+  only. Exact archive license versions/content still need validation before runtime integration.
+
+### 2026-10-16: Compare city references, shortlist reusable assets and plan destruction
+- **Signed:** Codex (OpenAI)
+- **What changed:** Researched all owner references: Skyrim, non-blocky Minecraft megacity
+  scale, Spider-Man, Crackdown/Crackdown 3 destruction, Kakarot world map/West City/destruction,
+  and elven/fantasy cities. Saved and visually inspected six reference screenshots (including
+  Kakarot's official map/city images), ranked nine reusable asset options with license/access
+  limits, and downloaded Kenney's unchanged CC0 Fantasy Town Kit archive for evaluation.
+  Added VIS-11 city implementation and ENV destruction tasks to the Swarmfall checklist.
+- **Sources / limits:** Crackdown 3's full cloud destruction is specifically Wrecking Zone;
+  Kakarot's official destruction description does not prove citywide persistent collapse.
+  Free subsets, paid licenses, UE-only assets and texture exceptions are distinguished.
+- **Files:** `research/fantasy-city-2026-10-16/`, `SWARMFALL-TODO.md`, `CHANGELOG.md`
+- **Checks:** Source links, creator licenses and saved images reviewed; documentation only.
+  No runtime city or destruction system implemented, no paid purchase and no game files ripped.
+- **Next:** VIS-11, then ENV-01 through ENV-04 in measured stages.
+
 ### 2026-10-16: Finish independent inspection layer controls and review the pending bulkhead
 - **Signed:** Codex (OpenAI)
 - **What changed:** Compact expandable Inspection layers controls for body/attic shells,
@@ -86,6 +137,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   rendered-pixel changes, keyboard controls and 1440/390/360 px layouts, no script errors.
 - **Open / next:** Complete the aft-bulkhead source/orientation, archive and app documentation;
   actual structural construction layers and far-side label occlusion remain open.
+
+### 2026-10-16: Record the large alien/fantasy city direction
+- **Signed:** Codex (OpenAI)
+- **What changed:** Added VIS-10 to the Swarmfall checklist. Minecraft megacities reference
+  scale and intricacy only; the owner wants a less blocky, non-voxel alien/fantasy city.
+  Recorded candidate modular asset sources, district/skyline approach, license checks and
+  dependencies on pilot controls, building collisions, navigation and rendering performance.
+- **Files:** `SWARMFALL-TODO.md`, `CHANGELOG.md`
+- **Checks:** Documentation-only; candidate pack descriptions/licenses checked on creator
+  websites. No assets imported and no game behavior changed.
 
 ### 2026-10-16: Resume active Swarmfall missions and record the next campaign requests
 - **Signed:** Codex (OpenAI)

@@ -28,6 +28,12 @@ Keep this file updated across sessions and assistant handoffs.
 - **New owner requests (October 16):** pilot/first-person campaign, later drone builder,
   optional extraction after victory requirements, and multiple small pods. Tracked as
   MODE-20, MODE-21, OBJ-07 and DROP-01 below; these are planned, not implemented.
+- **City research (Codex, October 16):** all references consolidated in
+  [City assets, scale and destruction](research/fantasy-city-2026-10-16/README.md): Skyrim,
+  Minecraft megacities (scale only), Spider-Man, Crackdown/Crackdown 3, Kakarot map/West City
+  and elven/fantasy architecture. Ranked free/paid asset shortlist and verified limitations.
+  Kenney's CC0 source archive is saved locally; no city runtime import yet. Start VIS-11 next
+  for a city prototype; ENV items below cover the separately requested destructibility.
 
 - **Live build:** `8b2399b`. The game arrived in `73c83e6`; `8b2399b` added the forgiving 404
   page. 237 tests pass on the committed tree.
@@ -258,6 +264,46 @@ and other threats on the planet):
 
 ## 10. Look (VIS)
 
+- [ ] **VIS-10 ★ (P2)** Large alien/fantasy cities (owner, October 16). Minecraft megacities
+  are a reference for **scale and intricacy only**; the owner explicitly wants a less blocky,
+  non-voxel appearance. Aim for sprawling connected districts, distinctive skylines, curved
+  architecture, monumental buildings, bridges and layered streets suitable for close pilot
+  flight as well as the strategy view. Explore fantasy/mythical city assets and reusable
+  modular kits; choose a coherent style per civilization. Public availability alone does not
+  establish permission to reuse a city/map; record the actual asset license and credits.
+  Use the [ranked asset shortlist and reference comparison](research/fantasy-city-2026-10-16/README.md):
+  Downtown City MegaKit / Poly Haven for detailed urban districts; Medieval Village MegaKit
+  for fantasy districts; paid Synty Elven Realm as an optional explicit elven-city candidate.
+  Preserve all owner references, including Kakarot's rounded West City architecture and larger
+  regional map, Skyrim's dense stone/timber districts, Spider-Man's continuous city fabric,
+  Minecraft megacity infrastructure/scale and Crackdown's vertical skyline.
+  Evaluate appearance before adoption; modular pieces need substantial layout/art work to
+  achieve the requested scale. Prototype one district with a larger skyline, then expand with
+  distance-based detail, section loading, shared materials/instances, building collisions,
+  navigable streets, safe pod zones and phone performance checks. Coordinate with FIX-02,
+  FIX-03, MODE-20 and PERF; Kenney source pack downloaded for evaluation, no runtime city yet.
+- [ ] **VIS-11 ★ (P2)** Implement the large-city asset prototype from VIS-10 and the
+  [research handoff](research/fantasy-city-2026-10-16/README.md). Start with a verified free
+  subset of Downtown City MegaKit for urban blocks, or Medieval Village MegaKit for a fantasy
+  district. Compose connected roads, varied heights, landmarks and a larger skyline; adapt to
+  the civilization instead of copying franchise buildings. Add an inspectable local city
+  preview. Preserve campaign balance initially; Aurex's current gameplay square is 1 km wide.
+  Shared city layout must drive geometry, collision, navigation and safe pod areas. Measure
+  desktop/phone rendering, use distance-based detail and section culling, preserve licenses,
+  credits and originals, and archive the prior skyline before replacement. Do not check this
+  off merely for downloading models or drawing another scatter of boxes.
+- [ ] **VIS-12 ★ (P2)** Prioritize architectural complexity over elementary building kits
+  (owner feedback, October 16). Inspect the [updated complex-scene shortlist](research/fantasy-city-2026-10-16/COMPLEX-SCENES.md):
+  carlcapu333's cyberpunk City for intricate geometry/elevated routes; Daniel Vicente's
+  Medieval Modular City as a fantasy candidate; drone City for urban coverage; Hidden Alley
+  for close-view realism and dressing. Some sources have only listing-level verification;
+  validate archives/licenses before importing. This revises VIS-11's initial pack preference.
+  Build an original reusable module inventory over time: curved facades, tower crowns,
+  sweeping roofs, ornamental arches/ribs, buttresses, bridges, terraces, stairs, gardens and
+  damage variants. Use Synty Elven Realm as a complexity reference; its proprietary geometry
+  has not been purchased or copied. Compare imported/authored districts from street and aerial
+  views; simple material swaps and repeated rectangular buildings do not close this task.
+
 - [ ] **VIS-01 (P1)** Rotor-wash dust under low drones and at pod touchdown (reuse
   `downwash-dust.mjs`).
 - [ ] **VIS-02 (P2)** More detailed drones: panel detail, lights, smoke when damaged, banking
@@ -347,3 +393,29 @@ The game is silent today.
 - [ ] **DOC-02 (P2)** How-to guides: add a planet, a drone, a defender, a hazard and an
   achievement (files to touch, tests to add).
 - [ ] **DOC-03 (P3)** A player guide (controls and tips) linked from the title screen.
+
+## 16. Destructible environments (ENV)
+
+Owner request, October 16: investigate Crackdown 3 and Dragon Ball Z: Kakarot destruction
+alongside all the earlier city references. [Research and sources](research/fantasy-city-2026-10-16/README.md).
+Crackdown 3's confirmed fully destructible/cloud-powered mode is Wrecking Zone; Kakarot's
+official page confirms destructible battlefields, not persistent collapse of every city
+building. None of the shortlisted architecture packs includes a verified browser destruction
+system. The following are implementation tasks, not claims about either game's internals.
+
+- [ ] **ENV-01 ★ (P2)** Damageable scenery in one city district: stable building/prop IDs,
+  health and intact/damaged/ruined states in a plain rules module; authored broken facades,
+  dust and a capped debris pool in the renderer. Start with selected walls/props/buildings,
+  then expand. Make target selection and weapon effects understandable to the player.
+- [ ] **ENV-02 ★ (P2)** Destruction changes movement and combat: consistent visible geometry,
+  collision, cover/line of sight, troop routes, drone clearance and safe pod landing points.
+  Rubble may create obstacles or openings. Preserve required objectives and extraction paths;
+  define damage to captured structures and civilian/public alarm effects.
+- [ ] **ENV-03 ★ (P2)** Save destruction by stable IDs, with checkpoint version/migration,
+  seeded-layout compatibility and tests across reloads. Re-entering a district must not revive
+  destroyed geometry or leave invisible blocking collision. Avoid double rewards/salvage.
+- [ ] **ENV-04 ★ (P3)** Profile selective building collapse and support/chain failures in a
+  smaller test arena. Use prebaked chunks, simplified collision, bounded active debris and
+  static settled rubble; consider a worker only if measurements justify it. Record phone and
+  desktop frame time/memory. Citywide physics and online synchronization need separate design;
+  do not promise Crackdown's cloud-scale behavior on the current browser architecture.

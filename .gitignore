@@ -1,0 +1,5 @@
+# Local-only copies that duplicate files already in the repository.
+# Kenney's archive: its contents are extracted in the same folder (kenney/).
+research/fantasy-city-2026-10-16/kenney_fantasy-town-kit_2.0.zip
+# The three.js npm package: the renderer and the addons in use are in dist/vendor/three/.
+research/fantasy-city-2026-10-16/three-0.180.0.tgz
