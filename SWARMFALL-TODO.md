@@ -20,6 +20,16 @@ Keep this file updated across sessions and assistant handoffs.
 
 ## Resume here (October 16, 2026)
 
+- **Environment Lab and backups (Codex continuation, October 16):** first three visual tests
+  are implemented at `dist/invasion/environments/`: alien arcology, metropolis and tidal
+  citadel, with orbit/pilot cameras, view presets, flyover, dusk and light rendering. First
+  version preserved in `598e3b9` by Claude after Codex's usage limit. Six verified source
+  backups (1.84 GB) are in `C:/Users/Heemi/Documents/Game Asset Library/`, with licenses,
+  creators, hashes and a pending space/alien queue. [Current handoff](research/fantasy-city-2026-10-16/ASSET-BACKUPS.md).
+  These updates supersede the older "no city runtime import yet" research status below:
+  selected CC0 models are imported in the separate lab, but no campaign planet was replaced.
+  Preserve every earlier version, original archive and Downloads copy; do not clean up yet.
+
 - **Codex continuation (October 16):** FIX-01 implemented locally: active missions autosave
   every 5 seconds and when the page is hidden/left. Resume from the title, paused, with terrain,
   orders, drops, hazards and camera restored. New missions ask before replacing a checkpoint.
@@ -264,6 +274,49 @@ and other threats on the planet):
 
 ## 10. Look (VIS)
 
+- [ ] **VIS-16 ★ (P2)** Contoured coastal setting for cyberpunk City / Skyway (Codex,
+  October 16): individual source contact points shape smooth ground, separate footing pads,
+  access roads and shoreline; animated ocean water and a Foundation camera. Original imported
+  architecture retained. Flat-ground comparison remains selectable; the large-plinth draft and
+  first gallery are preserved under `archive/environment-lab-v1-2026-10-16/`.
+  **Owner review:** second low-coast pass is the preferred baseline and restored as default.
+  High contact-envelope draft rejected: terrain swallowed buildings. Finish actual underside
+  fitting across the entire city without burying architecture; some elevated bases still float.
+  Both first foundation passes have screenshots and selectable comparison links in credits.
+  Gallery titles restored to **Skyway megacity** and **Phototextured city** by owner preference;
+  original Cyberpunk City and drone City names remain in subtitles/credits.
+  Fresh local test link: `http://127.0.0.1:4201/invasion/environments/?scene=cyberpunk`.
+  These are visual experiments; collision, navigation, citywide streaming and destruction remain open.
+
+- [ ] **VIS-17 ★ (P2)** Reusable terrain/foundation authoring tools for imported cities.
+  Investigate Blender Geometry Nodes Raycast / Shrinkwrap against selected underside proxies;
+  Houdini HeightField Project + geometry masks for district-scale fitting; Unreal Landscape
+  Patch if an Unreal authoring workflow becomes useful. Start with Blender and the second
+  Skyway coast pass. Keep roofs/bridges out of terrain targets, constrain coast and slopes,
+  generate fitted retaining/foundation meshes, and test both gaps and unwanted burial.
+  [Tool shortlist, official sources and workflow](research/fantasy-city-2026-10-16/FOUNDATION-TOOLS.md).
+
+- [x] **VIS-13 ★ (P2)** First separate environment comparison gallery (Codex; preserved by
+  Claude in `598e3b9`): three inspectable city studies, aerial/district/street cameras,
+  orbit/free-pilot/flyover, dusk, light rendering and runtime source credits. Local address:
+  `http://127.0.0.1:4187/invasion/environments/`. This completes the initial test-gallery
+  deliverable only; VIS-10 through VIS-12 remain open for the requested quality and integration.
+- [ ] **VIS-14 ★ (P2)** Compare complete Blender scenes against the modular/procedural tests.
+  Convert cyberpunk City and drone City with embedded scripts disabled, retain originals and
+  license notices, inspect geometry/materials/packed textures, record reductions and offer
+  separate preview links. Then evaluate Hidden Alley for close-view detail. Keep the first
+  gallery available; new experiments should add choices rather than erase old work.
+  **Progress (Codex, October 16):** cyberpunk City and drone City converted with Blender
+  4.5.14, embedded scripts disabled, originals retained. Added Skyway megacity and Phototextured
+  city as separate gallery choices, normalized to a 2 km source span. Geometry grouped by
+  material; drone textures capped at 1024 px, animation omitted; cyberpunk gets new PBR colors.
+  Both rendered without browser errors. Hidden Alley conversion and campaign integration remain
+  open; these previews do not by themselves complete VIS-10/VIS-11/VIS-12 or ENV destruction.
+- [ ] **VIS-15 ★ (P2)** Space/alien asset continuation: planetary bases, orbital stations,
+  intricate alien architecture, vessels and appropriate environments. Follow the library's
+  source/queue manifest; use only free authorized files, respect daily download allowances,
+  resolve exact CC-BY notices before redistribution and keep incomplete downloads pending.
+
 - [ ] **VIS-10 ★ (P2)** Large alien/fantasy cities (owner, October 16). Minecraft megacities
   are a reference for **scale and intricacy only**; the owner explicitly wants a less blocky,
   non-voxel appearance. Aim for sprawling connected districts, distinctive skylines, curved
@@ -366,6 +419,13 @@ The game is silent today.
   winnable, difficulty rising.
 
 ## 14. Publishing and housekeeping (OPS)
+
+- [x] **OPS-07 ★ (P2)** Create a reusable asset library outside this project (Codex,
+  October 16): six completed original backups totaling 1,843,813,552 bytes, searchable JSON
+  catalog, creators/source/license receipts, SHA-256 hashes, ZIP CRC checks, archive inventories
+  and preserved catalog history. Location: `C:/Users/Heemi/Documents/Game Asset Library/`.
+  Original archives, existing files and Downloads copies retained. Further downloads remain
+  open under VIS-15; source backups are not automatically game-ready implementations.
 
 - [ ] **OPS-01 (P1)** Another session's aft-bulkhead work (`dist/aft-bulkhead.mjs`,
   `dist/vehicle-research.mjs`, `dist/thermal-loop.mjs`, `dist/vehicle-inspector.mjs`,

@@ -1,9 +1,22 @@
 # Environment Lab — sources and modifications
 
-Three separate visual studies by Codex (OpenAI), October 16, 2026. Architecture, dimensions,
+Five separate visual studies by Codex (OpenAI), October 16, 2026. Original architecture, dimensions,
 layout, terrain and lighting are invented visual designs. No image-generation service was used.
 
 ## Imported runtime models
+
+- **carlcapu333, cyberpunk City.** https://blendswap.com/blend/21664
+  (legacy archive ID 91935), [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/).
+  Used in **Skyway megacity**. Original untextured architecture converted from Blender with
+  modifiers applied. New ceramic/metal PBR palette, normalized scale and merged render batches
+  by Codex; original source, included license notice and inspection report retained. No source
+  geometry was decimated. Embedded scripts disabled; original Blender file not overwritten.
+- **Voxelatio, drone City.** https://blendswap.com/blend/27360 — CC0 listing.
+  Used in **Phototextured city**. Packed facade/roof images retained, with a 1024 px texture
+  cap; animation omitted, modifiers applied, scale normalized and meshes grouped by material
+  for rendering. Original Blender scene preserved. Some source textures are intended for
+  aerial views; a close camera can expose their low resolution. This is an adaptation study,
+  not a claim that every storefront/texture has been redesigned as alien architecture.
 
 - **Quaternius, Downtown City MegaKit, free Standard edition.**
   https://quaternius.itch.io/downtown-city-megakit — CC0 1.0.
@@ -22,6 +35,16 @@ layout, terrain and lighting are invented visual designs. No image-generation se
   license are in `dist/vendor/three/`; addon provenance is recorded in that folder's README.
 
 ## Original composition
+
+Cyberpunk City / Skyway now adds original contoured coastal land, individual footing pads,
+access roads and ocean water around the preserved source architecture. Contact points inform
+the drawing, not structural calculations. The broad intermediate plinth is archived; the
+flat-ground version remains available through the credits panel for comparison.
+
+Owner review selected the second low-coast draft as the default. Full base fitting is still
+unfinished. The later full-height terrain envelope buried architecture and is archived;
+it is not the current default. The first raised platform and second low coast are selectable
+historical comparisons. Gallery titles are Skyway megacity and Phototextured city.
 
 Alien arcology: radial ceramic towers, skyways, canals, landing pads and planetary setting.
 Metropolis: connected street grid, civic park, financial landmarks, waterfront and lower-detail
@@ -42,7 +65,8 @@ archive inventories and SHA-256 checksums track the actual backups and pending d
 Downloads copies and earlier project work were retained. Browser derivatives are additional
 files; no current Swarmfall planet or simulator environment was replaced.
 
-Cyberpunk City, drone City, HY-21 and Hidden Alley are preserved source backups, not runtime
-imports in these tests. They need a separate Blender conversion/material/dependency inspection.
+Cyberpunk City and drone City now have separate converted runtime tests. Their original source
+backups remain unchanged. HY-21 and Hidden Alley are preserved backups, not runtime imports;
+they still need separate conversion/material/dependency inspection.
 Paid Synty assets and proprietary Skyrim/Minecraft/Spider-Man/Crackdown/Kakarot geometry have
 not been copied into the gallery. Earlier screenshots remain reference-only research.

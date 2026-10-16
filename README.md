@@ -54,6 +54,53 @@ and a local versus mode where players race to take the same planet with drone-vs
 Everything still to do is in the [Swarmfall update checklist](SWARMFALL-TODO.md), with item
 numbers to ask for.
 
+### Environment tests and asset library
+
+The separate **Environment Lab** compares city directions without changing campaign planets
+or mission saves. Run `python research/fantasy-city-2026-10-16/preview-server.py` from the
+repository root, then open [the local gallery](http://127.0.0.1:4201/invasion/environments/).
+It serves the gallery on port 4201 with fresh resources; the existing game preview can stay open.
+The first three tests are [Alien arcology](http://127.0.0.1:4201/invasion/environments/?scene=alien),
+[Metropolis](http://127.0.0.1:4201/invasion/environments/?scene=metropolis) and
+[Tidal citadel](http://127.0.0.1:4201/invasion/environments/?scene=citadel).
+Two complete Blender-scene tests now supplement those original compositions:
+[Cyberpunk City / Skyway megacity](http://127.0.0.1:4201/invasion/environments/?scene=cyberpunk) and
+[drone City / Phototextured city](http://127.0.0.1:4201/invasion/environments/?scene=drone).
+Skyway is the strongest intricate/alien architecture comparison; Phototextured City provides
+the more realistic urban comparison. Both retain the source city layout and use a normalized
+2 km span for inspection, not verified real-world dimensions.
+Cyberpunk City's new land follows individual architectural contact points, with small footing
+pads, coastal slopes, access roads and animated ocean water. **Foundation** frames the ground;
+the credits panel links to the retained flat-ground and first two foundation passes. The owner
+prefers the second low-coast pass, restored as default; fitting all elevated bases remains open.
+The later high terrain envelope was rejected because it swallowed buildings and is archived.
+[Foundation tooling shortlist](research/fantasy-city-2026-10-16/FOUNDATION-TOOLS.md) records Blender,
+Houdini and Unreal options for future fitting. Skyway megacity and Phototextured city remain the
+gallery titles, with original asset names in credits. These are local previews, not a published update.
+Each offers vista, district and street cameras, orbit/pilot movement, flyover, dusk and a
+lighter render setting. These are visual studies; collision, campaign navigation, streaming
+and destruction remain checklist work. [Runtime credits](dist/invasion/environments/CREDITS.md)
+identify the imported CC0 models and original compositions.
+
+The reusable source library is **`C:\Users\Heemi\Documents\Game Asset Library`**, outside
+this repository and available for other projects. Six completed backups total 1,843,813,552
+bytes: cyberpunk City, drone City, Downtown City MegaKit Standard, Kenney Fantasy Town Kit,
+Spaceship HY-21 and Poly Haven Hidden Alley. Its README and JSON catalog retain source links,
+creators, licenses, SHA-256 hashes, archive inventories and pending downloads.
+[Backup status and handoff](research/fantasy-city-2026-10-16/ASSET-BACKUPS.md).
+All existing work, original archives and Downloads copies are retained; no paid packs were bought.
+The first gallery's exact source and screenshot are preserved in
+[the v1 archive](archive/environment-lab-v1-2026-10-16/README.md).
+
+The visual target remains large, intricate, less blocky alien/fantasy cities. Minecraft is a
+scale/infrastructure reference; Skyrim, Spider-Man, Crackdown, Kakarot and Synty Elven Realm
+remain in the [city research](research/fantasy-city-2026-10-16/README.md) and
+[complex-scene shortlist](research/fantasy-city-2026-10-16/COMPLEX-SCENES.md).
+Spacecraft, orbital stations and planetary/alien architecture are priorities in the download
+queue. Pilot/first-person campaign (**MODE-20**), a later Tank Wars-style drone builder
+(**MODE-21**), choosing victory extraction or continued capture (**OBJ-07**), and multiple
+pods carrying 1–3 drones each (**DROP-01**) are recorded as future gameplay work.
+
 ## Run Locally
 
 Serve the `dist` folder over HTTP, then open the local URL (the game is at `/invasion/`):

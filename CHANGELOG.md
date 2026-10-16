@@ -39,6 +39,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-16: Source-city previews, preserved foundation passes and fitting-tool shortlist
+- **Signed:** Codex (OpenAI)
+- **Commit:** Add source-city previews and preserve reviewed coastal foundation drafts
+- **What changed:** Converted complete Cyberpunk City and drone City scenes into separate
+  Skyway megacity / Phototextured city previews; restored those titles at the owner's request.
+  Added coast, water, roads and foundation comparisons. Owner prefers the second low-coast
+  pass, now default; the later high terrain envelope was rejected for swallowing buildings.
+  Preserved all drafts, re-rendered pictures of the first two passes, and added Blender,
+  Houdini and Unreal fitting-tool research as VIS-17. VIS-16 remains open for full fitted support.
+  Completed six reusable library backups with provenance, hashes and inventories.
+- **Files:** README, SWARMFALL-TODO, environment gallery and source GLBs, archive/environment-lab-v1,
+  research/fantasy-city-2026-10-16 tooling, source receipts, conversion and foundation handoffs.
+- **Assumptions:** Dimensions, terrain and support selection are visual estimates. Source
+  cities normalized to 2 km; no real-world scale or structural analysis implied.
+- **Checks:** Node suite and local browser previews; saved test output and screenshots in
+  research/archive. Gap-only checks were insufficient for the rejected terrain, documented
+  explicitly so future fitting must also check burial. No public deployment in this continuation.
+- **Open / next:** Finish underside-aware fitting with bounded land contours and separate
+  foundations. Keep coast low, preserve bridges, inspect all districts. Hidden Alley conversion,
+  space/alien queue, collision/navigation/streaming, pilot campaign and destruction remain open.
+  Claude's unfinished kit expansion remains untouched. Original downloads/source scenes retained.
+
 ### 2026-10-16: Swarmfall Environment Lab, first version (Codex)
 - **Signed:** Codex (OpenAI), the work; recorded by Claude (Anthropic Claude Opus 5.5), because
   Codex reached its usage limit before logging or committing it.

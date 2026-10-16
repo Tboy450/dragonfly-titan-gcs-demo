@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#09131b"><title>Swarmfall · Environment Lab</title>
+  <link rel="stylesheet" href="./lab.css?v=dev">
+  <script type="importmap">{"imports":{"three":"../../vendor/three/three.module.min.js","three/addons/":"../../vendor/three/addons/"}}</script>
+</head>
+<body>
+  <canvas id="world" aria-label="Interactive 3D environment. Drag to orbit, scroll to zoom. Use Pilot view for free flight."></canvas>
+  <header class="topbar"><a class="brand" href="../">SWARMFALL<span>ENVIRONMENT LAB</span></a><span class="badge">EXPERIMENTAL · 01</span><button id="menu" aria-expanded="true" aria-controls="panel">Explore tests</button></header>
+  <aside id="panel">
+    <p class="eyebrow">WORLDS IN DEVELOPMENT</p><h1 id="title">Building the world…</h1><p id="description" class="description"></p>
+    <nav class="tests" aria-label="Environment tests">
+      <a href="?scene=alien" data-scene="alien"><span class="number">01</span><span><strong>Alien arcology</strong><small>Curved towers · aerial infrastructure</small></span><span>↗</span></a>
+      <a href="?scene=metropolis" data-scene="metropolis"><span class="number">02</span><span><strong>Metropolis</strong><small>Textured districts · urban scale</small></span><span>↗</span></a>
+      <a href="?scene=citadel" data-scene="citadel"><span class="number">03</span><span><strong>Tidal citadel</strong><small>Fantasy terraces · bridges & spires</small></span><span>↗</span></a>
+      <a href="?scene=cyberpunk" data-scene="cyberpunk"><span class="number">04</span><span><strong>Skyway megacity</strong><small>Complete Blender city · complex routes</small></span><span>↗</span></a>
+      <a href="?scene=drone" data-scene="drone"><span class="number">05</span><span><strong>Phototextured city</strong><small>Complete Blender city · aerial realism</small></span><span>↗</span></a>
+    </nav>
+    <div class="section-label">CHOOSE A PERSPECTIVE</div>
+    <div class="buttons presets"><button data-view="vista" class="active">Vista</button><button data-view="district">District</button><button data-view="street">Street</button></div>
+    <div class="buttons"><button id="pilot" aria-pressed="false">Pilot view</button><button id="tour" aria-pressed="false">Flyover</button><button id="light" aria-pressed="false">Dusk</button></div>
+    <label class="quality">Render detail <select id="quality"><option value="high">High</option><option value="low">Light</option></select></label>
+    <p class="help" id="help">Drag to orbit · scroll to zoom · right-drag to pan.<br>Choose Pilot view to fly through the environment.</p>
+    <details><summary>About this test & credits</summary><p id="credits"></p><p>Visual studies with invented dimensions. Free flight has no collision. City streaming, battle navigation and campaign destruction are future integration work. This lab does not change your game saves.</p><a href="./CREDITS.md" target="_blank">Sources & modifications ↗</a></details>
+  </aside>
+  <div id="loading" role="status"><span class="spinner"></span><span id="loading-text">Preparing environment…</span></div>
+  <footer><span id="status">Loading source assets</span><span id="metrics" aria-live="off"></span></footer>
+  <div class="touch-controls" aria-label="Pilot movement"><button data-move="KeyW" aria-label="Fly forward">↑</button><button data-move="KeyA" aria-label="Fly left">←</button><button data-move="KeyS" aria-label="Fly backward">↓</button><button data-move="KeyD" aria-label="Fly right">→</button><button data-move="KeyE" aria-label="Fly up">＋</button><button data-move="KeyQ" aria-label="Fly down">−</button></div>
+  <script type="module" src="./lab.mjs?v=dev"></script>
+</body></html>

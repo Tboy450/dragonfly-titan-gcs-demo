@@ -1,7 +1,10 @@
 // Original, deterministic visual studies [EST]. These are not campaign city/navigation data.
 import * as THREE from "../../vendor/three/three.module.min.js";
+import { createCityFoundation } from "./history/contour-v2.mjs?v=dev";
 
 export const worldInfo = {
+  cyberpunk: { title:"Skyway megacity",description:"The complete Cyberpunk City architecture on contoured coastal land, with individual footings, access roads and ocean shoreline. Explore the layered streets and elevated infrastructure.",span:"2 km normalized source-city span",credit:"cyberpunk City by carlcapu333, BlendSwap 21664 (legacy 91935), CC-BY 3.0. Converted by Codex; new PBR materials, scale and batching. Coastal foundation, ramps, terrain and water are original visual additions; source scene preserved.",sky:[0x1c3450,0xa0b5bc],ground:0x40525c,sun:0xffdfba,views:{vista:[[1600,1000,1750],[0,220,0]],district:[[500,320,560],[0,200,0]],street:[[160,100,200],[0,100,0]]} },
+  drone: { title:"Phototextured city",description:"The complete drone City Blender scene with packed photographic facades, roof detail and connected streets. Compare its aerial coverage and close-view texture quality against the modular metropolis.",span:"2 km normalized source-city span",credit:"drone City by Voxelatio, BlendSwap 27360, CC0. Blender-to-glTF conversion, texture cap at 1024 px, normalized scale and render batching by Codex. Animation omitted; original scene retained.",sky:[0x648ca5,0xcbd3cd],ground:0x697773,sun:0xffe9c9,views:{vista:[[1550,950,1650],[0,100,0]],district:[[460,250,500],[0,80,0]],street:[[100,35,160],[0,40,0]]} },
   alien: { title: "Alien arcology", description: "A radial off-world city: ceramic towers, suspended transit rings and luminous canals. Follow the bridges into its monumental central district.", span: "2.4 km city diameter", credit: "Original procedural architecture by Codex. No proprietary game geometry or paid assets. Space/alien source scenes remain separately preserved for future conversion.", sky: [0x101c39,0x889fa8], ground: 0x253e49, sun:0xf6d5b4, views: { vista:[[1540,940,1680],[0,190,0]], district:[[520,270,610],[0,180,0]], street:[[205,28,235],[0,95,0]] } },
   metropolis: { title: "Metropolis", description: "A broad city of connected avenues, textured brick districts, a riverside promenade and a tall financial core. Inspect both the skyline and the imported street-level architecture.", span: "2.2 × 2.2 km urban grid", credit: "Selected Downtown City MegaKit Standard buildings by Quaternius (CC0), with reduced texture resolution. Original district layout, roads, skyline and waterfront.", sky:[0x537f9b,0xd0d6c3], ground:0x778277,sun:0xffebce,views:{vista:[[1320,800,1450],[0,75,0]],district:[[270,115,350],[0,40,0]],street:[[70,7,125],[70,15,-90]]} },
   citadel: { title:"Tidal citadel",description:"A fantasy city built above an alien sea: layered stone terraces, sweeping green spires, inhabited lower districts, hanging bridges and waterfalls.",span:"1.8 km island & bridge district",credit:"Selected Fantasy Town Kit pieces by Kenney (CC0). Original citadel, curved roofs, terraces, bridges, cliffs and planetary setting; a stylized study, not a Synty or Skyrim asset.",sky:[0x284f68,0xc1ced2],ground:0x4b6564,sun:0xffdfb0,views:{vista:[[1210,780,1380],[0,120,0]],district:[[410,265,500],[0,175,0]],street:[[170,113,270],[0,190,0]]} }
@@ -85,4 +88,24 @@ function citadel(group,batch,assets){const random=rng(572),stone=mat(0xbdc9c2,.1
   landing(batch,0,121,370,18);return {moving,target:V(0,170,0)};
 }
 
-export function buildWorld(type,assets){const group=new THREE.Group(),batch=new Batches(group);const result=type==='metropolis'?metropolis(group,batch,assets):type==='citadel'?citadel(group,batch,assets):alien(group,batch);result.instanceCount=batch.finish();return {group,...result};}
+export function buildWorld(type, assets) {
+  const group = new THREE.Group();
+  if (type === 'cyberpunk' || type === 'drone') {
+    group.add(assets.SourceCity);
+    let animate;
+    if (type === 'cyberpunk' && !assets.FlatFoundation) {
+      const anchors=assets.FoundationVersion==='contour-v2'?assets.SourceLegacyAnchors:assets.SourceAnchors;
+      const foundation = (assets.FoundationBuilder || createCityFoundation)(assets.SourceFootprint, anchors);
+      group.add(foundation);
+      animate = foundation.userData.animate;
+    } else {
+      const floor = mesh(group, cyl(128), mat(worldInfo[type].ground, .1, .9), 0, -4, 0, 2600, 6, 2600);
+      floor.castShadow = false;
+    }
+    return { group, moving: [], target: V(0, assets.SourceHeight * .3, 0), instanceCount: assets.SourceDraws, source: true, animate };
+  }
+  const batch = new Batches(group);
+  const result = type === 'metropolis' ? metropolis(group, batch, assets) : type === 'citadel' ? citadel(group, batch, assets) : alien(group, batch);
+  result.instanceCount = batch.finish();
+  return { group, ...result };
+}

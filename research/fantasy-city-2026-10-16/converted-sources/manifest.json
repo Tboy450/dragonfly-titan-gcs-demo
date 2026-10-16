@@ -1,0 +1,16 @@
+{
+  "toolchain": "Blender Foundation bpy 4.5.14 LTS; official Python 3.11.9 embedded x64, isolated local research tools",
+  "python_zip_md5": "6d9aa08531d48fcc261ba667e2df17c4",
+  "exports": [
+    {
+      "file": "dist/invasion/environments/assets/source-scenes/cyberpunk.glb",
+      "bytes": 21311292,
+      "sha256": "054a72489446785421cd7cfc1d3aa904d6d24b6d1aee2e69f106d5318bbd622e"
+    },
+    {
+      "file": "dist/invasion/environments/assets/source-scenes/drone.glb",
+      "bytes": 15798400,
+      "sha256": "bddd3e80fd881e06042a9a69b47c0619fb3999a3b1d31275cb8fd2e9b54dec18"
+    }
+  ]
+}

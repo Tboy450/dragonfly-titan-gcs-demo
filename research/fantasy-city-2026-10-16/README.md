@@ -11,6 +11,12 @@ No city has been integrated into the running game in this research pass.
 
 ## Recommended choices
 
+**Implementation continuation:** the separate Environment Lab now includes the original three
+studies plus two complete converted Blender cities. See [backup/test handoff](ASSET-BACKUPS.md)
+and the project README for links, source credits, preserved versions and remaining work.
+Earlier "no city integrated" statements describe this initial research pass; no campaign planet
+has been replaced, but selected models and both source cities are now rendered in the lab.
+
 **Later owner feedback:** simple facade/medieval kits are too basic as the main target.
 Prioritize elaborate authored architecture and complete scenes. The updated
 [complex-scene shortlist and reusable module inventory](COMPLEX-SCENES.md) supersedes

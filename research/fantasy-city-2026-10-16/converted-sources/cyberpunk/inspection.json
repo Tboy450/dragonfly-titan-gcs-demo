@@ -1,0 +1,33 @@
+{
+  "asset": "cyberpunk",
+  "blender": "4.5.14 LTS",
+  "objects": 3515,
+  "triangles_evaluated": 544170,
+  "bounds": [
+    [
+      -35.39207458496094,
+      19.86758041381836
+    ],
+    [
+      -35.675838470458984,
+      34.6466178894043
+    ],
+    [
+      -18.17438316345215,
+      12.694635391235352
+    ]
+  ],
+  "images": [
+    {
+      "name": "Render Result",
+      "size": [
+        0,
+        0
+      ],
+      "packed": false,
+      "path": ""
+    }
+  ],
+  "materials": 1,
+  "scripts_auto_execute": false
+}

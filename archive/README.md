@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [environment-lab-v1-2026-10-16](environment-lab-v1-2026-10-16/README.md) | Original three-test gallery, menu and camera behavior before adding complete source cities; exact code, screenshot and restore steps | 2026-10-16 | `archive/environment-lab-v1-2026-10-16` |
 | [aft-bulkhead-2026-10-15](aft-bulkhead-2026-10-15/README.md) | Rectangular aft panel, level MMRTG, old aft body/antenna and coupled fan layout before Claude's canted interface; exact originals and before pictures | 2026-10-16 | `archive/aft-bulkhead-2026-10-15` |
 | [fans-v1-2026-10-15](fans-v1-2026-10-15/README.md) | Fans at z 1.16 and old adapter/flow path before fitting the canted aft panel; pictures shared with the full aft archive | 2026-10-16 | `archive/fans-v1-2026-10-15` |
 | [inspection-visibility-2026-10-16](inspection-visibility-2026-10-16/README.md) | Mission inspector before independent shell, insulation, panel and equipment layer masks; working snapshot includes the pending aft-bulkhead membership line | 2026-10-16 | `archive/inspection-visibility-2026-10-16` |

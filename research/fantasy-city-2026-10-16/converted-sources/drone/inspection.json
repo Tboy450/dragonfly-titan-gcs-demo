@@ -1,0 +1,375 @@
+{
+  "asset": "drone",
+  "blender": "4.5.14 LTS",
+  "objects": 671,
+  "triangles_evaluated": 262037,
+  "bounds": [
+    [
+      -34.87879943847656,
+      18.242658615112305
+    ],
+    [
+      -28.37199592590332,
+      27.61102294921875
+    ],
+    [
+      -0.682345449924469,
+      13.543075561523438
+    ]
+  ],
+  "images": [
+    {
+      "name": "ciudadortogonal-ACONDICIONADORes.png",
+      "size": [
+        44,
+        278
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ciudadortogonal-ACONDICIONADORes.png"
+    },
+    {
+      "name": "ciudadortogonal-CALLE1mod.jpg",
+      "size": [
+        131,
+        360
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ciudadortogonal-CALLE1mod1.jpg"
+    },
+    {
+      "name": "ciudadortogonal-CALLE1mod22.jpg",
+      "size": [
+        131,
+        360
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ciudadortogonal-CALLE1mod22.jpg"
+    },
+    {
+      "name": "ciudadortogonal-CALLE2mod.jpg",
+      "size": [
+        176,
+        151
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ciudadortogonal-CALLE2mod.jpg"
+    },
+    {
+      "name": "ciudadortogonal-MOD.jpg",
+      "size": [
+        1920,
+        1080
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ciudadortogonal-MOD.jpg"
+    },
+    {
+      "name": "ciudadortogonal-VEREDA1mod.jpg",
+      "size": [
+        60,
+        249
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ciudadortogonal-VEREDA1mod.jpg"
+    },
+    {
+      "name": "hospitalladoventanas.png.001",
+      "size": [
+        90,
+        259
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\hospitalladoventanas.png"
+    },
+    {
+      "name": "hospitaltecho-mod.png",
+      "size": [
+        200,
+        472
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\hospitaltecho-mod.png"
+    },
+    {
+      "name": "hospitaltecho.png.001",
+      "size": [
+        200,
+        472
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\hospitaltecho.png"
+    },
+    {
+      "name": "kloetzle_blei_4k(1).hdr",
+      "size": [
+        4096,
+        2048
+      ],
+      "packed": true,
+      "path": "//..\\HDRi HaVEN\\kloetzle_blei_4k(1).hdr"
+    },
+    {
+      "name": "ortclosetelectricotecho.png",
+      "size": [
+        40,
+        56
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortclosetelectricotecho.png"
+    },
+    {
+      "name": "orto-edificio22-adosolocemento.png",
+      "size": [
+        138,
+        41
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\orto-edificio22-adosolocemento.png"
+    },
+    {
+      "name": "orto-edificio22-ladoventanas.png",
+      "size": [
+        171,
+        147
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\orto-edificio22-ladoventanas.png"
+    },
+    {
+      "name": "orto-edificio22-techoybase.png",
+      "size": [
+        140,
+        141
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\orto-edificio22-techoybase.png"
+    },
+    {
+      "name": "ortocasuchadetecho-allparts.png",
+      "size": [
+        105,
+        126
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortocasuchadetecho-allparts.png"
+    },
+    {
+      "name": "ortocity-AUTOS.png",
+      "size": [
+        148,
+        194
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortocity-AUTOS.png"
+    },
+    {
+      "name": "ortoedificio-frontal-frontal.png",
+      "size": [
+        294,
+        180
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificio-frontal-frontal.png"
+    },
+    {
+      "name": "ortoedificioceleste-frontal-MOD.png",
+      "size": [
+        278,
+        165
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificioceleste-frontal-MOD.png"
+    },
+    {
+      "name": "ortoedificioceleste-lado.png",
+      "size": [
+        101,
+        162
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificioceleste-lado.png"
+    },
+    {
+      "name": "ortoedificioceleste-techo-mod.jpg",
+      "size": [
+        264,
+        90
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificioceleste-techo-mod.jpg"
+    },
+    {
+      "name": "ortoedificioceleste-techo.png",
+      "size": [
+        264,
+        90
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificioceleste-techo.png"
+    },
+    {
+      "name": "ortoedificiocontechorojo-ladoventanas.png",
+      "size": [
+        136,
+        222
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificiocontechorojo-ladoventanas.png"
+    },
+    {
+      "name": "ortoedificiocontechorojo-techo-extension-techo.png",
+      "size": [
+        158,
+        94
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificiocontechorojo-techo-extension-techo.png"
+    },
+    {
+      "name": "ortoedificiocontechorojo-techo.png",
+      "size": [
+        134,
+        271
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificiocontechorojo-techo.png"
+    },
+    {
+      "name": "ortoedificiorojo-frontal.png",
+      "size": [
+        184,
+        184
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificiorojo-frontal.png"
+    },
+    {
+      "name": "ortoedificiorojo-techo.png",
+      "size": [
+        190,
+        80
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificiorojo-techo.png"
+    },
+    {
+      "name": "ortoedificiotechoceleste -lado1ventana.png",
+      "size": [
+        125,
+        88
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificiotechoceleste -lado1ventana.png"
+    },
+    {
+      "name": "ortoedificiotechoceleste -ladoventanas.png",
+      "size": [
+        33,
+        214
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificiotechoceleste -ladoventanas.png"
+    },
+    {
+      "name": "ortoedificiotechoceleste -techo.jpg",
+      "size": [
+        133,
+        371
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortoedificiotechoceleste -techo.jpg"
+    },
+    {
+      "name": "ortomicroceleste -lado.png",
+      "size": [
+        162,
+        30
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortomicroceleste -lado.png"
+    },
+    {
+      "name": "ortomicroceleste -techo.png",
+      "size": [
+        21,
+        162
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortomicroceleste -techo.png"
+    },
+    {
+      "name": "ortotechocarcel-cuartitoeneltecho.png",
+      "size": [
+        227,
+        148
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortotechocarcel-cuartitoeneltecho.png"
+    },
+    {
+      "name": "ortotechocarcel-ladoventanas.png",
+      "size": [
+        92,
+        176
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortotechocarcel-ladoventanas.png"
+    },
+    {
+      "name": "ortotechocarcel-ladoventanas2.png",
+      "size": [
+        106,
+        141
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortotechocarcel-ladoventanas2.png"
+    },
+    {
+      "name": "ortotechocarcel-techo.png",
+      "size": [
+        158,
+        325
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\ortotechocarcel-techo.png"
+    },
+    {
+      "name": "Render Result",
+      "size": [
+        0,
+        0
+      ],
+      "packed": false,
+      "path": ""
+    },
+    {
+      "name": "techolocalcomercialoxxo-Mod.png",
+      "size": [
+        167,
+        267
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\techolocalcomercialoxxo-Mod.png"
+    },
+    {
+      "name": "techolocalcomercialoxxo.png",
+      "size": [
+        167,
+        267
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\techolocalcomercialoxxo.png"
+    },
+    {
+      "name": "vitrinalocalcomercialoxxo.png",
+      "size": [
+        177,
+        64
+      ],
+      "packed": true,
+      "path": "//..\\edificios drone\\vitrinalocalcomercialoxxo.png"
+    }
+  ],
+  "materials": 52,
+  "scripts_auto_execute": false
+}
