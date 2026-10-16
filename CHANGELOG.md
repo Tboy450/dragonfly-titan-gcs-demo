@@ -39,6 +39,21 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-16: A forgiving not-found page that leads mistyped game links to the game
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Send mistyped or decorated game links to the game from a site-wide 404 page"
+- **What changed:** The owner got a 404 on a phone. The game link was live and public (200 for
+  a logged-out phone), but GitHub Pages is case-sensitive and exact, so `/Invasion/`, a link
+  with `**` left over from a chat message, or a stray `)` all hit GitHub's generic 404. A new
+  `dist/404.html` (served by Pages for any missing address) sends any address that mentions the
+  game (`invasion` or `swarmfall`, any case, extra characters) to `/invasion/`, and otherwise
+  shows links to the simulator and the game. The repository name itself still has to be typed
+  in lowercase: GitHub answers a wrongly cased repository name before this page is reached.
+- **Files:** `dist/404.html` (new), `tests/invasion-campaign.test.mjs`
+- **Checks:** `node --test` on the committed tree (redirect test covers the failing addresses);
+  the live site checked with phone user agents before and after.
+- **Open / next:** none.
+
 ### 2026-10-15: Swarmfall, a drone invasion game built from the simulator
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add Swarmfall, a drone invasion campaign game built from the simulator"

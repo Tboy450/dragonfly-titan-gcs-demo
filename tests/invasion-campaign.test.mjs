@@ -122,3 +122,19 @@ test("The Swarmfall page parses, carries publish stamps and gets its own build l
     assert.equal(result.status, 0, `${file}: ${result.stderr}`);
   }
 });
+
+test("The site's not-found page sends mistyped or decorated game links to the game", async () => {
+  const { readFileSync } = await import("node:fs");
+  const vm = await import("node:vm");
+  const html = readFileSync(new URL("../dist/404.html", import.meta.url), "utf8");
+  // Checkouts may use Windows line endings, so the function's end is matched either way.
+  const source = html.match(/function notFoundTarget[\s\S]*?\r?\n {6}}\r?\n/)[0];
+  const notFoundTarget = vm.runInNewContext(`${source}; notFoundTarget`);
+  const repo = "/dragonfly-titan-gcs-demo";
+  for (const path of ["/invasion/**", "/invasion/%2A%2A", "/Invasion/", "/INVASION", "/invasion/)", "/invasion%20", "/swarmfall/", "/invasion/index.htm"]) {
+    assert.equal(notFoundTarget(repo + path, true), `${repo}/invasion/`, path);
+  }
+  assert.equal(notFoundTarget("/Invasion/", false), "/invasion/", "works when the site is served from the root");
+  assert.equal(notFoundTarget(`${repo}/no-such-page`, true), null, "other missing pages show the links instead");
+  assert.equal(notFoundTarget(`${repo}/%E0%A4%A`, true), null, "a malformed address does not throw");
+});
