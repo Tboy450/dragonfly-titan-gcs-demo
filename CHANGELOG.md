@@ -39,6 +39,42 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-16: Resume active Swarmfall missions and record the next campaign requests
+- **Signed:** Codex (OpenAI)
+- **Commit:** "Save and resume Swarmfall missions and expand campaign checklist"
+- **What changed:** FIX-01 adds versioned battle checkpoints every five seconds and on page
+  hiding/exit. The title offers Resume mission with the planet name. Restore rebuilds terrain
+  callbacks/pads, preserves the camera and full battle state, and pauses until the player resumes.
+  Campaign progress and the checkpoint use one localStorage write; finishing/resetting clears
+  the checkpoint, and starting a replacement mission asks first. Storage failure shows a warning.
+  Old campaign saves still load; incompatible/broken checkpoints are ignored. Added the owner's
+  pilot campaign (MODE-20), later Tank Wars-style drone builder (MODE-21), optional victory
+  extraction (OBJ-07) and 1–3 drones per pod/multiple-pod waves (DROP-01) to the checklist only.
+- **Files:** `invasion/mission-save.mjs`, `invasion/main.mjs`, `invasion/index.html`,
+  `tests/invasion-mission-save.test.mjs`, checklist, README and architecture/archive indexes.
+- **Archive:** `archive/swarmfall-mission-save-2026-10-16/`: original page code, before/after
+  title and restored-mission screenshots, restore instructions; baseline `8b2399b`.
+- **Checks:** 245 tests pass in the current workspace, including the unrelated local interior
+  tests. New tests compare uninterrupted and resumed simulations on all seven planets through
+  descending pods, release, orders and hazards, plus initial cooldown and invalid saves.
+  Browser reload restores Titan at 0:36, 46 matter and 9 drones, paused.
+- **Open / next:** FIX-02 flight clearance; the four new owner requests remain unchecked.
+  Public deployment is not verified by these local checks. Other sessions' interior files
+  are excluded from this game change.
+
+### 2026-10-16: Swarmfall update checklist
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add the Swarmfall update checklist"
+- **What changed:** At the owner's request, `SWARMFALL-TODO.md` lists everything the game still
+  needs: 108 open items (28 P1, 62 P2, 18 P3; 8 asked for by the owner) in 15 areas (known problems, tutorial, controls, economy, drones,
+  defenders and the public, planet threats, objectives, the owner's free and versus modes, look,
+  sound, performance, engineering and tests, publishing, documentation), each with an ID, a
+  priority and the files involved, plus a "built so far" baseline and suggested milestones.
+  Linked from README and ARCHITECTURE.md.
+- **Files:** `SWARMFALL-TODO.md` (new), `README.md`, `ARCHITECTURE.md`
+- **Checks:** known-problem items checked against the code and the October 15-16 browser runs.
+- **Open / next:** Milestone 1 in the checklist.
+
 ### 2026-10-16: A forgiving not-found page that leads mistyped game links to the game
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Send mistyped or decorated game links to the game from a site-wide 404 page"

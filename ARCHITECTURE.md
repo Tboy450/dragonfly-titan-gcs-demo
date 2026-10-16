@@ -122,6 +122,7 @@ same split as the simulator: plain modules with tests, plus a page layer.
 |---|---|
 | `invasion/units.mjs` | Drone, defender and society types; weapons per target class (ground, structure, air) so drones can later carry different arms against rival drones; pod slots and costs |
 | `invasion/campaign.mjs` | The seven planets in campaign order, rewards, per-planet supply, saved progress (validated field by field) and `applyMissionResult` |
+| `invasion/mission-save.mjs` | Versioned JSON battle checkpoints, validation and terrain callback/pad restoration; stored with campaign progress by the page |
 | `invasion/battle.mjs` | One mission: zones, drops, orders (group pace, attack-move), movement, combat, capture (damage or control path, converted defenses), public alarm, reinforcements, artillery, income, objectives, stars, outcome |
 | `invasion/hazards.mjs` | Seeded environmental threats with advance warning; shelter in held zones |
 | `invasion/achievements.mjs` | Twelve campaign achievements, checked live and at the end of a mission |
@@ -141,6 +142,7 @@ first tries, losses rising from 0 to about 150 drones); real playtesting is stil
 |---|---|
 | `CHANGELOG.md` | Signed record of every change (newest first) |
 | `INTERIOR-REALISM-TODO.md` | Owner-requested callout fix, numbered part-by-part asset rebuild and enclosure/insulation views; persistent handoff checklist |
+| `SWARMFALL-TODO.md` | The game's update checklist: known problems, owner requests (free mode, local versus, planet threats) and planned work by area, with item IDs and priorities |
 | `RESEARCH-COMPENDIUM.md` | Research reference: sources, values with tags, implementation status (§7), next steps (§8), future requests |
 | `RESEARCH.md`, `RESEARCH-FOLLOWUP.md` | Earlier source audit and GPT/Codex review notes |
 | `research/titan_physics.py` | Script behind the [CALC] values |

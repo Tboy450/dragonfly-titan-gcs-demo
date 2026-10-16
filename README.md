@@ -39,6 +39,10 @@ force or by quiet control.
   and it joins every later drop (the simulator's research model, interior removed).
 - **Objectives and achievements:** two optional goals per planet (three stars) and twelve
   campaign achievements, saved in the browser.
+- **Mission saves:** active battles save on this device every five seconds and when the page
+  is hidden or left. Choose **Resume mission** on the title screen; the restored battle starts
+  paused. Starting another mission asks before replacing that save. Browser storage must be
+  available; campaign progress and the active battle are saved together.
 - **Controls:** tap a squad card or a drone to select, tap the ground to move, a ring to
   capture, a defender to attack. Drag to move the view, scroll or pinch to zoom, right-drag or
   Q/E to turn; WASD/arrows pan, 1-9 select squads, 0 all, H hold, B drop pod, Space pause.
@@ -47,6 +51,8 @@ All game numbers, the invented worlds and the drone and defender models are game
 not physics. Rules are in plain modules with tests (`tests/invasion-*.test.mjs`); see
 ARCHITECTURE.md. Later ideas from the owner: a free mode with a galaxy of planets to pick from,
 and a local versus mode where players race to take the same planet with drone-vs-drone weapons.
+Everything still to do is in the [Swarmfall update checklist](SWARMFALL-TODO.md), with item
+numbers to ask for.
 
 ## Run Locally
 

@@ -15,6 +15,7 @@ import { achievements, achievementContext, newAchievements, recordAchievements }
 import { createPlanetTerrain } from "./planet-terrain.mjs?v=dev";
 import { drawGalaxy, drawStarfield } from "./galaxy.mjs?v=dev";
 import { createInvasionScene, swarmColor, nativeColor } from "./scene.mjs?v=dev";
+import { missionCheckpoint, validMissionCheckpoint, restoreMissionCheckpoint } from "./mission-save.mjs?v=dev";
 
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (text) => String(text).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -26,9 +27,14 @@ function loadProgress() {
   try { return validProgress(JSON.parse(localStorage.getItem(SAVE_KEY) || "null")) || createProgress(); } catch { return createProgress(); }
 }
 function saveProgress() {
-  try { localStorage.setItem(SAVE_KEY, JSON.stringify(progress)); } catch { /* private mode: progress lasts this visit */ }
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify({ ...progress, activeMission: savedMission }));
+    return true;
+  } catch { return false; }
 }
 let progress = loadProgress();
+let savedMission = null;
+try { savedMission = validMissionCheckpoint(JSON.parse(localStorage.getItem(SAVE_KEY) || "null")?.activeMission); } catch { /* unavailable storage or old save */ }
 
 // ---- Screens ----
 let current = "title";
@@ -57,6 +63,8 @@ function drawTitle() {
   const earned = Object.keys(progress.achievements).length;
   $("title-progress").textContent = done || earned ? `${done} of ${planets.length} planets conquered · ${earned} of ${achievements.length} achievements` : "";
   $("play-button").textContent = done || progress.stats.missionsPlayed ? "Continue campaign" : "Play campaign";
+  $("resume-button").hidden = !savedMission;
+  $("resume-button").textContent = savedMission ? `Resume mission · ${planetById(savedMission.battle.planetId).name}` : "Resume mission";
 }
 
 // ---- Galaxy ----
@@ -120,7 +128,10 @@ function renderPlanetPanel() {
       <button id="invade-button" class="primary invade" type="button">${progress.captured[planet.id] ? "Invade again" : `Invade ${escapeHtml(planet.name)}`}</button>`
       : `<p class="locked-note">Locked. Conquer ${escapeHtml(previous?.name || "the previous planet")} first.</p>`}
   `;
-  $("invade-button")?.addEventListener("click", () => startMission(planet));
+  $("invade-button")?.addEventListener("click", async () => {
+    if (savedMission && !await confirmDialog("Start a new mission and replace your saved battle? Campaign progress will be kept.")) return;
+    startMission(planet);
+  });
   $("bank-matter").textContent = progress.matter;
   $("bank-pod").textContent = progress.podSlots;
   $("bank-drones").textContent = progress.unlocks.map(t => droneTypes[t].name).join(", ");
@@ -149,9 +160,13 @@ function showAchievements() {
 }
 
 $("play-button").addEventListener("click", () => { selectedPlanet = nextPlanet(progress).id; show("galaxy"); });
+$("resume-button").addEventListener("click", () => {
+  if (savedMission) startMission(planetById(savedMission.battle.planetId), savedMission);
+});
 $("reset-button").addEventListener("click", async () => {
   if (await confirmDialog("Erase all campaign progress, unlocks and achievements on this device?")) {
     progress = createProgress();
+    savedMission = null;
     saveProgress();
     selectedPlanet = nextPlanet(progress).id;
     drawTitle();
@@ -192,11 +207,13 @@ function defaultPayload(b) {
   return payload;
 }
 
-function startMission(planet) {
+function startMission(planet, checkpoint = null) {
   if (!ensureScene()) return;
   $("debrief").open && $("debrief").close();
   const terrain = createPlanetTerrain(planet);
-  const battle = createBattle(planet, {
+  const restored = checkpoint ? restoreMissionCheckpoint(checkpoint, terrain) : null;
+  if (checkpoint && !restored) return;
+  const battle = restored?.battle || createBattle(planet, {
     matter: missionMatter(progress, planet), unlocks: progress.unlocks, podSlots: progress.podSlots, terrain, seed: planet.seed,
   });
   scene.load(planet, terrain, battle);
@@ -205,8 +222,8 @@ function startMission(planet) {
   const length = Math.hypot(away.x, away.z) || 1;
   mission = {
     planet, battle, terrain,
-    cam: { focus: { x: home.x - away.x / length * 70, z: home.z - away.z / length * 70 }, distance: 230, yaw: Math.atan2(away.x, away.z), pitch: 0.9 },
-    selected: new Set(), speed: 1, paused: false, payload: defaultPayload(battle), placing: false,
+    cam: restored?.cam || { focus: { x: home.x - away.x / length * 70, z: home.z - away.z / length * 70 }, distance: 230, yaw: Math.atan2(away.x, away.z), pitch: 0.9 },
+    selected: new Set(), speed: 1, paused: !!restored, payload: defaultPayload(battle), placing: false,
     seenLog: new WeakSet(), ended: false, lastHud: 0, lastMinimap: 0, lastAchievements: 0, cards: new Map(), dropTypes: "",
   };
   $("squad-bar").replaceChildren();
@@ -214,11 +231,27 @@ function startMission(planet) {
   $("hud-log").replaceChildren();
   $("drop-rows").replaceChildren();
   $("placement-hint").hidden = true;
+  $("pause-button").textContent = mission.paused ? "Resume" : "Pause";
+  $("speed-button").textContent = "1×";
   show("mission");
   resizeMission();
   openDropPanel();
   updateHud();
+  checkpointMission();
+  if (restored) toast("Mission restored and paused. Press Resume when ready.", "info", 6000);
 }
+
+function checkpointMission() {
+  if (!mission || mission.battle.outcome) return;
+  savedMission = missionCheckpoint(mission);
+  if (!saveProgress() && !mission.saveWarning) {
+    mission.saveWarning = true;
+    toast("Browser storage is unavailable. This mission cannot be saved on this device.", "warn", 7000);
+  }
+}
+setInterval(checkpointMission, 5000);
+window.addEventListener("pagehide", checkpointMission);
+document.addEventListener("visibilitychange", () => { if (document.hidden) checkpointMission(); });
 
 function resizeMission() {
   if (!scene) return;
@@ -725,6 +758,7 @@ function finishMission() {
   const applied = applyMissionResult(progress, planet, result);
   const earned = newAchievements(applied.progress, achievementContext(applied.progress, planet, result, false));
   progress = recordAchievements(applied.progress, earned);
+  savedMission = null;
   saveProgress();
   const titles = { won: `${planet.name} conquered`, lost: "The swarm was destroyed", retreated: "Swarm withdrawn" };
   $("debrief-title").textContent = titles[result.outcome];

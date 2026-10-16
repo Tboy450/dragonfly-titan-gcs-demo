@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [swarmfall-mission-save-2026-10-16](swarmfall-mission-save-2026-10-16/README.md) | Game page before active-mission saving and title-screen Resume | 2026-10-16 | `archive/swarmfall-mission-save-2026-10-16` |
 | [part-labels-2026-10-15](part-labels-2026-10-15/README.md) | Part numbers pushed down the screen on overlap (chains and jumps as the view turned), before fixed anchors with leaders | 2026-10-15 | `archive/part-labels-2026-10-15` |
 | [rotor-heads-2026-10-15](rotor-heads-2026-10-15/README.md) | White motor pods, gold hub cylinders and spinner domes at the arm ends, before the coaxial motor stacks from the Revolutionary Rotors video | 2026-10-15 | `archive/rotor-heads-2026-10-15` |
 | [battery-2026-10-15](battery-2026-10-15/README.md) | Olive 0.60 x 0.30 x 0.52 m battery box before the 24-cell battery; also the unpublished CAD-look draft | 2026-10-15 | `archive/battery-2026-10-15` |
