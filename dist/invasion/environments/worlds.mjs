@@ -94,9 +94,10 @@ export function buildWorld(type, assets) {
     group.add(assets.SourceCity);
     let animate;
     if (type === 'cyberpunk' && !assets.FlatFoundation) {
-      const anchors=assets.FoundationVersion==='contour-v2'?assets.SourceLegacyAnchors:assets.SourceAnchors;
+      const anchors=['contour-v2','blender'].includes(assets.FoundationVersion)?assets.SourceLegacyAnchors:assets.SourceAnchors;
       const foundation = (assets.FoundationBuilder || createCityFoundation)(assets.SourceFootprint, anchors);
       group.add(foundation);
+      if(assets.SourceSupport)group.add(assets.SourceSupport);
       animate = foundation.userData.animate;
     } else {
       const floor = mesh(group, cyl(128), mat(worldInfo[type].ground, .1, .9), 0, -4, 0, 2600, 6, 2600);

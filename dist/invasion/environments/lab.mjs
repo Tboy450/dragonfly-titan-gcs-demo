@@ -55,7 +55,7 @@ async function loadSource(name){
 }
 async function load(name,folder){const path=`./assets/${folder}/${name}.${folder==='downtown'?'gltf':'glb'}`;const loaded=await loader.loadAsync(path);const root=loaded.scene;root.updateMatrixWorld(true);const bounds=new THREE.Box3().setFromObject(root),center=bounds.getCenter(new THREE.Vector3());root.position.set(-center.x,-bounds.min.y,-center.z);root.updateMatrixWorld(true);root.traverse(o=>{if(o.isMesh){o.castShadow=o.receiveShadow=true;for(const m of Array.isArray(o.material)?o.material:[o.material]){if(m.map)m.map.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());}}});assets[name]=root;}
 assets.FlatFoundation = new URLSearchParams(location.search).get('foundation') === 'flat';
-assets.FoundationVersion = new URLSearchParams(location.search).get('foundation') || 'contour-v2';
+assets.FoundationVersion = new URLSearchParams(location.search).get('foundation') || 'blender';
 if(type==='cyberpunk'&&['platform-v1','contour-v2'].includes(assets.FoundationVersion)){
   assets.FoundationBuilder=(await import(`./history/${assets.FoundationVersion}.mjs?v=dev`)).createCityFoundation;
 }
@@ -65,15 +65,16 @@ if (type === 'cyberpunk') {
   link.href = assets.FlatFoundation ? '?scene=cyberpunk' : '?scene=cyberpunk&foundation=flat';
   link.textContent = assets.FlatFoundation ? 'Show coastal foundation' : 'Compare original flat-ground version';
   variant.append(link);
-  for(const [version,label] of [['platform-v1','First raised-platform pass'],['contour-v2','Second low-coast pass']]){
+  for(const [version,label] of [['platform-v1','First raised-platform pass'],['contour-v2','Second low-coast pass'],['blender','Blender underside-fitted supports']]){
     const comparison=document.createElement('a');comparison.href=`?scene=cyberpunk&foundation=${version}`;comparison.textContent=label;variant.append(document.createElement('br'),comparison);
   }
   if(assets.FoundationVersion==='contour-v2')$('description').textContent='The preferred second foundation pass: low coastal land and ocean around the complete Cyberpunk City scene. Foundation fitting remains in progress; some elevated bases still need shaped support.';
   if(assets.FoundationVersion==='platform-v1')$('description').textContent='Preserved first raised-platform experiment. Re-rendered with current controls; the original platform geometry is unchanged.';
+  if(assets.FoundationVersion==='blender')$('description').textContent='The second low coast with Blender-built structural foundations fitted to actual building undersides. Terrain stays low; elevated architecture receives solid support. This is a visual prototype for inspection.';
   if (assets.FlatFoundation) $('description').textContent = 'Original source-city test on a flat ground disc, retained for comparison with the new coastal foundation.';
 }
 let world;
-try{if(type==='metropolis')await Promise.all(['Building_Large_2','Building_Medium_2_001','Building_Small_1','Prop_ACUnit','Prop_Planter_Single'].map(n=>load(n,'downtown')));if(type==='citadel')await load('wall-wood-window-shutters','fantasy');if(type==='cyberpunk'||type==='drone')await loadSource(type);$('loading-text').textContent='Composing the district…';world=buildWorld(type,assets);scene.add(world.group);$('loading').classList.add('hidden');$('status').textContent=`${info.span} · ${world.source?'complete imported scene':type==='metropolis'?world.importedBuildings+' imported buildings':'original city composition'}`;document.body.dataset.ready='true';}catch(error){console.error(error);$('loading-text').textContent='A source asset could not load. Reload this page to retry.';$('status').textContent='Environment could not load';throw error;}
+try{if(type==='metropolis')await Promise.all(['Building_Large_2','Building_Medium_2_001','Building_Small_1','Prop_ACUnit','Prop_Planter_Single'].map(n=>load(n,'downtown')));if(type==='citadel')await load('wall-wood-window-shutters','fantasy');if(type==='cyberpunk'||type==='drone')await loadSource(type);if(type==='cyberpunk'&&assets.FoundationVersion==='blender'){assets.SourceSupport=(await loader.loadAsync('./assets/source-scenes/skyway-foundation.glb')).scene;assets.SourceSupport.traverse(o=>{if(o.isMesh)o.castShadow=o.receiveShadow=true;});}$('loading-text').textContent='Composing the district…';world=buildWorld(type,assets);scene.add(world.group);$('loading').classList.add('hidden');$('status').textContent=`${info.span} · ${world.source?'complete imported scene':type==='metropolis'?world.importedBuildings+' imported buildings':'original city composition'}`;document.body.dataset.ready='true';}catch(error){console.error(error);$('loading-text').textContent='A source asset could not load. Reload this page to retry.';$('status').textContent='Environment could not load';throw error;}
 
 let pilot=false,tour=false,dusk=false,currentView='vista',yaw=0,pitch=0;const keys=new Set();let dragging=null;
 function syncAngles(){const direction=camera.getWorldDirection(new THREE.Vector3());yaw=Math.atan2(-direction.x,-direction.z);pitch=Math.asin(direction.y);}

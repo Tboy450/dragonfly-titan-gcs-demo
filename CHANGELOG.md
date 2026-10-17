@@ -39,6 +39,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-16: Implement Blender underside-fitted city foundations
+- **Signed:** Codex (OpenAI)
+- **Commit:** Implement Blender raycast foundations on the preferred low coast
+- **What changed:** Downloaded and verified official portable Blender 4.5.14 LTS and the
+  signed SideFX Launcher 22.0.466. Used Blender to author a reusable Geometry Nodes Raycast
+  setup and bake fitted structural support under actual city undersides. Kept the second
+  coast unchanged and separately selectable; new Blender-supported test is Skyway's default.
+  Joined contact cells remove internal-wall overdraw; clamp prevents support bottoms rising
+  above their tops where source bases already lie below the baseline land.
+- **Files:** foundation authoring/input scripts, local editable .blend and report, exported
+  foundation GLB, gallery loader/comparisons/credits, README and Swarmfall checklist.
+- **Assumptions:** Visual construction, normalized preview units. Selected major underside
+  faces are proxies for actual support needs; no collision or structural certification.
+- **Checks:** Blender evaluated 23,885 top/bottom pairs: no ray misses, no top shifts,
+  bottom embed error <0.001 and underside distance <0.2. Pre-existing baseline burial is
+  reported (1,012 vertices); terrain was not changed. Node suite and browser views checked.
+- **Preserved:** Original coast, city, first two platform screenshots, rejected high envelope,
+  first Blender prism draft and editable projects. No deletion or public deployment.
+- **Open / next:** Owner visual review, classification/polish for remaining city components,
+  retaining/tunnel details, collision/navigation and campaign integration. Houdini Launcher is
+  downloaded to Downloads; full Houdini installation/license remains unconfirmed.
+
 ### 2026-10-16: Source-city previews, preserved foundation passes and fitting-tool shortlist
 - **Signed:** Codex (OpenAI)
 - **Commit:** Add source-city previews and preserve reviewed coastal foundation drafts

@@ -46,6 +46,12 @@ unfinished. The later full-height terrain envelope buried architecture and is ar
 it is not the current default. The first raised platform and second low coast are selectable
 historical comparisons. Gallery titles are Skyway megacity and Phototextured city.
 
+The default Skyway view now adds an original Blender Geometry Nodes foundation derivative:
+selected actual underside contacts from carlcapu333's CC-BY 3.0 city, with structural fill
+projected onto the unchanged second coast using Raycast. Source architecture, coastal land
+and earlier versions remain intact. This is visual support geometry; inspection/refinement,
+collision and authored tunnels remain open. The credits panel retains the plain second coast.
+
 Alien arcology: radial ceramic towers, skyways, canals, landing pads and planetary setting.
 Metropolis: connected street grid, civic park, financial landmarks, waterfront and lower-detail
 distant skyline. Tidal citadel: terraces, original curved roofs, spires, bridges, cliffs,

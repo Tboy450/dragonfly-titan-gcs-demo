@@ -1,0 +1,27 @@
+{
+  "blender": "4.5.14 LTS",
+  "method": "Geometry Nodes Raycast",
+  "source_objects": 3445,
+  "structural_masses": 104,
+  "underside_triangles": 17124,
+  "support_cells": 41205,
+  "boundary_edges": 5867,
+  "occluded_cells_skipped": 20383,
+  "vertices": 47770,
+  "minimum_evaluated_height": -31.8623046875,
+  "maximum_evaluated_height": 1013.029296875,
+  "originals_modified": false,
+  "coast_modified": false,
+  "contact_clearance": 0.08,
+  "bottom_embed": 0.5,
+  "verification": {
+    "bottom_ray_misses": 0,
+    "max_bottom_embed_error": 0.00048828125,
+    "max_top_shift": 0,
+    "max_top_distance_to_actual_underside": 0.13827838003635406,
+    "vertices_already_below_baseline_coast": 1012,
+    "checked_top_vertices": 23885,
+    "checked_bottom_vertices": 23885,
+    "underside_distance_tolerance": 0.2
+  }
+}

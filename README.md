@@ -77,6 +77,11 @@ The later high terrain envelope was rejected because it swallowed buildings and 
 [Foundation tooling shortlist](research/fantasy-city-2026-10-16/FOUNDATION-TOOLS.md) records Blender,
 Houdini and Unreal options for future fitting. Skyway megacity and Phototextured city remain the
 gallery titles, with original asset names in credits. These are local previews, not a published update.
+The [Blender fitting test](http://127.0.0.1:4201/invasion/environments/?scene=cyberpunk&foundation=blender)
+now adds underside-fitted structural fill to that second coast without raising its land.
+[Blender authoring project and tool status](research/fantasy-city-2026-10-16/foundation-authoring/README.md)
+record the reusable Geometry Nodes setup, portable Blender and verified SideFX Launcher download.
+Houdini engine installation remains unconfirmed; the second coast remains separately selectable.
 Each offers vista, district and street cameras, orbit/pilot movement, flyover, dusk and a
 lighter render setting. These are visual studies; collision, campaign navigation, streaming
 and destruction remain checklist work. [Runtime credits](dist/invasion/environments/CREDITS.md)

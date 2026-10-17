@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [Skyway second-coast baseline](environment-lab-v1-2026-10-16/partial-contour-draft/) | Preferred low coast before adding Blender-fitted structural supports; source and re-rendered pictures retained, selectable with `foundation=contour-v2`; last default commit `0aa7b87` | 2026-10-16 | `archive/skyway-low-coast-v2-2026-10-16` |
 | [environment-lab-v1-2026-10-16](environment-lab-v1-2026-10-16/README.md) | Original three-test gallery, menu and camera behavior before adding complete source cities; exact code, screenshot and restore steps | 2026-10-16 | `archive/environment-lab-v1-2026-10-16` |
 | [aft-bulkhead-2026-10-15](aft-bulkhead-2026-10-15/README.md) | Rectangular aft panel, level MMRTG, old aft body/antenna and coupled fan layout before Claude's canted interface; exact originals and before pictures | 2026-10-16 | `archive/aft-bulkhead-2026-10-15` |
 | [fans-v1-2026-10-15](fans-v1-2026-10-15/README.md) | Fans at z 1.16 and old adapter/flow path before fitting the canted aft panel; pictures shared with the full aft archive | 2026-10-16 | `archive/fans-v1-2026-10-15` |
@@ -62,6 +63,7 @@ were never committed).
 | [mission-backdrop-drafts](mission-backdrop-drafts/README.md) | Drafts of the new backdrops: cut-off blueprint label, tiled ground seams, true-color thermal where cold parts blend in, faint yellow grid, white text on light grey; Exterior v2 drafts with gear over the telemetry text or on the phone's keep-out tape | 2026-10-08/09 (never published) | none |
 
 ### Replaced before this rule (in git history only, not yet archived here)
+
 
 - The first arrival capsule and parachutes (simple cone heat shield, sphere-cap canopies, glow
   sphere), replaced 2026-09-29 by "Rework the arrival sequence graphics and camera" (a6571b6);

@@ -295,6 +295,12 @@ and other threats on the planet):
   Skyway coast pass. Keep roofs/bridges out of terrain targets, constrain coast and slopes,
   generate fitted retaining/foundation meshes, and test both gaps and unwanted burial.
   [Tool shortlist, official sources and workflow](research/fantasy-city-2026-10-16/FOUNDATION-TOOLS.md).
+  **Implemented first tool (Codex, October 16):** official portable Blender 4.5.14 verified
+  and used for an editable Geometry Nodes Raycast foundation workflow. Default Skyway adds
+  structural fill from actual undersides onto the unchanged second coast; plain coast still
+  selectable. Checked 23,885 top/bottom pairs, retained originals and first draft. Artistic
+  refinement and full component review remain VIS-16 work. Signed SideFX Launcher downloaded;
+  Houdini engine setup/license not yet confirmed. [Authoring handoff](research/fantasy-city-2026-10-16/foundation-authoring/README.md).
 
 - [x] **VIS-13 ★ (P2)** First separate environment comparison gallery (Codex; preserved by
   Claude in `598e3b9`): three inspectable city studies, aerial/district/street cameras,

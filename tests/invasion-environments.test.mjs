@@ -95,6 +95,19 @@ test('Source batching preserves front faces after negative scale without changin
   assert.equal(original.index.count, 36);
 });
 
+test('Blender evaluated support keeps tops fixed and projects bottoms onto the preserved coast', () => {
+  const report=JSON.parse(readFileSync(new URL('../research/fantasy-city-2026-10-16/foundation-authoring/fit-report.json',import.meta.url),'utf8'));
+  assert.equal(report.method,'Geometry Nodes Raycast');
+  assert.equal(report.originals_modified,false);assert.equal(report.coast_modified,false);
+  assert.ok(report.support_cells>1000);
+  const v=report.verification;
+  assert.ok(v.checked_top_vertices>10000);assert.equal(v.checked_bottom_vertices,v.checked_top_vertices);
+  assert.equal(v.bottom_ray_misses,0);assert.ok(v.max_bottom_embed_error<.001);
+  assert.equal(v.max_top_shift,0);
+  assert.ok(v.max_top_distance_to_actual_underside<=v.underside_distance_tolerance);
+  assert.ok(v.vertices_already_below_baseline_coast>0,'pre-existing burial is reported, not hidden');
+});
+
 function documents(directory) {
   const result = [];
   for (const entry of readdirSync(directory, { withFileTypes: true })) {

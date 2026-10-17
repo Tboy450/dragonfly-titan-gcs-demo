@@ -8,3 +8,10 @@ research/fantasy-city-2026-10-16/three-0.180.0.tgz
 research/fantasy-city-2026-10-16/tools/
 research/fantasy-city-2026-10-16/converted-sources/**/*.blend
 research/fantasy-city-2026-10-16/converted-sources/**/*.log
+# Editable Blender authoring projects, logs, regenerable input and local draft binaries.
+research/fantasy-city-2026-10-16/foundation-authoring/**/*.blend
+research/fantasy-city-2026-10-16/foundation-authoring/**/*.blend1
+research/fantasy-city-2026-10-16/foundation-authoring/**/*.log
+research/fantasy-city-2026-10-16/foundation-authoring/coast-input.json
+research/fantasy-city-2026-10-16/foundation-authoring/contacts.json
+research/fantasy-city-2026-10-16/foundation-authoring/drafts/**/*.glb

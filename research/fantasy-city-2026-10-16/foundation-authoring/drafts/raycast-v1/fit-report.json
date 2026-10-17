@@ -1,0 +1,16 @@
+{
+  "blender": "4.5.14 LTS",
+  "method": "Geometry Nodes Raycast",
+  "source_objects": 3445,
+  "structural_masses": 104,
+  "underside_triangles": 6253,
+  "support_cells": 37101,
+  "occluded_cells_skipped": 6285,
+  "vertices": 222606,
+  "minimum_evaluated_height": -31.86224365234375,
+  "maximum_evaluated_height": 813.0011596679688,
+  "originals_modified": false,
+  "coast_modified": false,
+  "contact_clearance": 0.08,
+  "bottom_embed": 0.5
+}
