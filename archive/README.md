@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [nose-sensors-2026-10-17](nose-sensors-2026-10-17/README.md) | Part 22 methane box and short EFIELD cylinder before two photo-referenced engineering-model probes; exact originals, before pictures and rejected mount draft | 2026-10-17 | `archive/nose-sensors-2026-10-17` |
 | [aft-bulkhead-2026-10-15](aft-bulkhead-2026-10-15/README.md) | Rectangular aft panel, level MMRTG, old aft body/antenna and coupled fan layout before Claude's canted interface; exact originals and before pictures | 2026-10-16 | `archive/aft-bulkhead-2026-10-15` |
 | [fans-v1-2026-10-15](fans-v1-2026-10-15/README.md) | Fans at z 1.16 and old adapter/flow path before fitting the canted aft panel; pictures shared with the full aft archive | 2026-10-16 | `archive/fans-v1-2026-10-15` |
 | [inspection-visibility-2026-10-16](inspection-visibility-2026-10-16/README.md) | Mission inspector before independent shell, insulation, panel and equipment layer masks; working snapshot includes the pending aft-bulkhead membership line | 2026-10-16 | `archive/inspection-visibility-2026-10-16` |

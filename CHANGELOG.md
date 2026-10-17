@@ -39,6 +39,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-17: Rebuild the two EFIELD probes from engineering-model photographs
+- **Signed:** Codex (OpenAI)
+- **Commit:** Rebuild EFIELD probes from published engineering-model references
+- **What changed:** Part 22 now includes both fixed EFIELD assemblies, following Seese et al.,
+  IPM 2025's real hardware photo and published 30 cm carbon stalk / 5 cm gold electrode sizes.
+  Front upper starboard and rear lower port locations follow the paper; exact mounts, preamp
+  envelopes, pointing and harness stubs remain [EST]. TEMP/MICRO are co-mounted as photographed.
+  Independent inspection groups and a front-preamp label anchor preserve the layer workflow.
+  METHAN remains the old unverified box; #22 stays unchecked and count stays 18/24.
+- **Sources/archive:** Original page images, credit, model comparison and handoff in
+  `research/nose-sensors-2026-10-17/`; baseline `eed63b1` and the rejected overlapping mount
+  draft preserved in `archive/nose-sensors-2026-10-17/`. Matching archive tag on baseline.
+- **Files:** new `dist/nose-sensors.mjs`, research-model integration, component/reference and
+  assumptions text, focused tests, source index, README, architecture, research and checklist.
+- **Checks:** All 252 Node tests pass. Desktop/390/360 px WebGL views and four-angle
+  Internal/Thermal screenshots are nonblank, framed and error-free. Focused tests cover
+  published dimensions, stable label, independent layers, rebuilt-part and rotor clearance.
+- **Scope:** No flight/thermal constants or other parts changed. Work isolated from the
+  shared checkout's unpublished city commits and dirty files; those remain untouched.
+- **Open / next:** Find a real METHAN hardware photo and scale reference. No hidden preamp
+  electronics or final-flight fit claims. Check public deployment against the new commit.
+
 ### 2026-10-16: Close out Claude's aft bulkhead and publish inspection layers
 - **Signed:** Claude (Anthropic Claude Opus 5.5), geometry; Codex (OpenAI), verification,
   archive, documentation and release closeout.

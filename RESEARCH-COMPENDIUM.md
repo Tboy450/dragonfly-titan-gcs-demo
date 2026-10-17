@@ -4,6 +4,15 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 17 EFIELD subpass (Codex):** [photo reference, parameters and limits](research/nose-sensors-2026-10-17/README.md).
+Seese et al., IPM 2025, printed pp. 186-187, provides real engineering-model photos and
+published 30 cm conductive carbon-fiber stalks / 5 cm gold-plated aluminum electrodes.
+Two fixed assemblies: upper starboard front and lower port rear near the skid/MMRTG.
+The stalk is guard-driven, not insulating; TEMP/MICRO are co-mounted on the preamp.
+Figure 1 CAD is layout-only; figure 2 supplies appearance, not final flight CAD.
+METHAN on CAPS 2024 slide 42 is CAD only and does not close its hardware-reference gap.
+No flight/thermal constants changed; #22 remains partial and the count stays 18/24.
+
 **October 16 inspection controls:** [behavior, checks and construction limits](research/inspection-visibility-2026-10-16/README.md).
 Existing shell/foam/panel and equipment groups can now be hidden independently for inspection.
 This adds no physical construction assumptions. Claude's completed battery pass is published;
