@@ -39,6 +39,48 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-17: Publish the Asset and Environment Lab with individual model inspection
+- **Signed:** Codex (OpenAI)
+- **Commit:** Publish Asset and Environment Lab with asset inspection
+- **What changed:** Renamed the lab to Asset & Environment Lab, retained the five environments
+  and destruction controls, and added an Assets mode with 18 bundled models: four game drones,
+  five urban buildings/props and nine fantasy pieces. Grouped selector, creator/license links,
+  fit-to-view inspection stand/cameras and turntable. Added a game-title link and release build
+  stamp; existing environment URLs and historical versions remain available.
+- **Files:** asset-viewer.mjs, lab UI/styles/loader, game index, Pages workflow, three inspector
+  tests, README/checklist/credits. Release also includes the preceding Houdini terrain and
+  progressive destruction work, their scripts, reports and tests.
+- **Assumptions:** Inspection display scale is normalized, not a physical size claim. The lab
+  remains an art/testing area separate from campaign saves. Source licenses retained; local
+  editable authoring caches and unfinished modular-kit work are excluded from publication.
+- **Checks:** Asset catalog dependencies, geometry framing and all four drone previews tested;
+  full project suite and local browser review before push. GitHub Pages runs the suite again
+  and stamps the deployed build; public verification is performed after deployment.
+- **Public URL:** https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/
+- **Open / next:** Multiple parachutes (DROP-01); gameplay collision and damage integration.
+
+### 2026-10-17: Review game integration and draw progressive destruction for all five cities
+- **Signed:** Codex (OpenAI)
+- **Commit:** Uncommitted local work; no push or deployment.
+- **What changed:** Added Intact, Damaged, Major destruction and Ruins comparisons to Alien
+  arcology, Metropolis, Tidal citadel, Skyway megacity and Phototextured city. Derivative meshes
+  clip the actual architecture, cap solid broken sections and add rods/settled roof and facade
+  rubble. Group roof ornaments with supporting towers; avoid caps spanning open transit rings.
+  Landscape, ocean, natural rock and citadel terraces are protected; original sources retained.
+  Reviewed current terrain, movement, combat, loading, zone placement and checkpoint code;
+  recorded a concrete district-first game integration plan and measured current GLB budgets.
+- **Files:** Environment Lab controls/styles/loader/world metadata, new `city-damage.mjs`,
+  `tests/invasion-city-damage.test.mjs`, GAME-INTEGRATION.md, README, checklist and credits.
+- **Assumptions:** Invented art stages and heuristic structural families [EST]. These are
+  code-authored browser 3D variants, not newly saved Houdini damage scenes or collapse physics.
+  Game rules, campaign saves and pod/parachute behavior are unchanged.
+- **Checks:** 263 Node tests passed; syntax checks passed. All five Major destruction views
+  inspected in the browser; alien Ruins also inspected. Screenshots saved under research.
+- **Open / next:** Owner art review; finer facade/bridge/ornament/debris cleanup (ENV-06),
+  campaign environment integration (VIS-18), weapon-triggered local damage/collision/saves
+  (ENV-01 through ENV-04). Multiple pods of 1–3 drones per pod (DROP-01) remain the requested
+  next gameplay pass. Houdini terrain art review remains open under VIS-16.
+
 ### 2026-10-16: Implement Blender underside-fitted city foundations
 - **Signed:** Codex (OpenAI)
 - **Commit:** Implement Blender raycast foundations on the preferred low coast

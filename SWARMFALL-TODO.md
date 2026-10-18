@@ -20,6 +20,24 @@ Keep this file updated across sessions and assistant handoffs.
 
 ## Resume here (October 16, 2026)
 
+- **Asset & Environment Lab release (Codex, October 17):** renamed the lab and added an Assets
+  mode for 18 individual drone, urban and fantasy models with inspection views and attribution.
+  [Public lab](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/);
+  [asset inspector](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/?asset=drone-scout).
+  Five environments, destruction stages and historical foundation variants remain available.
+  Linked from the game title; uses the existing GitHub Pages release workflow and build stamp.
+  Unfinished modular-kit work and the separate unmerged EFIELD branch are not part of this release.
+
+- **City review and destruction artwork (Codex, October 17):** all five environments now have
+  Intact / Damaged / Major destruction / Ruins previews with broken mesh geometry, exposed
+  floors, rods and settled rubble. Original cities, terrain, water and citadel terraces are
+  retained. See ENV-05 and the [implementation review](research/fantasy-city-2026-10-16/GAME-INTEGRATION.md)
+  for five local links, measured GLB costs and concrete campaign integration steps. The
+  recommended route is one playable district within the full city, shared environment data,
+  collision/navigation/landing courts, then per-building damage and persistence. These art
+  states do not complete ENV-01 through ENV-04. **DROP-01 remains the next requested gameplay
+  pass** after this review/artwork; no parachute or pod logic changed.
+
 - **Environment Lab and backups (Codex continuation, October 16):** first three visual tests
   are implemented at `dist/invasion/environments/`: alien arcology, metropolis and tidal
   citadel, with orbit/pilot cameras, view presets, flyover, dusk and light rendering. First
@@ -274,6 +292,18 @@ and other threats on the planet):
 
 ## 10. Look (VIS)
 
+- [x] **VIS-19 ★ (P2) — Codex (October 17)** Rename and publish **Asset & Environment Lab**;
+  retain all five environment tests and add individual inspection for 18 bundled game/kit
+  assets, grouped selection, creator/license links, fit-to-view cameras and a turntable.
+  Public URL and title-screen link above; preserve existing routes and campaign saves.
+
+- [ ] **VIS-18 ★ (P2)** Implement the reviewed city integration path: shared versioned layout
+  data, asynchronous district loading, real terrain/multi-level surfaces, fixed objective and
+  safe drop sites, flight clearance/ground navigation, district culling and compatible mission
+  saves. Start with a separate city battle test and a roughly 0.8–1 km playable district inside
+  the full city; retain Aurex and existing campaign saves until validated. See FIX-02/FIX-03,
+  VIS-10 through VIS-12, MODE-20 and the [code review](research/fantasy-city-2026-10-16/GAME-INTEGRATION.md).
+
 - [ ] **VIS-16 ★ (P2)** Contoured coastal setting for cyberpunk City / Skyway (Codex,
   October 16): individual source contact points shape smooth ground, separate footing pads,
   access roads and shoreline; animated ocean water and a Foundation camera. Original imported
@@ -287,6 +317,16 @@ and other threats on the planet):
   original Cyberpunk City and drone City names remain in subtitles/credits.
   Fresh local test link: `http://127.0.0.1:4201/invasion/environments/?scene=cyberpunk`.
   These are visual experiments; collision, navigation, citywide streaming and destruction remain open.
+  **Houdini terrain revision (October 17):** authored a connected HeightField landscape from
+  the preferred second coast, projected actual exposed bases, preserved base outlines in a
+  constrained triangle mesh, and added narrow cut/fill steps at adjoining district elevations.
+  Main city geometry is unchanged; the rejected Blender building extensions are not loaded in
+  this variant. Added Rear coast / Building bases cameras and independent contact probes.
+  Inspect `http://127.0.0.1:4201/invasion/environments/?scene=cyberpunk&foundation=houdini`.
+  Owner review of the high rear terrain remains open; all prior comparison passes are retained.
+  Final native checks: 25,740 exposed-base samples, zero ray misses or sampled burial,
+  maximum gap 2.368 preview units; 557 exposed transit samples clear of the ground.
+  Houdini is now the default Skyway preview. Artistic review remains VIS-16 work.
 
 - [ ] **VIS-17 ★ (P2)** Reusable terrain/foundation authoring tools for imported cities.
   Investigate Blender Geometry Nodes Raycast / Shrinkwrap against selected underside proxies;
@@ -296,11 +336,20 @@ and other threats on the planet):
   generate fitted retaining/foundation meshes, and test both gaps and unwanted burial.
   [Tool shortlist, official sources and workflow](research/fantasy-city-2026-10-16/FOUNDATION-TOOLS.md).
   **Implemented first tool (Codex, October 16):** official portable Blender 4.5.14 verified
-  and used for an editable Geometry Nodes Raycast foundation workflow. Default Skyway adds
+  and used for an editable Geometry Nodes Raycast foundation workflow. The preserved Blender variant adds
   structural fill from actual undersides onto the unchanged second coast; plain coast still
   selectable. Checked 23,885 top/bottom pairs, retained originals and first draft. Artistic
   refinement and full component review remain VIS-16 work. Signed SideFX Launcher downloaded;
-  Houdini engine setup/license not yet confirmed. [Authoring handoff](research/fantasy-city-2026-10-16/foundation-authoring/README.md).
+  **Software setup (October 17):** Houdini 22.0.466 Production installed; Apprentice licenses
+  activated; the main Apprentice workspace opened and responds. Launcher recognized the
+  account after restarting with License Administrator
+  already signed in, avoiding the failing Launcher browser-login path. Owner stopped the
+  building-extension approach; the setup-only pause ended when the owner requested a Houdini terrain fit.
+  [Authoring handoff](research/fantasy-city-2026-10-16/foundation-authoring/README.md).
+  **Second tool implemented (October 17):** native Houdini HeightField Project and masks,
+  bounded smoothing, underside ceilings, constrained contact-edge meshing and two adaptive
+  refinement passes. Saved an editable `.hipnc`, local caches and the evaluated browser GLB.
+  [Houdini workflow, validation and review links](research/fantasy-city-2026-10-16/houdini-authoring/README.md).
 
 - [x] **VIS-13 ★ (P2)** First separate environment comparison gallery (Codex; preserved by
   Claude in `598e3b9`): three inspectable city studies, aerial/district/street cameras,
@@ -461,6 +510,19 @@ The game is silent today.
 - [ ] **DOC-03 (P3)** A player guide (controls and tips) linked from the title screen.
 
 ## 16. Destructible environments (ENV)
+
+- [x] **ENV-05 ★ (P2) — Codex (October 17, local)** Progressive damaged/destroyed art studies
+  for **all five maps**: Alien arcology, Metropolis, Tidal citadel, Skyway megacity and
+  Phototextured city. Four selectable states, deterministic component grouping, real facade
+  clipping, jagged remnants, exposed cross sections, bent rods and style-specific settled
+  debris. Protected landscape/water/terraces; reversible Intact control; current variant
+  geometry disposed on replacement. [Links and details](research/fantasy-city-2026-10-16/GAME-INTEGRATION.md).
+  Visual prototypes only: no weapon-triggered destruction, collapse physics or campaign changes.
+- [ ] **ENV-06 ★ (P2)** Refine destruction artwork after owner review: authored building IDs,
+  localized facade wounds, recognizable fallen crowns/roofs, bridge-specific broken spans,
+  support cleanup for fine imported roof ornaments, surface-fitted debris and collapse
+  transitions. Replace geometric grouping heuristics with reviewed structural families before
+  connecting damage to navigation. Preserve each intact asset and this first damage pass.
 
 Owner request, October 16: investigate Crackdown 3 and Dragon Ball Z: Kakarot destruction
 alongside all the earlier city references. [Research and sources](research/fantasy-city-2026-10-16/README.md).

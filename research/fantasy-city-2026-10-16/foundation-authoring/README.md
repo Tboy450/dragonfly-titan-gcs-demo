@@ -3,8 +3,24 @@
 Owner requested Blender and Houdini downloads and one implemented fitting tool.
 Blender 4.5.14 LTS is downloaded, extracted locally and used to build this experiment.
 The signed SideFX Launcher 22.0.466 is downloaded to the tool folder and
-`C:/Users/Heemi/Downloads/sidefx-launcher-22.0.466.exe`. Houdini's engine installation/license
-is **not confirmed**; the Launcher download is not a full Houdini installation.
+`C:/Users/Heemi/Downloads/sidefx-launcher-22.0.466.exe`.
+
+## Houdini setup — October 17, 2026
+
+Houdini 22.0.466 Production is installed at
+`C:/Program Files/Side Effects Software/Houdini 22.0.466/`.
+Apprentice activation succeeded; License Administrator shows version 22.0 licenses
+available through November 16, 2026. The main workspace opened successfully as
+**Houdini Apprentice Non-Commercial 22.0.466 - Py3.13**, and Windows reports the
+application responding. Software setup is verified; no Houdini foundation project has
+been built yet.
+
+The Launcher browser-login path failed with an hserver "unknown escape sequence" error.
+Signing in through License Administrator worked. Restarting only Launcher then picked up
+that account and enabled installation, without changing server configuration.
+
+Owner stopped the building-extension approach. Preserve all modeling drafts and pause
+further foundation changes; the software setup does not validate the Blender visual result.
 
 ## Open and compare
 

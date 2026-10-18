@@ -54,9 +54,17 @@ and a local versus mode where players race to take the same planet with drone-vs
 Everything still to do is in the [Swarmfall update checklist](SWARMFALL-TODO.md), with item
 numbers to ask for.
 
-### Environment tests and asset library
+### Asset & Environment Lab
 
-The separate **Environment Lab** compares city directions without changing campaign planets
+[Open the public Asset & Environment Lab](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/).
+Choose **Environments** for the five city tests and their four destruction stages, or **Assets**
+to inspect 18 individual models: four Swarmfall drones, five urban buildings/props and nine
+fantasy pieces. Each asset has creator/license details, orbit/zoom views and a turntable.
+The lab is also linked from the game's title screen. It is separate from campaign progress.
+October 17 publication supersedes the earlier local-preview-only status recorded below;
+all existing local links, historical foundation versions and original asset files are retained.
+
+The separate **Asset & Environment Lab** compares city directions without changing campaign planets
 or mission saves. Run `python research/fantasy-city-2026-10-16/preview-server.py` from the
 repository root, then open [the local gallery](http://127.0.0.1:4201/invasion/environments/).
 It serves the gallery on port 4201 with fresh resources; the existing game preview can stay open.
@@ -72,16 +80,24 @@ the more realistic urban comparison. Both retain the source city layout and use 
 Cyberpunk City's new land follows individual architectural contact points, with small footing
 pads, coastal slopes, access roads and animated ocean water. **Foundation** frames the ground;
 the credits panel links to the retained flat-ground and first two foundation passes. The owner
-prefers the second low-coast pass, restored as default; fitting all elevated bases remains open.
+prefers the second low-coast pass, retained as the baseline; fitting all elevated bases remains open.
 The later high terrain envelope was rejected because it swallowed buildings and is archived.
 [Foundation tooling shortlist](research/fantasy-city-2026-10-16/FOUNDATION-TOOLS.md) records Blender,
 Houdini and Unreal options for future fitting. Skyway megacity and Phototextured city remain the
 gallery titles, with original asset names in credits. These are local previews, not a published update.
 The [Blender fitting test](http://127.0.0.1:4201/invasion/environments/?scene=cyberpunk&foundation=blender)
-now adds underside-fitted structural fill to that second coast without raising its land.
+preserves the earlier underside-fitted structural-fill experiment on that second coast.
 [Blender authoring project and tool status](research/fantasy-city-2026-10-16/foundation-authoring/README.md)
 record the reusable Geometry Nodes setup, portable Blender and verified SideFX Launcher download.
-Houdini engine installation remains unconfirmed; the second coast remains separately selectable.
+Houdini 22.0.466 Production is now installed with Apprentice licenses activated (October 17).
+The owner rejected the building-extension approach and requested a Houdini terrain fit.
+The [Houdini coastal test](http://127.0.0.1:4201/invasion/environments/?scene=cyberpunk&foundation=houdini)
+is the current Skyway preview. It uses a connected landscape, projected building bases and constrained terrain steps, with the
+second coast's outer shore and animated water. **Rear coast** and **Building bases** add inspection
+angles. [Editable Houdini project and measured fit](research/fantasy-city-2026-10-16/houdini-authoring/README.md)
+record the native node graph and independent gap/burial checks. Source buildings are unchanged;
+the earlier platform, second coast, flat-ground and Blender passes remain available. Terrain
+art direction still needs owner review, especially the high rear districts in the source model.
 Each offers vista, district and street cameras, orbit/pilot movement, flyover, dusk and a
 lighter render setting. These are visual studies; collision, campaign navigation, streaming
 and destruction remain checklist work. [Runtime credits](dist/invasion/environments/CREDITS.md)
@@ -105,6 +121,17 @@ Spacecraft, orbital stations and planetary/alien architecture are priorities in 
 queue. Pilot/first-person campaign (**MODE-20**), a later Tank Wars-style drone builder
 (**MODE-21**), choosing victory extraction or continued capture (**OBJ-07**), and multiple
 pods carrying 1–3 drones each (**DROP-01**) are recorded as future gameplay work.
+
+**October 17 — progressive destruction artwork:** all five city tests now offer **Intact,
+Damaged, Major destruction and Ruins**. Broken facades, jagged tower sections, exposed floors,
+bent rods and settled rubble are actual derivative 3D meshes; the original architecture,
+terrain, ocean and citadel foundations remain available. Start with the
+[alien destruction test](http://127.0.0.1:4201/invasion/environments/?scene=alien&damage=heavy)
+and switch maps/stages in the sidebar. These are visual prototypes; battle damage, collision,
+save persistence and collapse animation are still open.
+[Game integration review and all five test links](research/fantasy-city-2026-10-16/GAME-INTEGRATION.md)
+record the measured asset sizes and concrete route into campaign districts. Multiple-pod
+delivery remains the next requested gameplay pass; parachutes were not changed here.
 
 ## Run Locally
 

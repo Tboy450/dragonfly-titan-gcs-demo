@@ -1,4 +1,11 @@
-# Environment Lab — sources and modifications
+# Asset & Environment Lab — sources and modifications
+
+October 17 public release adds an individual asset inspector for four existing Swarmfall
+procedural drone models, five Quaternius urban buildings/props and nine Kenney fantasy pieces.
+Their original geometry and materials are retained on a fit-to-view inspection stand. Drone
+geometry remains the existing Swarmfall game artwork; this does not relicense it as CC0.
+The Quaternius and Kenney notices/source links below remain the relevant kit attribution.
+The viewer's stand, inspection cameras and grouped catalog were added by Codex (OpenAI).
 
 Five separate visual studies by Codex (OpenAI), October 16, 2026. Original architecture, dimensions,
 layout, terrain and lighting are invented visual designs. No image-generation service was used.
@@ -46,11 +53,20 @@ unfinished. The later full-height terrain envelope buried architecture and is ar
 it is not the current default. The first raised platform and second low coast are selectable
 historical comparisons. Gallery titles are Skyway megacity and Phototextured city.
 
-The default Skyway view now adds an original Blender Geometry Nodes foundation derivative:
+The preserved Blender Skyway variant adds an original Geometry Nodes foundation derivative:
 selected actual underside contacts from carlcapu333's CC-BY 3.0 city, with structural fill
 projected onto the unchanged second coast using Raycast. Source architecture, coastal land
 and earlier versions remain intact. This is visual support geometry; inspection/refinement,
 collision and authored tunnels remain open. The credits panel retains the plain second coast.
+
+The October 17 **Houdini coastal terrain** variant replaces that structural fill with a
+connected landscape authored in Houdini 22.0.466 Apprentice. HeightField projection of selected
+actual undersides, coast blending, protected contact edges and adaptive triangulation fit the
+ground without extending source buildings. The animated ocean is retained from the second
+coast. Contact shapes derive from carlcapu333's city (CC-BY 3.0); terrain authoring, converted
+mesh and viewer integration by Codex. The source geometry and all earlier variants are retained.
+The local editable Houdini project uses Apprentice's Non-Commercial edition. These remain
+visual prototype assets; full artistic review, collision and campaign integration are open.
 
 Alien arcology: radial ceramic towers, skyways, canals, landing pads and planetary setting.
 Metropolis: connected street grid, civic park, financial landmarks, waterfront and lower-detail
@@ -62,6 +78,19 @@ yet connected to game collision, pathfinding, zone capture, damage or campaign s
 view is a free-flight camera with no collision. Performance counters describe the current
 browser/device, not verified phone benchmarks. Light mode reduces resolution and shadows;
 streaming and distance-dependent replacement remain follow-ups.
+
+## October 17 destruction art variants
+
+All five environments now include procedural derivative geometry for Damaged, Major
+destruction and Ruins, with Intact retained. Codex authored the structural grouping, jagged
+facade cuts, exposed cross sections, bent rods and settled rubble in `city-damage.mjs`.
+Source UVs are retained, materials are roughened/darkened and alien/stone/urban debris uses
+different shapes and palettes. This is a geometric art study, not simulated structural failure.
+The cities' original authors and licenses above also apply to their modified architecture;
+cyberpunk City remains attributed to carlcapu333 under CC-BY 3.0. Terrain/water and protected
+citadel foundation terraces remain intact. No image generation or proprietary game geometry
+was used. Battle-triggered damage, local building collision, persistence and art cleanup are
+still follow-ups. The browser builds variants from retained sources without overwriting them.
 
 ## Preserved source backups
 

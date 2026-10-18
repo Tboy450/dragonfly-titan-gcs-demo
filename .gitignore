@@ -15,3 +15,10 @@ research/fantasy-city-2026-10-16/foundation-authoring/**/*.log
 research/fantasy-city-2026-10-16/foundation-authoring/coast-input.json
 research/fantasy-city-2026-10-16/foundation-authoring/contacts.json
 research/fantasy-city-2026-10-16/foundation-authoring/drafts/**/*.glb
+# Local editable Houdini scene, caches and retained intermediate exports.
+research/fantasy-city-2026-10-16/houdini-authoring/**/*.hipnc
+research/fantasy-city-2026-10-16/houdini-authoring/**/*.bgeo.sc
+research/fantasy-city-2026-10-16/houdini-authoring/**/*.obj
+research/fantasy-city-2026-10-16/houdini-authoring/**/*.bak
+research/fantasy-city-2026-10-16/houdini-authoring/backup/
+research/fantasy-city-2026-10-16/houdini-authoring/drafts/**/*.glb

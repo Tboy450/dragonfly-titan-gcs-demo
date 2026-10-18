@@ -1,0 +1,42 @@
+{
+  "houdini": "22.0.466",
+  "license": "licenseCategoryType.Apprentice",
+  "method": "HeightField Project, protected contacts, district fit, constrained TIN, adaptive joins, transit clearance",
+  "structural_masses": 89,
+  "contact_primitives": 5539,
+  "grid_spacing": 8,
+  "vertices": 159397,
+  "triangles": 318312,
+  "height_range": [
+    -99.23518371582031,
+    860.0703125
+  ],
+  "macro_slope": [
+    -0.1562008339811819,
+    -0.3586906435751488,
+    451.2857322192561
+  ],
+  "source_modified": false,
+  "building_extensions": false,
+  "sea_level": -38,
+  "transit_clearance_target": 50,
+  "verification": {
+    "candidate_samples": 25909,
+    "samples": 25740,
+    "already_supported_by_lower_city": 169,
+    "ray_misses": 0,
+    "min_clearance": 0.6201171875,
+    "max_gap": 2.367767333984375,
+    "median_gap": 0.70001220703125,
+    "p95_gap": 0.7000732421875,
+    "buried_over_3": 0,
+    "gaps_over_8": 0,
+    "worst": []
+  },
+  "transit_verification": {
+    "samples": 557,
+    "above_building_contact": 1032,
+    "minimum_clearance": 92.20989990234375,
+    "below_20": 0
+  }
+}
