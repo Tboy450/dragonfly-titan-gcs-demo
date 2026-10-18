@@ -13,3 +13,7 @@ The sensor-suite slide mixes illustrations and hardware photos. Its METHAN and E
 panels are CAD, not equivalent to a real hardware photo. Used to identify the remaining
 METHAN reference gap, not to invent a detailed enclosure or published scale. The 2025
 EFIELD paper supplies the actual engineering-model photograph for the EFIELD subpass.
+
+October 18: the owner approved a labeled METHAN design approximation. Its chamfered outline
+is now used as a design cue; sizes, filter layout, finish and installation are estimates,
+not a hardware-photo match. [Current model](../../methan-2026-10-18/README.md).

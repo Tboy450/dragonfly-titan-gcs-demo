@@ -39,6 +39,33 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-18: Complete part 22 with the approved labeled METHAN approximation
+- **Signed:** Codex (OpenAI)
+- **Commit:** Complete part 22 with approved METHAN design approximation
+- **Owner decision:** "Build a labeled approximation" after the hardware-photo search.
+- **What changed:** Replaced the last part-22 placeholder with a chamfered cold-cell frame,
+  removable metal-felt filter covers, supports, fiber feedthrough and short jacketed entry.
+  The split between exterior cell and warm DPU sources/detectors follows Lorenz et al.,
+  IPM 2025 pp. 184-185. Diagram outline only; all METHAN sizes, finish, filter layout,
+  detailed fittings and installation remain [EST], explicitly NOT photo-matched hardware.
+  No hidden mirrors, optical path or DPU electronics invented. EFIELD geometry unchanged.
+- **Inspection:** Publishes the prior feature-branch checkpoint too: separately focus Front
+  EFIELD, Rear EFIELD or METHAN (design estimate), same component ID 22, independent layers
+  and draw-time visibility restoration. No flight, science, power or thermal constants changed.
+- **Records:** Initial #22 asset pass checked off; current count 19/24 (4 Codex, 15 Claude).
+  Real hardware/exact-dimension follow-ups stay open. Component text, expandable assumptions,
+  source list, README, architecture and handoff updated together.
+- **Archive:** Previous exact module/UI/test, all subassembly views, banded-texture draft and
+  rectangular-frame draft retained under `archive/methan-placeholder-2026-10-18/`; tag on
+  `e133dbf`. Sources, parameter table and comparison in `research/methan-2026-10-18/`.
+- **Checks:** 273 Node tests pass. Real Edge/WebGL checks at 1440/390/360 px, both layers,
+  all subassemblies/four angles; nonblank framed pixels, no browser errors or page overflow.
+  Rebuilt-neighbor/rotor clearances, skin mounting, cavity/filter/fiber construction, labels,
+  masks and completion counts tested. Visual comparison refined the frame/texture before release.
+- **Open / next:** Obtain actual METHAN photos and flight dimensions when available. Keep
+  the exception limited to this approved model; preserve the normal real-photo-first rule.
+  Other incomplete numbered parts remain on the checklist. Other chat's city/game files untouched.
+
 ### 2026-10-18: Inspect individual part-22 probes and record the METHAN reference gap
 - **Signed:** Codex (OpenAI)
 - **Commit:** Inspect individual part-22 probes and record METHAN reference gap

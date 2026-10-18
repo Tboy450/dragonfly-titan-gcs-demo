@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 18 owner-approved METHAN closeout (Codex):** [model, sources and limits](research/methan-2026-10-18/README.md).
+The owner chose a labeled approximation. A removable casing/filter/support/fiber-entry model
+now replaces the placeholder, following the published cold-cell/warm-DPU architecture. All
+METHAN sizes, finish, detailed geometry and installation are [EST], not photo-matched flight
+hardware. EFIELD geometry is unchanged. Initial part #22 pass complete; count 19/24 (4 Codex,
+15 Claude), with real-photo/exact-dimension follow-ups retained. No physics constants changed.
+The earlier local-checkpoint notes below describe the state before that approval.
+
 **October 18 part-22 continuation (local, Codex):** [primary evidence and handoff](research/part22-2026-10-18/README.md).
 Lorenz et al., IPM 2025 printed pp. 184-185, clarifies METHAN: a cold mirrored absorption
 cell with metal-felt dust filtration, optical fibers through insulation to warm DPU sources

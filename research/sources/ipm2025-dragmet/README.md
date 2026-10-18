@@ -33,3 +33,7 @@ Related primary research checked:
 
 The CAPS 2024 METHAN panel remains a CAD reference, not a photo. The October 17 EFIELD
 engineering-model photo is not a METHAN photo. Real-photo-first requirement stays in force.
+
+October 18 exception: the owner explicitly approved a labeled METHAN approximation from
+the published design/diagram. See [implementation and limits](../../methan-2026-10-18/README.md).
+This does not turn the CAD into photography or change the default rule for other assets.
