@@ -451,7 +451,7 @@ export function buildResearchModel(kit) {
   // Kept on the MMRTG's top fin root when the MMRTG was tilted (part 16); still a placeholder.
   mesh(new THREE.SphereGeometry(0.022, 12, 8), material, new THREE.Vector3(0, 0.22, 0).applyEuler(generator.rotation).add(generator.position).toArray());
   // Externally mounted items described in the same paper, visible in every layer.
-  interiorPart("nose-sensors", "external-sensors", "DraGMet: two EFIELD probes; METHAN housing remains provisional", "Seese et al., IPM 2025 pp186-187, figs1-2 (real engineering-model photo); CAPS 2024 slide42; locations from text, exact coordinates/preamp size estimated", 0x6b7278, "exterior");
+  interiorPart("nose-sensors", "external-sensors", "DraGMet: EFIELD / METHAN", "Seese et al., IPM 2025 pp186-187, figs1-2 (real engineering-model photo); CAPS 2024 slide42; locations from text, exact coordinates/preamp size estimated; METHAN housing provisional", 0x6b7278, "exterior");
   buildNoseSensors({ parent: buildTarget, mesh });
   interiorPart("side-cameras", "cold-actuators", "DragonCam lower cameras: Microscopic Camera, LED array, two Down Cameras (in foam cavities)", "DragonCam paper (Clark et al. 2026) figs. 1-3, 5, 12, table 1; brackets and down-camera position estimated", 0xbfb8aa, "exterior");
   buildSideCameras({ parent: buildTarget, mesh });

@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 18 part-22 continuation (local, Codex):** [primary evidence and handoff](research/part22-2026-10-18/README.md).
+Lorenz et al., IPM 2025 printed pp. 184-185, clarifies METHAN: a cold mirrored absorption
+cell with metal-felt dust filtration, optical fibers through insulation to warm DPU sources
+and photodiodes; in-band source at 1.67 micrometers plus continuum. No clear METHAN hardware
+photo found in the checked sources. Geometry remains unchanged pending reference or owner's
+approval for a labeled approximation. Both EFIELD assemblies already exist; the local
+inspector can now focus front/rear separately without renumbering. #22 remains open, count 18/24.
+
 **October 17 EFIELD subpass (Codex):** [photo reference, parameters and limits](research/nose-sensors-2026-10-17/README.md).
 Seese et al., IPM 2025, printed pp. 186-187, provides real engineering-model photos and
 published 30 cm conductive carbon-fiber stalks / 5 cm gold-plated aluminum electrodes.

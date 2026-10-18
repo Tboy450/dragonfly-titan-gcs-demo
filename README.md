@@ -249,6 +249,12 @@ engineering-model photos, with published 30 cm carbon-fiber stalks and 5 cm gold
 balls. Preamp size and exact installation remain estimated; METHAN is still provisional,
 so #22 stays open and the count remains 18/24. Geometry: Codex.
 
+[October 18 local continuation](research/part22-2026-10-18/README.md): a subassembly selector
+focuses either EFIELD probe independently; both already existed in the published model.
+New primary research clarifies METHAN's cold gas cell and fiber-fed warm light engine.
+Its appearance still awaits a hardware reference or approval for a labeled approximation.
+This continuation is a local checkpoint, not a completed/published part-22 replacement.
+
 The [aft bulkhead](research/aft-bulkhead-2026-10-15/README.md) follows NASA/APL's real structure
 photos: gold-colored face, ribbed circular generator interface and pocketed rim. The generator
 rises aft at an estimated 25 degrees; the fan collar and aft body profile follow the same

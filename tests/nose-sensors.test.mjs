@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import * as THREE from "../dist/vendor/three/three.module.min.js";
 import { buildNoseSensors, noseSensorsAsset as A } from "../dist/nose-sensors.mjs";
+import { createFlightState } from "../dist/flight-model.mjs";
 import { buildNoseCameras } from "../dist/nose-cameras.mjs";
 import { buildSideCameras } from "../dist/side-cameras.mjs";
 import { buildDrill } from "../dist/drills.mjs";
@@ -18,6 +19,8 @@ import { buildHgaGimbal } from "../dist/hga-gimbal.mjs";
 import { buildBattery } from "../dist/battery.mjs";
 import { buildAftBulkhead } from "../dist/aft-bulkhead.mjs";
 import { buildFans, buildWarmDuct, buildTrimDevice } from "../dist/thermal-loop.mjs";
+import { createInspector, focusInspector, inspectionSubassemblies, inspectionSubassembly,
+  selectInspectionSubassembly, resetInspector } from "../dist/vehicle-inspector.mjs";
 
 function mesh(geometry, material, position, parent) {
   const object = new THREE.Mesh(geometry, material); object.position.fromArray(position); parent.add(object); return object;
@@ -51,6 +54,29 @@ test("Two fixed EFIELD probes use published 30 cm stalks and 5 cm electrodes, wi
     const ballPosition = new THREE.Vector3(); p.ball.getWorldPosition(ballPosition);
     assert.ok(ballPosition.y > -0.6 && Math.abs(ballPosition.x) < 0.85 && Math.abs(ballPosition.z) < 1.95, "inside vehicle footprint, above skids");
   }
+});
+
+test("Front and rear probes can be focused separately without changing geometry or the part ID", () => {
+  const { parent, probes } = fixture(); parent.name = "nose-sensors";
+  const s = { ...createFlightState(), inspector: createInspector() };
+  const pose = probes.map(p => p.group.matrixWorld.clone());
+  assert.deepEqual(inspectionSubassemblies(parent).map(p => p.name), ["efield-front", "efield-rear", "methan-placeholder"]);
+  focusInspector(s, parent.name);
+  for (const p of probes) {
+    selectInspectionSubassembly(s, parent, p.group.name);
+    assert.equal(inspectionSubassembly(parent, s.inspector), p.group);
+    assert.equal(s.inspector.focusPart, "nose-sensors");
+    assert.equal(s.inspector.zoom, 1);
+  }
+  selectInspectionSubassembly(s, parent, "not-a-part");
+  assert.equal(s.inspector.subassembly, "efield-rear", "invalid selection does not change focus");
+  selectInspectionSubassembly(s, parent, "");
+  assert.equal(inspectionSubassembly(parent, s.inspector), null);
+  probes.forEach((p, i) => assert.ok(p.group.matrixWorld.equals(pose[i])));
+  selectInspectionSubassembly(s, parent, "efield-front");
+  focusInspector(s, "battery");
+  assert.equal(s.inspector.subassembly, null);
+  resetInspector(s.inspector); assert.equal(s.inspector.subassembly, null);
 });
 
 test("EFIELD envelopes stay outside the swept rotor volumes", () => {

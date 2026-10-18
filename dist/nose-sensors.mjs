@@ -36,6 +36,8 @@ export function buildNoseSensors({ parent, mesh }) {
   };
   const probes = A.probes.map(p => {
     const group = new THREE.Group(); group.name = p.name; assembly.add(group);
+    group.userData.inspectionLabel = p.side > 0 ? "Front EFIELD" : "Rear EFIELD";
+    group.userData.labelAnchor = new THREE.Vector3(...p.mount);
     const casings = layer(group, `${p.name}-casings`, "equipment-casings");
     const covers = layer(group, `${p.name}-covers`, "equipment-covers");
     const mounts = layer(group, `${p.name}-mounts`, "mounts");
@@ -94,6 +96,8 @@ export function buildNoseSensors({ parent, mesh }) {
   });
   const methan = layer(assembly, "methan-placeholder", "equipment-casings");
   methan.userData.provisional = true;
+  methan.userData.inspectionLabel = "METHAN (provisional)";
+  methan.userData.labelAnchor = new THREE.Vector3(...A.methan.position);
   box(methan, "methan-unverified-housing", A.methan.size, A.methan.position,
     new THREE.MeshStandardMaterial({ color: 0x6b7278, roughness: 0.65, metalness: 0.3 }));
   return { assembly, probes, methan };

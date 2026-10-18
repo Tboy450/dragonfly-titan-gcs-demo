@@ -4,7 +4,7 @@ import { visibilityDefaults } from "./inspection-visibility.mjs?v=dev";
 
 export const inspectionDefaults = Object.freeze({
   azimuth: Math.atan2(1.6, 7.2), elevation: Math.atan2(5.35, Math.hypot(1.6, 7.2)),
-  zoom: 1, rotate: false, focusPart: null, isolate: false, followSampling: false,
+  zoom: 1, rotate: false, focusPart: null, subassembly: null, isolate: false, followSampling: false,
   ...visibilityDefaults,
 });
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
@@ -33,7 +33,24 @@ export function focusInspector(state, name) {
   state.inspector.focusPart = name;
   state.inspector.followSampling = false;
   state.inspector.zoom = 1;
+  state.inspector.subassembly = null;
   if (!name) state.inspector.isolate = false;
+}
+export function inspectionSubassemblies(group) {
+  const result = [];
+  group?.traverse(child => { if (child.userData.inspectionLabel) result.push(child); });
+  return result;
+}
+export function inspectionSubassembly(group, inspector) {
+  return inspectionSubassemblies(group).find(child => child.name === inspector?.subassembly) ?? null;
+}
+export function selectInspectionSubassembly(state, group, name) {
+  if (!group || inspectionTarget(state) !== group.name) return;
+  const child = inspectionSubassemblies(group).find(child => child.name === name);
+  if (name && !child) return;
+  state.inspector.subassembly = child?.name ?? null;
+  state.inspector.zoom = 1;
+  state.inspector.resetSerial += 1;
 }
 export function inspectionGroups(name) {
   const related = {

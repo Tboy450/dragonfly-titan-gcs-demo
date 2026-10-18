@@ -8,6 +8,7 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 | Folder | Source | Pages saved | Used by |
 |---|---|---|---|
+| [`sources/ipm2025-dragmet`](sources/ipm2025-dragmet/README.md) | Lorenz, Sotzen, Hacala, Mehr and DraGMet team (APL), IPM 2025 suite design | Printed pp. 184-185 (PDF 185-186); poster index page 2 | 22 continuation: published METHAN gas-cell/fiber/light-engine arrangement; no hardware-photo claim |
 | [`sources/ipm2025-efield`](sources/ipm2025-efield/README.md) | Seese et al. (APL/LATMOS), *Electric Field Sensor on Dragonfly's Titan Lander*, IPM 2025 | Printed pp. 186-187, PDF pages 187-188; real engineering-model photo fig. 2, dimensions and placement text | 22 EFIELD only |
 | [`sources/caps2024-dragmet`](sources/caps2024-dragmet/README.md) | Turtle (APL), *Dragonfly Update*, CAPS, October 22, 2024 | Slide 42 sensor suite | 22 reference-gap check; METHAN is CAD, not hardware photo |
 | [`sources/scitech2024-sdc-drams-interface`](sources/scitech2024-sdc-drams-interface/README.md) | Barfknecht et al. (NASA Goddard), *Development of the thermal interface between the Dragonfly Mass Spectrometer and the DrACO Sample Delivery Carousel*, AIAA SciTech 2024 | pp. 2, 3, 5, 7, 8 (figs. 1, 2, 5, 6, 8, 9, 10, 11) | 06, 07, 08 |

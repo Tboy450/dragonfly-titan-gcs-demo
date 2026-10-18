@@ -39,6 +39,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-18: Inspect individual part-22 probes and record the METHAN reference gap
+- **Signed:** Codex (OpenAI)
+- **Commit:** Inspect individual part-22 probes and record METHAN reference gap
+- **Release:** Checkpoint on `codex/dragonfly-nose-sensors-publish`; not merged to main or published to the app.
+- **What changed:** Both EFIELD assemblies existed already. Added a compact Subassembly menu
+  to focus/temporarily isolate Front EFIELD, Rear EFIELD or the provisional METHAN housing.
+  Retained component number 22; its anchor follows selected hardware. Selection resets on
+  component change, camera reset or Follow sampling, persists across Internal/Thermal, and
+  does not leak visibility changes into ordinary views or after a failed render. No geometry,
+  flight or thermal constants changed. Shortened the part's selector label to fit phone width.
+- **Research:** Lorenz et al., IPM 2025 pp. 184-185 identifies the cold mirrored gas cell,
+  dust filtration and fiber connection through foam to the warm DPU light engine. Saved
+  original pages and the poster index with credits. Reviewed primary sources do not establish
+  a photo-matched METHAN casing; awaiting owner's choice about a labeled approximation.
+- **Checks:** 272 Node tests pass; real Edge/WebGL checks at 1440/390/360 px, Internal/Thermal,
+  and all three subassemblies at four angles. No page errors or horizontal overflow.
+- **Archive:** exact prior files and screenshots at `archive/part22-inspection-2026-10-18/`;
+  restore tag on published baseline `fb2e5b6`. Old EFIELD geometry is unchanged.
+- **Open / next:** #22 remains partial, 18/24 total. Preserve the real-photo-first rule and
+  do not call the placeholder or CAD photo-matched. New evidence/handoff in
+  `research/part22-2026-10-18/README.md`. Shared city work left untouched.
+
 ### 2026-10-17: Publish the Asset and Environment Lab with individual model inspection
 - **Signed:** Codex (OpenAI)
 - **Commit:** Publish Asset and Environment Lab with asset inspection
