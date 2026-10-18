@@ -7,7 +7,30 @@ Battery pass finished and Codex's RDE pass reviewed October 15, 2026 by Claude (
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: October 16 Context
+## Resume Here: October 17 Context
+
+**Codex: #22 EFIELD subpass.** Two fixed probes now follow Seese et al., IPM 2025,
+printed pp. 186-187: actual engineering-model photos (fig. 2), 30 cm carbon-fiber stalks
+and 5 cm gold-plated aluminum balls [PUB]. Front upper starboard and rear lower port
+near MMRTG locations are published; coordinates, pointing, tube diameter, preamp envelope
+and interfaces are [EST]. TEMP/MICRO are co-mounted as photographed, not #20/#21.
+METHAN still has no comparable real hardware reference: retain its provisional housing.
+**#22 remains unchecked; count stays 18/24 (3 Codex, 15 Claude).** See
+[sources, parameters and verification](research/nose-sensors-2026-10-17/README.md).
+
+Work is isolated on `codex/dragonfly-nose-sensors-publish`, based on `eed63b1`, in
+`C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree`.
+The shared checkout contains unrelated unpublished city commits and edits. Do not reset it,
+include those commits in this release, or overwrite the other session's files. Preview: port 4195.
+Inspect both checkouts and fresh remote state before choosing where to continue.
+
+**Next:** find real METHAN hardware images and a scale reference; CAPS 2024 slide 42's
+CAD is not a hardware photograph. Preserve EFIELD and part ID 22. Keep published probe
+dimensions fixed when adjusting estimated mounting coordinates. Independent casing/cover/
+mount/interface/harness tags exist. Label 22 is anchored to the front preamp, not the empty
+midpoint between the two assemblies. No electric-field solver or instrument telemetry was added.
+
+## October 16 Context (Historical)
 
 **Current closeout:** Claude's #16 aft bulkhead is complete as an approximate photo-referenced
 asset. Codex preserved the geometry, confirmed NASA/APL's explicit inverted-fixture caption,
@@ -239,6 +262,7 @@ estimated. Parts with an estimated position need a layout pass against the sourc
 | 07 Wonderwall | [EST] | [EST] attic, from SciTech 2024 figs. 2 and 11 |
 | 08 DraMS | [EST] | [EST] keyed to the Wonderwall opening |
 | 13 Frontier radio | [PUB] 4 x 6 in slices; width [EST] from the photo | [EST] the old placeholder's spot on the starboard floor |
+| 22 EFIELD only | [PUB] two 0.30 m carbon stalks and 0.05 m electrode balls; preamp and tube diameter [EST] | Published front upper starboard / rear lower port regions; exact coordinates and pointing [EST]. METHAN still provisional; see October 17 notes. |
 | 12 IEM | [EST] from standard Micro-D sizes in the photos | [EST] port wall; photo shows it on a wall panel beside a PSU |
 | 11 PSUs | [EST] from standard D-sub sizes in the photo | PSU 1 beside the IEM as photographed (absolute position [EST]); PSU 2 [EST] |
 | 23 Lower cameras | Microscopic Camera [PUB] 105 x 155 x 90 mm; ECAM-P50 heads [EST] | Microscopic Camera [PUB] 986 mm at 52 degrees from the port drill site; Down Cameras [EST] mid-body per DragonCam figs. 2-3 |
@@ -400,6 +424,11 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **20 Battery temperature sensor** (`battery-sensor`): verify installation; distinguish an actual sensor body from a diagram marker.
 - [ ] **21 MMRTG fin-root sensor** (`mmrtg-sensor`): same distinction, with verified placement rather than a floating green sphere.
 - [ ] **22 Nose methane/E-field instruments** (`nose-sensors`): individual housings, supports and wire exits.
+  - [x] **Codex, October 17:** both EFIELD probes from an engineering-model photo and
+    published stalk/ball dimensions; estimated preamp and co-mounted TEMP/MICRO; independent
+    inspection masks and fixed front label. Front mount clears the rebuilt DrACO tube.
+  - [ ] **METHAN:** locate clear hardware imagery and a scale reference before replacing the
+    retained gray placeholder. Exact flight mounting and hidden electronics remain unverified.
 - [x] **Claude:** **23 Lower DragonCam cameras** (`side-cameras`): Microscopic Camera on the port side placed from its published 986 mm range at 52 degrees to the port drill site, APL's LED array beside it (365 nm UV emitter), a Down Camera on each side; Malin ECAM heads drawn from the paper's figures (shared `dist/ecam.mjs`); each in a foam cavity behind a 3 mm window, brackets on the bay wall's outer face, harness through the wall. [References/limits](research/side-cameras-2026-10-13/README.md).
 - [ ] **23 follow-up:** the foam blister the Microscopic Camera needs (it is thicker than the 7.62 cm average foam); Down Cameras' exact position; the camera electronics box (ECAM-DVR8P) inside the bay. #19 has replaced the old side-chimney placeholder with the under-belly trim device; retain the rebuilt-set clearance checks.
 - [x] **Claude:** **24 DrACO blowers** (`drill-blower`): forward and aft centrifugal blowers (volute, motor, axial inlet, tangential exhaust out and down) behind the port forward arm, fed by an inlet flow diverter; per DrACO fig. 1 and ICES-2023. [References/limits](research/draco-plumbing-2026-10-14/README.md).

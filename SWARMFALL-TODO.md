@@ -26,7 +26,8 @@ Keep this file updated across sessions and assistant handoffs.
   [asset inspector](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/?asset=drone-scout).
   Five environments, destruction stages and historical foundation variants remain available.
   Linked from the game title; uses the existing GitHub Pages release workflow and build stamp.
-  Unfinished modular-kit work and the separate unmerged EFIELD branch are not part of this release.
+  Unfinished modular-kit work remains separate. A concurrent EFIELD update reached main during
+  publication; its existing simulator changes, documentation and archives are preserved by merge.
 
 - **City review and destruction artwork (Codex, October 17):** all five environments now have
   Intact / Damaged / Major destruction / Ruins previews with broken mesh geometry, exposed

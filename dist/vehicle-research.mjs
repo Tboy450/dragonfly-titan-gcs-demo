@@ -11,6 +11,7 @@ import { buildFrontierRadio } from "./frontier-radio.mjs?v=dev";
 import { buildTwta } from "./twta.mjs?v=dev";
 import { buildHgaGimbal, hgaAsset } from "./hga-gimbal.mjs?v=dev";
 import { buildBattery } from "./battery.mjs?v=dev";
+import { buildNoseSensors } from "./nose-sensors.mjs?v=dev";
 import { buildAftBulkhead, aftBulkheadAsset, aftFaceZ, poseMmrtg } from "./aft-bulkhead.mjs?v=dev";
 import { buildRotorHead, buildHubPlate, rotorHeadAsset } from "./rotor-heads.mjs?v=dev";
 import { buildRotorDriveElectronics } from "./rotor-drive-electronics.mjs?v=dev";
@@ -450,9 +451,8 @@ export function buildResearchModel(kit) {
   // Kept on the MMRTG's top fin root when the MMRTG was tilted (part 16); still a placeholder.
   mesh(new THREE.SphereGeometry(0.022, 12, 8), material, new THREE.Vector3(0, 0.22, 0).applyEuler(generator.rotation).add(generator.position).toArray());
   // Externally mounted items described in the same paper, visible in every layer.
-  material = interiorPart("nose-sensors", "external-sensors", "METHAN sensor with the E-field sensor above (starboard nose)", "ICES-2023 p2", 0x6b7278, "exterior");
-  mesh(new THREE.BoxGeometry(0.05, 0.07, 0.09), material, [0.455, -0.12, -1.66]);
-  mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.1, 8), material, [0.455, 0.02, -1.66]);
+  interiorPart("nose-sensors", "external-sensors", "DraGMet: two EFIELD probes; METHAN housing remains provisional", "Seese et al., IPM 2025 pp186-187, figs1-2 (real engineering-model photo); CAPS 2024 slide42; locations from text, exact coordinates/preamp size estimated", 0x6b7278, "exterior");
+  buildNoseSensors({ parent: buildTarget, mesh });
   interiorPart("side-cameras", "cold-actuators", "DragonCam lower cameras: Microscopic Camera, LED array, two Down Cameras (in foam cavities)", "DragonCam paper (Clark et al. 2026) figs. 1-3, 5, 12, table 1; brackets and down-camera position estimated", 0xbfb8aa, "exterior");
   buildSideCameras({ parent: buildTarget, mesh });
   interiorPart("drill-blower", "drills", "DrACO blowers: forward and aft centrifugal blowers behind the port forward arm", "LPSC 2022 fig. 1 and schematic; ICES-2023 p5, p7; sizes and layout estimated", 0x8c8f93, "exterior");

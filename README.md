@@ -244,6 +244,11 @@ harnesses can be hidden independently where modeled; the component menu marks hi
 **Restore layers** keeps the current camera and selection; the camera reset restores everything.
 These are viewing masks on existing geometry, not a verified structural layer stack.
 
+The [two EFIELD probes](research/nose-sensors-2026-10-17/README.md) follow real 2025
+engineering-model photos, with published 30 cm carbon-fiber stalks and 5 cm gold electrode
+balls. Preamp size and exact installation remain estimated; METHAN is still provisional,
+so #22 stays open and the count remains 18/24. Geometry: Codex.
+
 The [aft bulkhead](research/aft-bulkhead-2026-10-15/README.md) follows NASA/APL's real structure
 photos: gold-colored face, ribbed circular generator interface and pocketed rim. The generator
 rises aft at an estimated 25 degrees; the fan collar and aft body profile follow the same
