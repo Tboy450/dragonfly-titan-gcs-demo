@@ -227,12 +227,14 @@ export function createInvasionScene(canvas, options = {}) {
 
   // ---- Drop pods: the simulator's arrival hardware around a cluster of drones ----
   const upAxis = new THREE.Vector3(0, 1, 0);
-  const podSlots = Array.from({ length: 3 }, () => {
+  const podSlots = [];
+  function createPodSlot() {
     const craft = new THREE.Group();
+    craft.name = "drop-payload";
     const cluster = new THREE.Group();
     const scout = models.scout;
-    for (let i = 0; i < 7; i += 1) {
-      const a = i / 6 * Math.PI * 2, r = i === 0 ? 0 : 1.15;
+    for (let i = 0; i < 3; i += 1) {
+      const a = i / 3 * Math.PI * 2, r = 1.4;
       const drone = new THREE.Mesh(scout.body, bodyMaterial);
       drone.scale.setScalar(1.3);
       drone.position.set(Math.cos(a) * r, (i % 2) * 0.35 - 0.2, Math.sin(a) * r);
@@ -242,8 +244,11 @@ export function createInvasionScene(canvas, options = {}) {
     scene.add(craft);
     craft.visible = false;
     const hardware = createArrivalHardware(scene, craft, upAxis);
-    return { craft, hardware, pod: null };
-  });
+    hardware.group.name = "drop-hardware";
+    const slot = { craft, cluster, hardware, pod: null, dragonfly: null };
+    podSlots.push(slot);
+    return slot;
+  }
 
   // ---- Planet ----
   let world = null, titan = null, terrain = null, look = biomeLooks.desert;
@@ -263,6 +268,20 @@ export function createInvasionScene(canvas, options = {}) {
   }
 
   function unload() {
+    for (const slot of podSlots) {
+      slot.craft.removeFromParent();
+      slot.hardware.group.removeFromParent();
+      const geometries = new Set(), materials = new Set(), textures = new Set();
+      slot.hardware.group.traverse(part => {
+        if (part.geometry) geometries.add(part.geometry);
+        for (const material of Array.isArray(part.material) ? part.material : part.material ? [part.material] : []) {
+          materials.add(material);
+          for (const value of Object.values(material)) if (value?.isTexture) textures.add(value);
+        }
+      });
+      for (const resource of [...textures, ...materials, ...geometries]) resource.dispose();
+    }
+    podSlots.length = 0;
     if (world) {
       scene.remove(world);
       world.traverse((part) => {
@@ -810,12 +829,24 @@ export function createInvasionScene(canvas, options = {}) {
     }
     for (const pod of b.pods) {
       if (podSlots.some(s => s.pod === pod.id)) continue;
-      const free = podSlots.find(s => !s.pod);
-      if (free) free.pod = pod.id;
+      const free = podSlots.find(s => !s.pod) || createPodSlot();
+      free.pod = pod.id;
+      const types = Object.entries(pod.payload).flatMap(([type, n]) => Array(n).fill(type));
+      // Legacy giant pods remain loadable; new pods show the actual 1–3 payload bodies.
+      free.cluster.children.forEach((mesh, i) => {
+        mesh.visible = i < types.length && types[i] !== "dragonfly";
+        mesh.geometry = (models[types[i]] || models.scout).body;
+      });
+      if (types.includes("dragonfly") && !free.dragonfly) {
+        free.dragonfly = dragonflyClone();
+        free.dragonfly.scale.setScalar(dragonflyScale);
+        free.craft.add(free.dragonfly);
+      }
+      if (free.dragonfly) free.dragonfly.visible = types.includes("dragonfly");
     }
     for (const slot of podSlots) {
       const pod = slot.pod && b.pods.find(p => p.id === slot.pod);
-      if (!pod) { slot.hardware.pose(null); slot.craft.visible = false; continue; }
+      if (!pod || pod.t < 0) { slot.hardware.pose(null); slot.craft.visible = false; continue; }
       const u = Math.min(1, pod.t / dropDurationS);
       const edlT = pod.t <= dropDurationS ? u * 41 : 41 + (pod.t - dropDurationS) * 1.5;
       const altitude = pod.t <= dropDurationS ? 30 + 620 * (1 - u) ** 2 : 30;

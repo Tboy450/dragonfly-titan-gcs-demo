@@ -9,7 +9,8 @@ import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, orderHold, battleSummary,
   objectiveStatus, starsEarned, missionResult, retreat, publicMood, dropZoneAt,
 } from "./battle.mjs?v=dev";
-import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost } from "./units.mjs?v=dev";
+import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
+import { packDropPods, podRadius, podStaggerS } from "./drop-waves.mjs?v=dev";
 import { hazardTypes, hazardAdvisory } from "./hazards.mjs?v=dev";
 import { achievements, achievementContext, newAchievements, recordAchievements } from "./achievements.mjs?v=dev";
 import { createPlanetTerrain } from "./planet-terrain.mjs?v=dev";
@@ -124,7 +125,7 @@ function renderPlanetPanel() {
     <p class="section-title">Reward for conquest</p>
     <p>${escapeHtml(reward.join(" · "))}</p>
     ${progress.captured[planet.id] ? `<p class="section-title">Your record</p><p>${"★".repeat(stars)}${"☆".repeat(3 - stars)}${best ? ` · best time ${clock(best)}` : ""}</p>` : ""}
-    ${open ? `<p class="section-title">Supply for this attempt</p><p>${missionMatter(progress, planet)} matter · pods carry ${progress.podSlots} slots</p>
+    ${open ? `<p class="section-title">Supply for this attempt</p><p>${missionMatter(progress, planet)} matter · ${progress.podSlots} slots per wave · 1–3 drones per pod</p>
       <button id="invade-button" class="primary invade" type="button">${progress.captured[planet.id] ? "Invade again" : `Invade ${escapeHtml(planet.name)}`}</button>`
       : `<p class="locked-note">Locked. Conquer ${escapeHtml(previous?.name || "the previous planet")} first.</p>`}
   `;
@@ -224,6 +225,7 @@ function startMission(planet, checkpoint = null) {
     planet, battle, terrain,
     cam: restored?.cam || { focus: { x: home.x - away.x / length * 70, z: home.z - away.z / length * 70 }, distance: 230, yaw: Math.atan2(away.x, away.z), pitch: 0.9 },
     selected: new Set(), speed: 1, paused: !!restored, payload: defaultPayload(battle), placing: false,
+    cleanView: false,
     seenLog: new WeakSet(), ended: false, lastHud: 0, lastMinimap: 0, lastAchievements: 0, cards: new Map(), dropTypes: "",
   };
   $("squad-bar").replaceChildren();
@@ -231,6 +233,7 @@ function startMission(planet, checkpoint = null) {
   $("hud-log").replaceChildren();
   $("drop-rows").replaceChildren();
   $("placement-hint").hidden = true;
+  setCleanView(false);
   $("pause-button").textContent = mission.paused ? "Resume" : "Pause";
   $("speed-button").textContent = "1×";
   show("mission");
@@ -379,7 +382,8 @@ function tap(clientX, clientY, additive) {
     const ground = scene.pickGround(x / width * 2 - 1, -(y / height) * 2 + 1);
     if (!ground) return;
     if (!dropZoneAt(b, ground.x, ground.z)) { toast("Pods can only land inside a zone you hold (cyan ring).", "warn"); return; }
-    launch(ground.x, ground.z);
+    mission.dropPoint = { x: ground.x, z: ground.z };
+    updateDropPreview();
     return;
   }
   const drone = unitAtScreen(x, y, isDrone);
@@ -408,7 +412,7 @@ function selectSquad(id, additive = false) {
 
 function selectAll() {
   const summary = battleSummary(mission.battle);
-  mission.selected = new Set(summary.squads.filter(s => s.size > 0).map(s => s.id));
+  mission.selected = new Set(summary.squads.filter(s => s.size > 0 || s.inbound).map(s => s.id));
   updateSquadBar();
 }
 
@@ -433,10 +437,21 @@ $("squad-bar").addEventListener("dblclick", (event) => {
 
 // ---- Drops ----
 function openDropPanel() {
+  if (!mission || mission.battle.outcome) return;
+  setCleanView(false);
   $("drop-panel").hidden = false;
   updateDropPanel(true);
 }
-function closeDropPanel() { $("drop-panel").hidden = true; }
+function closeDropPanel() { $("drop-panel").hidden = true; if (mission) mission.dropPreview = null; }
+function updateDropPreview() {
+  if (!mission) return;
+  const b = mission.battle;
+  const point = mission.placing ? mission.dropPoint : !$("drop-panel").hidden ? b.zones.find(z => z.kind === "beachhead") : null;
+  mission.dropPreview = point ? checkDrop(b, { x: point.x, z: point.z, payload: mission.payload }) : null;
+  $("placement-launch").disabled = !mission.placing || !mission.dropPreview?.ok;
+  $("placement-text").textContent = !point ? "Tap a held zone to preview its pod courts." : mission.dropPreview?.ok
+    ? `${mission.dropPreview.landings.length} spaced pods ready. Launch here or tap another point.` : mission.dropPreview?.reason;
+}
 $("drop-button").addEventListener("click", () => ($("drop-panel").hidden ? openDropPanel() : closeDropPanel()));
 $("drop-close").addEventListener("click", closeDropPanel);
 
@@ -457,10 +472,13 @@ function updateDropPanel(rebuild = false) {
   }
   for (const row of $("drop-rows").querySelectorAll(".drop-row")) row.querySelector("output").textContent = mission.payload[row.dataset.type] || 0;
   const slots = payloadSlots(mission.payload), cost = payloadCost(mission.payload);
-  $("drop-summary").textContent = `Slots ${slots}/${b.podSlots} · cost ${cost} of ${Math.floor(b.matter)} matter`;
+  const podCount = packDropPods(mission.payload).length;
+  $("drop-summary").textContent = `${podCount} pod${podCount === 1 ? "" : "s"} · wave slots ${slots}/${b.podSlots} · cost ${cost} of ${Math.floor(b.matter)} matter · arrivals ${(dropDurationS + Math.max(0, podCount - 1) * podStaggerS).toFixed(1)} s`;
   const check = checkDrop(b, { payload: mission.payload });
-  $("drop-reason").textContent = check.ok ? "" : check.reason;
-  $("drop-home").disabled = !check.ok;
+  const home = b.zones.find(z => z.kind === "beachhead");
+  const homeCheck = checkDrop(b, { x: home.x, z: home.z, payload: mission.payload });
+  $("drop-reason").textContent = !check.ok ? check.reason : !homeCheck.ok ? `Hive court: ${homeCheck.reason}` : "Up to 3 drones per pod; each Dragonfly travels alone. One squad and one purchase for the wave.";
+  $("drop-home").disabled = !homeCheck.ok;
   $("drop-pick").disabled = !check.ok;
 }
 
@@ -479,6 +497,9 @@ function launch(x, z) {
   mission.placing = false;
   $("placement-hint").hidden = true;
   closeDropPanel();
+  mission.selected = new Set([result.squad.id]);
+  updateSquadBar();
+  checkpointMission();
 }
 $("drop-home").addEventListener("click", () => {
   const home = mission.battle.zones.find(z => z.kind === "beachhead");
@@ -486,12 +507,27 @@ $("drop-home").addEventListener("click", () => {
 });
 $("drop-pick").addEventListener("click", () => {
   mission.placing = true;
+  mission.dropPoint = null;
   closeDropPanel();
   $("placement-hint").hidden = false;
+  updateDropPreview();
 });
+$("placement-launch").addEventListener("click", () => { if (mission?.placing && mission.dropPoint) launch(mission.dropPoint.x, mission.dropPoint.z); });
 $("placement-cancel").addEventListener("click", () => { mission.placing = false; $("placement-hint").hidden = true; });
 
 // ---- Pause, speed, retreat ----
+function setCleanView(enabled) {
+  if (!mission) return;
+  mission.cleanView = enabled;
+  if (enabled) { mission.placing = false; $("placement-hint").hidden = true; closeDropPanel(); }
+  $("screen-mission").classList.toggle("clean-view", enabled);
+  $("clean-view-button").textContent = enabled ? "Show HUD · V" : "Clean view · V";
+  $("clean-view-button").setAttribute("aria-pressed", String(enabled));
+  $("clean-view-button").title = enabled ? "Restore panels and labels (V or Escape)" : "Hide panels and labels (V)";
+  if (enabled && document.activeElement !== $("clean-view-button") && $("screen-mission").contains(document.activeElement))
+    $("clean-view-button").focus({ preventScroll: true });
+}
+$("clean-view-button").addEventListener("click", () => { if (mission) setCleanView(!mission.cleanView); });
 $("pause-button").addEventListener("click", () => { if (mission) mission.paused = !mission.paused; updateHud(); });
 $("speed-button").addEventListener("click", () => { if (mission) { mission.speed = mission.speed % 3 + 1; updateHud(); } });
 $("retreat-button").addEventListener("click", async () => {
@@ -506,8 +542,9 @@ document.addEventListener("visibilitychange", () => { if (document.hidden && mis
 window.addEventListener("keydown", (event) => {
   if (current !== "mission" || !mission || event.target.closest?.("input, textarea") || document.querySelector("dialog[open]")) return;
   const key = event.key.toLowerCase();
+  if (key === "v" && !event.repeat) { setCleanView(!mission.cleanView); event.preventDefault(); return; }
   if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
-  if (key === "escape") { mission.placing = false; $("placement-hint").hidden = true; closeDropPanel(); return; }
+  if (key === "escape") { setCleanView(false); mission.placing = false; $("placement-hint").hidden = true; closeDropPanel(); return; }
   if (key === "b") { $("drop-panel").hidden ? openDropPanel() : closeDropPanel(); return; }
   if (key === "h") { if (mission.selected.size) orderHold(mission.battle, [...mission.selected]); return; }
   if (key === "0") { selectAll(); return; }
@@ -536,8 +573,8 @@ function toast(text, tone = "info", ms = 3600) {
 
 function coachText(b) {
   if (!b.practice) return "";
-  if (b.stats.drops === 0) return "Press Drop pod, choose a few Scouts and Links, then land them on the Hive beacon.";
-  if (!b.units.some(isDrone)) return "The pod is coming down under its parachute. The drones are released just above the ground.";
+  if (b.stats.drops === 0) return "Press Drop wave, choose Scouts and Links, then land on the Hive beacon. Each pod carries up to 3 drones; the wave stays one squad.";
+  if (!b.units.some(isDrone)) return "The pods are coming down under their parachutes. Drones release just above the ground; you can already select their squad and give an order.";
   if (!mission.selected.size) return "Tap a squad card at the bottom (or one of your drones) to select it.";
   if (b.stats.zonesCaptured === 0) return "Now tap inside a white beacon ring: the squad flies there and captures it. Drag to move the view, scroll or pinch to zoom, right-drag or Q/E to turn.";
   return "Hold 3 beacons to win. Optional: capture the Dragonfly landing site to unlock NASA's Dragonfly as a drone.";
@@ -568,8 +605,8 @@ function updateSquadBar() {
     const mix = {};
     for (const unit of members) mix[unit.type] = (mix[unit.type] || 0) + 1;
     const health = members.length ? members.reduce((s, u) => s + u.hp / u.maxHp, 0) / members.length : 1;
-    card.querySelector("strong").textContent = `${squad.name} · ${squad.inbound ? "landing" : members.length}`;
-    card.querySelector(".mix").textContent = Object.entries(mix).map(([t, n]) => `${n} ${droneTypes[t].name}`).join(", ") || "in the pod";
+    card.querySelector("strong").textContent = `${squad.name} · ${members.length} ready${squad.inbound ? ` · ${squad.inboundPods} pods inbound` : ""}`;
+    card.querySelector(".mix").textContent = [Object.entries(mix).map(([t, n]) => `${n} ${droneTypes[t].name}`).join(", "), squad.inboundDrones ? `${squad.inboundDrones} arriving` : ""].filter(Boolean).join(" · ");
     card.querySelector(".health i").style.width = `${Math.round(health * 100)}%`;
     card.setAttribute("aria-pressed", String(mission.selected.has(squad.id)));
   }
@@ -596,7 +633,7 @@ function updateHud() {
   $("pause-button").setAttribute("aria-pressed", String(mission.paused));
   $("speed-button").textContent = `${mission.speed}×`;
   const wait = summary.dropReadyIn;
-  $("drop-button").textContent = wait > 0 ? `Drop pod (${Math.ceil(wait)} s)` : "Drop pod";
+  $("drop-button").textContent = wait > 0 ? `Drop wave (${Math.ceil(wait)} s)` : "Drop wave";
   $("objective-list").innerHTML = objectiveStatus(b).map(o => {
     const state = o.done ? "done" : o.failed ? "failed" : "";
     return `<li class="${state}"><span class="mark">${o.done ? "✓" : o.failed ? "✗" : o.primary ? "•" : "☆"}</span><span>${escapeHtml(o.text)}</span>${o.progress ? `<small>${escapeHtml(o.progress)}</small>` : ""}</li>`;
@@ -607,12 +644,14 @@ function updateHud() {
   $("hud-log").innerHTML = b.log.slice(-4).map(entry => `<li class="${entry.tone}">${escapeHtml(entry.text)}</li>`).join("");
   updateSquadBar();
   updateDropPanel();
+  updateDropPreview();
 }
 
 // ---- Overlay and minimap ----
 function drawOverlay() {
   const { ctx, width, height } = fitCanvas(overlay);
   ctx.clearRect(0, 0, width, height);
+  if (mission.cleanView) return;
   const b = mission.battle;
   ctx.font = "600 12px system-ui, sans-serif";
   ctx.textAlign = "center";
@@ -633,10 +672,23 @@ function drawOverlay() {
     ctx.fillText(text, p.x, p.y + 4);
     if (mission.placing && zone.captured) {
       ctx.fillStyle = swarmColor;
-      ctx.fillText("tap to land here", p.x, p.y + 22);
+      ctx.fillText("tap to preview courts", p.x, p.y + 22);
     }
   }
   const squadColor = new Map(b.squads.map(s => [s.id, s.color]));
+  for (const [index, point] of (mission.dropPreview?.ok ? mission.dropPreview.landings : []).entries()) {
+    const y = scene.heightAt(point.x, point.z) + 1;
+    ctx.strokeStyle = swarmColor; ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let i = 0; i <= 24; i++) {
+      const angle = i / 24 * Math.PI * 2;
+      const p = scene.project(point.x + Math.cos(angle) * podRadius, y, point.z + Math.sin(angle) * podRadius, width, height);
+      if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+    }
+    ctx.stroke();
+    const label = scene.project(point.x, y + 5, point.z, width, height);
+    if (label.visible) { ctx.fillStyle = swarmColor; ctx.fillText(`Pod ${index + 1}`, label.x, label.y); }
+  }
   for (const unit of b.units) {
     const selected = isDrone(unit) && mission.selected.has(unit.squad);
     const damaged = unit.hp < unit.maxHp - 0.5;
@@ -752,6 +804,10 @@ function checkLiveAchievements() {
 }
 
 function finishMission() {
+  setCleanView(false);
+  closeDropPanel();
+  mission.placing = false;
+  $("placement-hint").hidden = true;
   const b = mission.battle, planet = mission.planet;
   const result = missionResult(b);
   const objectives = objectiveStatus(b);
@@ -766,7 +822,7 @@ function finishMission() {
   $("debrief-objectives").innerHTML = objectives.map(o => `<li>${o.done ? "✓" : o.failed || result.outcome !== "won" ? "✗" : "•"} ${escapeHtml(o.text)}${o.progress ? ` <small>(${escapeHtml(o.progress)})</small>` : ""}</li>`).join("");
   const s = result.stats;
   const rows = [
-    ["Time", clock(result.time)], ["Drops", s.drops], ["Drones dropped", s.dronesDropped], ["Drones lost", s.dronesLost],
+    ["Time", clock(result.time)], ["Drop waves", s.drops], ["Pods launched", s.podsLaunched || s.drops], ["Drones dropped", s.dronesDropped], ["Drones lost", s.dronesLost],
     ["Lost to hazards", s.hazardLosses], ["Zones captured", s.zonesCaptured], ["Defenses destroyed", s.defensesDestroyed],
     ["Matter gathered", Math.round(s.matterHarvested)], ["Hazards weathered", s.hazardEvents], ["Peak alarm", Math.round(s.alarmPeak)],
     ["Recalled drones refund", `${b.refund} matter`], ["Matter in the bank", progress.matter],

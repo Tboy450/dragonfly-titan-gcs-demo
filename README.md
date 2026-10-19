@@ -26,9 +26,12 @@ force or by quiet control.
   simulator's real Ahmakiq Undae terrain) through rising society levels (tribal, agrarian,
   industrial, networked, spacefaring) and threat levels. Each win opens the next planet and pays
   matter, new drone types or bigger drop pods.
-- **Drops:** pods come down with the simulator's aeroshell, heat shield and parachutes; one pod
-  carries a whole squad, sized by pod slots and paid for with **matter** (the resource). Zones
-  you hold pay matter over time and become landing zones.
+- **Drops:** a squad arrives as a wave of parachute pods carrying **1–3 drones each**; a large
+  Dragonfly travels alone. Slot capacity, matter cost and recharge apply once to the whole wave.
+  The drop panel shows pod count and courts before launch. Pick a zone, inspect the spaced
+  court outlines, then choose **Launch here**. Unsafe/occupied courts refuse the drop without
+  charging matter. Drones arriving later retain their squad's orders. Held zones pay matter
+  over time and become landing areas. Existing paid single-pod saves keep their original payload.
 - **Damage or control:** Strikers and Breachers destroy defenses (salvage pays matter, but the
   public's alarm rises); Links capture under fire, calm the public and turn standing defenses to
   your side. High alarm brings militia raids, stronger defenses and artillery.
@@ -45,7 +48,9 @@ force or by quiet control.
   available; campaign progress and the active battle are saved together.
 - **Controls:** tap a squad card or a drone to select, tap the ground to move, a ring to
   capture, a defender to attack. Drag to move the view, scroll or pinch to zoom, right-drag or
-  Q/E to turn; WASD/arrows pan, 1-9 select squads, 0 all, H hold, B drop pod, Space pause.
+  Q/E to turn; WASD/arrows pan, 1-9 select squads, 0 all, H hold, B drop wave, Space pause.
+  **Clean view** or **V** hides HUD panels and battlefield labels; the small Show HUD button,
+  V or Escape restores them. R/F retain camera pitch. Opening drops or ending a mission restores the HUD.
 
 All game numbers, the invented worlds and the drone and defender models are gameplay choices,
 not physics. Rules are in plain modules with tests (`tests/invasion-*.test.mjs`); see

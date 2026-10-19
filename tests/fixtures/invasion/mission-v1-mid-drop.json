@@ -1,0 +1,217 @@
+{
+  "version": 1,
+  "battle": {
+    "planetId": "titan",
+    "practice": true,
+    "threat": 0,
+    "tier": 0,
+    "rngState": 3663132076,
+    "time": 2.9999999999999973,
+    "paused": false,
+    "outcome": null,
+    "endTime": null,
+    "map": {
+      "centerX": 0,
+      "centerZ": -100,
+      "half": 420
+    },
+    "matter": 46,
+    "unlocks": [
+      "scout",
+      "link"
+    ],
+    "podSlots": 12,
+    "required": 3,
+    "objectives": [
+      {
+        "id": "dragonfly",
+        "kind": "captureZone",
+        "zone": "relic",
+        "text": "Recover the Dragonfly lander (unlocks it)"
+      },
+      {
+        "id": "no-losses",
+        "kind": "maxLosses",
+        "value": 0,
+        "text": "Lose no drones"
+      }
+    ],
+    "alarm": 0,
+    "alarmStage": 0,
+    "zones": [
+      {
+        "id": "beachhead",
+        "name": "Hive beacon",
+        "kind": "beachhead",
+        "x": -250,
+        "z": 180,
+        "special": null,
+        "radius": 50,
+        "value": 0,
+        "control": 100,
+        "captured": true,
+        "contested": false,
+        "population": 0
+      },
+      {
+        "id": "outcrop",
+        "name": "Dry outcrop",
+        "kind": "beacon",
+        "x": 145,
+        "z": -90,
+        "special": null,
+        "radius": 42,
+        "value": 0.6,
+        "control": 0,
+        "captured": false,
+        "contested": false,
+        "population": 0,
+        "drones": 0
+      },
+      {
+        "id": "site-a",
+        "name": "Site A",
+        "kind": "beacon",
+        "x": 219,
+        "z": -235,
+        "special": null,
+        "radius": 42,
+        "value": 0.6,
+        "control": 0,
+        "captured": false,
+        "contested": false,
+        "population": 0,
+        "drones": 0
+      },
+      {
+        "id": "site-b",
+        "name": "Site B",
+        "kind": "beacon",
+        "x": -270,
+        "z": -40,
+        "special": null,
+        "radius": 42,
+        "value": 0.6,
+        "control": 0,
+        "captured": false,
+        "contested": false,
+        "population": 0,
+        "drones": 0
+      },
+      {
+        "id": "relic",
+        "name": "Dragonfly landing site",
+        "kind": "relic",
+        "x": 0,
+        "z": 0,
+        "special": "dragonfly",
+        "radius": 40,
+        "value": 0.3,
+        "control": 0,
+        "captured": false,
+        "contested": false,
+        "population": 0,
+        "drones": 0
+      }
+    ],
+    "units": [],
+    "squads": [
+      {
+        "id": 1,
+        "name": "Squad 1",
+        "color": "#7ce7ff"
+      }
+    ],
+    "pods": [
+      {
+        "id": 1,
+        "x": -250,
+        "z": 180,
+        "t": 2.9999999999999973,
+        "payload": {
+          "scout": 6,
+          "link": 3
+        },
+        "squad": 1,
+        "released": false,
+        "launchedAt": 0
+      }
+    ],
+    "strikes": [],
+    "events": [
+      {
+        "kind": "drop",
+        "pod": 1,
+        "x": -250,
+        "z": 180
+      }
+    ],
+    "log": [
+      {
+        "t": 0,
+        "tone": "info",
+        "text": "Practice planet: call a drop on the Hive beacon, then send drones to the beacons."
+      },
+      {
+        "t": 0,
+        "tone": "info",
+        "text": "Squad 1 launched: 9 drones, landing in 10 s."
+      }
+    ],
+    "nextId": 2,
+    "lastDropAt": 0,
+    "reinforceIn": 40,
+    "strikeIn": 20,
+    "specials": [],
+    "refund": 0,
+    "stats": {
+      "drops": 1,
+      "dronesDropped": 0,
+      "dronesLost": 0,
+      "hazardLosses": 0,
+      "zonesCaptured": 0,
+      "defensesDestroyed": 0,
+      "militiaDefeated": 0,
+      "matterHarvested": 0,
+      "hazardEvents": 0,
+      "maxAlive": 0,
+      "alarmPeak": 0,
+      "damageDealt": 0
+    },
+    "hazards": {
+      "types": [
+        "methaneRain",
+        "gusts"
+      ],
+      "next": {
+        "methaneRain": 66.2239938788116,
+        "gusts": 89.67048374353908
+      },
+      "events": [],
+      "effects": {
+        "speed": 1,
+        "sight": 1,
+        "range": 1,
+        "damage": 0,
+        "wind": {
+          "x": 0,
+          "z": 0
+        },
+        "stun": false,
+        "zones": []
+      },
+      "calm": 1.4,
+      "severity": 0.5,
+      "serial": 0
+    }
+  },
+  "cam": {
+    "focus": {
+      "x": -250,
+      "z": 180
+    },
+    "distance": 230,
+    "yaw": 0,
+    "pitch": 0.9
+  }
+}

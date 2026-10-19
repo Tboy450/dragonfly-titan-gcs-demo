@@ -31,7 +31,7 @@
         <h2>Campaign galaxy</h2>
         <div class="bar-stats">
           <span title="Matter in the Hive's bank. Each planet guarantees a minimum supply.">Matter <strong id="bank-matter">0</strong></span>
-          <span title="Slots in one drop pod">Pod <strong id="bank-pod">12</strong> slots</span>
+          <span title="Total payload slots per squad wave; up to 3 drones in each pod">Wave <strong id="bank-pod">12</strong> slots</span>
           <span>Drones <strong id="bank-drones"></strong></span>
         </div>
         <button id="achievements-button" class="ghost" type="button">Achievements <span id="achievement-count"></span></button>
@@ -74,11 +74,11 @@
         <div class="command-buttons">
           <button id="all-button" type="button" title="Select every squad (0)">All squads</button>
           <button id="hold-button" type="button" title="Stop and hold position (H)">Hold</button>
-          <button id="drop-button" type="button" class="primary" title="Call a drop pod (B)">Drop pod</button>
+          <button id="drop-button" type="button" class="primary" title="Call a squad wave of parachute pods (B)">Drop wave</button>
         </div>
       </div>
       <div id="drop-panel" class="panel drop-panel" hidden>
-        <header><h3>Drop pod</h3><button id="drop-close" class="ghost" type="button" aria-label="Close">×</button></header>
+        <header><h3>Drop wave</h3><button id="drop-close" class="ghost" type="button" aria-label="Close">×</button></header>
         <div id="drop-rows" class="drop-rows"></div>
         <p id="drop-summary" class="drop-summary"></p>
         <p id="drop-reason" class="drop-reason"></p>
@@ -87,7 +87,8 @@
           <button id="drop-pick" type="button">Pick a zone…</button>
         </div>
       </div>
-      <div id="placement-hint" class="placement-hint" hidden>Tap inside a zone you hold (cyan ring) to land the pod. <button id="placement-cancel" type="button">Cancel</button></div>
+      <div id="placement-hint" class="placement-hint" hidden><span id="placement-text">Tap a held zone to preview its pod courts.</span> <button id="placement-launch" type="button" disabled>Launch here</button> <button id="placement-cancel" type="button">Cancel</button></div>
+      <button id="clean-view-button" class="clean-view-button" type="button" aria-pressed="false" title="Hide panels and labels (V)">Clean view · V</button>
       <div id="toasts" class="toasts" aria-live="polite"></div>
     </section>
 

@@ -103,10 +103,10 @@ export function createPlanetTerrain(planet) {
   const raw = (x, z) => biome.height(x, z, seed, base, cones);
   let pads = [];
   const liquid = biome.liquid;
-  return {
+  const terrain = {
     biome: planet.biome, liquid, solidLiquid: !!biome.solidLiquid, cones: planet.biome === "volcanic" ? cones : [],
     raw,
-    isLand: (x, z) => liquid === null || biome.solidLiquid || raw(x, z) > liquid + 0.8,
+    isLand: (x, z) => liquid === null || biome.solidLiquid || terrain.heightAt(x, z) > liquid + 0.8,
     // Zones get a level pad above any liquid, blended into the surrounding ground.
     setPads(zones) {
       pads = zones.map(zone => {
@@ -126,4 +126,5 @@ export function createPlanetTerrain(planet) {
       return h;
     },
   };
+  return terrain;
 }

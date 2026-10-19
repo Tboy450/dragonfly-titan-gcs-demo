@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [swarmfall-drop-waves-2026-10-19](swarmfall-drop-waves-2026-10-19/README.md) | One whole-squad pod, three renderer slots, checkpoint v1 and HUD before multi-pod waves/Clean view; original code/tests and dated historical screenshot retained | 2026-10-19 | `archive/swarmfall-drop-waves-2026-10-19` |
 | [swarmfall-checklist-2026-10-19](swarmfall-checklist-2026-10-19/README.md) | Complete checklist before priority/status review; every prior request, task ID and historical note retained for comparison | 2026-10-19 | Documentation baseline `fb2e5b6`; no model replacement |
 | [nose-bulkhead-2026-10-19](nose-bulkhead-2026-10-19/README.md) | Single gray nose block before provisional panel/returns/mounts; exact builder/UI and four-angle desktop/mobile pictures | 2026-10-19 | `archive/nose-bulkhead-2026-10-19` |
 | [methan-placeholder-2026-10-18](methan-placeholder-2026-10-18/README.md) | METHAN gray box before approved labeled design approximation; original module/UI/test, all subassembly views and banded-filter draft | 2026-10-18 | `archive/methan-placeholder-2026-10-18` |

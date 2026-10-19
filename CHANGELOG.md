@@ -39,6 +39,36 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Multi-pod squad waves, checkpoint migration and Clean view
+- **Signed:** Codex (OpenAI)
+- **Commit:** Deliver multi-pod squad waves and clean battlefield view.
+- **What changed:** Split new deliveries into deterministic 1–3 drone pods (Dragonflies solo)
+  with stable wave/pod IDs, one squad, one cost/cooldown and distinct wave/pod counts. Preview
+  spaced courts before launch; reject water, steep/bounded/occupied/blocked courts without
+  charging. Support orders before/between arrivals and dynamic rendering beyond three pods.
+  Current generated terrain pads now agree with the land query used by drop/ground rules.
+- **Saves:** Mission checkpoint v2 migrates real v1 saves, retaining already paid whole-squad
+  legacy pods. Persists placement, stagger, release flags and incoming orders; validates IDs,
+  payloads, timers and references. Campaign progress stays version 1; broader campaign schema
+  migration remains TECH-03 work. New wave purchases are checkpointed immediately.
+- **Interface:** Added Clean view (V; Escape/restore button to exit) for HUD panels, minimap,
+  toasts and battlefield text; kept R/F camera pitch. Drop controls/end-of-mission restore HUD.
+  Fixed the lingering drop panel/placement hint under debrief. Clearer inbound squad counts.
+- **Checklist:** Codex signatures on completed DROP-02/03/05/07 and TEST-06. DROP-01/04/06/08
+  and CTRL-13 retain browser acceptance notes. Renamed the environment matrix's approval column
+  to Visual review and explained that it is not a permission gate. Added owner FX-01–04 for
+  future weapon sound, animated explosions, smoke/fire, licensed assets and effect budgets.
+- **Preservation:** Exact original code/tests in `archive/swarmfall-drop-waves-2026-10-19/`,
+  baseline/tag `f122c36`; dated historical game picture reused with its original date. A real
+  v1 mid-descent fixture was generated before editing. All unrelated kit/assets remain intact.
+- **Checks:** All **291 tests passed**; focused wave/checkpoint scenarios and real Three.js scene with a stand-in
+  renderer: 15 visible pods/44 payload bodies, no hidden excess pods, disposal and reload.
+  Full-suite log: `research/swarmfall-design-2026-10-19/drop-wave-test-results.txt`.
+  Syntax/diff checks before push; public stamped-file verification follows deployment.
+  Browser tooling rejected local preview access; no visual, touch or phone review is claimed.
+- **Open / next:** Browser acceptance of waves/Clean view; victory versus continue (OBJ-07)
+  with one-time settlement and compatible saves. Imported cities still need authored collision.
+
 ### 2026-10-19: Extensive Swarmfall priorities, drone identity and free-roam planet design
 - **Signed:** Codex (OpenAI)
 - **Commit:** Record Swarmfall priorities and free-roam design.

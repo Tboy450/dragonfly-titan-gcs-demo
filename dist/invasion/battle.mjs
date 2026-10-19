@@ -13,6 +13,7 @@ import {
 } from "./units.mjs?v=dev";
 import { nextRandom, randomRange, randomPick } from "./random.mjs?v=dev";
 import { createHazardState, stepHazards } from "./hazards.mjs?v=dev";
+import { validPayload, packDropPods, planDropLandings, podStaggerS } from "./drop-waves.mjs?v=dev";
 
 const zoneRadius = { beachhead: 50, beacon: 42, relic: 40, settlement: 46, mine: 40, capital: 60 };
 // Matter per second while the swarm holds the zone.
@@ -42,12 +43,14 @@ export function createBattle(planet, options = {}) {
     events: [], log: [], nextId: 1, lastDropAt: -Infinity,
     reinforceIn: 40, strikeIn: 20, specials: [], refund: 0,
     stats: {
-      drops: 0, dronesDropped: 0, dronesLost: 0, hazardLosses: 0, zonesCaptured: 0, defensesDestroyed: 0,
+      drops: 0, podsLaunched: 0, dronesDropped: 0, dronesLost: 0, hazardLosses: 0, zonesCaptured: 0, defensesDestroyed: 0,
       militiaDefeated: 0, matterHarvested: 0, hazardEvents: 0, maxAlive: 0, alarmPeak: 0, damageDealt: 0,
     },
     hazards: null,
     // Troops on foot stay on land; drones and interceptors fly over liquid.
     isLand: terrain.isLand,
+    heightAt: terrain.heightAt,
+    canDropAt: terrain.canDropAt,
   };
   placeZones(b, planet, terrain);
   terrain.setPads?.(b.zones);
@@ -173,13 +176,14 @@ export function dropReadyIn(b) {
 export function checkDrop(b, { x, z, payload }) {
   const fail = (reason) => ({ ok: false, reason });
   if (b.outcome) return fail("The mission is over.");
+  if (!validPayload(payload)) return fail("Choose valid whole-number drone counts.");
   const count = payloadCount(payload);
-  if (!count) return fail("Choose at least one drone for the pod.");
+  if (!count) return fail("Choose at least one drone for the wave.");
   for (const [type, n] of Object.entries(payload)) {
     if (n > 0 && !b.unlocks.includes(type)) return fail(`${droneTypes[type]?.name || type} drones are still locked.`);
   }
-  if (payloadSlots(payload) > b.podSlots) return fail(`A pod holds ${b.podSlots} slots.`);
-  if (payloadCost(payload) > b.matter + 1e-9) return fail("Not enough matter for this pod.");
+  if (payloadSlots(payload) > b.podSlots) return fail(`A wave holds ${b.podSlots} slots.`);
+  if (payloadCost(payload) > b.matter + 1e-9) return fail("Not enough matter for this wave.");
   for (const type of droneOrder) {
     const limit = droneTypes[type].limit;
     if (!limit || !(payload[type] > 0)) continue;
@@ -189,11 +193,16 @@ export function checkDrop(b, { x, z, payload }) {
   }
   const wait = dropReadyIn(b);
   if (wait > 0) return fail(`Pod bay recharging: ${Math.ceil(wait)} s.`);
-  if (x !== undefined && !dropZoneAt(b, x, z)) return fail("Pods can only land in a zone you hold.");
-  return { ok: true };
+  const payloads = packDropPods(payload);
+  if (x === undefined && z === undefined) return { ok: true, payloads };
+  if (!Number.isFinite(x) || !Number.isFinite(z)) return fail("Choose a valid landing point.");
+  const zone = dropZoneAt(b, x, z);
+  if (!zone) return fail("Pods can only land in a zone you hold.");
+  return { ...planDropLandings(b, zone, x, z, payloads.length), payloads };
 }
 
 export function requestDrop(b, request) {
+  if (!Number.isFinite(request.x) || !Number.isFinite(request.z)) return { ok: false, reason: "Choose a valid landing point." };
   const check = checkDrop(b, request);
   if (!check.ok) return check;
   const payload = Object.fromEntries(Object.entries(request.payload).filter(([, n]) => n > 0).map(([type, n]) => [type, n | 0]));
@@ -201,12 +210,21 @@ export function requestDrop(b, request) {
   b.lastDropAt = b.time;
   const squad = { id: b.squads.length + 1, name: `Squad ${b.squads.length + 1}`, color: squadColors[b.squads.length % squadColors.length] };
   b.squads.push(squad);
-  const pod = { id: b.nextId++, x: request.x, z: request.z, t: 0, payload, squad: squad.id, released: false, launchedAt: b.time };
-  b.pods.push(pod);
+  const waveId = b.nextId++;
+  let slotStart = 0;
+  const pods = check.payloads.map((payload, waveIndex) => {
+    const stagger = waveIndex * podStaggerS;
+    const pod = { id: b.nextId++, waveId, waveIndex, waveCount: check.payloads.length, slotStart,
+      ...check.landings[waveIndex], t: -stagger, stagger, payload, squad: squad.id, released: false, launchedAt: b.time };
+    slotStart += payloadCount(payload);
+    b.pods.push(pod);
+    b.events.push({ kind: "drop", pod: pod.id, waveId, x: pod.x, z: pod.z });
+    return pod;
+  });
   b.stats.drops += 1;
-  b.events.push({ kind: "drop", pod: pod.id, x: pod.x, z: pod.z });
-  b.log.push({ t: b.time, tone: "info", text: `${squad.name} launched: ${payloadCount(payload)} drones, landing in ${dropDurationS} s.` });
-  return { ok: true, pod, squad };
+  b.stats.podsLaunched = (b.stats.podsLaunched || 0) + pods.length;
+  b.log.push({ t: b.time, tone: "info", text: `${squad.name} launched: ${payloadCount(payload)} drones in ${pods.length} pod${pods.length === 1 ? "" : "s"}, landing in ${(dropDurationS + pods.at(-1).stagger).toFixed(1)} s.` });
+  return { ok: true, pod: pods[0], pods, waveId, squad };
 }
 
 // Golden-angle spiral: spot i of a disc formation.
@@ -218,19 +236,23 @@ export function formationSlot(index, spacing = separation) {
 function releasePod(b, pod) {
   pod.released = true;
   let index = 0;
+  const squad = b.squads.find(s => s.id === pod.squad);
   for (const type of droneOrder) {
     for (let n = 0; n < (pod.payload[type] || 0); n += 1) {
-      const slot = formationSlot(index);
-      spawnUnit(b, "swarm", type, pod.x + slot.dx * 0.25, pod.z + slot.dz * 0.25, {
-        alt: 32, squad: pod.squad, slot, order: { kind: "hold", x: pod.x, z: pod.z },
+      const slot = pod.pendingSlots?.[index] || formationSlot((pod.slotStart || 0) + index);
+      const local = formationSlot(index, 4);
+      const x = pod.x + local.dx, z = pod.z + local.dz;
+      const order = squad?.order && squad.order.kind !== "hold" ? { ...squad.order } : { kind: "hold", x: x - slot.dx, z: z - slot.dz };
+      spawnUnit(b, "swarm", type, x, z, {
+        alt: 32, squad: pod.squad, slot, order,
       });
       index += 1;
     }
   }
   b.stats.dronesDropped += index;
   b.events.push({ kind: "release", pod: pod.id, x: pod.x, z: pod.z });
-  const squad = b.squads.find(s => s.id === pod.squad);
-  b.log.push({ t: b.time, tone: "good", text: `${squad?.name || "Squad"} is down: ${index} drones ready for orders.` });
+  const remaining = b.pods.filter(p => p.squad === pod.squad && !p.released).length;
+  b.log.push({ t: b.time, tone: "good", text: `${squad?.name || "Squad"}: pod ${(pod.waveIndex || 0) + 1}/${pod.waveCount || 1} down, ${index} drones${remaining ? ` · ${remaining} pods inbound` : " · wave complete"}.` });
 }
 
 function stepPods(b, dt) {
@@ -251,18 +273,23 @@ function squadDrones(b, squadIds) {
 // order: { kind: "move" | "capture" | "attack" | "hold", x, z, target, zone }
 export function orderSquads(b, squadIds, order) {
   const drones = squadDrones(b, squadIds);
-  if (!drones.length) return 0;
+  const pending = b.pods.filter(p => !p.released && squadIds.includes(p.squad));
+  const total = drones.length + pending.reduce((n, p) => n + payloadCount(p.payload), 0);
+  if (!total) return 0;
   const zone = order.zone ? zoneById(b, order.zone) : null;
-  const spacing = zone ? Math.min(separation, zone.radius * 0.75 / Math.sqrt(drones.length)) : separation;
+  const spacing = zone ? Math.min(separation, zone.radius * 0.75 / Math.sqrt(total)) : separation;
   // pace: the group travels at its slowest drone's speed so it arrives together.
-  const pace = Math.min(...drones.map(unit => droneTypes[unit.type].speed));
+  const pace = Math.min(...drones.map(unit => droneTypes[unit.type].speed), ...pending.flatMap(p => Object.keys(p.payload).map(t => droneTypes[t].speed)));
+  for (const squad of b.squads) if (squadIds.includes(squad.id)) squad.order = { ...order, pace };
   drones.forEach((unit, index) => {
     unit.order = { ...order, pace };
     unit.slot = order.kind === "attack" ? formationSlot(index, 5) : formationSlot(index, spacing);
     unit.landed = false;
   });
+  let index = drones.length;
+  for (const pod of pending) pod.pendingSlots = Array.from({ length: payloadCount(pod.payload) }, () => formationSlot(index++, order.kind === "attack" ? 5 : spacing));
   b.events.push({ kind: "order", order: order.kind, x: order.x, z: order.z, target: order.target ?? null });
-  return drones.length;
+  return total;
 }
 
 // One tap or click on the map: attack a defender near the point, capture a zone the swarm does
@@ -284,6 +311,8 @@ export function orderAt(b, squadIds, x, z) {
 }
 
 export function orderHold(b, squadIds) {
+  for (const squad of b.squads) if (squadIds.includes(squad.id)) squad.order = { kind: "hold" };
+  for (const pod of b.pods) if (!pod.released && squadIds.includes(pod.squad)) delete pod.pendingSlots;
   for (const unit of squadDrones(b, squadIds)) {
     unit.order = { kind: "hold", x: unit.x, z: unit.z };
     unit.slot = { dx: 0, dz: 0 };
@@ -766,8 +795,11 @@ export function battleSummary(b) {
     defenders: b.units.filter(u => u.side === "native").length,
     defenses: b.units.filter(u => u.side === "native" && u.structure).length,
     alarm: b.alarm, matter: b.matter, time: b.time, dropReadyIn: dropReadyIn(b),
+    inboundPods: b.pods.filter(pod => !pod.released).length,
     squads: b.squads.map(squad => ({ ...squad, size: drones.filter(u => u.squad === squad.id).length,
-      inbound: b.pods.some(pod => !pod.released && pod.squad === squad.id) })),
+      inbound: b.pods.some(pod => !pod.released && pod.squad === squad.id),
+      inboundPods: b.pods.filter(p => !p.released && p.squad === squad.id).length,
+      inboundDrones: b.pods.filter(p => !p.released && p.squad === squad.id).reduce((n, p) => n + payloadCount(p.payload), 0) })),
   };
 }
 

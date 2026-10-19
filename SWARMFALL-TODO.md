@@ -38,7 +38,7 @@ The Dragonfly scientific simulator has its own interior/engineering checklists.
 | --- | --- | --- |
 | Campaign | Seven planets, economy, hazards, capture/control paths, achievements and progression exist | Human balance review, deeper progression and more mission types |
 | Mission saves | Active battle autosave/resume is implemented; restored missions start paused | Schema migrations, stronger validation and coverage for new wave/victory/damage states |
-| Drop delivery | A request creates one squad and one pod containing its entire payload | Multiple pods carrying 1–3 drones, spacing, arrival coordination and saved wave state |
+| Drop delivery | Codex October 19: deterministic 1–3 drone pods, solo Dragonflies, one paid squad wave, safe courts, retained orders, v1→v2 checkpoint migration | Browser/touch/device acceptance under DROP-08; real imported-city corridors remain CITY work |
 | Victory | Required captured-zone count immediately ends the battle and recalls the swarm | Leave for victory versus continue capturing, explicit extraction and final reward rules |
 | Public lab | Five environments and an 18-model asset inspector were published October 17 | Expanded metadata, loading/recovery, device review and gameplay integration |
 | Destruction artwork | All five maps have Intact / Damaged / Major destruction / Ruins variants | Authored structural IDs, local weapon damage, support cleanup, collision and persistence |
@@ -48,11 +48,16 @@ The Dragonfly scientific simulator has its own interior/engineering checklists.
 | Free-roam planet | Existing campaign and lab supply reusable rules/art; open-world mode is not implemented | Separate persistent world, connected regions, capture/travel rules, streaming and graphics review |
 | Source library | Six original backups, receipts and hashes were recorded, about 1.84 GB | Additional space/alien sources, derivative-authoring backup/restore and unresolved notices |
 
-Evidence baseline: local game/lab source at **fb2e5b6**; the October 17 combined release passed
+Planning-audit baseline: game/lab source at **fb2e5b6**; the October 17 combined release passed
 **270 tests** and its public build was checked. This October 19 work is a documentation/code
 audit, not a new full test run. After fetching, remote main is **9f3fea1** (October 18);
 its two newer commits concern simulator part 22, with no changes under the game or its tests.
-They remain separate from this documentation-only working-tree change.
+Those changes were separate from the planning edit and were merged before gameplay work below.
+
+Implementation follow-up, October 19 — Codex: the planning checkpoint was pushed as `f122c36`
+after merging simulator updates through `8632674` and passing 278 tests. The multi-pod/Clean
+view update below passes **291 tests** and is the next release milestone. Completed children have a checkbox and Codex
+signature; broad browser/device acceptance stays open. Effects requests are retained in section 36.
 
 The old "live build 8b2399b / 237 tests" and uncommitted aft-bulkhead failure were historical
 notes, not the current Swarmfall status. The aft-bulkhead/inspection work was closed in eed63b1
@@ -138,13 +143,17 @@ should require precision piloting. Detailed candidate and free-roam checkboxes a
 "Art states available" means the lab can display the four versions. It does not mean that
 every asset has been artistically approved or that the environment is a playable battle.
 
-| Environment | Public preview | Art states available | Owner art/support approval | Campaign battle | Collision/routes | Safe pod courts | Saved local destruction | Phone benchmark |
+| Environment | Public preview | Art states available | Visual review: appearance and supports | Campaign battle | Collision/routes | Safe pod courts | Saved local destruction | Phone benchmark |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Alien arcology | Yes | Yes | Pending | Pending | Pending | Pending | Pending | Pending |
 | Metropolis | Yes | Yes | Pending | Pending | Pending | Pending | Pending | Pending |
 | Tidal citadel | Yes | Yes | Pending | Pending | Pending | Pending | Pending | Pending |
 | Skyway megacity | Yes | Yes | Pending; high rear land especially | Pending | Pending | Pending | Pending | Pending |
 | Phototextured city | Yes | Yes | Pending; close-view materials especially | Pending | Pending | Pending | Pending | Pending |
+
+"Visual review" records whether appearance, foundations and structural supports have been
+reviewed; it is not a permission gate for routine implementation. These five imported lab
+environments are separate from the existing campaign terrain, where pod placement is being updated.
 
 ### What a completed feature needs
 
@@ -197,7 +206,7 @@ complete solely because its assets download or its unit tests pass.
   hide parts of them. Consider drawing them on top at low opacity.
 - [ ] **FIX-07 (P2)** On phones the objectives and log panels cover much of the battlefield.
   Collapse them after the first capture and add a log toggle.
-- [ ] **FIX-08 (P2)** The drop panel and the "pick a zone" hint stay open under the debrief when
+- [x] **FIX-08 (P2) — Codex, October 19** The drop panel and the "pick a zone" hint stay open under the debrief when
   a mission ends. Close them in `finishMission`.
 - [ ] **FIX-09 (P2)** Aurex, the last planet, is very hard (bot: about 16 minutes and 150 drones
   lost). Revisit after human playtests.
@@ -238,6 +247,10 @@ complete solely because its assets download or its unit tests pass.
 - [ ] **CTRL-10 (P2)** Settings: camera speed, invert drag, key rebinding, UI size.
 - [ ] **CTRL-11 (P3)** Gamepad support.
 - [ ] **CTRL-12 (P3)** Pause menu with restart, settings and quit to the galaxy.
+- [ ] **CTRL-13 ★ (P1) — implementation by Codex, October 19; browser review pending**
+  Clean view hides mission panels, minimap, toasts and battlefield labels. A small restore
+  button remains; V toggles and Escape restores the HUD. Drop controls/mission end restore
+  the HUD; camera controls remain available. V preserves the existing R/F pitch controls.
 
 ## 4. Economy and progression (ECON)
 
@@ -336,6 +349,8 @@ complete solely because its assets download or its unit tests pass.
   safe landing points inside the chosen zone, with a fallback when space is limited.
   Charge matter once for the full payload and apply cooldown once per wave. Update arrivals,
   release timing, inbound counts, save/resume and drop HUD; test small and large payloads.
+  **Codex, October 19:** implementation and automated rules/scene checks delivered; keep
+  this broad item open until DROP-08's browser/touch acceptance is completed.
 
 Free mode (★ owner: "eventually a free mode with a universe or galaxy to pick planets"):
 
@@ -630,27 +645,34 @@ system. The following are implementation tasks, not claims about either game's i
 These complete the original DROP-01 feature; they are not separate squad purchases. Use the
 current terrains first, then reuse the same placement contract in city districts.
 
-- [ ] **DROP-02 ★ (P1)** Define deterministic payload packing: 1–3 drones per physical pod,
+- [x] **DROP-02 ★ (P1) — Codex, October 19** Define deterministic payload packing: 1–3 drones per physical pod,
   mixed types supported, with current slot capacity applied to the **whole wave**. Explicitly
   decide how a large Dragonfly occupies a pod. Show wave capacity and pod count before launch.
-- [ ] **DROP-03 ★ (P1)** Give each wave and physical pod stable IDs. Charge matter and apply
+- [x] **DROP-03 ★ (P1) — Codex, October 19** Give each wave and physical pod stable IDs. Charge matter and apply
   recharge once per accepted wave; failed validation charges nothing. Preserve one squad,
   type limits, unlock rules and loss recovery. Count waves versus physical pods separately.
 - [ ] **DROP-04 ★ (P1)** Preview spaced touchdown positions beside one another within a held
   landing area. Check dry/allowed surface, slope, playable bounds, canopy/pod clearance and
   formation space. Use a bounded reposition/stagger fallback when the first layout cannot fit.
-- [ ] **DROP-05 ★ (P1)** Coordinate staggered arrivals. Assign unique formation slots across
+- [x] **DROP-05 ★ (P1) — Codex, October 19** Coordinate staggered arrivals. Assign unique formation slots across
   sibling pods; retain squad commands while later pods descend. A delayed pod must not reset
   orders, overlap released drones or split the delivery into unrelated squad cards.
 - [ ] **DROP-06 ★ (P1)** Render every inbound pod/parachute with separate touchdown cues and
   controlled separation. Review the current fixed visual pod pool before increasing count;
   never silently hide excess inbound pods. Explain inbound, released and missing drones in HUD.
-- [ ] **DROP-07 ★ (P1)** Save/resume complete wave state: payload partition, positions,
+- [x] **DROP-07 ★ (P1) — Codex, October 19** Save/resume complete wave state: payload partition, positions,
   timers, released flags and shared squad ID. Reload before descent, between releases and
   after release; produce each drone once and never charge/refund a wave twice. Depends TECH-03.
 - [ ] **DROP-08 ★ (P1)** Accept the feature with 1/2/3/4 drones, mixed and maximum payloads,
   multiple waves, paused launches, narrow courts, shoreline/roof/bridge obstacles and low
   frame rate. Test failure feedback, last-pod arrival and command continuity on desktop/touch.
+
+Codex evidence, October 19: 12 focused wave/checkpoint tests plus the real Three.js scene
+with a stand-in renderer (15 visible pod assemblies, 44 payload bodies, teardown/reload).
+All seven campaign terrain pads accept the initial mixed wave. Version-1 mid-drop saves keep
+their original paid giant pod, then new purchases use the new packing. DROP-04 and DROP-06
+are implemented for current terrain but remain open for visual acceptance; imported-city
+collision is still pending. Browser tooling rejected the local preview, so DROP-08 remains open.
 
 ## 18. Victory, objectives and checkpoint completion (OBJ, SAVE)
 
@@ -940,7 +962,7 @@ MODE-20 is the owner feature; the current lab camera is not a completed pilot mo
 
 ## 27. Test, release and preservation detail (TEST, OPS, DOC continuation)
 
-- [ ] **TEST-06 (P1)** Add focused multi-pod regression fixtures: payload packing, one
+- [x] **TEST-06 (P1) — Codex, October 19** Add focused multi-pod regression fixtures: payload packing, one
   purchase/cooldown, all releases exactly once, unique formation slots, safe positioning and
   save/resume between arrivals. Keep coverage for the existing single-wave API while migrating it.
 - [ ] **TEST-07 (P1)** Add victory/continue settlement scenarios: eligibility, continued
@@ -1215,3 +1237,22 @@ a detailed seamless spherical world is a separate future scope. See the [free-ro
 - [ ] **GFX-06 (P2)** Add bounded environmental atmosphere that responds to state: sky/moons,
   weather layers, water, local light activity, smoke and downwash. Prioritize visible gameplay
   cues and scene cohesion; make expensive reflections/volumetrics optional after profiling.
+
+## 36. Weapon sound, explosions, smoke and fire (FX)
+
+★ Owner, October 19: improve weapon firing visuals/sound and add cooler animated explosion,
+smoke and fire effects. Extend AUD-01/02 and IMM-03/04; keep their existing IDs.
+
+- [ ] **FX-01 ★ (P2)** Give weapon families distinct muzzle flashes, tracers/beams, impact
+  bursts, shock cues and debris, tied to the actual shot/hit event. Keep friendly/hostile
+  fire and shield/armor hits readable from pilot and strategic views.
+- [ ] **FX-02 ★ (P2)** Add animated explosion-to-smoke transitions, drifting plumes, embers
+  and optional lingering fire on damaged structures/wrecks. Use procedural effects or suitable
+  licensed sprite/flipbook/VFX assets, record credits and preserve originals. A visual flame
+  must not imply unimplemented spreading fire or damage; gameplay burning needs explicit rules.
+- [ ] **FX-03 ★ (P2)** Improve weapon/explosion sound layers, mechanical/electronic character,
+  distance attenuation and restrained reverberation/occlusion where supported. Mix simultaneous
+  shots into bounded voices, distinguish near hits from distant fighting, and retain mute/volume.
+- [ ] **FX-04 (P1 for effects release)** Pool and cap fire/smoke/debris/voices, with High/Light
+  settings and reduced-flash/shake options. Profile a sustained city fight and verify effects
+  pause, expire, clear between missions and never hide required warnings or delay controls.
