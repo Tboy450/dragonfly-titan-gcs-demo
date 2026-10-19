@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [swarmfall-checkpoint-validation-2026-10-19](swarmfall-checkpoint-validation-2026-10-19/README.md) | Exact validator/test before strict rule/reference/JSON bounds, plus a dated historical mission picture; current save format and migrations retained | 2026-10-19 | `archive/swarmfall-checkpoint-validation-2026-10-19` |
 | [nose-electronics-2026-10-19](nose-electronics-2026-10-19/README.md) | Part-05 original four blocks/UI/pictures, central-flat/upright rejects, pre-MIMU dimension study and support-isolation draft before photo-referenced MIMU family models | 2026-10-19 | `archive/nose-electronics-2026-10-19` |
 | [lab-aftermath-2026-10-19](lab-aftermath-2026-10-19/README.md) | Lab before smoke/fire/embers and supported architecture destruction controls; exact source and dated historical picture retained | 2026-10-19 | `archive/lab-aftermath-2026-10-19` |
 | [swarmfall-victory-choice-2026-10-19](swarmfall-victory-choice-2026-10-19/README.md) | Automatic capture-threshold victory, mission v2/progress v1 and UI before continue/extract and settlement IDs; exact original code/tests retained | 2026-10-19 | `archive/swarmfall-victory-choice-2026-10-19` |

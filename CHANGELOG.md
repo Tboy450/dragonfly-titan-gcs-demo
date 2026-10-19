@@ -39,6 +39,30 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Validate checkpoint rules and references before resuming
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Harden Swarmfall checkpoint validation`.
+- **What changed:** resumed missions now require bounded JSON data, complete counters/flags,
+  valid unit classes/ownership/combat fields, real squad/zone/objective references, consistent
+  sibling pod clocks/cargo/slots and valid strikes/hazard internals. Reject nonfinite Hold
+  fields before legacy cloning can hide them. All validation is read-only and leaves the
+  surrounding campaign progress intact. Checkpoint v3 and existing v1/v2 migrations remain.
+- **Compatibility:** destroyed attack targets remain legal for retargeting; converted
+  structures retain ownership; released backshells can expire independently. No new unit,
+  art, battle balance or interface changes. Recovery limits are estimates above normal saves.
+- **Checks:** **325 tests pass**, including eleven new validation tests. The focused set has
+  41 passing save/drop/victory tests; all seven planets validate through 220 simulated seconds
+  of weather and supported artillery/lightning. Eight invalid examples accepted by the prior
+  production validator are rejected now. Evidence: `research/swarmfall-checkpoint-validation-2026-10-19/`.
+  Before publication, merged concurrent simulator work `9e647ba`; the combined **332 tests pass**.
+  Both implementations, signed entries and archive-index rows are preserved.
+- **Preservation:** exact prior validator/test and dated historical mission picture under
+  `archive/swarmfall-checkpoint-validation-2026-10-19/`, tag on `cf4c866`. Original assets,
+  unfinished kit work and every existing checklist ID are retained. SAVE-01 checked/signed.
+- **Open / next:** SAVE-02 recovery explanation/backup/export and SAVE-03 browser storage-fault
+  acceptance remain open, along with pod/victory/lab visual and device checks. Browser access
+  was previously blocked and was not retried. Flight clearance/routes follow save reliability.
+
 ### 2026-10-19: Photo-referenced MIMU family assets and nominal Ocellus envelopes
 - **Signed:** Codex (OpenAI).
 - **Commit:** Add photo-referenced MIMU family assets and Ocellus dimension study.

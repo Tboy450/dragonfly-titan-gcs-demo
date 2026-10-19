@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Inherited unit type",
+    "previousAccepted": true,
+    "currentAccepted": false
+  },
+  {
+    "name": "Missing damage multiplier",
+    "previousAccepted": true,
+    "currentAccepted": false
+  },
+  {
+    "name": "Native-side Scout",
+    "previousAccepted": true,
+    "currentAccepted": false
+  },
+  {
+    "name": "Nonfinite squad hold coordinate",
+    "previousAccepted": true,
+    "currentAccepted": false
+  },
+  {
+    "name": "Unknown capture-zone reference",
+    "previousAccepted": true,
+    "currentAccepted": false
+  },
+  {
+    "name": "Missing paid inbound sibling",
+    "previousAccepted": true,
+    "currentAccepted": false
+  },
+  {
+    "name": "Missing required loss counter",
+    "previousAccepted": true,
+    "currentAccepted": false
+  },
+  {
+    "name": "Malformed pending strike",
+    "previousAccepted": true,
+    "currentAccepted": false
+  }
+]

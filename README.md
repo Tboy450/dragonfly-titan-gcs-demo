@@ -53,6 +53,10 @@ force or by quiet control.
   Earlier mission/progress saves migrate automatically. Results save immediately with the
   completed checkpoint cleared; a storage failure shows a retry action and retains the result
   in memory. If storage stays unavailable, keep the page open until it can save.
+  **October 19 — Codex:** resume validation now checks unit/order/zone references, complete
+  pod waves, combat/hazard fields and bounded data before restoring. Old v1/v2 checkpoints
+  remain supported. A rejected checkpoint does not change campaign totals; an explanation
+  and backup/export workflow remain planned under SAVE-02.
 - **Landing and resources:** Scouts, Links, Strikers and Breachers stay airborne. Dragonfly
   lands in a safe held zone to drill matter. A small drill drone and landed-harvest balance are
   planned; this release does not add that unit or increase extraction rates.
