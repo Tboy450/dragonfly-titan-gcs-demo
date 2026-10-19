@@ -46,6 +46,8 @@ force or by quiet control.
   count. Earned victory remains available if zones are retaken, but total defeat can still lose
   the mission. Stars and time goals finalize on extraction. Recalled survivors refund half
   their cost; unreleased pod cargo is fully refunded. Each attempt's result settles once.
+  Watchtower/jammer goals explicitly allow **destroy or capture**, with a live hostile count.
+  A defense retaken by the enemy counts against that goal again until neutralized.
 - **Mission saves:** active battles save on this device every five seconds and when the page
   is hidden or left. Choose **Resume mission** on the title screen; the restored battle starts
   paused. Starting another mission asks before replacing that save. Browser storage must be

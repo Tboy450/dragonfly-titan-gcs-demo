@@ -39,6 +39,27 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Explicit neutralization goals and live-hostile progress
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Clarify Swarmfall neutralization objectives`.
+- **What changed:** tower/jammer goals now explicitly say “Neutralize every … (destroy or
+  capture)” in briefings and live/debrief presentation. Progress counts live native targets
+  and says “N hostile remaining”. Converted defenses satisfy the goal; an enemy retaking
+  them makes them outstanding again. Stars still finalize on extraction.
+- **Compatibility:** retains the existing `destroyType` key and its conversion-compatible
+  meaning. Shared text clarifies old checkpoint wording without mutating battle data or
+  changing mission identity/checkpoint schema. No weapon/jammer/capture balance changes.
+- **Checks:** **366 tests pass**, including six new rule tests covering campaign wording,
+  real combat kills and zone conversion/retaking for both targets, legacy reload, final-state
+  stars and loss/alarm/time/recovery boundaries. Isolated fixtures defer reinforcements/weather;
+  they do not prove whole-mission quiet-route balance. Evidence:
+  `research/swarmfall-objective-rules-2026-10-19/README.md`.
+- **Preservation:** previous runtime/coverage files and dated historical picture under
+  `archive/swarmfall-objective-rules-2026-10-19/`, tag on `ede71e4`. All assets and task IDs kept.
+- **Previous release / open:** SAVE-04 `ede71e4` deployed successfully; live build and command
+  module verified. OBJ-08 checked/signed Codex. Browser access was previously blocked and
+  not retried; actual desktop/touch/visual and human balance checks remain open.
+
 ### 2026-10-19: Retain command intent while resuming safely paused
 - **Signed:** Codex (OpenAI).
 - **Commit:** `Preserve Swarmfall command state across resume`.
