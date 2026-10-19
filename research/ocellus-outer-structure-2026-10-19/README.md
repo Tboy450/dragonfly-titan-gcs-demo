@@ -85,6 +85,17 @@ by a direct assertion that panel03 is still provisional/not a completed assumpti
 other parts completing no longer break it. Original test archived. Final publication
 verification will be recorded in a release checkpoint after deployment.
 
+## Release Checkpoint
+
+Model/archive commit **51d063d** pushed to main and isolated feature branch; recovery tag
+on f28fe8b pushed. Pages run **39322730880 succeeded**. `verify-live.cjs 51d063d` passed
+against the public site in real Edge: stamped module/revision, count20, source links,
+five selectors, FEB at1440/390/360 without horizontal overflow, cover hide/restore across
+Internal/Thermal and reset/Pilot return. No page errors or failed requests. Public images
+and `live-51d063d-ocellus-checks.json` saved here. Public builds intentionally omit localhost
+debug globals; the live check verifies the published source module plus actual UI instead.
+This documentation/evidence follow-up changes no model geometry or app behavior.
+
 ## Continuation
 
 Do not redo the completed first pass or treat the historical unchecked/count19 notes in

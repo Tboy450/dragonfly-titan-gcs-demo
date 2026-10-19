@@ -39,6 +39,17 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Verify published Ocellus approximation
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record live Ocellus model verification.
+- **Release:** model/archive51d063d and recovery tag pushed; Pages39322730880 succeeded.
+  Real Edge verified build stamp, module/revision, count20, source links, all selectors,
+  FEB at1440/390/360, cover hide/restore across Internal/Thermal and reset/Pilot return.
+  No page/network errors or horizontal overflow; screenshots/JSON/check script saved.
+- **Scope:** evidence/handoff only; no app changes. Full model suite367 pass. Public builds
+  omit local debug globals, so live script checks published module and UI instead. Initial
+  #05 pass complete as an approved estimate; exact flight hardware remains a follow-up.
+
 ### 2026-10-19: Approved Ocellus outer-structure asset pass
 - **Signed:** Codex (OpenAI).
 - **Commit:** Add approved Ocellus outer-structure approximation.

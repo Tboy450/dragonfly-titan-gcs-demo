@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "build": "51d063d",
+  "errors": [],
+  "failed": [],
+  "loaded": [
+    "https://tboy450.github.io/dragonfly-titan-gcs-demo/nose-electronics.mjs?v=51d063d",
+    "https://tboy450.github.io/dragonfly-titan-gcs-demo/nose-electronics.mjs?v=51d063d"
+  ],
+  "links": [
+    "https://ntrs.nasa.gov/citations/20230004117",
+    "https://www.honeywellaerospace.com/us/en/products-and-services/products/navigation-and-sensors/inertial-measurement-units/miniature-inertial-measurement-unit",
+    "https://science.nasa.gov/wp-content/uploads/2023/10/uranus-orbiter-and-probe-appendix-c.pdf",
+    "https://technology.nasa.gov/patent/GSC-TOPS-353",
+    "https://ntrs.nasa.gov/citations/20230014147",
+    "https://ntrs.nasa.gov/citations/20240010518",
+    "https://techport.nasa.gov/projects/116315",
+    "https://arxiv.org/abs/2307.13513",
+    "https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content",
+    "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php"
+  ],
+  "options": [
+    "",
+    "ocellus-meb",
+    "ocellus-feb",
+    "imu-a",
+    "imu-b",
+    "imu-estimated-support"
+  ],
+  "widths": [
+    1440,
+    390,
+    360
+  ]
+}

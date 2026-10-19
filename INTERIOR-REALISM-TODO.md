@@ -15,6 +15,10 @@ approximation. [Current asset, sources, real/CAD/model samples and handoff](rese
 **20/24 initial passes, 5 Codex / 15 Claude**, not verified flight replicas. #05 checked
 with separate flight-specific follow-up. Historical count19/unchecked notes below and in
 prior research are superseded; do not restart completed MIMUs or repeat the approval question.
+Model/archive51d063d and recovery tag pushed; Pages39322730880 succeeded. Public real-Edge
+checks at1440/390/360 passed: stamped module/revision, count20, source links, selectors,
+cover hide/restore and Pilot return; no page/network errors. Live JSON/pictures saved in
+the current part research folder. Full suite367 pass. This release note changes no geometry.
 
 Ocellus MEB/FEB now have estimated outer structures within unchanged nominal2023 envelopes:
 MEB machined frame/stiffeners/lid; FEB base/returns/receiver barrel/angled collimator housing.
