@@ -1,10 +1,18 @@
 # Extended Photo and Cross-Project Reuse Search
 
+**Newest October19 owner-directed search:** [cross-project hardware lineage](../ocellus-cross-project-2026-10-19/README.md).
+SpaceCube2019 real boards, GSFC real connector heritage, NEPP2024 Ocellus seed-laser table,
+supplier images and original Kodiak/Ocellus development pages are now inspected/saved.
+Confirmed families are not exact installed units; Optotune/Mirrorcle leads remain unproven
+for Ocellus. This supersedes stale uninspected-board/wait-for-choice notes below. No model
+change; published MIMUs preserved, #05 open/count19. Historical checkpoints remain as history.
+
 **Later October 19 update:** [Ocellus evidence follow-up](../ocellus-evidence-2026-10-19/README.md)
 now closes the previously uninspected SQRLi review/digitizer leads. Original review slides1/4,
 embedded hardware/CAD, Ocellus packaging slide13 and real ERAU photo saved/visually inspected.
 MEB qualification link is stronger, but no complete Ocellus flight enclosure photo identified.
-No geometry change; labeled Ocellus approximation question is open, do not assume approval.
+No geometry change; owner subsequently requested deeper cross-project research, not an
+assumed answer to the earlier approximation question.
 Historical statements below about these files not opening are superseded by this checkpoint.
 
 **October 19 continuation:** Honeywell's original product image and current June 2026

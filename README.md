@@ -311,6 +311,11 @@ original NASA SQRLi review slides/hardware photos, identified Ocellus packaging 
 credited real digitizer-test photo. They improve the reuse/layout evidence, not flight-box
 photo verification. Research only: the published IMUs/lidar studies and app behavior remain
 unchanged; #05 stays open pending identified imagery or an approved labeled approximation.
+The [deeper cross-project search](research/ocellus-cross-project-2026-10-19/README.md)
+traces predecessor lidar electronics, SpaceCube Mini, real fiber-interface heritage and
+supplier leads back to Ocellus. Credited original pages/images and an evidence comparison
+are saved. Confirmed family reuse is separated from unverified scanner/processor variants;
+no unrelated project's hardware or hidden boards were installed in the model.
 
 The [aft bulkhead](research/aft-bulkhead-2026-10-15/README.md) follows NASA/APL's real structure
 photos: gold-colored face, ribbed circular generator interface and pocketed rim. The generator

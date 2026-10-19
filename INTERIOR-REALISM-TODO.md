@@ -7,7 +7,27 @@ Battery pass finished and Codex's RDE pass reviewed October 15, 2026 by Claude (
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: October 19 Ocellus Evidence Follow-Up
+## Resume Here: October 19 Cross-Project Hardware Search
+
+**Newest owner instruction:** search other projects for comparable/reused parts, then
+cross-check those against Ocellus. Completed the requested deeper research pass, not a new
+model. [Evidence matrix, original sources and comparison](research/ocellus-cross-project-2026-10-19/README.md).
+NASA documents GRSSLi/GRLR -> Kodiak lineage, Ocellus development from Kodiak, shared SQRLi
+qualification and SpaceCube Mini family use in Ocellus. Real v2.0 Mini board imagery saved,
+but exact Ocellus generation/card stack unverified. NASA NEPP2024 p5 names the Ocellus1064nm
+seed laser; reported test quantity is NOT installed count. DIAMOND identifies test MiniAVIM
+versus mission MicroAVIM interface; real related connector photos/product image saved.
+Optotune MR-10-30 is an unverified SQRLi procurement lead, NOT an Ocellus identification;
+Mirrorcle's Kodiak architecture citation is NOT supplier adoption. Do not copy either scanner.
+
+**No geometry, physics or game files changed. #05 unchecked, 19/24 unchanged.** Published
+MIMUs remain intact. No complete as-built Ocellus housing/board-stack photograph established.
+Owner redirected to deeper research; do not treat the old approximation question as a new
+waiting gate or infer an answer. Next modeling must preserve original source scale/masks,
+archive CURRENT module/tests/UI/renders, and not move rebuilt neighbors to make room.
+Current lidar studies remain explicitly nominal 2023 envelopes, not photo-matched units.
+
+## Earlier October 19 Ocellus Evidence Follow-Up
 
 **Newest checkpoint, research only:** original NASA SQRLi 2024 review retrieved and visually
 inspected. Real optical/board imagery, complete source slides1/4 and explicitly identified
@@ -15,8 +35,9 @@ Ocellus FEB packaging CAD (NASA Optics2023 slide13) saved, plus credited real di
 photo. SQRLi review links its MEB qualification to sister-project Ocellus, but does NOT
 establish identical complete flight boxes; different FEB/FOV must not be copied. Digitizer
 is largely occluded. No identified complete Ocellus flight-box photograph found. **No model,
-app behavior or physics changed; #05 remains open/count19.** Owner asked whether to allow a
-labeled Ocellus approximation; answer not received at this checkpoint. Do not claim approval.
+app behavior or physics changed; #05 remains open/count19.** Historical checkpoint: a labeled
+approximation question was presented; the owner subsequently requested deeper cross-project
+research (newest checkpoint above), not approval of invented internals.
 [Evidence, rejected substitutions, implementation boundary and next steps](research/ocellus-evidence-2026-10-19/README.md).
 Current MIMU family geometry stays as published; do not restart it. Archive the CURRENT
 lidar study before any replacement, not just old blue blocks. Preserve new unrelated game

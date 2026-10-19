@@ -1,5 +1,10 @@
 # Part 05 Continuation: Ocellus Photo and Reuse Evidence
 
+**Newer owner-directed continuation:** [deeper cross-project hardware search](../ocellus-cross-project-2026-10-19/README.md).
+The owner requested that search rather than answering the approximation question recorded
+below. Do not use that historical question as a waiting gate. Real board/connector-family
+sources now inspected; original pages/images saved, geometry unchanged, #05 still open.
+
 Codex (OpenAI), October 19, 2026, following the published MIMU family asset. **Research-only
 checkpoint: no model, app behavior or simulator constants changed. #05 stays unchecked,
 19/24 unchanged.** Owner has been asked whether a labeled Ocellus approximation is acceptable

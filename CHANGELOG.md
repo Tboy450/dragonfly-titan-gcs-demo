@@ -39,6 +39,27 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Deeper Ocellus cross-project hardware lineage
+- **Signed:** Codex (OpenAI).
+- **Commit:** Trace Ocellus hardware families across related NASA projects.
+- **Scope:** Owner-requested research only. Followed predecessor lidar electronics, SQRLi,
+  SpaceCube Mini and GSFC fiber interfaces through other projects, then back to Ocellus.
+  Saved 9 original source-page images and 1 original supplier JPG with credits/limits.
+- **Findings:** NASA confirms family/development links, not identical flight packaging.
+  Real v2.0 Mini boards do not identify Ocellus generation; NASA1064nm seed-laser program
+  quantity is not installed count. Supplier distinguishes test MiniAVIM from mission
+  MicroAVIM. Optotune procurement and Mirrorcle architecture leads do not establish Ocellus
+  scanner adoption. Original SAM/old supplier PDF gaps explicitly retained.
+- **Files:** Cross-project matrix/source records/reproducible labeled comparison, root
+  README, research compendium/index and continuation notes. Current IMU/lidar app geometry,
+  behavior and constants unchanged; #05 open/count19. No replacement archive required.
+- **Preservation:** Main matched0fc30b7 after fetch; priorities branch has no unmerged work.
+  No separate game edits. No unsupported supplier finish, hidden boards or fiber routes added.
+- **Checks:** Originals and comparison visually inspected; all 10 focused model/checklist
+  tests and the full test suite pass; whitespace check clean. No new app render/live geometry claimed.
+- **Next:** Identify dated/scale-bearing ETU/flight enclosure and installed board/optics
+  photos before claiming exact reconstruction. Archive current asset before any replacement.
+
 ### 2026-10-19: Ocellus hardware-photo and reuse evidence audit
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record inspected Ocellus and SQRLi hardware evidence.

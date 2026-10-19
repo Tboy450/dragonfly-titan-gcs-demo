@@ -13,10 +13,14 @@ and visually inspected. MIMU family asset built, exact flight variant/install un
 NASA Ocellus/Kodiak SpaceCube Mini reuse is documented, not identical housings. SQRLi 2024
 review and digitizer-test are now inspected/saved in the [later evidence follow-up](ocellus-evidence-2026-10-19/README.md),
 along with identified Ocellus FEB packaging CAD. No complete flight-box photo established;
-no geometry changed. Other SpaceCube-board leads remain uninspected.
+no geometry changed. [Deeper cross-project investigation](ocellus-cross-project-2026-10-19/README.md)
+now includes inspected real SpaceCube v2.0 Mini boards, NASA photonics heritage, Ocellus
+seed-laser evidence and supplier product imagery. Exact Ocellus processor generation,
+scanner vendor, installed routing and completed housing remain unresolved; no model change.
 
 | Folder | Source | Pages saved | Used by |
 |---|---|---|---|
+| [`sources/ocellus-cross-project-lineage`](sources/ocellus-cross-project-lineage/README.md) | NASA IGARSS2020 / SpaceCube2019 / GSFC fiber optics / NEPP2024 / Ocellus technology sheet; DIAMOND and Optotune | 9 original page images + 1 original supplier JPG, all visually inspected | 05 research only: real family references vs identified CAD and unverified leads; no exact Ocellus internal-layout claim |
 | [`sources/nasa-sqrli2024-review`](sources/nasa-sqrli2024-review/README.md) | Nathaniel Gill, NASA/GSFC GCD annual review, NTRS20240010518 | Complete original slides1/4 and embedded hardware/CAD images | 05 reuse evidence; different FEB, no Ocellus flight-photo substitution |
 | [`sources/nasa-optics2023-ocellus`](sources/nasa-optics2023-ocellus/README.md) | Georgieva, NASA Mirror Technology Days2023, NTRS20230014147 | Original page13 | 05 explicitly identified Ocellus FEB packaging CAD, NOT a hardware photo |
 | [`sources/erau2023-digitizer`](sources/erau2023-digitizer/README.md) | ERAU, From Campus to the Cosmos, October2023 | Original digitizer-test photo, Kaley Eaton credit | 05 actual test context, board largely occluded; not a reconstruction reference |

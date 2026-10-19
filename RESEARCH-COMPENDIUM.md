@@ -4,6 +4,17 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**Newest October19 cross-project research (Codex):** [lineage matrix / credited images](research/ocellus-cross-project-2026-10-19/README.md).
+NASA confirms predecessor MEB reuse (GRSSLi/GRLR/Kodiak), Kodiak -> Ocellus development,
+SQRLi qualification ties and SpaceCube Mini family use in Ocellus. Real v2.0 Mini boards
+are now inspected/saved, NOT identified as Ocellus's exact processor generation/card stack.
+NASA NEPP2024 p5 lists Ocellus1064nm seed-laser work; its quantity is not installed count.
+DIAMOND's Ocellus test MiniAVIM versus mission MicroAVIM statement is kept distinct from
+real LRO/GSFC connector heritage and current product imagery. No routing/placement inferred.
+Optotune/SQRLi procurement remains a lead without original SAM verification/direct Ocellus
+link; Mirrorcle architecture citation is not supplier adoption. No geometry/constants changed;
+#05 remains unchecked/count19. Owner requested this deeper research, not another waiting question.
+
 **Later October19 Ocellus evidence audit (Codex, research-only):** [saved originals and
 limits](research/ocellus-evidence-2026-10-19/README.md). NASA SQRLi2024 slide4 explicitly ties
 MEB qualification to sister-project Ocellus; does not establish identical flight housings.
@@ -11,7 +22,7 @@ Real exposed optical hardware and board imagery are SQRLi context, not Ocellus f
 NASA Optics2023 slide13 identifies Ocellus FEB packaging CAD; CAD colors are not coatings,
 red circle is annotation. ERAU digitizer-test photo is real/credited Kaley Eaton but obscured,
 not a board-layout source. No complete Ocellus box photo found; no geometry/constants changed.
-Question about labeled approximation is open; #05 unchecked. Do not silently turn these
+Earlier approximation question was superseded by the deeper-search request above; #05 unchecked. Do not silently turn these
 references into claimed flight verification or copy SQRLi range/FOV/mass into Dragonfly.
 
 **October 19 partial navigation study (Codex):** [sources and sample comparison](research/nose-electronics-2026-10-19/README.md).

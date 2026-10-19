@@ -1,5 +1,10 @@
 # Part 05: MIMU Family Asset and Ocellus Dimension Study
 
+**Newest owner-directed follow-up:** [cross-project hardware lineage and comparison](../ocellus-cross-project-2026-10-19/README.md).
+Real SpaceCube/GSFC connector references and direct Ocellus family links inspected/saved;
+no processor-generation, complete flight-box or installed routing claim. Geometry below
+is unchanged. Part05 remains partial; no hidden internals added from a related project.
+
 **Latest evidence follow-up:** [inspected SQRLi review, Ocellus packaging CAD and real
 digitizer-test photograph](../ocellus-evidence-2026-10-19/README.md). Prior "uninspected"
 SQRLi/digitizer notes below are historical; they are now inspected, but still do not provide
