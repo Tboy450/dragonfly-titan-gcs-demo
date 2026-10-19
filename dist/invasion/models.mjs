@@ -63,15 +63,42 @@ const cone = (r, h, n = 12) => new THREE.ConeGeometry(r, h, n);
 // body: merged frame; glow: lights tinted with the squad color; rotors: disc centers and radius.
 const hull = 0x2b3238, panel = 0x4a5560, glass = 0x10161b, motor = 0x5d646b, accent = 0xb7c2c9;
 
+function scoutHullGeometry() {
+  // Original gameplay design [EST]: three hard-edged rings form a tapered, chamfered shell.
+  const outline = [[-.11, -.24], [.11, -.24], [.17, -.13], [.17, .15], [.10, .26], [-.10, .26], [-.17, .15], [-.17, -.13]];
+  const rings = [[-.06, .86], [.025, 1], [.06, .82]].map(([y, scale]) => outline.map(([x, z]) => [x * scale, y, z * scale]));
+  const positions = [];
+  const tri = (a, b, c) => positions.push(...a, ...b, ...c);
+  for (let i = 0; i < outline.length; i++) {
+    const next = (i + 1) % outline.length;
+    tri([0, -.06, 0], rings[0][i], rings[0][next]);
+    tri([0, .06, 0], rings[2][next], rings[2][i]);
+    for (let r = 0; r < 2; r++) {
+      tri(rings[r][i], rings[r + 1][i], rings[r + 1][next]);
+      tri(rings[r][i], rings[r + 1][next], rings[r][next]);
+    }
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
 function scoutModel() {
   const p = new Parts()
-    .add(box(0.34, 0.12, 0.52), hull)
-    .add(ball(0.12), glass, { at: [0, 0.07, 0.16], scale: [1, 0.6, 1.3] })
-    .add(box(0.3, 0.03, 0.3), panel, { at: [0, 0.075, -0.08] });
+    .add(scoutHullGeometry(), hull)
+    .add(box(.24, .022, .25), panel, { at: [0, .066, -.065] })
+    .add(box(.16, .055, .13), panel, { at: [0, .061, .16], rotate: [-.12, 0, 0] })
+    .add(new THREE.CylinderGeometry(.069, .077, .065, 12, 1, true), motor, { at: [0, .055, .244], rotate: [Math.PI / 2, 0, 0] })
+    .add(new THREE.RingGeometry(.049, .069, 12), motor, { at: [0, .055, .2765] })
+    .add(cyl(.049, .049, .006, 12), glass, { at: [0, .055, .268], rotate: [Math.PI / 2, 0, 0] })
+    .add(box(.014, .006, .18), accent, { at: [-.09, .080, -.065] });
+  for (const z of [-.15, -.11, -.07]) p.add(box(.105, .006, .012), glass, { at: [.025, .080, z] });
   const rotors = [];
   for (const [x, z] of [[1, 1], [-1, 1], [1, -1], [-1, -1]]) {
     p.beam([0, 0, 0], [x * 0.34, 0.02, z * 0.34], 0.045, hull);
     p.add(cyl(0.05, 0.05, 0.08), motor, { at: [x * 0.34, 0.04, z * 0.34] });
+    p.add(cyl(.045, .05, .018, 8), panel, { at: [x * .34, .073, z * .34] });
     rotors.push([x * 0.34, 0.09, z * 0.34, 0.21]);
   }
   const glow = new Parts().add(box(0.05, 0.03, 0.05), 0xffffff, { at: [0.34, -0.01, 0.34] }).add(box(0.05, 0.03, 0.05), 0xffffff, { at: [-0.34, -0.01, 0.34] })

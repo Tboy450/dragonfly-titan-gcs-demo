@@ -93,6 +93,8 @@ and modular loadouts. Existing task IDs and the full previous checklist are pres
 Future visual priority **ART-09** reviews and upgrades small assets that lag behind the best
 existing work, including unit details, props, icons, textures and effects, while preserving
 originals and keeping performance and gameplay readability in view.
+Scout's first hull/sensor polish pass is implemented; [before/after and checks](research/scout-polish-2026-10-19/README.md)
+record the preserved original and pending real-browser/phone art review.
 
 ### Asset & Environment Lab
 

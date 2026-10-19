@@ -4,6 +4,11 @@ Planning and CPU inventory completed October 19, 2026 — **Codex (OpenAI)**.
 Two small preparation steps are complete: define limited batches, and record baseline
 geometry for the first candidates. **No art upgrade or visual acceptance is claimed.**
 
+**Follow-up October 19 — Codex:** Scout A1's first cosmetic pass is implemented with
+381 passing tests; [comparison, preserved baseline and checks](../scout-polish-2026-10-19/README.md).
+This planning inventory remains the historical baseline. Owner/browser/phone acceptance
+is pending, ART-09 stays open, and Link is next after Scout feedback.
+
 ## Proposed batches
 
 | Order | Candidate | Source evidence and next work | Scope boundary |
@@ -39,7 +44,7 @@ The script successfully built all six templates and checked nonempty, finite pos
 this is not a GPU/device benchmark. No runtime files changed and no new full test run was
 needed; the last implementation suite passed 380 tests.
 
-## Next session: one concrete small implementation
+## Original plan for the first implementation (preserved)
 
 1. Start with **Scout only**. Read ART-09 and the current source; preserve the old model,
    a dated view and restore tag before replacement, following ARCHITECTURE house rule 6.
@@ -56,4 +61,4 @@ needed; the last implementation suite passed 380 tests.
 Current canonical checklist count remains **23/305**. Prior deployment `9f69205` verified
 CTRL-04 selection/order behavior in published source; `cda9454` recorded future first/third-
 person drone control and `72b2d4d` added this small-asset priority. Preserve untracked modular
-kit work and authoring/download receipts. No assets have been removed or replaced here.
+kit work and authoring/download receipts. No assets were removed or replaced in that planning step; the later Scout replacement is archived separately.

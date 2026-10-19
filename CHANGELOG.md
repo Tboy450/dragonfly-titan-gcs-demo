@@ -39,6 +39,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: ART-09 A1 Scout hull and sensor polish
+- **Signed:** Codex (OpenAI)
+- **Commit:** Refine Scout hull and recessed sensor housing
+- **What changed:** Replaced Scout's rectangular hull/sensor sphere with chamfered hull
+  bands, open rim/recessed lens, deck grooves/trim and capped motors. Original gameplay art;
+  scale, rotor anchors/radii, squad-light data, prior envelope and instancing path retained.
+  Other models, statistics, flight, orders and save formats remain unchanged.
+- **Files:** invasion models, Scout invariant test, research CPU preview/geometry/scripts,
+  archive/source/picture/draft/tag, master checklist and README handoff.
+- **Checks:** 381 tests pass including old envelope/anchors/lights/normals/budget and existing
+  scene allocation/drop/disposal. New fixed-view CPU comparison inspected; body/glow620
+  triangles vs468, +32.5% shared template geometry, no new material/mesh batch. Not a GPU benchmark.
+- **Open / next:** Owner/browser visual acceptance, High/Light/phone review; previous browser
+  restriction was not retried. Link follows Scout feedback. ART-09 remains open; count23/305.
+  [Evidence](research/scout-polish-2026-10-19/README.md),
+  [original and restore steps](archive/scout-polish-2026-10-19/README.md).
+
 ### 2026-10-19: Prepare two small ART-09 follow-up steps
 - **Signed:** Codex (OpenAI)
 - **Commit:** Prepare small asset batches and geometry baseline

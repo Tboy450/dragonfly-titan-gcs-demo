@@ -905,7 +905,10 @@ Use licensed sources and original adaptation, not proprietary franchise extracti
   **Preparation by Codex, October 19:** defined Scout → Link → defender/interceptor batches
   and recorded unchanged geometry/bounds for six templates. [Batch plan, inventory and next
   session handoff](research/swarmfall-small-assets-2026-10-19/README.md). First implementation
-  candidate is Scout only; no art upgrade/visual review is complete. Count remains 23/305.
+  candidate was Scout only. **A1 follow-up, Codex:** first Scout hull/sensor/deck/motor-cap
+  pass implemented; exact rotor/light/scale contracts and prior envelope retained, originals
+  archived. **381 tests pass**; [CPU comparison and checks](research/scout-polish-2026-10-19/README.md).
+  Owner/browser/phone acceptance remains open; Link/other assets are untouched. Count 23/305.
 
 ## 22. Destruction integration acceptance tasks (ENV continuation)
 
