@@ -70,6 +70,8 @@ are published; both Pages deployments and their public source stamps were verifi
 passed **314 tests** and added FX-05/06, bringing the checklist to **304 unique IDs**. The next
 completed item is **SAVE-01** below: current-schema checkpoint validation, with **325 tests**
 passing and an eight-case before/after report. Recovery/export and browser/device checks stay open.
+Before publication, concurrent simulator work from **9e647ba** was merged with both signed
+records preserved; the combined repository passes **332 tests**. No checklist IDs were removed.
 
 The old "live build 8b2399b / 237 tests" and uncommitted aft-bulkhead failure were historical
 notes, not the current Swarmfall status. The aft-bulkhead/inspection work was closed in eed63b1

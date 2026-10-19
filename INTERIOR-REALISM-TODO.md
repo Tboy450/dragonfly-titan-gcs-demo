@@ -7,7 +7,44 @@ Battery pass finished and Codex's RDE pass reviewed October 15, 2026 by Claude (
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: October 19 Nose-Panel Provisional Pass
+## Resume Here: October 19 Part-05 MIMU Family Subpass
+
+**Latest:** after deeper real-photo/reuse research, owner requested continuing part 05.
+Honeywell's current June 2026 datasheet and original hardware product image are inspected
+and archived; NASA/APL Uranus Appendix C pp.184-185 explicitly associates MIMU with Dragonfly.
+Both old IMU cubes are replaced by photo-referenced Honeywell space MIMU FAMILY approximations.
+Exact Dragonfly variant/options and installation remain unconfirmed. Full 233.7 mm diameter
+x 169.9 mm supplier upper envelope, not exact flight dimensions. No supplier power/mass imported.
+Ribbed housing, rounded removable cap, side cover and external connector shells; no invented
+pins, internal boards/gyros or flight harness. Independent casings/covers/mounts/interfaces,
+four unit focuses plus separately selectable estimated support shelf retain original number 05.
+
+Codex found nominal Ocellus design dimensions in NASA MSS 2023 page 6: MEB
+24.19 x 18.54 x 12.04 cm and FEB 23.4 x 23.2 x 12.7 cm. Two dimensioned enclosure
+representations replace the two generic lidar boxes; no Ocellus hardware-photo match is
+claimed. Native geometry x/y/z maps length/height/depth. Placement, yaw, neutral finish,
+walls/covers/feet remain estimates. No hidden optics, electronics or harness invented.
+**#05 stays unchecked; count 19/24 unchanged** because Ocellus appearance and exact flight
+MIMU configuration/installation are not verified. Current module revision
+`nose-electronics-mimu-family-2026-10-19`.
+
+**Fit:** new units clear one another and rebuilt neighbors without moving completed parts
+or shrinking sourced envelopes. Old FEB/IMU overlaps now resolved. Both IMUs at x .205,
+bottom y -.1, z -1.393/-1.145 with yaw 0/180. Shelf/post arrangement is an explicit installation
+study, not flight evidence. Cover removal reveals UNMODELED space, not asserted empty hardware.
+Original blocks, central-flat/upright rejected placements, pre-MIMU dimension study and shelf
+isolation draft archived with exact code/tests/pictures. [All parameters, real/CAD/process
+samples and handoff](research/nose-electronics-2026-10-19/README.md).
+
+Next within #05: inspect SQRLi 2024 review/digitizer leads for identified Ocellus-family real
+hardware, keeping shared processors distinct from identical housings. Seek actual Dragonfly
+MIMU flight variant/scale/mount evidence. [Research leads](research/nose-electronics-2026-10-19/PHOTO-AND-REUSE-SEARCH.md).
+Real Kodiak is heritage only; supplier exploded MIMU image is CAD, not an interior photo.
+#03/#09/#20/#21 also open. No game edits; published game commits preserved by fast-forward to
+cf4c866 before this pass. Preview 4195 / isolated worktree below. Prior tool-approval block
+cleared; fetch now works. Check current deployment before claiming live status.
+
+## October 19 Nose-Panel Provisional Pass
 
 Codex assessed next unfinished part **03**. Real 2026 flight-structure photos provide
 panel finish/joint evidence, but no fully exposed identified nose face or dimensioned
@@ -441,7 +478,7 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **03 Nose bulkhead** (`nose-bulkhead`): October 19 provisional thin-panel/perimeter/mount pass, not photo-matched. Complete nose-face profile, thickness, apertures and real attachment remain unresolved. [Evidence/model/process comparison](research/nose-bulkhead-2026-10-19/README.md). Do not count as completed or invent a hidden core.
 - [x] **Claude:** **04 Nose cameras** (`nose-cameras-inside`): Forward MAC (hooded lens), Forward WAC, two Side Cameras and two NavCams (yellow top plates) on a camera panel behind the nose cap, each behind a window; same ECAM body throughout, differences from DragonCam fig. 1; positions from figs. 2-3. [References/limits](research/nose-cameras-2026-10-13/README.md).
 - [ ] **04 follow-up:** pointing angles and which low unit is the WAC or the NavCams; the fuller 2026 chin (the low cameras stand out of the older nose shell, noted for the fuselage nose redraw).
-- [ ] **05 IMU/lidar electronics, FEB/MEB** (`nose-electronics`): distinguish boxes and brackets; verify names/locations against current sources.
+- [ ] **05 IMU/lidar electronics, FEB/MEB** (`nose-electronics`): Ocellus 2023 dimension study, not photo-matched; two photo-referenced Honeywell MIMU FAMILY models at supplier upper-envelope scale, exact flight variant/installation unconfirmed. Four unit focuses plus estimated shelf; casings/covers/mounts/interfaces removable. All clear rebuilt neighbors; old IMU/FEB overlaps resolved without moving other parts. Need current Ocellus photos and flight MIMU identification/mounts. [Sources and handoff](research/nose-electronics-2026-10-19/README.md).
 - [x] **Codex:** **06 Cold sample-delivery carousel** (`sample-carousel`): enclosed drum, cooling fins, ports and underside drives; stationary housing, internal indexing cue. [References/limits](research/carousel-2026-10-12/README.md). No exposed invented cup inventory; 0.36 m diameter and placement remain estimates.
 - [ ] **06 dimensional follow-up:** replace proportional scale with an authoritative dimension/CAD if available; #02/#07/#08 now have approximate integrated interfaces, but real sealed transfer paths remain unverified. Existing legacy overlap is not corrected by shrinking #06.
 - [x] **Codex:** **07 Wonderwall thermal barrier** (`wonderwall`): contoured reference-based warm/cold partition, interface openings and separate face/core/mount groups. [References and limits](research/wonderwall-2026-10-12.md). Not a verified flight material stack.

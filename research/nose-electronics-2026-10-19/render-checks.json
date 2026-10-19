@@ -1,0 +1,166 @@
+{
+  "status": "passed",
+  "errors": [],
+  "checks": [
+    {
+      "id": "ocellus-meb",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "id": "ocellus-meb",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "id": "ocellus-meb",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "id": "ocellus-meb",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "id": "ocellus-meb",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "id": "ocellus-meb",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "id": "ocellus-feb",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "id": "ocellus-feb",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "id": "ocellus-feb",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "id": "ocellus-feb",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "id": "ocellus-feb",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "id": "ocellus-feb",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "id": "imu-a",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "id": "imu-a",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "id": "imu-a",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "id": "imu-a",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "id": "imu-a",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "id": "imu-a",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "id": "imu-b",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "id": "imu-b",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "id": "imu-b",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "id": "imu-b",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "id": "imu-b",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "id": "imu-b",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "id": "imu-estimated-support",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "id": "imu-estimated-support",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "id": "imu-estimated-support",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "id": "imu-estimated-support",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "id": "imu-estimated-support",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "id": "imu-estimated-support",
+      "layer": "thermal",
+      "width": 360
+    }
+  ],
+  "samples": [
+    "ocellus-meb-closed.png",
+    "ocellus-meb-cover-hidden.png",
+    "ocellus-feb-closed.png",
+    "ocellus-feb-cover-hidden.png",
+    "imu-a-closed.png",
+    "imu-a-cover-hidden.png",
+    "imu-b-closed.png",
+    "imu-b-cover-hidden.png"
+  ]
+}

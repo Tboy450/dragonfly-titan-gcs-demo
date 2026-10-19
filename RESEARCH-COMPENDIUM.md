@@ -4,6 +4,18 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 19 partial navigation study (Codex):** [sources and sample comparison](research/nose-electronics-2026-10-19/README.md).
+NASA MSS 2023 p6 provides historical design envelopes, not 2026 as-built dimensions.
+Ocellus MEB 24.19 x 18.54 x 12.04 cm and FEB 23.4 x 23.2 x 12.7 cm [PUB-design]; installed
+pose, neutral appearance and casing/mount details [EST]. Two photo-referenced Honeywell space
+MIMU family approximations replace the old cubes. Supplier June 2026 hardware image/exploded
+CAD and NASA/APL Uranus appendix C pp.184-185 support the family; exact Dragonfly variant and
+installation remain unconfirmed. 233.7 mm diameter x 169.9 mm height is a family UPPER bound,
+not exact as-built dimensions. Exterior proportions, support shelf and coordinates [EST].
+No hidden devices/harness invented. All four units clear rebuilt neighbors at source-envelope
+scale; legacy IMU/FEB overlap resolved without moving others. #05 unchecked/count 19 unchanged.
+Kodiak's photo is heritage only. No supplier power/mass/temperature numbers imported into physics.
+
 **October 19 provisional nose-panel study (Codex):** [evidence and comparison](research/nose-bulkhead-2026-10-19/README.md).
 Real 2026 photos inform structure finish/joints, older thermal/CAD images establish layout
 only. No complete identified nose face or published dimensions found. The panel, perimeter

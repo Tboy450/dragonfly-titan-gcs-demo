@@ -36,6 +36,8 @@ limits and validation together.
 
 - [325-test full run](test-results.txt) and [41 focused save/drop/victory tests](focused-test-results.txt).
   Eleven new regression tests cover malformed state and legal recovery exceptions.
+- [332-test combined run](merged-test-results.txt): all tests pass after merging concurrent
+  simulator MIMU/Ocellus work from `9e647ba`. Both changes and signed records are preserved.
 - [Before/after report](validation-report.json): eight concrete invalid checkpoints were
   accepted by the archived production validator and are rejected now. Reproduce with
   `node research/swarmfall-checkpoint-validation-2026-10-19/compare-validators.mjs`.
