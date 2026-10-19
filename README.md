@@ -90,6 +90,9 @@ pilot control, drone-specific tactics, better graphics and a separate persistent
 planet mode alongside the campaign; these are planned features. The [RTS/space design study](research/swarmfall-design-2026-10-19/README.md)
 links reference games and proposes connected territories, scouting/relays, recoverable drones
 and modular loadouts. Existing task IDs and the full previous checklist are preserved.
+Future visual priority **ART-09** reviews and upgrades small assets that lag behind the best
+existing work, including unit details, props, icons, textures and effects, while preserving
+originals and keeping performance and gameplay readability in view.
 
 ### Asset & Environment Lab
 

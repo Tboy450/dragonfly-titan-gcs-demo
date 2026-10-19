@@ -39,6 +39,18 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Prioritize smaller assets below the project visual standard
+- **Signed:** Codex (OpenAI)
+- **Commit:** Prioritize future small asset visual upgrades
+- **What changed:** Added owner-requested ART-09 as a future P2 visual priority, linked from
+  roadmap milestone 9. Review small unit details, props, icons, textures, decals and effect
+  elements against the strongest existing work; upgrade weak spots in tracked batches with
+  coherent style, RTS/pilot readability, performance checks and preserved originals.
+- **Files:** SWARMFALL-TODO.md and README.md; all prior tasks/history retained.
+- **Checks:** Documentation diff and unique task IDs/count checked. Documentation only;
+  no assets changed or claimed approved, no runtime tests needed. Count now 23/305 checked.
+- **Open / next:** Identify and review the actual assets before implementing upgrades.
+
 ### 2026-10-19: Expand future pilot control to first and third person
 - **Signed:** Codex (OpenAI)
 - **Commit:** Record individual drone first and third person mode

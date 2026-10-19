@@ -98,6 +98,11 @@ while retaining touch controls and camera gestures. **380 tests pass; 23/304 uni
 are checked.** Browser/device acceptance remains open. Prior OBJ-08 release `564f000` was
 published and its live source verified. See the signed evidence linked from CTRL-04.
 
+Small-asset priority follow-up — Codex, October 19: added owner-requested **ART-09** for future
+visual upgrades to smaller assets below the current project standard. No asset is claimed
+reviewed or upgraded in this planning change. Current count: **23/305 unique tasks checked**;
+earlier release counts above are historical.
+
 ## Priority order — work from the top
 
 | Order | Work package | Canonical tasks | Scope | Completion gate |
@@ -110,7 +115,7 @@ published and its live source verified. See the signed evidence linked from CTRL
 | 6 | Tutorial and first human balance pass | TUT-01/02; TEST-02/03/05; OBJ-08 | M | A new player can finish Titan, understand objectives and recover from losses |
 | 7 | First playable city district | VIS-18; CITY-01 through CITY-12; PERF-01/04/07 | XL | One reviewed district with terrain, collision, routes, zones, drops and a compatible checkpoint |
 | 8 | ★ Localized progressive destruction | ENV-01/02/03/06 through ENV-11; ART-01 through ART-08 | XL | One building changes state locally; visuals, collision, routes and saved state stay synchronized |
-| 9 | Public lab and asset pipeline polish | LAB-01 through LAB-09; OPS-08/09/10 | M/L | Every public route works, assets have provenance/readiness, repeated changes stay responsive |
+| 9 | Public lab, asset pipeline and small-asset visual polish | LAB-01 through LAB-09; OPS-08/09/10; ART-09 | M/L | Every public route works, assets have provenance/readiness, repeated changes stay responsive |
 | 10 | ★ First-person/pilot campaign | MODE-20; PILOT-01 through PILOT-09 | XL | Pilot a real campaign drone and return to command without losing squad/mission state |
 | 11 | ★ Free-roam planetary conquest and better graphics | MODE-01/02/03; ROAM-01 through ROAM-16; GFX-01 through GFX-06 | XL | Three connected regions, persistent capture/revisits, separate saves and measured visual quality |
 | 12 | Content and progression | ECON, DRONE, ENEMY, HAZ and OBJ-01 through OBJ-06; SENSE/SWARM/SPACE/TACT experiments | L/XL | New content is balanced against measured campaign results; keep only useful experiments |
@@ -886,6 +891,17 @@ Use licensed sources and original adaptation, not proprietary franchise extracti
 - [ ] **ART-08 ★ (P2)** Record owner art approval with annotated screenshots and exact version
   links for each map/stage. Retain every earlier platform/coast/damage pass and restore steps;
   numerical contact checks supplement artistic review rather than replacing it.
+
+
+- [ ] **ART-09 ★ (P2; future visual priority) — owner request, October 19** Review smaller
+  digital assets that lag behind the project's current visual standard: drone/defender
+  details, props, icons, textures, decals and effect elements. Identify actual weak spots
+  through side-by-side comparisons with the strongest existing work; prioritize frequently
+  seen placeholders, basic shapes, inconsistent materials and blurry or mismatched details.
+  Upgrade them in manageable batches with coherent alien/space styling, readable silhouettes
+  and appropriate detail at RTS and future first/third-person scales. Keep performance and
+  High/Light readability within budget. Retain originals, before/after views, credits and
+  restore steps, and track reviewed assets individually before marking this item complete.
 
 ## 22. Destruction integration acceptance tasks (ENV continuation)
 
