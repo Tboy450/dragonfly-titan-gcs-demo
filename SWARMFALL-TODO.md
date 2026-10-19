@@ -93,6 +93,11 @@ notes, not the current Swarmfall status. The aft-bulkhead/inspection work was cl
 and included in the published baseline. Its archive and all old checklist notes are retained.
 Untracked modular-kit work and local authoring/install receipts are preserved.
 
+Pointer-controls follow-up — Codex, October 19: **CTRL-04** separates desktop selection/orders
+while retaining touch controls and camera gestures. **380 tests pass; 23/304 unique tasks
+are checked.** Browser/device acceptance remains open. Prior OBJ-08 release `564f000` was
+published and its live source verified. See the signed evidence linked from CTRL-04.
+
 ## Priority order — work from the top
 
 | Order | Work package | Canonical tasks | Scope | Completion gate |
@@ -263,8 +268,14 @@ complete solely because its assets download or its unit tests pass.
   touch screens.
 - [ ] **CTRL-02 (P1)** Squad tools: merge, split, rename, select by drone type, renumber keys.
 - [ ] **CTRL-03 (P1)** Waypoint queues (Shift+tap), patrol and an "attack-move here" order.
-- [ ] **CTRL-04 (P1)** Desktop convention: left-click selects, right-click orders (today both
-  happen on a left tap).
+- [x] **CTRL-04 (P1) — Codex, October 19; implementation and automated acceptance**
+  Desktop left-click selects a squad; right-click orders an attack, capture or move. Modifier
+  clicks toggle additional squads; empty primary clicks clear selection. Touch/pen retain
+  select-then-tap orders. Camera drags, pinches, button chords, cancelled/lost capture, blur,
+  hidden pages and modal interruptions cannot release a stray command. Right-click cancels
+  landing placement; only Launch here purchases the previewed wave. **380 tests pass**;
+  [evidence](research/swarmfall-pointer-controls-2026-10-19/README.md). Real browser/device
+  acceptance remains open under TEST tasks; box selection and order queues remain CTRL-01/03.
 - [ ] **CTRL-05 (P1)** Camera: follow the selected squad, jump to the last alert, edge-scroll,
   reset view.
 - [ ] **CTRL-06 (P1)** Alerts with minimap pings and tap-to-jump: squad under attack, zone being

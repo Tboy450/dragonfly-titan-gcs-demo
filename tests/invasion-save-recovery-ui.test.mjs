@@ -1,7 +1,6 @@
 // Actual entry-point wiring with DOM/storage/download stand-ins. No browser/GPU acceptance.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import { createProgress, SAVE_KEY } from '../dist/invasion/campaign.mjs';
 import { recoveryBackupPrefix } from '../dist/invasion/save-recovery.mjs';
@@ -9,54 +8,7 @@ import { createBattle, requestDrop } from '../dist/invasion/battle.mjs';
 import { planetById } from '../dist/invasion/campaign.mjs';
 import { missionCheckpoint } from '../dist/invasion/mission-save.mjs';
 
-const entry=new URL('../dist/invasion/main.mjs',import.meta.url),source=readFileSync(entry,'utf8');
-const html=readFileSync(new URL('../dist/invasion/index.html',import.meta.url),'utf8');
-const importPattern=/^import[\s\S]*?from\s+["']([^"']+)["'];?\r?$/gm;
-const bindings={};
-for(const match of source.matchAll(importPattern)){
-  if(match[1].includes('scene.mjs')){bindings.createInvasionScene=()=>{throw new Error('No renderer in this test');};continue;}
-  if(match[1].includes('galaxy.mjs')){Object.assign(bindings,{drawStarfield(){},drawGalaxy:()=>[]});continue;}
-  Object.assign(bindings,await import(new URL(match[1],entry).href));
-}
-
-function harness(raw=null,{renderer=false}={}){
-  const data=new Map(raw===null?[]:[[SAVE_KEY,raw]]),writes=[],nodes=new Map(),blobs=[],revoked=[];
-  let failRead=false,failBackup=false,failPrimary=false;
-  const storage={get length(){return data.size;},key:i=>[...data.keys()][i]??null,getItem:key=>data.get(key)??null,
-    setItem(key,value){if(failPrimary&&key===SAVE_KEY||failBackup&&key.startsWith(recoveryBackupPrefix))throw new Error('quota');writes.push({key,value});data.set(key,value);}};
-  class Element{
-    constructor(id='',tag='div'){this.id=id;this.tagName=tag;this.hidden=false;this.disabled=false;this.open=false;this.value='';this.children=[];this.handlers={};this.dataset={};this.style={setProperty(){}};this.queries=new Map();this.classList={toggle(){},add(){},remove(){},contains:()=>false};this.clientWidth=800;this.clientHeight=600;}
-    addEventListener(kind,fn){(this.handlers[kind]??=[]).push(fn);}
-    async click(){if(this.disabled)return;this.onclick?.();await Promise.all((this.handlers.click||[]).map(fn=>fn({currentTarget:this,target:this})));}
-    showModal(){this.open=true;}
-    close(){this.open=false;queueMicrotask(()=>this.onclose?.());}
-    append(child){this.children.push(child);if(this.id==='save-backup-choice'&&this.children.length===1)this.value=child.value;}
-    replaceChildren(){this.children=[];this.value='';}
-    setAttribute(){} remove(){} focus(){} contains(){return false;}
-    getContext(){return {setTransform(){}};}
-    querySelector(selector){if(!this.queries.has(selector))this.queries.set(selector,new Element());return this.queries.get(selector);}
-    querySelectorAll(){return [];}
-  }
-  for(const tag of html.matchAll(/<[^>]+\bid="([^"]+)"[^>]*>/g)){
-    const node=new Element(tag[1]);node.hidden=/\bhidden(?:\s|>)/.test(tag[0]);nodes.set(tag[1],node);
-  }
-  const document={body:new Element(),getElementById:id=>nodes.get(id)||null,
-    querySelectorAll:selector=>selector==='.screen'?[...nodes.values()].filter(n=>n.id.startsWith('screen-')):[],
-    querySelector:()=>null,createElement:tag=>new Element('',tag),addEventListener(){}};
-  class DownloadURL extends URL{
-    static createObjectURL(blob){blobs.push(blob);return 'blob:test-'+blobs.length;}
-    static revokeObjectURL(url){revoked.push(url);}
-  }
-  const context=vm.createContext({...bindings,document,window:{devicePixelRatio:1,addEventListener(){}},location:{hostname:'unit-test'},
-    URL:DownloadURL,Blob,console,performance,queueMicrotask,requestAnimationFrame(){},setInterval(){},setTimeout(fn){queueMicrotask(fn);},addEventListener(){}});
-  if(renderer)context.createInvasionScene=()=>({load(){},resize(){}});
-  Object.defineProperty(context,'localStorage',{get(){if(failRead)throw new Error('permission denied');return storage;}});
-  const start=()=>vm.runInContext(source.replace(importPattern,''),context,{filename:'Swarmfall entry-point unit harness'});
-  const click=id=>nodes.get(id).click();
-  async function confirmAction(id,answer=true){const pending=click(id);assert.equal(nodes.get('confirm-dialog').open,true);await click(answer?'confirm-yes':'confirm-no');await pending;}
-  return {data,writes,nodes,blobs,revoked,storage,context,start,click,confirmAction,
-    failReading(value){failRead=value;},failBackup(value){failBackup=value;},failPrimary(value){failPrimary=value;}};
-}
+import { harness } from './helpers/invasion-ui-harness.mjs';
 
 test('Healthy title save controls export the exact original through Blob without changing storage',async()=>{
   const raw=JSON.stringify({...createProgress(),activeMission:null},null,2),h=harness(raw);h.start();

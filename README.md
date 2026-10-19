@@ -69,9 +69,13 @@ force or by quiet control.
 - **Landing and resources:** Scouts, Links, Strikers and Breachers stay airborne. Dragonfly
   lands in a safe held zone to drill matter. A small drill drone and landed-harvest balance are
   planned; this release does not add that unit or increase extraction rates.
-- **Controls:** tap a squad card or a drone to select, tap the ground to move, a ring to
-  capture, a defender to attack. Drag to move the view, scroll or pinch to zoom, right-drag or
-  Q/E to turn; WASD/arrows pan, 1-9 select squads, 0 all, H hold, B drop wave, Space pause.
+- **Controls:** on desktop, left-click a drone to select its squad; right-click the ground
+  to move, a ring to capture or a defender to attack. Shift/Ctrl/Meta+click toggles additional
+  squads; an empty left-click clears selection. Squad cards also select. On touch or pen, tap
+  a drone/card to select, then tap the destination or target to order. Drag to pan, scroll or
+  pinch to zoom; right/middle/Alt+drag or Q/E turns. WASD/arrows pan, 1-9 select squads, 0 all,
+  H holds, B opens drops and Space pauses. In landing placement, click/tap only previews;
+  Launch here confirms the purchase, and right-click or Cancel cancels the preview.
   **Clean view** or **V** hides HUD panels and battlefield labels; the small Show HUD button,
   V or Escape restores them. R/F retain camera pitch. Opening drops or ending a mission restores the HUD.
 

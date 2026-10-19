@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: CTRL-04 desktop selection and order controls
+- **Signed:** Codex (OpenAI)
+- **Commit:** Separate desktop selection from battlefield orders
+- **What changed:** Left-click selects and right-click orders attacks/captures/movement;
+  modifier clicks toggle additional squads and empty left-click clears selection. Touch/pen
+  keep smart taps, camera drags/pinch remain, and interrupted gestures cannot release an order.
+  Right-click cancels landing placement; stale previews clear without launching or spending.
+- **Files:** invasion main/HTML and plain pointer-intent module; shared entry-point test harness,
+  pointer coverage, README, master checklist and evidence/archive folders.
+- **Assumptions:** Input thresholds/gestures are UI design choices; battle rules, saves, paid
+  cargo and campaign art remain compatible. Concurrent simulator work through 514241b retained.
+- **Checks:** 380 tests pass, including 13 new pointer/wiring tests using actual battle rules
+  with DOM/projection/capture stand-ins; preserved sources verified against baseline tag.
+- **Open / next:** Real browser/touch/capture acceptance remains open; prior browser restriction
+  was not retried. CTRL-01/03 selection tools/queues remain open. Checklist now 23/304 checked.
+  [Evidence](research/swarmfall-pointer-controls-2026-10-19/README.md),
+  [preserved behavior and historical picture](archive/swarmfall-pointer-controls-2026-10-19/README.md).
+
 ### 2026-10-19: Verify published Ocellus approximation
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record live Ocellus model verification.

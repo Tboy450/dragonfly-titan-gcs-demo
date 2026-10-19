@@ -17,6 +17,7 @@ import { createPlanetTerrain } from "./planet-terrain.mjs?v=dev";
 import { drawGalaxy, drawStarfield } from "./galaxy.mjs?v=dev";
 import { createInvasionScene, swarmColor, nativeColor } from "./scene.mjs?v=dev";
 import { missionCheckpoint, restoreMissionCheckpoint } from "./mission-save.mjs?v=dev";
+import { pointerIntent, exceedsTapSlop } from './pointer-controls.mjs?v=dev';
 import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecoveryBackups } from './save-recovery.mjs?v=dev';
 
 const $ = (id) => document.getElementById(id);
@@ -94,7 +95,7 @@ function openSaveFiles() {
     $('save-backup-choice').append(option);
   });
   $('save-backups').hidden = !preservedBackups.length;
-  $('save-action-status').textContent = ''; renderSaveRecovery(); $('save-dialog').showModal();
+  $('save-action-status').textContent = ''; renderSaveRecovery(); resetPointers(); $('save-dialog').showModal();
 }
 function downloadSave(raw, name) {
   let url, link;
@@ -217,6 +218,7 @@ function confirmDialog(text) {
     $("confirm-yes").onclick = () => done(true);
     $("confirm-no").onclick = () => done(false);
     dialog.onclose = () => resolve(false);
+    resetPointers();
     dialog.showModal();
   });
 }
@@ -226,6 +228,7 @@ function showAchievements() {
     const at = progress.achievements[a.id];
     return `<li class="${at ? "earned" : ""}"><strong>${at ? "🏆 " : ""}${escapeHtml(a.name)}</strong><small>${escapeHtml(a.text)}${at ? ` · earned ${new Date(at).toLocaleDateString()}` : ""}</small></li>`;
   }).join("");
+  resetPointers();
   $("achievements-dialog").showModal();
 }
 
@@ -278,6 +281,7 @@ function defaultPayload(b) {
 
 function startMission(planet, checkpoint = null) {
   if (!ensureScene()) return;
+  resetPointers();
   $("debrief").open && $("debrief").close();
   $("victory-dialog").open && $("victory-dialog").close();
   const terrain = createPlanetTerrain(planet);
@@ -380,27 +384,42 @@ function keyboardCamera(dt) {
 
 const pointers = new Map();
 let gesture = null;
+function battlefieldActive() {
+  return current === "mission" && mission && !mission.battle.outcome && !document.hidden && !document.querySelector("dialog[open]");
+}
+function resetPointers() {
+  const captured = [...pointers.keys()];
+  pointers.clear(); gesture = null;
+  for (const id of captured) if (overlay.hasPointerCapture(id)) overlay.releasePointerCapture(id);
+}
 function pinchState() {
   const [a, b] = [...pointers.values()];
   return { dist: Math.hypot(a.x - b.x, a.y - b.y), angle: Math.atan2(b.y - a.y, b.x - a.x), x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
 }
 overlay.addEventListener("pointerdown", (event) => {
-  if (!mission) return;
+  if (!battlefieldActive()) return;
+  const intent = pointerIntent(event);
+  if (!intent) return;
+  if (pointers.has(event.pointerId)) { if (gesture) gesture.moved = true; return; }
   overlay.setPointerCapture(event.pointerId);
   pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
   if (pointers.size === 1) {
-    gesture = { x: event.clientX, y: event.clientY, lastX: event.clientX, lastY: event.clientY, moved: false, rotate: event.button === 2 || event.altKey || event.ctrlKey, shift: event.shiftKey || event.metaKey };
-  } else if (pointers.size === 2 && gesture) {
+    gesture = { ...intent, x: event.clientX, y: event.clientY, lastX: event.clientX, lastY: event.clientY,
+      moved: event.buttons !== undefined && event.buttons !== intent.buttons };
+  } else if (gesture) {
     gesture.moved = true;
     gesture.pinch = pinchState();
   }
 });
 overlay.addEventListener("pointermove", (event) => {
-  if (!mission || !pointers.has(event.pointerId)) return;
+  if (!pointers.has(event.pointerId)) return;
+  if (!battlefieldActive()) { resetPointers(); return; }
   pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+  // A mouse-button chord must never become a command when its final button is released.
+  if (gesture && event.buttons !== undefined && event.buttons !== gesture.buttons) gesture.moved = true;
   if (pointers.size >= 2 && gesture?.pinch) {
     const now = pinchState(), before = gesture.pinch;
-    mission.cam.distance *= before.dist / Math.max(10, now.dist);
+    mission.cam.distance *= Math.max(10, before.dist) / Math.max(10, now.dist);
     mission.cam.yaw -= now.angle - before.angle;
     pan(now.x - before.x, now.y - before.y);
     gesture.pinch = now;
@@ -408,7 +427,7 @@ overlay.addEventListener("pointermove", (event) => {
   }
   if (!gesture) return;
   const dx = event.clientX - gesture.lastX, dy = event.clientY - gesture.lastY;
-  if (Math.hypot(event.clientX - gesture.x, event.clientY - gesture.y) > 8) gesture.moved = true;
+  if (exceedsTapSlop(gesture, event)) gesture.moved = true;
   if (gesture.moved) {
     if (gesture.rotate) { mission.cam.yaw -= dx * 0.006; mission.cam.pitch += dy * 0.004; clampCamera(); } else pan(dx, dy);
   }
@@ -416,17 +435,26 @@ overlay.addEventListener("pointermove", (event) => {
 });
 const endPointer = (event) => {
   if (!pointers.has(event.pointerId)) return;
+  if (event.type !== "pointerup" || !battlefieldActive()) { resetPointers(); return; }
   pointers.delete(event.pointerId);
+  const finished = gesture;
   if (pointers.size === 0) {
-    if (gesture && !gesture.moved && event.type === "pointerup") tap(event.clientX, event.clientY, gesture.shift);
     gesture = null;
-  } else if (gesture) gesture.pinch = null;
+    if (finished && !finished.moved && !exceedsTapSlop(finished, event) && finished.action)
+      tap(event.clientX, event.clientY, finished.additive, finished.action);
+  } else if (gesture) {
+    gesture.moved = true;
+    gesture.pinch = pointers.size >= 2 ? pinchState() : null;
+    const remaining = pointers.values().next().value;
+    gesture.lastX = remaining.x; gesture.lastY = remaining.y;
+  }
 };
 overlay.addEventListener("pointerup", endPointer);
 overlay.addEventListener("pointercancel", endPointer);
+overlay.addEventListener("lostpointercapture", (event) => { if (pointers.has(event.pointerId)) resetPointers(); });
 overlay.addEventListener("contextmenu", (event) => event.preventDefault());
 overlay.addEventListener("wheel", (event) => {
-  if (!mission) return;
+  if (!battlefieldActive()) return;
   event.preventDefault();
   mission.cam.distance *= Math.exp(event.deltaY * 0.0012);
   clampCamera();
@@ -451,10 +479,11 @@ function unitAtScreen(x, y, filter, reach = 24) {
   return best;
 }
 
-function tap(clientX, clientY, additive) {
+function tap(clientX, clientY, additive, action = "smart") {
   const b = mission.battle;
   const { x, y, width, height } = screenPoint(clientX, clientY);
   if (mission.placing) {
+    if (action === "order") { cancelPlacement(); return; }
     const ground = scene.pickGround(x / width * 2 - 1, -(y / height) * 2 + 1);
     if (!ground) return;
     if (!dropZoneAt(b, ground.x, ground.z)) { toast("Pods can only land inside a zone you hold (cyan ring).", "warn"); return; }
@@ -462,13 +491,18 @@ function tap(clientX, clientY, additive) {
     updateDropPreview();
     return;
   }
-  const drone = unitAtScreen(x, y, isDrone);
+  const drone = action === "order" ? null : unitAtScreen(x, y, isDrone);
   if (drone) {
+    if (action === "select" && !additive && mission.selected.size === 1 && mission.selected.has(drone.squad)) return;
     selectSquad(drone.squad, additive);
     return;
   }
+  if (action === "select") {
+    if (!additive) { mission.selected.clear(); updateSquadBar(); }
+    return;
+  }
   if (!mission.selected.size) {
-    toast("Select a squad first: tap a squad card below or one of your drones.", "warn");
+    toast("Select a squad first: click or tap a squad card below or one of your drones.", "warn");
     return;
   }
   const enemy = unitAtScreen(x, y, u => u.alive && u.side === "native", 22);
@@ -526,7 +560,7 @@ function updateDropPreview() {
   const point = mission.placing ? mission.dropPoint : !$("drop-panel").hidden ? b.zones.find(z => z.kind === "beachhead") : null;
   mission.dropPreview = point ? checkDrop(b, { x: point.x, z: point.z, payload: mission.payload }) : null;
   $("placement-launch").disabled = !mission.placing || !mission.dropPreview?.ok;
-  $("placement-text").textContent = !point ? "Tap a held zone to preview its pod courts." : mission.dropPreview?.ok
+  $("placement-text").textContent = !point ? "Click or tap a held zone to preview courts. Right-click or Cancel to stop." : mission.dropPreview?.ok
     ? `${mission.dropPreview.landings.length} spaced pods ready. Launch here or tap another point.` : mission.dropPreview?.reason;
 }
 $("drop-button").addEventListener("click", () => ($("drop-panel").hidden ? openDropPanel() : closeDropPanel()));
@@ -590,13 +624,19 @@ $("drop-pick").addEventListener("click", () => {
   updateDropPreview();
 });
 $("placement-launch").addEventListener("click", () => { if (mission?.placing && mission.dropPoint) launch(mission.dropPoint.x, mission.dropPoint.z); });
-$("placement-cancel").addEventListener("click", () => { mission.placing = false; $("placement-hint").hidden = true; });
+function cancelPlacement() {
+  if (!mission) return;
+  mission.placing = false; mission.dropPoint = null; mission.dropPreview = null;
+  $("placement-launch").disabled = true;
+  $("placement-hint").hidden = true;
+}
+$("placement-cancel").addEventListener("click", cancelPlacement);
 
 // ---- Pause, speed, retreat ----
 function setCleanView(enabled) {
   if (!mission) return;
   mission.cleanView = enabled;
-  if (enabled) { mission.placing = false; $("placement-hint").hidden = true; closeDropPanel(); }
+  if (enabled) { cancelPlacement(); closeDropPanel(); }
   $("screen-mission").classList.toggle("clean-view", enabled);
   $("clean-view-button").textContent = enabled ? "Show HUD · V" : "Clean view · V";
   $("clean-view-button").setAttribute("aria-pressed", String(enabled));
@@ -626,6 +666,7 @@ function offerVictoryChoice() {
   const summary = battleSummary(mission.battle);
   $("victory-remaining").textContent = `${summary.held} of ${summary.total} zones held; ${summary.total - summary.held} remain. Leave now, or keep playing and use Leave for victory later.`;
   checkpointMission();
+  resetPointers();
   $("victory-dialog").showModal();
 }
 function keepCapturing() {
@@ -651,7 +692,7 @@ window.addEventListener("keydown", (event) => {
   const key = event.key.toLowerCase();
   if (key === "v" && !event.repeat) { setCleanView(!mission.cleanView); event.preventDefault(); return; }
   if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
-  if (key === "escape") { setCleanView(false); mission.placing = false; $("placement-hint").hidden = true; closeDropPanel(); return; }
+  if (key === "escape") { resetPointers(); setCleanView(false); cancelPlacement(); closeDropPanel(); return; }
   if (key === "b") { $("drop-panel").hidden ? openDropPanel() : closeDropPanel(); return; }
   if (key === "h") { if (mission.selected.size) orderHold(mission.battle, [...mission.selected]); return; }
   if (key === "0") { selectAll(); return; }
@@ -665,7 +706,8 @@ window.addEventListener("keydown", (event) => {
   if (key.startsWith("arrow")) event.preventDefault();
 });
 window.addEventListener("keyup", (event) => keys.delete(event.key.toLowerCase()));
-window.addEventListener("blur", () => keys.clear());
+window.addEventListener("blur", () => { keys.clear(); resetPointers(); });
+document.addEventListener("visibilitychange", () => { if (document.hidden) resetPointers(); });
 
 // ---- HUD ----
 function toast(text, tone = "info", ms = 3600) {
@@ -682,8 +724,8 @@ function coachText(b) {
   if (!b.practice) return "";
   if (b.stats.drops === 0) return "Press Drop wave, choose Scouts and Links, then land on the Hive beacon. Each pod carries up to 3 drones; the wave stays one squad.";
   if (!b.units.some(isDrone)) return "The pods are coming down under their parachutes. Drones release just above the ground; you can already select their squad and give an order.";
-  if (!mission.selected.size) return "Tap a squad card at the bottom (or one of your drones) to select it.";
-  if (b.stats.zonesCaptured === 0) return "Now tap inside a white beacon ring: the squad flies there and captures it. Drag to move the view, scroll or pinch to zoom, right-drag or Q/E to turn.";
+  if (!mission.selected.size) return "Left-click or touch-tap a squad card at the bottom (or one of your drones) to select it.";
+  if (b.stats.zonesCaptured === 0) return "Right-click (or touch-tap) inside a white beacon ring: the squad flies there and captures it. Drag to move the view, scroll or pinch to zoom, right-drag or Q/E to turn.";
   return "Hold 3 beacons to win. Optional: capture the Dragonfly landing site to unlock NASA's Dragonfly as a drone.";
 }
 
@@ -944,6 +986,7 @@ function finishMission() {
   $("debrief-stats").innerHTML = rows.map(([k, v]) => `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd>`).join("");
   $("debrief-notes").innerHTML = [...applied.notes, ...earned.map(a => `Achievement: ${a.name}`)].map(n => `<li>${escapeHtml(n)}</li>`).join("");
   $("debrief-retry").textContent = result.outcome === "won" ? "Play again" : "Try again";
+  resetPointers();
   $("debrief").showModal();
 }
 
