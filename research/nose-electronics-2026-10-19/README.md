@@ -81,6 +81,14 @@ Seven focused tests cover envelopes, unmodeled internals, stable focus/anchors, 
 rebuilt-neighbor clearances and unchanged completion count. Full suite: 321 pass. Browser:
 30 selector/view/viewport checks passed; eight raw-angle pixel/framing checks passed.
 
+Published model commit **9e647ba**, main + isolated feature, recovery tag pushed. GitHub
+Pages run [39301658664](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/39301658664)
+succeeded. Public build verified in Edge: 1440/390/360 px, stamped module, five selectors,
+source links, cover hide/restore between Internal/Thermal, clean Pilot return, no page or
+network errors/overflow. `live-9e647ba-mimu-checks.json` and three screenshots record the
+actual deployed build, distinct from local renders. Subsequent documentation-only commit
+records this result without changing the model.
+
 ## Next Handoff
 
 Keep #05 open. Find identified current Ocellus MEB/FEB photos; SQRLi review/digitizer leads

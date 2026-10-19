@@ -62,7 +62,10 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Checks:** 321 tests pass (seven focused new tests); 30 Edge/WebGL selector checks across
   Internal/Thermal and 1440/390/360 px. Four angles per layer nonblank/framed, no page errors
   or horizontal overflow. Envelopes, independent masks/anchors, rebuilt-neighbor clearance,
-  omitted internals and unchanged completion count tested. Release/live result recorded after deploy.
+  omitted internals and unchanged completion count tested. Published model commit `9e647ba`;
+  Pages run39301658664 succeeded. Public Edge checks passed at 1440/390/360 px, stamped module,
+  five selectors, source links, cover masks/restore across both views and Pilot return; no
+  page/network errors or overflow. Dated live JSON/screenshots saved in the part research folder.
 - **Next:** Find current Ocellus hardware photos; SQRLi/SpaceCube leads do not establish
   identical housings/boards. Seek mission-specific MIMU variant/dimensions/install. Already
   published game work preserved; no game source edits. Other open parts #03/#09/#20/#21.

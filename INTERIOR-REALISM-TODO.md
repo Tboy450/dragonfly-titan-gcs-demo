@@ -9,6 +9,15 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Resume Here: October 19 Part-05 MIMU Family Subpass
 
+**Release checkpoint:** model/source/archive commit `9e647ba` pushed to main and the
+isolated feature branch; recovery tag on cf4c866 pushed. Pages run **39301658664 succeeded**.
+Public build9e647ba verified in real Edge at 1440/390/360 px: stamped module, source links,
+five selectors, cover hide/restore across Internal/Thermal and Pilot return all pass; no
+page/network errors or horizontal overflow. Full local suite **321 pass**; 30 local selector
+checks plus eight raw-angle pixel/framing checks pass. Dated live JSON/screenshots saved in
+`research/nose-electronics-2026-10-19/`. A documentation-only follow-up records this result;
+do not mistake the historical pre-MIMU notes below for current missing work.
+
 **Latest:** after deeper real-photo/reuse research, owner requested continuing part 05.
 Honeywell's current June 2026 datasheet and original hardware product image are inspected
 and archived; NASA/APL Uranus Appendix C pp.184-185 explicitly associates MIMU with Dragonfly.
