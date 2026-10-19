@@ -1,0 +1,281 @@
+{
+  "status": "passed",
+  "url": "http://127.0.0.1:4195/",
+  "errors": [],
+  "checks": [
+    {
+      "id": "ocellus-meb",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "id": "ocellus-meb",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "id": "ocellus-meb",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "id": "ocellus-meb",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "id": "ocellus-meb",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "id": "ocellus-meb",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "id": "ocellus-feb",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "id": "ocellus-feb",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "id": "ocellus-feb",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "id": "ocellus-feb",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "id": "ocellus-feb",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "id": "ocellus-feb",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "id": "imu-a",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "id": "imu-a",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "id": "imu-a",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "id": "imu-a",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "id": "imu-a",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "id": "imu-a",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "id": "imu-b",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "id": "imu-b",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "id": "imu-b",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "id": "imu-b",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "id": "imu-b",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "id": "imu-b",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "id": "imu-estimated-support",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "id": "imu-estimated-support",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "id": "imu-estimated-support",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "id": "imu-estimated-support",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "id": "imu-estimated-support",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "id": "imu-estimated-support",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "layer": "internal",
+      "azimuth": 0,
+      "width": 1440
+    },
+    {
+      "layer": "internal",
+      "azimuth": 1.5,
+      "width": 1440
+    },
+    {
+      "layer": "internal",
+      "azimuth": 3.1,
+      "width": 1440
+    },
+    {
+      "layer": "internal",
+      "azimuth": 4.7,
+      "width": 1440
+    },
+    {
+      "layer": "thermal",
+      "azimuth": 0,
+      "width": 1440
+    },
+    {
+      "layer": "thermal",
+      "azimuth": 1.5,
+      "width": 1440
+    },
+    {
+      "layer": "thermal",
+      "azimuth": 3.1,
+      "width": 1440
+    },
+    {
+      "layer": "thermal",
+      "azimuth": 4.7,
+      "width": 1440
+    }
+  ],
+  "samples": [
+    {
+      "name": "ocellus-meb-closed.png",
+      "pixels": {
+        "count": 120629,
+        "minX": 328,
+        "maxX": 789,
+        "minY": 141,
+        "maxY": 539
+      }
+    },
+    {
+      "name": "ocellus-meb-cover-hidden.png",
+      "pixels": {
+        "count": 119054,
+        "minX": 328,
+        "maxX": 789,
+        "minY": 141,
+        "maxY": 536
+      }
+    },
+    {
+      "name": "ocellus-feb-closed.png",
+      "pixels": {
+        "count": 104741,
+        "minX": 300,
+        "maxX": 807,
+        "minY": 122,
+        "maxY": 549
+      }
+    },
+    {
+      "name": "ocellus-feb-cover-hidden.png",
+      "pixels": {
+        "count": 110179,
+        "minX": 300,
+        "maxX": 807,
+        "minY": 122,
+        "maxY": 549
+      }
+    },
+    {
+      "name": "imu-a-closed.png",
+      "pixels": {
+        "count": 128176,
+        "minX": 364,
+        "maxX": 735,
+        "minY": 146,
+        "maxY": 550
+      }
+    },
+    {
+      "name": "imu-a-cover-hidden.png",
+      "pixels": {
+        "count": 105904,
+        "minX": 370,
+        "maxX": 729,
+        "minY": 146,
+        "maxY": 487
+      }
+    },
+    {
+      "name": "imu-b-closed.png",
+      "pixels": {
+        "count": 128033,
+        "minX": 364,
+        "maxX": 735,
+        "minY": 146,
+        "maxY": 550
+      }
+    },
+    {
+      "name": "imu-b-cover-hidden.png",
+      "pixels": {
+        "count": 109516,
+        "minX": 370,
+        "maxX": 729,
+        "minY": 146,
+        "maxY": 531
+      }
+    }
+  ],
+  "coverHideRestore": true,
+  "pilotReturn": true
+}

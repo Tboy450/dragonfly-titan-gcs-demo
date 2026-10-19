@@ -81,7 +81,7 @@ test("Nose panel clears individually rebuilt hardware without moving it",()=>{
 
 test("Provisional panel does not increment the completed-part count",()=>{
   const html=readFileSync(new URL("../dist/index.html",import.meta.url),"utf8");
-  assert.match(html,/19 of the 24 interior parts/);
+  assert.doesNotMatch(html,/data-assumption="nose-bulkhead"/);
   assert.match(html,/data-provisional="nose-bulkhead"/);
   const todo=readFileSync(new URL("../INTERIOR-REALISM-TODO.md",import.meta.url),"utf8");
   assert.match(todo,/- \[ \] \*\*03 Nose bulkhead/);

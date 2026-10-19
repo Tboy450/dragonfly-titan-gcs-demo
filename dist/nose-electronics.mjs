@@ -1,20 +1,21 @@
 import * as THREE from "./vendor/three/three.module.min.js";
 
-// Part 05: Ocellus dimension study + photo-referenced Honeywell MIMU FAMILY approximation.
+// Part 05: owner-approved Ocellus outer-structure and Honeywell MIMU FAMILY approximations.
 // The exact Dragonfly MIMU variant/installation is not established. Amzajerdian,
 // NASA MSS 2023, page 6: Ocellus MEB 24.19 x 18.54 x 12.04 cm; FEB 23.4 x 23.2 x
 // 12.7 cm [PUB, 2023 design]. Native axes below: x=first, z=second, y=third dimension.
-// [EST] installed poses, neutral display finish, wall/lid/feet construction and fasteners.
-// Do not copy the larger Kodiak heritage hardware, CAD internal colors or boards/optics.
+// [EST] installed poses, finish and structural proportions. Real SQRLi/Kodiak hardware
+// informs construction; identified Ocellus CAD is arrangement/dimension support only.
+// No exact flight-hardware claim, copied card stacks, detailed optics or inferred harness.
 const unit = (name, label, dimensions, position, yaw) => Object.freeze({
   name, label, dimensions: Object.freeze(dimensions), position: Object.freeze(position), yaw,
 });
 export const noseElectronicsAsset = Object.freeze({
-  revision: "nose-electronics-mimu-family-2026-10-19",
+  revision: "nose-electronics-ocellus-outer-estimate-2026-10-19",
   floorY: -0.284,
   units: Object.freeze([
-    unit("ocellus-meb", "Ocellus MEB (2023 design envelope)", [0.2419,0.1204,0.1854],[-0.207,-0.284,-1.39],Math.PI/2),
-    unit("ocellus-feb", "Ocellus FEB (2023 design envelope)", [0.234,0.127,0.232],[0.205,-0.284,-1.393],0),
+    unit("ocellus-meb", "Ocellus MEB (outer-structure estimate)", [0.2419,0.1204,0.1854],[-0.207,-0.284,-1.39],Math.PI/2),
+    unit("ocellus-feb", "Ocellus FEB (outer-structure estimate)", [0.234,0.127,0.232],[0.205,-0.284,-1.393],0),
   ]),
   // [PUB] Honeywell June 2026 family upper envelope, NOT exact flight dimensions.
   // [EST] exterior proportions from supplier hardware imagery; all installation coordinates.
@@ -30,8 +31,9 @@ export function buildNoseElectronics({parent,mesh}) {
   assembly.name="nose-navigation-assemblies";parent.add(assembly);
   const anchor=new THREE.Vector3(-0.207,A.floorY+A.units[0].dimensions[1],-1.39);
   Object.assign(parent.userData,{
-    assetRevision:A.revision,partialRebuild:true,dimensionConfidence:"PUB-design+PUB-family-limit+EST-installation",
-    appearanceEvidence:"Ocellus not hardware-photo matched; Honeywell MIMU family photo, exact flight variant unconfirmed",
+    assetRevision:A.revision,partialRebuild:false,approximation:true,flightConfigurationConfirmed:false,
+    dimensionConfidence:"PUB-design+PUB-family-limit+EST-installation",
+    appearanceEvidence:"Ocellus approved outer-structure estimate, not hardware-photo matched; MIMU family photo, exact flight variant unconfirmed",
     labelAnchor:anchor,
   });
   const silver=new THREE.MeshStandardMaterial({color:0xb2bdc2,metalness:0.5,roughness:0.46});
@@ -43,10 +45,19 @@ export function buildNoseElectronics({parent,mesh}) {
   const box=(name,size,p,material,target)=>{
     const o=mesh(new THREE.BoxGeometry(...size),material,p,target);o.name=name;return o;
   };
+  const plate=(name,w,d,t,cut,p,material,target)=>{
+    const shape=new THREE.Shape();
+    const corners=[[-w/2+cut,-d/2],[w/2-cut,-d/2],[w/2,-d/2+cut],[w/2,d/2-cut],
+      [w/2-cut,d/2],[-w/2+cut,d/2],[-w/2,d/2-cut],[-w/2,-d/2+cut]];
+    corners.forEach(([x,z],i)=>i?shape.lineTo(x,z):shape.moveTo(x,z));shape.closePath();
+    const geometry=new THREE.ExtrudeGeometry(shape,{depth:t,bevelEnabled:false});geometry.rotateX(-Math.PI/2);
+    const o=mesh(geometry,material,p,target);o.name=name;return o;
+  };
   const units=A.units.map(spec=>{
     const group=new THREE.Group();group.name=spec.name;group.position.fromArray(spec.position);
     group.rotation.y=spec.yaw;group.userData.inspectionLabel=spec.label;
-    group.userData.dimensionConfidence="PUB-2023-design";
+    Object.assign(group.userData,{dimensionConfidence:"PUB-2023-design+EST-structure",
+      approximation:true,flightConfigurationConfirmed:false,unmodeledInternals:true});
     const [W,H,D]=spec.dimensions,wall=0.002,base=0.006;
     group.userData.labelAnchor=new THREE.Vector3(0,H,0).applyEuler(group.rotation).add(group.position);
     assembly.add(group);
@@ -54,19 +65,67 @@ export function buildNoseElectronics({parent,mesh}) {
       const g=new THREE.Group();g.name=`${spec.name}-${name}`;g.userData.inspectionLayer=category;group.add(g);return g;
     };
     const casing=layer("casing","equipment-casings"),cover=layer("cover","equipment-covers"),mounts=layer("mounts","mounts");
-    // Keep the complete representation INSIDE the published design envelope, including
-    // estimated feet and screw heads. No fabricated connector pinouts or internal devices.
+    // All estimated structure, caps and mounts stay inside the historical envelope.
     const w=W-0.014,d=D-0.014;
-    box(`${spec.name}-base`,[w,wall,d],[0,base+wall/2,0],silver,casing);
-    for(const s of [-1,1]){
-      box(`${spec.name}-side`,[wall,H-base-2*wall,d],[s*(w-wall)/2,(H+base)/2-wall/2,0],silver,casing);
-      box(`${spec.name}-end`,[w-2*wall,H-base-2*wall,wall],[0,(H+base)/2-wall/2,s*(d-wall)/2],silver,casing);
+    plate(`${spec.name}-base`,w,d,.004,.012,[0,base,0],silver,casing);
+    const fastener=(name,x,y,z,target)=>{
+      const o=mesh(new THREE.CylinderGeometry(.0027,.0027,.002,12),steel,[x,y,z],target);o.name=name;
+    };
+    if(spec.name==="ocellus-meb"){
+      for(const s of [-1,1]){
+        box(`${spec.name}-side`,[wall,H-base-.008,d-.018],[s*(w/2-.005),(H+base)/2-.002,0],silver,casing);
+        box(`${spec.name}-end`,[w-2*wall,H-base-.008,wall],[0,(H+base)/2-.002,s*(d-wall)/2],silver,casing);
+        box(`${spec.name}-lid-rail`,[.008,.005,d-.014],[s*(w-.012)/2,H-.0065,0],steel,casing);
+        for(let i=0;i<5;i++){
+          box(`${spec.name}-external-stiffener`,[.006,H-base-.019,.006],
+            [s*(w/2-.003),(H+base)/2-.003,(i-2)*(d-.035)/4],steel,casing);
+        }
+        for(const z of [-1,1])box(`${spec.name}-corner-post`,[.008,H-base-.008,.012],
+          [s*(w/2-.004),(H+base)/2-.002,z*(d/2-.006)],silver,casing);
+      }
+      plate(`${spec.name}-lid`,w,d,wall,.012,[0,H-.003,0],lidMaterial,cover);
+      for(const x of [-1,1])for(const z of [-1,1]){
+        fastener(`${spec.name}-cover-fastener`,x*(w/2-.010),H-.001,z*(d/2-.014),cover);
+      }
+    }else{
+      // Outer receiver/collimator housings only, not lenses, MEMS mirrors or laser internals.
+      // Neutral estimated finishes avoid treating CAD component colors as real coatings.
+      for(const s of [-1,1]){
+        box(`${spec.name}-base-rail`,[w-.028,.005,.006],[0,.012,s*(d/2-.007)],steel,casing);
+      }
+      box(`${spec.name}-rear-return`,[w-.024,H-.012,wall],[0,(H+.012)/2,d/2-.005],silver,casing);
+      box(`${spec.name}-side-return`,[wall,H-.012,d*.48],[-w/2+.005,(H+.012)/2,d*.20],silver,casing);
+      const receiver=new THREE.Group();receiver.name=`${spec.name}-receiver-housing`;receiver.position.set(.046,.014,-.020);casing.add(receiver);
+      const barrel=mesh(new THREE.CylinderGeometry(.043,.043,.081,48,1,true),silver,[0,.045,0],receiver);
+      barrel.name=`${spec.name}-receiver-barrel`;barrel.material=silver.clone();barrel.material.side=THREE.DoubleSide;
+      for(const y of [.006,.078]){
+        const ring=mesh(new THREE.TorusGeometry(.044,.0025,8,48),steel,[0,y,0],receiver);ring.rotation.x=Math.PI/2;
+        ring.name=`${spec.name}-receiver-flange`;
+      }
+      const receiverCap=mesh(new THREE.CylinderGeometry(.043,.043,.003,48),lidMaterial,[.046,.101,-.020],cover);
+      receiverCap.name=`${spec.name}-receiver-cover`;
+      for(let i=0;i<6;i++){
+        const a=i*Math.PI/3;fastener(`${spec.name}-receiver-fastener`,.046+Math.sin(a)*.036,.1035,-.020+Math.cos(a)*.036,cover);
+      }
+      const collimator=new THREE.Group();collimator.name=`${spec.name}-collimator-housing`;collimator.position.set(-.044,.060,-.032);
+      collimator.rotation.z=-.30;casing.add(collimator);
+      const cw=.058,ch=.070,cd=.062;
+      for(const s of [-1,1]){
+        box(`${spec.name}-collimator-wall`,[wall,ch,cd],[s*(cw-wall)/2,0,0],silver,collimator);
+        box(`${spec.name}-collimator-end`,[cw-2*wall,ch,wall],[0,0,s*(cd-wall)/2],silver,collimator);
+      }
+      const collimatorCap=new THREE.Group();collimatorCap.name=`${spec.name}-collimator-cover`;
+      collimatorCap.position.copy(collimator.position);collimatorCap.rotation.copy(collimator.rotation);cover.add(collimatorCap);
+      box(`${spec.name}-collimator-cap`,[cw,.003,cd],[0,ch/2+.0015,0],lidMaterial,collimatorCap);
+      for(const x of [-.022,.022]){
+        box(`${spec.name}-collimator-foot`,[.012,.016,.064],[-.044+x,.021,-.032],steel,casing);
+      }
+      for(const x of [-1,1])for(const z of [-1,1]){
+        fastener(`${spec.name}-base-fastener`,x*(w/2-.014),.011,z*(d/2-.014),casing);
+      }
     }
-    box(`${spec.name}-lid`,[w,wall,d],[0,H-wall*1.5,0],lidMaterial,cover);
     for(const x of [-1,1])for(const z of [-1,1]){
       box(`${spec.name}-mount-foot`,[0.022,base,0.027],[x*(W-0.022)/2,base/2,z*(D-0.027)/2],silver,mounts);
-      const head=mesh(new THREE.CylinderGeometry(0.0027,0.0027,wall,8),steel,
-        [x*(w/2-0.007),H-wall/2,z*(d/2-0.007)],cover);head.name=`${spec.name}-cover-fastener`;
     }
     return {spec,group,casing,cover,mounts};
   });

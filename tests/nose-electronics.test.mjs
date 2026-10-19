@@ -36,7 +36,8 @@ const pieces=group=>{
 };
 
 test("Ocellus boxes retain the published 2023 design dimensions, including estimated mounts",()=>{
- const {parent,units}=fixture();assert.equal(parent.userData.partialRebuild,true);
+ const {parent,units}=fixture();assert.equal(parent.userData.partialRebuild,false);
+ assert.equal(parent.userData.approximation,true);assert.equal(parent.userData.flightConfigurationConfirmed,false);
  assert.match(parent.userData.dimensionConfidence,/PUB-design/);
  assert.match(parent.userData.appearanceEvidence,/not hardware-photo matched/);
  assert.deepEqual(A.units.map(u=>u.dimensions),[[.2419,.1204,.1854],[.234,.127,.232]]);
@@ -80,13 +81,35 @@ test("Part 05 exposes independent MEB/FEB/IMU focus, masks and stable anchors",(
  assert.equal(support.visible,false);for(const g of imus)assert.equal(g.getObjectByName(`${g.name}-interfaces`).visible,false);
 });
 
-test("Dimension-study enclosures do not invent optics, circuit boards, pinouts or harnesses",()=>{
+test("Approved outer structures omit hidden optics, circuit boards, pinouts and harnesses",()=>{
  const {units}=fixture();
  for(const u of units){
   const names=pieces(u.group).map(([n])=>n);
   assert.ok(!names.some(n=>/laser|mirror|pcb|circuit|connector|pinout|cable/.test(n)));
-  assert.equal(u.cover.getObjectByName(`${u.group.name}-lid`).geometry.parameters.height,.002);
+  assert.equal(u.group.userData.unmodeledInternals,true);
+  assert.equal(u.group.userData.flightConfigurationConfirmed,false);
+  assert.match(u.group.userData.inspectionLabel,/estimate/);
  }
+ const meb=units[0],feb=units[1];
+ assert.equal(meb.cover.getObjectByName("ocellus-meb-lid").geometry.parameters.options.depth,.002);
+ assert.equal(pieces(meb.casing).filter(([n])=>/external-stiffener$/.test(n)).length,10);
+ const side=meb.casing.children.find(o=>o.name==="ocellus-meb-side"&&o.position.x>0);
+ for(const rib of meb.casing.children.filter(o=>/external-stiffener$/.test(o.name))){
+  const inner=Math.abs(rib.position.x)-rib.geometry.parameters.width/2,outer=Math.abs(rib.position.x)+rib.geometry.parameters.width/2;
+  const face=side.position.x+side.geometry.parameters.width/2;
+  assert.ok(inner<face&&outer>face,"external ribs attach to the case wall without floating or being buried");
+ }
+ assert.ok(feb.casing.getObjectByName("ocellus-feb-receiver-barrel").geometry.parameters.openEnded);
+ assert.ok(feb.casing.getObjectByName("ocellus-feb-collimator-housing"));
+ assert.ok(feb.cover.getObjectByName("ocellus-feb-receiver-cover"));
+ assert.ok(feb.cover.getObjectByName("ocellus-feb-collimator-cover"));
+});
+
+test("Ocellus replacement preserves the published MIMU geometry and all installed poses",()=>{
+ const current=readFileSync(new URL("../dist/nose-electronics.mjs",import.meta.url),"utf8");
+ const prior=readFileSync(new URL("../archive/ocellus-outer-structure-2026-10-19/original/nose-electronics.mjs",import.meta.url),"utf8");
+ const tail=s=>s.slice(s.indexOf("  const imus=A.imus.map"));assert.equal(tail(current),tail(prior));
+ assert.deepEqual(A.units.map(u=>[...u.position,u.yaw]),[[-.207,-.284,-1.39,Math.PI/2],[.205,-.284,-1.393,0]]);
 });
 
 test("All four navigation units clear each other and rebuilt neighbors at full source envelope scale",()=>{
@@ -114,8 +137,9 @@ test("MIMU exterior does not fabricate its unphotographed internals or flight ha
  }
 });
 
-test("Part 05 remains unchecked with explicit provisional app assumptions",()=>{
+test("Part 05 initial pass is counted as an explicit approximation, not verified flight hardware",()=>{
  const html=readFileSync(new URL("../dist/index.html",import.meta.url),"utf8"),todo=readFileSync(new URL("../INTERIOR-REALISM-TODO.md",import.meta.url),"utf8");
- assert.match(html,/19 of the 24 interior parts/);assert.match(html,/data-provisional="nose-electronics"/);
- assert.match(todo,/- \[ \] \*\*05 IMU\/lidar electronics/);
+ assert.match(html,/20 of the 24 interior parts/);assert.match(html,/data-assumption="nose-electronics"/);
+ assert.match(todo,/- \[x\] \*\*Codex:\*\* \*\*05 IMU\/lidar electronics/);
+ assert.match(html,/Ocellus outer-structure approximation/);
 });

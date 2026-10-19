@@ -1,5 +1,10 @@
 # Part 05: Cross-Project Hardware Lineage
 
+**Later approved implementation:** [outer-structure asset and current samples](../ocellus-outer-structure-2026-10-19/README.md).
+Owner replied "same as last 2 parts" to the explicit approximation/wait choice. Initial05
+is now counted as a labeled estimate (20/24), not photo verification. The research-only
+checkpoint below and its count19/unchanged sample are historical; evidence limits still apply.
+
 Codex (OpenAI), October 19, 2026. Owner requested a deeper search of related projects,
 followed by searching Dragonfly/Ocellus in reference to those components. This supersedes
 the preceding handoff's suggestion to wait for an approximation choice. No choice is

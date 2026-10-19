@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [ocellus-outer-structure-2026-10-19](ocellus-outer-structure-2026-10-19/README.md) | Exact prior Ocellus box module/test/UI/HTML/builder, historical same-geometry box renders and two rejected stiffener drafts before approved labeled outer-structure estimate; existing MIMUs/poses unchanged | 2026-10-19 | `archive/ocellus-outer-structure-2026-10-19` on f28fe8b |
 | [swarmfall-objective-rules-2026-10-19](swarmfall-objective-rules-2026-10-19/README.md) | Prior ambiguous tower/jammer wording and “N left” counter; original runtime/coverage and dated historical picture retained | 2026-10-19 | `archive/swarmfall-objective-rules-2026-10-19` |
 | [swarmfall-command-resume-2026-10-19](swarmfall-command-resume-2026-10-19/README.md) | Resume before selected squads/payload/panel metadata; exact runtime/UI test and dated historical picture retained | 2026-10-19 | `archive/swarmfall-command-resume-2026-10-19` |
 | [swarmfall-save-recovery-2026-10-19](swarmfall-save-recovery-2026-10-19/README.md) | Title/save/reset behavior before visible recovery, exact-original browser backups and JSON export; source and dated historical picture retained | 2026-10-19 | `archive/swarmfall-save-recovery-2026-10-19` |

@@ -397,7 +397,7 @@ export function buildResearchModel(kit) {
   buildNoseBulkhead({ parent: buildTarget, mesh });
   interiorPart("nose-cameras-inside", "nose-cameras", "Nose cameras: Forward MAC, Forward WAC, two Side Cameras, two NavCams (no active airflow)", "DragonCam paper (Clark et al. 2026) figs. 1-3; ICES-2023 p7; positions and pointing estimated", 0x3d4a52);
   buildNoseCameras({ parent: buildTarget, mesh });
-  interiorPart("nose-electronics", "nose-electronics", "Ocellus design envelopes / Honeywell MIMU family approximations", "NASA MSS2023 p6; Honeywell June2026 hardware/datasheet; NASA/APL Uranus appendix pp184-185. Exact flight variant/install unconfirmed", 0x5f8fa3);
+  interiorPart("nose-electronics", "nose-electronics", "Ocellus outer-structure / MIMU family approximations", "NASA MSS2023 p6; Optics2023 p13; related SQRLi hardware; Honeywell June2026; NASA/APL Uranus pp184-185. Estimated structure, exact flight variant/install unconfirmed", 0x5f8fa3);
   buildNoseElectronics({ parent: buildTarget, mesh });
   interiorPart("sample-carousel", "cold-attic", "Cold attic: DrACO sample carousel", "NASA SVS 15003; SciTech 2024 figs. 1-2; 0.36 m drum and placement estimated", 0x7fb3c9);
   const carousel = buildSampleCarousel({ parent: buildTarget, mesh });

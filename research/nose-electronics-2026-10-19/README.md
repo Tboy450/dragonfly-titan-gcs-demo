@@ -1,5 +1,10 @@
 # Part 05: MIMU Family Asset and Ocellus Dimension Study
 
+**Superseding approved pass:** [Ocellus outer-structure approximation](../ocellus-outer-structure-2026-10-19/README.md).
+Owner requested the same approximate approach as the last two parts. Initial05 is now
+checked/count20, not exact flight verification. MIMU geometry/poses below unchanged; this
+folder's box/unchecked images and text remain historical. Do not repeat the old question.
+
 **Newest owner-directed follow-up:** [cross-project hardware lineage and comparison](../ocellus-cross-project-2026-10-19/README.md).
 Real SpaceCube/GSFC connector references and direct Ocellus family links inspected/saved;
 no processor-generation, complete flight-box or installed routing claim. Geometry below

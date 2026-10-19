@@ -7,6 +7,9 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 ## Shared sources (saved pages)
 
 **Part-05 additional research:**
+The [latest approved outer-structure pass](ocellus-outer-structure-2026-10-19/README.md)
+completes the initial pass as an explicit approximation, not flight photo verification.
+Earlier unchecked/dimension-only notes below are historical. Exact source imagery retained.
 [extended real-photo and cross-project reuse research](nose-electronics-2026-10-19/PHOTO-AND-REUSE-SEARCH.md).
 Honeywell product image/current June 2026 datasheet and NASA/APL Uranus pp.184-185 now saved
 and visually inspected. MIMU family asset built, exact flight variant/install unverified.
@@ -20,6 +23,7 @@ scanner vendor, installed routing and completed housing remain unresolved; no mo
 
 | Folder | Source | Pages saved | Used by |
 |---|---|---|---|
+| [`sources/ti-lmp7704-evaluation`](sources/ti-lmp7704-evaluation/README.md) | Texas Instruments LMP7704-SP datasheet, Sept2026 package addendum | Original PDF p26 | 05 source audit only: matches EVAL ONLY IC marking in related SQRLi image; NOT a flight PCB model |
 | [`sources/ocellus-cross-project-lineage`](sources/ocellus-cross-project-lineage/README.md) | NASA IGARSS2020 / SpaceCube2019 / GSFC fiber optics / NEPP2024 / Ocellus technology sheet; DIAMOND and Optotune | 9 original page images + 1 original supplier JPG, all visually inspected | 05 research only: real family references vs identified CAD and unverified leads; no exact Ocellus internal-layout claim |
 | [`sources/nasa-sqrli2024-review`](sources/nasa-sqrli2024-review/README.md) | Nathaniel Gill, NASA/GSFC GCD annual review, NTRS20240010518 | Complete original slides1/4 and embedded hardware/CAD images | 05 reuse evidence; different FEB, no Ocellus flight-photo substitution |
 | [`sources/nasa-optics2023-ocellus`](sources/nasa-optics2023-ocellus/README.md) | Georgieva, NASA Mirror Technology Days2023, NTRS20230014147 | Original page13 | 05 explicitly identified Ocellus FEB packaging CAD, NOT a hardware photo |
@@ -53,7 +57,7 @@ scanner vendor, installed routing and completed housing remain unresolved; no mo
 
 | Part | Photos (saved) | Figures and patents (saved) | Links only (not saved) | Notes |
 |---|---|---|---|---|
-| **05 Navigation electronics (partial)** | [Research/comparisons](nose-electronics-2026-10-19/README.md): Honeywell original MIMU hardware image; NASA/W. Hrybyk Kodiak heritage, NOT Ocellus | Honeywell exploded CAD; NASA MSS2023 p6 Ocellus CAD; APL navigation p2; NASA/APL Uranus pp184-185 | NASA Ocellus overview; supplier interview; uninspected SQRLi leads | MIMU family approximation, exact flight variant/install unknown; Ocellus dimension-only. All new units clear rebuilt neighbors. #05 unchecked |
+| **05 Navigation electronics (approved approximation)** | [Current real/CAD/model comparison](ocellus-outer-structure-2026-10-19/README.md): related real SQRLi optics and NASA/W. Hrybyk Kodiak; unchanged Honeywell MIMU imagery | NASA MSS2023 p6 design envelopes; Optics2023 p13 packaging CAD; SQRLi2024 slides1/4; Honeywell CAD; Uranus pp184-185; TI evaluation marking p26 | NASA TechPort116315; DIAMOND supplier Ocellus statement | Codex. Initial pass complete as owner-approved outer-structure estimate, not flight photo match. No hidden boards/optical train/harness; MIMU family geometry/poses unchanged. Exact flight details remain follow-ups |
 | **03 Nose bulkhead (provisional)** | [`nose-bulkhead-2026-10-19/`](nose-bulkhead-2026-10-19/README.md): NASA/APL September harness integration and July suspended-structure photos (Ed Whitman); existing April fit check | ICES-2023 fig. 3, APL 2024 CAD frame (layout only, not photos) | NASA April primary-structure report, all original links in part README | Finish/joints only; full nose face unresolved. Dimensions, face, returns, mounts and fasteners [EST]; #03 stays unchecked |
 | **22 EFIELD / METHAN** | [`nose-sensors-2026-10-17/`](nose-sensors-2026-10-17/README.md): EFIELD engineering-model photo; [`methan-2026-10-18/`](methan-2026-10-18/README.md): approved design estimate and comparison, NOT a METHAN photo match | IPM pp. 184-187; CAPS 2024 slide 42 CAD, not hardware photography | [IPM proceedings](https://zenodo.org/records/17056361), [APL DraGMet](https://www.jhuapl.edu/destinations/instruments/dragmet) | Codex. EFIELD stalk/ball sizes [PUB]; METHAN cold-cell/warm-light-engine architecture [PUB]. All METHAN casing sizes, finish and installation [EST]; owner-approved approximation completes initial #22 pass, not photo verification. |
 | **16 Aft bulkhead** | [`aft-bulkhead-2026-10-15/`](aft-bulkhead-2026-10-15/README.md): full-resolution inverted vibration-test photo and Claude's evidence sheet; April fit-check original in `lander-structure-2026/` (NASA/Johns Hopkins APL/Ed Whitman) | TFAWS 2023 layout; APL 2024 rotating CAD already saved in `apl-spacecraft-models/` (orientation/layout only) | [NASA April fit check](https://science.nasa.gov/blogs/dragonfly/2026/04/23/nasas-dragonfly-rotorcraft-gets-decked-out-tested/), [APL July tests](https://www.jhuapl.edu/news/news-releases/260709-dragonfly-clears-key-tests-as-assembly-comes-together) | Real photos for appearance; fixture explicitly inverted; 25-degree angle, sizes, coating and gas interface [EST]. Claude geometry; Codex closeout. |

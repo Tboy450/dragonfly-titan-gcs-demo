@@ -4,6 +4,17 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**Latest October19 approved Ocellus outer-structure pass (Codex):** [parameters, original
+sources, actual samples and archive](research/ocellus-outer-structure-2026-10-19/README.md).
+Owner replied "same as last 2 parts" to the approximation/wait choice. Detailed MEB/FEB
+outer structure now [EST] within unchanged [PUB-2023-design] envelopes. Real related photos
+inform construction; identified CAD is scale/arrangement support, not material/flight proof.
+Existing MIMU geometry/shelf and all installed poses unchanged. No hidden boards, detailed
+optics, mirrors, pins or harness invented. #05 initial pass complete as an approved estimate:
+20/24 (5 Codex,15 Claude). Exact flight details remain open. This supersedes historical
+unchecked/count19 notes below, not their evidence limits. Related board IC visibly marked
+EVAL ONLY matches TI's original table; do not model it as an identified flight board.
+
 **Newest October19 cross-project research (Codex):** [lineage matrix / credited images](research/ocellus-cross-project-2026-10-19/README.md).
 NASA confirms predecessor MEB reuse (GRSSLi/GRLR/Kodiak), Kodiak -> Ocellus development,
 SQRLi qualification ties and SpaceCube Mini family use in Ocellus. Real v2.0 Mini boards

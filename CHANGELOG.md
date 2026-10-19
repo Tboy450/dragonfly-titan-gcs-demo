@@ -39,6 +39,32 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Approved Ocellus outer-structure asset pass
+- **Signed:** Codex (OpenAI).
+- **Commit:** Add approved Ocellus outer-structure approximation.
+- **Owner direction:** "same as last 2 parts" to the explicit approximation/wait choice.
+  Same labeled-estimate approach as METHAN/MIMU; not permission to assert hidden flight detail.
+- **Geometry:** replace plain lidar boxes with estimated MEB frame/stiffeners/removable lid
+  and FEB base/returns/receiver barrel/angled collimator housing/removable caps. Retain exact
+  nominal2023 envelopes, all poses, original05 anchor/five focuses and independent masks.
+  Both MIMU models and support geometry unchanged, asserted against exact archived module.
+  No hidden boards, detailed optics, mirror, pinouts or flight harness; no physics changes.
+- **Evidence:** real related SQRLi/Kodiak construction and identified Ocellus CAD scale/layout,
+  not photo-matched Ocellus. Related board's EVAL ONLY marking confirmed by original TI table,
+  saved/credited; not treated as a qualified flight board. New source links in Component text.
+- **Archive:** exact prior module/test/UI/HTML/builder, historical same-geometry box renders,
+  original panel-count test and two uncommitted stiffener drafts saved with restore steps.
+  Recovery tag `archive/ocellus-outer-structure-2026-10-19` on f28fe8b. No draft tags.
+- **Checklist:** #05 initial pass checked as approved approximation; 20/24 (5 Codex,15 Claude),
+  not flight verification. Exact flight configuration/optical/electrical interfaces stay open.
+  Updated app assumptions, root/readme/research/source index/architecture/handoff; older
+  research explicitly marked historical. Panel03 remains unchecked; test no longer pins
+  unrelated global count19. No separate game edits.
+- **Checks:** **367 tests pass,0 fail**. Real Edge:30 unit/layer/viewport combinations,
+  eight installed angles, eight raw nonblank/framed pixel checks, cap hide/restore and Pilot
+  return pass at1440/390/360. Original sources and real/CAD/current-model comparison inspected.
+  Publication verification recorded in current part README when complete.
+
 ### 2026-10-19: Deeper Ocellus cross-project hardware lineage
 - **Signed:** Codex (OpenAI).
 - **Commit:** Trace Ocellus hardware families across related NASA projects.

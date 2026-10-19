@@ -7,7 +7,29 @@ Battery pass finished and Codex's RDE pass reviewed October 15, 2026 by Claude (
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: October 19 Cross-Project Hardware Search
+## Resume Here: Part 05 Approved Initial Pass Complete
+
+**Newest owner reply:** "same as last 2 parts" to the explicit choice between a labeled
+outer-structure approximation and waiting for exact photos. Proceeded with the approved
+approximation. [Current asset, sources, real/CAD/model samples and handoff](research/ocellus-outer-structure-2026-10-19/README.md).
+**20/24 initial passes, 5 Codex / 15 Claude**, not verified flight replicas. #05 checked
+with separate flight-specific follow-up. Historical count19/unchecked notes below and in
+prior research are superseded; do not restart completed MIMUs or repeat the approval question.
+
+Ocellus MEB/FEB now have estimated outer structures within unchanged nominal2023 envelopes:
+MEB machined frame/stiffeners/lid; FEB base/returns/receiver barrel/angled collimator housing.
+All detailed proportions/finish/caps/mounts/installation remain estimates. No hidden boards,
+optical train, mirrors, pins or flight harness invented. Current MIMU geometry/shelf and all
+unit poses preserved exactly; all new-to-new clearances pass without moving other equipment.
+Original05 label anchor/five focuses retained, removable casings/covers/mounts/IMU interfaces.
+Archive exact prior code/UI/tests/box pictures and two rejected rib drafts; recovery tag f28fe8b.
+
+11 focused tests pass; 38 viewport/layer/angle captures plus eight raw-pixel/framing checks,
+cover hide/restore and Pilot return pass in real Edge. Full suite/publication recorded in
+current asset README/change log. Remaining initial passes: 03,09,20,21. Real-photo-first,
+cross-project research before approximation, exact archive/source/credit process remains.
+
+## Earlier October 19 Cross-Project Hardware Search
 
 **Newest owner instruction:** search other projects for comparable/reused parts, then
 cross-check those against Ocellus. Completed the requested deeper research pass, not a new
@@ -524,7 +546,8 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **03 Nose bulkhead** (`nose-bulkhead`): October 19 provisional thin-panel/perimeter/mount pass, not photo-matched. Complete nose-face profile, thickness, apertures and real attachment remain unresolved. [Evidence/model/process comparison](research/nose-bulkhead-2026-10-19/README.md). Do not count as completed or invent a hidden core.
 - [x] **Claude:** **04 Nose cameras** (`nose-cameras-inside`): Forward MAC (hooded lens), Forward WAC, two Side Cameras and two NavCams (yellow top plates) on a camera panel behind the nose cap, each behind a window; same ECAM body throughout, differences from DragonCam fig. 1; positions from figs. 2-3. [References/limits](research/nose-cameras-2026-10-13/README.md).
 - [ ] **04 follow-up:** pointing angles and which low unit is the WAC or the NavCams; the fuller 2026 chin (the low cameras stand out of the older nose shell, noted for the fuselage nose redraw).
-- [ ] **05 IMU/lidar electronics, FEB/MEB** (`nose-electronics`): Ocellus 2023 dimension study, not photo-matched; two photo-referenced Honeywell MIMU FAMILY models at supplier upper-envelope scale, exact flight variant/installation unconfirmed. Four unit focuses plus estimated shelf; casings/covers/mounts/interfaces removable. All clear rebuilt neighbors; old IMU/FEB overlaps resolved without moving other parts. Need current Ocellus photos and flight MIMU identification/mounts. [Sources and handoff](research/nose-electronics-2026-10-19/README.md).
+- [x] **Codex:** **05 IMU/lidar electronics, FEB/MEB** (`nose-electronics`): owner-approved Ocellus outer-structure approximation within historical 2023 envelopes; estimated machined MEB frame/stiffeners/lid, FEB base/returns/receiver barrel/angled collimator housing. Real related hardware informs construction, identified CAD arrangement/scale only. Not photo-matched flight units. Existing two MIMU family models/poses preserved. Independent casings/covers/mounts/interfaces, four units plus shelf focus, original05 anchor; no hidden boards, detailed optics or harness. [Current sources, model samples and limits](research/ocellus-outer-structure-2026-10-19/README.md).
+- [ ] **05 follow-up:** exact flight MIMU variant/mounts, Ocellus as-built housing/coating/dimensions, processor generation and board stack, real optical train and installed fiber/electrical interfaces. Family/evaluation hardware is not proof of flight configuration. Initial pass counted as an approved approximation only.
 - [x] **Codex:** **06 Cold sample-delivery carousel** (`sample-carousel`): enclosed drum, cooling fins, ports and underside drives; stationary housing, internal indexing cue. [References/limits](research/carousel-2026-10-12/README.md). No exposed invented cup inventory; 0.36 m diameter and placement remain estimates.
 - [ ] **06 dimensional follow-up:** replace proportional scale with an authoritative dimension/CAD if available; #02/#07/#08 now have approximate integrated interfaces, but real sealed transfer paths remain unverified. Existing legacy overlap is not corrected by shrinking #06.
 - [x] **Codex:** **07 Wonderwall thermal barrier** (`wonderwall`): contoured reference-based warm/cold partition, interface openings and separate face/core/mount groups. [References and limits](research/wonderwall-2026-10-12.md). Not a verified flight material stack.

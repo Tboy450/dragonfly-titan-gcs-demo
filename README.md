@@ -294,28 +294,31 @@ balls. Preamp size and exact installation remain estimated. The
 approximation with removable filtered covers, supports and fiber entry; it is not photo-matched
 hardware. Warm DPU sources/detectors and hidden optics are not invented. The subassembly menu
 focuses Front EFIELD, Rear EFIELD or METHAN independently. Initial asset pass #22 is complete;
-the count is 19/24, including this explicitly approximate pass. Geometry: Codex.
+the current count is 20/24, including the later approved navigation approximation. Geometry: Codex.
 
 The [nose bulkhead study](research/nose-bulkhead-2026-10-19/README.md) replaces the old block
 with a provisional thin face, perimeter returns and mounts. Real integration photographs,
 separately labeled CAD and process renders are saved together. Complete nose-face geometry
-and dimensions remain unresolved, so #03 stays unchecked and the count stays 19/24. Hiding
+and dimensions remain unresolved, so #03 stays unchecked; the current total is 20/24. Hiding
 the face shows unmodeled space, not a verified hollow flight panel. Geometry: Codex.
 
-The [part-05 navigation study](research/nose-electronics-2026-10-19/README.md) uses NASA's
-nominal 2023 Ocellus MEB/FEB sizes, not photo-matched flight housings. Both former IMU cubes
-are now photo-referenced Honeywell space MIMU family approximations, supported by a NASA/APL
-Dragonfly mention, not an exact flight variant identification. Full supplier upper-envelope
-scale, estimated installation/shelf, independent covers/casings/mounts/interfaces and four
-subassembly focuses are retained. All four units clear rebuilt equipment without moving it.
-Hidden electronics/harness remain unmodeled. #05 stays unchecked and count stays 19/24.
-Real supplier/heritage images, labeled CAD and process samples are saved separately. Geometry: Codex.
+The [part-05 approved navigation approximation](research/ocellus-outer-structure-2026-10-19/README.md)
+replaces the plain Ocellus boxes with estimated machined MEB structure and FEB base/returns,
+receiver barrel and angled collimator housing, retaining NASA's nominal 2023 envelopes.
+Real related-hardware photos inform construction; identified CAD supports scale/layout,
+not actual finishes. Both Honeywell space MIMU family models and every installed pose are
+unchanged. Four unit focuses plus shelf, independent casings/covers/mounts/IMU interfaces
+and original05 anchor retained. All units clear rebuilt neighbors without moving them.
+Hidden boards, detailed optics and harness remain unmodeled. #05 initial pass checked as an
+owner-approved approximation, not flight verification: 20/24 total (5 Codex,15 Claude).
+Exact flight variant/configuration/interfaces remain follow-ups. Geometry: Codex.
 
 The [later Ocellus evidence follow-up](research/ocellus-evidence-2026-10-19/README.md) saves
 original NASA SQRLi review slides/hardware photos, identified Ocellus packaging CAD and a
 credited real digitizer-test photo. They improve the reuse/layout evidence, not flight-box
 photo verification. Research only: the published IMUs/lidar studies and app behavior remain
-unchanged; #05 stays open pending identified imagery or an approved labeled approximation.
+unchanged in that historical checkpoint. The later approved outer-structure pass above
+supersedes its unchecked/count19 status; the evidence limitations still apply.
 The [deeper cross-project search](research/ocellus-cross-project-2026-10-19/README.md)
 traces predecessor lidar electronics, SpaceCube Mini, real fiber-interface heritage and
 supplier leads back to Ocellus. Credited original pages/images and an evidence comparison
@@ -547,8 +550,8 @@ and the launch and flight locks), and the battery (24 upright cells in a ribbed 
 aluminum upper housing, fans and heat pipes, its look from real photos of APL's test module);
 their positions are mostly estimated. The rotor drive electronics are a provisional enclosure
 illustration (Codex) until a clear photo turns up. The aft bulkhead and EFIELD assemblies are also
-rebuilt; METHAN is an approved design estimate, not photo-matched. Remaining placeholders are
-the nose avionics and battery/MMRTG temperature sensors; the nose bulkhead remains a provisional
+rebuilt; METHAN and Ocellus are approved design estimates, not photo-matched. Remaining placeholders are
+the battery/MMRTG temperature sensors; the nose bulkhead remains a provisional
 structural illustration, not a completed photo-match. The air loop was redrawn from NASA/APL's
 thermal talks: two circulation fans at the MMRTG end, the warm duct forward under the floor into
 the nose, and the trim device, a cold bypass duct under the belly between fore and aft diverter

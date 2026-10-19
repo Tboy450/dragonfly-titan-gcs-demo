@@ -18,6 +18,10 @@ read-only by PowerPoint document API at 2000 x 1125, no visible presentation win
 | `image4.png` | Original 1652 x 871 CAD screen image from cover, NOT photography; SQRLi packaging, not Ocellus |
 | `image9.png` | Original 1239 x 1272 hardware/circuit-board image from cover; not identified as an exact Ocellus flight board or SpaceCube variant |
 
+Later visual reinspection: IC marking LMP7704HBH/EM / EVAL ONLY is clearly legible in image9.
+[TI's original package table](../ti-lmp7704-evaluation/README.md) confirms that marking.
+Do not call this a flight-qualified Ocellus board; no netlist/exact circuit function inferred.
+
 Slide 4 ties MEB qualification to sister-project Dragonfly-Ocellus. This strengthens the
 reuse/design link beyond the processor-family statement in
 [NASA TechPort 116315](https://techport.nasa.gov/projects/116315), but does not establish
