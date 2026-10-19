@@ -57,11 +57,34 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   No separate game edits. No unsupported supplier finish, hidden boards or fiber routes added.
   A concurrent save-state update ede71e4 reached main during publication; merged it intact,
   retaining both change-log entries. No force push or manual game-source edits.
+  Further concurrent objective clarification564f000 also merged intact before main publication.
 - **Checks:** Originals and comparison visually inspected; all 10 focused model/checklist
   tests and the full test suite pass; whitespace check clean. No new app render/live geometry claimed.
   After preserving ede71e4, full suite rerun: **360 pass, 0 fail**.
+  Final combined suite after564f000: **366 pass, 0 fail**; dist matches main exactly.
 - **Next:** Identify dated/scale-bearing ETU/flight enclosure and installed board/optics
   photos before claiming exact reconstruction. Archive current asset before any replacement.
+
+### 2026-10-19: Explicit neutralization goals and live-hostile progress
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Clarify Swarmfall neutralization objectives`.
+- **What changed:** tower/jammer goals now explicitly say “Neutralize every … (destroy or
+  capture)” in briefings and live/debrief presentation. Progress counts live native targets
+  and says “N hostile remaining”. Converted defenses satisfy the goal; an enemy retaking
+  them makes them outstanding again. Stars still finalize on extraction.
+- **Compatibility:** retains the existing `destroyType` key and its conversion-compatible
+  meaning. Shared text clarifies old checkpoint wording without mutating battle data or
+  changing mission identity/checkpoint schema. No weapon/jammer/capture balance changes.
+- **Checks:** **366 tests pass**, including six new rule tests covering campaign wording,
+  real combat kills and zone conversion/retaking for both targets, legacy reload, final-state
+  stars and loss/alarm/time/recovery boundaries. Isolated fixtures defer reinforcements/weather;
+  they do not prove whole-mission quiet-route balance. Evidence:
+  `research/swarmfall-objective-rules-2026-10-19/README.md`.
+- **Preservation:** previous runtime/coverage files and dated historical picture under
+  `archive/swarmfall-objective-rules-2026-10-19/`, tag on `ede71e4`. All assets and task IDs kept.
+- **Previous release / open:** SAVE-04 `ede71e4` deployed successfully; live build and command
+  module verified. OBJ-08 checked/signed Codex. Browser access was previously blocked and
+  not retried; actual desktop/touch/visual and human balance checks remain open.
 
 ### 2026-10-19: Retain command intent while resuming safely paused
 - **Signed:** Codex (OpenAI).

@@ -14,6 +14,7 @@ import {
 import { nextRandom, randomRange, randomPick } from "./random.mjs?v=dev";
 import { createHazardState, stepHazards } from "./hazards.mjs?v=dev";
 import { validPayload, packDropPods, planDropLandings, podStaggerS } from "./drop-waves.mjs?v=dev";
+import { objectiveText } from './objective-rules.mjs?v=dev';
 
 const zoneRadius = { beachhead: 50, beacon: 42, relic: 40, settlement: 46, mine: 40, capital: 60 };
 // Matter per second while the swarm holds the zone.
@@ -832,7 +833,7 @@ export function objectiveStatus(b) {
   const won = b.outcome === "won";
   const list = [{ id: "primary", primary: true, text: b.victoryAvailable ? "Victory available — leave or keep capturing" : `Hold ${b.required} zones`, progress: `${held}/${b.required}`, done: won || b.victoryAvailable || held >= b.required, failed: false }];
   for (const objective of b.objectives) {
-    const entry = { id: objective.id, text: objective.text, done: false, failed: false, progress: "" };
+    const entry = { id: objective.id, text: objectiveText(objective), done: false, failed: false, progress: "" };
     if (objective.kind === "captureZone") {
       const zone = zoneById(b, objective.zone);
       entry.done = !!(zone?.captured || (zone?.special && b.specials.includes(zone.special)));
@@ -849,9 +850,9 @@ export function objectiveStatus(b) {
       entry.done = won && !entry.failed;
       entry.progress = `${Math.floor(objective.value / 60)} min limit`;
     } else if (objective.kind === "destroyType") {
-      const left = b.units.filter(u => u.side === "native" && u.type === objective.type).length;
+      const left = b.units.filter(u => u.alive && u.side === "native" && u.type === objective.type).length;
       entry.done = left === 0;
-      entry.progress = `${left} left`;
+      entry.progress = `${left} hostile remaining`;
     } else if (objective.kind === "noHazardLosses") {
       entry.failed = b.stats.hazardLosses > 0;
       entry.done = won && !entry.failed;

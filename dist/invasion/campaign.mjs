@@ -1,6 +1,7 @@
 // The invasion campaign: planets in the order they are invaded, what each one rewards, and the
 // player's saved progress between missions. No DOM; covered by tests/invasion-campaign.test.mjs.
 import { droneOrder, droneTypes, startingDrones, basePodSlots } from "./units.mjs?v=dev";
+import { objectiveText } from './objective-rules.mjs?v=dev';
 import { validMissionId } from "./mission-id.mjs?v=dev";
 
 // galaxy: position on the campaign map (0-1 across, 0-1 down). society: index into societies
@@ -50,7 +51,7 @@ export const planets = Object.freeze([
     map: { centerX: 0, centerZ: 0, half: 440 }, zoneCount: 5, required: 4, seed: 2207,
     reward: { matter: 180, unlock: "breacher" },
     objectives: [
-      { id: "towers", kind: "destroyType", type: "watchtower", text: "Topple every watchtower" },
+      { id: "towers", kind: "destroyType", type: "watchtower", text: objectiveText({kind:'destroyType',type:'watchtower'}) },
       { id: "losses", kind: "maxLosses", value: 12, text: "Lose 12 drones or fewer" },
     ],
   },
@@ -86,7 +87,7 @@ export const planets = Object.freeze([
     map: { centerX: 0, centerZ: 0, half: 480 }, zoneCount: 6, required: 5, seed: 5003,
     reward: { matter: 300, podSlots: 4 },
     objectives: [
-      { id: "jammers", kind: "destroyType", type: "jammer", text: "Silence every signal jammer" },
+      { id: "jammers", kind: "destroyType", type: "jammer", text: objectiveText({kind:'destroyType',type:'jammer'}) },
       { id: "losses", kind: "maxLosses", value: 25, text: "Lose 25 drones or fewer" },
     ],
   },

@@ -114,4 +114,6 @@ Fetched origin: main matched local0fc30b7; priorities branch has no commits outs
 A concurrent save-state update ede71e4 reached main during publication; merged it intact
 with both change-log entries retained, no force push or manual game-source edits.
 Full suite rerun after merge: **360 tests pass, 0 fail**.
+Further concurrent objective clarification564f000 also merged intact before main publication.
+Final combined suite: **366 pass, 0 fail**; `dist/` matches that published main exactly.
 Keep future unrelated commits when publishing.

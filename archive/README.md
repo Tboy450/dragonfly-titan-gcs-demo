@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [swarmfall-objective-rules-2026-10-19](swarmfall-objective-rules-2026-10-19/README.md) | Prior ambiguous tower/jammer wording and “N left” counter; original runtime/coverage and dated historical picture retained | 2026-10-19 | `archive/swarmfall-objective-rules-2026-10-19` |
 | [swarmfall-command-resume-2026-10-19](swarmfall-command-resume-2026-10-19/README.md) | Resume before selected squads/payload/panel metadata; exact runtime/UI test and dated historical picture retained | 2026-10-19 | `archive/swarmfall-command-resume-2026-10-19` |
 | [swarmfall-save-recovery-2026-10-19](swarmfall-save-recovery-2026-10-19/README.md) | Title/save/reset behavior before visible recovery, exact-original browser backups and JSON export; source and dated historical picture retained | 2026-10-19 | `archive/swarmfall-save-recovery-2026-10-19` |
 | [swarmfall-checkpoint-validation-2026-10-19](swarmfall-checkpoint-validation-2026-10-19/README.md) | Exact validator/test before strict rule/reference/JSON bounds, plus a dated historical mission picture; current save format and migrations retained | 2026-10-19 | `archive/swarmfall-checkpoint-validation-2026-10-19` |

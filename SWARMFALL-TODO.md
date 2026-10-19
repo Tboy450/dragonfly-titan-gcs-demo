@@ -83,6 +83,11 @@ camera, draft payload and panel state. Reload is paused at 1× with visible HUD 
 placement. **360 tests pass**, including real entry-point wiring with DOM/renderer stand-ins.
 Browser reload/device acceptance remains open under SAVE-06; no checklist IDs were removed.
 
+Objective follow-up — Codex, October 19: **OBJ-08** now explicitly defines tower/jammer goals
+as neutralization by destruction or capture, counts live hostiles and reevaluates retaken
+defenses until extraction. Old saved rule IDs remain compatible. **366 tests pass**; prior
+SAVE-04 `ede71e4` deployment and live source were verified. Browser/human balance review stays open.
+
 The old "live build 8b2399b / 237 tests" and uncommitted aft-bulkhead failure were historical
 notes, not the current Swarmfall status. The aft-bulkhead/inspection work was closed in eed63b1
 and included in the published baseline. Its archive and all old checklist notes are retained.
@@ -709,9 +714,16 @@ collision is still pending. Browser tooling rejected the local preview, so DROP-
 
 OBJ-07 is the owner feature. Resolve its rules before adding UI or awarding rewards early.
 
-- [ ] **OBJ-08 (P1)** Align objective wording and logic: “destroy every watchtower” currently
+- [x] **OBJ-08 (P1) — Codex, October 19; rules/presentation and automated acceptance** Align objective wording and logic: “destroy every watchtower” currently
   checks remaining native structures, so conversion can satisfy it. Decide whether each
   objective means destroy, capture or neutralize; test every allowed path and display it clearly.
+  Completed: shared “Neutralize every … (destroy or capture)” wording for towers/jammers in
+  briefings, live objectives and debriefs, including old saved wording; “N hostile remaining”
+  excludes dead records. Actual combat destruction, zone conversion, enemy retaking and
+  extraction-star outcomes tested for both target types, plus capture/loss/alarm/time/hazard
+  boundaries. Existing `destroyType` save keys keep their conversion-compatible semantics.
+  **366 tests pass**. [Evidence](research/swarmfall-objective-rules-2026-10-19/README.md).
+  Whole-mission balance and real browser/touch acceptance remain the existing TEST tasks.
 - [x] **OBJ-09 ★ (P1) — Codex, October 19; rule/save/UI implementation, visual acceptance under OBJ-07** Add a persisted **victory available** phase distinct from a finished
   mission. Offer leave/claim victory versus continue. Keep an obvious extraction action and
   remaining-zone count while continuing; do not repeatedly interrupt after the first choice.
