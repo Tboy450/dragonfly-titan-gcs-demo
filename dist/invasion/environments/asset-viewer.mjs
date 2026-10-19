@@ -10,7 +10,7 @@ const drone = (id, name, description) => ({id:`drone-${id}`, name, drone:id, cat
   description, creator:'Swarmfall', license:'Original game asset', source:'https://github.com/Tboy450/dragonfly-titan-gcs-demo'});
 
 export const assetCatalog = Object.freeze([
-  drone('scout','Scout drone','The light reconnaissance drone, with its original game hull, rotor layout and lights.'),
+  drone('scout','Scout drone','The light reconnaissance drone. Compare its original hull with the first hull/sensor polish pass; art review is still pending.'),
   drone('link','Link drone','The control-path drone used to capture zones and turn defenses.'),
   drone('striker','Striker drone','The assault drone used in the Swarmfall campaign.'),
   drone('breacher','Breacher drone','The heavy structure-attack drone, shown separately from a battle.'),
@@ -50,15 +50,25 @@ export function createAssetDisplay(root, entry) {
   return {group,moving:[],target:new THREE.Vector3(0,size.y*scale*.45,0),asset:true};
 }
 
-export async function loadAssetDisplay(entry, loader) {
+export async function loadAssetDisplay(entry, loader, { scoutVersion = 'polished' } = {}) {
   let root;
   if(entry.drone){
-    const {droneModels}=await import('../models.mjs?v=dev'),model=droneModels()[entry.drone];
+    let model;
+    if(entry.drone==='scout'&&scoutVersion==='original'){
+      const {originalScoutModel}=await import('./history/scout-original.mjs?v=dev');
+      model=originalScoutModel();
+    }else{
+      const {droneModels}=await import('../models.mjs?v=dev'),models=droneModels();
+      model=models[entry.drone];
+      for(const other of Object.values(models))if(other!==model){other.body.dispose();other.glow.dispose();}
+    }
     root=new THREE.Group();
     root.add(new THREE.Mesh(model.body,new THREE.MeshStandardMaterial({vertexColors:true,metalness:.45,roughness:.45})),
       new THREE.Mesh(model.glow,new THREE.MeshBasicMaterial({vertexColors:true})));
     const material=new THREE.MeshStandardMaterial({color:0x93b6c7,transparent:true,opacity:.23,side:THREE.DoubleSide});
     for(const [x,y,z,r] of model.rotors){const disc=new THREE.Mesh(new THREE.CircleGeometry(r,24).rotateX(-Math.PI/2),material);disc.position.set(x,y,z);root.add(disc);}
   }else root=(await loader.loadAsync(entry.url)).scene;
-  return createAssetDisplay(root,entry);
+  const display=createAssetDisplay(root,entry);
+  if(entry.drone==='scout')display.group.userData.asset.version=scoutVersion==='original'?'original':'polished';
+  return display;
 }

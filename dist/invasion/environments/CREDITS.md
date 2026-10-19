@@ -1,5 +1,10 @@
 # Asset & Environment Lab — sources and modifications
 
+October 19 Scout comparison: the current hull/sensor polish and original pre-polish template
+are original Swarmfall gameplay artwork. Original/polished inspection links were added by
+Codex (OpenAI); the original template is retained unchanged for comparison. Neither version
+is licensed as CC0 or claimed to depict real hardware. Art/device acceptance remains pending.
+
 October 19: original procedural smoke, fire and ember shaders, fracture emission metadata,
 bounded local firelight and preview controls by Codex (OpenAI). No image-generation service,
 downloaded VFX imagery or franchise assets were used. These are invented visual aftermath

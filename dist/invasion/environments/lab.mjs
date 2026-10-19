@@ -11,8 +11,9 @@ import { assetCatalog, assetById, loadAssetDisplay } from './asset-viewer.mjs?v=
 
 const $=id=>document.getElementById(id),query=new URLSearchParams(location.search),requested=query.get('scene');
 const assetEntry=query.has('asset')?(assetById(query.get('asset'))||assetCatalog[0]):null;
+const scoutComparison=assetEntry?.drone==='scout',scoutVersion=query.get('scout')==='original'?'original':'polished';
 const type=Object.hasOwn(worldInfo,requested)?requested:'alien',info=assetEntry?{
-  title:assetEntry.name,description:assetEntry.description,credit:`${assetEntry.creator} · ${assetEntry.license}. ${assetEntry.description}`,
+  title:assetEntry.name+(scoutComparison?` · ${scoutVersion==='original'?'Original':'Polish pass'}`:''),description:assetEntry.description,credit:`${assetEntry.creator} · ${assetEntry.license}. ${assetEntry.description}`,
   span:'Individual asset · fit-to-view scale',sky:[0x182c3b,0x748995],ground:0x223642,sun:0xffe9ce,
   views:{vista:[[170,110,180],[0,35,0]],district:[[100,65,110],[0,35,0]],street:[[55,30,60],[0,30,0]]}
 }:worldInfo[type];
@@ -22,6 +23,11 @@ document.title=`${info.title} · Swarmfall Asset & Environment Lab`;
 document.querySelector(`[data-mode="${assetEntry?'assets':'environments'}"]`).setAttribute('aria-current','page');
 $('asset-browser').hidden=!assetEntry;document.querySelector('.tests').hidden=!!assetEntry;$('damage-preview').hidden=!!assetEntry;
 if(assetEntry){
+  $('scout-versions').hidden=!scoutComparison;
+  if(scoutComparison)for(const link of $('scout-versions').querySelectorAll('[data-scout-version]')){
+    const url=new URL(location.href);url.searchParams.set('scout',link.dataset.scoutVersion);link.href=url;
+    if(link.dataset.scoutVersion===scoutVersion)link.setAttribute('aria-current','page');
+  }
   $('lab-eyebrow').textContent='REUSABLE ASSETS';$('asset-license').textContent=`${assetEntry.creator} · ${assetEntry.license}`;
   $('asset-source').href=assetEntry.source;$('tour').textContent='Turntable';
   document.querySelector('[data-view="district"]').textContent='Detail';document.querySelector('[data-view="street"]').textContent='Close';
@@ -124,7 +130,7 @@ try{
     assets.SourceTerrain=(await loader.loadAsync('./assets/source-scenes/skyway-houdini-coast.glb')).scene;
     assets.SourceTerrain.traverse(o=>{if(o.isMesh){o.geometry.computeVertexNormals();o.receiveShadow=true;}});
   }
-  $('loading-text').textContent=assetEntry?'Preparing asset inspection…':'Composing the district…';world=assetEntry?await loadAssetDisplay(assetEntry,loader):buildWorld(type,assets);scene.add(world.group);
+  $('loading-text').textContent=assetEntry?'Preparing asset inspection…':'Composing the district…';world=assetEntry?await loadAssetDisplay(assetEntry,loader,{scoutVersion}):buildWorld(type,assets);scene.add(world.group);
   $('loading').classList.add('hidden');
   $('status').textContent=assetEntry?`${info.span} · ${assetEntry.license}`:`${info.span} · ${world.source?'complete imported scene':type==='metropolis'?world.importedBuildings+' imported buildings':'original city composition'}`;
   document.body.dataset.ready='true';

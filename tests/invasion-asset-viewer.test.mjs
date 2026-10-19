@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import * as THREE from '../dist/vendor/three/three.module.min.js';
 import { assetCatalog, assetById, createAssetDisplay, loadAssetDisplay } from '../dist/invasion/environments/asset-viewer.mjs';
 
@@ -39,5 +39,39 @@ test('All four playable drone models can be inspected without changing battle st
     world.group.traverse(object=>{
       if(object.isMesh)assert.ok([...object.geometry.attributes.position.array].every(Number.isFinite));
     });
+  }
+});
+
+test('Historical Scout inspection template exactly reproduces its preserved pre-polish geometry',async()=>{
+  const {originalScoutModel}=await import('../dist/invasion/environments/history/scout-original.mjs');
+  const baseline=JSON.parse(readFileSync(new URL('../archive/scout-polish-2026-10-19/baseline-geometry.json',import.meta.url),'utf8'));
+  const model=originalScoutModel();
+  try{
+    assert.equal(model.scale,baseline.scale);assert.deepEqual(model.rotors,baseline.rotors);
+    for(const part of ['body','glow'])for(const [attribute,field] of [['position','positions'],['normal','normals'],['color','colors']])
+      assert.deepEqual([...model[part].getAttribute(attribute).array],baseline[part][field]);
+  }finally{model.body.dispose();model.glow.dispose();}
+});
+
+test('Original and polished Scout lab routes keep the same footprint/stand scale, with a safe unknown-version fallback',async()=>{
+  const entry=assetById('drone-scout');
+  const views=await Promise.all(['original','polished','unknown'].map(scoutVersion=>loadAssetDisplay(entry,null,{scoutVersion})));
+  try{
+    const [original,polished,fallback]=views;
+    const asset=view=>view.group.userData.asset;
+    const body=view=>view.group.getObjectByName('Inspection asset').children[0].children[0].geometry;
+    assert.equal(asset(original).version,'original');assert.equal(asset(polished).version,'polished');assert.equal(asset(fallback).version,'polished');
+    assert.equal(asset(original).displayScale,asset(polished).displayScale);
+    assert.equal(asset(original).sourceSize[0],asset(polished).sourceSize[0]);
+    assert.equal(asset(original).sourceSize[2],asset(polished).sourceSize[2]);
+    assert.equal(body(original).getAttribute('position').count,432*3);
+    assert.equal(body(polished).getAttribute('position').count,584*3);
+    assert.deepEqual(body(fallback).getAttribute('position').array,body(polished).getAttribute('position').array);
+  }finally{
+    for(const view of views){
+      const geometries=new Set(),materials=new Set();
+      view.group.traverse(object=>{if(object.geometry)geometries.add(object.geometry);if(object.material)materials.add(object.material);});
+      for(const geometry of geometries)geometry.dispose();for(const material of materials)material.dispose();
+    }
   }
 });

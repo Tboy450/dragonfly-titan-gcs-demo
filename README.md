@@ -95,6 +95,9 @@ existing work, including unit details, props, icons, textures and effects, while
 originals and keeping performance and gameplay readability in view.
 Scout's first hull/sensor polish pass is implemented; [before/after and checks](research/scout-polish-2026-10-19/README.md)
 record the preserved original and pending real-browser/phone art review.
+Inspect it in the lab: [Original Scout](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/?asset=drone-scout&scout=original)
+/ [Polish pass](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/?asset=drone-scout&scout=polished).
+Both offer orbit, zoom and turntable controls; the version links reset the camera.
 
 ### Asset & Environment Lab
 

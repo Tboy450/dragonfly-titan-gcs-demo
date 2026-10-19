@@ -39,6 +39,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Add public original/polished Scout inspection links
+- **Signed:** Codex (OpenAI)
+- **Commit:** Add original and polished Scout lab comparison
+- **What changed:** Added a Scout-only Original / Polish pass selector to the existing
+  Asset & Environment Lab. Shareable query links use its orbit/zoom/turntable controls,
+  lighting and stand scale; title labels the selected version. Catalog stays at 18 assets,
+  unknown versions fall back to polished, and campaign/save state is unaffected. Loader
+  disposes unused drone templates; historical Scout module is loaded only for the old view.
+- **Files:** asset-viewer/lab/HTML, historical Scout generator, tests, credits, evidence,
+  preserved inspector baseline/tag and master checklist/README links.
+- **Checks:** 383 tests pass. Historical geometry exactly matches archived body/glow data,
+  normals/colors/anchors/scale; both displays share stand scale and XZ footprint. Current
+  Scout remains584 body triangles, original432; no additional drone redesign.
+- **Open / next:** Actual browser/touch/phone and owner art acceptance remain open. Prior
+  browser restriction was not retried. ART-09 stays unchecked; canonical count23/305.
+  [Comparison links/evidence](research/scout-lab-comparison-2026-10-19/README.md).
+
 ### 2026-10-19: ART-09 A1 Scout hull and sensor polish
 - **Signed:** Codex (OpenAI)
 - **Commit:** Refine Scout hull and recessed sensor housing

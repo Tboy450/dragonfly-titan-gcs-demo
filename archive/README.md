@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [scout-lab-comparison-2026-10-19](scout-lab-comparison-2026-10-19/README.md) | Lab before original/polished Scout selector; exact inspector/lab/HTML/test, historical CPU comparison and restore steps | 2026-10-19 | `archive/scout-lab-comparison-2026-10-19` on 204fb0f |
 | [scout-polish-2026-10-19](scout-polish-2026-10-19/README.md) | Original rectangular Scout/sensor sphere, exact model source and exported geometry, CPU picture, baseline inventory and unpublished lens draft | 2026-10-19 | `archive/scout-polish-2026-10-19` on 4728169 |
 | [swarmfall-pointer-controls-2026-10-19](swarmfall-pointer-controls-2026-10-19/README.md) | Shared smart-tap mouse behavior before desktop select/order split; exact runtime/HTML/UI test and dated historical picture retained | 2026-10-19 | `archive/swarmfall-pointer-controls-2026-10-19` on 514241b |
 | [ocellus-outer-structure-2026-10-19](ocellus-outer-structure-2026-10-19/README.md) | Exact prior Ocellus box module/test/UI/HTML/builder, historical same-geometry box renders and two rejected stiffener drafts before approved labeled outer-structure estimate; existing MIMUs/poses unchanged | 2026-10-19 | `archive/ocellus-outer-structure-2026-10-19` on f28fe8b |

@@ -909,6 +909,10 @@ Use licensed sources and original adaptation, not proprietary franchise extracti
   pass implemented; exact rotor/light/scale contracts and prior envelope retained, originals
   archived. **381 tests pass**; [CPU comparison and checks](research/scout-polish-2026-10-19/README.md).
   Owner/browser/phone acceptance remains open; Link/other assets are untouched. Count 23/305.
+  **Comparison follow-up, Codex:** the existing lab Scout inspector now offers shareable
+  Original / Polish pass links with orbit/zoom/turntable; original template matches archived
+  data exactly, and catalog remains 18 assets. **383 tests pass**. [Links and evidence](research/scout-lab-comparison-2026-10-19/README.md).
+  This enables owner review; actual browser/device acceptance remains open.
 
 ## 22. Destruction integration acceptance tasks (ENV continuation)
 
