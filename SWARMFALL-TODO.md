@@ -37,7 +37,7 @@ The Dragonfly scientific simulator has its own interior/engineering checklists.
 | Area | Verified status | Still open |
 | --- | --- | --- |
 | Campaign | Seven planets, economy, hazards, capture/control paths, achievements and progression exist | Human balance review, deeper progression and more mission types |
-| Mission saves | Codex October 19: mission v1/v2→v3 and progress v1→v2 migration; wave/victory state and one-write result settlement; restored missions paused | Broader validation/recovery/export and future damage/environment schemas |
+| Mission saves | Codex October 19: v1/v2→v3 migration, wave/victory state, one-write settlement, paused resume and SAVE-01 rule/reference/data bounds implemented | Recovery/export, browser storage-fault review and future damage/environment schemas |
 | Drop delivery | Codex October 19: deterministic 1–3 drone pods, solo Dragonflies, one paid squad wave, safe courts, retained orders, v1→v2 checkpoint migration | Browser/touch/device acceptance under DROP-08; real imported-city corridors remain CITY work |
 | Victory | Codex October 19: persisted eligibility, one choice, continued play, explicit extraction and idempotent result ledger | Browser/touch acceptance of choice, resumed prompts and storage-failure feedback |
 | Public lab | Five environments and an 18-model asset inspector were published October 17 | Expanded metadata, loading/recovery, device review and gameplay integration |
@@ -49,9 +49,9 @@ The Dragonfly scientific simulator has its own interior/engineering checklists.
 | Free-roam planet | Existing campaign and lab supply reusable rules/art; open-world mode is not implemented | Separate persistent world, connected regions, capture/travel rules, streaming and graphics review |
 | Source library | Six original backups, receipts and hashes were recorded, about 1.84 GB | Additional space/alien sources, derivative-authoring backup/restore and unresolved notices |
 
-Planning-audit baseline: game/lab source at **fb2e5b6**; the October 17 combined release passed
-**270 tests** and its public build was checked. This October 19 work is a documentation/code
-audit, not a new full test run. After fetching, remote main is **9f3fea1** (October 18);
+Historical planning-audit baseline: game/lab source at **fb2e5b6**; the October 17 combined release passed
+**270 tests** and its public build was checked. That first October 19 step was a documentation/code
+audit, not a new full test run. At that fetch, remote main was **9f3fea1** (October 18);
 its two newer commits concern simulator part 22, with no changes under the game or its tests.
 Those changes were separate from the planning edit and were merged before gameplay work below.
 
@@ -64,6 +64,12 @@ Release follow-up — Codex: **5b05c32 is published**, its GitHub Pages run succ
 build/import stamps were verified. The next milestone implements victory/continue, mission v3/
 progress v2 migration and one-time settlement, with **306 tests passing**. See the newest signed
 CHANGELOG entry and test log. The backlog now has 302 unique task IDs across 36 numbered sections.
+
+Latest follow-up — Codex, October 19: victory/continue **f1ad919** and lab aftermath **cf4c866**
+are published; both Pages deployments and their public source stamps were verified. Lab effects
+passed **314 tests** and added FX-05/06, bringing the checklist to **304 unique IDs**. The next
+completed item is **SAVE-01** below: current-schema checkpoint validation, with **325 tests**
+passing and an eight-case before/after report. Recovery/export and browser/device checks stay open.
 
 The old "live build 8b2399b / 237 tests" and uncommitted aft-bulkhead failure were historical
 notes, not the current Swarmfall status. The aft-bulkhead/inspection work was closed in eed63b1
@@ -703,9 +709,15 @@ OBJ-07 is the owner feature. Resolve its rules before adding UI or awarding rewa
 - [x] **OBJ-11 ★ (P1) — Codex, October 19** Settle a mission exactly once using a stable completion identity.
   Exercise repeated callbacks, double activation, reload around extraction and replayed planets.
   First-conquest rewards remain distinct from replay income, statistics and best-time updates.
-- [ ] **SAVE-01 (P1)** Strengthen checkpoint validation for references and rule invariants:
+- [x] **SAVE-01 (P1) — Codex, October 19; current checkpoint schemas** Strengthen checkpoint validation for references and rule invariants:
   squad membership, orders, finite movement/formation values, pod release flags, strikes and
   practical array/count bounds. Reject invalid state without damaging valid campaign progress.
+  Completed: required stats/flags, unit class/side/conversion, objective/home/raid references,
+  pod siblings/slot ranges/capacity, strike/hazard internals and bounded JSON preflight.
+  Preserve dead-target retargeting and independently expired backshells; v1/v2 fixtures still
+  migrate. Eleven new tests, all-seven-planet active weather/combat checks, **325 tests passing**.
+  [Evidence and prior-validator comparison](research/swarmfall-checkpoint-validation-2026-10-19/README.md).
+  Visible recovery/export remains SAVE-02; browser storage faults remain SAVE-03.
 - [ ] **SAVE-02 (P1)** Add real previous-version fixtures and explicit checkpoint/progress
   migration through TECH-03. An unsupported save should produce a useful explanation and a
   recoverable backup/export path, rather than silently appearing as a fresh campaign.
