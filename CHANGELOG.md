@@ -39,6 +39,30 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Provisional nose-panel study with real/CAD/process comparison
+- **Signed:** Codex (OpenAI)
+- **Commit:** Improve provisional nose panel and record real CAD model comparison
+- **What changed:** Assessed next unfinished part 03; real 2026 integration/structure photos
+  inform finish and joints, not a complete nose-face reconstruction. Replaced the block
+  with a thin face representation, perimeter returns, mounting feet, joint fasteners and
+  separately removable inspection groups. Preserved original part ID, center, width/height,
+  thermal zone and neighboring parts. Label anchor now sits on the upper perimeter.
+- **Assumptions:** All dimensions/details remain [EST]. No hidden core/layup, apertures or
+  electronics invented. Removing the face does not assert a real hatch or hollow panel.
+  #03 stays unchecked and the completed count remains 19/24 (4 Codex, 15 Claude).
+- **Sources/samples:** Credited original NASA/APL September harness and July suspended-test
+  photos saved; separately labeled APL 2024/ICES-2023 CAD compared with actual WebGL closed,
+  rear and face-hidden samples in `research/nose-bulkhead-2026-10-19/`. No image generation.
+- **Archive:** Old builder/UI and before pictures saved in `archive/nose-bulkhead-2026-10-19/`;
+  restore tag on `9f3fea1`. Source index, checklist/handoff, README, architecture, compendium
+  and expandable app assumptions updated together. Separate game/city work untouched.
+- **Checks:** 278 Node tests pass, including five focused panel tests, rebuilt-neighbor
+  clearances and unchanged completion count. Edge/WebGL Internal/Thermal at 1440/390/360 px
+  and four raw angles: framed nonblank pixels, no page errors or horizontal overflow.
+- **Open / next:** Identify unobscured nose-face hardware and a reliable scale before
+  checking off #03 or adding structural apertures. #05/#09/#20/#21 remain independent
+  research tasks. Include real/CAD/process images with future part updates.
+
 ### 2026-10-18: Complete part 22 with the approved labeled METHAN approximation
 - **Signed:** Codex (OpenAI)
 - **Commit:** Complete part 22 with approved METHAN design approximation

@@ -253,6 +253,12 @@ hardware. Warm DPU sources/detectors and hidden optics are not invented. The sub
 focuses Front EFIELD, Rear EFIELD or METHAN independently. Initial asset pass #22 is complete;
 the count is 19/24, including this explicitly approximate pass. Geometry: Codex.
 
+The [nose bulkhead study](research/nose-bulkhead-2026-10-19/README.md) replaces the old block
+with a provisional thin face, perimeter returns and mounts. Real integration photographs,
+separately labeled CAD and process renders are saved together. Complete nose-face geometry
+and dimensions remain unresolved, so #03 stays unchecked and the count stays 19/24. Hiding
+the face shows unmodeled space, not a verified hollow flight panel. Geometry: Codex.
+
 The [aft bulkhead](research/aft-bulkhead-2026-10-15/README.md) follows NASA/APL's real structure
 photos: gold-colored face, ribbed circular generator interface and pocketed rim. The generator
 rises aft at an estimated 25 degrees; the fan collar and aft body profile follow the same
@@ -479,7 +485,8 @@ aluminum upper housing, fans and heat pipes, its look from real photos of APL's 
 their positions are mostly estimated. The rotor drive electronics are a provisional enclosure
 illustration (Codex) until a clear photo turns up. The aft bulkhead and EFIELD assemblies are also
 rebuilt; METHAN is an approved design estimate, not photo-matched. Remaining placeholders are
-the nose bulkhead, nose avionics and battery/MMRTG temperature sensors. The air loop was redrawn from NASA/APL's
+the nose avionics and battery/MMRTG temperature sensors; the nose bulkhead remains a provisional
+structural illustration, not a completed photo-match. The air loop was redrawn from NASA/APL's
 thermal talks: two circulation fans at the MMRTG end, the warm duct forward under the floor into
 the nose, and the trim device, a cold bypass duct under the belly between fore and aft diverter
 flaps (an earlier side-chimney concept is archived). Arrows follow the warm-air loop from the

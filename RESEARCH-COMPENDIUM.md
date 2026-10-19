@@ -4,6 +4,13 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 19 provisional nose-panel study (Codex):** [evidence and comparison](research/nose-bulkhead-2026-10-19/README.md).
+Real 2026 photos inform structure finish/joints, older thermal/CAD images establish layout
+only. No complete identified nose face or published dimensions found. The panel, perimeter
+returns, face and mounts remain [EST]; hidden layup/core/apertures are not invented. Part03
+stays unchecked; 19/24 completed count unchanged. Independent inspection masks only; no
+flight/power/thermal constants changed. Real/CGI/process images are explicitly distinguished.
+
 **October 18 owner-approved METHAN closeout (Codex):** [model, sources and limits](research/methan-2026-10-18/README.md).
 The owner chose a labeled approximation. A removable casing/filter/support/fiber-entry model
 now replaces the placeholder, following the published cold-cell/warm-DPU architecture. All

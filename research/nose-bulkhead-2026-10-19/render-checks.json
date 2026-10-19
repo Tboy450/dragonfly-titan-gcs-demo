@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "errors": [],
+  "checks": [
+    {
+      "width": 1440,
+      "layer": "internal"
+    },
+    {
+      "width": 1440,
+      "layer": "thermal"
+    },
+    {
+      "width": 390,
+      "layer": "internal"
+    },
+    {
+      "width": 390,
+      "layer": "thermal"
+    },
+    {
+      "width": 360,
+      "layer": "internal"
+    },
+    {
+      "width": 360,
+      "layer": "thermal"
+    }
+  ],
+  "samples": [
+    "nose-bulkhead-closed.png",
+    "nose-bulkhead-rear.png",
+    "nose-bulkhead-face-hidden.png"
+  ]
+}

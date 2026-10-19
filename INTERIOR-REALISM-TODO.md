@@ -7,7 +7,23 @@ Battery pass finished and Codex's RDE pass reviewed October 15, 2026 by Claude (
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: October 18 Part-22 Closeout
+## Resume Here: October 19 Nose-Panel Provisional Pass
+
+Codex assessed next unfinished part **03**. Real 2026 flight-structure photos provide
+panel finish/joint evidence, but no fully exposed identified nose face or dimensioned
+reference was found. The plain block now has a thin face representation, perimeter
+returns, mounts and independent inspection groups; all dimensions/details remain [EST].
+No hidden honeycomb cells, stack or apertures invented. **#03 stays unchecked; count
+19/24 (4 Codex, 15 Claude) is unchanged.** METHAN's exception is not blanket approval.
+[Real photos, labeled CAD and model/process samples](research/nose-bulkhead-2026-10-19/README.md).
+Next: obtain a nose-specific photo/scale, or assess #05/#09/#20/#21 independently. Do not
+restart #22 or touch the separate city/game project. Worktree/preview below still apply.
+
+The owner now requests **real, CGI/CAD and process samples** with each part update.
+Keep their types/credits visibly distinct; CGI is layout/dimension support, not a substitute
+for real appearance evidence. Include an actual model sample inline in the completion reply.
+
+## October 18 Part-22 Closeout
 
 **Owner approved a labeled METHAN approximation on October 18.** Codex replaced the
 remaining placeholder with an explicitly estimated exterior gas-cell enclosure, removable
@@ -422,7 +438,7 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **01 follow-up:** real part sizes; exact fore-aft position (sources span 0.34-0.45 m forward of center; model 0.43 m). The #02 pass now connects to the moving swivel port; preserve that connection through the full drill stroke.
 - [x] **Claude:** **02 Sample-transfer lines** (`sample-lines`): flexible hose from each drill's port (follows the drill down), rigid tubes forward under the body edges and up into the attic, flow-diverter manifold on the carousel inlet, return tube down the port side to the blowers; topology from DrACO fig. 1, routes and the 13 mm size [EST]. [References/limits](research/draco-plumbing-2026-10-14/README.md).
 - [ ] **02 follow-up:** real tube sizes and routes; separate LDMS and GCMS elevators at the carousel (the carousel models one inlet).
-- [ ] **03 Nose bulkhead** (`nose-bulkhead`): profile, thickness, apertures and relation to the forward bay.
+- [ ] **03 Nose bulkhead** (`nose-bulkhead`): October 19 provisional thin-panel/perimeter/mount pass, not photo-matched. Complete nose-face profile, thickness, apertures and real attachment remain unresolved. [Evidence/model/process comparison](research/nose-bulkhead-2026-10-19/README.md). Do not count as completed or invent a hidden core.
 - [x] **Claude:** **04 Nose cameras** (`nose-cameras-inside`): Forward MAC (hooded lens), Forward WAC, two Side Cameras and two NavCams (yellow top plates) on a camera panel behind the nose cap, each behind a window; same ECAM body throughout, differences from DragonCam fig. 1; positions from figs. 2-3. [References/limits](research/nose-cameras-2026-10-13/README.md).
 - [ ] **04 follow-up:** pointing angles and which low unit is the WAC or the NavCams; the fuller 2026 chin (the low cameras stand out of the older nose shell, noted for the fuselage nose redraw).
 - [ ] **05 IMU/lidar electronics, FEB/MEB** (`nose-electronics`): distinguish boxes and brackets; verify names/locations against current sources.
