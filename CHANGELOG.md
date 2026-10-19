@@ -39,6 +39,19 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Prepare two small ART-09 follow-up steps
+- **Signed:** Codex (OpenAI)
+- **Commit:** Prepare small asset batches and geometry baseline
+- **What changed:** Split future polish into Scout, Link, defender/interceptor and later
+  props/UI/effects batches. Built an unchanged six-template CPU geometry inventory and
+  recorded source evidence, scope boundaries and a Scout-only next-session handoff.
+- **Files:** research/swarmfall-small-assets-2026-10-19 and ART-09 evidence link.
+- **Checks:** Inventory script builds six templates, checks nonempty/finite positions and
+  records triangles, local bounds, rotor counts and CPU attribute bytes; documentation diff
+  and canonical task count checked. No runtime changes or new full suite needed.
+- **Open / next:** Scout cosmetic prototype, preserved original, real visual comparison and
+  relevant checks. No asset upgraded/approved yet; ART-09 remains open and count stays 23/305.
+
 ### 2026-10-19: Prioritize smaller assets below the project visual standard
 - **Signed:** Codex (OpenAI)
 - **Commit:** Prioritize future small asset visual upgrades

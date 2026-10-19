@@ -902,6 +902,10 @@ Use licensed sources and original adaptation, not proprietary franchise extracti
   and appropriate detail at RTS and future first/third-person scales. Keep performance and
   High/Light readability within budget. Retain originals, before/after views, credits and
   restore steps, and track reviewed assets individually before marking this item complete.
+  **Preparation by Codex, October 19:** defined Scout → Link → defender/interceptor batches
+  and recorded unchanged geometry/bounds for six templates. [Batch plan, inventory and next
+  session handoff](research/swarmfall-small-assets-2026-10-19/README.md). First implementation
+  candidate is Scout only; no art upgrade/visual review is complete. Count remains 23/305.
 
 ## 22. Destruction integration acceptance tasks (ENV continuation)
 
