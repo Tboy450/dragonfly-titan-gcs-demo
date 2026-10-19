@@ -39,6 +39,34 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Photo-referenced MIMU family assets and nominal Ocellus envelopes
+- **Signed:** Codex (OpenAI).
+- **Commit:** Add photo-referenced MIMU family assets and Ocellus dimension study.
+- **What changed:** Two old IMU cubes replaced with ribbed Honeywell space MIMU FAMILY
+  models, shallow rounded removable caps, side covers, external connector shells/flanges.
+  Four unit inspection entries plus separately selectable estimated support shelf; independent
+  casing/cover/mount/interface masks. Two lidar boxes now retain NASA's nominal 2023 MEB/FEB
+  design envelopes. Original number 05/thermal zone retained. No physics constants changed.
+- **Evidence/limits:** Real supplier hardware image and both June 2026 datasheet pages
+  inspected/saved, exploded image labeled CAD. NASA/APL Uranus appendix pp184-185 links MIMU
+  to Dragonfly, not exact flight variant/options/install. Family upper-envelope scale,
+  exterior proportions/support/coordinates [EST]; Ocellus housings NOT photo-matched. No
+  hidden boards/gyros/optics/connector pins/flight harness invented. #05 unchecked, count19/24.
+- **Fit:** All four units clear each other and rebuilt neighbors at source-envelope scale;
+  legacy IMU/FEB overlaps resolved without moving/shrinking completed parts. Estimated shelf
+  intentionally contacts bases; not asserted flight mounting. No supplier mass/power imported.
+- **Archive:** Original blocks/UI/pictures, central-flat/upright rejected poses, pre-MIMU
+  dimension study and shelf-focus draft retained with restore instructions. Baseline/tag
+  `archive/nose-electronics-2026-10-19` on `cf4c866`. Real/CAD/model comparisons credited
+  separately; source index, assumptions, checklist/handoff/architecture updated together.
+- **Checks:** 321 tests pass (seven focused new tests); 30 Edge/WebGL selector checks across
+  Internal/Thermal and 1440/390/360 px. Four angles per layer nonblank/framed, no page errors
+  or horizontal overflow. Envelopes, independent masks/anchors, rebuilt-neighbor clearance,
+  omitted internals and unchanged completion count tested. Release/live result recorded after deploy.
+- **Next:** Find current Ocellus hardware photos; SQRLi/SpaceCube leads do not establish
+  identical housings/boards. Seek mission-specific MIMU variant/dimensions/install. Already
+  published game work preserved; no game source edits. Other open parts #03/#09/#20/#21.
+
 ### 2026-10-19: Smoke, fire and embers on lab destruction previews
 - **Signed:** Codex (OpenAI).
 - **Commit:** `Add smoke and fire to lab destruction previews`.

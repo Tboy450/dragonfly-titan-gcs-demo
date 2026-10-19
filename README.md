@@ -289,6 +289,15 @@ separately labeled CAD and process renders are saved together. Complete nose-fac
 and dimensions remain unresolved, so #03 stays unchecked and the count stays 19/24. Hiding
 the face shows unmodeled space, not a verified hollow flight panel. Geometry: Codex.
 
+The [part-05 navigation study](research/nose-electronics-2026-10-19/README.md) uses NASA's
+nominal 2023 Ocellus MEB/FEB sizes, not photo-matched flight housings. Both former IMU cubes
+are now photo-referenced Honeywell space MIMU family approximations, supported by a NASA/APL
+Dragonfly mention, not an exact flight variant identification. Full supplier upper-envelope
+scale, estimated installation/shelf, independent covers/casings/mounts/interfaces and four
+subassembly focuses are retained. All four units clear rebuilt equipment without moving it.
+Hidden electronics/harness remain unmodeled. #05 stays unchecked and count stays 19/24.
+Real supplier/heritage images, labeled CAD and process samples are saved separately. Geometry: Codex.
+
 The [aft bulkhead](research/aft-bulkhead-2026-10-15/README.md) follows NASA/APL's real structure
 photos: gold-colored face, ribbed circular generator interface and pocketed rim. The generator
 rises aft at an estimated 25 degrees; the fan collar and aft body profile follow the same

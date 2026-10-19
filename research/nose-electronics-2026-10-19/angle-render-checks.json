@@ -1,0 +1,78 @@
+{
+  "status": "passed",
+  "errors": [],
+  "checks": [
+    {
+      "layer": "internal",
+      "azimuth": 0,
+      "pixels": 21196,
+      "l": 360,
+      "r": 539,
+      "t": 213,
+      "b": 392
+    },
+    {
+      "layer": "internal",
+      "azimuth": 1.5,
+      "pixels": 16577,
+      "l": 324,
+      "r": 575,
+      "t": 217,
+      "b": 382
+    },
+    {
+      "layer": "internal",
+      "azimuth": 3.1,
+      "pixels": 18936,
+      "l": 360,
+      "r": 544,
+      "t": 245,
+      "b": 393
+    },
+    {
+      "layer": "internal",
+      "azimuth": 4.7,
+      "pixels": 18041,
+      "l": 329,
+      "r": 570,
+      "t": 218,
+      "b": 385
+    },
+    {
+      "layer": "thermal",
+      "azimuth": 0,
+      "pixels": 21196,
+      "l": 360,
+      "r": 539,
+      "t": 213,
+      "b": 392
+    },
+    {
+      "layer": "thermal",
+      "azimuth": 1.5,
+      "pixels": 16577,
+      "l": 324,
+      "r": 575,
+      "t": 217,
+      "b": 382
+    },
+    {
+      "layer": "thermal",
+      "azimuth": 3.1,
+      "pixels": 18936,
+      "l": 360,
+      "r": 544,
+      "t": 245,
+      "b": 393
+    },
+    {
+      "layer": "thermal",
+      "azimuth": 4.7,
+      "pixels": 18041,
+      "l": 329,
+      "r": 570,
+      "t": 218,
+      "b": 385
+    }
+  ]
+}

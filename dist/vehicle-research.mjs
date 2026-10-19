@@ -20,6 +20,7 @@ import { buildPowerUnits } from "./power-units.mjs?v=dev";
 import { buildSideCameras } from "./side-cameras.mjs?v=dev";
 import { buildNoseCameras } from "./nose-cameras.mjs?v=dev";
 import { buildNoseBulkhead } from "./nose-bulkhead.mjs?v=dev";
+import { buildNoseElectronics } from "./nose-electronics.mjs?v=dev";
 import { buildDrill, drillAsset } from "./drills.mjs?v=dev";
 import { buildSampleLines, buildBlowers } from "./draco-plumbing.mjs?v=dev";
 import { buildFans, buildWarmDuct, buildTrimDevice, airLoopPaths, thermalLoopAsset } from "./thermal-loop.mjs?v=dev";
@@ -396,11 +397,8 @@ export function buildResearchModel(kit) {
   buildNoseBulkhead({ parent: buildTarget, mesh });
   interiorPart("nose-cameras-inside", "nose-cameras", "Nose cameras: Forward MAC, Forward WAC, two Side Cameras, two NavCams (no active airflow)", "DragonCam paper (Clark et al. 2026) figs. 1-3; ICES-2023 p7; positions and pointing estimated", 0x3d4a52);
   buildNoseCameras({ parent: buildTarget, mesh });
-  let material = interiorPart("nose-electronics", "nose-electronics", "IMUs and lidar electronics (FEB, MEB)", "ICES-2023 p7 (base of the nose), fig. 4", 0x5f8fa3);
-  mesh(new THREE.BoxGeometry(0.22, 0.12, 0.2), material, [-0.15, -0.26, -1.36]);
-  mesh(new THREE.BoxGeometry(0.14, 0.1, 0.14), material, [0.07, -0.27, -1.38]);
-  mesh(new THREE.BoxGeometry(0.09, 0.09, 0.09), material, [0.25, -0.28, -1.42]);
-  mesh(new THREE.BoxGeometry(0.09, 0.09, 0.09), material, [0.25, -0.28, -1.28]);
+  interiorPart("nose-electronics", "nose-electronics", "Ocellus design envelopes / Honeywell MIMU family approximations", "NASA MSS2023 p6; Honeywell June2026 hardware/datasheet; NASA/APL Uranus appendix pp184-185. Exact flight variant/install unconfirmed", 0x5f8fa3);
+  buildNoseElectronics({ parent: buildTarget, mesh });
   interiorPart("sample-carousel", "cold-attic", "Cold attic: DrACO sample carousel", "NASA SVS 15003; SciTech 2024 figs. 1-2; 0.36 m drum and placement estimated", 0x7fb3c9);
   const carousel = buildSampleCarousel({ parent: buildTarget, mesh });
   // Only the illustrative flow endpoint changes; the older transfer-line asset is queued separately.
@@ -446,7 +444,7 @@ export function buildResearchModel(kit) {
   // The durable id stays "trim-chimneys"; the device drawn is the later cold bypass duct.
   interiorPart("trim-chimneys", "trim-device", "Trim device: cold bypass duct under the belly with fore and aft diverter flaps", "TFAWS 2023 slides 4, 7, 8; TFAWS 2024 slides 6-16; section and flap details estimated", 0xb04a9a, "exterior");
   const trimDevice = buildTrimDevice({ parent: buildTarget, mesh });
-  material = interiorPart("battery-sensor", "battery", "Battery temperature sensor: an input to the thermal controller", "TFAWS 2023 (controller inputs); placement illustrative", 0x9fe870);
+  let material = interiorPart("battery-sensor", "battery", "Battery temperature sensor: an input to the thermal controller", "TFAWS 2023 (controller inputs); placement illustrative", 0x9fe870);
   mesh(new THREE.SphereGeometry(0.022, 12, 8), material, [0.2, 0.02, 0.72]);
   material = interiorPart("mmrtg-sensor", "mmrtg", "MMRTG fin-root temperature sensor: the other controller input", "TFAWS 2023 (controller inputs); placement illustrative", 0x9fe870, "exterior");
   // Kept on the MMRTG's top fin root when the MMRTG was tilted (part 16); still a placeholder.

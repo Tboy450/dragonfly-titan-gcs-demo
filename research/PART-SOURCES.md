@@ -6,8 +6,19 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part-05 additional research:**
+[extended real-photo and cross-project reuse research](nose-electronics-2026-10-19/PHOTO-AND-REUSE-SEARCH.md).
+Honeywell product image/current June 2026 datasheet and NASA/APL Uranus pp.184-185 now saved
+and visually inspected. MIMU family asset built, exact flight variant/install unverified.
+NASA Ocellus/Kodiak SpaceCube Mini reuse is documented, not identical housings. SQRLi 2024
+review, digitizer-test and related-board leads remain uninspected follow-ups.
+
 | Folder | Source | Pages saved | Used by |
 |---|---|---|---|
+| [`sources/honeywell-mimu-2026`](sources/honeywell-mimu-2026/README.md) | Honeywell current June 2026 MIMU datasheet and original product image | Both original pages: exterior hardware image and explicitly labeled exploded CAD | 05 IMU family approximation; supplier credit, upper-bound scale, exact flight variant unknown |
+| [`sources/nasa-uranus-mimu`](sources/nasa-uranus-mimu/README.md) | NASA/APL Uranus study Appendix C | Original pages 184-185, visually inspected | 05 MIMU family/Dragonfly corroboration; historical study not flown-mission proof |
+| [`sources/nasa-mss2023-ocellus`](sources/nasa-mss2023-ocellus/README.md) | Amzajerdian, NASA MSS 2023 lidar overview | PDF page 6, Ocellus design CAD/dimensions | 05 dimensional study only; not actual hardware appearance |
+| [`sources/apl-navigation2023`](sources/apl-navigation2023/README.md) | Schilling et al., AAS 23-303, arXiv:2307.13513v2 | Page 2 sensor table | 05 redundant IMU context, no make/size |
 | [`sources/ipm2025-dragmet`](sources/ipm2025-dragmet/README.md) | Lorenz, Sotzen, Hacala, Mehr and DraGMet team (APL), IPM 2025 suite design | Printed pp. 184-185 (PDF 185-186); poster index page 2 | 22 continuation: published METHAN gas-cell/fiber/light-engine arrangement; no hardware-photo claim |
 | [`sources/ipm2025-efield`](sources/ipm2025-efield/README.md) | Seese et al. (APL/LATMOS), *Electric Field Sensor on Dragonfly's Titan Lander*, IPM 2025 | Printed pp. 186-187, PDF pages 187-188; real engineering-model photo fig. 2, dimensions and placement text | 22 EFIELD only |
 | [`sources/caps2024-dragmet`](sources/caps2024-dragmet/README.md) | Turtle (APL), *Dragonfly Update*, CAPS, October 22, 2024 | Slide 42 sensor suite | 22 reference-gap check; METHAN is CAD, not hardware photo |
@@ -33,6 +44,7 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 | Part | Photos (saved) | Figures and patents (saved) | Links only (not saved) | Notes |
 |---|---|---|---|---|
+| **05 Navigation electronics (partial)** | [Research/comparisons](nose-electronics-2026-10-19/README.md): Honeywell original MIMU hardware image; NASA/W. Hrybyk Kodiak heritage, NOT Ocellus | Honeywell exploded CAD; NASA MSS2023 p6 Ocellus CAD; APL navigation p2; NASA/APL Uranus pp184-185 | NASA Ocellus overview; supplier interview; uninspected SQRLi leads | MIMU family approximation, exact flight variant/install unknown; Ocellus dimension-only. All new units clear rebuilt neighbors. #05 unchecked |
 | **03 Nose bulkhead (provisional)** | [`nose-bulkhead-2026-10-19/`](nose-bulkhead-2026-10-19/README.md): NASA/APL September harness integration and July suspended-structure photos (Ed Whitman); existing April fit check | ICES-2023 fig. 3, APL 2024 CAD frame (layout only, not photos) | NASA April primary-structure report, all original links in part README | Finish/joints only; full nose face unresolved. Dimensions, face, returns, mounts and fasteners [EST]; #03 stays unchecked |
 | **22 EFIELD / METHAN** | [`nose-sensors-2026-10-17/`](nose-sensors-2026-10-17/README.md): EFIELD engineering-model photo; [`methan-2026-10-18/`](methan-2026-10-18/README.md): approved design estimate and comparison, NOT a METHAN photo match | IPM pp. 184-187; CAPS 2024 slide 42 CAD, not hardware photography | [IPM proceedings](https://zenodo.org/records/17056361), [APL DraGMet](https://www.jhuapl.edu/destinations/instruments/dragmet) | Codex. EFIELD stalk/ball sizes [PUB]; METHAN cold-cell/warm-light-engine architecture [PUB]. All METHAN casing sizes, finish and installation [EST]; owner-approved approximation completes initial #22 pass, not photo verification. |
 | **16 Aft bulkhead** | [`aft-bulkhead-2026-10-15/`](aft-bulkhead-2026-10-15/README.md): full-resolution inverted vibration-test photo and Claude's evidence sheet; April fit-check original in `lander-structure-2026/` (NASA/Johns Hopkins APL/Ed Whitman) | TFAWS 2023 layout; APL 2024 rotating CAD already saved in `apl-spacecraft-models/` (orientation/layout only) | [NASA April fit check](https://science.nasa.gov/blogs/dragonfly/2026/04/23/nasas-dragonfly-rotorcraft-gets-decked-out-tested/), [APL July tests](https://www.jhuapl.edu/news/news-releases/260709-dragonfly-clears-key-tests-as-assembly-comes-together) | Real photos for appearance; fixture explicitly inverted; 25-degree angle, sizes, coating and gas interface [EST]. Claude geometry; Codex closeout. |
