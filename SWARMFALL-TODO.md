@@ -374,10 +374,14 @@ complete solely because its assets download or its unit tests pass.
 
 ## 9. Game modes (MODE)
 
-- [ ] **MODE-20 ★ (P2)** First-person / pilot campaign experience (owner, October 16).
-  Let the player pilot a drone during campaign battles, with a cockpit/pilot camera and
-  flight/aim controls. Define how piloting switches back to swarm command and how the other
-  squads behave while the player flies. Preserve campaign objectives, hazards and progression.
+- [ ] **MODE-20 ★ (P2)** Individual-drone first- and third-person control (owner, October
+  16; expanded October 19). Let the player take over an eligible drone, switch between an
+  onboard first-person view and third-person chase view, fly/aim/use that drone's abilities,
+  and return to RTS swarm command. Owner reference: Ghost Recon / RTS-style direct control;
+  exact game reference is not yet specified. Preserve campaign objectives, hazards and
+  progression, and keep other squads following orders. A separate optional pilot/skirmish
+  mode is an acceptable first playable step if campaign integration needs more groundwork;
+  that prototype does not complete the campaign handoff milestone.
 - [ ] **MODE-21 ★ (P3)** Future Tank Wars-style drone builder for the pilot campaign (owner,
   October 16). Design configurable drone bodies, propulsion, weapons and equipment, with
   understandable cost/performance tradeoffs. This is a future design request; scope and
@@ -937,10 +941,13 @@ from local weapon-triggered gameplay, building on ENV-01 through ENV-04 and ENV-
 ## 24. Pilot campaign and future drone builder (PILOT, BUILD)
 
 MODE-20 is the owner feature; the current lab camera is not a completed pilot mode.
+October 19 owner expansion: control individual drones in both first and third person, with
+an optional dedicated mode as a first step. Keep this future work unchecked until playable.
 
-- [ ] **PILOT-01 ★ (P2)** Prototype possession of an existing live campaign drone. Define
-  entry/exit, which squad it belongs to and what command the drone resumes on release;
-  preserve the ongoing battle, hazards and objectives rather than starting a separate toy mode.
+- [ ] **PILOT-01 ★ (P2)** Prototype possession of an eligible individual drone. Define
+  entry/exit, unit switching, which squad it belongs to and what order it resumes on release.
+  An optional pilot/skirmish mode can prove controls first; then integrate possession into
+  the existing campaign while preserving the ongoing battle, hazards and objectives.
 - [ ] **PILOT-02 ★ (P2)** Implement controllable pitch/yaw/translation/altitude or the
   selected simplified flight scheme, with clear acceleration and boost limits. Reuse shared
   clearance/collision and world-height rules; flight must not pass through scenery.
@@ -949,7 +956,9 @@ MODE-20 is the owner feature; the current lab camera is not a completed pilot mo
   target handling; visual projectiles must agree with actual damage and line of sight.
 - [ ] **PILOT-04 ★ (P2)** Build a readable pilot HUD: health, weapon state, warnings,
   altitude/clearance, objective direction, squad/mission status and a quick return to command.
-  Add cockpit/chase presentation after the control prototype is useful and stable.
+  Provide switchable first-person onboard and third-person chase cameras, with suitable
+  near clipping, obstacle avoidance, readable aiming and adjustable chase distance. Views
+  control the same drone and abilities; camera switching must not reset combat state.
 - [ ] **PILOT-05 ★ (P2)** Specify autonomy for the rest of the swarm while the player flies:
   retain orders, continue capturing/fighting and issue actionable alerts. Provide quick squad
   commands without accidental camera/input conflicts or unexplained abandoned squads.
@@ -958,13 +967,15 @@ MODE-20 is the owner feature; the current lab camera is not a completed pilot mo
   preserve camera comfort, selected squad and outcome/extraction flow.
 - [ ] **PILOT-07 (P2)** Design desktop and touch controls, configurable sensitivity,
   inversion and accessible alternatives. Keep pause/menus from firing weapons or steering;
-  clear held inputs when focus changes or the browser hides.
-- [ ] **PILOT-08 (P2)** Save/resume mode, controlled unit ID and necessary view/control
-  state through reviewed schemas. Restore safely paused, validate target existence and
-  fall back to command mode when the controlled drone is no longer valid.
+  clear held inputs when focus changes or the browser hides. Include explicit first/third-
+  person toggle, drone switching and return-to-RTS bindings without camera/fire conflicts.
+- [ ] **PILOT-08 (P2)** Save/resume mode, controlled unit ID, first/third-person preference
+  and necessary view/control state through reviewed schemas. Restore safely paused, validate
+  target existence and fall back to command mode when the controlled drone is no longer valid.
 - [ ] **PILOT-09 ★ (P2)** Playtest a whole mission that switches between command and pilot
-  play, then repeat on a real city district. Record combat readability, collision, comfort,
-  difficulty and phone performance before expanding cockpit art or pilot-only content.
+  play in both first and third person, then repeat on a real city district. Record combat
+  readability, collision, comfort, difficulty and phone performance before expanding cockpit
+  art or pilot-only content.
 - [ ] **BUILD-01 ★ (P3)** Clarify the owner's Tank Wars-style builder reference when this
   milestone begins. Agree on editable parts, attachment freedom and intended combat role;
   retain the concept without assuming a specific game's mechanics or copying proprietary assets.

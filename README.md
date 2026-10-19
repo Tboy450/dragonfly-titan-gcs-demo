@@ -165,9 +165,13 @@ scale/infrastructure reference; Skyrim, Spider-Man, Crackdown, Kakarot and Synty
 remain in the [city research](research/fantasy-city-2026-10-16/README.md) and
 [complex-scene shortlist](research/fantasy-city-2026-10-16/COMPLEX-SCENES.md).
 Spacecraft, orbital stations and planetary/alien architecture are priorities in the download
-queue. Pilot/first-person campaign (**MODE-20**), a later Tank Wars-style drone builder
-(**MODE-21**), choosing victory extraction or continued capture (**OBJ-07**), and multiple
-pods carrying 1–3 drones each (**DROP-01**) are recorded as future gameplay work.
+queue. Future individual-drone control (**MODE-20**, **PILOT-01–09**) includes switchable
+first-person onboard and third-person chase views, flight/aim/abilities, and a return to RTS
+command while other squads keep their orders. An optional dedicated pilot/skirmish mode
+can come first; campaign integration remains the eventual goal. The owner's Ghost Recon /
+RTS reference guides the idea; the exact title is unspecified. The later Tank Wars-style
+builder (**MODE-21**) also remains planned. Victory extraction/continued capture and multiple
+pods carrying 1–3 drones each are now implemented, with browser/device acceptance still open.
 
 **October 17 — progressive destruction artwork:** all five city tests now offer **Intact,
 Damaged, Major destruction and Ruins**. Broken facades, jagged tower sections, exposed floors,

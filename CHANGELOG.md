@@ -39,6 +39,19 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Expand future pilot control to first and third person
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record individual drone first and third person mode
+- **What changed:** Expanded existing MODE-20/PILOT tasks for individual-drone possession,
+  switchable onboard/chase cameras, drone abilities, unit switching and return to RTS with
+  other squads retaining orders. Optional dedicated pilot/skirmish mode can be the first
+  playable step; eventual campaign handoff remains required. Owner reference recorded as
+  Ghost Recon / RTS-style control without assuming an exact title or its mechanics.
+- **Files:** SWARMFALL-TODO.md and README.md; existing task IDs retained and kept unchecked.
+- **Checks:** Documentation diff, unique task IDs and checkbox count verified; no runtime
+  changes or new test run. Latest implementation suite remains 380 passing tests.
+- **Open / next:** Future design/implementation, not a playable mode yet. Count stays 23/304.
+
 ### 2026-10-19: CTRL-04 desktop selection and order controls
 - **Signed:** Codex (OpenAI)
 - **Commit:** Separate desktop selection from battlefield orders
