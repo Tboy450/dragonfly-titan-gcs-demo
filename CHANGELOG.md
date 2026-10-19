@@ -39,6 +39,37 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Extensive Swarmfall priorities, drone identity and free-roam planet design
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record Swarmfall priorities and free-roam design.
+- **What changed:** Expanded the master checklist to 296 unique tracked tasks across 35
+  numbered sections, retaining all 129 previous task IDs and adding 167 detailed tasks.
+  Added ordered milestones, acceptance gates, a per-environment readiness matrix and current
+  implementation status. Multiple pods and victory/continue remain first; campaign pilot,
+  local destruction, playable cities and builder requests remain explicit.
+- **Design additions:** Researched seven RTS/construction references through official or
+  publisher material. Added proposed scouting/relay/electronic warfare, drone recovery,
+  pod reuse, squad cooperation, space operations and useful sensory feedback. Designed a
+  separate persistent free-roam mode: first three connected regions on one planet, capture
+  and return travel, saved world changes and a measured graphics/streaming plan. These are
+  candidates and milestones, not implemented game features or promised photorealism.
+- **Preservation:** Saved the complete previous checklist in
+  `archive/swarmfall-checklist-2026-10-19/`, with baseline and restore instructions; added its
+  archive index entry. Old requests, source references, downloaded assets, previous art and
+  unfinished modular-kit work are retained. No runtime code, assets or saves changed.
+- **Status reconciliation:** Corrected stale local-only lab and prior aft-bulkhead failure
+  notes. The last game/lab release baseline is fb2e5b6 (October 17; 270 tests at that release).
+  Fetched remote main 9f3fea1; its two newer simulator part-22 commits do not change the game
+  or its tests and are separate from this documentation-only work.
+- **Files:** SWARMFALL-TODO.md, README, this log, archive index/snapshot/readme,
+  `research/swarmfall-design-2026-10-19/README.md`, city integration status header.
+- **Checks:** Task-ID uniqueness and preservation, explicit task references, local document
+  links, archived checklist versus its tracked baseline, and `git diff --check`. No new full
+  application test run is claimed for these Markdown-only changes. Reference research was a
+  documentation review, not an installed-game playtest.
+- **Open / next:** DROP-01 through DROP-08 and OBJ-07/09/10/11 with compatible checkpoints;
+  then reliable commands, one playable district and the gated free-roam/drone experiments.
+
 ### 2026-10-17: Publish the Asset and Environment Lab with individual model inspection
 - **Signed:** Codex (OpenAI)
 - **Commit:** Publish Asset and Environment Lab with asset inspection

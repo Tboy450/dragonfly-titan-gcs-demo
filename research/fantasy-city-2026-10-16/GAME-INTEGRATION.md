@@ -1,6 +1,9 @@
 # City implementation review and destruction artwork
 
-October 17, 2026 — Codex (OpenAI). Local implementation and code review; no public deployment.
+October 17, 2026 — Codex (OpenAI). Initial local implementation and code review.
+Status reconciled October 19: the [Asset & Environment Lab](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/)
+and its destruction previews were published later on October 17. Playable city integration
+and local combat destruction remain pending in the [master checklist](../../SWARMFALL-TODO.md).
 Earlier city studies, source archives, authoring projects and campaign maps are retained.
 
 ## Recommended use of the existing environments

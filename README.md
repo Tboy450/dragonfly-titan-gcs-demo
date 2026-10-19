@@ -51,8 +51,13 @@ All game numbers, the invented worlds and the drone and defender models are game
 not physics. Rules are in plain modules with tests (`tests/invasion-*.test.mjs`); see
 ARCHITECTURE.md. Later ideas from the owner: a free mode with a galaxy of planets to pick from,
 and a local versus mode where players race to take the same planet with drone-vs-drone weapons.
-Everything still to do is in the [Swarmfall update checklist](SWARMFALL-TODO.md), with item
-numbers to ask for.
+The [Swarmfall prioritized update checklist](SWARMFALL-TODO.md) was expanded October 19 with
+ordered milestones, current implementation status and detailed acceptance tasks. Multiple
+parachute pods and victory/continue remain first. It also tracks playable cities, destruction,
+pilot control, drone-specific tactics, better graphics and a separate persistent free-roam
+planet mode alongside the campaign; these are planned features. The [RTS/space design study](research/swarmfall-design-2026-10-19/README.md)
+links reference games and proposes connected territories, scouting/relays, recoverable drones
+and modular loadouts. Existing task IDs and the full previous checklist are preserved.
 
 ### Asset & Environment Lab
 

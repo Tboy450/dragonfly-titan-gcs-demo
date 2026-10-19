@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [swarmfall-checklist-2026-10-19](swarmfall-checklist-2026-10-19/README.md) | Complete checklist before priority/status review; every prior request, task ID and historical note retained for comparison | 2026-10-19 | Documentation baseline `fb2e5b6`; no model replacement |
 | [Skyway second-coast baseline](environment-lab-v1-2026-10-16/partial-contour-draft/) | Preferred low coast before adding Blender-fitted structural supports; source and re-rendered pictures retained, selectable with `foundation=contour-v2`; last default commit `0aa7b87` | 2026-10-16 | `archive/skyway-low-coast-v2-2026-10-16` |
 | [environment-lab-v1-2026-10-16](environment-lab-v1-2026-10-16/README.md) | Original three-test gallery, menu and camera behavior before adding complete source cities; exact code, screenshot and restore steps | 2026-10-16 | `archive/environment-lab-v1-2026-10-16` |
 | [nose-sensors-2026-10-17](nose-sensors-2026-10-17/README.md) | Part 22 methane box and short EFIELD cylinder before two photo-referenced engineering-model probes; exact originals, before pictures and rejected mount draft | 2026-10-17 | `archive/nose-sensors-2026-10-17` |

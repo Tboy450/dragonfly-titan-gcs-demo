@@ -1,89 +1,160 @@
-# Swarmfall Update Checklist
+# Swarmfall — Prioritized Update Checklist
 
-Owner request recorded October 16, 2026: the game "still needs a lot of work"; keep an extensive
-update checklist. Started by Claude (Anthropic Claude Opus 5.5).
-The game lives in `dist/invasion/` and is live at
-https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/ (see README and ARCHITECTURE.md).
-Keep this file updated across sessions and assistant handoffs.
+Updated October 19, 2026 — Codex (OpenAI), following the owner's request for an extensive
+priority checklist. Scope: **Swarmfall gameplay and the Asset & Environment Lab**.
+The Dragonfly scientific simulator has its own interior/engineering checklists.
 
-## How to use this list
+[Play Swarmfall](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/) ·
+[Public Asset & Environment Lab](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/) ·
+[City integration review](research/fantasy-city-2026-10-16/GAME-INTEGRATION.md) ·
+[RTS, space and drone design study](research/swarmfall-design-2026-10-19/README.md) ·
+[Previous checklist, preserved in full](archive/swarmfall-checklist-2026-10-19/SWARMFALL-TODO-before.md)
 
-- Every item has an ID (for example `CTRL-03`), so the owner can ask for items by number.
-- **P1** = needed for a solid public game (do these next). **P2** = important depth.
-  **P3** = later ideas.
-- ★ marks things the owner asked for directly.
-- Tick an item in the same commit as the work, add the worker's name after it, and add a signed
-  CHANGELOG entry (house rule 5).
-- Game rules stay in plain modules with tests (`battle.mjs`, `campaign.mjs`, `units.mjs`,
-  `hazards.mjs`, `achievements.mjs`); `main.mjs` and `scene.mjs` only read them (house rule 3).
-- Replaced work is archived, never deleted (house rule 6).
+## Tracking rules
 
-## Resume here (October 16, 2026)
+- This is the master backlog. Existing task IDs remain valid; new detailed tasks expand the
+  original requests. The priority table references those tasks rather than creating duplicates.
+- **P0 — urgent:** a reproduced crash, progress loss or other release-blocking failure.
+  Promote a task here when reproduced; this review does not invent a new P0 incident.
+- **P1 — next:** core playability or a prerequisite for the next milestone.
+  **P2 — after the core:** depth, art refinement and expansion. **P3 — later:** new large modes.
+  Follow the ordered roadmap; all P1 tasks are not meant to run at once.
+- **★** means directly requested by the owner. Unstarred items are implementation/support
+  recommendations. **S / M / L / XL** are relative scope, not promised calendar durations.
+- **[x]** means implemented for the stated scope. A public preview, source download or free
+  camera does not complete campaign integration, combat destruction or pilot gameplay.
+- Keep battle rules in plain modules, with the renderer/UI reading state. Add meaningful tests
+  to changed rules and compatibility paths. Mark completed work with worker/date/evidence.
+- Preserve original models, previous terrain passes, downloaded sources and unfinished work.
+  Use Blender, Houdini and code-based graphics; **do not use or suggest image generation**.
+- Existing checkbox IDs are the canonical tracking entries. Detailed child tasks and milestone
+  gates must pass before the corresponding broad feature is marked complete.
+- Every implementation release gets a signed CHANGELOG entry, appropriate checks and public
+  verification when deployment is part of the authorized task.
 
-- **Asset & Environment Lab release (Codex, October 17):** renamed the lab and added an Assets
-  mode for 18 individual drone, urban and fantasy models with inspection views and attribution.
-  [Public lab](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/);
-  [asset inspector](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/?asset=drone-scout).
-  Five environments, destruction stages and historical foundation variants remain available.
-  Linked from the game title; uses the existing GitHub Pages release workflow and build stamp.
-  Unfinished modular-kit work remains separate. A concurrent EFIELD update reached main during
-  publication; its existing simulator changes, documentation and archives are preserved by merge.
+## Current status — October 19 review
 
-- **City review and destruction artwork (Codex, October 17):** all five environments now have
-  Intact / Damaged / Major destruction / Ruins previews with broken mesh geometry, exposed
-  floors, rods and settled rubble. Original cities, terrain, water and citadel terraces are
-  retained. See ENV-05 and the [implementation review](research/fantasy-city-2026-10-16/GAME-INTEGRATION.md)
-  for five local links, measured GLB costs and concrete campaign integration steps. The
-  recommended route is one playable district within the full city, shared environment data,
-  collision/navigation/landing courts, then per-building damage and persistence. These art
-  states do not complete ENV-01 through ENV-04. **DROP-01 remains the next requested gameplay
-  pass** after this review/artwork; no parachute or pod logic changed.
+| Area | Verified status | Still open |
+| --- | --- | --- |
+| Campaign | Seven planets, economy, hazards, capture/control paths, achievements and progression exist | Human balance review, deeper progression and more mission types |
+| Mission saves | Active battle autosave/resume is implemented; restored missions start paused | Schema migrations, stronger validation and coverage for new wave/victory/damage states |
+| Drop delivery | A request creates one squad and one pod containing its entire payload | Multiple pods carrying 1–3 drones, spacing, arrival coordination and saved wave state |
+| Victory | Required captured-zone count immediately ends the battle and recalls the swarm | Leave for victory versus continue capturing, explicit extraction and final reward rules |
+| Public lab | Five environments and an 18-model asset inspector were published October 17 | Expanded metadata, loading/recovery, device review and gameplay integration |
+| Destruction artwork | All five maps have Intact / Damaged / Major destruction / Ruins variants | Authored structural IDs, local weapon damage, support cleanup, collision and persistence |
+| Skyway terrain | Houdini coast and editable native project exist; sampled contacts were validated | Owner art approval of the high rear land, full component/support and route review |
+| Pilot mode | The lab has a free camera | Possessing a campaign drone, flight/aim controls, collision, squad handoff and HUD |
+| Drone builder | Requested concept is retained | Reference clarification, modular rules/UI, balance and save compatibility |
+| Free-roam planet | Existing campaign and lab supply reusable rules/art; open-world mode is not implemented | Separate persistent world, connected regions, capture/travel rules, streaming and graphics review |
+| Source library | Six original backups, receipts and hashes were recorded, about 1.84 GB | Additional space/alien sources, derivative-authoring backup/restore and unresolved notices |
 
-- **Environment Lab and backups (Codex continuation, October 16):** first three visual tests
-  are implemented at `dist/invasion/environments/`: alien arcology, metropolis and tidal
-  citadel, with orbit/pilot cameras, view presets, flyover, dusk and light rendering. First
-  version preserved in `598e3b9` by Claude after Codex's usage limit. Six verified source
-  backups (1.84 GB) are in `C:/Users/Heemi/Documents/Game Asset Library/`, with licenses,
-  creators, hashes and a pending space/alien queue. [Current handoff](research/fantasy-city-2026-10-16/ASSET-BACKUPS.md).
-  These updates supersede the older "no city runtime import yet" research status below:
-  selected CC0 models are imported in the separate lab, but no campaign planet was replaced.
-  Preserve every earlier version, original archive and Downloads copy; do not clean up yet.
+Evidence baseline: local game/lab source at **fb2e5b6**; the October 17 combined release passed
+**270 tests** and its public build was checked. This October 19 work is a documentation/code
+audit, not a new full test run. After fetching, remote main is **9f3fea1** (October 18);
+its two newer commits concern simulator part 22, with no changes under the game or its tests.
+They remain separate from this documentation-only working-tree change.
 
-- **Codex continuation (October 16):** FIX-01 implemented locally: active missions autosave
-  every 5 seconds and when the page is hidden/left. Resume from the title, paused, with terrain,
-  orders, drops, hazards and camera restored. New missions ask before replacing a checkpoint.
-  Campaign progress and the checkpoint share one storage record. See the signed CHANGELOG entry
-  for verification and release status. The existing aft-bulkhead changes remain separate.
-- **New owner requests (October 16):** pilot/first-person campaign, later drone builder,
-  optional extraction after victory requirements, and multiple small pods. Tracked as
-  MODE-20, MODE-21, OBJ-07 and DROP-01 below; these are planned, not implemented.
-- **City research (Codex, October 16):** all references consolidated in
-  [City assets, scale and destruction](research/fantasy-city-2026-10-16/README.md): Skyrim,
-  Minecraft megacities (scale only), Spider-Man, Crackdown/Crackdown 3, Kakarot map/West City
-  and elven/fantasy architecture. Ranked free/paid asset shortlist and verified limitations.
-  Kenney's CC0 source archive is saved locally; no city runtime import yet. Start VIS-11 next
-  for a city prototype; ENV items below cover the separately requested destructibility.
+The old "live build 8b2399b / 237 tests" and uncommitted aft-bulkhead failure were historical
+notes, not the current Swarmfall status. The aft-bulkhead/inspection work was closed in eed63b1
+and included in the published baseline. Its archive and all old checklist notes are retained.
+Untracked modular-kit work and local authoring/install receipts are preserved.
 
-- **Live build:** `8b2399b`. The game arrived in `73c83e6`; `8b2399b` added the forgiving 404
-  page. 237 tests pass on the committed tree.
-- **Balance** was tuned only with a scripted bot that plays the whole campaign. It won all seven
-  planets on its first tries, with losses rising from 0 (Titan) to about 150 drones (Aurex).
-  No human playtest yet (TEST-03).
-- **Not part of the game:** another session's uncommitted aft-bulkhead work is in the working
-  tree with one failing test (OPS-01). Keep it out of game commits.
-- **Suggested next step:** Milestone 1.
+## Priority order — work from the top
 
-## Milestones (suggested order)
+| Order | Work package | Canonical tasks | Scope | Completion gate |
+| --- | --- | --- | --- | --- |
+| 1 | ★ Multiple parachute pods | DROP-01 through DROP-08 | L | One squad/wave, 1–3 drones per pod, safe spacing, one charge/cooldown, correct save/resume |
+| 2 | ★ Victory or continue | OBJ-07, OBJ-09 through OBJ-11; FIX-08 | M/L | Choice appears once, continuing stays playable, extraction settles rewards once |
+| 3 | Save compatibility for those changes | TECH-03; SAVE-01 through SAVE-06 | M | Old saves survive; descent, arrival and extraction reloads cannot duplicate progress |
+| 4 | Flight and ground movement | FIX-02/FIX-03; COMBAT-01/02; CITY-03/04 | L | Drones avoid solids, ground units find routes, height and attacks agree |
+| 5 | Selection, orders and readable feedback | CTRL-01/03/04/05/06; FIX-04/07/08 | M/L | Reliable desktop/touch orders, visible squads/alerts and clean mission-end UI |
+| 6 | Tutorial and first human balance pass | TUT-01/02; TEST-02/03/05; OBJ-08 | M | A new player can finish Titan, understand objectives and recover from losses |
+| 7 | First playable city district | VIS-18; CITY-01 through CITY-12; PERF-01/04/07 | XL | One reviewed district with terrain, collision, routes, zones, drops and a compatible checkpoint |
+| 8 | ★ Localized progressive destruction | ENV-01/02/03/06 through ENV-11; ART-01 through ART-08 | XL | One building changes state locally; visuals, collision, routes and saved state stay synchronized |
+| 9 | Public lab and asset pipeline polish | LAB-01 through LAB-09; OPS-08/09/10 | M/L | Every public route works, assets have provenance/readiness, repeated changes stay responsive |
+| 10 | ★ First-person/pilot campaign | MODE-20; PILOT-01 through PILOT-09 | XL | Pilot a real campaign drone and return to command without losing squad/mission state |
+| 11 | ★ Free-roam planetary conquest and better graphics | MODE-01/02/03; ROAM-01 through ROAM-16; GFX-01 through GFX-06 | XL | Three connected regions, persistent capture/revisits, separate saves and measured visual quality |
+| 12 | Content and progression | ECON, DRONE, ENEMY, HAZ and OBJ-01 through OBJ-06; SENSE/SWARM/SPACE/TACT experiments | L/XL | New content is balanced against measured campaign results; keep only useful experiments |
+| 13 | ★ Builder and versus | MODE-21; BUILD-01 through BUILD-10; MODE-10 through MODE-15 | XL | Stable core contracts, saves and performance exist before these modes expand scope |
 
-1. **Playable and polished:** the P1 items in FIX, TUT, CTRL, AUD, PERF and TEST, then human
-   playtests.
-2. **Deeper campaign:** ECON upgrades, new drones (DRONE), smarter defenders and a visible
-   public (ENEMY), wildlife and new hazards (HAZ), more objective kinds (OBJ).
-3. **New modes:** free mode (MODE-01 to 03) and local versus (MODE-10 to 15).
-4. **Look and sound:** VIS and the rest of AUD.
-5. **More content:** more planets, star systems and story (OBJ-03, OBJ-06).
+Tests, preservation and checkpoint compatibility belong inside each work package, not at
+the very end. Start first-city work as an isolated test mission. **Metropolis is the simplest
+technical route prototype; Skyway remains the intricate alien-capital art direction.** Keep
+the full city as surrounding context and validate roughly a 0.8–1 km active district before
+expansion. Do not shrink an entire city silently or replace campaign planets before review.
 
-## Built so far (October 15-16, Claude)
+### Drone identity and immersion — new design track
+
+The owner's October 19 direction adds RTS references, outer space, Tank Wars-style building,
+drone-specific possibilities and better immersion. The [design study](research/swarmfall-design-2026-10-19/README.md)
+records seven reference games and distinguishes their documented mechanics from our proposals.
+The suggestions below are **unimplemented candidates**, not new promises or completed systems.
+
+Recommended identity: **scout an alien district → establish a relay → hijack useful infrastructure
+→ deploy a coordinated swarm → recover survivors → extract or press on**. Pilot possession
+lets the player experience the same operation through one drone's sensors.
+
+| When | Design experiment | Tasks | Keep it only if… |
+| --- | --- | --- | --- |
+| With core fixes | Responsive rotor/weapon feedback, order acknowledgement, readable battle scale | AUD-01/02/03; IMM-01/02/03/04 | The player can tell what is happening without extra HUD clutter |
+| After one city district works | Scout information, one relay and one service to hijack | SENSE-01 through SENSE-06; TACT-02 | At least two useful approaches exist and a failed relay is recoverable |
+| After the district and save contracts work | Three-region free-roam planetary operation | ROAM-01 through ROAM-16; GFX-01 through GFX-06 | Capture survives travel/revisits/reload, with clear planet-wide progress |
+| After support/recovery rules | Rescue a disabled drone; repurpose landed pod hardware | SWARM-05/06; DRONE-02 | Creates a worthwhile rescue/positioning choice without recurring chores |
+| Alongside pilot milestone | Precision tagging/disable/recovery with command-mode alternatives | PILOT-01 through PILOT-09; SWARM-07 | Direct control is useful and returning to RTS preserves the battle |
+| After those roles prove useful | Small modular loadouts, then larger builder and off-world missions | BUILD-07 through BUILD-10; SPACE-01/04/05 | Building changes tactics and still fits campaign/device budgets |
+
+Use **matter plus at most one new tactical constraint in the first prototype**. Evaluate energy,
+signal and module power separately before combining them. Keep explicit player orders reliable,
+provide safe return/recovery options, and make all cinematic views skippable. No basic mission
+should require precision piloting. Detailed candidate and free-roam checkboxes are in sections 28–35.
+
+## Milestones and release gates
+
+1. **A — Drop and victory update:** DROP-01 through DROP-08, OBJ-07/09/10/11, relevant SAVE
+   tasks and FIX-08. Gate: tested multi-pod launch, all arrivals, pause/reload, continuing
+   capture and one-time extraction/rewards.
+2. **B — Reliable command gameplay:** FIX-02/03/04/07, CTRL selection/orders/alerts, TUT-01/02,
+   save hardening and a human Titan-to-Aurex review. Gate: no reproducible blocked core loop.
+3. **C — One real city battle:** shared environment data, fixed sites, safe descents,
+   geometry-aware movement/attacks and measured device settings. Gate: every required
+   objective and extraction point is reachable; new/legacy saves behave as documented.
+4. **D — Destruction that affects play:** reviewed structure families, local health/state,
+   damaged collision/routes, bounded effects, durable state. Gate: no floating blocking
+   collision, duplicate salvage or revived destroyed buildings after reload.
+5. **E — Pilot campaign:** possession, collision-aware controls/aim, useful pilot HUD,
+   autonomous remaining squads and clean RTS return. Gate: one whole mission in mixed modes.
+6. **F — Free-roam planet:** three connected regions, separate world save, meaningful sites,
+   persistent capture/travel/revisits and a polished foreground with a larger horizon. Gate:
+   one entire operation and reload/return travel pass on target devices. Can prototype after C;
+   add D's local damage and E's pilot control when those systems are ready.
+7. **G — Deeper worlds:** measured economy upgrades, new drones, society behaviors, wildlife,
+   hazards, mission variety and broader city districts. Gate: campaign remains winnable and legible.
+8. **H — Later systems:** drone builder, broader generated galaxies, local versus and eventually
+   online play. Gate: explicit designs and separate prototypes; online work follows stable
+   deterministic simulation and local rules.
+
+### Environment acceptance matrix
+
+"Art states available" means the lab can display the four versions. It does not mean that
+every asset has been artistically approved or that the environment is a playable battle.
+
+| Environment | Public preview | Art states available | Owner art/support approval | Campaign battle | Collision/routes | Safe pod courts | Saved local destruction | Phone benchmark |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Alien arcology | Yes | Yes | Pending | Pending | Pending | Pending | Pending | Pending |
+| Metropolis | Yes | Yes | Pending | Pending | Pending | Pending | Pending | Pending |
+| Tidal citadel | Yes | Yes | Pending | Pending | Pending | Pending | Pending | Pending |
+| Skyway megacity | Yes | Yes | Pending; high rear land especially | Pending | Pending | Pending | Pending | Pending |
+| Phototextured city | Yes | Yes | Pending; close-view materials especially | Pending | Pending | Pending | Pending | Pending |
+
+### What a completed feature needs
+
+State its player-visible behavior, rule/data changes, rendering/HUD feedback and relevant
+save behavior. Exercise normal and failure paths, desktop/touch inputs where relevant,
+and the intended mission(s). Keep existing campaign behavior compatible. Update this list
+and the signed handoff; retain replaced work and source notices. A new feature is not
+complete solely because its assets download or its unit tests pass.
+
+## Initial game inventory (October 15-16, Claude; historical baseline)
 
 - [x] Separate page `dist/invasion/` with its own public link; the simulator is unchanged apart
   from how `titan-terrain.mjs` finds its ground texture.
@@ -108,13 +179,14 @@ Keep this file updated across sessions and assistant handoffs.
 
 ## 1. Known problems (FIX)
 
-- [x] **FIX-01 (P1) — Codex (October 16, local)** Save and resume an active battle, including
+- [x] **FIX-01 (P1) — Codex (October 16; published baseline verified October 17)** Save and resume an active battle, including
   its terrain callback/pads. Title-screen Resume mission; autosave every 5 s and on page exit/
   hiding, resumed missions paused, malformed/version-mismatched saves ignored. New-mission
   replacement confirmation; unavailable-storage warning. Release status in CHANGELOG.
-- [ ] **FIX-02 (P1)** Drones fly through Aurex's towers (skyline up to about 48 m; drones cruise
-  at 15-28 m) and through hills. Make flying height follow terrain and buildings
-  (`battle.mjs` for the rule, `scene.mjs` for the obstacles).
+- [ ] **FIX-02 (P1)** Drones pass through Aurex's towers (skyline up to about 48 m; drones
+  cruise at 15–28 m). The renderer already adds ground height, but battle rules lack obstacle
+  clearance, look-ahead and climb/descent limits. Add one shared terrain/building clearance
+  model, with alternate routes where climbing is unsuitable; keep rules in `battle.mjs`.
 - [ ] **FIX-03 (P1)** Ground troops walk in straight lines and simply stop at shorelines. Add
   pathfinding (a grid search on `isLand`, or flow fields).
 - [ ] **FIX-04 (P1)** Drones are a few pixels wide when zoomed out. Draw squad-colored markers
@@ -258,7 +330,7 @@ Keep this file updated across sessions and assistant handoffs.
   show remaining zones, and award campaign rewards exactly once. Define loss/retreat after
   victory is available and when optional objectives/stars are finalized. The current game
   ends the mission automatically as soon as the required zone count is reached.
-- [ ] **DROP-01 ★ (P2)** Split a squad's delivery into multiple parachute pods carrying
+- [ ] **DROP-01 ★ (P1)** Split a squad's delivery into multiple parachute pods carrying
   **1–3 drones per pod**, dropped beside one another (owner, October 16; suggested rule).
   Keep one squad/order group across the wave. Show pod count before launch; find spaced,
   safe landing points inside the chosen zone, with a fallback when space is limited.
@@ -390,7 +462,8 @@ and other threats on the planet):
   achieve the requested scale. Prototype one district with a larger skyline, then expand with
   distance-based detail, section loading, shared materials/instances, building collisions,
   navigable streets, safe pod zones and phone performance checks. Coordinate with FIX-02,
-  FIX-03, MODE-20 and PERF; Kenney source pack downloaded for evaluation, no runtime city yet.
+  FIX-03, MODE-20 and PERF; Kenney source pack downloaded for evaluation. Lab city previews
+  now exist; a playable campaign city remains pending.
 - [ ] **VIS-11 ★ (P2)** Implement the large-city asset prototype from VIS-10 and the
   [research handoff](research/fantasy-city-2026-10-16/README.md). Start with a verified free
   subset of Downtown City MegaKit for urban blocks, or Medieval Village MegaKit for a fantasy
@@ -446,8 +519,9 @@ The game is silent today.
   Aurex's skyline and in storms.
 - [ ] **PERF-02 (P1)** Each Dragonfly drone is a full copy of the research model's exterior.
   Use a low-detail stand-in beyond about 150 m.
-- [ ] **PERF-03 (P1)** The 2,400 weather particles are moved on the CPU every frame. Move them
-  to the GPU.
+- [ ] **PERF-03 (P2)** Profile the 2,400 CPU-updated weather particles on target devices.
+  Move animation to the GPU or reduce cost only if measured frame time justifies it; verify
+  storm appearance, paused state and deterministic game hazards stay correct.
 - [ ] **PERF-04 (P1)** Adaptive resolution and a graphics quality setting (decor density,
   effects).
 - [ ] **PERF-05 (P2)** Combat checks every unit against every enemy each step. Use the
@@ -456,12 +530,14 @@ The game is silent today.
 
 ## 13. Engineering and tests (TECH, TEST)
 
-- [ ] **TECH-01 (P1)** Split `main.mjs` (about 790 lines) into `invasion/ui/` modules like the
+- [ ] **TECH-01 (P2)** Extract cohesive parts of `main.mjs` into `invasion/ui/` modules while implementing the relevant feature, like the
   simulator's `ui/` folder: camera, selection, drop panel, HUD, minimap, debrief.
 - [ ] **TECH-02 (P2)** Fixed-step simulation, so game speed and frame rate never change the
   result; needed for replays and online versus.
-- [ ] **TECH-03 (P2)** Versioned progress saves with migration (`PROGRESS_VERSION`) before
-  upgrades or new fields arrive.
+- [ ] **TECH-03 (P1)** Add migrations for existing versioned campaign/checkpoint saves before
+  waves, victory eligibility, upgrades or environment fields change. Exact-version rejection
+  exists today; migration does not. Keep real old-save fixtures and explicit unsupported-version
+  behavior. Coordinate SAVE-01 through SAVE-06.
 - [ ] **TECH-04 (P2)** Export and import progress to move it between devices.
 - [ ] **TECH-05 (P3)** Installable app with offline play.
 - [ ] **TEST-01 (P1)** A render smoke test for `scene.mjs` and `models.mjs`, using the
@@ -483,10 +559,10 @@ The game is silent today.
   Original archives, existing files and Downloads copies retained. Further downloads remain
   open under VIS-15; source backups are not automatically game-ready implementations.
 
-- [ ] **OPS-01 (P1)** Another session's aft-bulkhead work (`dist/aft-bulkhead.mjs`,
-  `dist/vehicle-research.mjs`, `dist/thermal-loop.mjs`, `dist/vehicle-inspector.mjs`,
-  `tests/aft-bulkhead.test.mjs`, `research/aft-bulkhead-2026-10-15/`) is uncommitted with one
-  failing test. Whoever started it should finish or archive it.
+- [x] **OPS-01 (P1) — Claude/Codex; closed in eed63b1, status reconciled October 19**
+  The earlier aft-bulkhead/inspection work was completed, archived and published. Its old
+  uncommitted/failing-test note is preserved in the checklist archive. Continue protecting the
+  game's Dragonfly rendering from simulator changes under TEST-04 rather than reopening this task.
 - [ ] **OPS-02 (P1)** GitHub Actions warnings on the publish run: actions that target Node 20
   are deprecated (`configure-pages@v5`, `deploy-pages@v4`, the upload step); update them when
   newer versions are available. `ubuntu-latest` moves to Ubuntu 26 from October 19, 2026:
@@ -498,9 +574,9 @@ The game is silent today.
 - [ ] **OPS-05 (P2)** Credits and notices in the game: the three.js license, the NASA/APL
   Dragonfly sources behind the model, and a "fan-made, not affiliated with NASA or APL" line on
   the title screen.
-- [ ] **OPS-06 (P3)** Remove stale git worktree records under `.git/worktrees/` that Windows
-  would not delete, and the `sites` remote, which needs a login (`sites-redirect/` was never
-  published).
+- [ ] **OPS-06 (P3)** Audit stale worktree records and the older `sites` remote; identify any
+  recoverable work and record cleanup options. Preserve everything under the owner's current
+  no-deletion instruction; actual removal requires a later explicit cleanup request.
 
 ## 15. Documentation (DOC)
 
@@ -512,7 +588,7 @@ The game is silent today.
 
 ## 16. Destructible environments (ENV)
 
-- [x] **ENV-05 ★ (P2) — Codex (October 17, local)** Progressive damaged/destroyed art studies
+- [x] **ENV-05 ★ (P2) — Codex (published October 17)** Progressive damaged/destroyed art studies
   for **all five maps**: Alien arcology, Metropolis, Tidal citadel, Skyway megacity and
   Phototextured city. Four selectable states, deterministic component grouping, real facade
   clipping, jagged remnants, exposed cross sections, bent rods and style-specific settled
@@ -548,3 +624,594 @@ system. The following are implementation tasks, not claims about either game's i
   static settled rubble; consider a worker only if measurements justify it. Record phone and
   desktop frame time/memory. Citywide physics and online synchronization need separate design;
   do not promise Crackdown's cloud-scale behavior on the current browser architecture.
+
+## 17. Multi-pod delivery acceptance tasks (DROP)
+
+These complete the original DROP-01 feature; they are not separate squad purchases. Use the
+current terrains first, then reuse the same placement contract in city districts.
+
+- [ ] **DROP-02 ★ (P1)** Define deterministic payload packing: 1–3 drones per physical pod,
+  mixed types supported, with current slot capacity applied to the **whole wave**. Explicitly
+  decide how a large Dragonfly occupies a pod. Show wave capacity and pod count before launch.
+- [ ] **DROP-03 ★ (P1)** Give each wave and physical pod stable IDs. Charge matter and apply
+  recharge once per accepted wave; failed validation charges nothing. Preserve one squad,
+  type limits, unlock rules and loss recovery. Count waves versus physical pods separately.
+- [ ] **DROP-04 ★ (P1)** Preview spaced touchdown positions beside one another within a held
+  landing area. Check dry/allowed surface, slope, playable bounds, canopy/pod clearance and
+  formation space. Use a bounded reposition/stagger fallback when the first layout cannot fit.
+- [ ] **DROP-05 ★ (P1)** Coordinate staggered arrivals. Assign unique formation slots across
+  sibling pods; retain squad commands while later pods descend. A delayed pod must not reset
+  orders, overlap released drones or split the delivery into unrelated squad cards.
+- [ ] **DROP-06 ★ (P1)** Render every inbound pod/parachute with separate touchdown cues and
+  controlled separation. Review the current fixed visual pod pool before increasing count;
+  never silently hide excess inbound pods. Explain inbound, released and missing drones in HUD.
+- [ ] **DROP-07 ★ (P1)** Save/resume complete wave state: payload partition, positions,
+  timers, released flags and shared squad ID. Reload before descent, between releases and
+  after release; produce each drone once and never charge/refund a wave twice. Depends TECH-03.
+- [ ] **DROP-08 ★ (P1)** Accept the feature with 1/2/3/4 drones, mixed and maximum payloads,
+  multiple waves, paused launches, narrow courts, shoreline/roof/bridge obstacles and low
+  frame rate. Test failure feedback, last-pod arrival and command continuity on desktop/touch.
+
+## 18. Victory, objectives and checkpoint completion (OBJ, SAVE)
+
+OBJ-07 is the owner feature. Resolve its rules before adding UI or awarding rewards early.
+
+- [ ] **OBJ-08 (P1)** Align objective wording and logic: “destroy every watchtower” currently
+  checks remaining native structures, so conversion can satisfy it. Decide whether each
+  objective means destroy, capture or neutralize; test every allowed path and display it clearly.
+- [ ] **OBJ-09 ★ (P1)** Add a persisted **victory available** phase distinct from a finished
+  mission. Offer leave/claim victory versus continue. Keep an obvious extraction action and
+  remaining-zone count while continuing; do not repeatedly interrupt after the first choice.
+- [ ] **OBJ-10 ★ (P1)** Define eligibility after zones are retaken, retreat or total defeat;
+  whether time-based goals stop at eligibility or extraction; and when stars/refunds finalize.
+  Implement the selected rules in one place and describe them in the choice/debrief.
+- [ ] **OBJ-11 ★ (P1)** Settle a mission exactly once using a stable completion identity.
+  Exercise repeated callbacks, double activation, reload around extraction and replayed planets.
+  First-conquest rewards remain distinct from replay income, statistics and best-time updates.
+- [ ] **SAVE-01 (P1)** Strengthen checkpoint validation for references and rule invariants:
+  squad membership, orders, finite movement/formation values, pod release flags, strikes and
+  practical array/count bounds. Reject invalid state without damaging valid campaign progress.
+- [ ] **SAVE-02 (P1)** Add real previous-version fixtures and explicit checkpoint/progress
+  migration through TECH-03. An unsupported save should produce a useful explanation and a
+  recoverable backup/export path, rather than silently appearing as a fresh campaign.
+- [ ] **SAVE-03 (P1)** Add a tested result-settlement boundary between active mission and
+  campaign bank. Handle closure during the current debrief delay and failed browser writes;
+  prevent duplicate rewards/recall or unexplained loss of a just-finished mission.
+- [ ] **SAVE-04 (P2)** Define which command UI state should survive reload: selected squads,
+  camera, pending orders, drop payload and placement intent. Restore safely paused and cancel
+  stale placement previews rather than accidentally launching from an old pointer position.
+- [ ] **SAVE-05 (P1)** Version the environment binding in a checkpoint: environment ID,
+  layout/district version, structural states and objective surface IDs. Rebuild collision and
+  surface callbacks; document migration/fallback when an authored city changes. Depends CITY-01/02.
+- [ ] **SAVE-06 (P1)** Add reload scenarios for sibling pod arrivals, victory availability,
+  continued capture, local destruction and pilot/command switching as those features arrive.
+  Include unavailable/full storage and interruption; future fields must not replay effects or rewards.
+
+## 19. Movement, combat and defender behavior (COMBAT)
+
+These extend FIX-02/FIX-03; new cities cannot rely on decorative geometry for game rules.
+
+- [ ] **COMBAT-01 (P1)** Define shared obstacle footprints and vertical intervals, including
+  elevated routes. Reuse the same queries for flight, ground navigation, camera clearance,
+  target visibility and landing validation. Rendering and collision must share transforms.
+- [ ] **COMBAT-02 (P1)** Route drones around/above obstacles with look-ahead and bounded
+  climb/descent. Handle shoreline, steep ground, narrow streets, blocked goals and formations;
+  recover from an unavailable route with feedback rather than leaving a squad stuck forever.
+- [ ] **COMBAT-03 (P1)** Use consistent world heights for weapon range and targeting. Add
+  line of sight/cover against shared geometry and distinguish air, ground and structures.
+  Explain a blocked shot; test street-to-roof and under-bridge cases before city release.
+- [ ] **COMBAT-04 (P2)** Make squad intent legible: target/retarget cue, movement destination,
+  attack range and stop/disengage feedback. Show jammer/shield coverage and why a capture or
+  weapon is blocked. Coordinate FIX-05, CTRL-06 and CTRL-07 rather than duplicating controls.
+- [ ] **COMBAT-05 (P2)** Give defenders obstacle-aware patrol, investigate, defend and retreat
+  behavior, with readable reinforcement origins. Cap numbers and ensure spawn sites/routes are
+  valid; avoid reinforcements appearing inside occupied solids or inaccessible city levels.
+- [ ] **COMBAT-06 (P2)** Test converted defenses and civilian/control-path consequences with
+  the new geometry. Keep friendly/enemy target selection, alarm, zone recapture and structure
+  damage coherent; a converted turret must not keep blocking objectives invisibly.
+
+## 20. Playable city implementation (CITY)
+
+These are the concrete work packages behind VIS-18. Keep each map's acceptance matrix current.
+
+- [ ] **CITY-01 (P1)** Establish one coordinate/scale contract: units, up axis, origin,
+  source transform, district bounds and meaningful drone/road/door dimensions. Record the
+  current normalized display scales explicitly; do not change range/speed balance by accident.
+- [ ] **CITY-02 (P1)** Export authored stable IDs for buildings, bridge spans, props and
+  structural families **before** merging geometry. Preserve identity through material batches,
+  LODs and damage variants; reordering source meshes must not change saved building identities.
+- [ ] **CITY-03 (P1)** Supply terrain samples/triangle queries that match the baked surface.
+  Keep Houdini's fitted coast intact instead of flattening it again with procedural zone pads.
+  Test terrain height/normal, shore classification and boundaries at district edges.
+- [ ] **CITY-04 (P1)** Add multi-level surface queries and picking: street, bridge, terrace,
+  roof and tunnel IDs with height/normal. Order the intended level under overhangs and connect
+  only physically reachable surfaces. A single height value cannot represent stacked streets.
+- [ ] **CITY-05 (P1)** Prepare environments asynchronously before creating a battle, with
+  progress, retry, cancellation and partial-resource release. Returning to the galaxy or
+  changing selection must not start an abandoned load or display mismatched mission state.
+- [ ] **CITY-06 (P1)** Author the first district's capture sites, defender spawns, matter
+  access, safe drop courts and extraction route. Validate required-objective reachability
+  before play; choose meaningful city landmarks rather than random rings through buildings.
+- [ ] **CITY-07 (P1)** Build a separate city battle test with its own checkpoint namespace.
+  Validate start/drop/order/capture/continue/extract/reload on one district. Keep existing
+  campaign planets and progress intact while the city test is under review.
+- [ ] **CITY-08 (P2)** Define district transitions and city boundaries: when the next region
+  activates, how squads/orders move between them and which simulation stays active. Preserve
+  large-city skyline context without simulating every street at full detail at once.
+- [ ] **CITY-09 (P1)** Render in district × material chunks while retaining structure IDs.
+  Add distant skyline proxies, culling and bounded asset lifetime; verify the silhouette,
+  materials and terrain joins before broadening the active map. Coordinate PERF-07/08.
+- [ ] **CITY-10 (P2)** Add city-aware minimap/intelligence: district extents, route links,
+  landmarks, relevant vertical levels and landing courts. Show meaningful blocked/reachable
+  areas so the strategic map agrees with what the player sees in the 3D view.
+- [ ] **CITY-11 ★ (P2)** Map reviewed environments to civilizations without losing their
+  identities: intricate Skyway capital, realistic urban districts, radial alien arcology,
+  fantasy island citadel and modular metropolis. Review art, lore and biome fit per planet.
+- [ ] **CITY-12 (P1)** Accept each integrated district independently: art/support review,
+  navigation, capture access, safe descents, geometry-aware combat, environment-versioned saves
+  and target-device performance. Update the five-map matrix; one successful map does not close all five.
+
+## 21. Environment-specific art and foundations (ART)
+
+Keep the owner's references: Skyrim's dense fantasy districts; Minecraft's scale/infrastructure
+with a less blocky look; Spider-Man's continuous city fabric; Crackdown's verticality;
+Kakarot's rounded architecture/regional scale; and Elven Realm's architectural complexity.
+Use licensed sources and original adaptation, not proprietary franchise extraction.
+
+- [ ] **ART-01 ★ (P2)** Review Alien arcology in Intact and all three damage stages: ceramic
+  tower bodies/crowns, luminous rings, transit supports, canals and landing pads. Remove
+  unsupported ornaments and make broken spans/remnants recognizable from street and aerial views.
+- [ ] **ART-02 ★ (P2)** Review Metropolis blocks, intersections, parks, waterfront and skyline.
+  Improve repetitive silhouettes and facade variation; preserve usable street widths and
+  landmarks. Replace overly uniform broken-box profiles with reviewed building damage families.
+- [ ] **ART-03 ★ (P2)** Review Tidal citadel terraces, house roofs, tower caps, bridges and
+  waterfalls. Fit debris to each terrace, keep foundation levels coherent and author deliberate
+  broken bridge spans; avoid floating roofs, rubble under decks or unexplained platform gaps.
+- [ ] **ART-04 ★ (P1 for Skyway adoption)** Review Skyway's entire foundation by district,
+  especially the high rear land. Capture front/rear/underside comparisons; tune coast contours,
+  retaining cuts and supported roads without burying architecture or extending buildings into pillars.
+- [ ] **ART-05 ★ (P2)** Review Phototextured city from street and rooftop distance. Address
+  low-resolution/stretched facades, recognizable Earth dressing and roof detail; add a coherent
+  alien adaptation while preserving the useful source layout and original credited version.
+- [ ] **ART-06 (P2)** Build a reusable original detail inventory: curved facade ribs, tower
+  crowns, arches, buttresses, sweeping roofs, stairs, gardens, bridge joints and signage.
+  Give each piece a stable origin, scale, collision intent, material family and damage readiness.
+- [ ] **ART-07 (P2)** Establish coherent materials, readable lighting and ground/water
+  transitions per civilization. Check daylight/dusk and low graphics settings, especially
+  whether gameplay silhouettes, capture zones and enemy effects remain distinguishable.
+- [ ] **ART-08 ★ (P2)** Record owner art approval with annotated screenshots and exact version
+  links for each map/stage. Retain every earlier platform/coast/damage pass and restore steps;
+  numerical contact checks supplement artistic review rather than replacing it.
+
+## 22. Destruction integration acceptance tasks (ENV continuation)
+
+ENV-05 is completed visual prototyping. The following tasks keep global art previews separate
+from local weapon-triggered gameplay, building on ENV-01 through ENV-04 and ENV-06.
+
+- [ ] **ENV-07 ★ (P2)** Author reviewed intact/damaged/heavy/ruined variants by structural
+  family: open facades, exposed floors, fallen crowns, roof panels and bridge spans. Define
+  intact support relationships so removing a lower structure cannot leave unexplained floating detail.
+- [ ] **ENV-08 (P1 for playable damage)** Damage only the affected structure/district.
+  Prebake or incrementally prepare variants during loading/idle time; weapon hits must not
+  synchronously rebuild a whole city. Preserve stable IDs and bound active effects/debris.
+- [ ] **ENV-09 ★ (P2)** Fit rubble, rods and settled fragments to actual terrain/deck
+  surfaces and normals. Keep roads/canals/objective courts usable according to explicit rules;
+  review all five maps close up, including steep coast and stacked citadel levels.
+- [ ] **ENV-10 (P1 for playable damage)** Change visible geometry, collision, cover, route
+  links and landing validity atomically for each damage transition. Define captured-building
+  damage, salvage/alarm effects and extraction protection; never pay salvage twice.
+- [ ] **ENV-11 (P1 for playable damage)** Test local destruction across save/reload and
+  district unload/re-entry. Restore both visuals and blockers; destroyed structures stay
+  destroyed, optional objectives remain correctly evaluated and required goals stay completable.
+
+## 23. Asset & Environment Lab development (LAB)
+
+- [ ] **LAB-01 (P1)** Add a public route smoke matrix: five maps × four art stages, all
+  18 assets, historical foundation variants and game/lab links. Verify case-sensitive
+  dependencies, meaningful ready/error state, build stamp and creator/source links on the deployed site.
+- [ ] **LAB-02 (P2)** Add in-page load progress, cancel/retry and useful failure messages
+  for assets/maps; partial failure must release resources and leave a usable prior view.
+  Avoid requiring a full-page reload for every failed texture/model request.
+- [ ] **LAB-03 (P2)** Enrich the inspector catalog with triangle/material/texture counts,
+  source units or unverified-scale label, intended use, dependency size, readiness and damage
+  variant availability. Keep original creator/license/modification links with each derivative.
+- [ ] **LAB-04 (P2)** Add optional physical-scale comparisons while retaining fit-to-view
+  inspection. Show drone/building/door reference sizes only after the coordinate contract is
+  established; the existing 100-unit stand must not imply real-world dimensions.
+- [ ] **LAB-05 (P2)** Improve inspection/comparison workflow: asset categories/search,
+  focus/reset, useful isolated detail views and shareable camera/stage links. Preserve stage
+  selection across map navigation and make the current city/damage version unmistakable.
+- [ ] **LAB-06 (P2)** Measure repeated asset/map/stage switches for stalls, retained GPU
+  resources and memory growth. Precompute or schedule expensive damage work as justified;
+  keep the Intact view and controls responsive while variants prepare.
+- [ ] **LAB-07 (P2)** Inspect the separate unfinished modular-kit work before adopting it.
+  Check piece origins, snap dimensions, external textures, licenses and visual quality;
+  integrate only a tested subset and retain the original unfinished files/author credits.
+- [ ] **LAB-08 (P2)** Convert and inspect preserved Hidden Alley and HY-21 backups in an
+  isolated authoring workflow. Resolve dependencies/material cost and HY-21's exact notice
+  before redistribution; downloading or backing up a file alone is not runtime implementation.
+- [ ] **LAB-09 ★ (P2)** Continue the licensed space/alien asset queue: planetary bases,
+  orbital stations, spacecraft and intricate off-world architecture. Track pending versus
+  downloaded versus inspected versus runtime-ready; respect free-access/download limits and retain receipts.
+
+## 24. Pilot campaign and future drone builder (PILOT, BUILD)
+
+MODE-20 is the owner feature; the current lab camera is not a completed pilot mode.
+
+- [ ] **PILOT-01 ★ (P2)** Prototype possession of an existing live campaign drone. Define
+  entry/exit, which squad it belongs to and what command the drone resumes on release;
+  preserve the ongoing battle, hazards and objectives rather than starting a separate toy mode.
+- [ ] **PILOT-02 ★ (P2)** Implement controllable pitch/yaw/translation/altitude or the
+  selected simplified flight scheme, with clear acceleration and boost limits. Reuse shared
+  clearance/collision and world-height rules; flight must not pass through scenery.
+- [ ] **PILOT-03 ★ (P2)** Add aiming, valid-target feedback, firing/reload or cooldown and
+  weapon effects consistent with unit rules. Confirm friendly/enemy and structure/air/ground
+  target handling; visual projectiles must agree with actual damage and line of sight.
+- [ ] **PILOT-04 ★ (P2)** Build a readable pilot HUD: health, weapon state, warnings,
+  altitude/clearance, objective direction, squad/mission status and a quick return to command.
+  Add cockpit/chase presentation after the control prototype is useful and stable.
+- [ ] **PILOT-05 ★ (P2)** Specify autonomy for the rest of the swarm while the player flies:
+  retain orders, continue capturing/fighting and issue actionable alerts. Provide quick squad
+  commands without accidental camera/input conflicts or unexplained abandoned squads.
+- [ ] **PILOT-06 (P2)** Handle drone destruction, loss of control, stun and unavailable
+  possession targets gracefully. Return to a valid command view or another allowed drone;
+  preserve camera comfort, selected squad and outcome/extraction flow.
+- [ ] **PILOT-07 (P2)** Design desktop and touch controls, configurable sensitivity,
+  inversion and accessible alternatives. Keep pause/menus from firing weapons or steering;
+  clear held inputs when focus changes or the browser hides.
+- [ ] **PILOT-08 (P2)** Save/resume mode, controlled unit ID and necessary view/control
+  state through reviewed schemas. Restore safely paused, validate target existence and
+  fall back to command mode when the controlled drone is no longer valid.
+- [ ] **PILOT-09 ★ (P2)** Playtest a whole mission that switches between command and pilot
+  play, then repeat on a real city district. Record combat readability, collision, comfort,
+  difficulty and phone performance before expanding cockpit art or pilot-only content.
+- [ ] **BUILD-01 ★ (P3)** Clarify the owner's Tank Wars-style builder reference when this
+  milestone begins. Agree on editable parts, attachment freedom and intended combat role;
+  retain the concept without assuming a specific game's mechanics or copying proprietary assets.
+- [ ] **BUILD-02 ★ (P3)** Define versioned part contracts for bodies, propulsion, weapons
+  and equipment: sockets, bounds, mass/cost and compatible systems. Reuse stable drone/weapon
+  interfaces rather than embedding builder-specific rules in the renderer.
+- [ ] **BUILD-03 ★ (P3)** Prototype a useful assembly UI with part selection, attachment,
+  rotation, undo/redo, symmetry if appropriate and visible invalid connections. Keep an
+  inspectable default craft and explain why a design cannot be launched.
+- [ ] **BUILD-04 ★ (P3)** Make cost/performance tradeoffs understandable: mass, maneuvering,
+  durability, energy and weapon limits. Test obvious extremes against stock drones and
+  campaign supply rules so custom designs do not bypass progression accidentally.
+- [ ] **BUILD-05 (P3)** Save/export/import named blueprints with schema validation and
+  part-version compatibility. Missing or changed parts need a recoverable explanation;
+  preserve older designs and stock-drone access.
+- [ ] **BUILD-06 ★ (P3)** Provide a separate flight/weapon test range, then trial reviewed
+  designs in a campaign mission. Consider damage variants and versus fairness only after
+  assembly, stats, piloting and blueprint persistence are stable.
+
+## 25. Accessibility, settings and device usability (ACCESS)
+
+- [ ] **ACCESS-01 (P1)** Ensure essential selection, launch, pause, continue/extract and
+  menu actions have keyboard paths and visible focus. Keep shortcuts from activating while
+  typing/selecting controls, and explain disabled actions rather than silently ignoring them.
+- [ ] **ACCESS-02 (P1)** Review touch target sizes, pointer cancellation, drag/tap thresholds,
+  pinch/rotate and portrait/landscape layout. Confirm panels do not cover the selected squad,
+  landing preview or extraction decision on small displays.
+- [ ] **ACCESS-03 (P2)** Add independent UI scale/text sizing and persist settings without
+  changing campaign state. Test long names, large text and dense squad bars; avoid hiding
+  critical information behind clipped or overlapping panels.
+- [ ] **ACCESS-04 (P2)** Use icons/shapes/labels as well as color for teams, hazards,
+  selected squads, damage and capture progress. Review color contrast in each biome and
+  dusk/light mode; minimap markers must remain distinguishable.
+- [ ] **ACCESS-05 (P2)** Offer reduced camera shake/flashes, motion intensity and comfortable
+  camera speeds. Respect reduced-motion preferences where applicable while retaining clear
+  hit, alarm, descent and hazard feedback.
+- [ ] **ACCESS-06 (P2)** Pair important audio alerts with readable visual equivalents;
+  provide master/effect/music controls and remember choices. Start with AUD-01 through AUD-03
+  rather than making sound mandatory for objectives or survival.
+- [ ] **ACCESS-07 (P2)** Make confirmation/result dialogs and live status useful to assistive
+  technology: meaningful names, sensible focus return, controlled announcements and no focus
+  traps. Verify the title-to-galaxy-to-mission loop and lab mode/asset selectors.
+
+## 26. Performance and engineering detail (PERF, TECH continuation)
+
+- [ ] **PERF-07 (P1 for city release)** Set measured device budgets for cold load, frame-time
+  percentiles, active drones, draw calls, triangles, texture memory and debris. Record desktop
+  and at least one real phone in High/Light; an FPS overlay alone is not acceptance evidence.
+- [ ] **PERF-08 (P2)** Record decoded texture/GPU cost per city, not only compressed transfer
+  size. Review Phototextured City's 51 material batches/58 embedded images and Skyway's large
+  citywide batches; consolidate/atlas/chunk where it measurably improves the target device.
+- [ ] **PERF-09 (P2)** Measure resource lifetime across mission restart, lab stage changes,
+  city transitions and repeated Dragonfly deployments. Dispose owned geometry/materials while
+  retaining intentionally shared textures/templates; test that memory settles rather than grows.
+- [ ] **PERF-10 (P2)** Bound expensive visual work: damage preparation, weather, smoke,
+  projectiles, debris and distant units. Tune quality/fallback behavior from profiles; move
+  work to shaders/workers only when measurements justify the extra system complexity.
+- [ ] **PERF-11 (P1)** Define gameplay behavior under low frame rate, slow loading, browser
+  hide/resume and pause. Preserve simulation meaning and input responsiveness; do not let
+  effects, timers or pod releases duplicate when rendering catches up.
+- [ ] **TECH-06 (P1)** Separate shared environment/rule queries from Three.js/UI objects.
+  Keep wave, victory, damage and possession state plain and testable, and make renderer
+  ownership/lifecycle explicit so new features do not expand one global entry module indefinitely.
+- [ ] **TECH-07 (P2)** Handle WebGL context loss/restoration, resize/orientation change and
+  low-memory/model failure. Recover a usable paused mission or a clear return path without
+  overwriting its valid checkpoint. Cover the standalone lab as well as the campaign.
+- [ ] **TECH-08 (P2)** Add useful diagnostics for reproduction: seed, game/environment
+  version, selected quality and bounded timing counters. Make a player-readable copyable
+  report; do not require a hosted account or automatic telemetry to report a local bug.
+- [ ] **TECH-09 (P2)** Define reusable content registration and validation for planets,
+  drones, weapons, hazards, objectives and environment manifests. Check missing references and
+  unreachable/unwinnable combinations before play; document extension points through DOC-02.
+
+## 27. Test, release and preservation detail (TEST, OPS, DOC continuation)
+
+- [ ] **TEST-06 (P1)** Add focused multi-pod regression fixtures: payload packing, one
+  purchase/cooldown, all releases exactly once, unique formation slots, safe positioning and
+  save/resume between arrivals. Keep coverage for the existing single-wave API while migrating it.
+- [ ] **TEST-07 (P1)** Add victory/continue settlement scenarios: eligibility, continued
+  play, optional objectives, retaken zones, retreat/defeat rules, extraction, double activation
+  and reload at the settlement boundary. Verify mission and campaign statistics together.
+- [ ] **TEST-08 (P1)** Add geometry/navigation fixtures for a wall, hill, shore, bridge,
+  tunnel/stacked surface and blocked goal. Test drones, ground troops, clicks, shots and pod
+  corridors against the same intended geometry, not just independently passing mocks.
+- [ ] **TEST-09 (P1)** Add environment-version and destruction checkpoint fixtures with
+  actual stable IDs. Cover legacy saves, changed layouts, missing structures, settled rubble,
+  restored blockers and safe fallback; reject inconsistent state without inventing rewards.
+- [ ] **TEST-10 (P1)** Add browser acceptance runs for command/pilot controls as implemented:
+  title, resume/new mission, galaxy, drops, orders, capture, pause, continue/extract and debrief.
+  Exercise pointer/touch/keyboard and verify that overlays/modals do not leak into the next mission.
+- [ ] **TEST-11 (P2)** Record per-map art regressions at repeatable cameras and all four
+  damage stages. Review unsupported detail, caps/holes, terrain burial, water and debris on
+  actual geometry. Keep prior screenshots so visual changes are deliberate and reversible.
+- [ ] **TEST-12 (P1)** Build a target-device review sheet with frame-time/load measurements,
+  touch usability and a full mission result. Include low quality, orientation change and
+  interrupted browser sessions; lab preview success alone is not a phone playtest.
+- [ ] **TEST-13 (P2)** Maintain scenario-based campaign balance records for each released
+  rule/content change: time, losses, alarm, matter recovery, control/damage paths and optional
+  goals. A deterministic bot is useful regression evidence, not a substitute for human feedback.
+- [ ] **OPS-08 (P1)** Define a release checklist: review the intended diff, preserve concurrent
+  work, check source/asset paths on a clean checkout, run required tests, confirm the stamped
+  public build and exercise game/lab entry routes. Keep a documented previous-build restore path.
+- [ ] **OPS-09 (P2)** Maintain exact runtime derivative provenance: source file/hash,
+  creator, license/version, modifications, authoring tool and exported dependencies. Resolve
+  pending notices before redistribution; keep commercial-authoring readiness separate from a free source license.
+- [ ] **OPS-10 (P2)** Back up native derivative projects and external dependencies as well
+  as downloaded originals: Blender/Houdini scenes, caches, scripts, reports and reviewed outputs.
+  Test a restore/regeneration from preserved inputs; files excluded from Git still need protection.
+- [ ] **OPS-11 (P2)** Publish a concise player/lab known-issues and feedback route, with
+  build/environment identifiers and reproduction steps. Clearly label prototype art and
+  planned features so public visitors do not mistake a preview for a finished game system.
+- [ ] **DOC-04 (P1)** Keep one current handoff at the top of this checklist: verified scope,
+  release/build/date, worktree notes, next owner priority and open blockers. Archive old status
+  rather than carrying obsolete failing-test or local-only claims as current facts.
+- [ ] **DOC-05 (P2)** Record gameplay decisions for wave capacity, extraction, objectives,
+  pilot handoff, destruction and blueprint parts. Link each rule decision to its tests and UI
+  wording; unresolved design choices should not become inconsistent behavior across screens.
+- [ ] **DOC-06 (P2)** Maintain a content/readiness inventory that distinguishes source
+  backup, inspected asset, art prototype, collision-ready structure, playable district and
+  published gameplay feature. Update the five-map matrix and preserve all owner reference directions.
+
+## 28. Reconnaissance, signals and electronic warfare (SENSE)
+
+These are proposed drone-identity experiments from the [RTS/space study](research/swarmfall-design-2026-10-19/README.md),
+not existing systems. Prototype a small subset after reliable commands and one playable district.
+
+- [ ] **SENSE-01 (P2)** Define unknown, direct sight, sensor contact and last-known states.
+  A contact must not reveal exact type/health without identification. Keep discovered terrain
+  and last-known icons legible; define the same information policy for defenders and rivals.
+- [ ] **SENSE-02 (P2)** Give Scout/Dragonfly scans a useful decision: active scanning finds
+  a marked defense/service quickly but briefly exposes the scanner; passive scouting is slower
+  and quieter. Preview radius/cooldown and explain what a scan discovered. Extends DRONE-05/06.
+- [ ] **SENSE-03 (P2)** Prototype one optional relay that improves shared intelligence or a
+  chosen service over a visible area. Show connected/disconnected squads and coverage before
+  placement; rooftop benefit must have a clear exposure/cost tradeoff. Avoid an upkeep puzzle.
+- [ ] **SENSE-04 (P2)** Define loss-of-signal autonomy: continue the last safe assignment,
+  hold or return according to a chosen policy, with an override and visible reason. Losing a
+  relay never invents input lag, permanently strands a squad or erases issued orders.
+- [ ] **SENSE-05 (P2)** Add one readable jammer/decoy/EMP interaction before expanding
+  electronic warfare. Give it range, duration, warning and at least one affordable counter;
+  a fake contact is discoverable evidence, not a random punishment. Reuse DRONE-03 and Link rules.
+- [ ] **SENSE-06 (P2)** Save discoveries, contacts and relevant signal state without giving
+  stale icons live enemy positions. Bound visibility-query cost and test hidden targets,
+  destroyed relays, interference, reload and returning from pilot view; include debug overlays.
+
+## 29. Mechanics that take advantage of being drones (SWARM)
+
+- [ ] **SWARM-01 (P2)** Add assignable squad jobs such as escort, screen, repair or support
+  a hacking team. Show each drone's role and why it is idle; cancellation and explicit player
+  commands take precedence. Start with one support role, extending CTRL-07 and PILOT-05.
+- [ ] **SWARM-02 (P2)** Prototype low sheltered versus high exposed flight policies, with
+  visible clearance/threat previews and a safe fallback. Begin with two bands rather than
+  unrestricted 3D micromanagement; share geometry with COMBAT/CITY and weather with HAZ-03.
+- [ ] **SWARM-03 (P2)** Let formations adapt through narrow spaces and spread against area
+  attacks, then reform. Distribute fire by useful target class to limit obvious overkill;
+  never silently split a named squad or override a focused player target. Extends CTRL-07.
+- [ ] **SWARM-04 (P2)** Make drone size matter at a few authored openings, service passages
+  or routes. Mark eligible body sizes and clearance; small scouts gain access while larger
+  carriers trade that access for payload. Do not require full building interiors for the prototype.
+- [ ] **SWARM-05 (P2)** Prototype a recoverable disabled drone/black box: rescue the body,
+  recover its software identity, or salvage matter as explicit mutually exclusive outcomes.
+  Prevent duplicate/farmed rewards; recovery is optional, not a second penalty for losing a unit.
+  Connect OBJ-01, DRONE-02, veteran ideas and future blueprint persistence.
+- [ ] **SWARM-06 (P2)** Give explicitly landed pod hardware one optional second use:
+  reclaim it or convert it into a modest relay/service point for a displayed matter cost.
+  Reuse DROP wave IDs/placement/save rules; do not anchor a service to a discarded airborne
+  backshell. Losing it leaves a recovery/retreat route and does not require constant maintenance.
+- [ ] **SWARM-07 (P2)** Test one cooperative precision action: scout tags an antenna,
+  Link disables it, assault drones exploit the opening; optional possession can perform a
+  more precise approach. Every required goal also has an RTS solution. Show stages, cancellation,
+  exposure and recovery rather than require a timed combination the player cannot understand.
+
+## 30. Outer-space identity and planet operations (SPACE)
+
+- [ ] **SPACE-01 (P2)** Give each planet an explicit atmosphere/gravity/propulsion profile
+  for gameplay. Future vacuum missions use thrusters/powered landing rather than working
+  parachutes/rotors; dense/thin atmospheres can change route and drop choices. Treat values
+  as gameplay choices unless sourced, and show compatibility before a loadout is purchased.
+- [ ] **SPACE-02 (P2)** Prototype one bounded orbital-support choice, such as a scan pass
+  versus reinforcement/repair delivery. Preview capacity, timing, danger and fallback; retain
+  an emergency option and avoid idle waiting. Do not add several new orbital resources at once.
+- [ ] **SPACE-03 (P2)** Connect planet selection, orbiting Hive, entry/descent and extraction
+  through consistent visuals and a short operation log. Keep transition cameras skippable;
+  command/pause access stays available and combat never begins unseen during a cinematic.
+- [ ] **SPACE-04 (P2)** Give forward sites and supply corridors a purpose with an explicit
+  small graph: extend sensor reach, repair access or arrival options. Show consequences before
+  abandoning a node; isolated drones retain autonomy. Coordinate ROAM territory rules.
+- [ ] **SPACE-05 (P3)** After one planet works, test a small airless ruin, station exterior
+  or asteroid site using the established drone rules and surface/collision queries. Start
+  with an authored local environment; full space-flight combat is a separate future scope.
+- [ ] **SPACE-06 (P2)** Give worlds distinct civilization/biome language: ring infrastructure,
+  terrace settlements, elevated transit, industrial districts, sky/moons and local emissions.
+  Keep their defenses, services and sound coherent with the setting; palette changes alone
+  should not be the only difference. Coordinate CITY-11 and the per-map ART review.
+
+## 31. Immersion and moment-to-moment feedback (IMM)
+
+- [ ] **IMM-01 (P1 for feedback pass)** Acknowledge selection and orders immediately, then
+  show moving, blocked, attacking, hacking, repairing and returning states. Make failure reasons
+  actionable and brief; consolidate with CTRL alerts rather than adding competing log panels.
+- [ ] **IMM-02 (P1 for feedback pass)** Connect visible rotor speed, lean, acceleration and
+  landing response to actual motion. Use bounded downwash dust/water and touchdown effects;
+  avoid an expensive physics rewrite. Review close pilot views as well as distant RTS icons.
+- [ ] **IMM-03 (P1 for feedback pass)** Tie weapon origin, projectile/beam, impact and target
+  damage to the same rule event. Distinguish shield hits, blocked shots and destroyed targets;
+  restrained recoil/shake is optional and cannot hide the next order or damage warning.
+- [ ] **IMM-04 (P1 for feedback pass)** Complete AUD-01/02/03 with spatial motor/weapon/pod
+  sounds, load changes and restrained machine acknowledgements. Respect mute/volume, browser
+  audio activation and ACCESS settings; pair every critical sound with a visible cue.
+- [ ] **IMM-05 (P2)** Give pilot view a useful sensor/gimbal identity: stable horizon/aim,
+  readable altitude/clearance, unit ID, health, order and optional modeled sensor overlays.
+  Limit static/glare/damage effects and provide reduced-motion settings; ordinary HUD stays usable.
+- [ ] **IMM-06 (P2)** Add bounded ambient life appropriate to the world: traffic, aircraft,
+  lights, evacuation/shelter movement and wildlife reacting to local alarm/weather. Distinguish
+  decorative life from actual interactable units; keep required objectives visually identifiable.
+- [ ] **IMM-07 (P2)** Preserve squad names, optional machine call signs and a short history
+  of captures, losses/recoveries and changed landmarks. A compact after-action map explains
+  consequences and rewards; it must remain useful without voice acting or a long forced scene.
+- [ ] **IMM-08 (P2)** Review one complete visual scene across close, street/district and
+  strategic scales: consistent drone/door/road size, contact shadows, atmosphere and landmarks.
+  Tune cinematic presentation around legibility and frame time; High/Light retain identical information.
+
+## 32. Tactical decisions, mission variety and pacing (TACT)
+
+- [ ] **TACT-01 (P2)** Document a compact counterplay matrix: scout, Link, assault and support
+  roles against armor, air defense, jammer, shields and hazards. Telegraph range/weaknesses;
+  provide at least two viable compositions/approaches in the first city rather than one required build.
+- [ ] **TACT-02 (P2)** Prototype one captured infrastructure node with two mutually exclusive
+  service choices, such as disabling radar or powering a safe court. Preview affected structures
+  and route changes; destroying the node cannot make the required mission unwinnable.
+- [ ] **TACT-03 (P2)** Extend OBJ-01 with a recon, rescue, escort/transfer or service-disable
+  objective that uses the same swarm. Avoid making every encounter a capture ring; state
+  success/failure/retry and rewards clearly, with no hidden mandatory pilot challenge.
+- [ ] **TACT-04 (P2)** Author one distinct scenario per environment using the study's
+  map matrix: arcology energy rings, metropolis services, citadel crossings, Skyway arrival
+  corridors and Phototextured City signal clues. Start with one, then review before copying rules.
+- [ ] **TACT-05 (P2)** Make continued capture after victory meaningful through visible
+  optional sites, recovery and exploration, with remaining goals and a persistent extraction
+  action. Bound farmable rewards and pressure; the player can end the operation without needless cleanup.
+- [ ] **TACT-06 (P2)** Give defenders a few readable responses to observed threats: protect
+  a service, investigate a scan, flank a static group or contest a supply court. Announce large
+  responses and use the same navigation/information rules; avoid omniscient pressure everywhere.
+- [ ] **TACT-07 (P2)** Tune pacing from human sessions: time to first decision, travel/idle
+  time, reinforcement cadence, recovery and battle length. Support pause/queued jobs and safe
+  staging; add urgency through visible local threats rather than constant unrelated countdowns.
+
+## 33. Builder tradeoffs and design experiments (BUILD, DESIGN)
+
+These extend MODE-21 and BUILD-01 through BUILD-06; they do not replace the future builder request.
+
+- [ ] **BUILD-07 (P3)** Make parts express proven roles: mass/lift, power allocation,
+  payload, armor, size/signature and useful sensors. Show a small understandable comparison
+  and expected handling; choose one primary constraint first, not several mandatory upkeep meters.
+- [ ] **BUILD-08 (P3)** Test limited local module damage with clear effects, such as a
+  disabled weapon or reduced maneuvering. Keep core/critical-part placement meaningful,
+  allow repair/recovery and avoid unreadable instant-loss chains. Persist only stable part IDs.
+- [ ] **BUILD-09 (P2 prototype; P3 full editor)** Try one equipment slot with two meaningful
+  choices before arbitrary assembly. Stock drones and saved presets remain competitive;
+  unlockable alien modules add tradeoffs rather than universally superior statistics.
+- [ ] **BUILD-10 (P3)** Validate custom drones in both RTS and pilot mode: working aim,
+  collision envelope, deployment/slot cost, selection, autopilot and equipment rules. Provide
+  safe recommended presets and a test range; no build should bypass mission costs through mode switching.
+- [ ] **DESIGN-01 (P2)** Run a small comparison of the current loop versus scout/relay/service
+  and recovery prototypes. Record alternate approaches, confusion, stalled orders, losses,
+  downtime and performance; keep an idea only when it improves decisions or understandable atmosphere.
+- [ ] **DESIGN-02 (P2)** Cap the first identity prototype at four or fewer new interacting
+  rules and at most one tactical constraint beyond matter. Prototype fog, signal, energy and
+  modular damage separately before combining them; retain/defer experiments with recorded reasons.
+- [ ] **DESIGN-03 (P3 before full builder)** Confirm the exact Tank Wars title/version and
+  desired construction style when builder implementation begins. Keep TerraTech as a researched
+  additional comparison, with the owner's original reference intact.
+- [ ] **DESIGN-04 (P2)** Keep source-backed game observations separate from Swarmfall
+  proposals and implemented features. Update the design study with decisions, screenshots,
+  prototype findings and deferred ideas; preserve earlier variants and avoid copying proprietary assets.
+
+## 34. Free-roam planetary conquest (ROAM)
+
+★ Owner, October 19: open planet capture with better graphics, alongside the starting campaign.
+This expands MODE-01/02/03. First target: three connected regions on one persistent planet;
+a detailed seamless spherical world is a separate future scope. See the [free-roam design](research/swarmfall-design-2026-10-19/README.md#proposed-free-roam-planetary-conquest).
+
+- [ ] **ROAM-01 ★ (P1 for free-roam milestone)** Add a distinct Free Roam entry/profile/world
+  slot alongside Campaign. Explain saves and starting choices; existing campaign progress and
+  its active checkpoint are retained. Reuse validated rules rather than fork an incompatible game.
+- [ ] **ROAM-02 ★ (P1 for free-roam milestone)** Build a lightweight planet/region overview
+  showing discovered terrain, territory, landmarks, important services and available landing
+  sites. Keep unknown information marked; initial scope is one planet with a stable world ID.
+- [ ] **ROAM-03 (P1 for free-roam milestone)** Define a stable seeded region graph and
+  versioned manifests: bounds, neighbors, world transforms, biomes, settlement styles, routes,
+  capture/service IDs, defenders and safe landing/extraction sites. Validate required reachability.
+- [ ] **ROAM-04 ★ (P1 for free-roam milestone)** Author the first three connected regions:
+  coast/landing, a city or settlement, and uplink/ruin. Let squads explore outside objective
+  rings and choose approaches; keep a consistent physical scale and recognizable world landmarks.
+- [ ] **ROAM-05 (P1 for free-roam milestone)** Implement clear region travel with advance
+  destination/loading/travel-cost feedback, cancellation and safe arrival. Transfer surviving
+  squads/inventory and reconcile invalid local orders; initially use quick explicit transitions.
+- [ ] **ROAM-06 (P1 for free-roam milestone)** Load detailed nearby terrain/city chunks and
+  a cheaper surrounding horizon. Keep distant territory as compact strategic state; define
+  simulation activation boundaries and resource ownership. Continuous crossing follows profiling.
+- [ ] **ROAM-07 ★ (P1 for free-roam milestone)** Persist captured sites, discovery, service
+  settings, bounded local damage, recovered items and parked/active squads as world deltas.
+  Revisit the first region and see those outcomes; prevent full regeneration from resetting progress.
+- [ ] **ROAM-08 (P1 for free-roam milestone)** Define territorial ownership through meaningful
+  command sites and regional goals, not sweeping every coordinate. Show progress and disputed
+  sites; explicitly define how local encounters contribute to planet-wide completion.
+- [ ] **ROAM-09 (P2)** Differentiate site benefits: communication, repairs/fabrication,
+  shelter, transport and supply access. Preview what capture/destruction changes; prototype
+  two functions before building a large infrastructure graph. Coordinate TACT-02 and SPACE-04.
+- [ ] **ROAM-10 (P2)** Test bounded, announced defender pressure on important territory.
+  Define active/inactive region rules and a strategic clock; pausing or closing the browser
+  does not cause unannounced offline losses. Preserve a reachable retreat/recovery option.
+- [ ] **ROAM-11 ★ (P1 for free-roam milestone)** Link planetary victory to a declared network/
+  command goal, then offer extraction or continued occupation/exploration. List meaningful
+  optional sites for 100% completion; settle planetary/campaign rewards once with explicit replay rules.
+- [ ] **ROAM-12 (P1 for free-roam milestone)** Define separate persistent-world and current-
+  encounter saves, with atomic travel/settlement checkpoints and layout compatibility. Test
+  leaving, loading failure, reload during travel, returning to old damage and full storage.
+- [ ] **ROAM-13 (P2)** Extend seeded layout generation only after the authored slice works:
+  connected terrain/roads, settlements, services and encounters. Reuse city modules within
+  placement/support rules; reject unreachable goals, buried architecture and unsafe landing courts.
+- [ ] **ROAM-14 (P2)** Make travel/exploration worthwhile with landmarks, scans, recovery,
+  local stories and optional encounters. Reveal route/distance choices and allow known-route
+  travel options; avoid huge empty distances or mandatory repeated captures just to revisit a place.
+- [ ] **ROAM-15 (P3)** Evaluate seamless region crossing and larger planetary coverage after
+  the three-region performance/save gate. Measure coordinates/precision and use origin shifting
+  only if needed. Full spherical traversal and multi-planet active simulation need separate designs.
+- [ ] **ROAM-16 ★ (P1 for free-roam milestone)** Review one whole operation: land, explore,
+  capture, move region, return, reload, face a warned response and extract or stay. Test command
+  mode first and pilot mode when ready; the original campaign must still work independently.
+
+## 35. Graphics for the larger explorable world (GFX)
+
+- [ ] **GFX-01 ★ (P1 for first region)** Produce one polished playable region using the best
+  existing city/terrain assets: fitted foundations, coherent shoreline, detailed foreground,
+  landmarks and a full surrounding skyline. Agree on scale and review fixed cameras before expanding.
+- [ ] **GFX-02 (P1 for first region)** Unify lighting, material response, color pipeline,
+  contact shadows and atmospheric depth. Add source-supported surface detail where useful;
+  profile shadows/water effects instead of assuming expensive post-processing will fix basic art.
+- [ ] **GFX-03 (P1 for free-roam milestone)** Use nearby detail, district chunks, cheaper
+  distant geometry and explicit texture budgets for the travel view. Review streaming pop-in,
+  stalls and memory alongside active drones and effects; reuse CITY-08/09 and PERF budgets.
+- [ ] **GFX-04 (P2)** Author coherent modular terrain/settlement sets for different planet
+  identities, with roads, supports, gateways, service spaces and navigation landmarks. Preserve
+  intricate fantasy/alien silhouettes; do not turn every region into the same recolored grid.
+- [ ] **GFX-05 (P1 for graphics release)** Review High/Light on desktop and a real phone:
+  clear paths/targets, stable frame times, consistent capture information and readable pilot/RTS
+  scales. Retain before/after images and measured settings; no photorealism claim from a lab screenshot.
+- [ ] **GFX-06 (P2)** Add bounded environmental atmosphere that responds to state: sky/moons,
+  weather layers, water, local light activity, smoke and downwash. Prioritize visible gameplay
+  cues and scene cohesion; make expensive reflections/volumetrics optional after profiling.
