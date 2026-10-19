@@ -55,10 +55,35 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   behavior and constants unchanged; #05 open/count19. No replacement archive required.
 - **Preservation:** Main matched0fc30b7 after fetch; priorities branch has no unmerged work.
   No separate game edits. No unsupported supplier finish, hidden boards or fiber routes added.
+  A concurrent save-state update ede71e4 reached main during publication; merged it intact,
+  retaining both change-log entries. No force push or manual game-source edits.
 - **Checks:** Originals and comparison visually inspected; all 10 focused model/checklist
   tests and the full test suite pass; whitespace check clean. No new app render/live geometry claimed.
+  After preserving ede71e4, full suite rerun: **360 pass, 0 fail**.
 - **Next:** Identify dated/scale-bearing ETU/flight enclosure and installed board/optics
   photos before claiming exact reconstruction. Archive current asset before any replacement.
+
+### 2026-10-19: Retain command intent while resuming safely paused
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Preserve Swarmfall command state across resume`.
+- **What changed:** optional version-1 command metadata on checkpoint v3 retains active/
+  inbound squad selection, camera, draft payload and open/closed drop panel. Restore starts
+  paused at 1× with the HUD shown. Landing coordinates/gesture/cached authorization are not
+  saved; a restored panel computes a fresh preview and requires an explicit launch. Existing
+  orders and paid wave cargo remain battle-owned. Steppers respect the existing 44/type cap.
+- **Compatibility:** absent/future/malformed optional UI metadata falls back without dropping
+  a valid battle. Invalid/locked draft types and unavailable squad references are filtered;
+  empty/zero and over-budget drafts are preserved safely. Existing v1/v2 fixtures migrate.
+- **Checks:** **360 tests pass**, including seven new plain-state tests and two actual Resume
+  entry-point tests with DOM/renderer stand-ins. Selection/payload/camera/pause/panel round
+  trips, old fixtures, sibling-release boundaries and no stale launch/charge are covered.
+  Evidence: `research/swarmfall-command-resume-2026-10-19/README.md`.
+- **Preservation:** exact prior main/checkpoint/UI test plus a dated historical mission picture
+  under `archive/swarmfall-command-resume-2026-10-19/`, tag on `0fc30b7`. Concurrent Ocellus
+  research was fast-forwarded first. All source assets, kit drafts and task IDs retained.
+- **Checklist / open:** SAVE-04 checked/signed Codex. Browser access was previously blocked
+  and not retried; actual browser/touch/device reload and storage-fault acceptance remain
+  SAVE-03/SAVE-06. City-bound checkpoint identity remains SAVE-05 after CITY contracts.
 
 ### 2026-10-19: Ocellus hardware-photo and reuse evidence audit
 - **Signed:** Codex (OpenAI).

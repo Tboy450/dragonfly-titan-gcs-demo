@@ -111,4 +111,7 @@ pass; full `node --test --test-reporter=dot tests/*.test.mjs` also passes. `git 
 is clean. No app render/deployment geometry change claimed for research only.
 No replacement archive/tag needed because no existing asset or behavior was replaced.
 Fetched origin: main matched local0fc30b7; priorities branch has no commits outside main.
-No separate game files touched. Keep future unrelated commits when publishing.
+A concurrent save-state update ede71e4 reached main during publication; merged it intact
+with both change-log entries retained, no force push or manual game-source edits.
+Full suite rerun after merge: **360 tests pass, 0 fail**.
+Keep future unrelated commits when publishing.

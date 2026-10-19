@@ -37,7 +37,7 @@ The Dragonfly scientific simulator has its own interior/engineering checklists.
 | Area | Verified status | Still open |
 | --- | --- | --- |
 | Campaign | Seven planets, economy, hazards, capture/control paths, achievements and progression exist | Human balance review, deeper progression and more mission types |
-| Mission saves | Codex October 19: migration, wave/victory state, one-write settlement, paused resume, SAVE-01 bounds and SAVE-02 protected recovery/JSON export implemented | Real browser download/storage-fault review, optional import and future damage/environment schemas |
+| Mission saves | Codex October 19: migration, wave/victory state, one-write settlement, paused resume, SAVE-01 bounds, SAVE-02 recovery/export and SAVE-04 command/camera state implemented | Real browser reload/download/storage-fault review, optional import and future damage/environment schemas |
 | Drop delivery | Codex October 19: deterministic 1–3 drone pods, solo Dragonflies, one paid squad wave, safe courts, retained orders, v1→v2 checkpoint migration | Browser/touch/device acceptance under DROP-08; real imported-city corridors remain CITY work |
 | Victory | Codex October 19: persisted eligibility, one choice, continued play, explicit extraction and idempotent result ledger | Browser/touch acceptance of choice, resumed prompts and storage-failure feedback |
 | Public lab | Five environments and an 18-model asset inspector were published October 17 | Expanded metadata, loading/recovery, device review and gameplay integration |
@@ -77,6 +77,11 @@ Recovery follow-up — Codex, October 19: **SAVE-02** is implemented with a titl
 files dialog, exact-original backups before replacement/migration, JSON downloads and safe
 failure/retry behavior. **351 tests pass**; existing v1/v2 fixtures remain supported. Browser
 download/focus/touch and real storage-fault checks stay open under SAVE-03/SAVE-06.
+
+Command-resume follow-up — Codex, October 19: **SAVE-04** retains active/inbound selection,
+camera, draft payload and panel state. Reload is paused at 1× with visible HUD and cancelled
+placement. **360 tests pass**, including real entry-point wiring with DOM/renderer stand-ins.
+Browser reload/device acceptance remains open under SAVE-06; no checklist IDs were removed.
 
 The old "live build 8b2399b / 237 tests" and uncommitted aft-bulkhead failure were historical
 notes, not the current Swarmfall status. The aft-bulkhead/inspection work was closed in eed63b1
@@ -742,9 +747,16 @@ OBJ-07 is the owner feature. Resolve its rules before adding UI or awarding rewa
   **Codex, October 19:** immediate settlement, one-write progress/checkpoint envelope, retry
   UI/dirty-result retry and failed-write tests implemented. Keep open for browser fault injection
   and recovery review; unavailable storage cannot preserve memory across a closed page.
-- [ ] **SAVE-04 (P2)** Define which command UI state should survive reload: selected squads,
+- [x] **SAVE-04 (P2) — Codex, October 19; implementation and automated acceptance** Define which command UI state should survive reload: selected squads,
   camera, pending orders, drop payload and placement intent. Restore safely paused and cancel
   stale placement previews rather than accidentally launching from an old pointer position.
+  Completed: optional versioned command metadata retains active/inbound squads, bounded
+  unlocked payload drafts (including zero/empty), panel state and the camera. Orders/cargo
+  remain battle-owned. HUD visible, speed 1× and paused on reload; pointer/landing intent
+  discarded, with no automatic charge/launch. Bad/future UI metadata falls back safely while
+  battle validation stays strict. **360 tests pass**, including seven new state tests and
+  two actual Resume entry-point checks. [Evidence](research/swarmfall-command-resume-2026-10-19/README.md).
+  Real browser/touch reload acceptance stays under SAVE-06.
 - [ ] **SAVE-05 (P1)** Version the environment binding in a checkpoint: environment ID,
   layout/district version, structural states and objective surface IDs. Rebuild collision and
   surface callbacks; document migration/fallback when an authored city changes. Depends CITY-01/02.
