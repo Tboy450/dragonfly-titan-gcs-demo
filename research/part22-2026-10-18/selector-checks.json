@@ -1,0 +1,150 @@
+{
+  "url": "http://127.0.0.1:4195/",
+  "errors": [],
+  "result": [
+    {
+      "subassembly": "efield-front",
+      "azimuth": 0,
+      "pixels": 10433,
+      "l": 305,
+      "r": 608,
+      "t": 182,
+      "b": 427,
+      "labels": [
+        "nose-sensors"
+      ]
+    },
+    {
+      "subassembly": "efield-front",
+      "azimuth": 1.5,
+      "pixels": 6520,
+      "l": 350,
+      "r": 537,
+      "t": 169,
+      "b": 447,
+      "labels": [
+        "nose-sensors"
+      ]
+    },
+    {
+      "subassembly": "efield-front",
+      "azimuth": 3.1,
+      "pixels": 10263,
+      "l": 287,
+      "r": 597,
+      "t": 218,
+      "b": 390,
+      "labels": [
+        "nose-sensors"
+      ]
+    },
+    {
+      "subassembly": "efield-front",
+      "azimuth": 4.7,
+      "pixels": 5480,
+      "l": 354,
+      "r": 555,
+      "t": 231,
+      "b": 388,
+      "labels": [
+        "nose-sensors"
+      ]
+    },
+    {
+      "subassembly": "efield-rear",
+      "azimuth": 0,
+      "pixels": 10396,
+      "l": 307,
+      "r": 579,
+      "t": 199,
+      "b": 393,
+      "labels": [
+        "nose-sensors"
+      ]
+    },
+    {
+      "subassembly": "efield-rear",
+      "azimuth": 1.5,
+      "pixels": 6668,
+      "l": 316,
+      "r": 594,
+      "t": 193,
+      "b": 393,
+      "labels": [
+        "nose-sensors"
+      ]
+    },
+    {
+      "subassembly": "efield-rear",
+      "azimuth": 3.1,
+      "pixels": 10264,
+      "l": 315,
+      "r": 597,
+      "t": 259,
+      "b": 347,
+      "labels": [
+        "nose-sensors"
+      ]
+    },
+    {
+      "subassembly": "efield-rear",
+      "azimuth": 4.7,
+      "pixels": 6465,
+      "l": 298,
+      "r": 590,
+      "t": 245,
+      "b": 351,
+      "labels": [
+        "nose-sensors"
+      ]
+    },
+    {
+      "subassembly": "methan-placeholder",
+      "azimuth": 0,
+      "pixels": 7200,
+      "l": 405,
+      "r": 494,
+      "t": 260,
+      "b": 339,
+      "labels": [
+        "nose-sensors"
+      ]
+    },
+    {
+      "subassembly": "methan-placeholder",
+      "azimuth": 1.5,
+      "pixels": 4946,
+      "l": 422,
+      "r": 477,
+      "t": 254,
+      "b": 345,
+      "labels": [
+        "nose-sensors"
+      ]
+    },
+    {
+      "subassembly": "methan-placeholder",
+      "azimuth": 3.1,
+      "pixels": 7408,
+      "l": 404,
+      "r": 495,
+      "t": 259,
+      "b": 340,
+      "labels": [
+        "nose-sensors"
+      ]
+    },
+    {
+      "subassembly": "methan-placeholder",
+      "azimuth": 4.7,
+      "pixels": 4642,
+      "l": 424,
+      "r": 475,
+      "t": 255,
+      "b": 344,
+      "labels": [
+        "nose-sensors"
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import * as THREE from "../dist/vendor/three/three.module.min.js";
 import { buildNoseSensors, noseSensorsAsset as A } from "../dist/nose-sensors.mjs";
+import { createFlightState } from "../dist/flight-model.mjs";
 import { buildNoseCameras } from "../dist/nose-cameras.mjs";
 import { buildSideCameras } from "../dist/side-cameras.mjs";
 import { buildDrill } from "../dist/drills.mjs";
@@ -18,6 +19,8 @@ import { buildHgaGimbal } from "../dist/hga-gimbal.mjs";
 import { buildBattery } from "../dist/battery.mjs";
 import { buildAftBulkhead } from "../dist/aft-bulkhead.mjs";
 import { buildFans, buildWarmDuct, buildTrimDevice } from "../dist/thermal-loop.mjs";
+import { createInspector, focusInspector, inspectionSubassemblies, inspectionSubassembly,
+  selectInspectionSubassembly, resetInspector } from "../dist/vehicle-inspector.mjs";
 
 function mesh(geometry, material, position, parent) {
   const object = new THREE.Mesh(geometry, material); object.position.fromArray(position); parent.add(object); return object;
@@ -38,7 +41,8 @@ test("Two fixed EFIELD probes use published 30 cm stalks and 5 cm electrodes, wi
   const { parent, probes } = fixture();
   assert.equal(parent.userData.assetRevision, A.revision);
   assert.equal(probes.length, 2);
-  assert.equal(parent.userData.partialRebuild, true, "METHAN is not claimed complete");
+  assert.equal(parent.userData.partialRebuild, false, "initial asset pass includes the approved METHAN estimate");
+  assert.match(parent.userData.appearanceEvidence, /METHAN.*not photo-matched/);
   assert.deepEqual(parent.userData.labelAnchor.toArray(), A.probes[0].mount, "label stays on the front preamp");
   for (const p of probes) {
     assert.equal(p.tube.geometry.parameters.height, 0.30);
@@ -53,9 +57,32 @@ test("Two fixed EFIELD probes use published 30 cm stalks and 5 cm electrodes, wi
   }
 });
 
-test("EFIELD envelopes stay outside the swept rotor volumes", () => {
-  const { probes } = fixture();
-  for (const p of probes) for (const [name, box] of pieces(p.group)) {
+test("Front and rear probes can be focused separately without changing geometry or the part ID", () => {
+  const { parent, probes } = fixture(); parent.name = "nose-sensors";
+  const s = { ...createFlightState(), inspector: createInspector() };
+  const pose = probes.map(p => p.group.matrixWorld.clone());
+  assert.deepEqual(inspectionSubassemblies(parent).map(p => p.name), ["efield-front", "efield-rear", "methan"]);
+  focusInspector(s, parent.name);
+  for (const p of probes) {
+    selectInspectionSubassembly(s, parent, p.group.name);
+    assert.equal(inspectionSubassembly(parent, s.inspector), p.group);
+    assert.equal(s.inspector.focusPart, "nose-sensors");
+    assert.equal(s.inspector.zoom, 1);
+  }
+  selectInspectionSubassembly(s, parent, "not-a-part");
+  assert.equal(s.inspector.subassembly, "efield-rear", "invalid selection does not change focus");
+  selectInspectionSubassembly(s, parent, "");
+  assert.equal(inspectionSubassembly(parent, s.inspector), null);
+  probes.forEach((p, i) => assert.ok(p.group.matrixWorld.equals(pose[i])));
+  selectInspectionSubassembly(s, parent, "efield-front");
+  focusInspector(s, "battery");
+  assert.equal(s.inspector.subassembly, null);
+  resetInspector(s.inspector); assert.equal(s.inspector.subassembly, null);
+});
+
+test("All part-22 envelopes stay outside the swept rotor volumes", () => {
+  const { probes, methan } = fixture();
+  for (const group of [...probes.map(p => p.group), methan]) for (const [name, box] of pieces(group)) {
     for (const x of [-1.25, 1.25]) for (const z of [-0.98, 0.98]) for (const y of [-0.16, 0.20]) {
       if (box.max.y < y - 0.01 || box.min.y > y + 0.01) continue;
       const dx = Math.max(box.min.x - x, x - box.max.x, 0);
@@ -66,7 +93,7 @@ test("EFIELD envelopes stay outside the swept rotor volumes", () => {
 });
 
 test("Covers, mounts, interfaces and harnesses are removable without moving the installed assembly", () => {
-  const { probes, methan } = fixture();
+  const { probes } = fixture();
   for (const p of probes) {
     const pose = p.group.matrixWorld.clone(), ballPose = p.ball.matrixWorld.clone();
     assert.deepEqual([p.casings, p.covers, p.mounts, p.interfaces, p.harness].map(g => g.userData.inspectionLayer),
@@ -75,13 +102,40 @@ test("Covers, mounts, interfaces and harnesses are removable without moving the 
     p.group.updateMatrixWorld(true);
     assert.ok(p.group.matrixWorld.equals(pose) && p.ball.matrixWorld.equals(ballPose));
   }
-  assert.equal(methan.userData.provisional, true);
-  const housing = methan.getObjectByName("methan-unverified-housing");
-  assert.deepEqual(housing.position.toArray(), [0.455, -0.12, -1.66], "existing METHAN placeholder retained");
 });
 
-test("The new EFIELD assemblies clear every already rebuilt part", () => {
-  const { probes } = fixture();
+test("METHAN is an explicitly estimated cold gas cell with removable filtered covers and a fiber entry, not warm electronics", () => {
+  const { methan, methanLayers } = fixture();
+  assert.equal(methan.userData.approximation, true);
+  assert.equal(methan.userData.geometryBasis, "published-design-estimate");
+  assert.match(methan.userData.inspectionLabel, /design estimate/);
+  assert.equal(methan.getObjectByName("methan-unverified-housing"), undefined);
+  const frame = methan.getObjectByName("methan-chamfered-cell-frame");
+  assert.equal(frame.geometry.parameters.shapes.holes.length, 1, "real open cavity, not a painted block");
+  assert.equal(frame.geometry.parameters.options.depth, A.methan.size[0]);
+  for (const name of ["outboard", "inboard"]) {
+    const filter = methan.getObjectByName(`methan-${name}-metal-felt`);
+    assert.ok(filter?.material.map?.isDataTexture, "porous-felt cue, not a sealed painted block");
+    assert.equal(filter.parent, methanLayers.covers);
+  }
+  const bundle = methan.getObjectByName("methan-optical-fiber-bundle"), end = bundle.geometry.parameters.path.getPoint(1).applyMatrix4(bundle.matrixWorld);
+  assert.ok(end.x < A.methan.skinX && end.x > A.methan.skinX - 0.012, "fiber enters the skin without inventing a route through equipment");
+  assert.equal(methan.getObjectByName("light-engine"), undefined, "warm DPU internals not reconstructed outside");
+  assert.deepEqual(Object.values(methanLayers).map(g => g.userData.inspectionLayer), ["equipment-casings", "equipment-covers", "mounts", "interfaces", "harnesses"]);
+  const box = new THREE.Box3().setFromObject(methanLayers.casings), pose = methan.matrixWorld.clone();
+  assert.ok(box.min.x >= A.methan.skinX && box.max.y < 0.1 && box.min.y > -0.4, "cell remains outside the body and above the skids");
+  const mountBox = new THREE.Box3().setFromObject(methanLayers.mounts);
+  assert.ok(Math.abs(mountBox.min.x - A.methan.skinX) < 1e-8, "mounts meet the hull rather than floating");
+  methanLayers.covers.visible = false; methan.updateMatrixWorld(true);
+  assert.ok(methan.matrixWorld.equals(pose) && bundle.visible, "removing covers leaves the installed frame and fiber unchanged");
+});
+
+test("All part-22 assemblies clear each other and every already rebuilt part", () => {
+  const { probes, methan } = fixture();
+  const groups = [...probes.map(p => p.group), methan];
+  for (let a = 0; a < groups.length; a++) for (let b = a + 1; b < groups.length; b++) {
+    for (const [, box] of pieces(groups[a])) assert.ok(!pieces(groups[b]).some(([, other]) => box.intersectsBox(other)), "separate instrument assemblies do not overlap");
+  }
   const buildDrills = kit => { for (const side of [-1, 1]) buildDrill({ ...kit, side }); };
   const builders = [buildNoseCameras, buildSideCameras, buildDrills, buildSampleLines, buildBlowers,
     buildSampleCarousel, buildWonderwall, buildDramsAssembly, buildRotorDriveElectronics, buildPowerUnits,
@@ -89,9 +143,9 @@ test("The new EFIELD assemblies clear every already rebuilt part", () => {
   for (const build of builders) {
     const other = new THREE.Group(); build({ parent: other, mesh });
     const boxes = pieces(other);
-    for (const p of probes) for (const [name, box] of pieces(p.group)) {
+    for (const group of groups) for (const [name, box] of pieces(group)) {
       const hit = boxes.find(([, b]) => box.intersectsBox(b));
-      assert.ok(!hit, `${p.group.name}/${name} intersects ${build.name}/${hit?.[0]}`);
+      assert.ok(!hit, `${group.name}/${name} intersects ${build.name}/${hit?.[0]}`);
     }
   }
 });

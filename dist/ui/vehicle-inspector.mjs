@@ -1,12 +1,15 @@
 import { $, chaseRenderer, flightCanvas, state } from "./context.mjs?v=dev";
 import { commandFlight } from "../flight-model.mjs?v=dev";
 import { samplingSequence } from "../science.mjs?v=dev";
-import { focusInspector, inspectionAvailable, inspectionTarget, resetInspector, rotateInspector, zoomInspector } from "../vehicle-inspector.mjs?v=dev";
+import { focusInspector, inspectionAvailable, inspectionTarget, resetInspector, rotateInspector, zoomInspector,
+  inspectionSubassemblies, inspectionSubassembly, selectInspectionSubassembly } from "../vehicle-inspector.mjs?v=dev";
 import { globalInspectionLayers, partInspectionLayers, inspectionLayerVisible, setInspectionLayer,
   restoreInspectionLayers, hiddenInspectionCount } from "../inspection-visibility.mjs?v=dev";
 
 const parts = Object.values(chaseRenderer?.subsystems ?? {}).filter(group => group.userData.label);
 const select = $("inspection-part");
+const subassemblySelect = $("inspection-subassembly");
+let subassemblyTarget;
 for (const part of parts) {
   const option = document.createElement("option");
   option.value = part.name;
@@ -45,6 +48,17 @@ export function updateInspectorUI() {
   flightCanvas.tabIndex = enabled ? 0 : -1;
   if (!enabled) { releasePointer(); return; }
   const i = state.inspector, target = inspectionTarget(state), job = samplingSequence(state);
+  const group = chaseRenderer.subsystems[target], assemblies = inspectionSubassemblies(group);
+  $("inspection-subassembly-label").hidden = assemblies.length < 2;
+  if (subassemblyTarget !== target) {
+    subassemblyTarget = target;
+    const all = document.createElement("option"); all.value = ""; all.textContent = "All subassemblies";
+    subassemblySelect.replaceChildren(all, ...assemblies.map(child => {
+      const option = document.createElement("option"); option.value = child.name;
+      option.textContent = child.userData.inspectionLabel; return option;
+    }));
+  }
+  subassemblySelect.value = inspectionSubassembly(group, i)?.name ?? "";
   const hidden = hiddenInspectionCount(i);
   for (const option of select.options) {
     if (!option.value) continue;
@@ -89,6 +103,10 @@ export function updateInspectorUI() {
 }
 
 select.addEventListener("change", () => { focusInspector(state, select.value || null); updateInspectorUI(); });
+subassemblySelect.addEventListener("change", () => {
+  selectInspectionSubassembly(state, chaseRenderer.subsystems[inspectionTarget(state)], subassemblySelect.value);
+  updateInspectorUI();
+});
 $("inspection-focus").addEventListener("click", () => { focusInspector(state, state.selectedPart); updateInspectorUI(); });
 $("inspection-reset").addEventListener("click", () => { resetInspector(state.inspector); state.selectedPart = null; releasePointer(); updateInspectorUI(); });
 $("inspection-restore-layers").addEventListener("click", () => { restoreInspectionLayers(state.inspector); updateInspectorUI(); });
@@ -103,6 +121,7 @@ $("inspection-isolate").addEventListener("change", event => { state.inspector.is
 $("inspection-follow").addEventListener("change", event => {
   state.inspector.followSampling = event.target.checked;
   state.inspector.focusPart = null;
+  state.inspector.subassembly = null;
   state.inspector.zoom = 1;
   updateInspectorUI();
 });

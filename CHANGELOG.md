@@ -69,6 +69,78 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   documentation review, not an installed-game playtest.
 - **Open / next:** DROP-01 through DROP-08 and OBJ-07/09/10/11 with compatible checkpoints;
   then reliable commands, one playable district and the gated free-roam/drone experiments.
+### 2026-10-19: Provisional nose-panel study with real/CAD/process comparison
+- **Signed:** Codex (OpenAI)
+- **Commit:** Improve provisional nose panel and record real CAD model comparison
+- **What changed:** Assessed next unfinished part 03; real 2026 integration/structure photos
+  inform finish and joints, not a complete nose-face reconstruction. Replaced the block
+  with a thin face representation, perimeter returns, mounting feet, joint fasteners and
+  separately removable inspection groups. Preserved original part ID, center, width/height,
+  thermal zone and neighboring parts. Label anchor now sits on the upper perimeter.
+- **Assumptions:** All dimensions/details remain [EST]. No hidden core/layup, apertures or
+  electronics invented. Removing the face does not assert a real hatch or hollow panel.
+  #03 stays unchecked and the completed count remains 19/24 (4 Codex, 15 Claude).
+- **Sources/samples:** Credited original NASA/APL September harness and July suspended-test
+  photos saved; separately labeled APL 2024/ICES-2023 CAD compared with actual WebGL closed,
+  rear and face-hidden samples in `research/nose-bulkhead-2026-10-19/`. No image generation.
+- **Archive:** Old builder/UI and before pictures saved in `archive/nose-bulkhead-2026-10-19/`;
+  restore tag on `9f3fea1`. Source index, checklist/handoff, README, architecture, compendium
+  and expandable app assumptions updated together. Separate game/city work untouched.
+- **Checks:** 278 Node tests pass, including five focused panel tests, rebuilt-neighbor
+  clearances and unchanged completion count. Edge/WebGL Internal/Thermal at 1440/390/360 px
+  and four raw angles: framed nonblank pixels, no page errors or horizontal overflow.
+- **Open / next:** Identify unobscured nose-face hardware and a reliable scale before
+  checking off #03 or adding structural apertures. #05/#09/#20/#21 remain independent
+  research tasks. Include real/CAD/process images with future part updates.
+
+### 2026-10-18: Complete part 22 with the approved labeled METHAN approximation
+- **Signed:** Codex (OpenAI)
+- **Commit:** Complete part 22 with approved METHAN design approximation
+- **Owner decision:** "Build a labeled approximation" after the hardware-photo search.
+- **What changed:** Replaced the last part-22 placeholder with a chamfered cold-cell frame,
+  removable metal-felt filter covers, supports, fiber feedthrough and short jacketed entry.
+  The split between exterior cell and warm DPU sources/detectors follows Lorenz et al.,
+  IPM 2025 pp. 184-185. Diagram outline only; all METHAN sizes, finish, filter layout,
+  detailed fittings and installation remain [EST], explicitly NOT photo-matched hardware.
+  No hidden mirrors, optical path or DPU electronics invented. EFIELD geometry unchanged.
+- **Inspection:** Publishes the prior feature-branch checkpoint too: separately focus Front
+  EFIELD, Rear EFIELD or METHAN (design estimate), same component ID 22, independent layers
+  and draw-time visibility restoration. No flight, science, power or thermal constants changed.
+- **Records:** Initial #22 asset pass checked off; current count 19/24 (4 Codex, 15 Claude).
+  Real hardware/exact-dimension follow-ups stay open. Component text, expandable assumptions,
+  source list, README, architecture and handoff updated together.
+- **Archive:** Previous exact module/UI/test, all subassembly views, banded-texture draft and
+  rectangular-frame draft retained under `archive/methan-placeholder-2026-10-18/`; tag on
+  `e133dbf`. Sources, parameter table and comparison in `research/methan-2026-10-18/`.
+- **Checks:** 273 Node tests pass. Real Edge/WebGL checks at 1440/390/360 px, both layers,
+  all subassemblies/four angles; nonblank framed pixels, no browser errors or page overflow.
+  Rebuilt-neighbor/rotor clearances, skin mounting, cavity/filter/fiber construction, labels,
+  masks and completion counts tested. Visual comparison refined the frame/texture before release.
+- **Open / next:** Obtain actual METHAN photos and flight dimensions when available. Keep
+  the exception limited to this approved model; preserve the normal real-photo-first rule.
+  Other incomplete numbered parts remain on the checklist. Other chat's city/game files untouched.
+
+### 2026-10-18: Inspect individual part-22 probes and record the METHAN reference gap
+- **Signed:** Codex (OpenAI)
+- **Commit:** Inspect individual part-22 probes and record METHAN reference gap
+- **Release:** Checkpoint on `codex/dragonfly-nose-sensors-publish`; not merged to main or published to the app.
+- **What changed:** Both EFIELD assemblies existed already. Added a compact Subassembly menu
+  to focus/temporarily isolate Front EFIELD, Rear EFIELD or the provisional METHAN housing.
+  Retained component number 22; its anchor follows selected hardware. Selection resets on
+  component change, camera reset or Follow sampling, persists across Internal/Thermal, and
+  does not leak visibility changes into ordinary views or after a failed render. No geometry,
+  flight or thermal constants changed. Shortened the part's selector label to fit phone width.
+- **Research:** Lorenz et al., IPM 2025 pp. 184-185 identifies the cold mirrored gas cell,
+  dust filtration and fiber connection through foam to the warm DPU light engine. Saved
+  original pages and the poster index with credits. Reviewed primary sources do not establish
+  a photo-matched METHAN casing; awaiting owner's choice about a labeled approximation.
+- **Checks:** 272 Node tests pass; real Edge/WebGL checks at 1440/390/360 px, Internal/Thermal,
+  and all three subassemblies at four angles. No page errors or horizontal overflow.
+- **Archive:** exact prior files and screenshots at `archive/part22-inspection-2026-10-18/`;
+  restore tag on published baseline `fb2e5b6`. Old EFIELD geometry is unchanged.
+- **Open / next:** #22 remains partial, 18/24 total. Preserve the real-photo-first rule and
+  do not call the placeholder or CAD photo-matched. New evidence/handoff in
+  `research/part22-2026-10-18/README.md`. Shared city work left untouched.
 
 ### 2026-10-17: Publish the Asset and Environment Lab with individual model inspection
 - **Signed:** Codex (OpenAI)

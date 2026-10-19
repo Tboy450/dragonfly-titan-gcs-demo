@@ -525,6 +525,40 @@ test("Inspector frames isolated assemblies at every angle and restores the ordin
   assert.equal(chase.subsystems.battery.visible, false);
 });
 
+test("Part 22 frames either EFIELD probe, preserves numbering and restores subassembly visibility", async () => {
+  const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
+  const { createFlightState } = await import("../dist/flight-model.mjs");
+  const { createInspector, inspectionSubassemblies } = await import("../dist/vehicle-inspector.mjs");
+  const renderer = fakeRenderer(), chase = createChaseRenderer({ renderer });
+  const s = { ...createFlightState(), vehicleModel: "research", hold: true }, before = structuredClone(s);
+  const i = { ...createInspector(), focusPart: "nose-sensors", isolate: true };
+  const root = chase.subsystems["nose-sensors"], assemblies = inspectionSubassemblies(root);
+  const render = renderer.render.bind(renderer);
+  let active;
+  renderer.render = (scene, camera) => {
+    render(scene, camera);
+    if (!active) return;
+    for (const child of assemblies) assert.equal(child.visible, child.name === active);
+    const box = new THREE.Box3().setFromObject(root.getObjectByName(active));
+    for (const x of [box.min.x, box.max.x]) for (const y of [box.min.y, box.max.y]) for (const z of [box.min.z, box.max.z]) {
+      const p = new THREE.Vector3(x, y, z).project(camera);
+      assert.ok(Math.abs(p.x) < 0.99 && Math.abs(p.y) < 0.99, "entire probe framed");
+    }
+  };
+  for (const child of assemblies) for (const layer of ["internal", "thermal"]) for (const azimuth of [0, 1.5, 3.1, 4.7]) {
+    active = child.name; i.subassembly = active; i.azimuth = azimuth;
+    const labels = chase.drawMission(context2d, 360, 460, s, { layer, inspector: i, focusPart: "nose-sensors", reduceMotion: true });
+    assert.deepEqual(labels.filter(p => p.onCanvas).map(p => p.name), ["nose-sensors"]);
+    const label = labels.find(p => p.name === "nose-sensors");
+    assert.ok(label.x > 0 && label.x < 360 && label.y > 0 && label.y < 460, "label follows selected hardware");
+    assert.ok(assemblies.every(p => p.visible), "isolation restored after render");
+  }
+  renderer.render = () => { throw new Error("render interrupted"); };
+  assert.throws(() => chase.drawMission(context2d, 360, 460, s, { layer: "internal", inspector: i, focusPart: "nose-sensors" }), /render interrupted/);
+  assert.ok(assemblies.every(p => p.visible), "subassembly masks restored even after an error");
+  assert.deepEqual(s, before, "no flight/science changes");
+});
+
 test("The air loop follows the fans and the cold-duct diverter flaps", async () => {
   const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
   const { createFlightState } = await import("../dist/flight-model.mjs");

@@ -19,6 +19,7 @@ import { buildIem } from "./iem.mjs?v=dev";
 import { buildPowerUnits } from "./power-units.mjs?v=dev";
 import { buildSideCameras } from "./side-cameras.mjs?v=dev";
 import { buildNoseCameras } from "./nose-cameras.mjs?v=dev";
+import { buildNoseBulkhead } from "./nose-bulkhead.mjs?v=dev";
 import { buildDrill, drillAsset } from "./drills.mjs?v=dev";
 import { buildSampleLines, buildBlowers } from "./draco-plumbing.mjs?v=dev";
 import { buildFans, buildWarmDuct, buildTrimDevice, airLoopPaths, thermalLoopAsset } from "./thermal-loop.mjs?v=dev";
@@ -391,11 +392,11 @@ export function buildResearchModel(kit) {
   }
   interiorPart("drills", "drills", "DrACO drill and feed assemblies", "NASA Assembly Guide p2; APL payload cutaway; dimensions illustrative", 0xa9b9b9, "exterior");
   interiorPart("sample-lines", "drills", "DrACO sample-transfer lines: hoses, tubes, flow diverter and return to the blowers", "LPSC 2022 fig. 1 and schematic; NASA Playing Lacrosse on Titan; routes estimated", 0xa9b9b9, "exterior");
-  let material = interiorPart("nose-bulkhead", "equipment-bay", "Nose bulkhead", "ICES-2023 p7, fig. 3", 0x9aa6ad);
-  mesh(new THREE.BoxGeometry(0.7, 0.4, 0.02), material, [0, -0.13, -1.56]);
+  interiorPart("nose-bulkhead", "equipment-bay", "Nose bulkhead (provisional structural panel)", "NASA/APL 2026 structure photos: finish/joints only; ICES-2023 fig. 3: layout; nose face, dimensions and mounting detail unresolved", 0x9aa6ad);
+  buildNoseBulkhead({ parent: buildTarget, mesh });
   interiorPart("nose-cameras-inside", "nose-cameras", "Nose cameras: Forward MAC, Forward WAC, two Side Cameras, two NavCams (no active airflow)", "DragonCam paper (Clark et al. 2026) figs. 1-3; ICES-2023 p7; positions and pointing estimated", 0x3d4a52);
   buildNoseCameras({ parent: buildTarget, mesh });
-  material = interiorPart("nose-electronics", "nose-electronics", "IMUs and lidar electronics (FEB, MEB)", "ICES-2023 p7 (base of the nose), fig. 4", 0x5f8fa3);
+  let material = interiorPart("nose-electronics", "nose-electronics", "IMUs and lidar electronics (FEB, MEB)", "ICES-2023 p7 (base of the nose), fig. 4", 0x5f8fa3);
   mesh(new THREE.BoxGeometry(0.22, 0.12, 0.2), material, [-0.15, -0.26, -1.36]);
   mesh(new THREE.BoxGeometry(0.14, 0.1, 0.14), material, [0.07, -0.27, -1.38]);
   mesh(new THREE.BoxGeometry(0.09, 0.09, 0.09), material, [0.25, -0.28, -1.42]);
@@ -451,7 +452,7 @@ export function buildResearchModel(kit) {
   // Kept on the MMRTG's top fin root when the MMRTG was tilted (part 16); still a placeholder.
   mesh(new THREE.SphereGeometry(0.022, 12, 8), material, new THREE.Vector3(0, 0.22, 0).applyEuler(generator.rotation).add(generator.position).toArray());
   // Externally mounted items described in the same paper, visible in every layer.
-  interiorPart("nose-sensors", "external-sensors", "DraGMet: two EFIELD probes; METHAN housing remains provisional", "Seese et al., IPM 2025 pp186-187, figs1-2 (real engineering-model photo); CAPS 2024 slide42; locations from text, exact coordinates/preamp size estimated", 0x6b7278, "exterior");
+  interiorPart("nose-sensors", "external-sensors", "DraGMet: EFIELD / METHAN", "IPM 2025 pp184-187: EFIELD engineering-model photo; METHAN published design and CAPS 2024 slide42 diagram. Exact installation estimated; METHAN NOT photo-matched", 0x6b7278, "exterior");
   buildNoseSensors({ parent: buildTarget, mesh });
   interiorPart("side-cameras", "cold-actuators", "DragonCam lower cameras: Microscopic Camera, LED array, two Down Cameras (in foam cavities)", "DragonCam paper (Clark et al. 2026) figs. 1-3, 5, 12, table 1; brackets and down-camera position estimated", 0xbfb8aa, "exterior");
   buildSideCameras({ parent: buildTarget, mesh });

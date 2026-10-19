@@ -1,5 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js";
-import { inspectionGroups, inspectionModified } from "./vehicle-inspector.mjs?v=dev";
+import { inspectionGroups, inspectionModified, inspectionSubassemblies, inspectionSubassembly } from "./vehicle-inspector.mjs?v=dev";
 import { createInspectionVisibility, visibleInspectionHardware } from "./inspection-visibility.mjs?v=dev";
 import { cameraPose } from "./flight-camera.mjs?v=dev";
 import { createTitanTerrain, terrainHeight } from "./titan-terrain.mjs?v=dev";
@@ -391,6 +391,7 @@ export function createChaseRenderer(options = {}) {
       let halfHeight = layered ? Math.max(1.75, 2.35 * h / w) * layeredScale : Math.max(3.4, 3.0 * h / w);
       const inspector = layered && which === "research" ? view.inspector : null;
       const focusName = inspector && subsystems[view.focusPart] ? view.focusPart : null;
+      const subassembly = focusName ? inspectionSubassembly(subsystems[focusName], inspector) : null;
       const modified = inspector && inspectionModified(inspector, focusName);
       const visibility = new Map();
       if (inspector) {
@@ -399,7 +400,8 @@ export function createChaseRenderer(options = {}) {
         const groups = inspectionGroups(focusName);
         if (focusName) {
           const bounds = new THREE.Box3();
-          for (const name of groups) if (subsystems[name]) bounds.union(new THREE.Box3().setFromObject(subsystems[name]));
+          if (subassembly) bounds.setFromObject(subassembly);
+          else for (const name of groups) if (subsystems[name]) bounds.union(new THREE.Box3().setFromObject(subsystems[name]));
           bounds.getCenter(center);
           // A bounding sphere keeps the entire selected assembly framed at every orbit angle.
           const radius = Math.max(0.22, bounds.getSize(new THREE.Vector3()).length() / 2);
@@ -423,6 +425,10 @@ export function createChaseRenderer(options = {}) {
           for (const group of Object.values(subsystems)) {
             visibility.set(group, group.visible);
             group.visible = group.visible && groups.includes(group.name);
+          }
+          if (subassembly) for (const child of inspectionSubassemblies(subsystems[focusName])) {
+            visibility.set(child, child.visible);
+            child.visible = child.visible && child === subassembly;
           }
         }
       } else { inspectionHeight = null; inspectionTime = null; }
@@ -469,7 +475,9 @@ export function createChaseRenderer(options = {}) {
           craft.updateMatrixWorld(true);
           for (const group of which === "research" ? labeledParts : mockParts) {
             group.userData.labelAnchor ??= labelAnchor(group);
-            labelPoint.copy(group.userData.labelAnchor).applyMatrix4(craft.matrixWorld).project(missionCamera);
+            const anchor = group.name === focusName && subassembly?.userData.labelAnchor
+              ? subassembly.userData.labelAnchor : group.userData.labelAnchor;
+            labelPoint.copy(anchor).applyMatrix4(craft.matrixWorld).project(missionCamera);
             labels.push({
               name: group.name, label: group.userData.label, source: group.userData.source,
               zone: group.userData.thermalZone, color: group.userData.color, mock: !!group.userData.mock,

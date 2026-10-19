@@ -251,8 +251,18 @@ These are viewing masks on existing geometry, not a verified structural layer st
 
 The [two EFIELD probes](research/nose-sensors-2026-10-17/README.md) follow real 2025
 engineering-model photos, with published 30 cm carbon-fiber stalks and 5 cm gold electrode
-balls. Preamp size and exact installation remain estimated; METHAN is still provisional,
-so #22 stays open and the count remains 18/24. Geometry: Codex.
+balls. Preamp size and exact installation remain estimated. The
+[METHAN cell](research/methan-2026-10-18/README.md) is an owner-approved, labeled design
+approximation with removable filtered covers, supports and fiber entry; it is not photo-matched
+hardware. Warm DPU sources/detectors and hidden optics are not invented. The subassembly menu
+focuses Front EFIELD, Rear EFIELD or METHAN independently. Initial asset pass #22 is complete;
+the count is 19/24, including this explicitly approximate pass. Geometry: Codex.
+
+The [nose bulkhead study](research/nose-bulkhead-2026-10-19/README.md) replaces the old block
+with a provisional thin face, perimeter returns and mounts. Real integration photographs,
+separately labeled CAD and process renders are saved together. Complete nose-face geometry
+and dimensions remain unresolved, so #03 stays unchecked and the count stays 19/24. Hiding
+the face shows unmodeled space, not a verified hollow flight panel. Geometry: Codex.
 
 The [aft bulkhead](research/aft-bulkhead-2026-10-15/README.md) follows NASA/APL's real structure
 photos: gold-colored face, ribbed circular generator interface and pocketed rim. The generator
@@ -478,9 +488,10 @@ drum under a foam dome just aft of the attic, the motorized arm and pedestal tha
 and the launch and flight locks), and the battery (24 upright cells in a ribbed enclosure with an
 aluminum upper housing, fans and heat pipes, its look from real photos of APL's test module);
 their positions are mostly estimated. The rotor drive electronics are a provisional enclosure
-illustration (Codex) until a clear photo turns up. The rest are still placeholder blocks from
-NASA's thermal papers, placed where their figures put them: the nose avionics, the bulkheads and
-the sensors. The air loop was redrawn from NASA/APL's
+illustration (Codex) until a clear photo turns up. The aft bulkhead and EFIELD assemblies are also
+rebuilt; METHAN is an approved design estimate, not photo-matched. Remaining placeholders are
+the nose avionics and battery/MMRTG temperature sensors; the nose bulkhead remains a provisional
+structural illustration, not a completed photo-match. The air loop was redrawn from NASA/APL's
 thermal talks: two circulation fans at the MMRTG end, the warm duct forward under the floor into
 the nose, and the trim device, a cold bypass duct under the belly between fore and aft diverter
 flaps (an earlier side-chimney concept is archived). Arrows follow the warm-air loop from the

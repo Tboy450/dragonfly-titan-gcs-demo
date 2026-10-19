@@ -7,7 +7,68 @@ Battery pass finished and Codex's RDE pass reviewed October 15, 2026 by Claude (
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: October 17 Context
+## Resume Here: October 19 Nose-Panel Provisional Pass
+
+Codex assessed next unfinished part **03**. Real 2026 flight-structure photos provide
+panel finish/joint evidence, but no fully exposed identified nose face or dimensioned
+reference was found. The plain block now has a thin face representation, perimeter
+returns, mounts and independent inspection groups; all dimensions/details remain [EST].
+No hidden honeycomb cells, stack or apertures invented. **#03 stays unchecked; count
+19/24 (4 Codex, 15 Claude) is unchanged.** METHAN's exception is not blanket approval.
+[Real photos, labeled CAD and model/process samples](research/nose-bulkhead-2026-10-19/README.md).
+Next: obtain a nose-specific photo/scale, or assess #05/#09/#20/#21 independently. Do not
+restart #22 or touch the separate city/game project. Worktree/preview below still apply.
+
+The owner now requests **real, CGI/CAD and process samples** with each part update.
+Keep their types/credits visibly distinct; CGI is layout/dimension support, not a substitute
+for real appearance evidence. Include an actual model sample inline in the completion reply.
+
+## October 18 Part-22 Closeout
+
+**Owner approved a labeled METHAN approximation on October 18.** Codex replaced the
+remaining placeholder with an explicitly estimated exterior gas-cell enclosure, removable
+metal-felt filter cassettes/cover, mounts, fiber feedthrough and short jacketed fiber entry.
+The cold-cell / warm-DPU separation follows Lorenz et al., IPM 2025 pp. 184-185. The
+diagram is not a hardware photo; casing size, finish, filter count/layout and all installation
+details remain [EST]. No hidden mirrors, optical path, warm DPU electronics or visible beam
+are invented. The two EFIELD assemblies are unchanged from their photo-referenced subpass.
+
+**Initial asset pass #22 is complete under that explicit approximation approval.** Count:
+**19/24 (4 Codex, 15 Claude)**, not nineteen verified flight replicas. Hardware photography,
+exact dimensions, real coating/material and internal optics remain follow-ups. Independent
+Front/Rear EFIELD and METHAN inspection is included; original part ID 22 is retained.
+[Source/model comparison and parameters](research/methan-2026-10-18/README.md).
+Old placeholder and prior controls are archived with restore tags; no other part was moved.
+
+Work remains on the isolated `codex/dragonfly-nose-sensors-publish` worktree below, preview
+4195. Preserve the shared checkout's unrelated kit files and all already-published game work.
+Check the fresh remote and deployment result before describing the current public build.
+
+## October 18 Earlier Checkpoint (Historical)
+
+**Codex local checkpoint, not published:** both EFIELD probes already existed in the
+October 17 release; the chat sample showed only the front one. A new Subassembly menu
+under component 22 focuses/isolates front EFIELD, rear EFIELD or METHAN individually.
+Both probes retain the same geometry and original number 22; the label follows the
+selected subassembly. Selection is viewing-only; masks restore after draws/errors.
+Tests: 272 pass; real desktop/390/360 px Internal/Thermal and four-angle pixel checks pass.
+
+**METHAN still open.** New APL primary reference: Lorenz et al., IPM 2025, printed
+pp. 184-185, original page images saved. Exterior mirrored gas cell with dust filters;
+fibers through foam to warm DPU light engine (1.67 micrometer/continuum superluminescent
+sources and photodiodes). Do not put a generic laser module, catalytic sensor, visible
+beam or fictional electronics outside. No clear METHAN hardware photo found in reviewed
+sources; CAPS 2024's depiction is CAD. Owner has been asked whether a labeled approximation
+is acceptable if no hardware photo is available. Await that answer before changing appearance.
+**Count stays 18/24; #22 is not checked off.**
+[Evidence, screenshots and handoff](research/part22-2026-10-18/README.md).
+
+Continue in the isolated `codex/dragonfly-nose-sensors-publish` worktree listed below.
+It is now based on published `fb2e5b6`, which includes the other chat's released city lab
+and the October 17 simulator update. Do not remove that released work or touch the shared
+checkout's untracked city kits. Preview 4195. Current selector changes are local only.
+
+## October 17 Context (Historical)
 
 **Codex: #22 EFIELD subpass.** Two fixed probes now follow Seese et al., IPM 2025,
 printed pp. 186-187: actual engineering-model photos (fig. 2), 30 cm carbon-fiber stalks
@@ -262,7 +323,7 @@ estimated. Parts with an estimated position need a layout pass against the sourc
 | 07 Wonderwall | [EST] | [EST] attic, from SciTech 2024 figs. 2 and 11 |
 | 08 DraMS | [EST] | [EST] keyed to the Wonderwall opening |
 | 13 Frontier radio | [PUB] 4 x 6 in slices; width [EST] from the photo | [EST] the old placeholder's spot on the starboard floor |
-| 22 EFIELD only | [PUB] two 0.30 m carbon stalks and 0.05 m electrode balls; preamp and tube diameter [EST] | Published front upper starboard / rear lower port regions; exact coordinates and pointing [EST]. METHAN still provisional; see October 17 notes. |
+| 22 EFIELD / METHAN | [PUB] two 0.30 m carbon stalks / 0.05 m balls; METHAN architecture. [EST] 0.062 x 0.100 x 0.105 m chamfered cell, 0.006 m frame edge, two filtered covers | METHAN center (0.505,-0.100,-1.670) m, skin x=0.435 m [EST]. EFIELD regions published, exact pose estimated. Owner-approved METHAN approximation; see October 18 closeout. |
 | 12 IEM | [EST] from standard Micro-D sizes in the photos | [EST] port wall; photo shows it on a wall panel beside a PSU |
 | 11 PSUs | [EST] from standard D-sub sizes in the photo | PSU 1 beside the IEM as photographed (absolute position [EST]); PSU 2 [EST] |
 | 23 Lower cameras | Microscopic Camera [PUB] 105 x 155 x 90 mm; ECAM-P50 heads [EST] | Microscopic Camera [PUB] 986 mm at 52 degrees from the port drill site; Down Cameras [EST] mid-body per DragonCam figs. 2-3 |
@@ -377,7 +438,7 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **01 follow-up:** real part sizes; exact fore-aft position (sources span 0.34-0.45 m forward of center; model 0.43 m). The #02 pass now connects to the moving swivel port; preserve that connection through the full drill stroke.
 - [x] **Claude:** **02 Sample-transfer lines** (`sample-lines`): flexible hose from each drill's port (follows the drill down), rigid tubes forward under the body edges and up into the attic, flow-diverter manifold on the carousel inlet, return tube down the port side to the blowers; topology from DrACO fig. 1, routes and the 13 mm size [EST]. [References/limits](research/draco-plumbing-2026-10-14/README.md).
 - [ ] **02 follow-up:** real tube sizes and routes; separate LDMS and GCMS elevators at the carousel (the carousel models one inlet).
-- [ ] **03 Nose bulkhead** (`nose-bulkhead`): profile, thickness, apertures and relation to the forward bay.
+- [ ] **03 Nose bulkhead** (`nose-bulkhead`): October 19 provisional thin-panel/perimeter/mount pass, not photo-matched. Complete nose-face profile, thickness, apertures and real attachment remain unresolved. [Evidence/model/process comparison](research/nose-bulkhead-2026-10-19/README.md). Do not count as completed or invent a hidden core.
 - [x] **Claude:** **04 Nose cameras** (`nose-cameras-inside`): Forward MAC (hooded lens), Forward WAC, two Side Cameras and two NavCams (yellow top plates) on a camera panel behind the nose cap, each behind a window; same ECAM body throughout, differences from DragonCam fig. 1; positions from figs. 2-3. [References/limits](research/nose-cameras-2026-10-13/README.md).
 - [ ] **04 follow-up:** pointing angles and which low unit is the WAC or the NavCams; the fuller 2026 chin (the low cameras stand out of the older nose shell, noted for the fuselage nose redraw).
 - [ ] **05 IMU/lidar electronics, FEB/MEB** (`nose-electronics`): distinguish boxes and brackets; verify names/locations against current sources.
@@ -423,12 +484,18 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **19 follow-up:** the cold duct's real section and the meaning of the "split cold duct" (TFAWS 2024); flap hinge sides and actuators.
 - [ ] **20 Battery temperature sensor** (`battery-sensor`): verify installation; distinguish an actual sensor body from a diagram marker.
 - [ ] **21 MMRTG fin-root sensor** (`mmrtg-sensor`): same distinction, with verified placement rather than a floating green sphere.
-- [ ] **22 Nose methane/E-field instruments** (`nose-sensors`): individual housings, supports and wire exits.
+- [x] **Codex:** **22 Nose methane/E-field instruments** (`nose-sensors`): photo-referenced EFIELD assemblies plus owner-approved, labeled METHAN design approximation; independently removable housings/covers, supports and fiber entry. [Sources, estimates and verification](research/methan-2026-10-18/README.md).
   - [x] **Codex, October 17:** both EFIELD probes from an engineering-model photo and
     published stalk/ball dimensions; estimated preamp and co-mounted TEMP/MICRO; independent
     inspection masks and fixed front label. Front mount clears the rebuilt DrACO tube.
-  - [ ] **METHAN:** locate clear hardware imagery and a scale reference before replacing the
-    retained gray placeholder. Exact flight mounting and hidden electronics remain unverified.
+  - [x] **METHAN, October 18:** owner approved a labeled design approximation; placeholder
+    replaced by estimated enclosure/filter cassettes, mounts and short optical-fiber entry.
+  - [x] **Codex, October 18:** independent Front EFIELD / Rear EFIELD / METHAN inspection;
+    sources distinguish the cold mirrored cell from the warm fiber-fed light engine.
+  - [ ] **22 follow-up:** actual METHAN hardware photo and scale; flight cell dimensions,
+    material/finish, filter layout, mounting, optics and warm DPU internals. Initial asset pass
+    completion is not photo verification. Keep every estimated dimension tagged and do not
+    invent extra TEMP/HYDRO sensors from the neighboring items in the CAD panel.
 - [x] **Claude:** **23 Lower DragonCam cameras** (`side-cameras`): Microscopic Camera on the port side placed from its published 986 mm range at 52 degrees to the port drill site, APL's LED array beside it (365 nm UV emitter), a Down Camera on each side; Malin ECAM heads drawn from the paper's figures (shared `dist/ecam.mjs`); each in a foam cavity behind a 3 mm window, brackets on the bay wall's outer face, harness through the wall. [References/limits](research/side-cameras-2026-10-13/README.md).
 - [ ] **23 follow-up:** the foam blister the Microscopic Camera needs (it is thicker than the 7.62 cm average foam); Down Cameras' exact position; the camera electronics box (ECAM-DVR8P) inside the bay. #19 has replaced the old side-chimney placeholder with the under-belly trim device; retain the rebuilt-set clearance checks.
 - [x] **Claude:** **24 DrACO blowers** (`drill-blower`): forward and aft centrifugal blowers (volute, motor, axial inlet, tangential exhaust out and down) behind the port forward arm, fed by an inlet flow diverter; per DrACO fig. 1 and ICES-2023. [References/limits](research/draco-plumbing-2026-10-14/README.md).
