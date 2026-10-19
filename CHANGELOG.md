@@ -39,6 +39,27 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Smoke, fire and embers on lab destruction previews
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Add smoke and fire to lab destruction previews`.
+- **What changed:** all five city studies now emit animated procedural smoke, flame tongues,
+  embers and bounded warm firelight from real clipped fracture geometry. Damaged / Major
+  destruction / Ruins have distinct activity levels. Compatible individual architecture
+  assets also offer destruction previews. Added independent smoke/fire controls, effect
+  pause, reduced-motion startup, shareable options and High/Light budgets. Intact assets,
+  source credits, terrain, foundation history and campaign saves are retained.
+- **Preservation:** exact previous lab/damage files and a dated historical October 17
+  picture are in `archive/lab-aftermath-2026-10-19/`; tag of the same name on `f1ad919`.
+- **Checks:** **314/314 repository tests pass**, including eight new aftermath tests.
+  The offline geometry probe confirms usable
+  sites across all 15 real city/stage combinations and 11 individual architecture assets.
+  Full test output and scope are recorded in
+  `research/lab-aftermath-2026-10-19/README.md`; shader checks are static contracts, not GPU rendering.
+- **Assumptions / open:** invented visual aftermath, not physical fire or gameplay burning.
+  No image-generation service or downloaded VFX art used. Browser access was blocked; visual,
+  shader/GPU, desktop/touch and real-phone acceptance remain FX-06. Weapon/explosion sound,
+  combat effects, spreading fire and campaign integration remain future checklist work.
+
 ### 2026-10-19: Continue capturing or claim victory, with one-time result settlement
 - **Signed:** Codex (OpenAI)
 - **Commit:** Offer victory extraction and settle mission results once.

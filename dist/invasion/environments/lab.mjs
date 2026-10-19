@@ -5,7 +5,8 @@ import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { worldInfo, buildWorld, rng } from "./worlds.mjs?v=dev";
 import { lowFootprint, structuralContacts } from "./foundation.mjs?v=dev";
 import { bakeSourceGeometry } from "./source-geometry.mjs?v=dev";
-import { damagePart, collectDamageParts, createCityDamageVariant, disposeCityDamageVariant, damageStages } from './city-damage.mjs?v=dev';
+import { damagePart, damageAnchors, collectDamageParts, createCityDamageVariant, disposeCityDamageVariant, damageStages } from './city-damage.mjs?v=dev';
+import { createCityAftermath } from './aftermath.mjs?v=dev';
 import { assetCatalog, assetById, loadAssetDisplay } from './asset-viewer.mjs?v=dev';
 
 const $=id=>document.getElementById(id),query=new URLSearchParams(location.search),requested=query.get('scene');
@@ -129,29 +130,75 @@ try{
   document.body.dataset.ready='true';
 }catch(error){console.error(error);$('loading-text').textContent='A source asset could not load. Reload this page to retry.';$('status').textContent='Environment could not load';throw error;}
 
-const damageSource=assetEntry?null:world.source?{parts:assets.SourceDamageParts,originals:new Set([assets.SourceCity])}:collectDamageParts(world.group);
-let damageVariant=null,damageBusy=false;
+let damageSource=assetEntry?.drone?null:world.source?{parts:assets.SourceDamageParts,originals:new Set([assets.SourceCity])}
+  :collectDamageParts(assetEntry?world.group.getObjectByName('Inspection asset'):world.group);
+if(assetEntry&&damageSource&&!damageAnchors(damageSource.parts).length)damageSource=null;
+$('damage-preview').hidden=!damageSource;
+if(assetEntry)$('asset-damage-note').textContent=damageSource?'Destruction and smoke/fire previews are available below.':'Intact model preview.';
+const damageStyle=assetEntry?(assetEntry.category.startsWith('Fantasy')?'citadel':'metropolis'):type;
+const effectsMode=['all','smoke','fire','off'].includes(query.get('effects'))?query.get('effects'):'all';
+const effectsState={smoke:['all','smoke'].includes(effectsMode),fire:['all','fire'].includes(effectsMode),
+  paused:query.get('motion')==='paused'||matchMedia('(prefers-reduced-motion: reduce)').matches};
+let damageVariant=null,aftermath=null,damageBusy=false;
+
+function syncPreviewLinks(stage){
+  const mode=effectsState.smoke?(effectsState.fire?'all':'smoke'):(effectsState.fire?'fire':'off');
+  for(const link of document.querySelectorAll('[data-scene]')){
+    const url=new URL(link.href);
+    if(stage==='intact')url.searchParams.delete('damage');else url.searchParams.set('damage',stage);
+    if(mode==='all')url.searchParams.delete('effects');else url.searchParams.set('effects',mode);
+    if(effectsState.paused)url.searchParams.set('motion','paused');else url.searchParams.delete('motion');
+    link.href=url;
+  }
+}
+function syncEffectsUI(){
+  $('effect-smoke').setAttribute('aria-pressed',String(effectsState.smoke));
+  $('effect-fire').setAttribute('aria-pressed',String(effectsState.fire));
+  $('effect-pause').setAttribute('aria-pressed',String(effectsState.paused));
+  $('effect-pause').textContent=effectsState.paused?'Animate effects':'Pause effects';
+  const sites=aftermath?.stats.sites||0;
+  $('effect-note').textContent=!sites?'Choose a damaged stage to see smoke and fire on broken architecture.'
+    :!effectsState.smoke&&!effectsState.fire?'Smoke and fire are hidden; the destruction model is unchanged.'
+    :`${sites} fracture hotspots · ${effectsState.paused?'frozen for inspection':'animated smoke/fire study'}. Visual preview only.`;
+}
+function updateEffects(){
+  aftermath?.setOptions({...effectsState,quality:$('quality').value});
+  const mode=effectsState.smoke?(effectsState.fire?'all':'smoke'):(effectsState.fire?'fire':'off');
+  const url=new URL(location.href);
+  if(mode==='all')url.searchParams.delete('effects');else url.searchParams.set('effects',mode);
+  if(effectsState.paused)url.searchParams.set('motion','paused');else url.searchParams.delete('motion');
+  history.replaceState(null,'',url);syncPreviewLinks(document.body.dataset.damage||'intact');syncEffectsUI();
+}
+$('effect-smoke').addEventListener('click',()=>{effectsState.smoke=!effectsState.smoke;updateEffects();});
+$('effect-fire').addEventListener('click',()=>{effectsState.fire=!effectsState.fire;updateEffects();});
+$('effect-pause').addEventListener('click',()=>{effectsState.paused=!effectsState.paused;updateEffects();});
+syncEffectsUI();
 async function setDamage(stage){
   if(!damageSource||damageBusy||!Object.hasOwn(damageStages,stage))return;
   damageBusy=true;document.body.dataset.damageBusy='true';
   const buttons=[...document.querySelectorAll('[data-damage]')];buttons.forEach(button=>button.disabled=true);
   $('damage-note').textContent=stage==='intact'?'Restoring intact architecture…':'Building fractured walls, exposed floors and settled rubble…';
   await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  let next=null,nextEffects=null;
   try{
     // Build before hiding/releasing the current version, so a failed variant leaves it usable.
-    const next=stage==='intact'?null:createCityDamageVariant(damageSource.parts,stage,{type});
+    next=stage==='intact'?null:createCityDamageVariant(damageSource.parts,stage,{type:damageStyle});
+    nextEffects=createCityAftermath(next?.userData.effectSources||[],stage,{...effectsState,quality:$('quality').value});
+    aftermath?.dispose();
     if(damageVariant)disposeCityDamageVariant(damageVariant);
-    damageVariant=next;if(next)scene.add(next);
+    damageVariant=next;aftermath=nextEffects;if(next)scene.add(next);scene.add(aftermath.group);
     for(const object of damageSource.originals)object.visible=stage==='intact';
     buttons.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.damage===stage)));
     const stats=next?.userData.damage;
     $('damage-note').textContent=stats?`${damageStages[stage].label} · ${stats.affected}/${stats.anchors} structural groups hit. Broken geometry study; game damage comes later.`:'Intact architecture. Terrain, water and all original assets are retained.';
     const url=new URL(location.href);if(stage==='intact')url.searchParams.delete('damage');else url.searchParams.set('damage',stage);
     history.replaceState(null,'',url);document.body.dataset.damage=stage;
-    document.querySelectorAll('[data-scene]').forEach(link=>{
-      const nextURL=new URL(link.href);if(stage==='intact')nextURL.searchParams.delete('damage');else nextURL.searchParams.set('damage',stage);link.href=nextURL;
-    });
-  }catch(error){console.error(error);$('damage-note').textContent='This damage version could not build. The previous view is retained.';}
+    syncPreviewLinks(stage);syncEffectsUI();
+  }catch(error){
+    if(nextEffects&&nextEffects!==aftermath)nextEffects.dispose();
+    if(next&&next!==damageVariant)disposeCityDamageVariant(next);
+    console.error(error);$('damage-note').textContent='This damage version could not build. The previous view is retained.';
+  }
   finally{damageBusy=false;document.body.dataset.damageBusy='false';buttons.forEach(button=>button.disabled=false);}
 }
 document.querySelectorAll('[data-damage]').forEach(button=>button.addEventListener('click',()=>setDamage(button.dataset.damage)));
@@ -169,7 +216,7 @@ $('pilot').addEventListener('click',()=>{pilot=!pilot;controls.enabled=!pilot;do
 $('pilot').addEventListener('click',()=>{if(pilot){canvas.tabIndex=0;canvas.focus({preventScroll:true});}});
 $('tour').addEventListener('click',()=>{const next=!tour;if(pilot)$('pilot').click();tour=next;$('tour').setAttribute('aria-pressed',String(tour));});
 $('light').addEventListener('click',()=>{dusk=!dusk;$('light').setAttribute('aria-pressed',String(dusk));$('light').textContent=dusk?'Daylight':'Dusk';sun.intensity=dusk?.6:3.2;hemi.intensity=dusk?1:2.2;skyUniforms.top.value.set(dusk?0x111c38:info.sky[0]);skyUniforms.bottom.value.set(dusk?0x7b7792:info.sky[1]);scene.fog.color.set(dusk?0x77768c:info.sky[1]);});
-$('quality').addEventListener('change',()=>{const high=$('quality').value==='high';renderer.setPixelRatio(Math.min(devicePixelRatio,high?1.6:1));renderer.shadowMap.enabled=high;renderer.setSize(innerWidth,innerHeight);});
+$('quality').addEventListener('change',()=>{const high=$('quality').value==='high';renderer.setPixelRatio(Math.min(devicePixelRatio,high?1.6:1));renderer.shadowMap.enabled=high;renderer.setSize(innerWidth,innerHeight);aftermath?.setOptions({quality:$('quality').value});syncEffectsUI();});
 $('menu').addEventListener('click',()=>{document.body.classList.toggle('panel-hidden');$('menu').setAttribute('aria-expanded',String(!document.body.classList.contains('panel-hidden')));});
 if(innerWidth<760){document.body.classList.add('panel-hidden');$('menu').setAttribute('aria-expanded','false');}
 const movementKeys=['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','ShiftLeft','ShiftRight'];
@@ -178,6 +225,6 @@ canvas.addEventListener('pointerdown',e=>{if(!pilot)return;dragging={id:e.pointe
 document.querySelectorAll('[data-move]').forEach(button=>{button.addEventListener('pointerdown',e=>{keys.add(button.dataset.move);button.setPointerCapture(e.pointerId);});for(const event of ['pointerup','pointercancel','lostpointercapture'])button.addEventListener(event,()=>keys.delete(button.dataset.move));});
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 let last=performance.now(),frames=0,since=last,tourTime=0;const direction=new THREE.Vector3(),right=new THREE.Vector3(),up=new THREE.Vector3(0,1,0);
-function frame(now){requestAnimationFrame(frame);const dt=Math.min((now-last)/1000,.06);last=now;if(document.hidden){keys.clear();return;}if(tour){tourTime+=dt*.055;const radius=assetEntry?190:1650;camera.position.set(Math.cos(tourTime)*radius,assetEntry?90:680+Math.sin(tourTime*.6)*130,Math.sin(tourTime)*radius);controls.target.copy(world.target);camera.lookAt(world.target);}else if(pilot){camera.rotation.set(pitch,yaw,0,'YXZ');camera.getWorldDirection(direction);right.crossVectors(direction,up).normalize();const speed=dt*(keys.has('ShiftLeft')||keys.has('ShiftRight')?240:65);if(keys.has('KeyW')||keys.has('ArrowUp'))camera.position.addScaledVector(direction,speed);if(keys.has('KeyS')||keys.has('ArrowDown'))camera.position.addScaledVector(direction,-speed);if(keys.has('KeyA')||keys.has('ArrowLeft'))camera.position.addScaledVector(right,-speed);if(keys.has('KeyD')||keys.has('ArrowRight'))camera.position.addScaledVector(right,speed);if(keys.has('KeyE'))camera.position.y+=speed;if(keys.has('KeyQ'))camera.position.y-=speed;camera.position.y=THREE.MathUtils.clamp(camera.position.y,2,3000);camera.position.x=THREE.MathUtils.clamp(camera.position.x,-3200,3200);camera.position.z=THREE.MathUtils.clamp(camera.position.z,-3200,3200);}else controls.update();world.animate?.(now/1000);for(const w of world.moving){w.material.opacity=.58+Math.sin(now*.003+w.position.x)*.08;}renderer.render(scene,camera);frames++;if(now-since>1100){$('metrics').textContent=`${Math.round(frames*1000/(now-since))} FPS · ${(renderer.info.render.triangles/1000000).toFixed(2)}M triangles · ${renderer.info.render.calls} draws`;frames=0;since=now;}}
+function frame(now){requestAnimationFrame(frame);const dt=Math.min((now-last)/1000,.06);last=now;if(document.hidden){keys.clear();return;}if(tour){tourTime+=dt*.055;const radius=assetEntry?190:1650;camera.position.set(Math.cos(tourTime)*radius,assetEntry?90:680+Math.sin(tourTime*.6)*130,Math.sin(tourTime)*radius);controls.target.copy(world.target);camera.lookAt(world.target);}else if(pilot){camera.rotation.set(pitch,yaw,0,'YXZ');camera.getWorldDirection(direction);right.crossVectors(direction,up).normalize();const speed=dt*(keys.has('ShiftLeft')||keys.has('ShiftRight')?240:65);if(keys.has('KeyW')||keys.has('ArrowUp'))camera.position.addScaledVector(direction,speed);if(keys.has('KeyS')||keys.has('ArrowDown'))camera.position.addScaledVector(direction,-speed);if(keys.has('KeyA')||keys.has('ArrowLeft'))camera.position.addScaledVector(right,-speed);if(keys.has('KeyD')||keys.has('ArrowRight'))camera.position.addScaledVector(right,speed);if(keys.has('KeyE'))camera.position.y+=speed;if(keys.has('KeyQ'))camera.position.y-=speed;camera.position.y=THREE.MathUtils.clamp(camera.position.y,2,3000);camera.position.x=THREE.MathUtils.clamp(camera.position.x,-3200,3200);camera.position.z=THREE.MathUtils.clamp(camera.position.z,-3200,3200);}else controls.update();world.animate?.(now/1000);for(const w of world.moving){w.material.opacity=.58+Math.sin(now*.003+w.position.x)*.08;}aftermath?.update(dt);renderer.render(scene,camera);frames++;if(now-since>1100){$('metrics').textContent=`${Math.round(frames*1000/(now-since))} FPS · ${(renderer.info.render.triangles/1000000).toFixed(2)}M triangles · ${renderer.info.render.calls} draws`;frames=0;since=now;}}
 requestAnimationFrame(frame);
-if(!assetEntry)await setDamage(new URLSearchParams(location.search).get('damage')||'intact');
+if(damageSource)await setDamage(new URLSearchParams(location.search).get('damage')||'intact');

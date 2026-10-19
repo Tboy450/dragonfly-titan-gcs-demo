@@ -1,0 +1,372 @@
+{
+  "kind": "offline geometry only; no WebGL, image/material, visual or phone verification",
+  "cities": [
+    {
+      "type": "alien",
+      "stages": [
+        {
+          "stage": "damaged",
+          "anchors": 99,
+          "fractures": 32,
+          "sites": 18,
+          "instances": 468
+        },
+        {
+          "stage": "heavy",
+          "anchors": 99,
+          "fractures": 79,
+          "sites": 36,
+          "instances": 936
+        },
+        {
+          "stage": "ruins",
+          "anchors": 99,
+          "fractures": 99,
+          "sites": 28,
+          "instances": 728
+        }
+      ]
+    },
+    {
+      "type": "metropolis",
+      "stages": [
+        {
+          "stage": "damaged",
+          "anchors": 864,
+          "fractures": 288,
+          "sites": 18,
+          "instances": 468
+        },
+        {
+          "stage": "heavy",
+          "anchors": 864,
+          "fractures": 674,
+          "sites": 36,
+          "instances": 936
+        },
+        {
+          "stage": "ruins",
+          "anchors": 864,
+          "fractures": 862,
+          "sites": 28,
+          "instances": 728
+        }
+      ]
+    },
+    {
+      "type": "citadel",
+      "stages": [
+        {
+          "stage": "damaged",
+          "anchors": 167,
+          "fractures": 71,
+          "sites": 18,
+          "instances": 468
+        },
+        {
+          "stage": "heavy",
+          "anchors": 167,
+          "fractures": 146,
+          "sites": 36,
+          "instances": 936
+        },
+        {
+          "stage": "ruins",
+          "anchors": 167,
+          "fractures": 167,
+          "sites": 28,
+          "instances": 728
+        }
+      ]
+    },
+    {
+      "type": "cyberpunk",
+      "stages": [
+        {
+          "stage": "damaged",
+          "anchors": 48,
+          "fractures": 17,
+          "sites": 17,
+          "instances": 442
+        },
+        {
+          "stage": "heavy",
+          "anchors": 48,
+          "fractures": 39,
+          "sites": 36,
+          "instances": 936
+        },
+        {
+          "stage": "ruins",
+          "anchors": 48,
+          "fractures": 47,
+          "sites": 28,
+          "instances": 728
+        }
+      ]
+    },
+    {
+      "type": "drone",
+      "stages": [
+        {
+          "stage": "damaged",
+          "anchors": 125,
+          "fractures": 40,
+          "sites": 18,
+          "instances": 468
+        },
+        {
+          "stage": "heavy",
+          "anchors": 125,
+          "fractures": 101,
+          "sites": 36,
+          "instances": 936
+        },
+        {
+          "stage": "ruins",
+          "anchors": 125,
+          "fractures": 125,
+          "sites": 28,
+          "instances": 728
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "building-large",
+      "supported": true,
+      "stages": [
+        {
+          "stage": "heavy",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        },
+        {
+          "stage": "ruins",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        }
+      ]
+    },
+    {
+      "id": "building-medium",
+      "supported": true,
+      "stages": [
+        {
+          "stage": "heavy",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        },
+        {
+          "stage": "ruins",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        }
+      ]
+    },
+    {
+      "id": "building-small",
+      "supported": true,
+      "stages": [
+        {
+          "stage": "heavy",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        },
+        {
+          "stage": "ruins",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        }
+      ]
+    },
+    {
+      "id": "air-conditioning",
+      "supported": true,
+      "stages": [
+        {
+          "stage": "heavy",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        },
+        {
+          "stage": "ruins",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        }
+      ]
+    },
+    {
+      "id": "planter",
+      "supported": false,
+      "stages": []
+    },
+    {
+      "id": "timber-wall",
+      "supported": true,
+      "stages": [
+        {
+          "stage": "heavy",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        },
+        {
+          "stage": "ruins",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        }
+      ]
+    },
+    {
+      "id": "timber-door",
+      "supported": true,
+      "stages": [
+        {
+          "stage": "heavy",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        },
+        {
+          "stage": "ruins",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        }
+      ]
+    },
+    {
+      "id": "timber-window",
+      "supported": true,
+      "stages": [
+        {
+          "stage": "heavy",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        },
+        {
+          "stage": "ruins",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        }
+      ]
+    },
+    {
+      "id": "roof-high",
+      "supported": true,
+      "stages": [
+        {
+          "stage": "heavy",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        },
+        {
+          "stage": "ruins",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        }
+      ]
+    },
+    {
+      "id": "roof-gable",
+      "supported": true,
+      "stages": [
+        {
+          "stage": "heavy",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        },
+        {
+          "stage": "ruins",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        }
+      ]
+    },
+    {
+      "id": "roof-point",
+      "supported": true,
+      "stages": [
+        {
+          "stage": "heavy",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        },
+        {
+          "stage": "ruins",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        }
+      ]
+    },
+    {
+      "id": "fountain",
+      "supported": false,
+      "stages": []
+    },
+    {
+      "id": "banner",
+      "supported": false,
+      "stages": []
+    },
+    {
+      "id": "tree",
+      "supported": true,
+      "stages": [
+        {
+          "stage": "heavy",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        },
+        {
+          "stage": "ruins",
+          "anchors": 1,
+          "fractures": 1,
+          "sites": 1,
+          "instances": 26
+        }
+      ]
+    }
+  ]
+}

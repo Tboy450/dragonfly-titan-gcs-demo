@@ -1,5 +1,12 @@
 # Asset & Environment Lab — sources and modifications
 
+October 19: original procedural smoke, fire and ember shaders, fracture emission metadata,
+bounded local firelight and preview controls by Codex (OpenAI). No image-generation service,
+downloaded VFX imagery or franchise assets were used. These are invented visual aftermath
+studies, not physical fire simulation or implemented gameplay burning. Supported individual
+architecture assets now have derivative destruction previews; their intact source geometry
+and the creator/license notices below are retained. No imported source file was overwritten.
+
 October 17 public release adds an individual asset inspector for four existing Swarmfall
 procedural drone models, five Quaternius urban buildings/props and nine Kenney fantasy pieces.
 Their original geometry and materials are retained on a fit-to-view inspection stand. Drone

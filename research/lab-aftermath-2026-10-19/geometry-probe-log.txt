@@ -1,0 +1,6 @@
+alien [{"stage":"damaged","anchors":99,"fractures":32,"sites":18,"instances":468},{"stage":"heavy","anchors":99,"fractures":79,"sites":36,"instances":936},{"stage":"ruins","anchors":99,"fractures":99,"sites":28,"instances":728}]
+metropolis [{"stage":"damaged","anchors":864,"fractures":288,"sites":18,"instances":468},{"stage":"heavy","anchors":864,"fractures":674,"sites":36,"instances":936},{"stage":"ruins","anchors":864,"fractures":862,"sites":28,"instances":728}]
+citadel [{"stage":"damaged","anchors":167,"fractures":71,"sites":18,"instances":468},{"stage":"heavy","anchors":167,"fractures":146,"sites":36,"instances":936},{"stage":"ruins","anchors":167,"fractures":167,"sites":28,"instances":728}]
+cyberpunk [{"stage":"damaged","anchors":48,"fractures":17,"sites":17,"instances":442},{"stage":"heavy","anchors":48,"fractures":39,"sites":36,"instances":936},{"stage":"ruins","anchors":48,"fractures":47,"sites":28,"instances":728}]
+drone [{"stage":"damaged","anchors":125,"fractures":40,"sites":18,"instances":468},{"stage":"heavy","anchors":125,"fractures":101,"sites":36,"instances":936},{"stage":"ruins","anchors":125,"fractures":125,"sites":28,"instances":728}]
+Saved geometry-probe.json

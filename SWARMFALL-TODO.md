@@ -42,6 +42,7 @@ The Dragonfly scientific simulator has its own interior/engineering checklists.
 | Victory | Codex October 19: persisted eligibility, one choice, continued play, explicit extraction and idempotent result ledger | Browser/touch acceptance of choice, resumed prompts and storage-failure feedback |
 | Public lab | Five environments and an 18-model asset inspector were published October 17 | Expanded metadata, loading/recovery, device review and gameplay integration |
 | Destruction artwork | All five maps have Intact / Damaged / Major destruction / Ruins variants | Authored structural IDs, local weapon damage, support cleanup, collision and persistence |
+| Lab smoke/fire | Codex October 19: procedural fracture smoke, flames, embers, local light, pause/toggles and High/Light budgets implemented; automated checks recorded under FX-05 | Browser/GPU and real-phone acceptance (FX-06); gameplay explosions, burning rules and sound remain FX-01–04 |
 | Skyway terrain | Houdini coast and editable native project exist; sampled contacts were validated | Owner art approval of the high rear land, full component/support and route review |
 | Pilot mode | The lab has a free camera | Possessing a campaign drone, flight/aim controls, collision, squad handoff and HUD |
 | Drone builder | Requested concept is retained | Reference clarification, modular rules/UI, balance and save compatibility |
@@ -1271,3 +1272,15 @@ smoke and fire effects. Extend AUD-01/02 and IMM-03/04; keep their existing IDs.
 - [ ] **FX-04 (P1 for effects release)** Pool and cap fire/smoke/debris/voices, with High/Light
   settings and reduced-flash/shake options. Profile a sustained city fight and verify effects
   pause, expire, clear between missions and never hide required warnings or delay controls.
+- [x] **FX-05 ★ (P2) — Codex, October 19; lab implementation and automated checks** Add
+  procedural smoke, animated flames, embers and bounded local firelight to all five city
+  destruction previews and supported individual architecture assets. Bind emission to actual
+  clipped geometry; retain intact originals, credits and historical foundations. Provide
+  independent smoke/fire toggles, pause/reduced-motion startup, shareable effect settings and
+  High/Light budgets with resource disposal. [Evidence](research/lab-aftermath-2026-10-19/README.md).
+  This closes the lab implementation only; FX-02/04 still cover broader gameplay work.
+- [ ] **FX-06 (P1 for visual acceptance)** Review smoke/fire placement, transparency, fog,
+  dusk light and ember readability on every damaged stage in all five environments and the
+  supported architecture inspector. Compile/render shaders in an actual browser, exercise
+  toggles/stage switching/pause on desktop and touch, and benchmark a real phone on High/Light.
+  **Codex, October 19:** browser access was blocked; no visual, GPU or phone acceptance claimed.

@@ -219,6 +219,13 @@ export function createCityDamageVariant(parts, stage, { type = 'alien' } = {}) {
     caps.name = 'Exposed broken floors and wall sections';caps.castShadow = caps.receiveShadow = true;group.add(caps);
   }
   addRubble(group, [...active], stage, type);
+  // Real facade/fracture intersections, in world space. Effects must not invent ground
+  // heights under skyways or place a fire at a removed building's former roof height.
+  group.userData.effectSources = [...active].filter(a => a.cuts?.length).map(a => {
+    const seed = hash(a.x, a.z, 43), point = a.cuts[Math.floor(seed * a.cuts.length)];
+    return { id: a.id, position: [point[0], point[1] + .25, point[2]],
+      scale: Math.max(1.4, Math.min(12, Math.min(a.width, a.depth) * .12)), seed };
+  });
   group.userData.damage = { stage, anchors: anchors.length, affected: active.size, cutComponents,
     intactTriangles, standingTriangles, visualPrototype: true };
   return group;

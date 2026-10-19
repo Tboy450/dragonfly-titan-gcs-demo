@@ -81,6 +81,16 @@ Choose **Environments** for the five city tests and their four destruction stage
 to inspect 18 individual models: four Swarmfall drones, five urban buildings/props and nine
 fantasy pieces. Each asset has creator/license details, orbit/zoom views and a turntable.
 The lab is also linked from the game's title screen. It is separate from campaign progress.
+**October 19 — Codex:** damaged city stages now include animated smoke, flame tongues,
+embers and warm local firelight. Major destruction burns more intensely; ruins have smaller
+residual fires. Use **Smoke**, **Fire & embers** and **Pause effects** independently, or
+**Light** quality for fewer particles and no added point lights. Reduced-motion preference
+starts the effects paused. Compatible individual architecture assets also offer destruction
+previews; the intact originals and drone inspector remain available.
+Try [Skyway with smoke/fire](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/?scene=cyberpunk&damage=heavy)
+or [the alien arcology](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/environments/?scene=alien&damage=heavy).
+These are visual aftermath studies; spreading fire, combat damage and sound remain future work.
+[Implementation and verification](research/lab-aftermath-2026-10-19/README.md).
 October 17 publication supersedes the earlier local-preview-only status recorded below;
 all existing local links, historical foundation versions and original asset files are retained.
 

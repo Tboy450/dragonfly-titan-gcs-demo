@@ -17,6 +17,7 @@
       <label for="asset-choice" class="section-label">CHOOSE AN ASSET</label><select id="asset-choice"></select>
       <p id="asset-license" class="help"></p><a id="asset-source" target="_blank" rel="noopener">Creator &amp; source ↗</a>
       <p class="help">Fit-to-view display scale. Orbit and zoom to inspect each model.</p>
+      <p id="asset-damage-note" class="help"></p>
     </section>
     <nav class="tests" aria-label="Environment tests">
       <a href="?scene=alien" data-scene="alien"><span class="number">01</span><span><strong>Alien arcology</strong><small>Curved towers · aerial infrastructure</small></span><span>↗</span></a>
@@ -29,13 +30,16 @@
       <div class="section-label">DESTRUCTION STUDY</div>
       <div class="buttons damage-stages"><button data-damage="intact" aria-pressed="true">Intact</button><button data-damage="damaged" aria-pressed="false">Damaged</button><button data-damage="heavy" aria-pressed="false">Major destruction</button><button data-damage="ruins" aria-pressed="false">Ruins</button></div>
       <p id="damage-note" class="help" role="status">Compare progressive broken architecture and settled debris.</p>
+      <div class="section-label">AFTERMATH EFFECTS</div>
+      <div class="buttons effect-controls"><button id="effect-smoke" aria-pressed="true">Smoke</button><button id="effect-fire" aria-pressed="true">Fire &amp; embers</button><button id="effect-pause" aria-pressed="false">Pause effects</button></div>
+      <p id="effect-note" class="help" role="status">Smoke and fire follow the damaged architecture.</p>
     </section>
     <div class="section-label">CHOOSE A PERSPECTIVE</div>
     <div class="buttons presets"><button data-view="vista" class="active">Vista</button><button data-view="district">District</button><button data-view="street">Street</button><button data-view="foundation" hidden>Foundation</button><button data-view="rear" hidden>Rear coast</button><button data-view="bases" hidden>Building bases</button></div>
     <div class="buttons"><button id="pilot" aria-pressed="false">Pilot view</button><button id="tour" aria-pressed="false">Flyover</button><button id="light" aria-pressed="false">Dusk</button></div>
     <label class="quality">Render detail <select id="quality"><option value="high">High</option><option value="low">Light</option></select></label>
     <p class="help" id="help">Drag to orbit · scroll to zoom · right-drag to pan.<br>Choose Pilot view to fly through the environment.</p>
-    <details><summary>About this test & credits</summary><p id="credits"></p><p id="variant" hidden></p><p>Visual studies with invented dimensions. Destruction stages are art prototypes; battle damage and collision are future integration work. Free flight has no collision. This lab does not change your game saves.</p><a href="./CREDITS.md" target="_blank">Sources & modifications ↗</a></details>
+    <details><summary>About this test & credits</summary><p id="credits"></p><p id="variant" hidden></p><p>Visual studies with invented dimensions. Destruction, smoke and fire are visual previews; battle damage, spreading fire and collision are future integration work. Free flight has no collision. This lab does not change your game saves.</p><a href="./CREDITS.md" target="_blank">Sources & modifications ↗</a></details>
   </aside>
   <div id="loading" role="status"><span class="spinner"></span><span id="loading-text">Preparing environment…</span></div>
   <footer><span id="status">Loading source assets</span><span id="metrics" aria-live="off"></span></footer>
