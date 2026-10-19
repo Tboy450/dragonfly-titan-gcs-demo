@@ -57,6 +57,7 @@
         <div class="hud-buttons">
           <button id="pause-button" type="button" title="Pause (Space)">Pause</button>
           <button id="speed-button" type="button" title="Game speed">1×</button>
+          <button id="extract-button" type="button" class="primary" hidden>Leave for victory</button>
           <button id="retreat-button" type="button" class="danger" title="End the mission and recall the swarm">Retreat</button>
         </div>
       </header>
@@ -92,13 +93,25 @@
       <div id="toasts" class="toasts" aria-live="polite"></div>
     </section>
 
+    <dialog id="victory-dialog" class="dialog" aria-labelledby="victory-title" aria-describedby="victory-remaining victory-rules">
+      <h2 id="victory-title">Victory is yours to claim</h2>
+      <p id="victory-remaining"></p>
+      <p id="victory-rules">The battle is paused for this choice. Victory stays available if zones are retaken, but total defeat can still lose the mission. Optional stars and time goals finalize when you leave. Surviving drones return for half their cost; unreleased cargo is fully refunded.</p>
+      <div class="dialog-actions">
+        <button id="victory-continue" type="button">Continue capturing</button>
+        <button id="victory-leave" class="primary" type="button">Leave for victory</button>
+      </div>
+    </dialog>
+
     <dialog id="debrief" class="dialog">
       <h2 id="debrief-title">Mission over</h2>
       <p id="debrief-stars" class="stars" aria-label="Stars"></p>
       <ul id="debrief-objectives" class="objective-list"></ul>
       <dl id="debrief-stats" class="stat-grid"></dl>
       <ul id="debrief-notes" class="notes"></ul>
+      <p id="settlement-status" role="status" hidden></p>
       <div class="dialog-actions">
+        <button id="settlement-retry" type="button" hidden>Retry saving result</button>
         <button id="debrief-retry" type="button">Try again</button>
         <button id="debrief-galaxy" class="primary" type="button">Back to the galaxy</button>
       </div>

@@ -64,6 +64,14 @@ test("Maximum wave fits distinct canopy courts inside the held zone and map", ()
   assert.equal(b.stats.dronesDropped, 44);
 });
 
+test("An edge-selected maximum wave can fall back to the roomier centered layout", () => {
+  const b = create(), home = b.zones[0];
+  const result = requestDrop(b, { x: home.x + home.radius * 1.5, z: home.z, payload: { scout: 44 } });
+  assert.ok(result.ok, result.reason);
+  assert.equal(result.pods.length, 15);
+  assert.ok(result.pods.every(p => Math.hypot(p.x - home.x, p.z - home.z) + podRadius <= home.radius + 1e-6));
+});
+
 test("Invalid payloads/coordinates never mutate matter, IDs, RNG, squads or events", () => {
   for (const payload of [{ scout: -1 }, { scout: 1.5 }, { scout: NaN }, { scout: Infinity }, { scout: 45 }, { unknown: 1 }, { constructor: 1 }, null, []]) {
     const b = create(), before = snapshot(b);
@@ -181,7 +189,7 @@ test("Real version-1 mid-drop fixture migrates without splitting or repurchasing
   assert.equal(restored.battle.pods.length, 1);
   assert.equal(payloadCount(restored.battle.pods[0].payload), 9);
   assert.equal(restored.battle.pods[0].legacy, true);
-  assert.equal(snapshot(restored.battle).version, 2);
+  assert.equal(snapshot(restored.battle).version, MISSION_SAVE_VERSION);
   run(restored.battle, 12);
   assert.equal(restored.battle.stats.dronesDropped, 9);
   assert.equal(restored.battle.stats.drops, 1);

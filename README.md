@@ -41,11 +41,21 @@ force or by quiet control.
 - **The Dragonfly** is an unlockable drone: recover NASA's lander from its landing site on Titan
   and it joins every later drop (the simulator's research model, interior removed).
 - **Objectives and achievements:** two optional goals per planet (three stars) and twelve
-  campaign achievements, saved in the browser.
+  campaign achievements, saved in the browser. Required captures offer **Leave for victory**
+  or **Continue capturing**. Continuing keeps a visible extraction action and remaining-zone
+  count. Earned victory remains available if zones are retaken, but total defeat can still lose
+  the mission. Stars and time goals finalize on extraction. Recalled survivors refund half
+  their cost; unreleased pod cargo is fully refunded. Each attempt's result settles once.
 - **Mission saves:** active battles save on this device every five seconds and when the page
   is hidden or left. Choose **Resume mission** on the title screen; the restored battle starts
   paused. Starting another mission asks before replacing that save. Browser storage must be
   available; campaign progress and the active battle are saved together.
+  Earlier mission/progress saves migrate automatically. Results save immediately with the
+  completed checkpoint cleared; a storage failure shows a retry action and retains the result
+  in memory. If storage stays unavailable, keep the page open until it can save.
+- **Landing and resources:** Scouts, Links, Strikers and Breachers stay airborne. Dragonfly
+  lands in a safe held zone to drill matter. A small drill drone and landed-harvest balance are
+  planned; this release does not add that unit or increase extraction rates.
 - **Controls:** tap a squad card or a drone to select, tap the ground to move, a ring to
   capture, a defender to attack. Drag to move the view, scroll or pinch to zoom, right-drag or
   Q/E to turn; WASD/arrows pan, 1-9 select squads, 0 all, H hold, B drop wave, Space pause.

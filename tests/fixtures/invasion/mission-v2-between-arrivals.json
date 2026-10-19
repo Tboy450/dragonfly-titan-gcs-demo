@@ -1,0 +1,366 @@
+{
+  "version": 2,
+  "battle": {
+    "planetId": "titan",
+    "practice": true,
+    "threat": 0,
+    "tier": 0,
+    "rngState": 1767625066,
+    "time": 10.050000000000008,
+    "paused": false,
+    "outcome": null,
+    "endTime": null,
+    "map": {
+      "centerX": 0,
+      "centerZ": -100,
+      "half": 420
+    },
+    "matter": 84,
+    "unlocks": [
+      "scout",
+      "link"
+    ],
+    "podSlots": 12,
+    "required": 3,
+    "objectives": [
+      {
+        "id": "dragonfly",
+        "kind": "captureZone",
+        "zone": "relic",
+        "text": "Recover the Dragonfly lander (unlocks it)"
+      },
+      {
+        "id": "no-losses",
+        "kind": "maxLosses",
+        "value": 0,
+        "text": "Lose no drones"
+      }
+    ],
+    "alarm": 0,
+    "alarmStage": 0,
+    "zones": [
+      {
+        "id": "beachhead",
+        "name": "Hive beacon",
+        "kind": "beachhead",
+        "x": -250,
+        "z": 180,
+        "special": null,
+        "radius": 50,
+        "value": 0,
+        "control": 100,
+        "captured": true,
+        "contested": false,
+        "population": 0
+      },
+      {
+        "id": "outcrop",
+        "name": "Dry outcrop",
+        "kind": "beacon",
+        "x": 145,
+        "z": -90,
+        "special": null,
+        "radius": 42,
+        "value": 0.6,
+        "control": 0,
+        "captured": false,
+        "contested": false,
+        "population": 0,
+        "drones": 0
+      },
+      {
+        "id": "site-a",
+        "name": "Site A",
+        "kind": "beacon",
+        "x": 219,
+        "z": -235,
+        "special": null,
+        "radius": 42,
+        "value": 0.6,
+        "control": 0,
+        "captured": false,
+        "contested": false,
+        "population": 0,
+        "drones": 0
+      },
+      {
+        "id": "site-b",
+        "name": "Site B",
+        "kind": "beacon",
+        "x": -270,
+        "z": -40,
+        "special": null,
+        "radius": 42,
+        "value": 0.6,
+        "control": 0,
+        "captured": false,
+        "contested": false,
+        "population": 0,
+        "drones": 0
+      },
+      {
+        "id": "relic",
+        "name": "Dragonfly landing site",
+        "kind": "relic",
+        "x": 0,
+        "z": 0,
+        "special": "dragonfly",
+        "radius": 40,
+        "value": 0.3,
+        "control": 0,
+        "captured": false,
+        "contested": false,
+        "population": 0,
+        "drones": 0
+      }
+    ],
+    "units": [
+      {
+        "id": 4,
+        "side": "swarm",
+        "type": "scout",
+        "x": -249.92875199962177,
+        "z": 179.97694568662916,
+        "alt": 30.836,
+        "vx": 0.9222365331438264,
+        "vz": -0.2958539517534886,
+        "hp": 24,
+        "maxHp": 24,
+        "damageScale": 1,
+        "squad": 1,
+        "order": {
+          "kind": "hold",
+          "x": -250,
+          "z": 180
+        },
+        "slot": {
+          "dx": 0,
+          "dz": 0
+        },
+        "home": null,
+        "raid": null,
+        "target": null,
+        "fireIn": 0.15210073050111533,
+        "alive": true,
+        "landed": false,
+        "structure": false,
+        "converted": false,
+        "heading": 1.8812252560996485
+      },
+      {
+        "id": 5,
+        "side": "swarm",
+        "type": "scout",
+        "x": -253.0241132974775,
+        "z": 182.76973451049517,
+        "alt": 30.836,
+        "vx": -0.9648170183170325,
+        "vz": 0.8744521635243268,
+        "hp": 24,
+        "maxHp": 24,
+        "damageScale": 1,
+        "squad": 1,
+        "order": {
+          "kind": "hold",
+          "x": -247.78789336521515,
+          "z": 177.97352911781567
+        },
+        "slot": {
+          "dx": -5.161582147831283,
+          "dz": 4.728432058430087
+        },
+        "home": null,
+        "raid": null,
+        "target": null,
+        "fireIn": 0.31005848227068783,
+        "alive": true,
+        "landed": false,
+        "structure": false,
+        "converted": false,
+        "heading": -0.834489537315533
+      },
+      {
+        "id": 6,
+        "side": "swarm",
+        "type": "scout",
+        "x": -249.50172341937994,
+        "z": 174.31863945768328,
+        "alt": 30.836,
+        "vx": 0.047434006495747964,
+        "vz": -0.5996026270681525,
+        "hp": 24,
+        "maxHp": 24,
+        "damageScale": 1,
+        "squad": 1,
+        "order": {
+          "kind": "hold",
+          "x": -250.3709159390787,
+          "z": 184.2263957891018
+        },
+        "slot": {
+          "dx": 0.8654705245169743,
+          "dz": -9.86159017457085
+        },
+        "home": null,
+        "raid": null,
+        "target": null,
+        "fireIn": 0.1847055391408503,
+        "alive": true,
+        "landed": false,
+        "structure": false,
+        "converted": false,
+        "heading": 3.8702250970385816
+      }
+    ],
+    "squads": [
+      {
+        "id": 1,
+        "name": "Squad 1",
+        "color": "#7ce7ff"
+      }
+    ],
+    "pods": [
+      {
+        "id": 2,
+        "waveId": 1,
+        "waveIndex": 0,
+        "waveCount": 2,
+        "slotStart": 0,
+        "x": -250,
+        "z": 180,
+        "t": 10.050000000000008,
+        "stagger": 0,
+        "payload": {
+          "scout": 3
+        },
+        "squad": 1,
+        "released": true,
+        "launchedAt": 0
+      },
+      {
+        "id": 3,
+        "waveId": 1,
+        "waveIndex": 1,
+        "waveCount": 2,
+        "slotStart": 3,
+        "x": -260,
+        "z": 162.67949192431124,
+        "t": 9.950000000000006,
+        "stagger": 0.1,
+        "payload": {
+          "scout": 1,
+          "link": 2
+        },
+        "squad": 1,
+        "released": false,
+        "launchedAt": 0
+      }
+    ],
+    "strikes": [],
+    "events": [
+      {
+        "kind": "drop",
+        "pod": 2,
+        "waveId": 1,
+        "x": -250,
+        "z": 180
+      },
+      {
+        "kind": "drop",
+        "pod": 3,
+        "waveId": 1,
+        "x": -260,
+        "z": 162.67949192431124
+      },
+      {
+        "kind": "release",
+        "pod": 2,
+        "x": -250,
+        "z": 180
+      }
+    ],
+    "log": [
+      {
+        "t": 0,
+        "tone": "info",
+        "text": "Practice planet: call a drop on the Hive beacon, then send drones to the beacons."
+      },
+      {
+        "t": 0,
+        "tone": "info",
+        "text": "Squad 1 launched: 6 drones in 2 pods, landing in 10.1 s."
+      },
+      {
+        "t": 10.000000000000007,
+        "tone": "good",
+        "text": "Squad 1: pod 1/2 down, 3 drones · 1 pods inbound."
+      }
+    ],
+    "nextId": 7,
+    "lastDropAt": 0,
+    "reinforceIn": 40,
+    "strikeIn": 20,
+    "specials": [],
+    "refund": 0,
+    "stats": {
+      "drops": 1,
+      "podsLaunched": 2,
+      "dronesDropped": 3,
+      "dronesLost": 0,
+      "hazardLosses": 0,
+      "zonesCaptured": 0,
+      "defensesDestroyed": 0,
+      "militiaDefeated": 0,
+      "matterHarvested": 0,
+      "hazardEvents": 0,
+      "maxAlive": 3,
+      "alarmPeak": 0,
+      "damageDealt": 0
+    },
+    "hazards": {
+      "types": [
+        "methaneRain",
+        "gusts"
+      ],
+      "next": {
+        "methaneRain": 66.2239938788116,
+        "gusts": 89.67048374353908
+      },
+      "events": [],
+      "effects": {
+        "speed": 1,
+        "sight": 1,
+        "range": 1,
+        "damage": 0,
+        "wind": {
+          "x": 0,
+          "z": 0
+        },
+        "stun": false,
+        "zones": []
+      },
+      "calm": 1.4,
+      "severity": 0.5,
+      "serial": 0
+    }
+  },
+  "cam": {
+    "focus": {
+      "id": "beachhead",
+      "name": "Hive beacon",
+      "kind": "beachhead",
+      "x": -250,
+      "z": 180,
+      "special": null,
+      "radius": 50,
+      "value": 0,
+      "control": 100,
+      "captured": true,
+      "contested": false,
+      "population": 0
+    },
+    "distance": 230,
+    "yaw": 0,
+    "pitch": 0.9
+  }
+}

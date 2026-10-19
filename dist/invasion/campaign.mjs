@@ -1,6 +1,7 @@
 // The invasion campaign: planets in the order they are invaded, what each one rewards, and the
 // player's saved progress between missions. No DOM; covered by tests/invasion-campaign.test.mjs.
 import { droneOrder, droneTypes, startingDrones, basePodSlots } from "./units.mjs?v=dev";
+import { validMissionId } from "./mission-id.mjs?v=dev";
 
 // galaxy: position on the campaign map (0-1 across, 0-1 down). society: index into societies
 // (units.mjs). threat 0-5 scales defender numbers, strength and reinforcements. zones: fixed
@@ -105,7 +106,7 @@ export const planets = Object.freeze([
 
 export const planetById = (id) => planets.find(planet => planet.id === id) || null;
 
-export const PROGRESS_VERSION = 1;
+export const PROGRESS_VERSION = 2;
 export const SAVE_KEY = "drone-invasion-progress";
 export const startingMatter = 160;
 const statNames = ["drops", "dronesDropped", "dronesLost", "zonesCaptured", "defensesDestroyed", "matterHarvested", "hazardEvents", "missionsPlayed", "missionsWon"];
@@ -120,6 +121,7 @@ export function createProgress() {
     unlocks: [...startingDrones],
     podSlots: basePodSlots,
     achievements: {},
+    settledMissions: {},
     stats: Object.fromEntries(statNames.map(name => [name, 0])),
   };
 }
@@ -144,6 +146,11 @@ export const missionMatter = (progress, planet) => Math.max(progress.matter, pla
 // Returns the new progress (the old one is not changed) and plain-language notes for the debrief.
 export function applyMissionResult(progress, planet, result) {
   const next = structuredClone(progress);
+  next.version = PROGRESS_VERSION;
+  next.settledMissions ||= {};
+  if (result.missionId && !validMissionId(result.missionId)) throw new TypeError("Invalid mission settlement identity.");
+  if (result.missionId && Object.hasOwn(next.settledMissions, result.missionId))
+    return { progress: next, notes: ["This mission result was already settled; no rewards or statistics were added again."] };
   const notes = [];
   next.matter = Math.max(0, Math.round(result.matter || 0));
   for (const name of statNames) next.stats[name] += Math.max(0, Math.round(result.stats?.[name] || 0));
@@ -178,13 +185,16 @@ export function applyMissionResult(progress, planet, result) {
   if (result.outcome !== "won" && next.matter < (planet.supply || 0)) {
     notes.push(`The Hive will resupply you to ${planet.supply} matter for the next attempt.`);
   }
+  if (result.missionId) Object.defineProperty(next.settledMissions, result.missionId, {
+    value: { planetId: planet.id, outcome: result.outcome }, enumerable: true, writable: true, configurable: true,
+  });
   return { progress: next, notes };
 }
 
 // Saved progress is checked field by field; anything unknown or malformed falls back to a
 // fresh campaign value, so an old or edited save can never break the game.
 export function validProgress(raw) {
-  if (!raw || typeof raw !== "object" || raw.version !== PROGRESS_VERSION) return null;
+  if (!raw || typeof raw !== "object" || ![1, PROGRESS_VERSION].includes(raw.version)) return null;
   const clean = createProgress();
   const count = (value, max = 1e7) => (Number.isFinite(value) && value >= 0 ? Math.min(max, Math.round(value)) : 0);
   clean.matter = count(raw.matter);
@@ -203,5 +213,11 @@ export function validProgress(raw) {
     for (const [id, at] of Object.entries(raw.achievements)) if (/^[a-z0-9-]{1,40}$/.test(id) && Number.isFinite(at)) clean.achievements[id] = at;
   }
   for (const name of statNames) clean.stats[name] = count(raw.stats?.[name]);
+  if (raw.settledMissions && typeof raw.settledMissions === "object" && !Array.isArray(raw.settledMissions)) {
+    for (const [id, entry] of Object.entries(raw.settledMissions)) {
+      if (validMissionId(id) && planetById(entry?.planetId) && ["won", "lost", "retreated"].includes(entry?.outcome))
+        Object.defineProperty(clean.settledMissions, id, { value: { planetId: entry.planetId, outcome: entry.outcome }, enumerable: true, writable: true, configurable: true });
+    }
+  }
   return clean;
 }

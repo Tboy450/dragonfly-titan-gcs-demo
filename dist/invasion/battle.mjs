@@ -37,6 +37,9 @@ export function createBattle(planet, options = {}) {
   const b = {
     planetId: planet.id, practice: !!planet.practice, threat: planet.threat || 0, tier: society.tier,
     rngState: seed >>> 0, time: 0, paused: false, outcome: null, endTime: null,
+    // UI injects a unique attempt ID. Deterministic simulations/tests can supply their own.
+    missionId: options.missionId || `simulation-${planet.id}-${seed >>> 0}`,
+    victoryAvailable: false, victoryAvailableAt: null, victoryChoiceMade: false,
     map: { centerX: 0, centerZ: 0, half: 420, ...planet.map },
     matter, unlocks: [...unlocks], podSlots, required: planet.required, objectives: planet.objectives || [],
     alarm: 0, alarmStage: 0, zones: [], units: [], squads: [], pods: [], strikes: [],
@@ -724,19 +727,20 @@ function artillery(b, dt, swarm) {
 function recallSwarm(b) {
   let refund = 0;
   for (const unit of b.units) if (isDrone(unit)) refund += droneTypes[unit.type].cost * 0.5;
+  // Unreleased cargo is cancelled, not lost or released after the mission ends.
+  for (const pod of b.pods) if (!pod.released) refund += payloadCost(pod.payload);
+  b.pods = b.pods.filter(pod => pod.released);
   b.refund = Math.round(refund);
   b.matter += b.refund;
 }
 
 function checkOutcome(b) {
   const held = b.zones.filter(zone => zone.captured && zone.kind !== "beachhead").length;
-  if (held >= b.required) {
-    b.outcome = "won";
-    b.endTime = b.time;
-    recallSwarm(b);
-    b.log.push({ t: b.time, tone: "good", text: "The planet is under swarm control." });
-    b.events.push({ kind: "outcome", outcome: "won" });
-    return;
+  if (held >= b.required && !b.victoryAvailable) {
+    b.victoryAvailable = true;
+    b.victoryAvailableAt = b.time;
+    b.log.push({ t: b.time, tone: "good", text: "Victory available: leave now or continue capturing. Stars and time goals finalize when you leave." });
+    b.events.push({ kind: "victoryAvailable" });
   }
   const alive = b.units.some(isDrone);
   if (!alive && !b.pods.some(pod => !pod.released) && b.matter < cheapestDrone(b)) {
@@ -747,8 +751,26 @@ function checkOutcome(b) {
   }
 }
 
+export function continueCapturing(b) {
+  if (!b.victoryAvailable || b.outcome) return false;
+  b.victoryChoiceMade = true;
+  return true;
+}
+
+export function extractVictory(b) {
+  if (!b.victoryAvailable || b.outcome) return false;
+  b.victoryChoiceMade = true;
+  b.outcome = "won";
+  b.endTime = b.time;
+  recallSwarm(b);
+  b.log.push({ t: b.time, tone: "good", text: "Victory claimed. Surviving drones recalled; unreleased cargo cancelled and refunded." });
+  b.events.push({ kind: "outcome", outcome: "won" });
+  return true;
+}
+
 export function retreat(b) {
   if (b.outcome) return;
+  if (b.victoryAvailable) return extractVictory(b);
   b.outcome = "retreated";
   b.endTime = b.time;
   recallSwarm(b);
@@ -808,7 +830,7 @@ export const publicMood = (alarm) => (alarm < 10 ? "Calm" : alarm < 25 ? "Watchf
 export function objectiveStatus(b) {
   const held = b.zones.filter(zone => zone.captured && zone.kind !== "beachhead").length;
   const won = b.outcome === "won";
-  const list = [{ id: "primary", primary: true, text: `Hold ${b.required} zones`, progress: `${held}/${b.required}`, done: won || held >= b.required, failed: false }];
+  const list = [{ id: "primary", primary: true, text: b.victoryAvailable ? "Victory available — leave or keep capturing" : `Hold ${b.required} zones`, progress: `${held}/${b.required}`, done: won || b.victoryAvailable || held >= b.required, failed: false }];
   for (const objective of b.objectives) {
     const entry = { id: objective.id, text: objective.text, done: false, failed: false, progress: "" };
     if (objective.kind === "captureZone") {
@@ -848,6 +870,7 @@ export function starsEarned(b) {
 // What the campaign needs once the mission ends (campaign.mjs applyMissionResult).
 export function missionResult(b) {
   return {
+    missionId: b.missionId,
     outcome: b.outcome || "retreated", matter: b.matter, stars: starsEarned(b), time: b.endTime ?? b.time,
     stats: { ...b.stats }, recovered: b.specials.filter(special => droneTypes[special]),
   };

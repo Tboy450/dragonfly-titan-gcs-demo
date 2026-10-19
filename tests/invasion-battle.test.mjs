@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { planets, planetById } from "../dist/invasion/campaign.mjs";
 import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, battleSummary,
-  objectiveStatus, starsEarned, missionResult, retreat, zoneById, flatTerrain,
+  objectiveStatus, starsEarned, missionResult, retreat, zoneById, flatTerrain, extractVictory,
 } from "../dist/invasion/battle.mjs";
 import { hazardTypes } from "../dist/invasion/hazards.mjs";
 import { createPlanetTerrain } from "../dist/invasion/planet-terrain.mjs";
@@ -34,6 +34,9 @@ test("Titan practice: drop, capture the beacons, recover the Dragonfly and win",
     for (let t = 0; t < 120 && !zone.captured; t += 0.1) stepBattle(b, 0.1);
     assert.ok(zone.captured, `${id} captured`);
   }
+  assert.equal(b.outcome, null, "required captures make victory available without ending play");
+  assert.equal(b.victoryAvailable, true);
+  assert.equal(extractVictory(b), true);
   assert.equal(b.outcome, "won");
   assert.ok(b.unlocks.includes("dragonfly"), "the Dragonfly can be dropped as soon as it is recovered");
   const status = objectiveStatus(b);

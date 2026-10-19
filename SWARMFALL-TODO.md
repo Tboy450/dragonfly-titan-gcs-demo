@@ -37,9 +37,9 @@ The Dragonfly scientific simulator has its own interior/engineering checklists.
 | Area | Verified status | Still open |
 | --- | --- | --- |
 | Campaign | Seven planets, economy, hazards, capture/control paths, achievements and progression exist | Human balance review, deeper progression and more mission types |
-| Mission saves | Active battle autosave/resume is implemented; restored missions start paused | Schema migrations, stronger validation and coverage for new wave/victory/damage states |
+| Mission saves | Codex October 19: mission v1/v2→v3 and progress v1→v2 migration; wave/victory state and one-write result settlement; restored missions paused | Broader validation/recovery/export and future damage/environment schemas |
 | Drop delivery | Codex October 19: deterministic 1–3 drone pods, solo Dragonflies, one paid squad wave, safe courts, retained orders, v1→v2 checkpoint migration | Browser/touch/device acceptance under DROP-08; real imported-city corridors remain CITY work |
-| Victory | Required captured-zone count immediately ends the battle and recalls the swarm | Leave for victory versus continue capturing, explicit extraction and final reward rules |
+| Victory | Codex October 19: persisted eligibility, one choice, continued play, explicit extraction and idempotent result ledger | Browser/touch acceptance of choice, resumed prompts and storage-failure feedback |
 | Public lab | Five environments and an 18-model asset inspector were published October 17 | Expanded metadata, loading/recovery, device review and gameplay integration |
 | Destruction artwork | All five maps have Intact / Damaged / Major destruction / Ruins variants | Authored structural IDs, local weapon damage, support cleanup, collision and persistence |
 | Skyway terrain | Houdini coast and editable native project exist; sampled contacts were validated | Owner art approval of the high rear land, full component/support and route review |
@@ -56,8 +56,13 @@ Those changes were separate from the planning edit and were merged before gamepl
 
 Implementation follow-up, October 19 — Codex: the planning checkpoint was pushed as `f122c36`
 after merging simulator updates through `8632674` and passing 278 tests. The multi-pod/Clean
-view update below passes **291 tests** and is the next release milestone. Completed children have a checkbox and Codex
+view update below passed **291 tests** for that release. Completed children have a checkbox and Codex
 signature; broad browser/device acceptance stays open. Effects requests are retained in section 36.
+
+Release follow-up — Codex: **5b05c32 is published**, its GitHub Pages run succeeded and public
+build/import stamps were verified. The next milestone implements victory/continue, mission v3/
+progress v2 migration and one-time settlement, with **306 tests passing**. See the newest signed
+CHANGELOG entry and test log. The backlog now has 302 unique task IDs across 36 numbered sections.
 
 The old "live build 8b2399b / 237 tests" and uncommitted aft-bulkhead failure were historical
 notes, not the current Swarmfall status. The aft-bulkhead/inspection work was closed in eed63b1
@@ -280,6 +285,11 @@ complete solely because its assets download or its unit tests pass.
 - [ ] **DRONE-07 (P2)** Drone energy with recharge in held zones (ideas from the simulator's
   energy model), giving a reason to rotate squads.
 - [ ] **DRONE-08 (P3)** Veteran squads: ranks earned from kills and captures.
+- [ ] **DRONE-10 ★ (P2)** Optional small drill drone, with a distinct cost/mobility/slot role
+  alongside Dragonfly. Evaluate stronger extraction while landed at a safe held deposit/zone;
+  show the landed collection bonus and test mission economy before increasing rates. Scouts,
+  Links, Strikers and Breachers remain flying units. Dragonfly is currently the only drone
+  that lands to drill; no new drill unit or harvest-rate buff is implemented in this update.
 - [ ] **DRONE-09 ★ (P2)** Weapons for fighting other drones, different from those used on
   defenders and planet threats: EMP pulse, flak pods, net launcher. Uses the existing `air`
   target class in `units.mjs`; needed by MODE-12.
@@ -341,8 +351,9 @@ complete solely because its assets download or its unit tests pass.
   **leave and claim victory** or **continue capturing everything** (owner, October 16).
   Keep the battle running when continuing, retain an explicit victory/extraction action,
   show remaining zones, and award campaign rewards exactly once. Define loss/retreat after
-  victory is available and when optional objectives/stars are finalized. The current game
-  ends the mission automatically as soon as the required zone count is reached.
+  victory is available and when optional objectives/stars are finalized.
+  **Codex, October 19:** implemented with tested rule/save/settlement behavior. Browser/touch
+  acceptance remains open, including choice on resume and visible extraction while continuing.
 - [ ] **DROP-01 ★ (P1)** Split a squad's delivery into multiple parachute pods carrying
   **1–3 drones per pod**, dropped beside one another (owner, October 16; suggested rule).
   Keep one squad/order group across the wave. Show pod count before launch; find spaced,
@@ -549,10 +560,11 @@ The game is silent today.
   simulator's `ui/` folder: camera, selection, drop panel, HUD, minimap, debrief.
 - [ ] **TECH-02 (P2)** Fixed-step simulation, so game speed and frame rate never change the
   result; needed for replays and online versus.
-- [ ] **TECH-03 (P1)** Add migrations for existing versioned campaign/checkpoint saves before
+- [x] **TECH-03 (P1) — Codex, October 19; current schema scope** Add migrations for existing versioned campaign/checkpoint saves before
   waves, victory eligibility, upgrades or environment fields change. Exact-version rejection
-  exists today; migration does not. Keep real old-save fixtures and explicit unsupported-version
-  behavior. Coordinate SAVE-01 through SAVE-06.
+  existed before this update. Real mission v1/v2 and campaign v1 fixtures now migrate to mission
+  v3/progress v2 without losing paid payloads, captures or unlocks. Unknown future versions are
+  rejected; recoverable backup/export and future schemas remain SAVE-02/05/06 work.
 - [ ] **TECH-04 (P2)** Export and import progress to move it between devices.
 - [ ] **TECH-05 (P3)** Installable app with offline play.
 - [ ] **TEST-01 (P1)** A render smoke test for `scene.mjs` and `models.mjs`, using the
@@ -681,13 +693,13 @@ OBJ-07 is the owner feature. Resolve its rules before adding UI or awarding rewa
 - [ ] **OBJ-08 (P1)** Align objective wording and logic: “destroy every watchtower” currently
   checks remaining native structures, so conversion can satisfy it. Decide whether each
   objective means destroy, capture or neutralize; test every allowed path and display it clearly.
-- [ ] **OBJ-09 ★ (P1)** Add a persisted **victory available** phase distinct from a finished
+- [x] **OBJ-09 ★ (P1) — Codex, October 19; rule/save/UI implementation, visual acceptance under OBJ-07** Add a persisted **victory available** phase distinct from a finished
   mission. Offer leave/claim victory versus continue. Keep an obvious extraction action and
   remaining-zone count while continuing; do not repeatedly interrupt after the first choice.
-- [ ] **OBJ-10 ★ (P1)** Define eligibility after zones are retaken, retreat or total defeat;
+- [x] **OBJ-10 ★ (P1) — Codex, October 19** Define eligibility after zones are retaken, retreat or total defeat;
   whether time-based goals stop at eligibility or extraction; and when stars/refunds finalize.
   Implement the selected rules in one place and describe them in the choice/debrief.
-- [ ] **OBJ-11 ★ (P1)** Settle a mission exactly once using a stable completion identity.
+- [x] **OBJ-11 ★ (P1) — Codex, October 19** Settle a mission exactly once using a stable completion identity.
   Exercise repeated callbacks, double activation, reload around extraction and replayed planets.
   First-conquest rewards remain distinct from replay income, statistics and best-time updates.
 - [ ] **SAVE-01 (P1)** Strengthen checkpoint validation for references and rule invariants:
@@ -699,6 +711,9 @@ OBJ-07 is the owner feature. Resolve its rules before adding UI or awarding rewa
 - [ ] **SAVE-03 (P1)** Add a tested result-settlement boundary between active mission and
   campaign bank. Handle closure during the current debrief delay and failed browser writes;
   prevent duplicate rewards/recall or unexplained loss of a just-finished mission.
+  **Codex, October 19:** immediate settlement, one-write progress/checkpoint envelope, retry
+  UI/dirty-result retry and failed-write tests implemented. Keep open for browser fault injection
+  and recovery review; unavailable storage cannot preserve memory across a closed page.
 - [ ] **SAVE-04 (P2)** Define which command UI state should survive reload: selected squads,
   camera, pending orders, drop payload and placement intent. Restore safely paused and cancel
   stale placement previews rather than accidentally launching from an old pointer position.
@@ -965,7 +980,7 @@ MODE-20 is the owner feature; the current lab camera is not a completed pilot mo
 - [x] **TEST-06 (P1) — Codex, October 19** Add focused multi-pod regression fixtures: payload packing, one
   purchase/cooldown, all releases exactly once, unique formation slots, safe positioning and
   save/resume between arrivals. Keep coverage for the existing single-wave API while migrating it.
-- [ ] **TEST-07 (P1)** Add victory/continue settlement scenarios: eligibility, continued
+- [x] **TEST-07 (P1) — Codex, October 19** Add victory/continue settlement scenarios: eligibility, continued
   play, optional objectives, retaken zones, retreat/defeat rules, extraction, double activation
   and reload at the settlement boundary. Verify mission and campaign statistics together.
 - [ ] **TEST-08 (P1)** Add geometry/navigation fixtures for a wall, hill, shore, bridge,

@@ -28,7 +28,7 @@ export function packDropPods(payload) {
   return pods;
 }
 
-export function planDropLandings(b, zone, x, z, count) {
+export function planDropLandings(b, zone, x, z, count, centeredFallback = false) {
   if (!Number.isFinite(zone.radius) || zone.radius <= podRadius || !Number.isInteger(count) || count < 1 || count > 44)
     return { ok: false, reason: "No safe pod courts fit this landing area. Choose another held zone." };
   const candidates = [], reserved = b.pods.filter(pod => !pod.released);
@@ -59,5 +59,7 @@ export function planDropLandings(b, zone, x, z, count) {
     landings.push(candidate);
     if (landings.length === count) return { ok: true, landings };
   }
+  if (!centeredFallback && (x !== zone.x || z !== zone.z))
+    return planDropLandings(b, zone, zone.x, zone.z, count, true);
   return { ok: false, reason: `Only ${landings.length} safe pod courts fit here; this wave needs ${count}. Choose another held zone, wait for arrivals, or send fewer drones.` };
 }

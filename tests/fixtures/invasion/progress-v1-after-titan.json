@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "matter": 290,
+  "captured": {
+    "titan": true
+  },
+  "stars": {
+    "titan": 3
+  },
+  "bestTime": {
+    "titan": 120
+  },
+  "unlocks": [
+    "scout",
+    "link",
+    "dragonfly",
+    "striker"
+  ],
+  "podSlots": 12,
+  "achievements": {},
+  "stats": {
+    "drops": 2,
+    "dronesDropped": 9,
+    "dronesLost": 0,
+    "zonesCaptured": 3,
+    "defensesDestroyed": 0,
+    "matterHarvested": 0,
+    "hazardEvents": 0,
+    "missionsPlayed": 1,
+    "missionsWon": 1
+  }
+}

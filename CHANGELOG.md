@@ -39,6 +39,37 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Continue capturing or claim victory, with one-time result settlement
+- **Signed:** Codex (OpenAI)
+- **Commit:** Offer victory extraction and settle mission results once.
+- **What changed:** Required captures earn persisted victory eligibility instead of ending
+  the battle. A paused choice offers Leave for victory or Continue capturing. Continuing
+  retains an extraction action and remaining-zone count; the prompt is not repeated. Eligibility
+  survives retaken zones, but total defeat can still lose. Stars/time goals finalize on exit.
+  Survivors refund half cost and unreleased pod cargo is cancelled/refunded once.
+- **Persistence:** Each UI attempt has a unique ID; deterministic rule simulations accept an
+  injected ID. Progress v2 stores a settlement ledger; mission v3 saves eligibility/choice.
+  Real v1/v2 mission and v1 campaign fixtures migrate without losing paid cargo or old conquests.
+  Result totals/ledger and the cleared active checkpoint commit in one storage write, immediately
+  rather than after a debrief delay. Failed writes retain old disk data, show a retry action and
+  keep retrying the in-memory result while the page stays open. Duplicate settlement adds nothing.
+- **Owner steering:** Dragonfly remains the only landed drilling unit; all other current drones
+  remain airborne. Added DRONE-10 for a later small drill specialist and landed-harvest balance;
+  no new unit or extraction-rate buff. Clarified the environment matrix's Visual review meaning.
+- **Preservation:** Exact previous automatic-win behavior/UI/checkpoint/campaign/tests under
+  `archive/swarmfall-victory-choice-2026-10-19/`, tag on `5b05c32`. Existing assets/kit drafts
+  retained. Also added a bounded center fallback for edge-selected multi-pod landing previews.
+- **Checks:** **306 tests passed**, including eligibility, continued play, retaken zones, defeat, final stars/time,
+  recall/cargo refunds, reload/ledger/replay and failed-write/retry tests. Source/build checks
+  and full-suite results are recorded in `research/swarmfall-design-2026-10-19/victory-test-results.txt`.
+  Browser policy blocked the local preview, so visual/touch/phone acceptance remains open.
+- **Previous release verified:** Multi-pod/Clean view `5b05c32` passed GitHub Pages deployment;
+  the public HTML build and stamped drop import were verified. Source receipt in the design folder.
+- **Checklist:** Completed OBJ-09/10/11, TECH-03 (current schemas) and TEST-07 signed Codex.
+  Broad OBJ-07, UI/device review and SAVE-03 browser fault injection remain explicitly open.
+- **Open / next:** Visual review of pods/Clean view/victory, then flight clearance and ground
+  routes. Real imported-city battle integration, the drill drone and upgraded effects remain future work.
+
 ### 2026-10-19: Multi-pod squad waves, checkpoint migration and Clean view
 - **Signed:** Codex (OpenAI)
 - **Commit:** Deliver multi-pod squad waves and clean battlefield view.

@@ -4,8 +4,9 @@ import { droneTypes, defenderTypes } from "./units.mjs?v=dev";
 import { hazardTypes } from "./hazards.mjs?v=dev";
 import { validPayload } from "./drop-waves.mjs?v=dev";
 import { payloadCount, dropDurationS } from "./units.mjs?v=dev";
+import { legacyMissionId, validMissionId } from "./mission-id.mjs?v=dev";
 
-export const MISSION_SAVE_VERSION = 2;
+export const MISSION_SAVE_VERSION = 3;
 const finite = Number.isFinite;
 const object = value => value !== null && typeof value === "object" && !Array.isArray(value);
 const fields = (value, keys, check = finite) => object(value) && keys.every(key => check(value[key]));
@@ -17,14 +18,21 @@ const validOrder = order => object(order) && ["hold", "move", "capture", "attack
   && (order.kind !== "capture" || typeof order.zone === "string");
 
 function migrateCheckpoint(value) {
-  if (!object(value) || ![1, MISSION_SAVE_VERSION].includes(value.version)) return null;
+  if (!object(value) || ![1, 2, MISSION_SAVE_VERSION].includes(value.version)) return null;
   if (value.version === MISSION_SAVE_VERSION) return value;
   const upgraded = jsonClone(value), b = upgraded.battle;
   // A paid legacy pod keeps its complete payload and descent: never repack or charge it again.
-  for (const pod of b.pods) Object.assign(pod, {
-    waveId: pod.id, waveIndex: 0, waveCount: 1, slotStart: 0, stagger: 0, legacy: true,
-  });
-  b.stats.podsLaunched = b.stats.drops;
+  const identity = legacyMissionId(b);
+  if (value.version === 1) {
+    for (const pod of b.pods) Object.assign(pod, {
+      waveId: pod.id, waveIndex: 0, waveCount: 1, slotStart: 0, stagger: 0, legacy: true,
+    });
+    b.stats.podsLaunched = b.stats.drops;
+  }
+  b.missionId = identity;
+  b.victoryAvailable = false;
+  b.victoryAvailableAt = null;
+  b.victoryChoiceMade = false;
   upgraded.version = MISSION_SAVE_VERSION;
   return upgraded;
 }
@@ -40,6 +48,9 @@ export function validMissionCheckpoint(value) {
     value = migrateCheckpoint(value);
     if (!value) return null;
     const b = value.battle, p = planetById(b?.planetId);
+    if (!b || !validMissionId(b.missionId) || typeof b.victoryAvailable !== "boolean" || typeof b.victoryChoiceMade !== "boolean"
+      || b.victoryAvailable && (!finite(b.victoryAvailableAt) || b.victoryAvailableAt < 0 || b.victoryAvailableAt > b.time)
+      || !b.victoryAvailable && (b.victoryAvailableAt !== null || b.victoryChoiceMade)) return null;
     if (!p || b.outcome !== null || !fields(b, ["time", "rngState", "matter", "nextId", "podSlots", "required", "alarm", "alarmStage", "reinforceIn", "strikeIn", "refund", "tier", "threat"]) || b.time < 0) return null;
     if (b.lastDropAt !== null && !finite(b.lastDropAt)) return null;
     if (!fields(b.map, ["centerX", "centerZ", "half"]) || b.map.half <= 0 || !object(b.stats) || !Object.values(b.stats).every(finite)) return null;

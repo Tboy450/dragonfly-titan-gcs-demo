@@ -7,7 +7,7 @@ import {
 } from "./campaign.mjs?v=dev";
 import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, orderHold, battleSummary,
-  objectiveStatus, starsEarned, missionResult, retreat, publicMood, dropZoneAt,
+  objectiveStatus, starsEarned, missionResult, retreat, publicMood, dropZoneAt, extractVictory, continueCapturing,
 } from "./battle.mjs?v=dev";
 import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
 import { packDropPods, podRadius, podStaggerS } from "./drop-waves.mjs?v=dev";
@@ -17,6 +17,7 @@ import { createPlanetTerrain } from "./planet-terrain.mjs?v=dev";
 import { drawGalaxy, drawStarfield } from "./galaxy.mjs?v=dev";
 import { createInvasionScene, swarmColor, nativeColor } from "./scene.mjs?v=dev";
 import { missionCheckpoint, validMissionCheckpoint, restoreMissionCheckpoint } from "./mission-save.mjs?v=dev";
+import { saveCampaignEnvelope } from "./progress-store.mjs?v=dev";
 
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (text) => String(text).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -24,18 +25,21 @@ const clock = (seconds) => `${Math.floor(seconds / 60)}:${String(Math.floor(seco
 const isDrone = (unit) => unit.alive && unit.side === "swarm" && !unit.structure;
 
 // ---- Saved progress ----
+let resultSavePending = false;
 function loadProgress() {
   try { return validProgress(JSON.parse(localStorage.getItem(SAVE_KEY) || "null")) || createProgress(); } catch { return createProgress(); }
 }
 function saveProgress() {
   try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify({ ...progress, activeMission: savedMission }));
+    if (!saveCampaignEnvelope(localStorage, progress, savedMission)) return false;
+    resultSavePending = false;
     return true;
   } catch { return false; }
 }
 let progress = loadProgress();
 let savedMission = null;
 try { savedMission = validMissionCheckpoint(JSON.parse(localStorage.getItem(SAVE_KEY) || "null")?.activeMission); } catch { /* unavailable storage or old save */ }
+if (savedMission && Object.hasOwn(progress.settledMissions, savedMission.battle.missionId)) savedMission = null;
 
 // ---- Screens ----
 let current = "title";
@@ -121,7 +125,7 @@ function renderPlanetPanel() {
     <p class="section-title">Defenders</p>
     <p>${escapeHtml(defenders)} ${escapeHtml(society.description)}</p>
     <p class="section-title">Objectives</p>
-    <ul class="objective-list"><li>Hold ${planet.required} zones (wins the planet, ★)</li>${planet.objectives.map(o => `<li>☆ ${escapeHtml(o.text)}</li>`).join("")}</ul>
+    <ul class="objective-list"><li>Hold ${planet.required} zones, then leave for victory or continue capturing (★)</li>${planet.objectives.map(o => `<li>☆ ${escapeHtml(o.text)}</li>`).join("")}</ul>
     <p class="section-title">Reward for conquest</p>
     <p>${escapeHtml(reward.join(" · "))}</p>
     ${progress.captured[planet.id] ? `<p class="section-title">Your record</p><p>${"★".repeat(stars)}${"☆".repeat(3 - stars)}${best ? ` · best time ${clock(best)}` : ""}</p>` : ""}
@@ -211,11 +215,13 @@ function defaultPayload(b) {
 function startMission(planet, checkpoint = null) {
   if (!ensureScene()) return;
   $("debrief").open && $("debrief").close();
+  $("victory-dialog").open && $("victory-dialog").close();
   const terrain = createPlanetTerrain(planet);
   const restored = checkpoint ? restoreMissionCheckpoint(checkpoint, terrain) : null;
   if (checkpoint && !restored) return;
   const battle = restored?.battle || createBattle(planet, {
     matter: missionMatter(progress, planet), unlocks: progress.unlocks, podSlots: progress.podSlots, terrain, seed: planet.seed,
+    missionId: globalThis.crypto?.randomUUID?.() || `attempt-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`,
   });
   scene.load(planet, terrain, battle);
   const home = battle.zones.find(z => z.kind === "beachhead");
@@ -242,10 +248,13 @@ function startMission(planet, checkpoint = null) {
   updateHud();
   checkpointMission();
   if (restored) toast("Mission restored and paused. Press Resume when ready.", "info", 6000);
+  offerVictoryChoice();
 }
 
 function checkpointMission() {
-  if (!mission || mission.battle.outcome) return;
+  if (resultSavePending && (!mission || mission.battle.outcome)) { retrySettlementSave(); return; }
+  if (!mission) return;
+  if (mission.battle.outcome) return;
   savedMission = missionCheckpoint(mission);
   if (!saveProgress() && !mission.saveWarning) {
     mission.saveWarning = true;
@@ -534,9 +543,39 @@ $("retreat-button").addEventListener("click", async () => {
   if (!mission || mission.battle.outcome) return;
   const wasPaused = mission.paused;
   mission.paused = true;
-  if (await confirmDialog("Retreat? The surviving drones return to the Hive and half their cost comes back as matter.")) retreat(mission.battle);
+  if (await confirmDialog("Retreat? Surviving drones return for half their cost; unreleased pod cargo is fully refunded.")) retreat(mission.battle);
   else mission.paused = wasPaused;
 });
+
+function offerVictoryChoice() {
+  if (!mission || mission.battle.outcome || !mission.battle.victoryAvailable || mission.battle.victoryChoiceMade || $("victory-dialog").open) return;
+  mission.victoryWasPaused = mission.paused;
+  mission.paused = true;
+  setCleanView(false);
+  closeDropPanel();
+  mission.placing = false;
+  $("placement-hint").hidden = true;
+  const summary = battleSummary(mission.battle);
+  $("victory-remaining").textContent = `${summary.held} of ${summary.total} zones held; ${summary.total - summary.held} remain. Leave now, or keep playing and use Leave for victory later.`;
+  checkpointMission();
+  $("victory-dialog").showModal();
+}
+function keepCapturing() {
+  if (!mission || !continueCapturing(mission.battle)) return;
+  $("victory-dialog").close();
+  mission.paused = mission.victoryWasPaused ?? mission.paused;
+  checkpointMission();
+  updateHud();
+}
+function leaveForVictory() {
+  if (!mission || !extractVictory(mission.battle)) return;
+  if ($("victory-dialog").open) $("victory-dialog").close();
+  finishMission(); // Settle/save immediately; do not leave a vulnerable debrief-delay window.
+}
+$("victory-continue").addEventListener("click", keepCapturing);
+$("victory-leave").addEventListener("click", leaveForVictory);
+$("extract-button").addEventListener("click", leaveForVictory);
+$("victory-dialog").addEventListener("cancel", event => { event.preventDefault(); keepCapturing(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden && mission && !mission.battle.outcome) { mission.paused = true; updateHud(); } });
 
 window.addEventListener("keydown", (event) => {
@@ -616,7 +655,9 @@ function updateHud() {
   if (!mission) return;
   const b = mission.battle, summary = battleSummary(b);
   $("hud-planet").textContent = mission.planet.name;
-  $("hud-zones").textContent = `${summary.held}/${summary.required} zones held (${summary.total} in all)`;
+  $("hud-zones").textContent = b.victoryAvailable ? `Victory available · ${summary.held}/${summary.total} held · ${summary.total - summary.held} remain` : `${summary.held}/${summary.required} zones held (${summary.total} in all)`;
+  $("extract-button").hidden = !b.victoryAvailable || !!b.outcome;
+  $("retreat-button").hidden = b.victoryAvailable || !!b.outcome;
   $("hud-matter").textContent = Math.floor(b.matter);
   if (b.tier === 0) {
     $("hud-mood").textContent = "nobody here";
@@ -804,6 +845,9 @@ function checkLiveAchievements() {
 }
 
 function finishMission() {
+  if (!mission?.battle.outcome || mission.resultApplied) return;
+  mission.ended = true;
+  mission.resultApplied = true;
   setCleanView(false);
   closeDropPanel();
   mission.placing = false;
@@ -815,7 +859,9 @@ function finishMission() {
   const earned = newAchievements(applied.progress, achievementContext(applied.progress, planet, result, false));
   progress = recordAchievements(applied.progress, earned);
   savedMission = null;
+  resultSavePending = true;
   saveProgress();
+  showSettlementSaveStatus();
   const titles = { won: `${planet.name} conquered`, lost: "The swarm was destroyed", retreated: "Swarm withdrawn" };
   $("debrief-title").textContent = titles[result.outcome];
   $("debrief-stars").textContent = result.outcome === "won" ? "★".repeat(result.stars) + "☆".repeat(3 - result.stars) : "";
@@ -825,7 +871,7 @@ function finishMission() {
     ["Time", clock(result.time)], ["Drop waves", s.drops], ["Pods launched", s.podsLaunched || s.drops], ["Drones dropped", s.dronesDropped], ["Drones lost", s.dronesLost],
     ["Lost to hazards", s.hazardLosses], ["Zones captured", s.zonesCaptured], ["Defenses destroyed", s.defensesDestroyed],
     ["Matter gathered", Math.round(s.matterHarvested)], ["Hazards weathered", s.hazardEvents], ["Peak alarm", Math.round(s.alarmPeak)],
-    ["Recalled drones refund", `${b.refund} matter`], ["Matter in the bank", progress.matter],
+    ["Recall/cancelled cargo refund", `${b.refund} matter`], ["Matter in the bank", progress.matter],
   ];
   $("debrief-stats").innerHTML = rows.map(([k, v]) => `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd>`).join("");
   $("debrief-notes").innerHTML = [...applied.notes, ...earned.map(a => `Achievement: ${a.name}`)].map(n => `<li>${escapeHtml(n)}</li>`).join("");
@@ -833,14 +879,29 @@ function finishMission() {
   $("debrief").showModal();
 }
 
+function showSettlementSaveStatus() {
+  $("settlement-status").hidden = !resultSavePending;
+  $("settlement-retry").hidden = !resultSavePending;
+  $("settlement-status").textContent = resultSavePending
+    ? "Result is in memory, but browser storage could not save it. Keep this page open and retry saving before leaving. No extra reward is granted by retrying." : "";
+}
+function retrySettlementSave() {
+  if (!resultSavePending) return;
+  saveProgress();
+  showSettlementSaveStatus();
+}
+$("settlement-retry").addEventListener("click", retrySettlementSave);
+
 $("debrief-retry").addEventListener("click", () => { const planet = mission.planet; $("debrief").close(); startMission(planet); });
-$("debrief-galaxy").addEventListener("click", () => {
+function returnToGalaxy() {
   $("debrief").close();
   selectedPlanet = nextPlanet(progress).id;
   mission = null;
   scene?.unload();
   show("galaxy");
-});
+}
+$("debrief-galaxy").addEventListener("click", returnToGalaxy);
+$("debrief").addEventListener("cancel", event => { event.preventDefault(); returnToGalaxy(); });
 
 // ---- Frame loop ----
 let last = performance.now();
@@ -858,15 +919,15 @@ function tick(now) {
   keyboardCamera(dt);
   const events = b.events.splice(0);
   handleEvents(events);
+  offerVictoryChoice();
   scene.frame(b, mission.cam, events, mission.paused ? 0 : dt * mission.speed, now / 1000);
   drawOverlay();
   if (now - mission.lastHud > 120) { updateHud(); mission.lastHud = now; }
   if (now - mission.lastMinimap > 150) { drawMinimap(); mission.lastMinimap = now; }
   if (now - mission.lastAchievements > 1000) { checkLiveAchievements(); mission.lastAchievements = now; }
   if (b.outcome && !mission.ended) {
-    mission.ended = true;
     updateHud();
-    setTimeout(finishMission, 1600);
+    finishMission();
   }
 }
 

@@ -1,0 +1,12 @@
+{
+  "verifiedDate": "2026-10-19",
+  "worker": "Codex (OpenAI)",
+  "commit": "5b05c32aa0c0ca607722a4e9bb3e88776caf377e",
+  "workflow": "https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/39212616426",
+  "workflowConclusion": "success",
+  "publicGame": "https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/",
+  "publicBuildStamp": "Build 5b05c32 · 2026-10-19",
+  "publicCleanViewControlPresent": true,
+  "publicDropImportStamped": true,
+  "verification": "Read-only workflow and HTTP source checks; no browser rendering or touch/device review"
+}
