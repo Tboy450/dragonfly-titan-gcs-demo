@@ -294,7 +294,8 @@ function startMission(planet, checkpoint = null) {
   mission = {
     planet, battle, terrain,
     cam: restored?.cam || { focus: { x: home.x - away.x / length * 70, z: home.z - away.z / length * 70 }, distance: 230, yaw: Math.atan2(away.x, away.z), pitch: 0.9 },
-    selected: new Set(), speed: 1, paused: !!restored, payload: defaultPayload(battle), placing: false,
+    selected: new Set(restored?.command.selected || []), speed: 1, paused: !!restored,
+    payload: restored?.command.payload ?? defaultPayload(battle), placing: false, dropPoint: null, dropPreview: null, dropPanelOpen: false,
     cleanView: false,
     seenLog: new WeakSet(), ended: false, lastHud: 0, lastMinimap: 0, lastAchievements: 0, cards: new Map(), dropTypes: "",
   };
@@ -303,15 +304,17 @@ function startMission(planet, checkpoint = null) {
   $("hud-log").replaceChildren();
   $("drop-rows").replaceChildren();
   $("placement-hint").hidden = true;
+  $('placement-launch').disabled = true;
+  clampCamera();
   setCleanView(false);
   $("pause-button").textContent = mission.paused ? "Resume" : "Pause";
   $("speed-button").textContent = "1×";
   show("mission");
   resizeMission();
-  openDropPanel();
+  if (!restored || restored.command.dropPanelOpen) openDropPanel(); else closeDropPanel();
   updateHud();
   checkpointMission();
-  if (restored) toast("Mission restored and paused. Press Resume when ready.", "info", 6000);
+  if (restored) toast("Mission restored and paused. Landing previews are cancelled; choose a fresh drop location. Press Resume when ready.", "info", 6000);
   offerVictoryChoice();
 }
 
@@ -512,10 +515,11 @@ $("squad-bar").addEventListener("dblclick", (event) => {
 function openDropPanel() {
   if (!mission || mission.battle.outcome) return;
   setCleanView(false);
+  mission.dropPanelOpen = true;
   $("drop-panel").hidden = false;
   updateDropPanel(true);
 }
-function closeDropPanel() { $("drop-panel").hidden = true; if (mission) mission.dropPreview = null; }
+function closeDropPanel() { $("drop-panel").hidden = true; if (mission) { mission.dropPreview = null; mission.dropPanelOpen = false; } }
 function updateDropPreview() {
   if (!mission) return;
   const b = mission.battle;
@@ -559,7 +563,7 @@ $("drop-rows").addEventListener("click", (event) => {
   const button = event.target.closest("[data-step]");
   if (!button || !mission) return;
   const type = button.closest("[data-type]").dataset.type;
-  const next = Math.max(0, (mission.payload[type] || 0) + Number(button.dataset.step));
+  const next = Math.min(44, Math.max(0, (mission.payload[type] || 0) + Number(button.dataset.step)));
   mission.payload = { ...mission.payload, [type]: next };
   updateDropPanel();
 });

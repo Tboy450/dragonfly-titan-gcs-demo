@@ -5,6 +5,9 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import { createProgress, SAVE_KEY } from '../dist/invasion/campaign.mjs';
 import { recoveryBackupPrefix } from '../dist/invasion/save-recovery.mjs';
+import { createBattle, requestDrop } from '../dist/invasion/battle.mjs';
+import { planetById } from '../dist/invasion/campaign.mjs';
+import { missionCheckpoint } from '../dist/invasion/mission-save.mjs';
 
 const entry=new URL('../dist/invasion/main.mjs',import.meta.url),source=readFileSync(entry,'utf8');
 const html=readFileSync(new URL('../dist/invasion/index.html',import.meta.url),'utf8');
@@ -16,13 +19,13 @@ for(const match of source.matchAll(importPattern)){
   Object.assign(bindings,await import(new URL(match[1],entry).href));
 }
 
-function harness(raw=null){
+function harness(raw=null,{renderer=false}={}){
   const data=new Map(raw===null?[]:[[SAVE_KEY,raw]]),writes=[],nodes=new Map(),blobs=[],revoked=[];
   let failRead=false,failBackup=false,failPrimary=false;
   const storage={get length(){return data.size;},key:i=>[...data.keys()][i]??null,getItem:key=>data.get(key)??null,
     setItem(key,value){if(failPrimary&&key===SAVE_KEY||failBackup&&key.startsWith(recoveryBackupPrefix))throw new Error('quota');writes.push({key,value});data.set(key,value);}};
   class Element{
-    constructor(id='',tag='div'){this.id=id;this.tagName=tag;this.hidden=false;this.disabled=false;this.open=false;this.value='';this.children=[];this.handlers={};this.classList={toggle(){},add(){},remove(){},contains:()=>false};this.clientWidth=800;this.clientHeight=600;}
+    constructor(id='',tag='div'){this.id=id;this.tagName=tag;this.hidden=false;this.disabled=false;this.open=false;this.value='';this.children=[];this.handlers={};this.dataset={};this.style={setProperty(){}};this.queries=new Map();this.classList={toggle(){},add(){},remove(){},contains:()=>false};this.clientWidth=800;this.clientHeight=600;}
     addEventListener(kind,fn){(this.handlers[kind]??=[]).push(fn);}
     async click(){if(this.disabled)return;this.onclick?.();await Promise.all((this.handlers.click||[]).map(fn=>fn({currentTarget:this,target:this})));}
     showModal(){this.open=true;}
@@ -31,6 +34,8 @@ function harness(raw=null){
     replaceChildren(){this.children=[];this.value='';}
     setAttribute(){} remove(){} focus(){} contains(){return false;}
     getContext(){return {setTransform(){}};}
+    querySelector(selector){if(!this.queries.has(selector))this.queries.set(selector,new Element());return this.queries.get(selector);}
+    querySelectorAll(){return [];}
   }
   for(const tag of html.matchAll(/<[^>]+\bid="([^"]+)"[^>]*>/g)){
     const node=new Element(tag[1]);node.hidden=/\bhidden(?:\s|>)/.test(tag[0]);nodes.set(tag[1],node);
@@ -44,6 +49,7 @@ function harness(raw=null){
   }
   const context=vm.createContext({...bindings,document,window:{devicePixelRatio:1,addEventListener(){}},location:{hostname:'unit-test'},
     URL:DownloadURL,Blob,console,performance,queueMicrotask,requestAnimationFrame(){},setInterval(){},setTimeout(fn){queueMicrotask(fn);},addEventListener(){}});
+  if(renderer)context.createInvasionScene=()=>({load(){},resize(){}});
   Object.defineProperty(context,'localStorage',{get(){if(failRead)throw new Error('permission denied');return storage;}});
   const start=()=>vm.runInContext(source.replace(importPattern,''),context,{filename:'Swarmfall entry-point unit harness'});
   const click=id=>nodes.get(id).click();
@@ -111,4 +117,32 @@ test('Cross-tab conflict preserves unsaved session data; reading newer data requ
   await h.confirmAction('save-retry-read',false);assert.match(h.nodes.get('save-record').textContent,/444 matter/);
   await h.confirmAction('save-retry-read');assert.match(h.nodes.get('save-record').textContent,/999 matter/);
   assert.equal(h.nodes.get('play-button').disabled,false);assert.deepEqual(h.writes,[]);
+});
+
+function savedCommandMission(dropPanelOpen){
+  const battle=createBattle(planetById('titan'),{matter:1000});
+  assert.ok(requestDrop(battle,{x:battle.zones[0].x,z:battle.zones[0].z,payload:{scout:4,link:2}}).ok);
+  return missionCheckpoint({battle,cam:{focus:{x:-220,z:180},distance:340,yaw:.6,pitch:.8},
+    selected:new Set([1]),payload:{scout:0,link:2},dropPanelOpen,placing:true,dropPoint:{x:999,z:999},speed:3});
+}
+
+test('Actual Resume restores command intent while cancelling placement and keeping the battle paused',async()=>{
+  const checkpoint=savedCommandMission(true),raw=JSON.stringify({...createProgress(),activeMission:checkpoint});
+  const h=harness(raw,{renderer:true});h.start();await h.click('resume-button');
+  const restored=JSON.parse(vm.runInContext('JSON.stringify({paused:mission.paused,speed:mission.speed,selected:[...mission.selected],payload:mission.payload,cam:mission.cam,placing:mission.placing,dropPoint:mission.dropPoint,cleanView:mission.cleanView,matter:mission.battle.matter})',h.context));
+  assert.equal(restored.paused,true);assert.equal(restored.speed,1);assert.deepEqual(restored.selected,[1]);
+  assert.deepEqual(restored.payload,checkpoint.command.payload);assert.deepEqual(restored.cam,checkpoint.cam);
+  assert.equal(restored.placing,false);assert.equal(restored.dropPoint,null);assert.equal(restored.cleanView,false);
+  assert.equal(restored.matter,checkpoint.battle.matter);assert.equal(h.nodes.get('placement-hint').hidden,true);
+  assert.equal(h.nodes.get('placement-launch').disabled,true);assert.equal(h.nodes.get('drop-panel').hidden,false);
+  assert.deepEqual(JSON.parse(h.data.get(SAVE_KEY)).activeMission.command.selected,[1],'selection remains saved across VM realms');
+});
+
+test('A saved closed drop panel stays closed on Resume and no pod is launched by a stale preview',async()=>{
+  const checkpoint=savedCommandMission(false),h=harness(JSON.stringify({...createProgress(),activeMission:checkpoint}),{renderer:true});
+  h.start();await h.click('resume-button');assert.equal(h.nodes.get('drop-panel').hidden,true);
+  await h.click('placement-launch');
+  const disk=JSON.parse(h.data.get(SAVE_KEY));assert.equal(disk.activeMission.battle.stats.drops,1);
+  assert.equal(disk.activeMission.battle.pods.length,checkpoint.battle.pods.length);
+  assert.equal(disk.activeMission.command.dropPanelOpen,false);
 });

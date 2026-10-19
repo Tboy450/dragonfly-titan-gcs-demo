@@ -5,6 +5,7 @@ import { hazardTypes } from "./hazards.mjs?v=dev";
 import { validPayload, podStaggerS, dronesPerPod } from "./drop-waves.mjs?v=dev";
 import { payloadCount, payloadSlots, dropDurationS } from "./units.mjs?v=dev";
 import { legacyMissionId, validMissionId } from "./mission-id.mjs?v=dev";
+import { commandCheckpoint, restoreCommandState } from './command-state.mjs?v=dev';
 
 export const MISSION_SAVE_VERSION = 3;
 // Recovery bounds [EST], deliberately above current campaign sizes, not gameplay caps.
@@ -152,11 +153,15 @@ function migrateCheckpoint(value) {
 export function missionCheckpoint(mission) {
   if (!mission || mission.battle.outcome) return null;
   const { isLand, heightAt, canDropAt, ...battle } = mission.battle;
-  return jsonClone({ version: MISSION_SAVE_VERSION, battle, cam: mission.cam });
+  return jsonClone({ version: MISSION_SAVE_VERSION, battle, cam: mission.cam, command: commandCheckpoint(mission) });
 }
 
 export function validMissionCheckpoint(value) {
   try {
+    // UI metadata is optional and independently normalized. Bad/future UI fields must
+    // not discard an otherwise valid paid battle or enter the strict battle JSON clone.
+    const command = value?.command;
+    if (object(value)) { const { command: ignored, ...core } = value; value = core; }
     if (!boundedData(value)) return null;
     value = migrateCheckpoint(value);
     if (!value) return null;
@@ -211,7 +216,7 @@ export function validMissionCheckpoint(value) {
     if (!b.log.every(l => between(l.t, 0, b.time) && text(l.text, 2048) && ["info", "good", "warn", "bad"].includes(l.tone))) return null;
     if (!validHazards(b.hazards, b)) return null;
     if (!point(value.cam?.focus) || !between(value.cam.distance, .001, 1e5) || !between(value.cam.yaw, -1e9, 1e9) || !between(value.cam.pitch, -Math.PI, Math.PI)) return null;
-    return jsonClone(value);
+    return { ...jsonClone(value), command: restoreCommandState(command, b) };
   } catch { return null; }
 }
 
@@ -226,5 +231,5 @@ export function restoreMissionCheckpoint(value, terrain) {
   battle.canDropAt = terrain.canDropAt;
   battle.events = []; // One-frame effects must not replay after loading.
   terrain.setPads?.(battle.zones);
-  return { planet: planetById(battle.planetId), battle, cam: saved.cam };
+  return { planet: planetById(battle.planetId), battle, cam: saved.cam, command: saved.command };
 }

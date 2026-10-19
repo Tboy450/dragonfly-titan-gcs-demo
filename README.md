@@ -50,6 +50,9 @@ force or by quiet control.
   is hidden or left. Choose **Resume mission** on the title screen; the restored battle starts
   paused. Starting another mission asks before replacing that save. Browser storage must be
   available; campaign progress and the active battle are saved together.
+  Resume retains active/inbound squad selection, camera, draft payload and drop-panel state.
+  It shows the HUD at 1×, cancels landing placement and requires a fresh explicit launch.
+  Existing issued orders and paid cargo remain in the battle; resuming adds no purchase.
   Earlier mission/progress saves migrate automatically. Results save immediately with the
   completed checkpoint cleared; a storage failure shows a retry action and retains the result
   in memory. If storage stays unavailable, keep the page open until it can save.
