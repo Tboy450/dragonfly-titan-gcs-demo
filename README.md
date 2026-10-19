@@ -306,6 +306,12 @@ subassembly focuses are retained. All four units clear rebuilt equipment without
 Hidden electronics/harness remain unmodeled. #05 stays unchecked and count stays 19/24.
 Real supplier/heritage images, labeled CAD and process samples are saved separately. Geometry: Codex.
 
+The [later Ocellus evidence follow-up](research/ocellus-evidence-2026-10-19/README.md) saves
+original NASA SQRLi review slides/hardware photos, identified Ocellus packaging CAD and a
+credited real digitizer-test photo. They improve the reuse/layout evidence, not flight-box
+photo verification. Research only: the published IMUs/lidar studies and app behavior remain
+unchanged; #05 stays open pending identified imagery or an approved labeled approximation.
+
 The [aft bulkhead](research/aft-bulkhead-2026-10-15/README.md) follows NASA/APL's real structure
 photos: gold-colored face, ribbed circular generator interface and pocketed rim. The generator
 rises aft at an estimated 25 degrees; the fan collar and aft body profile follow the same

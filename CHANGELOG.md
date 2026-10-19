@@ -39,6 +39,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Ocellus hardware-photo and reuse evidence audit
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record inspected Ocellus and SQRLi hardware evidence.
+- **Scope:** Research only. Original NASA SQRLi2024 six-slide review inspected, source
+  slides1/4 and embedded hardware/CAD images retained. NASA Optics2023 p13 explicitly
+  identified Ocellus packaging CAD saved; ERAU real digitizer-test photo saved/credited.
+- **Findings:** Stronger sister-project MEB qualification relationship, not identical flight
+  packaging. SQRLi exposed optical hardware/FOV differs; digitizer largely occluded. No
+  identified complete Ocellus flight-box photo; no source colors/hidden boards copied.
+- **Model:** No mesh, app behavior or physics changes; no replacement archive needed.
+  MIMU family assets preserved. #05 unchecked/count19. Labeled approximation question
+  presented to owner; no answer assumed. Sources/index/compendium/README/handoff reconciled.
+- **Preservation:** Clean isolated worktree fast-forwarded to published81177ed; no separate
+  game edits. Original PDF/PPTX outside Git, relevant unaltered source imagery retained.
+- **Checks:** 10 focused navigation-model/checklist tests pass; diff check clean. Originals
+  and source-gap comparison visually inspected. No new app render claimed for research only.
+
 ### 2026-10-19: Protected save recovery and downloadable originals
 - **Signed:** Codex (OpenAI).
 - **Commit:** `Add protected Swarmfall save recovery and export`.

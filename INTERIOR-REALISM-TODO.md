@@ -7,7 +7,22 @@ Battery pass finished and Codex's RDE pass reviewed October 15, 2026 by Claude (
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: October 19 Part-05 MIMU Family Subpass
+## Resume Here: October 19 Ocellus Evidence Follow-Up
+
+**Newest checkpoint, research only:** original NASA SQRLi 2024 review retrieved and visually
+inspected. Real optical/board imagery, complete source slides1/4 and explicitly identified
+Ocellus FEB packaging CAD (NASA Optics2023 slide13) saved, plus credited real digitizer-test
+photo. SQRLi review links its MEB qualification to sister-project Ocellus, but does NOT
+establish identical complete flight boxes; different FEB/FOV must not be copied. Digitizer
+is largely occluded. No identified complete Ocellus flight-box photograph found. **No model,
+app behavior or physics changed; #05 remains open/count19.** Owner asked whether to allow a
+labeled Ocellus approximation; answer not received at this checkpoint. Do not claim approval.
+[Evidence, rejected substitutions, implementation boundary and next steps](research/ocellus-evidence-2026-10-19/README.md).
+Current MIMU family geometry stays as published; do not restart it. Archive the CURRENT
+lidar study before any replacement, not just old blue blocks. Preserve new unrelated game
+commits (fast-forwarded clean worktree to81177ed); do not edit that source. Preview4195.
+
+## October 19 Published MIMU Family Subpass
 
 **Release checkpoint:** model/source/archive commit `9e647ba` pushed to main and the
 isolated feature branch; recovery tag on cf4c866 pushed. Pages run **39301658664 succeeded**.
@@ -45,8 +60,9 @@ Original blocks, central-flat/upright rejected placements, pre-MIMU dimension st
 isolation draft archived with exact code/tests/pictures. [All parameters, real/CAD/process
 samples and handoff](research/nose-electronics-2026-10-19/README.md).
 
-Next within #05: inspect SQRLi 2024 review/digitizer leads for identified Ocellus-family real
-hardware, keeping shared processors distinct from identical housings. Seek actual Dragonfly
+Next within #05: SQRLi 2024 review/digitizer leads are now inspected (see newest checkpoint),
+but no exact complete Ocellus photo found. Keep shared processors distinct from identical
+housings. Seek actual Dragonfly
 MIMU flight variant/scale/mount evidence. [Research leads](research/nose-electronics-2026-10-19/PHOTO-AND-REUSE-SEARCH.md).
 Real Kodiak is heritage only; supplier exploded MIMU image is CAD, not an interior photo.
 #03/#09/#20/#21 also open. No game edits; published game commits preserved by fast-forward to

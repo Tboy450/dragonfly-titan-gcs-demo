@@ -1,5 +1,12 @@
 # Extended Photo and Cross-Project Reuse Search
 
+**Later October 19 update:** [Ocellus evidence follow-up](../ocellus-evidence-2026-10-19/README.md)
+now closes the previously uninspected SQRLi review/digitizer leads. Original review slides1/4,
+embedded hardware/CAD, Ocellus packaging slide13 and real ERAU photo saved/visually inspected.
+MEB qualification link is stronger, but no complete Ocellus flight enclosure photo identified.
+No geometry change; labeled Ocellus approximation question is open, do not assume approval.
+Historical statements below about these files not opening are superseded by this checkpoint.
+
 **October 19 continuation:** Honeywell's original product image and current June 2026
 datasheet are now downloaded and visually inspected; old March 2021 link is 404. NASA/APL
 Uranus appendix pp.184-185 also downloaded/visually verified. MIMU FAMILY approximations

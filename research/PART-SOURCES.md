@@ -11,10 +11,15 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 Honeywell product image/current June 2026 datasheet and NASA/APL Uranus pp.184-185 now saved
 and visually inspected. MIMU family asset built, exact flight variant/install unverified.
 NASA Ocellus/Kodiak SpaceCube Mini reuse is documented, not identical housings. SQRLi 2024
-review, digitizer-test and related-board leads remain uninspected follow-ups.
+review and digitizer-test are now inspected/saved in the [later evidence follow-up](ocellus-evidence-2026-10-19/README.md),
+along with identified Ocellus FEB packaging CAD. No complete flight-box photo established;
+no geometry changed. Other SpaceCube-board leads remain uninspected.
 
 | Folder | Source | Pages saved | Used by |
 |---|---|---|---|
+| [`sources/nasa-sqrli2024-review`](sources/nasa-sqrli2024-review/README.md) | Nathaniel Gill, NASA/GSFC GCD annual review, NTRS20240010518 | Complete original slides1/4 and embedded hardware/CAD images | 05 reuse evidence; different FEB, no Ocellus flight-photo substitution |
+| [`sources/nasa-optics2023-ocellus`](sources/nasa-optics2023-ocellus/README.md) | Georgieva, NASA Mirror Technology Days2023, NTRS20230014147 | Original page13 | 05 explicitly identified Ocellus FEB packaging CAD, NOT a hardware photo |
+| [`sources/erau2023-digitizer`](sources/erau2023-digitizer/README.md) | ERAU, From Campus to the Cosmos, October2023 | Original digitizer-test photo, Kaley Eaton credit | 05 actual test context, board largely occluded; not a reconstruction reference |
 | [`sources/honeywell-mimu-2026`](sources/honeywell-mimu-2026/README.md) | Honeywell current June 2026 MIMU datasheet and original product image | Both original pages: exterior hardware image and explicitly labeled exploded CAD | 05 IMU family approximation; supplier credit, upper-bound scale, exact flight variant unknown |
 | [`sources/nasa-uranus-mimu`](sources/nasa-uranus-mimu/README.md) | NASA/APL Uranus study Appendix C | Original pages 184-185, visually inspected | 05 MIMU family/Dragonfly corroboration; historical study not flown-mission proof |
 | [`sources/nasa-mss2023-ocellus`](sources/nasa-mss2023-ocellus/README.md) | Amzajerdian, NASA MSS 2023 lidar overview | PDF page 6, Ocellus design CAD/dimensions | 05 dimensional study only; not actual hardware appearance |

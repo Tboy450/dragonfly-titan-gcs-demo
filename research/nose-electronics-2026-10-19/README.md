@@ -1,5 +1,10 @@
 # Part 05: MIMU Family Asset and Ocellus Dimension Study
 
+**Latest evidence follow-up:** [inspected SQRLi review, Ocellus packaging CAD and real
+digitizer-test photograph](../ocellus-evidence-2026-10-19/README.md). Prior "uninspected"
+SQRLi/digitizer notes below are historical; they are now inspected, but still do not provide
+an identified complete Ocellus flight-box photo. No geometry changed in that continuation.
+
 Codex (OpenAI), October 19, 2026. **Partial: #05 stays unchecked, 19/24 unchanged**
 (4 Codex, 15 Claude initial passes, not verified flight replicas). After deeper hardware-photo
 research, both IMU cubes are now photo-referenced Honeywell space MIMU FAMILY approximations.
@@ -36,8 +41,8 @@ not photo-matched housings. No image generation, simulator-physics or separate g
   predecessor, NOT Ocellus; ports/optics not copied. ICES-2023 figs.3/4: older layout only.
 
 [Extended search](PHOTO-AND-REUSE-SEARCH.md) records SpaceCube Mini, SQRLi and digitizer leads.
-Common processor/platform does not mean identical packaging. Uninspected SQRLi review and
-board-photo leads remain follow-ups, not inspected evidence.
+Common processor/platform does not mean identical packaging. SQRLi review/digitizer leads
+are now inspected in the later follow-up; other SpaceCube board-photo leads remain uninspected.
 
 ## Parameters and Limits
 
@@ -91,8 +96,8 @@ records this result without changing the model.
 
 ## Next Handoff
 
-Keep #05 open. Find identified current Ocellus MEB/FEB photos; SQRLi review/digitizer leads
-may help but are not license to copy unrelated housings/PCBs. Seek exact Dragonfly MIMU
+Keep #05 open. Find identified current Ocellus MEB/FEB photos; inspected SQRLi/digitizer
+references are not license to copy unrelated housings/PCBs. Seek exact Dragonfly MIMU
 variant, flight dimensions and mounting before calling this flight-specific. Preserve
 credits and all real/CAD/model distinctions. No hidden internals without evidence.
 Other open parts #03/#09/#20/#21. Do not restart #22 or touch the separate game.

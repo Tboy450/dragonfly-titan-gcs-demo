@@ -4,6 +4,16 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**Later October19 Ocellus evidence audit (Codex, research-only):** [saved originals and
+limits](research/ocellus-evidence-2026-10-19/README.md). NASA SQRLi2024 slide4 explicitly ties
+MEB qualification to sister-project Ocellus; does not establish identical flight housings.
+Real exposed optical hardware and board imagery are SQRLi context, not Ocellus flight photos.
+NASA Optics2023 slide13 identifies Ocellus FEB packaging CAD; CAD colors are not coatings,
+red circle is annotation. ERAU digitizer-test photo is real/credited Kaley Eaton but obscured,
+not a board-layout source. No complete Ocellus box photo found; no geometry/constants changed.
+Question about labeled approximation is open; #05 unchecked. Do not silently turn these
+references into claimed flight verification or copy SQRLi range/FOV/mass into Dragonfly.
+
 **October 19 partial navigation study (Codex):** [sources and sample comparison](research/nose-electronics-2026-10-19/README.md).
 NASA MSS 2023 p6 provides historical design envelopes, not 2026 as-built dimensions.
 Ocellus MEB 24.19 x 18.54 x 12.04 cm and FEB 23.4 x 23.2 x 12.7 cm [PUB-design]; installed
