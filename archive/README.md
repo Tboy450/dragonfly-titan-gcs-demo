@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [swarmfall-save-recovery-2026-10-19](swarmfall-save-recovery-2026-10-19/README.md) | Title/save/reset behavior before visible recovery, exact-original browser backups and JSON export; source and dated historical picture retained | 2026-10-19 | `archive/swarmfall-save-recovery-2026-10-19` |
 | [swarmfall-checkpoint-validation-2026-10-19](swarmfall-checkpoint-validation-2026-10-19/README.md) | Exact validator/test before strict rule/reference/JSON bounds, plus a dated historical mission picture; current save format and migrations retained | 2026-10-19 | `archive/swarmfall-checkpoint-validation-2026-10-19` |
 | [nose-electronics-2026-10-19](nose-electronics-2026-10-19/README.md) | Part-05 original four blocks/UI/pictures, central-flat/upright rejects, pre-MIMU dimension study and support-isolation draft before photo-referenced MIMU family models | 2026-10-19 | `archive/nose-electronics-2026-10-19` |
 | [lab-aftermath-2026-10-19](lab-aftermath-2026-10-19/README.md) | Lab before smoke/fire/embers and supported architecture destruction controls; exact source and dated historical picture retained | 2026-10-19 | `archive/lab-aftermath-2026-10-19` |

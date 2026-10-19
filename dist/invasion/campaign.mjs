@@ -206,7 +206,7 @@ export function validProgress(raw) {
     if (Number.isFinite(best) && best > 0) clean.bestTime[planet.id] = Math.round(best);
   }
   if (Array.isArray(raw.unlocks)) {
-    for (const unlock of raw.unlocks) if (droneTypes[unlock] && !clean.unlocks.includes(unlock)) clean.unlocks.push(unlock);
+    for (const unlock of raw.unlocks) if (typeof unlock === 'string' && Object.hasOwn(droneTypes, unlock) && !clean.unlocks.includes(unlock)) clean.unlocks.push(unlock);
   }
   clean.podSlots = Math.max(basePodSlots, Math.min(basePodSlots + 32, count(raw.podSlots)));
   if (raw.achievements && typeof raw.achievements === "object") {

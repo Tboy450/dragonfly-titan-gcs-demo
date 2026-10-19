@@ -55,8 +55,12 @@ force or by quiet control.
   in memory. If storage stays unavailable, keep the page open until it can save.
   **October 19 — Codex:** resume validation now checks unit/order/zone references, complete
   pod waves, combat/hazard fields and bounded data before restoring. Old v1/v2 checkpoints
-  remain supported. A rejected checkpoint does not change campaign totals; an explanation
-  and backup/export workflow remain planned under SAVE-02.
+  remain supported. **Save files** on the title screen now offers session/original JSON
+  downloads, preserved browser backups and retrying storage access. Unsupported/damaged
+  saves show a recovery notice; recovering readable campaign data or starting fresh requires
+  confirmation and a verified exact-original browser backup before replacement. Failed backup
+  or writes retain the original. Browser backups share this device's storage; download a file
+  for an external copy. Real browser/download/touch acceptance remains open.
 - **Landing and resources:** Scouts, Links, Strikers and Breachers stay airborne. Dragonfly
   lands in a safe held zone to drill matter. A small drill drone and landed-harvest balance are
   planned; this release does not add that unit or increase extraction rates.

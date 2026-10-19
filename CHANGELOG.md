@@ -39,6 +39,31 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Protected save recovery and downloadable originals
+- **Signed:** Codex (OpenAI).
+- **Commit:** `Add protected Swarmfall save recovery and export`.
+- **What changed:** title-screen Save files dialog exports in-memory sessions, exact original
+  saved strings and preserved browser backups. Unsupported/damaged files show a visible notice
+  and block replacement until confirmed recovery/fresh start. Readable campaign progress can
+  be recovered without its damaged battle. Supported v1/v2 migration remains available.
+- **Preservation:** reading never writes; protected originals are verified in a separate
+  browser backup before recovery, legacy migration or reset. Backup failures refuse replacement;
+  failed final writes retain the primary/backup. Observed another-tab changes refuse overwrite.
+  Storage denial offers explicit temporary play and read retry. Reset adopts fresh in-memory
+  state only after its write succeeds. Invalid/inherited unlock types are ignored safely.
+- **Checks:** **351 tests pass**, including 12 storage/data and seven actual entry-point wiring
+  tests with DOM/Blob/storage stand-ins. They cover real legacy fixtures, exact export bytes,
+  confirm/cancel, blocked downloads, quota/write failures, backup collisions, settled missions, access retry,
+  cross-tab conflict and unchanged campaign totals. Evidence:
+  `research/swarmfall-save-recovery-2026-10-19/README.md`.
+- **Archive:** exact prior UI/campaign files and dated historical mission picture under
+  `archive/swarmfall-save-recovery-2026-10-19/`, tag on `e6bb497`. Concurrent publication records
+  `ac2ba15/e6bb497` were fast-forwarded before starting. All assets, kit drafts and task IDs kept.
+- **Checklist / open:** SAVE-02 checked/signed Codex. Browser backups share local quota;
+  download an external copy. File import is future work. Browser access was previously blocked
+  and not retried; native downloads, focus/touch/phone and real storage faults remain under
+  SAVE-03/SAVE-06. No game balance, drone landing or lab-art changes.
+
 ### 2026-10-19: Validate checkpoint rules and references before resuming
 - **Signed:** Codex (OpenAI).
 - **Commit:** `Harden Swarmfall checkpoint validation`.

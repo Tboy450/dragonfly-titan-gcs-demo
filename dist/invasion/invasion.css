@@ -37,6 +37,12 @@ a { color: var(--swarm); }
 .tagline { color: #cfd7ea; margin: 0 0 20px; }
 .title-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 .title-actions .primary { padding: 10px 26px; font-size: 17px; }
+.title-card { max-height: calc(100dvh - 24px); overflow-y: auto; }
+.save-notice { margin: 14px 0 0; padding: 12px; text-align: left; border: 1px solid var(--amber); border-radius: 8px; font-size: 13px; }
+.save-notice p { margin: 0 0 10px; }
+#save-backups { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--line); }
+#save-backup-choice { width: 100%; margin: 8px 0; padding: 8px; background: var(--panel-solid); color: var(--text); border: 1px solid var(--line); border-radius: 5px; }
+#save-action-status { color: var(--amber); overflow-wrap: anywhere; }
 .title-progress { color: var(--muted); min-height: 1.4em; margin: 14px 0 0; }
 .title-foot { color: var(--muted); font-size: 13px; margin: 16px 0 0; }
 

@@ -19,7 +19,9 @@
           <button id="resume-button" class="primary" type="button" hidden>Resume mission</button>
           <button id="play-button" class="primary" type="button">Play campaign</button>
           <button id="reset-button" class="ghost" type="button">Reset progress</button>
+          <button id="save-files-button" class="ghost" type="button">Save files</button>
         </div>
+        <section id="save-notice" class="save-notice" aria-label="Saved data needs attention" hidden><p id="save-notice-text" role="status"></p><button id="save-review" type="button">Review saved data</button></section>
         <p id="title-progress" class="title-progress"></p>
         <p class="title-foot"><a href="./environments/">Asset &amp; Environment Lab</a> · <a href="../">Dragonfly Titan simulator</a> · <span data-build-stamp>Build local</span></p>
       </div>
@@ -121,6 +123,15 @@
       <h2>Achievements</h2>
       <ul id="achievement-list" class="achievement-list"></ul>
       <div class="dialog-actions"><button id="achievements-close" class="primary" type="button">Close</button></div>
+    </dialog>
+
+    <dialog id="save-dialog" class="dialog" aria-labelledby="save-title" aria-describedby="save-summary">
+      <h2 id="save-title">Save files &amp; recovery</h2>
+      <p id="save-summary"></p><p id="save-record" class="muted"></p>
+      <div class="dialog-actions"><button id="save-download-session" type="button">Download this session</button><button id="save-download-original" type="button">Download original file</button></div>
+      <section id="save-backups" hidden><label for="save-backup-choice">Preserved browser backups</label><select id="save-backup-choice"></select><button id="save-download-backup" type="button">Download selected backup</button></section>
+      <p id="save-action-status" role="status"></p>
+      <div class="dialog-actions"><button id="save-retry-read" type="button">Retry reading saved data</button><button id="save-resolve" class="primary" type="button" hidden>Recover campaign data</button><button id="save-close" type="button">Close</button></div>
     </dialog>
 
     <dialog id="confirm-dialog" class="dialog">

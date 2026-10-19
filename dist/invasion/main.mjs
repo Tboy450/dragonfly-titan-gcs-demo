@@ -2,7 +2,7 @@
 // orders, drops, HUD, minimap) and the debrief. Game rules live in battle.mjs and campaign.mjs;
 // this file only reads them, sends player commands and draws the page.
 import {
-  planets, planetById, createProgress, validProgress, SAVE_KEY, isPlanetUnlocked, nextPlanet,
+  planets, planetById, createProgress, isPlanetUnlocked, nextPlanet,
   applyMissionResult, missionMatter,
 } from "./campaign.mjs?v=dev";
 import {
@@ -16,8 +16,8 @@ import { achievements, achievementContext, newAchievements, recordAchievements }
 import { createPlanetTerrain } from "./planet-terrain.mjs?v=dev";
 import { drawGalaxy, drawStarfield } from "./galaxy.mjs?v=dev";
 import { createInvasionScene, swarmColor, nativeColor } from "./scene.mjs?v=dev";
-import { missionCheckpoint, validMissionCheckpoint, restoreMissionCheckpoint } from "./mission-save.mjs?v=dev";
-import { saveCampaignEnvelope } from "./progress-store.mjs?v=dev";
+import { missionCheckpoint, restoreMissionCheckpoint } from "./mission-save.mjs?v=dev";
+import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecoveryBackups } from './save-recovery.mjs?v=dev';
 
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (text) => String(text).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -26,20 +26,15 @@ const isDrone = (unit) => unit.alive && unit.side === "swarm" && !unit.structure
 
 // ---- Saved progress ----
 let resultSavePending = false;
-function loadProgress() {
-  try { return validProgress(JSON.parse(localStorage.getItem(SAVE_KEY) || "null")) || createProgress(); } catch { return createProgress(); }
-}
+const storageAccess = () => localStorage;
+let saveState = readCampaignSave(storageAccess), lastSaveError = '', sessionDirty = false, preservedBackups = [];
+let progress = saveState.progress, savedMission = saveState.activeMission;
 function saveProgress() {
-  try {
-    if (!saveCampaignEnvelope(localStorage, progress, savedMission)) return false;
-    resultSavePending = false;
-    return true;
-  } catch { return false; }
+  const result = writeCampaignSave(storageAccess, progress, savedMission, saveState);
+  if (!result.ok) { lastSaveError = result.reason; sessionDirty = true; return false; }
+  saveState = result.state; lastSaveError = ''; sessionDirty = false; resultSavePending = false;
+  return true;
 }
-let progress = loadProgress();
-let savedMission = null;
-try { savedMission = validMissionCheckpoint(JSON.parse(localStorage.getItem(SAVE_KEY) || "null")?.activeMission); } catch { /* unavailable storage or old save */ }
-if (savedMission && Object.hasOwn(progress.settledMissions, savedMission.battle.missionId)) savedMission = null;
 
 // ---- Screens ----
 let current = "title";
@@ -70,7 +65,77 @@ function drawTitle() {
   $("play-button").textContent = done || progress.stats.missionsPlayed ? "Continue campaign" : "Play campaign";
   $("resume-button").hidden = !savedMission;
   $("resume-button").textContent = savedMission ? `Resume mission · ${planetById(savedMission.battle.planetId).name}` : "Resume mission";
+  renderSaveRecovery();
 }
+
+// ---- Save files and protected recovery ----
+function renderSaveRecovery() {
+  const protectedSave = saveState.status === 'recovery';
+  const message = lastSaveError ? recoveryFailureMessage(lastSaveError) : saveState.issue?.message || '';
+  $('save-notice').hidden = !message; $('save-notice-text').textContent = message;
+  $('play-button').disabled = protectedSave || lastSaveError === 'changed';
+  $('reset-button').disabled = protectedSave || saveState.status === 'unavailable';
+  $('resume-button').disabled = protectedSave;
+  if (saveState.status === 'unavailable') $('play-button').textContent = 'Play without saving';
+  $('save-summary').textContent = message || (saveState.needsBackup
+    ? 'This older save is supported. Its original file will be preserved before the migrated save is written.'
+    : 'Download a copy of this session or the saved file on this device. Browser backups stay on this device.');
+  $('save-record').textContent = `${Object.keys(progress.captured).length} planets conquered · ${Math.round(progress.matter)} matter${savedMission ? ' · active battle available' : ''}`;
+  $('save-download-original').disabled = saveState.raw === null;
+  $('save-resolve').hidden = !protectedSave;
+  $('save-resolve').textContent = saveState.issue?.canKeepCampaign ? 'Recover campaign data' : 'Start fresh with backup';
+}
+function openSaveFiles() {
+  preservedBackups = listRecoveryBackups(storageAccess);
+  $('save-backup-choice').replaceChildren();
+  preservedBackups.forEach((copy, i) => {
+    const option = document.createElement('option'); option.value = String(i);
+    option.textContent = `Preserved backup ${i + 1} · ${Math.ceil(copy.raw.length / 1024)} KB`;
+    $('save-backup-choice').append(option);
+  });
+  $('save-backups').hidden = !preservedBackups.length;
+  $('save-action-status').textContent = ''; renderSaveRecovery(); $('save-dialog').showModal();
+}
+function downloadSave(raw, name) {
+  let url, link;
+  try {
+    url = URL.createObjectURL(new Blob([raw], { type: 'application/json;charset=utf-8' }));
+    link = document.createElement('a'); link.href = url; link.download = name; document.body.append(link); link.click();
+    $('save-action-status').textContent = 'Backup download requested. Check your browser downloads.';
+  } catch { $('save-action-status').textContent = 'The download could not start. Your saved file is unchanged. Try a browser that allows downloads.'; }
+  finally { link?.remove(); if (url) setTimeout(() => URL.revokeObjectURL(url), 1000); }
+}
+function adoptSavedState(state) {
+  saveState = state; progress = state.progress; savedMission = state.activeMission;
+  lastSaveError = ''; sessionDirty = false; resultSavePending = false;
+  selectedPlanet = nextPlanet(progress).id; drawTitle();
+}
+$('save-files-button').addEventListener('click', openSaveFiles);
+$('save-review').addEventListener('click', openSaveFiles);
+$('save-close').addEventListener('click', () => $('save-dialog').close());
+$('save-download-session').addEventListener('click', () => downloadSave(JSON.stringify({ ...progress, activeMission: savedMission }, null, 2), 'swarmfall-session.json'));
+$('save-download-original').addEventListener('click', () => { if (saveState.raw !== null) downloadSave(saveState.raw, 'swarmfall-original-save.json'); });
+$('save-download-backup').addEventListener('click', () => {
+  const copy = preservedBackups[Number($('save-backup-choice').value)];
+  if (copy) downloadSave(copy.raw, copy.key + '.json');
+});
+$('save-retry-read').addEventListener('click', async () => {
+  if (sessionDirty && !await confirmDialog('Reload saved data and replace this session’s unsaved changes? Download this session first if you want to keep it.')) return;
+  const state = readCampaignSave(storageAccess);
+  if (state.status === 'unavailable') { $('save-action-status').textContent = state.issue.message; return; }
+  adoptSavedState(state); $('save-action-status').textContent = 'Saved data rechecked. No file was overwritten.';
+});
+$('save-resolve').addEventListener('click', async () => {
+  if (saveState.status !== 'recovery') return;
+  const keep = saveState.issue.canKeepCampaign;
+  if (!await confirmDialog(keep
+    ? 'Recover the readable campaign data without its saved battle? The exact original will be kept as a browser backup before replacement.'
+    : 'Start a fresh campaign? The exact original will be kept as a browser backup before replacement.')) return;
+  const result = writeCampaignSave(storageAccess, keep ? progress : createProgress(), null, saveState, { resolve: true });
+  if (!result.ok) { lastSaveError = result.reason; renderSaveRecovery(); return; }
+  adoptSavedState(result.state); $('save-dialog').close(); openSaveFiles();
+  $('save-action-status').textContent = 'Campaign ready. The original is retained below as a preserved browser backup.';
+});
 
 // ---- Galaxy ----
 let selectedPlanet = nextPlanet(progress).id;
@@ -169,12 +234,11 @@ $("resume-button").addEventListener("click", () => {
   if (savedMission) startMission(planetById(savedMission.battle.planetId), savedMission);
 });
 $("reset-button").addEventListener("click", async () => {
-  if (await confirmDialog("Erase all campaign progress, unlocks and achievements on this device?")) {
-    progress = createProgress();
-    savedMission = null;
-    saveProgress();
-    selectedPlanet = nextPlanet(progress).id;
-    drawTitle();
+  if (await confirmDialog("Reset the campaign, unlocks and achievements? The current saved file will be retained as a browser backup.")) {
+    const protectedState = { ...saveState, needsBackup: saveState.raw !== null };
+    const result = writeCampaignSave(storageAccess, createProgress(), null, protectedState);
+    if (result.ok) adoptSavedState(result.state);
+    else { lastSaveError = result.reason; openSaveFiles(); }
   }
 });
 $("galaxy-back").addEventListener("click", () => show("title"));
@@ -258,7 +322,7 @@ function checkpointMission() {
   savedMission = missionCheckpoint(mission);
   if (!saveProgress() && !mission.saveWarning) {
     mission.saveWarning = true;
-    toast("Browser storage is unavailable. This mission cannot be saved on this device.", "warn", 7000);
+    toast(recoveryFailureMessage(lastSaveError), "warn", 7000);
   }
 }
 setInterval(checkpointMission, 5000);
@@ -883,7 +947,7 @@ function showSettlementSaveStatus() {
   $("settlement-status").hidden = !resultSavePending;
   $("settlement-retry").hidden = !resultSavePending;
   $("settlement-status").textContent = resultSavePending
-    ? "Result is in memory, but browser storage could not save it. Keep this page open and retry saving before leaving. No extra reward is granted by retrying." : "";
+    ? `Result is in memory. ${recoveryFailureMessage(lastSaveError)} Keep this page open; Save files on the title screen can export this session. Retrying grants no extra reward.` : "";
 }
 function retrySettlementSave() {
   if (!resultSavePending) return;
