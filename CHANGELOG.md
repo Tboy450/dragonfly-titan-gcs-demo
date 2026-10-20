@@ -39,6 +39,42 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-20: Kit-built lab worlds: varied Metropolis, orbital ring, asteroid colony, Titan outpost
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add kit-built lab worlds and rebuild Metropolis from modular parts"
+- **What changed:** At the owner's request for many detailed environments from our assets and
+  original art, and because the first Metropolis was "a tad too identical in places":
+  - New shared kit `dist/invasion/environments/kit/` (instancing, merged facades with meter UVs,
+    generated facade/ground textures with dusk windows, horizon mountains, water, stars, planets,
+    trees, moving traffic) and on-demand worlds in `worlds/` registered in `worlds/index.mjs`.
+  - **Metropolis (new):** 40 downtown buildings assembled panel by panel from all 150 Downtown
+    City MegaKit parts (CC0), each with its own style, size, height, window rhythm, storefronts,
+    entrance, setback and rooftop; walls facing a neighbor use flat matching facades to keep the
+    triangle count near 4 M (was 11 M). About 1,700 procedural buildings in 8 facade styles, 10
+    one-off towers, river and bridges, elevated rail, park, stadium, harbor, 420 moving cars.
+    Codex's first version stays as `?scene=metropolis-classic`.
+  - **Orbital ring:** a habitat wheel (towns on its inner floor, hub, solar wings, shuttles) over a
+    gas giant. Owner feedback: cool, but not yet placed in the story and too small for a battle
+    map; labeled as a visual study pending that decision (see VIS-20).
+  - **Asteroid colony:** cratered asteroid, habitat ring, mining rigs, refinery, debris field,
+    haulers and the game's own Scout drones.
+  - **Titan Hive outpost:** the simulator's Titan terrain and haze, its aeroshell/parachute
+    hardware landing pods on a loop, two Dragonfly research models (one flying) and the game's
+    drone squads around an original Hive spire, pads, domes and sheds.
+  - Small generic hooks in Codex's `lab.mjs` (load a registered world, worlds with their own sky,
+    per-world fog/flyover/pilot limits, dusk handler, opt-out of the destruction study) and a
+    localhost-only `window.labDebug`. Kit copies prepared by
+    `research/fantasy-city-2026-10-16/prepare-environment-kits.py` (textures reduced to 512 px).
+- **Assumptions:** all layouts, sizes and procedural art are invented visual studies [EST]; no
+  collision, routes or game rules. Kit worlds opt out of the destruction preview for now.
+- **Incident:** a computer crash left two OneDrive conflict copies (`*-LAPTOP-VIAE0F3D.mjs`) holding
+  the newest edits while older copies kept the real names; the newest versions were restored and
+  the copies removed. Check for such copies after any crash.
+- **Checks:** every module parses; all tests pass; each new world loaded in the browser with no
+  errors. Phone/Light-mode frame times are not yet measured.
+- **Open / next:** VIS-20 in the checklist (market town and forge city were started in the plan
+  but not built, and are not in the menu).
+
 ### 2026-10-20: Part 21 MMRTG fin-root temperature shown as an annotation on the generator
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Show part 21 as a fin-root annotation on the MMRTG instead of a floating sphere"
