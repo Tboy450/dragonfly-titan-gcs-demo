@@ -302,12 +302,14 @@ function startMission(planet, checkpoint = null) {
     cam: restored?.cam || { focus: { x: home.x - away.x / length * 70, z: home.z - away.z / length * 70 }, distance: 230, yaw: Math.atan2(away.x, away.z), pitch: 0.9 },
     selected: new Set(restored?.command.selected || []), speed: 1, paused: !!restored,
     payload: restored?.command.payload ?? defaultPayload(battle), placing: false, dropPoint: null, dropPreview: null, dropPanelOpen: false,
-    cleanView: false, minimapOrders: false, minimapPing: null,
+    cleanView: false, minimapOrders: false, minimapPing: null, phoneHudCollapsed: false,
     seenLog: new WeakSet(), ended: false, lastHud: 0, lastMinimap: 0, lastAchievements: 0, cards: new Map(), dropTypes: "",
   };
   $("squad-bar").replaceChildren();
   $("toasts").replaceChildren();
   $("hud-log").replaceChildren();
+  $("objectives-box").open = true;
+  $("log-box").open = true;
   $("drop-rows").replaceChildren();
   $("placement-hint").hidden = true;
   $('placement-launch').disabled = true;
@@ -777,6 +779,16 @@ function updateSquadBar() {
 function updateHud() {
   if (!mission) return;
   const b = mission.battle, summary = battleSummary(b);
+  // Collapse once per mission on a narrow screen, then respect manual reopening.
+  // A resumed battle with captures gets the same compact starting layout.
+  if (!mission.phoneHudCollapsed && b.stats.zonesCaptured > 0 && window.matchMedia("(max-width: 720px)").matches) {
+    mission.phoneHudCollapsed = true;
+    for (const id of ["objectives-box", "log-box"]) {
+      const panel = $(id);
+      if (panel.contains(document.activeElement)) panel.querySelector("summary").focus();
+      panel.open = false;
+    }
+  }
   $("hud-planet").textContent = mission.planet.name;
   $("hud-zones").textContent = b.victoryAvailable ? `Victory available · ${summary.held}/${summary.total} held · ${summary.total - summary.held} remain` : `${summary.held}/${summary.required} zones held (${summary.total} in all)`;
   $("extract-button").hidden = !b.victoryAvailable || !!b.outcome;

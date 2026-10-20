@@ -116,6 +116,10 @@ Minimap-orders follow-up — Codex, October 20: **CTRL-08** adds right-click ord
 explicit touch-friendly View/Orders toggle. **400 tests pass; 26/305 tasks checked.** The
 separate studio remains owned by its other project; neither environment lab is changed.
 
+Phone-HUD follow-up — Codex, October 20: **FIX-07** reduces battlefield panel coverage
+after the first capture, with manual access retained. **405 tests pass; 27/305 tasks
+checked.** Original HUD code/picture retained; real-phone acceptance remains open.
+
 ## Priority order — work from the top
 
 | Order | Work package | Canonical tasks | Scope | Completion gate |
@@ -260,8 +264,11 @@ complete solely because its assets download or its unit tests pass.
   within 110 m, sometimes off screen with no feedback. Show the new target and allow "stop".
 - [ ] **FIX-06 (P2)** Zone rings follow the ground but steep Titan dunes and trees can still
   hide parts of them. Consider drawing them on top at low opacity.
-- [ ] **FIX-07 (P2)** On phones the objectives and log panels cover much of the battlefield.
-  Collapse them after the first capture and add a log toggle.
+- [x] **FIX-07 (P2) — Codex, October 20; implementation and automated checks** On phones,
+  collapse Objectives and Battle log once after the first capture; both have independent
+  summary toggles. Respect manual reopening, reset new missions and compact captured resumes.
+  Warning toasts remain active. [Evidence](research/swarmfall-phone-hud-2026-10-20/README.md).
+  Real-phone layout/touch and screen-reader review remain open acceptance work.
 - [x] **FIX-08 (P2) — Codex, October 19** The drop panel and the "pick a zone" hint stay open under the debrief when
   a mission ends. Close them in `finishMission`.
 - [ ] **FIX-09 (P2)** Aurex, the last planet, is very hard (bot: about 16 minutes and 150 drones

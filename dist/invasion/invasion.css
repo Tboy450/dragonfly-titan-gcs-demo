@@ -93,6 +93,9 @@ a { color: var(--swarm); }
 .hud-left > * { pointer-events: auto; }
 .panel.small { padding: 6px 10px; font-size: 13px; }
 .panel.small summary { cursor: pointer; font-weight: 600; }
+.hud-left details:not([open]) { width: max-content; max-width: 100%; }
+.hud-left summary { min-height: 24px; line-height: 24px; }
+#log-box[open] summary { margin-bottom: 6px; }
 #objective-list { list-style: none; margin: 6px 0 0; padding: 0; }
 #objective-list li { display: flex; gap: 6px; margin: 3px 0; }
 #objective-list li .mark { width: 1.1em; flex: none; text-align: center; }

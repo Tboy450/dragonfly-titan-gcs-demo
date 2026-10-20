@@ -22,6 +22,11 @@ hardware imagery is still needed;09 stays open and the initial-pass count remain
 
 ## Swarmfall: Drone Invasion (game)
 
+October 20 — **FIX-07:** phone-sized screens collapse Objectives and Battle log after
+the first capture. Tap either heading to reopen it; that choice stays respected during
+the mission. Captured saves resume compact on phones. Warning toasts remain active.
+[Automated checks and acceptance limits](research/swarmfall-phone-hud-2026-10-20/README.md).
+
 [Play Swarmfall](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/) (its own page,
 `dist/invasion/`; the simulator above is unchanged). A strategy game built from the simulator's
 best parts: drop drone swarms on planet after planet in a campaign galaxy and take each world by

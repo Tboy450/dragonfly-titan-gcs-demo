@@ -39,17 +39,17 @@ export function harness(raw=null,{renderer=false}={}){
     querySelectorAll(){return [];}
   }
   for(const tag of html.matchAll(/<[^>]+\bid="([^"]+)"[^>]*>/g)){
-    const node=new Element(tag[1]);node.hidden=/\bhidden(?:\s|>)/.test(tag[0]);nodes.set(tag[1],node);
+    const node=new Element(tag[1],tag[0].match(/^<(\w+)/)[1]);node.hidden=/\bhidden(?:\s|>)/.test(tag[0]);nodes.set(tag[1],node);
   }
   const document={body:new Element(),getElementById:id=>nodes.get(id)||null,
     querySelectorAll:selector=>selector==='.screen'?[...nodes.values()].filter(n=>n.id.startsWith('screen-')):[],
-    querySelector:selector=>selector==='dialog[open]'?[...nodes.values()].find(n=>n.open)||null:null,
+    querySelector:selector=>selector==='dialog[open]'?[...nodes.values()].find(n=>n.tagName==='dialog'&&n.open)||null:null,
     createElement:tag=>new Element('',tag),addEventListener(kind,fn){(documentHandlers[kind]??=[]).push(fn);}};
   class DownloadURL extends URL{
     static createObjectURL(blob){blobs.push(blob);return 'blob:test-'+blobs.length;}
     static revokeObjectURL(url){revoked.push(url);}
   }
-  const context=vm.createContext({...bindings,document,window:{devicePixelRatio:1,addEventListener(kind,fn){(windowHandlers[kind]??=[]).push(fn);}},location:{hostname:'unit-test'},
+  const context=vm.createContext({...bindings,document,window:{devicePixelRatio:1,matchMedia:()=>({matches:false}),addEventListener(kind,fn){(windowHandlers[kind]??=[]).push(fn);}},location:{hostname:'unit-test'},
     URL:DownloadURL,Blob,console,performance,queueMicrotask,requestAnimationFrame(){},setInterval(){},setTimeout(fn){queueMicrotask(fn);},addEventListener(){}});
   if(renderer)context.createInvasionScene=()=>({load(){},resize(){},unitTop:()=>10,
     project:(x,y,z)=>({x,y:z,visible:true}),pickGround:(x,y)=>({x:(x+1)*400,z:(1-y)*300})});

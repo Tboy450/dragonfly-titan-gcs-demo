@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [swarmfall-phone-hud-2026-10-20](swarmfall-phone-hud-2026-10-20/README.md) | HUD before one-time phone collapse/log toggle; exact source/harness, dated historical picture and restore steps | 2026-10-20 | `archive/swarmfall-phone-hud-2026-10-20` on a7261bb |
 | [swarmfall-minimap-orders-2026-10-20](swarmfall-minimap-orders-2026-10-20/README.md) | Camera-only minimap before View/Orders mode; exact entry/HTML/CSS, initial styling draft, dated historical picture and restore steps | 2026-10-20 | `archive/swarmfall-minimap-orders-2026-10-20` on 5220223 |
 | [swarmfall-hold-hint-2026-10-19](swarmfall-hold-hint-2026-10-19/README.md) | Hold/H before empty-selection guidance; exact entry point, dated historical mission picture and restore steps | 2026-10-19 | `archive/swarmfall-hold-hint-2026-10-19` on 183bdba |
 | [swarmfall-drone-markers-2026-10-19](swarmfall-drone-markers-2026-10-19/README.md) | Overlay/renderer before tiny friendly-drone markers; exact code/test and dated historical mission picture | 2026-10-19 | `archive/swarmfall-drone-markers-2026-10-19` on 7ab195e |

@@ -39,6 +39,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-20: FIX-07 phone HUD decluttering
+- **Signed:** Codex (OpenAI)
+- **Commit:** Collapse phone battlefield panels after first capture
+- **What changed:** Objectives and Battle log collapse once after a capture on narrow
+  screens, with independent native summary controls. Manual reopening persists during
+  the mission; new missions reset, captured resumes start compact on phones. Logs keep
+  updating and warning toasts remain active. Focus inside closing panels moves to summary.
+- **Files:** invasion entry/HTML/CSS, DOM harness, five focused tests, checklist/README,
+  evidence and exact-original archive with dated historical picture and restore steps.
+- **Checks:** 405 tests pass. Entry-point tests cover capture, manual choices, viewport
+  changes, new/resumed missions, warnings and keyboard controls. DOM harness corrected
+  to recognize only actual dialog elements as modal. Canonical checklist:27/305 checked.
+- **Assumptions:** 720px uses the existing phone CSS breakpoint; collapse preference is
+  mission-local UI state and does not change save format or game rules.
+- **Open / next:** Browser/touch/screen-reader and real-phone visual acceptance remain
+  open; prior browser restriction retained. No environment lab or independent studio edits.
+
 ### 2026-10-20: CTRL-08 minimap squad orders
 - **Signed:** Codex (OpenAI)
 - **Commit:** Give squad orders from the minimap
