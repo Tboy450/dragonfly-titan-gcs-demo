@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "build": "5d85fd0",
+  "errors": [],
+  "failed": [],
+  "checks": [
+    {
+      "width": 1440,
+      "unit": "rde-1"
+    },
+    {
+      "width": 1440,
+      "unit": "rde-2"
+    },
+    {
+      "width": 390,
+      "unit": "rde-1"
+    },
+    {
+      "width": 390,
+      "unit": "rde-2"
+    },
+    {
+      "width": 360,
+      "unit": "rde-1"
+    },
+    {
+      "width": 360,
+      "unit": "rde-2"
+    }
+  ],
+  "loaded": [
+    "https://tboy450.github.io/dragonfly-titan-gcs-demo/rotor-drive-electronics.mjs?v=5d85fd0",
+    "https://tboy450.github.io/dragonfly-titan-gcs-demo/rotor-drive-electronics.mjs?v=5d85fd0"
+  ],
+  "links": [
+    "https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content",
+    "https://www.a-a-c.com/wp-content/uploads/2023/04/JHU-APL-Titan-PR.pdf",
+    "https://indico.cern.ch/event/1577141/page/42829-speakers-information",
+    "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php"
+  ],
+  "options": [
+    "",
+    "rde-1",
+    "rde-2"
+  ],
+  "coverHideRestore": true,
+  "pilotReturn": true
+}

@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October19 RDE inspection/evidence audit (Codex):** [research, saved page and comparison](research/rde-inspection-2026-10-19/README.md).
+[PUB] AAC supplies current sensors for Dragonfly motor controllers; APL's2026 workshop
+abstract discusses SiC/GaN in RDE/fan electronics. Neither establishes enclosure appearance,
+installed board layout or final flight dimensions. TT identifies selected fan Hall sensors
+but not which assembly. X-57 has related SiC technology, not proven Dragonfly hardware reuse.
+Existing [EST] casings/positions retained exactly, now individually inspectable with masks.
+No physics changes;09unchecked, count20/24 unchanged. Real-test photo and CAD kept distinct.
+
 **Latest October19 approved Ocellus outer-structure pass (Codex):** [parameters, original
 sources, actual samples and archive](research/ocellus-outer-structure-2026-10-19/README.md).
 Owner replied "same as last 2 parts" to the approximation/wait choice. Detailed MEB/FEB

@@ -4,7 +4,7 @@ import * as THREE from "./vendor/three/three.module.min.js";
 // [EST] All visual details below. The CAPS 2024 test photo does not resolve flight
 // casing geometry. This is a provisional enclosure illustration, not a photo replica.
 export const rdeAsset = Object.freeze({
-  revision: "rde-provisional-2026-10-15",
+  revision: "rde-provisional-inspection-2026-10-19",
   confidence: "EST",
   unitCount: 2,
   centers: Object.freeze([Object.freeze([-0.16, -0.55]), Object.freeze([0.16, -0.55])]),
@@ -16,15 +16,8 @@ export function buildRotorDriveElectronics({ parent, mesh }) {
   const assembly = new THREE.Group();
   assembly.name = "rde-provisional-assemblies";
   parent.add(assembly);
-  Object.assign(parent.userData, { assetRevision: rdeAsset.revision, dimensionConfidence: "EST" });
-  const layers = {};
-  for (const [key, category] of Object.entries({
-    mounts: "mounts", casings: "equipment-casings", covers: "equipment-covers",
-    cooling: "interfaces", connectors: "interfaces",
-  })) {
-    const g = new THREE.Group(); g.name = `rde-${key}`;
-    g.userData.inspectionLayer = category; assembly.add(g); layers[key] = g;
-  }
+  Object.assign(parent.userData, { assetRevision: rdeAsset.revision, dimensionConfidence: "EST",
+    appearanceEvidence: "Provisional illustration; no resolved flight-casing photo", flightConfigurationConfirmed: false });
   const silver = new THREE.MeshStandardMaterial({ color: 0xb4bec3, metalness: 0.6, roughness: 0.4 });
   const dark = new THREE.MeshStandardMaterial({ color: 0x343d43, metalness: 0.4, roughness: 0.53 });
   const fastener = new THREE.MeshStandardMaterial({ color: 0x747c82, metalness: 0.7, roughness: 0.32 });
@@ -33,8 +26,23 @@ export function buildRotorDriveElectronics({ parent, mesh }) {
   };
   const { widthM: w, depthM: d, bottomY: bottom, topY: top, floorY, fanRadiusM: r } = rdeAsset;
   const h = top - bottom, cy = (top + bottom) / 2, skin = 0.003;
-  rdeAsset.centers.forEach(([x, z], i) => {
+  const units = rdeAsset.centers.map(([x, z], i) => {
     const prefix = `rde-${i + 1}`;
+    // Identity roots preserve every existing vehicle-frame mesh position and the original part 09.
+    const group = new THREE.Group(); group.name = prefix; assembly.add(group);
+    Object.assign(group.userData, {
+      inspectionLabel: `RDE ${i + 1} (provisional illustration)`,
+      labelAnchor: new THREE.Vector3(x, top + skin, z), dimensionConfidence: "EST",
+      flightConfigurationConfirmed: false, unmodeledInternals: true,
+    });
+    const layers = {};
+    for (const [key, category] of Object.entries({
+      mounts: "mounts", casings: "equipment-casings", covers: "equipment-covers",
+      cooling: "interfaces", connectors: "interfaces",
+    })) {
+      const g = new THREE.Group(); g.name = `${prefix}-${key}`;
+      g.userData.inspectionLayer = category; group.add(g); layers[key] = g;
+    }
     // Separate cover and hollow casing; hiding a cover never reveals invented boards.
     box([w, skin, d], [x, bottom + skin / 2, z], silver, layers.casings, `${prefix}-floor`);
     box([w, skin, d], [x, top + skin / 2, z], silver, layers.covers, `${prefix}-lid`);
@@ -84,6 +92,7 @@ export function buildRotorDriveElectronics({ parent, mesh }) {
     for (const dx of [-0.06, 0.06]) {
       box([0.036, 0.014, 0.006], [x + dx, bottom + 0.022, z - d / 2 - 0.004], dark, layers.connectors, `${prefix}-connector-blank`);
     }
+    return { group, ...layers };
   });
-  return { assembly, ...layers };
+  return { assembly, units };
 }

@@ -104,7 +104,7 @@ reviewed or upgraded in this planning change. Current count: **23/305 unique tas
 earlier release counts above are historical.
 
 Readability follow-up — Codex, October 19: **FIX-04** adds projected-size squad-colored
-markers for tiny living friendly drones. **387 tests pass; 24/305 tasks checked.** Both
+markers for tiny living friendly drones. **390 tests pass; 24/305 tasks checked.** Both
 original and separate-copy environment labs are unchanged by this gameplay update. The
 separate project owns expansion of the standalone studio; continue Swarmfall work here.
 
@@ -246,7 +246,7 @@ complete solely because its assets download or its unit tests pass.
   squad-colored diamond for living friendly drones when their projected model bounds fall
   below 8 CSS pixels. Use actual model/rotor bounds and camera depth; retain selection rings
   and health bars, omit off-screen/behind-camera/dead/enemy markers, and hide them in Clean
-  view. **387 tests pass**; [evidence](research/swarmfall-drone-markers-2026-10-19/README.md).
+  view. **390 tests pass**; [evidence](research/swarmfall-drone-markers-2026-10-19/README.md).
   Real browser/phone visual acceptance remains open under TEST/accessibility tasks.
 - [ ] **FIX-05 (P2)** After its target dies, an attack order moves on to the nearest defender
   within 110 m, sometimes off screen with no feedback. Show the new target and allow "stop".

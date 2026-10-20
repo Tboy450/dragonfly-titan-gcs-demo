@@ -22,7 +22,9 @@ selection rules, unit statistics, orders, paid cargo or save schemas.
 or behind-camera sizing returns no marker. CSS dimensions keep the footprint independent
 of framebuffer/device-pixel ratio. No new DOM nodes or per-unit mesh/material batches.
 
-**387/387 tests pass.** [Full output](test-results.txt). Four new checks cover perspective
+**390/390 combined tests pass**, preserving concurrent simulator RDE updates through
+`11c0b31`. The initial game-only pass had 387 tests. [Initial output](test-results.txt) /
+[merged output](merged-test-results.txt). Four new checks cover perspective
 size/depth/viewport math; threshold, invalid and clipped points; actual entry-point overlay
 wiring with Canvas/DOM stand-ins including unselected/selected/damaged/native/dead/Clean-view
 paths; and real Three camera/model bounds at near/far zoom using a renderer stand-in.

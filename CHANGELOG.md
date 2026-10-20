@@ -43,19 +43,48 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Signed:** Codex (OpenAI)
 - **Commit:** Keep tiny friendly drones visible with squad markers
 - **What changed:** Added squad-colored, dark-outlined overlay diamonds for living friendly
-  drones below8 projected CSS pixels. Cached actual body/rotor bounds and camera-space depth
+  drones below 8 projected CSS pixels. Cached actual body/rotor bounds and camera-space depth
   drive the threshold. Selection rings/health bars remain; Clean view hides markers. No unit
   scale/rules/hit tests/saves changed. Both environment labs remain untouched; the other
   project owns standalone studio expansion.
 - **Files:** invasion main/scene, plain marker helper, automated marker/camera coverage,
   master checklist/README and preserved baseline/evidence folders.
-- **Checks:** 387 tests pass including4 new projection, viewport, actual overlay wiring and
-  real-camera/model-bound checks with renderer/DOM stand-ins. Unit state remains unchanged.
+- **Checks:** 390 combined tests pass, preserving concurrent simulator RDE work through
+  11c0b31 (initial game pass387). Four new projection, viewport, actual overlay wiring and
+  real-camera/model-bound checks use renderer/DOM stand-ins. Unit state remains unchanged.
 - **Open / next:** Native browser/phone/occlusion readability acceptance remains open; prior
   browser automation restriction was not retried. FIX-04 closes implementation/automated
-  scope; checklist24/305. Original-source archive hashes verified and recovery tag created
-  on7ab195e; public deployment is checked after push.
+  scope; checklist 24/305. Original-source archive hashes verified and recovery tag created
+  on 7ab195e; public deployment is checked after push.
   [Evidence](research/swarmfall-drone-markers-2026-10-19/README.md).
+
+### 2026-10-19: Verify published individual RDE inspection
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record public RDE inspection acceptance
+- **Checks:** Release5d85fd0 and recovery tag pushed; Pages39355386898 succeeded.
+  Public real-Edge stamped module/revision, part09/count20, both selectors at1440/390/360,
+  source links, cover hide/restore across Thermal and Pilot return pass. No page/network
+  failures or horizontal overflow. Six public screenshots/JSON and repeatable script saved.
+- **Scope:** Acceptance/documentation only; no application, geometry, physics or game edits.
+ 386 tests from the model release pass.09 remains provisional;20/24 unchanged.
+
+### 2026-10-19: Individual provisional RDE inspection and source audit
+- **Signed:** Codex (OpenAI)
+- **Commit:** Add individual RDE inspection and supplier evidence
+- **What changed:** Two unit focus/isolation targets under original part09; independent
+  casing/cover/mount/interface groups. Geometry, materials and installed coordinates unchanged.
+  Expandable detail cites AAC current-sensor supply and APL WBG abstract; no flight casing claim.
+- **Evidence:** Saved original AAC page, retained real CAPS test photo and identified CAD,
+  real/CAD/actual-model comparison and access/reuse audit. Related X-57 is not copied.
+- **Assumptions:** Existing provisional enclosure dimensions/appearance/install remain EST;
+  hidden electronics are unmodeled.09unchecked,20/24 unchanged. No physics or game edits.
+- **Archive:** Exact prior module/UI/test, fresh pictures/mesh manifest; recovery tag
+  `archive/rde-inspection-2026-10-19` on7ab195e. No shape drafts created/discarded.
+- **Checks:** 386 tests pass, including7RDE tests; exact archived mesh/material/pose comparison,
+  rebuilt-neighbor clearances. Real Edge18selector/layer/width checks at1440/390/360,
+  cover hide/restore, Pilot return and raw nonblank/framing checks pass; no page errors.
+- **Open / next:** Resolve actual RDE appearance/scale before checking off09.03/20/21 also
+  open. Public release acceptance follows deployment; local pictures are not live proof.
 
 ### 2026-10-19: Add public original/polished Scout inspection links
 - **Signed:** Codex (OpenAI)
