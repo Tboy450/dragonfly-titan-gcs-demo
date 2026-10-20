@@ -9,6 +9,7 @@ import { createArrivalHardware } from "../arrival-hardware.mjs?v=dev";
 import { edlStateAt } from "../edl.mjs?v=dev";
 import { dropDurationS, droneTypes } from "./units.mjs?v=dev";
 import { droneModels, figureModel, interceptorModel, structureModels, buildingModels, dragonflyTemplate, societyColors } from "./models.mjs?v=dev";
+import { projectedDiameter } from './drone-markers.mjs?v=dev';
 
 export const swarmColor = "#7ce7ff";
 export const nativeColor = "#ff8a4a";
@@ -125,6 +126,9 @@ export function createInvasionScene(canvas, options = {}) {
   const discMaterial = new THREE.MeshBasicMaterial({ map: discTexture, transparent: true, depthWrite: false, side: THREE.DoubleSide });
   const discGeometry = new THREE.CircleGeometry(1, 20).rotateX(-Math.PI / 2);
   const models = droneModels();
+  const markerRadii = new Map(Object.entries(models).map(([type, model]) => [type,
+    Math.max(model.body.boundingSphere.radius, ...model.rotors.map(([x, , z, r]) => Math.hypot(x, z) + r)) * model.scale,
+  ]));
   const droneMeshes = {};
   for (const [type, model] of Object.entries(models)) {
     const capacity = 200;
@@ -150,6 +154,7 @@ export function createInvasionScene(canvas, options = {}) {
   function dragonflyClone() {
     if (!dragonflyBase) {
       dragonflyBase = dragonflyTemplate();
+      markerRadii.set('dragonfly', new THREE.Box3().setFromObject(dragonflyBase).getBoundingSphere(new THREE.Sphere()).radius * dragonflyScale);
       dragonflyBase.traverse((part) => { if (part.isMesh && part.material.transparent) part.material.opacity = 0.28; });
     }
     const clone = dragonflyBase.clone();
@@ -919,6 +924,11 @@ export function createInvasionScene(canvas, options = {}) {
   }
 
   const unitTop = (unit) => terrain.heightAt(unit.x, unit.z) + unit.alt + (unit.structure ? 15 : unit.side === "swarm" ? 4 : 6.5);
+  const markerPosition = new THREE.Vector3();
+  function unitPixelSize(unit, height) {
+    markerPosition.set(unit.x, unitTop(unit), unit.z).applyMatrix4(camera.matrixWorldInverse);
+    return projectedDiameter(markerRadii.get(unit.type), -markerPosition.z, camera.projectionMatrix.elements[5], height);
+  }
 
-  return { renderer, scene, camera, load, unload, frame, resize, setCamera, pickGround, project, unitTop, heightAt: (x, z) => terrain?.heightAt(x, z) ?? 0 };
+  return { renderer, scene, camera, load, unload, frame, resize, setCamera, pickGround, project, unitTop, unitPixelSize, heightAt: (x, z) => terrain?.heightAt(x, z) ?? 0 };
 }

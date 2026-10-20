@@ -18,6 +18,7 @@ import { drawGalaxy, drawStarfield } from "./galaxy.mjs?v=dev";
 import { createInvasionScene, swarmColor, nativeColor } from "./scene.mjs?v=dev";
 import { missionCheckpoint, restoreMissionCheckpoint } from "./mission-save.mjs?v=dev";
 import { pointerIntent, exceedsTapSlop } from './pointer-controls.mjs?v=dev';
+import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
 import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecoveryBackups } from './save-recovery.mjs?v=dev';
 
 const $ = (id) => document.getElementById(id);
@@ -841,11 +842,25 @@ function drawOverlay() {
     if (label.visible) { ctx.fillStyle = swarmColor; ctx.fillText(`Pod ${index + 1}`, label.x, label.y); }
   }
   for (const unit of b.units) {
+    if (!unit.alive) continue;
     const selected = isDrone(unit) && mission.selected.has(unit.squad);
     const damaged = unit.hp < unit.maxHp - 0.5;
-    if (!selected && !damaged) continue;
+    if (!isDrone(unit) && !selected && !damaged) continue;
     const p = scene.project(unit.x, scene.unitTop(unit), unit.z, width, height);
     if (!p.visible || p.x < 0 || p.x > width || p.y < 0 || p.y > height) continue;
+    const marker = isDrone(unit) ? tinyDroneMarker(p, scene.unitPixelSize(unit, height), width, height) : null;
+    if (marker) {
+      ctx.fillStyle = squadColor.get(unit.squad) || swarmColor;
+      ctx.strokeStyle = "rgba(6, 8, 16, 0.95)";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(marker.x, marker.y - marker.radius);
+      ctx.lineTo(marker.x + marker.radius, marker.y);
+      ctx.lineTo(marker.x, marker.y + marker.radius);
+      ctx.lineTo(marker.x - marker.radius, marker.y);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
+    }
     if (selected) {
       ctx.strokeStyle = squadColor.get(unit.squad) || swarmColor;
       ctx.lineWidth = 2;

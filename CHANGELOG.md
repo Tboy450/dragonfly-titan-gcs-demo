@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: FIX-04 tiny-drone squad markers
+- **Signed:** Codex (OpenAI)
+- **Commit:** Keep tiny friendly drones visible with squad markers
+- **What changed:** Added squad-colored, dark-outlined overlay diamonds for living friendly
+  drones below8 projected CSS pixels. Cached actual body/rotor bounds and camera-space depth
+  drive the threshold. Selection rings/health bars remain; Clean view hides markers. No unit
+  scale/rules/hit tests/saves changed. Both environment labs remain untouched; the other
+  project owns standalone studio expansion.
+- **Files:** invasion main/scene, plain marker helper, automated marker/camera coverage,
+  master checklist/README and preserved baseline/evidence folders.
+- **Checks:** 387 tests pass including4 new projection, viewport, actual overlay wiring and
+  real-camera/model-bound checks with renderer/DOM stand-ins. Unit state remains unchanged.
+- **Open / next:** Native browser/phone/occlusion readability acceptance remains open; prior
+  browser automation restriction was not retried. FIX-04 closes implementation/automated
+  scope; checklist24/305. Original-source archive hashes verified and recovery tag created
+  on7ab195e; public deployment is checked after push.
+  [Evidence](research/swarmfall-drone-markers-2026-10-19/README.md).
+
 ### 2026-10-19: Add public original/polished Scout inspection links
 - **Signed:** Codex (OpenAI)
 - **Commit:** Add original and polished Scout lab comparison

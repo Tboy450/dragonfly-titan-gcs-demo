@@ -103,6 +103,11 @@ visual upgrades to smaller assets below the current project standard. No asset i
 reviewed or upgraded in this planning change. Current count: **23/305 unique tasks checked**;
 earlier release counts above are historical.
 
+Readability follow-up — Codex, October 19: **FIX-04** adds projected-size squad-colored
+markers for tiny living friendly drones. **387 tests pass; 24/305 tasks checked.** Both
+original and separate-copy environment labs are unchanged by this gameplay update. The
+separate project owns expansion of the standalone studio; continue Swarmfall work here.
+
 ## Priority order — work from the top
 
 | Order | Work package | Canonical tasks | Scope | Completion gate |
@@ -237,8 +242,12 @@ complete solely because its assets download or its unit tests pass.
   model, with alternate routes where climbing is unsuitable; keep rules in `battle.mjs`.
 - [ ] **FIX-03 (P1)** Ground troops walk in straight lines and simply stop at shorelines. Add
   pathfinding (a grid search on `isLand`, or flow fields).
-- [ ] **FIX-04 (P1)** Drones are a few pixels wide when zoomed out. Draw squad-colored markers
-  in the overlay when a unit would be too small to see.
+- [x] **FIX-04 (P1) — Codex, October 19; implementation and automated checks** Show a
+  squad-colored diamond for living friendly drones when their projected model bounds fall
+  below 8 CSS pixels. Use actual model/rotor bounds and camera depth; retain selection rings
+  and health bars, omit off-screen/behind-camera/dead/enemy markers, and hide them in Clean
+  view. **387 tests pass**; [evidence](research/swarmfall-drone-markers-2026-10-19/README.md).
+  Real browser/phone visual acceptance remains open under TEST/accessibility tasks.
 - [ ] **FIX-05 (P2)** After its target dies, an attack order moves on to the nearest defender
   within 110 m, sometimes off screen with no feedback. Show the new target and allow "stop".
 - [ ] **FIX-06 (P2)** Zone rings follow the ground but steep Titan dunes and trees can still

@@ -49,3 +49,18 @@ test("Real scene renders every pod beyond the old three-slot limit and releases 
   assert.equal(view.scene.children.filter(p => p.name === "drop-hardware").length, 15);
   assert.equal(engine.frames, 2);
 });
+
+test('Real camera and Scout model bounds produce smaller marker sizes when zooming out without DPR dependence',async()=>{
+  const {createInvasionScene}=await import('../dist/invasion/scene.mjs');
+  const view=createInvasionScene(element(),{renderer:renderer()}),planet=planetById('titan'),terrain={...flatTerrain,liquid:null};
+  const b=createBattle(planet,{terrain}),home=b.zones[0],unit={x:home.x,z:home.z,alt:20,type:'scout',side:'swarm',structure:false};
+  try{
+    view.load(planet,terrain,b);view.resize(800,600);
+    const camera={focus:home,distance:100,yaw:0,pitch:.9};view.setCamera(camera);
+    const near=view.unitPixelSize(unit,600);assert.ok(Number.isFinite(near)&&near>8);
+    view.setCamera({...camera,distance:750});const far=view.unitPixelSize(unit,600);
+    assert.ok(far>0&&far<8,'far Scout qualifies for the small-unit marker');assert.ok(far<near);
+    assert.equal(view.unitPixelSize(unit,300),far/2,'viewport CSS height drives the size');
+    assert.equal(view.unitPixelSize({...unit,type:'unknown'},600),Infinity);
+  }finally{view.unload();}
+});

@@ -78,6 +78,8 @@ force or by quiet control.
   Launch here confirms the purchase, and right-click or Cancel cancels the preview.
   **Clean view** or **V** hides HUD panels and battlefield labels; the small Show HUD button,
   V or Escape restores them. R/F retain camera pitch. Opening drops or ending a mission restores the HUD.
+  At distant zoom, friendly drones below 8 projected CSS pixels receive small squad-colored
+  diamonds; selection rings and damage bars remain. Clean view hides these markers too.
 
 All game numbers, the invented worlds and the drone and defender models are gameplay choices,
 not physics. Rules are in plain modules with tests (`tests/invasion-*.test.mjs`); see
