@@ -12,6 +12,7 @@ import { buildTwta } from "./twta.mjs?v=dev";
 import { buildHgaGimbal, hgaAsset } from "./hga-gimbal.mjs?v=dev";
 import { buildBattery } from "./battery.mjs?v=dev";
 import { buildBatteryMeasurement } from "./battery-measurement.mjs?v=dev";
+import { buildMmrtgMeasurement } from "./mmrtg-measurement.mjs?v=dev";
 import { buildNoseSensors } from "./nose-sensors.mjs?v=dev";
 import { buildAftBulkhead, aftBulkheadAsset, aftFaceZ, poseMmrtg } from "./aft-bulkhead.mjs?v=dev";
 import { buildRotorHead, buildHubPlate, rotorHeadAsset } from "./rotor-heads.mjs?v=dev";
@@ -447,9 +448,10 @@ export function buildResearchModel(kit) {
   const trimDevice = buildTrimDevice({ parent: buildTarget, mesh });
   interiorPart("battery-sensor", "battery", "Battery temperature input (annotation, not sensor hardware)", "TFAWS 2023 slides7/9: control input; annotation beside estimated battery, exact sensing point/package/count unknown", 0x9fe870);
   buildBatteryMeasurement({ parent: buildTarget, mesh });
-  const material = interiorPart("mmrtg-sensor", "mmrtg", "MMRTG fin-root temperature sensor: the other controller input", "TFAWS 2023 (controller inputs); placement illustrative", 0x9fe870, "exterior");
-  // Kept on the MMRTG's top fin root when the MMRTG was tilted (part 16); still a placeholder.
-  mesh(new THREE.SphereGeometry(0.022, 12, 8), material, new THREE.Vector3(0, 0.22, 0).applyEuler(generator.rotation).add(generator.position).toArray());
+  // Part 21 (Oct 20): an annotation on the generator's housing beside the top fin's root, not
+  // sensor hardware; the green sphere it replaces is in archive/mmrtg-sensor-2026-10-20.
+  interiorPart("mmrtg-sensor", "mmrtg", "MMRTG fin-root temperature input (annotation, not sensor hardware)", "TFAWS 2023 slides 7/9: control input; NASA MMRTG fact sheet: 157 C fin-root rating; annotation beside the top fin's root, exact sensing point/package/count unknown", 0x9fe870, "exterior");
+  buildMmrtgMeasurement({ parent: buildTarget, mesh });
   // Externally mounted items described in the same paper, visible in every layer.
   interiorPart("nose-sensors", "external-sensors", "DraGMet: EFIELD / METHAN", "IPM 2025 pp184-187: EFIELD engineering-model photo; METHAN published design and CAPS 2024 slide42 diagram. Exact installation estimated; METHAN NOT photo-matched", 0x6b7278, "exterior");
   buildNoseSensors({ parent: buildTarget, mesh });

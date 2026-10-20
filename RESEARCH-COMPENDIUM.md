@@ -4,6 +4,12 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 20 part 21 fin-root annotation (Claude):** [sources and checks](research/mmrtg-measurement-2026-10-20/README.md).
+TFAWS 2023 slides 7/9: the MMRTG fin-root temperature is the second controller input (fans'
+speed). NASA's MMRTG fact sheet: 157 C at the fin root [PUB]. Pioneer's one fin-root sensor
+per RTG is precedent only. No flight sensor package, count or position published: the
+intersecting sphere is replaced by an [EST] annotation on the housing; 21 stays unchecked.
+
 **October20 part20 evidence correction (Codex):** [source audit and samples](research/battery-measurement-2026-10-20/README.md).
 NASA/APL TFAWS2023 slides7/9 establish a battery-temperature input, not a sensor package,
 coordinate or physical count. ICES2022 test-photo instrumentation is not flight hardware.

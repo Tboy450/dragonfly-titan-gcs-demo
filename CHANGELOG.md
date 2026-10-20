@@ -39,6 +39,41 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-20: Part 21 MMRTG fin-root temperature shown as an annotation on the generator
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Show part 21 as a fin-root annotation on the MMRTG instead of a floating sphere"
+- **What changed:** The owner asked Claude to check Codex's work and continue with several
+  parts. Review: Codex's October 16-20 simulator passes (#22, #05, provisional #03, #09
+  inspection, #20 annotation) are committed and published; 409 tests passed. Claude's unpublished
+  #22 research draft was dropped, since Codex's #22 covers it. Part 21's green sphere passed
+  through the MMRTG's top fin and, isolated, floated alone. Following Codex's part 20 treatment,
+  it is now a labeled measurement annotation (ring and crosshair) lying on the generator's
+  housing beside the top fin's root, posed with the generator. Isolating 21 shows the MMRTG. The
+  part has its own text (published input, 157 C rating, what is not known, that the shown
+  temperature is the modeled gas), sources and a live line (fans, flow, generation).
+- **Sources:** TFAWS 2023 slides 7/9 (fin-root temperature as the second controller input,
+  driving the fans); NASA MMRTG fact sheet (157 C fin-root rating; pages saved); Pioneer RTG
+  fin-root sensors (Toth and Turyshev 2007; pages saved; context only).
+- **Assumptions:** The target's position and size are [EST]; it is not a sensor package, point
+  or count. No flight sensor evidence was found (NASA blog has nothing after September 2, APL
+  nothing after July 9). 21 stays unchecked; count stays 20 of 24 (5 Codex, 15 Claude).
+- **Codex's part 20 test:** its check that part 21 was left unchanged now compares the two
+  archived copies (part 20's pass did leave it unchanged) and ignores line endings.
+- **Archive:** `archive/mmrtg-sensor-2026-10-20/` (tag on `d016f12`): exact files, pictures,
+  real-Edge baseline.
+- **Files:** `dist/mmrtg-measurement.mjs` (new), `dist/vehicle-research.mjs`,
+  `dist/vehicle-inspector.mjs`, `dist/ui/layers-panel.mjs`, `dist/index.html`,
+  `tests/mmrtg-measurement.test.mjs` (new), `tests/battery-measurement.test.mjs`,
+  `research/mmrtg-measurement-2026-10-20/` (new), `research/sources/nasa-mmrtg-factsheet/`,
+  `research/sources/pioneer-rtg-fin-root-2007/` (new), `research/sources/tfaws2023-battery-feedback/README.md`,
+  `research/PART-SOURCES.md`, `INTERIOR-REALISM-TODO.md`, `README.md`, `ARCHITECTURE.md`,
+  `RESEARCH-COMPENDIUM.md`, `archive/`
+- **Checks:** `node --test tests/*.test.mjs` (414 pass, 5 new). Real Edge (Playwright):
+  isolated Internal/Thermal at 1440/390/360 px, no overflow, four angles, close view, part text
+  and sources, Pilot return, no page errors; the same for the old build as a baseline.
+- **Open / next:** 03, 09, 20 and 21 all wait on evidence; the owner chooses between approved,
+  labeled approximations and waiting for new photos.
+
 ### 2026-10-20: FIX-07 phone HUD decluttering
 - **Signed:** Codex (OpenAI)
 - **Commit:** Collapse phone battlefield panels after first capture

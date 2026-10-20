@@ -1,0 +1,67 @@
+{
+  "status": "passed",
+  "baseline": false,
+  "port": 4190,
+  "checks": [
+    {
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "layer": "thermal",
+      "width": 360
+    }
+  ],
+  "errors": [],
+  "detail": {
+    "title": "21. MMRTG fin-root temperature input (annotation, not sensor hardware)",
+    "placement": "Placement: TFAWS 2023 slides 7/9: control input; NASA MMRTG fact sheet: 157 C fin-root rating; annotation beside the top fin's root, exact sensing point/package/count unknown.",
+    "role": "The MMRTG fin-root temperature is the second published input to the lander's thermal controller (battery temperature is the first); the fans' speed controls it. NASA's fact sheet rates an MMRTG's fin root at 157 C. The target on the generator's housing beside its top fin is a measurement annotation, not a modeled sensor package or a verified mounting point. Its place and drawn size are illustrative, and one target does not mean one physical sensor. The flight sensor's type, count, mounting and wiring are not published. The temperature shown is the modeled MMRTG gas; this simulator does not model the fin root or the second controller. Hardware reconstruction remains open.",
+    "live": "Fans at 100%, moving 0.052 kg/s through the MMRTG; generation 90 W (modeled).",
+    "sources": [
+      [
+        "NASA/APL thermal-controller design, slides 7 and 9: MMRTG fin-root temperature input",
+        "https://tfaws.nasa.gov/wp-content/uploads/TFAWS23-AT-14-Presentation.pdf"
+      ],
+      [
+        "NASA MMRTG fact sheet (2020): 157 C fin-root temperature, 64 x 66 cm",
+        "https://science.nasa.gov/wp-content/uploads/2024/02/mmrtg-factsheet-updated-5-18-20-1.pdf"
+      ],
+      [
+        "APL payload reference",
+        "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php"
+      ]
+    ],
+    "meshes": [
+      [
+        "mmrtg-measurement-target",
+        "TorusGeometry"
+      ],
+      [
+        "mmrtg-measurement-crosshair",
+        "BoxGeometry"
+      ],
+      [
+        "mmrtg-measurement-crosshair",
+        "BoxGeometry"
+      ]
+    ]
+  },
+  "pilotReturn": true
+}

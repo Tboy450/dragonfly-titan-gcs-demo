@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [mmrtg-sensor-2026-10-20](mmrtg-sensor-2026-10-20/README.md) | Part 21 green sphere at the MMRTG's top fin root (passed through the fin; floated alone when isolated); exact builder, inspector, panel, HTML and part 20 test, four-angle and isolated pictures, real-Edge baseline at 1440/390/360 px | 2026-10-20 | `archive/mmrtg-sensor-2026-10-20` on d016f12 |
 | [swarmfall-phone-hud-2026-10-20](swarmfall-phone-hud-2026-10-20/README.md) | HUD before one-time phone collapse/log toggle; exact source/harness, dated historical picture and restore steps | 2026-10-20 | `archive/swarmfall-phone-hud-2026-10-20` on a7261bb |
 | [battery-measurement-2026-10-20](battery-measurement-2026-10-20/README.md) | Part20 intersecting green sphere, exact builder/inspector/UI/HTML and fresh baseline screenshots/manifest before explicit measurement annotation |2026-10-20| `archive/battery-measurement-2026-10-20` on5220223 |
 | [swarmfall-minimap-orders-2026-10-20](swarmfall-minimap-orders-2026-10-20/README.md) | Camera-only minimap before View/Orders mode; exact entry/HTML/CSS, initial styling draft, dated historical picture and restore steps | 2026-10-20 | `archive/swarmfall-minimap-orders-2026-10-20` on 5220223 |

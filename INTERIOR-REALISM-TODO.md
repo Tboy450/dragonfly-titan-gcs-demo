@@ -4,10 +4,32 @@ Owner request recorded October 12, 2026. Maintainer for this entry: Codex (OpenA
 Process and handoff notes added October 13, 2026 by Claude (Anthropic Claude Opus 5.5).
 Context reconciled October 15, 2026 by Codex (OpenAI), including Claude's interrupted battery pass.
 Battery pass finished and Codex's RDE pass reviewed October 15, 2026 by Claude (Anthropic Claude Opus 5.5).
+Codex's October 16-20 passes reviewed and part 21 annotated October 20, 2026 by Claude.
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: Part20 Annotation Corrected; Hardware Open
+## Resume Here: Part 21 Annotated Like Part 20; Hardware Open (October 20, Claude)
+
+The owner asked Claude to check Codex's work and continue ("do like 3-6 of the parts", pushing
+after each). **Review:** Codex's October 16-20 passes (#22 EFIELD/METHAN, #05 Ocellus/MIMU,
+provisional #03, #09 inspection, #20 annotation) are committed and published; 409 tests passed
+before this pass. Claude's unpublished #22 research draft was dropped, not merged: Codex's #22
+already covers it. Count **20 of 24 (5 Codex, 15 Claude)**, unchanged.
+
+**Part 21:** [sources, changes and checks](research/mmrtg-measurement-2026-10-20/README.md). The
+green sphere passed through the MMRTG's top fin and floated alone when isolated. It is now a
+labeled annotation on the housing beside the top fin's root, posed with the generator, and
+isolating 21 shows the MMRTG. TFAWS 2023 slides 7/9 and NASA's MMRTG fact sheet (157 C) are the
+evidence; Pioneer's RTG fin-root sensors are context only. No flight sensor package, count or
+position is published, so **21 stays unchecked**. Archive and tag `archive/mmrtg-sensor-2026-10-20`
+on `d016f12`. 414 tests pass; real Edge at 1440/390/360 px, before and after.
+
+**All four remaining parts (03, 09, 20, 21) now wait on evidence**, not on modeling. As of
+October 20 NASA's Dragonfly blog has nothing after September 2 and APL nothing after July 9.
+Options for the owner: approved, labeled approximations (as for 05 and 22), or waiting for new
+photos. Don't re-search the same sources without a new lead.
+
+## Previous Checkpoint: Part 20 Annotation Corrected; Hardware Open (Codex)
 
 October20 Codex: [sources, actual samples, archive and handoff](research/battery-measurement-2026-10-20/README.md).
 Replaced intersecting green sphere with an explicitly illustrative battery-temperature target,
@@ -626,7 +648,8 @@ DraMS neck intentionally passes through the wall aperture.
 - [x] **Claude:** **19 Trim device** (`trim-chimneys`, durable id kept): the cold bypass duct under the belly, outside the foam, with fore and aft diverter flaps in foam-wrapped housings that open with the trim setting; TFAWS 2023 slides 4, 7, 8 and TFAWS 2024. ICES-2023's side-chimney concept archived. [References/limits](research/thermal-loop-2026-10-14/README.md).
 - [ ] **19 follow-up:** the cold duct's real section and the meaning of the "split cold duct" (TFAWS 2024); flap hinge sides and actuators.
 - [ ] **20 Battery temperature sensor** (`battery-sensor`): October20 intersecting sphere replaced with explicit measurement annotation tied to battery context; no hardware claimed. Actual package/count/mounting still unverified. [Sources and sample](research/battery-measurement-2026-10-20/README.md).
-- [ ] **21 MMRTG fin-root sensor** (`mmrtg-sensor`): same distinction, with verified placement rather than a floating green sphere.
+- [ ] **21 MMRTG fin-root sensor** (`mmrtg-sensor`): same distinction, with verified placement rather than a floating green sphere. **Claude, October 20:** the sphere (which passed through the top fin) is replaced by a labeled measurement annotation on the generator's housing beside the top fin's root, posed with the generator; isolation shows the MMRTG; no hardware claimed. Fin-root temperature as a controller input [PUB, TFAWS 2023 slides 7/9]; 157 C rating [PUB, NASA MMRTG fact sheet]. [Sources and checks](research/mmrtg-measurement-2026-10-20/README.md).
+- [ ] **21 follow-up:** the flight sensor's type, count, mounting point, bonding and harness, and whether it belongs to the generator or the lander; redraw the MMRTG itself from MMRTG photos (the target's test flags that change).
 - [x] **Codex:** **22 Nose methane/E-field instruments** (`nose-sensors`): photo-referenced EFIELD assemblies plus owner-approved, labeled METHAN design approximation; independently removable housings/covers, supports and fiber entry. [Sources, estimates and verification](research/methan-2026-10-18/README.md).
   - [x] **Codex, October 17:** both EFIELD probes from an engineering-model photo and
     published stalk/ball dimensions; estimated preamp and co-mounted TEMP/MICRO; independent

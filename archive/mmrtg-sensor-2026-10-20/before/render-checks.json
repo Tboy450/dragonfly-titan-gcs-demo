@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "baseline": true,
+  "port": 4191,
+  "checks": [
+    {
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "layer": "thermal",
+      "width": 360
+    }
+  ],
+  "errors": [],
+  "detail": {
+    "title": "21. MMRTG fin-root temperature sensor: the other controller input",
+    "placement": "Placement: TFAWS 2023 (controller inputs); placement illustrative.",
+    "role": "",
+    "live": "",
+    "sources": [
+      [
+        "Thermal layout (ICES 2023)",
+        "https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content"
+      ],
+      [
+        "APL payload reference",
+        "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php"
+      ]
+    ],
+    "meshes": [
+      [
+        "",
+        "SphereGeometry"
+      ]
+    ]
+  },
+  "pilotReturn": true
+}

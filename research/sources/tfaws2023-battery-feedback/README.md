@@ -13,6 +13,10 @@ original do not obscure the inspected diagrams/text; original page lettering ret
 - `tfaws2023-08.jpg`: complete page8, historical trim-device requirements, NOT new app limits.
 - `tfaws2023-09.jpg`: complete page9, simplified two-node thermal model and PI controller inputs.
 
+**Also used for part 21 (Claude, October 20):** slides 7 and 9 name the MMRTG fin-root temperature
+as the second controller input, driving the fans' speed; same limits (no sensor package, point or
+count). See [`../../mmrtg-measurement-2026-10-20/`](../../mmrtg-measurement-2026-10-20/README.md).
+
 These pages support a battery-temperature feedback variable, NOT the flight sensor's package,
 maker, sensing-point coordinate, physical sensor count, harness or redundancy architecture.
 No values or simulation behavior changed from these pages in this pass.

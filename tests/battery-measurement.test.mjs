@@ -33,9 +33,12 @@ test("Part20 isolation includes the battery and keeps the original part identifi
   assert.deepEqual(inspectionGroups("battery"), ["battery", "battery-sensor"]);
   const builder = readFileSync(new URL("../dist/vehicle-research.mjs", import.meta.url), "utf8");
   assert.match(builder, /interiorPart\("battery-sensor", "battery", "Battery temperature input \(annotation/);
-  const unchanged = text => text.slice(text.indexOf('  // Kept on the MMRTG'), text.indexOf('  // Externally mounted items'));
+  // Part 21 was later redrawn as its own annotation (Claude, Oct 20; tests/mmrtg-measurement.test.mjs),
+  // so this pass's check that it left part 21 unchanged now compares the archived copies.
+  const unchanged = raw => { const text = raw.replace(/\r\n/g, "\n"); return text.slice(text.indexOf('  // Kept on the MMRTG'), text.indexOf('  // Externally mounted items')); };
   const prior = readFileSync(new URL("../archive/battery-measurement-2026-10-20/vehicle-research.mjs", import.meta.url), "utf8");
-  assert.equal(unchanged(builder), unchanged(prior), "part21 geometry unchanged");
+  const afterPart20 = readFileSync(new URL("../archive/mmrtg-sensor-2026-10-20/vehicle-research.mjs", import.meta.url), "utf8");
+  assert.equal(unchanged(afterPart20), unchanged(prior), "part21 geometry unchanged by part 20");
 });
 
 test("Part20 records evidence limits without claiming a completed hardware rebuild", () => {

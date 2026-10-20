@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part 21 (Claude, October 20):** [fin-root annotation, sources and checks](mmrtg-measurement-2026-10-20/README.md).
+TFAWS 2023 slides 7 and 9 (saved with part 20) name the MMRTG fin-root temperature as a controller
+input; the [NASA MMRTG fact sheet](sources/nasa-mmrtg-factsheet/README.md) rates it at 157 C;
+[Pioneer's RTG fin-root sensors](sources/pioneer-rtg-fin-root-2007/README.md) are context only.
+No flight sensor package, count or mounting found; 21 stays open, now a labeled annotation.
+
 **Part20 evidence correction:** [audit and real/CAD/model comparison](battery-measurement-2026-10-20/README.md).
 Original [TFAWS2023 controller pages7-9](sources/tfaws2023-battery-feedback/README.md)
 saved/inspected with existing battery test photographs. No identified flight sensor package
@@ -33,7 +39,9 @@ scanner vendor, installed routing and completed housing remain unresolved; no mo
 
 | Folder | Source | Pages saved | Used by |
 |---|---|---|---|
-| [`sources/tfaws2023-battery-feedback`](sources/tfaws2023-battery-feedback/README.md) | Holtzman/Castano, NASA/APL TFAWS2023 | Complete original pages7-9 |20 control-input evidence only; not sensor appearance, scale or count |
+| [`sources/nasa-mmrtg-factsheet`](sources/nasa-mmrtg-factsheet/README.md) | NASA MMRTG fact sheet NF-2020-05-619-HQ | both pages | 21: 157 C fin-root rating; generator size |
+| [`sources/pioneer-rtg-fin-root-2007`](sources/pioneer-rtg-fin-root-2007/README.md) | Toth and Turyshev 2007, arXiv:0710.2656 | pp. 3, 5 | 21: context only (one fin-root sensor per Pioneer RTG); not Dragonfly evidence |
+| [`sources/tfaws2023-battery-feedback`](sources/tfaws2023-battery-feedback/README.md) | Holtzman/Castano, NASA/APL TFAWS2023 | Complete original pages7-9 |20 control-input evidence only; not sensor appearance, scale or count. Also 21 (Claude): slides 7/9 MMRTG fin-root input |
 | [`sources/rde-supplier-2026`](sources/rde-supplier-2026/README.md) | AAC2023, APL G-RADNEXT2026, TT Electronics2026 | AAC original single page image; primary text links/access audit |09 research only; not enclosure appearance, board layout or final flight dimensions |
 | [`sources/ti-lmp7704-evaluation`](sources/ti-lmp7704-evaluation/README.md) | Texas Instruments LMP7704-SP datasheet, Sept2026 package addendum | Original PDF p26 | 05 source audit only: matches EVAL ONLY IC marking in related SQRLi image; NOT a flight PCB model |
 | [`sources/ocellus-cross-project-lineage`](sources/ocellus-cross-project-lineage/README.md) | NASA IGARSS2020 / SpaceCube2019 / GSFC fiber optics / NEPP2024 / Ocellus technology sheet; DIAMOND and Optotune | 9 original page images + 1 original supplier JPG, all visually inspected | 05 research only: real family references vs identified CAD and unverified leads; no exact Ocellus internal-layout claim |
@@ -69,6 +77,7 @@ scanner vendor, installed routing and completed housing remain unresolved; no mo
 
 | Part | Photos (saved) | Figures and patents (saved) | Links only (not saved) | Notes |
 |---|---|---|---|---|
+| **21 MMRTG fin-root temperature (annotation)** | none: no photo of the sensor found | TFAWS 2023 slides 7, 9 ([pages](sources/tfaws2023-battery-feedback/README.md)); [NASA MMRTG fact sheet](sources/nasa-mmrtg-factsheet/README.md); [Pioneer RTG paper pp. 3, 5](sources/pioneer-rtg-fin-root-2007/README.md) (context) | | [Notes and checks](mmrtg-measurement-2026-10-20/README.md). An annotation, not hardware |
 | **05 Navigation electronics (approved approximation)** | [Current real/CAD/model comparison](ocellus-outer-structure-2026-10-19/README.md): related real SQRLi optics and NASA/W. Hrybyk Kodiak; unchanged Honeywell MIMU imagery | NASA MSS2023 p6 design envelopes; Optics2023 p13 packaging CAD; SQRLi2024 slides1/4; Honeywell CAD; Uranus pp184-185; TI evaluation marking p26 | NASA TechPort116315; DIAMOND supplier Ocellus statement | Codex. Initial pass complete as owner-approved outer-structure estimate, not flight photo match. No hidden boards/optical train/harness; MIMU family geometry/poses unchanged. Exact flight details remain follow-ups |
 | **03 Nose bulkhead (provisional)** | [`nose-bulkhead-2026-10-19/`](nose-bulkhead-2026-10-19/README.md): NASA/APL September harness integration and July suspended-structure photos (Ed Whitman); existing April fit check | ICES-2023 fig. 3, APL 2024 CAD frame (layout only, not photos) | NASA April primary-structure report, all original links in part README | Finish/joints only; full nose face unresolved. Dimensions, face, returns, mounts and fasteners [EST]; #03 stays unchecked |
 | **22 EFIELD / METHAN** | [`nose-sensors-2026-10-17/`](nose-sensors-2026-10-17/README.md): EFIELD engineering-model photo; [`methan-2026-10-18/`](methan-2026-10-18/README.md): approved design estimate and comparison, NOT a METHAN photo match | IPM pp. 184-187; CAPS 2024 slide 42 CAD, not hardware photography | [IPM proceedings](https://zenodo.org/records/17056361), [APL DraGMet](https://www.jhuapl.edu/destinations/instruments/dragmet) | Codex. EFIELD stalk/ball sizes [PUB]; METHAN cold-cell/warm-light-engine architecture [PUB]. All METHAN casing sizes, finish and installation [EST]; owner-approved approximation completes initial #22 pass, not photo verification. |

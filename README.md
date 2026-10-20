@@ -15,6 +15,11 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
+October 20 (Claude): [part 21 MMRTG fin-root annotation](research/mmrtg-measurement-2026-10-20/README.md)
+replaces the green sphere that passed through the generator's top fin with a labeled target on
+the housing beside the fin's root, and shows the MMRTG when part 21 is isolated. Like part 20,
+it is not a reconstructed flight sensor; part 21 remains open.
+
 October20: [part20 battery-temperature annotation](research/battery-measurement-2026-10-20/README.md)
 replaces the intersecting green sphere with a labeled measurement target and keeps battery
 context during inspection. It is not a reconstructed flight sensor; hardware evidence and
