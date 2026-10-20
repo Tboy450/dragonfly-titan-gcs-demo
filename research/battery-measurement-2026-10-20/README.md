@@ -61,7 +61,12 @@ physical collision model. Other completed units were not moved to fit it. Game f
 - Preserved concurrent minimap releasea7261bb intact; combined suite **404 pass**, output
   `merged-tests.txt`. Shared log/archive conflicts resolved by retaining both entries, no
   game code manually edited. Pre-merge results above remain the scoped-tree checkpoint.
-- Public status is recorded after deployment; local checks alone are not publication evidence.
+- Published model release3ff49b5 via merge2810746, both branches/recovery tag pushed.
+  Pages39382667705 succeeded. Actual public Edge build2810746 passes six Internal/Thermal
+  viewport checks1440/390/360, stamped module/revision, original part20/count20, source links,
+  cover hide/restore and Pilot return; no page/network errors or overflow. Seven screenshots
+  and JSON saved in `live/`; reproducible `verify-live.cjs`. Public picture visually checked.
+  This receipt follow-up changes no application code.
 
 ## Next / handoff
 

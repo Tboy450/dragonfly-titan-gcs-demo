@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-20: Verify public battery-measurement correction
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record public battery annotation verification
+- **Checks:** Published2810746, Pages39382667705 success; real Edge1440/390/360 Internal/
+  Thermal, stamped module/revision, original part20/count20, source links, covers hide/restore
+  and Pilot return pass. No page/network failures or overflow. Seven public pictures/JSON
+  saved in `research/battery-measurement-2026-10-20/live/`. Combined full suite404pass.
+- **Scope:** Evidence/handoff only, no new app changes.20 remains open hardware, no photo-match
+  claimed. Battery/21 and game changes preserved. Model/source/archive release3ff49b5/2810746.
+
 ### 2026-10-20: Correct battery-temperature placeholder as a measurement annotation
 - **Signed:** Codex (OpenAI)
 - **Commit:** Clarify battery temperature annotation and inspection context

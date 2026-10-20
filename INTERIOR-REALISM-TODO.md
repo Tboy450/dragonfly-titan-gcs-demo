@@ -17,7 +17,10 @@ TE/Juno/Landsat heritage and DrEAM entry-sensor reuse do not establish battery-s
 No invented package/wiring. Claude's battery and part21 unchanged, manifest-verified.
 394scoped-tree tests pass;404pass after preserving concurrent minimap updatea7261bb.
 Actual Edge desktop/mobile Internal/Thermal, four angles, cover restore/Pilot,
-raw pixel/framing checks pass. Archive/tag5220223; publish status recorded after deployment.
+raw pixel/framing checks pass. Archive/tag5220223; release3ff49b5 merged/published as2810746.
+Pages39382667705 succeeded. Public actual Edge six Internal/Thermal cases1440/390/360,
+stamped module/revision, part20/count20, sources, covers restore/Pilot pass; no page/network
+errors or overflow. Live pictures/JSON saved in current research folder. Receipt-only follow-up.
 **20/24 (5 Codex / 15 Claude) unchanged.20 stays unchecked; remaining03/09/20/21.**
 Need actual flight sensor package/photo/install evidence, not another unrelated thermistor.
 No game edits; preserved published work through5220223. Do not restart completed05/22.
