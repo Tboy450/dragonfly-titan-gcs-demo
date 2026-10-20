@@ -71,7 +71,10 @@
         </details>
         <ol id="hud-log" class="hud-log" aria-live="polite"></ol>
       </aside>
-      <canvas id="minimap" aria-label="Map overview: tap to move the view"></canvas>
+      <div id="minimap-panel">
+        <canvas id="minimap" aria-label="Minimap: tap to move the view; right-click to order selected squads"></canvas>
+        <button id="minimap-mode" type="button" aria-pressed="false" title="Switch minimap taps between moving the view and ordering squads">Map: View</button>
+      </div>
       <div class="hud-bottom">
         <div id="squad-bar" class="squad-bar" role="toolbar" aria-label="Squads"></div>
         <div class="command-buttons">

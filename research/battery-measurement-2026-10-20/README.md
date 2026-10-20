@@ -58,6 +58,9 @@ physical collision model. Other completed units were not moved to fit it. Game f
 - `verify-render.cjs`: actual Edge, no horizontal overflow/page errors, battery cover
   hide/restore, Pilot return, unchanged battery/part21. Render-only source copy omits circular
   UI owner metadata; model geometry is not altered. Tests: **394 pass**, including4new tests.
+- Preserved concurrent minimap releasea7261bb intact; combined suite **404 pass**, output
+  `merged-tests.txt`. Shared log/archive conflicts resolved by retaining both entries, no
+  game code manually edited. Pre-merge results above remain the scoped-tree checkpoint.
 - Public status is recorded after deployment; local checks alone are not publication evidence.
 
 ## Next / handoff

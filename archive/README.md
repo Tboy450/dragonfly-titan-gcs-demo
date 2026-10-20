@@ -13,6 +13,7 @@ were never committed).
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
 | [battery-measurement-2026-10-20](battery-measurement-2026-10-20/README.md) | Part20 intersecting green sphere, exact builder/inspector/UI/HTML and fresh baseline screenshots/manifest before explicit measurement annotation |2026-10-20| `archive/battery-measurement-2026-10-20` on5220223 |
+| [swarmfall-minimap-orders-2026-10-20](swarmfall-minimap-orders-2026-10-20/README.md) | Camera-only minimap before View/Orders mode; exact entry/HTML/CSS, initial styling draft, dated historical picture and restore steps | 2026-10-20 | `archive/swarmfall-minimap-orders-2026-10-20` on 5220223 |
 | [swarmfall-hold-hint-2026-10-19](swarmfall-hold-hint-2026-10-19/README.md) | Hold/H before empty-selection guidance; exact entry point, dated historical mission picture and restore steps | 2026-10-19 | `archive/swarmfall-hold-hint-2026-10-19` on 183bdba |
 | [swarmfall-drone-markers-2026-10-19](swarmfall-drone-markers-2026-10-19/README.md) | Overlay/renderer before tiny friendly-drone markers; exact code/test and dated historical mission picture | 2026-10-19 | `archive/swarmfall-drone-markers-2026-10-19` on 7ab195e |
 | [rde-inspection-2026-10-19](rde-inspection-2026-10-19/README.md) | Exact prior RDE module/UI/test, fresh baseline renders and world-mesh manifest before individual unit inspection; geometry unchanged |2026-10-19| `archive/rde-inspection-2026-10-19` on7ab195e |

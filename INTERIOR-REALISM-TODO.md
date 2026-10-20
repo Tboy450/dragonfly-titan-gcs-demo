@@ -15,7 +15,8 @@ not a sensor body or exact sensing point/count. Part20 isolation includes batter
 NASA/APL2023 controller inputs inspected; real2022 test leads do not identify flight sensors.
 TE/Juno/Landsat heritage and DrEAM entry-sensor reuse do not establish battery-sensor adoption.
 No invented package/wiring. Claude's battery and part21 unchanged, manifest-verified.
-394tests pass; actual Edge desktop/mobile Internal/Thermal, four angles, cover restore/Pilot,
+394scoped-tree tests pass;404pass after preserving concurrent minimap updatea7261bb.
+Actual Edge desktop/mobile Internal/Thermal, four angles, cover restore/Pilot,
 raw pixel/framing checks pass. Archive/tag5220223; publish status recorded after deployment.
 **20/24 (5 Codex / 15 Claude) unchanged.20 stays unchecked; remaining03/09/20/21.**
 Need actual flight sensor package/photo/install evidence, not another unrelated thermistor.

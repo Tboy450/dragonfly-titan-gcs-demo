@@ -86,6 +86,10 @@ force or by quiet control.
   pinch to zoom; right/middle/Alt+drag or Q/E turns. WASD/arrows pan, 1-9 select squads, 0 all,
   H holds, B opens drops and Space pauses. Hold or H with no selected squad explains how to select one. In landing placement, click/tap only previews;
   Launch here confirms the purchase, and right-click or Cancel cancels the preview.
+  **Minimap:** taps move the camera by default; desktop right-click orders selected squads.
+  **Map: Orders** enables touch/pen tap orders; switch to **Map: View** for camera taps.
+  Orders use the same attack/capture/move rules, with a short target pulse. New/resumed
+  missions reset the minimap to View mode; Clean view hides the map and its toggle.
   **Clean view** or **V** hides HUD panels and battlefield labels; the small Show HUD button,
   V or Escape restores them. R/F retain camera pitch. Opening drops or ending a mission restores the HUD.
   At distant zoom, friendly drones below 8 projected CSS pixels receive small squad-colored
