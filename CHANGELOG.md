@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-20: Correct battery-temperature placeholder as a measurement annotation
+- **Signed:** Codex (OpenAI)
+- **Commit:** Clarify battery temperature annotation and inspection context
+- **What changed:** Part20 green sphere intersecting the battery replaced with open target;
+  explicitly an annotation, not a flight sensor package/mounting/count. Focus includes battery.
+  Expandable details/source links/assumptions updated; hardware rebuild remains unchecked.
+- **Evidence:** Original NASA/APL TFAWS2023 pages7-9 inspected/saved; existing real ICES2022
+  ground-test photos and CAD differentiated. TE/Juno/Landsat and DrEAM heritage not copied as
+  this part. Real/CAD/controller/model comparison saved. No invented hardware or wiring.
+- **Archive:** Exact prior builder/inspector/panel/HTML, fresh baseline pictures/manifest,
+  restore steps and recovery tag `archive/battery-measurement-2026-10-20` on5220223.
+- **Checks:**394tests pass including4new tests; actual Edge six viewport/layer cases,
+  four orbit angles, cover hide/restore, Pilot return and raw nonblank/framing checks.
+  Battery and part21 exact geometry/transform manifests match baseline. No app/page errors
+  or horizontal overflow. No physics/game changes;20/24 unchanged.
+- **Next:** Identified flight sensor photo/type/mount/count needed. Public release checked
+  after deployment; local screenshots alone are not publication proof.
+
 ### 2026-10-19: FIX-11 guidance for Hold without selection
 - **Signed:** Codex (OpenAI)
 - **Commit:** Explain Hold when no squad is selected

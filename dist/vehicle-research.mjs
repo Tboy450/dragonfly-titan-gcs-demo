@@ -11,6 +11,7 @@ import { buildFrontierRadio } from "./frontier-radio.mjs?v=dev";
 import { buildTwta } from "./twta.mjs?v=dev";
 import { buildHgaGimbal, hgaAsset } from "./hga-gimbal.mjs?v=dev";
 import { buildBattery } from "./battery.mjs?v=dev";
+import { buildBatteryMeasurement } from "./battery-measurement.mjs?v=dev";
 import { buildNoseSensors } from "./nose-sensors.mjs?v=dev";
 import { buildAftBulkhead, aftBulkheadAsset, aftFaceZ, poseMmrtg } from "./aft-bulkhead.mjs?v=dev";
 import { buildRotorHead, buildHubPlate, rotorHeadAsset } from "./rotor-heads.mjs?v=dev";
@@ -444,9 +445,9 @@ export function buildResearchModel(kit) {
   // The durable id stays "trim-chimneys"; the device drawn is the later cold bypass duct.
   interiorPart("trim-chimneys", "trim-device", "Trim device: cold bypass duct under the belly with fore and aft diverter flaps", "TFAWS 2023 slides 4, 7, 8; TFAWS 2024 slides 6-16; section and flap details estimated", 0xb04a9a, "exterior");
   const trimDevice = buildTrimDevice({ parent: buildTarget, mesh });
-  let material = interiorPart("battery-sensor", "battery", "Battery temperature sensor: an input to the thermal controller", "TFAWS 2023 (controller inputs); placement illustrative", 0x9fe870);
-  mesh(new THREE.SphereGeometry(0.022, 12, 8), material, [0.2, 0.02, 0.72]);
-  material = interiorPart("mmrtg-sensor", "mmrtg", "MMRTG fin-root temperature sensor: the other controller input", "TFAWS 2023 (controller inputs); placement illustrative", 0x9fe870, "exterior");
+  interiorPart("battery-sensor", "battery", "Battery temperature input (annotation, not sensor hardware)", "TFAWS 2023 slides7/9: control input; annotation beside estimated battery, exact sensing point/package/count unknown", 0x9fe870);
+  buildBatteryMeasurement({ parent: buildTarget, mesh });
+  const material = interiorPart("mmrtg-sensor", "mmrtg", "MMRTG fin-root temperature sensor: the other controller input", "TFAWS 2023 (controller inputs); placement illustrative", 0x9fe870, "exterior");
   // Kept on the MMRTG's top fin root when the MMRTG was tilted (part 16); still a placeholder.
   mesh(new THREE.SphereGeometry(0.022, 12, 8), material, new THREE.Vector3(0, 0.22, 0).applyEuler(generator.rotation).add(generator.position).toArray());
   // Externally mounted items described in the same paper, visible in every layer.

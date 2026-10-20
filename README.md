@@ -15,6 +15,11 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
+October20: [part20 battery-temperature annotation](research/battery-measurement-2026-10-20/README.md)
+replaces the intersecting green sphere with a labeled measurement target and keeps battery
+context during inspection. It is not a reconstructed flight sensor; hardware evidence and
+part20 remain open. Battery geometry, part21 and simulation behavior are unchanged.
+
 October19: [part09 evidence and inspection update](research/rde-inspection-2026-10-19/README.md)
 adds individual focus for the two provisional rotor controllers and removable covers/casings/
 mounts/interfaces, without changing their estimated geometry or any flight physics. Clearer
