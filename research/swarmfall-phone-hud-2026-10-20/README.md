@@ -21,3 +21,7 @@ screen-reader or touch acceptance. Those real-device checks remain open.
 Exact originals and a clearly dated historical picture are retained in
 `archive/swarmfall-phone-hud-2026-10-20/`, with baseline tag and restore instructions.
 Neither environment lab or independent asset studio is changed.
+
+Publication integration: preserved the concurrent battery-annotation update through
+`21ded4e`, retaining both changelog and archive entries. The combined suite passes
+**409 tests** (`merged-test-results.txt`); the isolated FIX-07 run above passed 405.

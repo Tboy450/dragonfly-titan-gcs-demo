@@ -51,10 +51,42 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Checks:** 405 tests pass. Entry-point tests cover capture, manual choices, viewport
   changes, new/resumed missions, warnings and keyboard controls. DOM harness corrected
   to recognize only actual dialog elements as modal. Canonical checklist:27/305 checked.
+  Concurrent battery-annotation changes through21ded4e retained; combined suite409pass
+  (`research/swarmfall-phone-hud-2026-10-20/merged-test-results.txt`).
 - **Assumptions:** 720px uses the existing phone CSS breakpoint; collapse preference is
   mission-local UI state and does not change save format or game rules.
 - **Open / next:** Browser/touch/screen-reader and real-phone visual acceptance remain
   open; prior browser restriction retained. No environment lab or independent studio edits.
+
+### 2026-10-20: Verify public battery-measurement correction
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record public battery annotation verification
+- **Checks:** Published2810746, Pages39382667705 success; real Edge1440/390/360 Internal/
+  Thermal, stamped module/revision, original part20/count20, source links, covers hide/restore
+  and Pilot return pass. No page/network failures or overflow. Seven public pictures/JSON
+  saved in `research/battery-measurement-2026-10-20/live/`. Combined full suite404pass.
+- **Scope:** Evidence/handoff only, no new app changes.20 remains open hardware, no photo-match
+  claimed. Battery/21 and game changes preserved. Model/source/archive release3ff49b5/2810746.
+
+### 2026-10-20: Correct battery-temperature placeholder as a measurement annotation
+- **Signed:** Codex (OpenAI)
+- **Commit:** Clarify battery temperature annotation and inspection context
+- **What changed:** Part20 green sphere intersecting the battery replaced with open target;
+  explicitly an annotation, not a flight sensor package/mounting/count. Focus includes battery.
+  Expandable details/source links/assumptions updated; hardware rebuild remains unchecked.
+- **Evidence:** Original NASA/APL TFAWS2023 pages7-9 inspected/saved; existing real ICES2022
+  ground-test photos and CAD differentiated. TE/Juno/Landsat and DrEAM heritage not copied as
+  this part. Real/CAD/controller/model comparison saved. No invented hardware or wiring.
+- **Archive:** Exact prior builder/inspector/panel/HTML, fresh baseline pictures/manifest,
+  restore steps and recovery tag `archive/battery-measurement-2026-10-20` on5220223.
+- **Checks:**394tests pass including4new tests; actual Edge six viewport/layer cases,
+  four orbit angles, cover hide/restore, Pilot return and raw nonblank/framing checks.
+  Battery and part21 exact geometry/transform manifests match baseline. No app/page errors
+  or horizontal overflow. No physics/game changes;20/24 unchanged.
+- **Next:** Identified flight sensor photo/type/mount/count needed. Public release checked
+  after deployment; local screenshots alone are not publication proof.
+- **Concurrent work:** Preserved minimap releasea7261bb intact, retained both log/archive
+  entries; combined suite404pass (`research/battery-measurement-2026-10-20/merged-tests.txt`).
 
 ### 2026-10-20: CTRL-08 minimap squad orders
 - **Signed:** Codex (OpenAI)

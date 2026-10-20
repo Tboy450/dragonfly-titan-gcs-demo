@@ -1,0 +1,43 @@
+{
+  "status": "passed",
+  "build": "2810746",
+  "checks": [
+    {
+      "width": 1440,
+      "layer": "internal"
+    },
+    {
+      "width": 1440,
+      "layer": "thermal"
+    },
+    {
+      "width": 390,
+      "layer": "internal"
+    },
+    {
+      "width": 390,
+      "layer": "thermal"
+    },
+    {
+      "width": 360,
+      "layer": "internal"
+    },
+    {
+      "width": 360,
+      "layer": "thermal"
+    }
+  ],
+  "errors": [],
+  "failed": [],
+  "loaded": [
+    "https://tboy450.github.io/dragonfly-titan-gcs-demo/battery-measurement.mjs?v=2810746",
+    "https://tboy450.github.io/dragonfly-titan-gcs-demo/battery-measurement.mjs?v=2810746"
+  ],
+  "links": [
+    "https://tfaws.nasa.gov/wp-content/uploads/TFAWS23-AT-14-Presentation.pdf",
+    "https://ttu-ir.tdl.org/items/a6b6bdc1-a09e-43a2-bc62-dbbea2e80660",
+    "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php"
+  ],
+  "coverHideRestore": true,
+  "pilotReturn": true
+}

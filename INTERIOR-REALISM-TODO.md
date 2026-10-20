@@ -7,7 +7,25 @@ Battery pass finished and Codex's RDE pass reviewed October 15, 2026 by Claude (
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: Part 09 Inspection / Evidence Audit
+## Resume Here: Part20 Annotation Corrected; Hardware Open
+
+October20 Codex: [sources, actual samples, archive and handoff](research/battery-measurement-2026-10-20/README.md).
+Replaced intersecting green sphere with an explicitly illustrative battery-temperature target,
+not a sensor body or exact sensing point/count. Part20 isolation includes battery context.
+NASA/APL2023 controller inputs inspected; real2022 test leads do not identify flight sensors.
+TE/Juno/Landsat heritage and DrEAM entry-sensor reuse do not establish battery-sensor adoption.
+No invented package/wiring. Claude's battery and part21 unchanged, manifest-verified.
+394scoped-tree tests pass;404pass after preserving concurrent minimap updatea7261bb.
+Actual Edge desktop/mobile Internal/Thermal, four angles, cover restore/Pilot,
+raw pixel/framing checks pass. Archive/tag5220223; release3ff49b5 merged/published as2810746.
+Pages39382667705 succeeded. Public actual Edge six Internal/Thermal cases1440/390/360,
+stamped module/revision, part20/count20, sources, covers restore/Pilot pass; no page/network
+errors or overflow. Live pictures/JSON saved in current research folder. Receipt-only follow-up.
+**20/24 (5 Codex / 15 Claude) unchanged.20 stays unchecked; remaining03/09/20/21.**
+Need actual flight sensor package/photo/install evidence, not another unrelated thermistor.
+No game edits; preserved published work through5220223. Do not restart completed05/22.
+
+## Previous Checkpoint: Part 09 Inspection / Evidence Audit
 
 October19 Codex continuation: [current evidence, comparison, tests and handoff](research/rde-inspection-2026-10-19/README.md).
 Both provisional controllers are separately selectable; each retains casing/cover/mount/
@@ -607,7 +625,7 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **18 follow-up:** real duct height; the round perforated feature on the duct in the slide 3 plan view; old nose-electronics placeholder reaches into the duct zone (fix with that part). Battery clearance is covered by the October 15 duct adjustment (duct 7.5 mm lower); #16 now clears the duct/fans with an estimated collar.
 - [x] **Claude:** **19 Trim device** (`trim-chimneys`, durable id kept): the cold bypass duct under the belly, outside the foam, with fore and aft diverter flaps in foam-wrapped housings that open with the trim setting; TFAWS 2023 slides 4, 7, 8 and TFAWS 2024. ICES-2023's side-chimney concept archived. [References/limits](research/thermal-loop-2026-10-14/README.md).
 - [ ] **19 follow-up:** the cold duct's real section and the meaning of the "split cold duct" (TFAWS 2024); flap hinge sides and actuators.
-- [ ] **20 Battery temperature sensor** (`battery-sensor`): verify installation; distinguish an actual sensor body from a diagram marker.
+- [ ] **20 Battery temperature sensor** (`battery-sensor`): October20 intersecting sphere replaced with explicit measurement annotation tied to battery context; no hardware claimed. Actual package/count/mounting still unverified. [Sources and sample](research/battery-measurement-2026-10-20/README.md).
 - [ ] **21 MMRTG fin-root sensor** (`mmrtg-sensor`): same distinction, with verified placement rather than a floating green sphere.
 - [x] **Codex:** **22 Nose methane/E-field instruments** (`nose-sensors`): photo-referenced EFIELD assemblies plus owner-approved, labeled METHAN design approximation; independently removable housings/covers, supports and fiber entry. [Sources, estimates and verification](research/methan-2026-10-18/README.md).
   - [x] **Codex, October 17:** both EFIELD probes from an engineering-model photo and

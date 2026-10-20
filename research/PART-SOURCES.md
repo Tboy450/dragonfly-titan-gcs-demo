@@ -6,6 +6,11 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part20 evidence correction:** [audit and real/CAD/model comparison](battery-measurement-2026-10-20/README.md).
+Original [TFAWS2023 controller pages7-9](sources/tfaws2023-battery-feedback/README.md)
+saved/inspected with existing battery test photographs. No identified flight sensor package
+or mounting evidence;20 remains open, now a clearly labeled measurement annotation.
+
 **Part09 latest:** [inspection/evidence audit and real/CAD/model comparison](rde-inspection-2026-10-19/README.md).
 Saved AAC announcement and credited supplier/workshop links are in
 [`sources/rde-supplier-2026`](sources/rde-supplier-2026/README.md). No clearer flight casing
@@ -28,6 +33,7 @@ scanner vendor, installed routing and completed housing remain unresolved; no mo
 
 | Folder | Source | Pages saved | Used by |
 |---|---|---|---|
+| [`sources/tfaws2023-battery-feedback`](sources/tfaws2023-battery-feedback/README.md) | Holtzman/Castano, NASA/APL TFAWS2023 | Complete original pages7-9 |20 control-input evidence only; not sensor appearance, scale or count |
 | [`sources/rde-supplier-2026`](sources/rde-supplier-2026/README.md) | AAC2023, APL G-RADNEXT2026, TT Electronics2026 | AAC original single page image; primary text links/access audit |09 research only; not enclosure appearance, board layout or final flight dimensions |
 | [`sources/ti-lmp7704-evaluation`](sources/ti-lmp7704-evaluation/README.md) | Texas Instruments LMP7704-SP datasheet, Sept2026 package addendum | Original PDF p26 | 05 source audit only: matches EVAL ONLY IC marking in related SQRLi image; NOT a flight PCB model |
 | [`sources/ocellus-cross-project-lineage`](sources/ocellus-cross-project-lineage/README.md) | NASA IGARSS2020 / SpaceCube2019 / GSFC fiber optics / NEPP2024 / Ocellus technology sheet; DIAMOND and Optotune | 9 original page images + 1 original supplier JPG, all visually inspected | 05 research only: real family references vs identified CAD and unverified leads; no exact Ocellus internal-layout claim |

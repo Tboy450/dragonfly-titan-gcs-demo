@@ -117,7 +117,7 @@ explicit touch-friendly View/Orders toggle. **400 tests pass; 26/305 tasks check
 separate studio remains owned by its other project; neither environment lab is changed.
 
 Phone-HUD follow-up — Codex, October 20: **FIX-07** reduces battlefield panel coverage
-after the first capture, with manual access retained. **405 tests pass; 27/305 tasks
+after the first capture, with manual access retained. **409 combined tests pass; 27/305 tasks
 checked.** Original HUD code/picture retained; real-phone acceptance remains open.
 
 ## Priority order — work from the top

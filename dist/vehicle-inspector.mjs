@@ -57,6 +57,7 @@ export function inspectionGroups(name) {
     "sample-lines": ["drills", "sample-lines", "sample-flow", "sample-carousel", "drill-blower"],
     drams: ["drams"],
     battery: ["battery", "battery-sensor"],
+    "battery-sensor": ["battery", "battery-sensor"],
     "hga-actuators": ["hga-actuators", "high-gain-antenna"],
     "aft-bulkhead": ["aft-bulkhead", "mmrtg", "fan"],
   };
