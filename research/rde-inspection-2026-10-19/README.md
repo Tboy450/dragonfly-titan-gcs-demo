@@ -68,5 +68,9 @@ Dragonfly adoption. If proceeding with an appearance approximation, retain expli
 labels and owner approval boundaries rather than turning related-project evidence into fact.
 Other unfinished initial passes:03,20,21. Do not restart completed05/22 or edit game assets.
 Preserve Claude's 15 completed passes. Archive the CURRENT revision before replacing it.
-Publishing/live acceptance are recorded separately after deployment; local screenshots alone
-do not prove the public site changed.
+Release `5d85fd0` and its recovery tag are pushed to main and the feature branch. GitHub Pages
+run39355386898 succeeded. `verify-live.cjs` passed in real Edge on the public site:
+stamped module/revision, original part09, count20, both selectors at1440/390/360, source links,
+cover hide/restore through Thermal and Pilot return; no page/network failures or horizontal
+overflow. Six public screenshots and JSON are saved in `live/`. This verification follow-up
+changes documentation/acceptance artifacts only, not application code.

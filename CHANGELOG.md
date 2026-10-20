@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Verify published individual RDE inspection
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record public RDE inspection acceptance
+- **Checks:** Release5d85fd0 and recovery tag pushed; Pages39355386898 succeeded.
+  Public real-Edge stamped module/revision, part09/count20, both selectors at1440/390/360,
+  source links, cover hide/restore across Thermal and Pilot return pass. No page/network
+  failures or horizontal overflow. Six public screenshots/JSON and repeatable script saved.
+- **Scope:** Acceptance/documentation only; no application, geometry, physics or game edits.
+ 386 tests from the model release pass.09 remains provisional;20/24 unchanged.
+
 ### 2026-10-19: Individual provisional RDE inspection and source audit
 - **Signed:** Codex (OpenAI)
 - **Commit:** Add individual RDE inspection and supplier evidence

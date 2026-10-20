@@ -17,7 +17,10 @@ Real CAPS photo remains obscured; related-project X-57 is NOT evidence of hardwa
 Part09 stays unchecked; **20/24 (5 Codex / 15 Claude)** unchanged. No physics/game edits.
 386 full tests pass; real Edge18viewport/layer/selector cases and raw-pixel framing checks
 pass, plus cover hide/restore and Pilot return. Archive/tag7ab195e retained. Public release
-status recorded after deployment, not inferred from local captures. Remaining03,09,20,21.
+status: release5d85fd0 pushed and Pages39355386898 succeeded. Public real-Edge checks passed:
+stamped module/revision, both selectors at1440/390/360, sources, cover hide/restore across
+Thermal and Pilot return; no page/network failures or overflow. Pictures/JSON in current
+research `live/`. Remaining03,09,20,21; this verification follow-up changes no app code.
 
 ## Previous Checkpoint: Part 05 Approved Initial Pass Complete
 
