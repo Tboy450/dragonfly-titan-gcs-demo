@@ -112,6 +112,10 @@ Hold-feedback follow-up — Codex, October 19: **FIX-11** adds an empty-selectio
 and H, with no key-repeat spam. **390 tests pass; 25/305 tasks checked.** Both environment
 labs and the independently maintained studio remain untouched by this game-only change.
 
+Minimap-orders follow-up — Codex, October 20: **CTRL-08** adds right-click orders and an
+explicit touch-friendly View/Orders toggle. **400 tests pass; 26/305 tasks checked.** The
+separate studio remains owned by its other project; neither environment lab is changed.
+
 ## Priority order — work from the top
 
 | Order | Work package | Canonical tasks | Scope | Completion gate |
@@ -304,7 +308,14 @@ complete solely because its assets download or its unit tests pass.
   retaken, hazard incoming, artillery marked.
 - [ ] **CTRL-07 (P2)** Formation choices (spread, tight, line) and stances (aggressive, hold
   fire for a quiet takeover).
-- [ ] **CTRL-08 (P2)** Give orders by tapping the minimap.
+- [x] **CTRL-08 (P2) — Codex, October 20; implementation and automated checks** Minimap
+  defaults to View taps. Desktop right-click orders selected squads; Map: Orders enables
+  touch/pen taps for attack/capture/move, with a brief target pulse. Paused orders work;
+  cancelled/multi-touch/drag/modal gestures cannot leak commands. Order input during drop
+  placement cancels the preview without spending/launching. New/resumed missions start in
+  View mode; Clean view hides map controls. **400 tests pass**;
+  [evidence](research/swarmfall-minimap-orders-2026-10-20/README.md). Native browser/touch/device
+  acceptance remains open under TEST/accessibility tasks.
 - [ ] **CTRL-09 (P2)** Drop presets ("assault", "hack team"), remembered per planet.
 - [ ] **CTRL-10 (P2)** Settings: camera speed, invert drag, key rebinding, UI size.
 - [ ] **CTRL-11 (P3)** Gamepad support.

@@ -19,6 +19,7 @@ import { createInvasionScene, swarmColor, nativeColor } from "./scene.mjs?v=dev"
 import { missionCheckpoint, restoreMissionCheckpoint } from "./mission-save.mjs?v=dev";
 import { pointerIntent, exceedsTapSlop } from './pointer-controls.mjs?v=dev';
 import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
+import { minimapWorldPoint } from './minimap-controls.mjs?v=dev';
 import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecoveryBackups } from './save-recovery.mjs?v=dev';
 
 const $ = (id) => document.getElementById(id);
@@ -301,7 +302,7 @@ function startMission(planet, checkpoint = null) {
     cam: restored?.cam || { focus: { x: home.x - away.x / length * 70, z: home.z - away.z / length * 70 }, distance: 230, yaw: Math.atan2(away.x, away.z), pitch: 0.9 },
     selected: new Set(restored?.command.selected || []), speed: 1, paused: !!restored,
     payload: restored?.command.payload ?? defaultPayload(battle), placing: false, dropPoint: null, dropPreview: null, dropPanelOpen: false,
-    cleanView: false,
+    cleanView: false, minimapOrders: false, minimapPing: null,
     seenLog: new WeakSet(), ended: false, lastHud: 0, lastMinimap: 0, lastAchievements: 0, cards: new Map(), dropTypes: "",
   };
   $("squad-bar").replaceChildren();
@@ -315,6 +316,7 @@ function startMission(planet, checkpoint = null) {
   $("pause-button").textContent = mission.paused ? "Resume" : "Pause";
   $("speed-button").textContent = "1×";
   show("mission");
+  setMinimapOrders(false);
   resizeMission();
   if (!restored || restored.command.dropPanelOpen) openDropPanel(); else closeDropPanel();
   updateHud();
@@ -389,6 +391,7 @@ function battlefieldActive() {
   return current === "mission" && mission && !mission.battle.outcome && !document.hidden && !document.querySelector("dialog[open]");
 }
 function resetPointers() {
+  resetMinimapPointers();
   const captured = [...pointers.keys()];
   pointers.clear(); gesture = null;
   for (const id of captured) if (overlay.hasPointerCapture(id)) overlay.releasePointerCapture(id);
@@ -646,7 +649,7 @@ $("placement-cancel").addEventListener("click", cancelPlacement);
 function setCleanView(enabled) {
   if (!mission) return;
   mission.cleanView = enabled;
-  if (enabled) { cancelPlacement(); closeDropPanel(); }
+  if (enabled) { resetMinimapPointers(); cancelPlacement(); closeDropPanel(); }
   $("screen-mission").classList.toggle("clean-view", enabled);
   $("clean-view-button").textContent = enabled ? "Show HUD · V" : "Clean view · V";
   $("clean-view-button").setAttribute("aria-pressed", String(enabled));
@@ -941,16 +944,71 @@ function drawMinimap() {
   ctx.lineTo(fx + Math.sin(yaw) * 6 - Math.cos(yaw) * 6, fz + Math.cos(yaw) * 6 + Math.sin(yaw) * 6);
   ctx.closePath();
   ctx.stroke();
+  if (mission.minimapPing) {
+    const elapsed = performance.now() - mission.minimapPing.at;
+    if (elapsed < 900) {
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, 1 - elapsed / 900);
+      ctx.strokeStyle = swarmColor; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(sx(mission.minimapPing.x), sz(mission.minimapPing.z), 4 + elapsed / 130, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore();
+    } else mission.minimapPing = null;
+  }
 }
 
-$("minimap").addEventListener("click", (event) => {
+const minimap = $("minimap"), minimapPointers = new Map();
+let minimapGesture = null;
+function resetMinimapPointers() {
+  const captured = [...minimapPointers.keys()];
+  minimapPointers.clear(); minimapGesture = null;
+  for (const id of captured) if (minimap.hasPointerCapture(id)) minimap.releasePointerCapture(id);
+}
+function setMinimapOrders(enabled) {
   if (!mission) return;
-  const rect = event.currentTarget.getBoundingClientRect();
-  const { centerX, centerZ, half } = mission.battle.map;
-  mission.cam.focus.x = centerX - half + (event.clientX - rect.left) / rect.width * half * 2;
-  mission.cam.focus.z = centerZ - half + (event.clientY - rect.top) / rect.height * half * 2;
-  clampCamera();
+  resetMinimapPointers(); mission.minimapOrders = enabled;
+  $("minimap-mode").textContent = enabled ? "Map: Orders" : "Map: View";
+  $("minimap-mode").setAttribute("aria-pressed", String(enabled));
+  $("minimap-mode").title = enabled ? "Minimap taps order selected squads. Switch back to move the view." : "Minimap taps move the view. Switch to Orders for touch commands; desktop right-click always orders.";
+  minimap.setAttribute("aria-label", enabled ? "Minimap: tap to order selected squads" : "Minimap: tap to move the view; right-click to order selected squads");
+}
+$("minimap-mode").addEventListener("click", () => { if (battlefieldActive()) setMinimapOrders(!mission.minimapOrders); });
+minimap.addEventListener("pointerdown", (event) => {
+  if (!battlefieldActive() || mission.cleanView) return;
+  const mouse = event.pointerType === "mouse" || !event.pointerType;
+  if (event.button !== 0 && !(mouse && event.button === 2)) return;
+  const expectedButtons = event.button === 2 ? 2 : 1;
+  minimap.setPointerCapture(event.pointerId);
+  minimapPointers.set(event.pointerId, true);
+  if (minimapPointers.size === 1 && !minimapGesture) {
+    minimapGesture = { x: event.clientX, y: event.clientY, order: event.button === 2 || mission.minimapOrders,
+      buttons: expectedButtons, cancelled: event.altKey || event.ctrlKey || (event.buttons !== undefined && event.buttons !== expectedButtons) };
+  } else if (minimapGesture) minimapGesture.cancelled = true;
 });
+minimap.addEventListener("pointermove", (event) => {
+  if (!minimapPointers.has(event.pointerId)) return;
+  if (!battlefieldActive()) { resetMinimapPointers(); return; }
+  if (minimapGesture && (exceedsTapSlop(minimapGesture, event) || (event.buttons !== undefined && event.buttons !== minimapGesture.buttons))) minimapGesture.cancelled = true;
+});
+minimap.addEventListener("pointerup", (event) => {
+  if (!minimapPointers.has(event.pointerId)) return;
+  const finished = minimapGesture;
+  minimapPointers.delete(event.pointerId);
+  if (minimapPointers.size) { if (minimapGesture) minimapGesture.cancelled = true; return; }
+  minimapGesture = null;
+  if (!battlefieldActive() || mission.cleanView || !finished || finished.cancelled || exceedsTapSlop(finished, event) || (event.button === 2 ? 2 : 1) !== finished.buttons) return;
+  const point = minimapWorldPoint(event.clientX, event.clientY, minimap.getBoundingClientRect(), mission.battle.map);
+  if (!point) return;
+  if (!finished.order) {
+    mission.cam.focus.x = point.x; mission.cam.focus.z = point.z; clampCamera(); return;
+  }
+  if (mission.placing) { cancelPlacement(); return; }
+  if (!mission.selected.size) { toast("Select a squad first, then give a minimap order.", "warn"); return; }
+  const order = orderAt(mission.battle, [...mission.selected], point.x, point.z);
+  if (order) mission.minimapPing = { x: order.x, z: order.z, at: performance.now() };
+});
+minimap.addEventListener("pointercancel", resetMinimapPointers);
+minimap.addEventListener("lostpointercapture", (event) => { if (minimapPointers.has(event.pointerId)) resetMinimapPointers(); });
+minimap.addEventListener("contextmenu", event => event.preventDefault());
 
 // ---- Events, achievements and the end of a mission ----
 function handleEvents(events) {

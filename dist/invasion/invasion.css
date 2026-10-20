@@ -107,7 +107,10 @@ a { color: var(--swarm); }
 .hud-log .bad { color: #ffb0a0; }
 .hud-log .warn { color: #ffd479; }
 
-#minimap { position: absolute; right: 10px; top: 64px; width: 150px; height: 150px; border: 1px solid var(--line); border-radius: 8px; background: rgba(6, 8, 16, 0.7); cursor: pointer; }
+#minimap-panel { position: absolute; right: 10px; top: 64px; width: 150px; }
+#minimap { display: block; width: 100%; height: 150px; border: 1px solid var(--line); border-radius: 8px; background: rgba(6, 8, 16, 0.7); cursor: pointer; touch-action: none; }
+#minimap-mode { width: 100%; min-height: 40px; margin-top: 4px; padding: 5px 3px; font-size: 11px; }
+#minimap-mode[aria-pressed="true"] { border-color: var(--swarm); color: var(--swarm); }
 
 .hud-bottom { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 10px; padding: 8px 10px; padding-bottom: max(8px, env(safe-area-inset-bottom)); background: linear-gradient(0deg, rgba(4, 6, 14, 0.85), rgba(4, 6, 14, 0)); pointer-events: none; }
 .hud-bottom > * { pointer-events: auto; }
@@ -150,7 +153,7 @@ a { color: var(--swarm); }
 .clean-view-button { position: absolute; right: 10px; top: 68px; z-index: 8; padding: 5px 9px; font-size: 12px; opacity: 0.85; }
 .clean-view .clean-view-button { top: 10px; }
 .clean-view .hud-top, .clean-view .hud-left, .clean-view .hud-bottom,
-.clean-view #minimap, .clean-view #drop-panel, .clean-view #placement-hint,
+.clean-view #minimap-panel, .clean-view #drop-panel, .clean-view #placement-hint,
 .clean-view #toasts { display: none; }
 .dialog { background: var(--panel-solid); color: var(--text); border: 1px solid var(--line); border-radius: 14px; width: min(520px, calc(100% - 24px)); max-height: calc(100% - 24px); padding: 18px 20px; }
 .dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
@@ -176,7 +179,8 @@ a { color: var(--swarm); }
   .hud-alarm { min-width: 96px; }
   .hud-left { top: 104px; width: 60vw; }
   #objectives-box:not([open]) { width: max-content; }
-  #minimap { top: auto; bottom: 122px; width: 110px; height: 110px; }
+  #minimap-panel { top: auto; bottom: 122px; width: 110px; }
+  #minimap { height: 110px; }
   .hud-bottom { flex-direction: column; align-items: stretch; }
   .command-buttons { justify-content: flex-end; }
   .drop-panel { bottom: 116px; }

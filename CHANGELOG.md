@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-20: CTRL-08 minimap squad orders
+- **Signed:** Codex (OpenAI)
+- **Commit:** Give squad orders from the minimap
+- **What changed:** Default View taps keep camera navigation; desktop right-click orders
+  selected squads. Map: Orders enables touch/pen primary tap orders via existing attack/
+  capture/move rules, with a short target pulse. Paused commands work; pointer interruption,
+  drag/chord/multi-touch and synthetic clicks cannot issue stray/duplicate orders. Order
+  input cancels active landing placement without a purchase; new/resumed missions start
+  with View mode/no transient pulse. Clean view hides the full map/toggle panel.
+- **Files:** invasion entry/HTML/CSS, plain map coordinate helper, focused controls tests,
+  signed master checklist/README and preserved baseline/evidence folders.
+- **Checks:** 400 tests pass including10 new real entry-point/rule checks with DOM/renderer/
+  capture stand-ins. Current save formats, battlefield controls, selection and battle rules
+  remain compatible. Original source preserved/tagged. Neither environment lab changed.
+- **Open / next:** Native browser/touch/phone visual acceptance remains open; prior browser
+  automation restriction not retried. CTRL-08 implementation complete; checklist26/305.
+  [Evidence](research/swarmfall-minimap-orders-2026-10-20/README.md).
+
 ### 2026-10-19: FIX-11 guidance for Hold without selection
 - **Signed:** Codex (OpenAI)
 - **Commit:** Explain Hold when no squad is selected
