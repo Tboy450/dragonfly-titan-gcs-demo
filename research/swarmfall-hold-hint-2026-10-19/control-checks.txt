@@ -1,0 +1,4 @@
+PASS: Hold button without selection gives guidance and does not mutate the battle.
+PASS: H shows the same hint, restores hidden HUD and ignores key repeat.
+PASS: Selected squad still holds normally; Clean view remains on and no empty-selection warning appears.
+PASS: An ended mission receives no Hold command or new warning.

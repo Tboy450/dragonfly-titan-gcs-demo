@@ -108,6 +108,10 @@ markers for tiny living friendly drones. **390 tests pass; 24/305 tasks checked.
 original and separate-copy environment labs are unchanged by this gameplay update. The
 separate project owns expansion of the standalone studio; continue Swarmfall work here.
 
+Hold-feedback follow-up — Codex, October 19: **FIX-11** adds an empty-selection hint to Hold
+and H, with no key-repeat spam. **390 tests pass; 25/305 tasks checked.** Both environment
+labs and the independently maintained studio remain untouched by this game-only change.
+
 ## Priority order — work from the top
 
 | Order | Work package | Canonical tasks | Scope | Completion gate |
@@ -259,7 +263,11 @@ complete solely because its assets download or its unit tests pass.
 - [ ] **FIX-09 (P2)** Aurex, the last planet, is very hard (bot: about 16 minutes and 150 drones
   lost). Revisit after human playtests.
 - [ ] **FIX-10 (P2)** The title card hides the title screen's spiral galaxy.
-- [ ] **FIX-11 (P3)** "Hold" with no squad selected does nothing and says nothing. Show a hint.
+- [x] **FIX-11 (P3) — Codex, October 19; implementation and focused checks** Hold and H
+  now explain how to select a squad when none is selected. Reveal the HUD for that hint,
+  ignore held-key repeats, and preserve selected-squad Hold behavior. Ended missions receive
+  no command/warning. **390 tests pass** plus entry-point control checks;
+  [evidence](research/swarmfall-hold-hint-2026-10-19/README.md).
 - [ ] **FIX-12 (P3)** Strikes, retaken zones and lost squads off screen give no cue. Add an
   edge-of-screen marker (see CTRL-06).
 

@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [swarmfall-hold-hint-2026-10-19](swarmfall-hold-hint-2026-10-19/README.md) | Hold/H before empty-selection guidance; exact entry point, dated historical mission picture and restore steps | 2026-10-19 | `archive/swarmfall-hold-hint-2026-10-19` on 183bdba |
 | [swarmfall-drone-markers-2026-10-19](swarmfall-drone-markers-2026-10-19/README.md) | Overlay/renderer before tiny friendly-drone markers; exact code/test and dated historical mission picture | 2026-10-19 | `archive/swarmfall-drone-markers-2026-10-19` on 7ab195e |
 | [rde-inspection-2026-10-19](rde-inspection-2026-10-19/README.md) | Exact prior RDE module/UI/test, fresh baseline renders and world-mesh manifest before individual unit inspection; geometry unchanged |2026-10-19| `archive/rde-inspection-2026-10-19` on7ab195e |
 | [scout-lab-comparison-2026-10-19](scout-lab-comparison-2026-10-19/README.md) | Lab before original/polished Scout selector; exact inspector/lab/HTML/test, historical CPU comparison and restore steps | 2026-10-19 | `archive/scout-lab-comparison-2026-10-19` on 204fb0f |

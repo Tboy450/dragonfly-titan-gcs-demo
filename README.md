@@ -79,7 +79,7 @@ force or by quiet control.
   squads; an empty left-click clears selection. Squad cards also select. On touch or pen, tap
   a drone/card to select, then tap the destination or target to order. Drag to pan, scroll or
   pinch to zoom; right/middle/Alt+drag or Q/E turns. WASD/arrows pan, 1-9 select squads, 0 all,
-  H holds, B opens drops and Space pauses. In landing placement, click/tap only previews;
+  H holds, B opens drops and Space pauses. Hold or H with no selected squad explains how to select one. In landing placement, click/tap only previews;
   Launch here confirms the purchase, and right-click or Cancel cancels the preview.
   **Clean view** or **V** hides HUD panels and battlefield labels; the small Show HUD button,
   V or Escape restores them. R/F retain camera pitch. Opening drops or ending a mission restores the HUD.

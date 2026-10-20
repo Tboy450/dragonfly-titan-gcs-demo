@@ -39,6 +39,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: FIX-11 guidance for Hold without selection
+- **Signed:** Codex (OpenAI)
+- **Commit:** Explain Hold when no squad is selected
+- **What changed:** Hold and H share an empty-selection hint that restores the HUD when
+  needed. H repeat events are ignored; selected-squad Hold and Clean view behavior remain.
+  Ended missions receive no Hold command or hint. Both environment labs and studio unchanged.
+- **Files:** invasion entry point, signed checklist/README and evidence/archive folders.
+- **Checks:** 390 tests pass plus focused actual entry-point button/key checks using existing
+  DOM/renderer stand-ins; empty guidance/no battle mutation, H/repeat/HUD, selected real drone
+  Hold and ended-mission paths pass. Original source archived and recovery tag created.
+- **Open / next:** Native browser/touch review remains open; prior restriction not retried.
+  FIX-11 implementation complete; canonical checklist 25/305.
+  [Evidence](research/swarmfall-hold-hint-2026-10-19/README.md).
+
 ### 2026-10-19: FIX-04 tiny-drone squad markers
 - **Signed:** Codex (OpenAI)
 - **Commit:** Keep tiny friendly drones visible with squad markers

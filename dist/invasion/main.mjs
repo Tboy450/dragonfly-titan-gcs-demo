@@ -536,7 +536,16 @@ function focusSquad(id) {
 }
 
 $("all-button").addEventListener("click", selectAll);
-$("hold-button").addEventListener("click", () => { if (mission?.selected.size) orderHold(mission.battle, [...mission.selected]); });
+function holdSelected() {
+  if (!mission || mission.battle.outcome) return;
+  if (!mission.selected.size) {
+    setCleanView(false);
+    toast("Select a squad first: click or tap a drone or a squad card, then choose Hold.", "warn");
+    return;
+  }
+  orderHold(mission.battle, [...mission.selected]);
+}
+$("hold-button").addEventListener("click", holdSelected);
 $("squad-bar").addEventListener("click", (event) => {
   const card = event.target.closest("[data-squad]");
   if (card) selectSquad(Number(card.dataset.squad), event.shiftKey || event.ctrlKey || event.metaKey);
@@ -695,7 +704,7 @@ window.addEventListener("keydown", (event) => {
   if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
   if (key === "escape") { resetPointers(); setCleanView(false); cancelPlacement(); closeDropPanel(); return; }
   if (key === "b") { $("drop-panel").hidden ? openDropPanel() : closeDropPanel(); return; }
-  if (key === "h") { if (mission.selected.size) orderHold(mission.battle, [...mission.selected]); return; }
+  if (key === "h") { if (!event.repeat) holdSelected(); return; }
   if (key === "0") { selectAll(); return; }
   if (/^[1-9]$/.test(key)) {
     const squads = battleSummary(mission.battle).squads.filter(s => s.size > 0 || s.inbound);
