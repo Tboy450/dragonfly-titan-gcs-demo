@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "baseline": true,
+  "checks": [
+    {
+      "unit": "",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "unit": "",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "unit": "",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "unit": "",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "unit": "",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "unit": "",
+      "layer": "thermal",
+      "width": 360
+    }
+  ],
+  "samples": [
+    {
+      "name": "rde-pair-closed.png",
+      "pixels": {
+        "count": 163742,
+        "minX": 217,
+        "maxX": 847,
+        "minY": 140,
+        "maxY": 549
+      }
+    },
+    {
+      "name": "rde-pair-covers-hidden.png",
+      "pixels": {
+        "count": 159307,
+        "minX": 217,
+        "maxX": 847,
+        "minY": 140,
+        "maxY": 547
+      }
+    }
+  ],
+  "errors": [],
+  "coverHideRestore": true,
+  "pilotReturn": true
+}

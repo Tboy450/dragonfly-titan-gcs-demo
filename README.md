@@ -15,6 +15,11 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
+October19: [part09 evidence and inspection update](research/rde-inspection-2026-10-19/README.md)
+adds individual focus for the two provisional rotor controllers and removable covers/casings/
+mounts/interfaces, without changing their estimated geometry or any flight physics. Clearer
+hardware imagery is still needed;09 stays open and the initial-pass count remains20/24.
+
 ## Swarmfall: Drone Invasion (game)
 
 [Play Swarmfall](https://tboy450.github.io/dragonfly-titan-gcs-demo/invasion/) (its own page,

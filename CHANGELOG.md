@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-19: Individual provisional RDE inspection and source audit
+- **Signed:** Codex (OpenAI)
+- **Commit:** Add individual RDE inspection and supplier evidence
+- **What changed:** Two unit focus/isolation targets under original part09; independent
+  casing/cover/mount/interface groups. Geometry, materials and installed coordinates unchanged.
+  Expandable detail cites AAC current-sensor supply and APL WBG abstract; no flight casing claim.
+- **Evidence:** Saved original AAC page, retained real CAPS test photo and identified CAD,
+  real/CAD/actual-model comparison and access/reuse audit. Related X-57 is not copied.
+- **Assumptions:** Existing provisional enclosure dimensions/appearance/install remain EST;
+  hidden electronics are unmodeled.09unchecked,20/24 unchanged. No physics or game edits.
+- **Archive:** Exact prior module/UI/test, fresh pictures/mesh manifest; recovery tag
+  `archive/rde-inspection-2026-10-19` on7ab195e. No shape drafts created/discarded.
+- **Checks:** 386 tests pass, including7RDE tests; exact archived mesh/material/pose comparison,
+  rebuilt-neighbor clearances. Real Edge18selector/layer/width checks at1440/390/360,
+  cover hide/restore, Pilot return and raw nonblank/framing checks pass; no page errors.
+- **Open / next:** Resolve actual RDE appearance/scale before checking off09.03/20/21 also
+  open. Public release acceptance follows deployment; local pictures are not live proof.
+
 ### 2026-10-19: Add public original/polished Scout inspection links
 - **Signed:** Codex (OpenAI)
 - **Commit:** Add original and polished Scout lab comparison

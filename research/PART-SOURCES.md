@@ -6,6 +6,11 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part09 latest:** [inspection/evidence audit and real/CAD/model comparison](rde-inspection-2026-10-19/README.md).
+Saved AAC announcement and credited supplier/workshop links are in
+[`sources/rde-supplier-2026`](sources/rde-supplier-2026/README.md). No clearer flight casing
+photo found; two old estimated boxes now individually inspectable.09unchecked/count20unchanged.
+
 **Part-05 additional research:**
 The [latest approved outer-structure pass](ocellus-outer-structure-2026-10-19/README.md)
 completes the initial pass as an explicit approximation, not flight photo verification.
@@ -23,6 +28,7 @@ scanner vendor, installed routing and completed housing remain unresolved; no mo
 
 | Folder | Source | Pages saved | Used by |
 |---|---|---|---|
+| [`sources/rde-supplier-2026`](sources/rde-supplier-2026/README.md) | AAC2023, APL G-RADNEXT2026, TT Electronics2026 | AAC original single page image; primary text links/access audit |09 research only; not enclosure appearance, board layout or final flight dimensions |
 | [`sources/ti-lmp7704-evaluation`](sources/ti-lmp7704-evaluation/README.md) | Texas Instruments LMP7704-SP datasheet, Sept2026 package addendum | Original PDF p26 | 05 source audit only: matches EVAL ONLY IC marking in related SQRLi image; NOT a flight PCB model |
 | [`sources/ocellus-cross-project-lineage`](sources/ocellus-cross-project-lineage/README.md) | NASA IGARSS2020 / SpaceCube2019 / GSFC fiber optics / NEPP2024 / Ocellus technology sheet; DIAMOND and Optotune | 9 original page images + 1 original supplier JPG, all visually inspected | 05 research only: real family references vs identified CAD and unverified leads; no exact Ocellus internal-layout claim |
 | [`sources/nasa-sqrli2024-review`](sources/nasa-sqrli2024-review/README.md) | Nathaniel Gill, NASA/GSFC GCD annual review, NTRS20240010518 | Complete original slides1/4 and embedded hardware/CAD images | 05 reuse evidence; different FEB, no Ocellus flight-photo substitution |

@@ -7,7 +7,19 @@ Battery pass finished and Codex's RDE pass reviewed October 15, 2026 by Claude (
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: Part 05 Approved Initial Pass Complete
+## Resume Here: Part 09 Inspection / Evidence Audit
+
+October19 Codex continuation: [current evidence, comparison, tests and handoff](research/rde-inspection-2026-10-19/README.md).
+Both provisional controllers are separately selectable; each retains casing/cover/mount/
+interface groups. Exact mesh vertices/materials/installed poses preserved against archived
+baseline. AAC current-sensor and APL WBG references added, no hidden boards invented.
+Real CAPS photo remains obscured; related-project X-57 is NOT evidence of hardware reuse.
+Part09 stays unchecked; **20/24 (5 Codex / 15 Claude)** unchanged. No physics/game edits.
+386 full tests pass; real Edge18viewport/layer/selector cases and raw-pixel framing checks
+pass, plus cover hide/restore and Pilot return. Archive/tag7ab195e retained. Public release
+status recorded after deployment, not inferred from local captures. Remaining03,09,20,21.
+
+## Previous Checkpoint: Part 05 Approved Initial Pass Complete
 
 **Newest owner reply:** "same as last 2 parts" to the explicit choice between a labeled
 outer-structure approximation and waiting for exact photos. Proceeded with the approved
