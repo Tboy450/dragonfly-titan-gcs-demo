@@ -331,6 +331,20 @@ complete solely because its assets download or its unit tests pass.
   Clean view hides mission panels, minimap, toasts and battlefield labels. A small restore
   button remains; V toggles and Escape restores the HUD. Drop controls/mission end restore
   the HUD; camera controls remain available. V preserves the existing R/F pitch controls.
+- [x] **CTRL-14 ★ (P2) — Claude (October 21)** Free camera (owner: "a free camera there we can
+  move up and down freely would be nice"). **Free cam · C** under the minimap switches between
+  the orbit camera and a camera that flies anywhere (`free-camera.mjs`):
+  - Keys: W A S D fly, R/F or Page Up/Down rise and fall, Q/E turn, Z/X look up and down,
+    Shift faster.
+  - Mouse: the wheel rises and falls, right-drag looks, left-drag slides.
+  - Touch: one finger slides; two fingers spread to fly forward and twist to turn. On-screen
+    ▲ ▼ ◠ ◡ buttons rise, fall and look.
+  - Speed grows with height. The camera stays over the map, above the ground and roofs,
+    below 2.5 km, and out of buildings once the city is found.
+  - Tapping still gives orders, and the minimap still jumps the view. Leaving returns to
+    orbiting the point ahead. Free view isn't saved with a mission.
+  - Evidence: `tests/invasion-free-camera.test.mjs`. Browser: street level in Corvan Prime;
+    R rose 45 m and W flew 46 m in one second of frames.
 
 ## 4. Economy and progression (ECON)
 
@@ -922,8 +936,12 @@ These extend FIX-02/FIX-03; new cities cannot rely on decorative geometry for ga
       the way.
     - Tested: cover, getting hit in the open, an attack order finding a clear line, and
       down-the-street and over-the-roof lines. A 56-drone city fight costs under 1 ms per step.
-    - Still open: showing the player why a shot is blocked, bridges and multi-level surfaces,
-      and terrain (hills) blocking sight.
+    - Later the same day:
+      - On frontier maps, ridges and hills block sight too (the line is sampled every ~30 m;
+        campaign maps unchanged).
+      - A selected drone's attack target gets a faint line when it can fire, and a dashed red
+        one with "No clear shot" while blocked.
+    - Still open: bridges and multi-level surfaces (none in the game yet).
 - [ ] **COMBAT-04 (P2)** Make squad intent legible: target/retarget cue, movement destination,
   attack range and stop/disengage feedback. Show jammer/shield coverage and why a capture or
   weapon is blocked. Coordinate FIX-05, CTRL-06 and CTRL-07 rather than duplicating controls.

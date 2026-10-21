@@ -217,6 +217,20 @@ test("Ashfall Frontier: a lava-veined valley among volcanoes holds a forge city 
   assert.equal(validMissionCheckpoint({ ...saved, battle: { ...saved.battle, landform: { ...map.landform, volcanoes: 99 } } }), null);
 });
 
+test("On frontier maps ridges block line of sight; the valley floor does not; campaign maps are unchanged", () => {
+  const map = planetById("corvan-frontier"), terrain = createPlanetTerrain(map);
+  let peak = null;
+  for (let x = -2800; x <= 2800; x += 100) for (let z = -2800; z <= 2800; z += 100) {
+    const h = terrain.heightAt(x, z);
+    if (!peak || h > peak.h) peak = { x, z, h };
+  }
+  assert.equal(terrain.lineBlocked(peak.x - 120, peak.z, 1.6, peak.x + 120, peak.z, 1.6), true, "across the highest peak");
+  assert.equal(terrain.lineBlocked(peak.x - 120, peak.z, peak.h + 20, peak.x + 120, peak.z, peak.h + 20), false, "high above it");
+  const { x, z } = map.landform;
+  assert.equal(terrain.lineBlocked(x, z, 4, x + 120, z - 60, 22.6), false, "a gun and a drone across the valley floor");
+  assert.equal(createPlanetTerrain(planetById("corvan")).lineBlocked, undefined, "campaign Corvan has no sight checks");
+});
+
 test("Buildings block line of sight: cover from city defenses, and an attack order closes in", () => {
   const city = createCityLayout(spec), queries = cityQueries(city);
   const tall = city.buildings.reduce((best, b) => (b.height > best.height ? b : best));

@@ -12,6 +12,7 @@ import { droneModels, figureModel, interceptorModel, structureModels, buildingMo
 import { projectedDiameter } from './drone-markers.mjs?v=dev';
 import { buildCity } from './city-render.mjs?v=dev';
 import { cityFound, hiddenUnits } from "./battle.mjs?v=dev";
+import { freeTarget } from "./free-camera.mjs?v=dev";
 
 export const swarmColor = "#7ce7ff";
 export const nativeColor = "#ff8a4a";
@@ -899,8 +900,19 @@ export function createInvasionScene(canvas, options = {}) {
     camera.updateProjectionMatrix();
   }
 
-  // view: { focus: {x, z}, distance, yaw, pitch }
+  // view: { focus: {x, z}, distance, yaw, pitch }, or with free: { x, y, z, yaw, pitch } a free
+  // camera (free-camera.mjs) placed and aimed directly.
   function setCamera(view) {
+    if (view.free) {
+      const f = view.free, look = freeTarget(f), ground = terrain ? terrain.heightAt(look.x, look.z) : 0;
+      camera.position.set(f.x, f.y, f.z);
+      camera.lookAt(look.x, look.y, look.z);
+      camera.updateMatrixWorld();
+      sun.position.set(look.x - 300, ground + 500, look.z - 200);
+      sun.target.position.set(look.x, ground, look.z);
+      if (titan?.group.visible) titan.update(look.x, look.z);
+      return;
+    }
     const ground = terrain ? terrain.heightAt(view.focus.x, view.focus.z) : 0;
     const horizontal = Math.cos(view.pitch) * view.distance;
     camera.position.set(view.focus.x + Math.sin(view.yaw) * horizontal, ground + Math.sin(view.pitch) * view.distance, view.focus.z + Math.cos(view.yaw) * horizontal);

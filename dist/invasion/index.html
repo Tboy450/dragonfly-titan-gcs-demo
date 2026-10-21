@@ -78,6 +78,7 @@
       <div id="minimap-panel">
         <canvas id="minimap" aria-label="Minimap: tap to move the view; right-click to order selected squads"></canvas>
         <button id="minimap-mode" type="button" aria-pressed="false" title="Switch minimap taps between moving the view and ordering squads">Map: View</button>
+        <button id="free-camera" type="button" aria-pressed="false" title="Free camera: fly anywhere. W A S D move, R/F or the wheel up and down, Q/E turn, Z/X look, Shift faster, right-drag to look (C)">Free cam · C</button>
       </div>
       <div class="hud-bottom">
         <div id="squad-bar" class="squad-bar" role="toolbar" aria-label="Squads"></div>
@@ -99,6 +100,12 @@
       </div>
       <div id="placement-hint" class="placement-hint" hidden><span id="placement-text">Tap a held zone to preview its pod courts.</span> <button id="placement-launch" type="button" disabled>Launch here</button> <button id="placement-cancel" type="button">Cancel</button></div>
       <button id="clean-view-button" class="clean-view-button" type="button" aria-pressed="false" title="Hide panels and labels (V)">Clean view · V</button>
+      <div id="free-controls" class="free-controls" role="group" aria-label="Free camera" hidden>
+        <button type="button" data-free="up" aria-label="Fly up" title="Fly up (R)">▲</button>
+        <button type="button" data-free="lookup" aria-label="Look up" title="Look up (Z)">◠</button>
+        <button type="button" data-free="down" aria-label="Fly down" title="Fly down (F)">▼</button>
+        <button type="button" data-free="lookdown" aria-label="Look down" title="Look down (X)">◡</button>
+      </div>
       <div id="toasts" class="toasts" aria-live="polite"></div>
     </section>
 

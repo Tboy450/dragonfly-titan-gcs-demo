@@ -39,6 +39,38 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Swarmfall free camera, ridges blocking sight, blocked-shot lines
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a free camera, ridge line of sight and blocked-shot lines"
+- **What changed:**
+  - **Free camera** (the owner asked for one that moves up and down freely). **Free cam · C**
+    under the minimap switches between the orbit camera and a camera that flies anywhere:
+    - Keys: W A S D fly, R/F or Page Up/Down rise and fall, Q/E turn, Z/X look up and down,
+      Shift faster.
+    - Mouse: the wheel rises and falls, right-drag looks around.
+    - Touch: spread or twist two fingers. Phones get ▲ ▼ ◠ ◡ buttons.
+    - It stays above the ground and roofs and out of buildings once the city is found. Speed
+      grows with height.
+    - Tapping still gives orders, and leaving returns to orbiting the point ahead.
+  - **Ridges block sight** on frontier maps: direct fire across a mountain is blocked.
+    Campaign maps are unchanged.
+  - **Blocked shots are visible:** a selected drone's attack target gets a faint line when it
+    can fire, and a dashed red one with "No clear shot" while a building or ridge is in the way.
+- **Assumptions:** Camera speeds and limits are invented [EST]. Ground sight is sampled every
+  ~30 m and ignores lines under 40 m.
+- **Files:** `dist/invasion/free-camera.mjs` (new), `scene.mjs`, `main.mjs`, `index.html`,
+  `invasion.css`, `battle.mjs` (`shotBlocked`), `planet-terrain.mjs` (ground sight),
+  `tests/invasion-free-camera.test.mjs` (new), `tests/invasion-city.test.mjs`,
+  `SWARMFALL-TODO.md` (CTRL-14, COMBAT-03), `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (446 pass). Browser:
+  - The free camera at street level in Corvan Prime, looking up between towers.
+  - The C key and the button both toggle it, and the phone buttons appear.
+  - R and W moved it 45 m in one second of frames.
+  - No console errors.
+  The wheel, touch gestures and the blocked-shot line weren't driven in the browser (the
+  pane was in the background).
+- **Open / next:** Try the free camera on a real phone; camera speed settings (CTRL-10).
+
 ### 2026-10-21: Record fin-root sensor public acceptance
 - **Signed:** Codex (OpenAI)
 - **Commit:** Record fin-root public acceptance [skip ci]

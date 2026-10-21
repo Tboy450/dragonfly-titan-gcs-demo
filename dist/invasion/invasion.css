@@ -114,6 +114,11 @@ a { color: var(--swarm); }
 #minimap { display: block; width: 100%; height: 150px; border: 1px solid var(--line); border-radius: 8px; background: rgba(6, 8, 16, 0.7); cursor: pointer; touch-action: none; }
 #minimap-mode { width: 100%; min-height: 40px; margin-top: 4px; padding: 5px 3px; font-size: 11px; }
 #minimap-mode[aria-pressed="true"] { border-color: var(--swarm); color: var(--swarm); }
+#free-camera { width: 100%; min-height: 36px; margin-top: 4px; padding: 4px 3px; font-size: 11px; }
+#free-camera[aria-pressed="true"] { border-color: var(--swarm); color: var(--swarm); }
+.free-controls { position: absolute; left: 10px; bottom: 72px; z-index: 8; display: grid; grid-template-columns: repeat(2, 48px); gap: 6px; }
+.free-controls[hidden] { display: none; }
+.free-controls button { min-height: 48px; padding: 0; font-size: 18px; touch-action: none; opacity: 0.9; }
 
 .hud-bottom { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; gap: 10px; padding: 8px 10px; padding-bottom: max(8px, env(safe-area-inset-bottom)); background: linear-gradient(0deg, rgba(4, 6, 14, 0.85), rgba(4, 6, 14, 0)); pointer-events: none; }
 .hud-bottom > * { pointer-events: auto; }

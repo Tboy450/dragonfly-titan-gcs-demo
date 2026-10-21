@@ -133,6 +133,8 @@ export function createPlanetTerrain(planet) {
     terrain.landformSpec = planet.landform;
     // Zone sites keep to the valley floor, the beacon's basin, the pass and low foothills.
     terrain.siteOK = (x, z) => landform.mountain(x, z) < 0.3;
+    // Ridges and hills block direct fire on these rough maps.
+    terrain.lineBlocked = groundSight(terrain);
   }
   if (planet.city) attachCity(terrain, planet.city, raw, liquid);
   return terrain;
@@ -232,9 +234,27 @@ function attachCity(terrain, spec, raw, liquid) {
   terrain.canDropAt = (x, z, { radius = 6 } = {}) => queries.clearAt(x, z, radius + 1);
   // Line of sight between two points given as heights above their own ground (a drone's
   // altitude, a gun's mount): buildings in between block it.
+  const ground = terrain.lineBlocked;
   terrain.lineBlocked = (ax, az, ah, bx, bz, bh) => {
+    if (ground?.(ax, az, ah, bx, bz, bh)) return true;
     const { minX, maxX, minZ, maxZ } = city.bounds;
     if (Math.max(ax, bx) < minX || Math.min(ax, bx) > maxX || Math.max(az, bz) < minZ || Math.min(az, bz) > maxZ) return false;
     return queries.lineBlocked(ax, az, terrain.heightAt(ax, az) + ah - level, bx, bz, terrain.heightAt(bx, bz) + bh - level);
+  };
+}
+
+// Line of sight over rough ground (frontier landforms): the line is sampled every ~30 m and is
+// blocked where the ground rises above it. Short lines (under 40 m) are never blocked by ground.
+function groundSight(terrain) {
+  return (ax, az, ah, bx, bz, bh) => {
+    const length = Math.hypot(bx - ax, bz - az);
+    if (length < 40) return false;
+    const ya = terrain.heightAt(ax, az) + ah, yb = terrain.heightAt(bx, bz) + bh;
+    const steps = Math.min(8, Math.floor(length / 30));
+    for (let k = 1; k <= steps; k += 1) {
+      const t = k / (steps + 1);
+      if (terrain.heightAt(ax + (bx - ax) * t, az + (bz - az) * t) > ya + (yb - ya) * t + 0.5) return true;
+    }
+    return false;
   };
 }
