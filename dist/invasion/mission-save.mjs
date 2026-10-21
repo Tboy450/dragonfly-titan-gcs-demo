@@ -152,7 +152,8 @@ function validWorld(b) {
       && point(city) && integer(city.blocks, 3, 21) && city.blocks % 2 === 1 && between(city.pitch, 30, 400)
       && between(city.street, 2, city.pitch / 2) && integer(city.seed, 0, 0xffffffff) && between(city.peak, 9, 1000)))) return false;
   return land === null || land.kind === "valley" && point(land) && between(land.length, 50, 1e5) && between(land.width, 50, 1e5)
-    && between(land.angle ?? 0, -10, 10) && between(land.floor ?? 0, -1000, 1000) && between(land.rim ?? 500, 10, 1e4) && between(land.peak ?? 400, 0, 5000);
+    && between(land.angle ?? 0, -10, 10) && between(land.floor ?? 0, -1000, 1000) && between(land.rim ?? 500, 10, 1e4) && between(land.peak ?? 400, 0, 5000)
+    && between(land.lava ?? 0, 0, 1) && integer(land.volcanoes ?? 0, 0, 8);
 }
 
 function migrateCheckpoint(value) {

@@ -7,6 +7,11 @@
 // landing courts) and park blocks hold trees; every other block is split into lots, each with a
 // building whose height falls off from the center. Buildings are axis-aligned boxes stacked in
 // tiers (setbacks); collision uses each building's full footprint up to its top.
+//
+// Styles: "metropolis" (the default, above) and "forge", an industrial city of foundry halls,
+// smokestacks and cooling towers (forgeBlock). Forge buildings carry a kind ("hall", "stack" or
+// "tower") for the renderer; metropolis buildings have none. A new style must never change the
+// random sequence of an existing one, or saved cities would move.
 
 export const CITY_LAYOUT_VERSION = 1;
 
@@ -56,6 +61,7 @@ export function createCityLayout(spec) {
       continue;
     }
     if (parkCells.has(key)) { parks.push({ id: `park-${parks.length}`, x: bx, z: bz, size: block }); continue; }
+    if (style === "forge") { forgeBlock(buildings, rand, { bx, bz, block, distance: Math.hypot(bx - x, bz - z) / half, style, peak }); continue; }
     const distance = Math.hypot(bx - x, bz - z) / half;      // 0 at the center, ~1.4 at a corner
     const ring = distance < 0.45 ? 0 : distance < 0.85 ? 1 : 2;
     const pattern = LOT_PATTERNS[Math.floor(rand() * LOT_PATTERNS.length) % LOT_PATTERNS.length];
@@ -93,6 +99,52 @@ export function createCityLayout(spec) {
     bounds: { minX: x - half, maxX: x + half, minZ: z - half, maxZ: z + half },
     plazas, parks, buildings, streets, blocks: blockList,
   };
+}
+
+// A forge city block [EST]: now and then one cooling tower; otherwise one or two foundry halls,
+// with one to three smokestacks standing inside their footprints and rising far above the roofs
+// (stack heights scale with the city's peak), so drones climb over the stacks, not the halls.
+const FORGE_LOTS = [
+  [[0, 0, 1, 1]],
+  [[-0.25, 0, 0.5, 1], [0.25, 0, 0.5, 1]],
+  [[0, -0.25, 1, 0.5], [0, 0.25, 1, 0.5]],
+];
+const FORGE_FACADES = ["brick", "concrete", "deco"];
+
+function forgeBlock(buildings, rand, { bx, bz, block, distance, style, peak }) {
+  const add = (building) => buildings.push({
+    id: `${style}-b${buildings.length}`, ...building,
+    tiers: [{ w: building.w, d: building.d, y: 0, h: building.height }],
+  });
+  if (rand() < 0.16) {
+    const r = 20 + rand() * 7, room = block - 2 * r - 4;
+    add({ kind: "tower", x: bx + (rand() - 0.5) * room, z: bz + (rand() - 0.5) * room, w: r * 2, d: r * 2, height: 55 + rand() * 25, facade: "concrete", variant: 1 });
+    return;
+  }
+  const halls = [];
+  for (const [ox, oz, fw, fd] of FORGE_LOTS[Math.floor(rand() * FORGE_LOTS.length) % FORGE_LOTS.length]) {
+    const lotW = block * fw - 4, lotD = block * fd - 4;
+    const w = lotW * (0.72 + rand() * 0.22), d = lotD * (0.72 + rand() * 0.22);
+    const hall = {
+      kind: "hall", x: bx + ox * block + (rand() - 0.5) * (lotW - w), z: bz + oz * block + (rand() - 0.5) * (lotD - d), w, d,
+      height: (12 + rand() * 20) * (1.2 - 0.4 * Math.min(1, distance)),
+      facade: FORGE_FACADES[Math.floor(rand() * FORGE_FACADES.length) % FORGE_FACADES.length], variant: 1 + Math.floor(rand() * 3),
+    };
+    halls.push(hall);
+    add(hall);
+  }
+  const stacks = [];
+  for (let k = 0, n = 1 + Math.floor(rand() * 2.2); k < n; k += 1) {
+    const hall = halls[Math.floor(rand() * halls.length) % halls.length], r = 2.5 + rand() * 2;
+    const stack = {
+      kind: "stack", x: hall.x + (rand() - 0.5) * (hall.w - 2 * r - 2), z: hall.z + (rand() - 0.5) * (hall.d - 2 * r - 2),
+      w: r * 2, d: r * 2, height: peak * (0.45 + rand() * 0.4), facade: "brick", variant: 1,
+    };
+    // Stacks keep at least 4 m apart.
+    if (stacks.some(other => Math.max(Math.abs(other.x - stack.x) - (other.w + stack.w) / 2, Math.abs(other.z - stack.z) - (other.d + stack.d) / 2) < 4)) continue;
+    stacks.push(stack);
+    add(stack);
+  }
 }
 
 // Fast spatial queries over a layout's buildings (25 m buckets).

@@ -127,6 +127,20 @@ export const frontiers = Object.freeze([
       { id: "weather", kind: "noHazardLosses", text: "Lose no drones to the blizzard" },
     ],
   },
+  {
+    id: "ashfall-frontier", frontier: true, base: "ashfall", name: "Ashfall Frontier", subtitle: "Volcanic world · large map",
+    supply: 750, kit: { unlocks: ["scout", "link", "striker"], podSlots: 16 },
+    society: 3, threat: 4, biome: "volcanic", hazards: ["eruption", "ashCloud"], color: "#e0553a",
+    description: "Black basalt ridges and smoking volcanoes around a long valley veined with lava. Forgeholm, a foundry city of halls, smokestacks and cooling towers, works the far end of it; the Hive beacon lands in a basin beyond the ridges. Stacks force your drones to climb, eruptions are announced a few seconds before they blow, and flak guns, watchtowers and radar guard the halls.",
+    map: { centerX: 0, centerZ: 0, half: 3000, view: 1800, fog: 0.00045 },
+    landform: { kind: "valley", x: -500, z: -700, length: 2300, width: 1150, angle: -0.6, floor: 4, rim: 480, peak: 460, lava: 1, volcanoes: 3 },
+    city: { name: "Forgeholm", style: "forge", x: 280, z: -1240, blocks: 9, pitch: 100, street: 20, seed: 4441, peak: 110 },
+    zoneCount: 9, required: 6, seed: 4441, explore: true,
+    objectives: [
+      { id: "weather", kind: "noHazardLosses", text: "Lose no drones to eruptions or ash" },
+      { id: "losses", kind: "maxLosses", value: 40, text: "Lose 40 drones or fewer" },
+    ],
+  },
 ].map(Object.freeze));
 
 export const planetById = (id) => planets.find(planet => planet.id === id) || frontiers.find(map => map.id === id) || null;

@@ -2,7 +2,9 @@
 // parks, and every building as merged facade boxes in tiers, with rooftop gear. Uses the
 // Environment Lab's kit (procedural facades, no downloads), sized for phones: buildings merge into
 // one mesh per facade style. The same layout drives the rules, so what you see is what blocks.
-import { THREE, rng, Batches, Massing, paint, unitBox, unitCylinder, unitCone } from "./environments/kit/core.mjs?v=dev";
+// A forge city (style "forge") is drawn by buildForge, after the lab's forge world.
+// group.userData.update(time), when present, animates the city (smoke); the scene calls it.
+import { THREE, rng, Batches, Massing, paint, unitBox, unitCylinder, unitCone, lathe, shape } from "./environments/kit/core.mjs?v=dev";
 import { facadeMaterials, roofMaterial, groundPatch, tree } from "./environments/kit/scenery.mjs?v=dev";
 
 const TILE = { residential: [9, 9], brick: [10, 12], deco: [10, 12] };
@@ -11,6 +13,7 @@ export function buildCity(parent, city, { high = true } = {}) {
   const group = new THREE.Group();
   group.name = "City";
   parent.add(group);
+  if (city.style === "forge") return buildForge(group, city, high);
   const y0 = city.ground, random = rng(city.seed * 31 + 7);
   const span = city.half * 2;
   // Sidewalk slab under everything, asphalt streets, paved squares and grassy parks on top.
@@ -45,5 +48,82 @@ export function buildCity(parent, city, { high = true } = {}) {
   }
   massing.build(group, wallMaterials, { roof: roofMaterial("#6e6c66"), default: roofMaterial("#6e6c66") });
   details.finish();
+  return group;
+}
+
+function streetsAndSquares(group, city, slab, squares) {
+  const y0 = city.ground;
+  groundPatch(group, slab, city.x, city.z, city.half * 2 + 24, city.half * 2 + 24, y0 + 0.04, 14);
+  for (const street of city.streets) {
+    const along = street.x1 === street.x2;
+    groundPatch(group, "asphalt", (street.x1 + street.x2) / 2, (street.z1 + street.z2) / 2,
+      along ? street.width : Math.abs(street.x2 - street.x1) + street.width, along ? Math.abs(street.z2 - street.z1) + street.width : street.width, y0 + 0.08, 20);
+  }
+  for (const plaza of city.plazas) groundPatch(group, squares, plaza.x, plaza.z, city.block, city.block, y0 + 0.12, 6);
+}
+
+// A forge city: brick and concrete foundry halls with ridge roofs and glowing furnace doors,
+// banded smokestacks and cooling towers trailing smoke, and slag yards with ore heaps, on
+// basalt paving. Built from the lab's forge world recipe (environments/worlds/forge.mjs).
+function buildForge(group, city, high) {
+  const y0 = city.ground, random = rng(city.seed * 31 + 7);
+  streetsAndSquares(group, city, "basalt", "cobble");
+  const parts = new Batches(group, { shadows: false });
+  const soot = paint(0x2a2624, { rough: 0.9 }), rust = paint(0x7a3f26, { metal: 0.4, rough: 0.7 }), band = paint(0xd8d2c8);
+  const concrete = paint(0x8f8a84, { rough: 0.9, side: THREE.DoubleSide }), ore = paint(0x5a4636, { rough: 1, flat: true }), furnace = paint(0xff8a3a, { glow: 1.6 });
+  const ridge = shape("ridge-roof", () => new THREE.CylinderGeometry(1, 1, 1, 3, 1).rotateZ(Math.PI / 2).rotateX(Math.PI / 6).translate(0, 0.5, 0));
+  const tower = lathe("cooling-tower", [[1, 0], [0.72, 0.55], [0.66, 0.75], [0.74, 1]], 40);
+  for (const yard of city.parks) {
+    groundPatch(group, "regolith", yard.x, yard.z, yard.size, yard.size, y0 + 0.12, 12);
+    for (let k = 0; k < (high ? 14 : 7); k += 1) {
+      const s = 4 + random() * 6;
+      parts.put(unitCone(10), ore, yard.x + (random() - 0.5) * yard.size * 0.8, y0, yard.z + (random() - 0.5) * yard.size * 0.8, random() * 3, s, s * 0.6, s);
+    }
+  }
+  const massing = new Massing(), wallMaterials = {}, tops = [];
+  for (const b of city.buildings) {
+    if (b.kind === "stack") {
+      parts.put(unitCylinder(16), rust, b.x, y0, b.z, 0, b.w / 2, b.height, b.d / 2);
+      for (let f = 0.35; f < 1; f += 0.25) parts.put(unitCylinder(16), band, b.x, y0 + b.height * f, b.z, 0, b.w / 2 + 0.4, 2, b.d / 2 + 0.4);
+      parts.put(unitCylinder(16), soot, b.x, y0 + b.height - 3, b.z, 0, b.w / 2 + 0.3, 3, b.d / 2 + 0.3);
+      tops.push({ x: b.x, y: y0 + b.height, z: b.z, size: 9 });
+    } else if (b.kind === "tower") {
+      parts.put(tower, concrete, b.x, y0, b.z, 0, b.w / 2, b.height, b.d / 2);
+      tops.push({ x: b.x, y: y0 + b.height, z: b.z, size: b.w * 0.7 });
+    } else {
+      const key = `${b.facade}/${b.variant}`;
+      wallMaterials[key] ??= facadeMaterials(b.facade, b.variant).day;
+      massing.box(key, "roof", b.x, y0, b.z, b.w, b.height, b.d, 0, TILE[b.facade] || [12, 12]);
+      const along = b.w >= b.d;
+      parts.put(ridge, soot, b.x, y0 + b.height - 0.5, b.z, along ? 0 : Math.PI / 2, (along ? b.w : b.d) * 0.98, 2.5, (along ? b.d : b.w) * 0.5);
+      if (random() < 0.6) parts.put(unitBox(), furnace, b.x + b.w / 2 + 0.1, y0, b.z + (random() - 0.5) * b.d * 0.5, 0, 0.6, 7, 6);
+    }
+  }
+  massing.build(group, wallMaterials, { roof: roofMaterial("#3a3634"), default: roofMaterial("#3a3634") });
+  parts.finish();
+  // Smoke drifting from the tallest stacks and every tower (each puff is a draw call, so few).
+  tops.sort((a, c) => c.size - a.size || c.y - a.y);
+  const smoke = document.createElement("canvas");
+  smoke.width = smoke.height = 64;
+  const ctx = smoke.getContext("2d"), glow = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  glow.addColorStop(0, "rgba(255,255,255,0.75)"); glow.addColorStop(0.6, "rgba(255,255,255,0.25)"); glow.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = glow; ctx.fillRect(0, 0, 64, 64);
+  const map = new THREE.CanvasTexture(smoke), puffs = [];
+  for (const top of tops.slice(0, high ? 22 : 10)) {
+    for (let k = 0; k < 4; k += 1) {
+      const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map, color: 0x3a3330, transparent: true, depthWrite: false }));
+      sprite.userData.ownMaterial = true;
+      group.add(sprite);
+      puffs.push({ sprite, top, phase: k / 4 + random() * 0.1, drift: 0.5 + random() });
+    }
+  }
+  group.userData.update = (time) => {
+    for (const p of puffs) {
+      const u = (time * 0.05 + p.phase) % 1, s = p.top.size + u * 50;
+      p.sprite.position.set(p.top.x + u * 60 * p.drift, p.top.y + u * 80, p.top.z - u * 25);
+      p.sprite.scale.set(s, s, 1);
+      p.sprite.material.opacity = 0.5 * (1 - u);
+    }
+  };
   return group;
 }

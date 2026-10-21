@@ -101,7 +101,7 @@ export function createPlanetTerrain(planet) {
     x: centerX + (hash(i, 1, seed) * 1.6 - 0.8) * half, z: centerZ + (hash(i, 2, seed) * 1.6 - 0.8) * half,
     r: 140 + hash(i, 3, seed) * 80, h: 45 + hash(i, 4, seed) * 35,
   }));
-  const landform = planet.landform ? valleyLandform(planet.landform, seed, beach) : null;
+  const landform = planet.landform ? valleyLandform(planet.landform, seed, beach, { centerX, centerZ, half }) : null;
   const raw = landform ? landform.height : (x, z) => biome.height(x, z, seed, base, cones);
   let pads = [];
   const liquid = biome.liquid;
@@ -163,9 +163,12 @@ const toSegment = (x, z, a, b) => {
 // nearly flat valley (an ellipse `length` x `width` m from its center, turned by `angle`). The
 // Hive beacon sits in a basin of its own, joined to the valley by a lower pass. mountain() is 0
 // on the valley floor, in the basin and 0.15 along the pass, rising to 1 in the mountains over
-// `rim` m with a ragged edge; peaks reach about `peak` m above the `floor` level. Invented [EST].
-function valleyLandform(spec, seed, beach) {
-  const { x: vx, z: vz, length, width, angle = 0, floor = 6, rim = 500, peak = 400 } = spec;
+// `rim` m with a ragged edge; peaks reach about `peak` m above the `floor` level. Options:
+// `lava` (0-1) cuts winding channels into the low ground that fill with the planet's liquid (kept
+// away from the beacon), and `volcanoes` raises that many cratered cones deep in the mountains.
+// Invented [EST].
+function valleyLandform(spec, seed, beach, map) {
+  const { x: vx, z: vz, length, width, angle = 0, floor = 6, rim = 500, peak = 400, lava = 0, volcanoes = 0 } = spec;
   const ca = Math.cos(angle), sa = Math.sin(angle);
   const local = (x, z) => ({ u: (x - vx) * ca + (z - vz) * sa, v: -(x - vx) * sa + (z - vz) * ca });
   // The pass runs from the basin to 200 m inside the valley edge nearest the beacon.
@@ -181,13 +184,30 @@ function valleyLandform(spec, seed, beach) {
     const pass = 0.15 + 0.85 * smooth(110, 420, toSegment(x, z, beach, passEnd) + wobble * 0.4);
     return valley * basin * pass;
   };
+  // Volcano sites: deep in the mountains, apart from each other and from the beacon.
+  const cones = [];
+  for (let i = 0; cones.length < volcanoes && i < 400; i += 1) {
+    const x = map.centerX + (hash(i, 7, seed) * 1.8 - 0.9) * map.half, z = map.centerZ + (hash(i, 8, seed) * 1.8 - 0.9) * map.half;
+    const r = 300 + hash(i, 9, seed) * 120;
+    if (mountain(x, z) < 0.95 || Math.hypot(x - beach.x, z - beach.z) < 900 || cones.some(c => Math.hypot(c.x - x, c.z - z) < 1000)) continue;
+    if ([0, 1, 2, 3].some(k => mountain(x + Math.cos(k * 1.57) * r * 0.9, z + Math.sin(k * 1.57) * r * 0.9) < 0.5)) continue;
+    cones.push({ x, z, r, h: 380 + hash(i, 10, seed) * 170 });
+  }
   const height = (x, z) => {
     const m = mountain(x, z);
-    const ground = floor + (fbm(x / 240, z / 240, seed + 5) - 0.5) * 7 + 0.3 * noise(x / 5, z / 5, seed);
-    if (m <= 0) return ground;
-    return ground + m * (peak * ridged(x / 700, z / 700, seed + 40) + 70 * fbm(x / 160, z / 160, seed + 9));
+    let ground = floor + (fbm(x / 240, z / 240, seed + 5) - 0.5) * 7 + 0.3 * noise(x / 5, z / 5, seed);
+    if (lava > 0) {
+      const channel = 1 - smooth(0.02, 0.07, Math.abs(noise(x / 380, z / 380, seed + 13) * 2 - 1));
+      ground -= lava * 6 * channel * smooth(350, 700, Math.hypot(x - beach.x, z - beach.z));
+    }
+    let h = m <= 0 ? ground : ground + m * (peak * ridged(x / 700, z / 700, seed + 40) + 70 * fbm(x / 160, z / 160, seed + 9));
+    for (const cone of cones) {
+      const r = Math.hypot(x - cone.x, z - cone.z) / cone.r;
+      if (r < 1) h += cone.h * (1 - r) ** 1.6 - (r < 0.16 ? cone.h * 0.3 * (1 - r / 0.16) : 0);
+    }
+    return h;
   };
-  return { height, mountain, passEnd };
+  return { height, mountain, passEnd, cones };
 }
 
 // A planet with a city (planet.city, see city-layout.mjs): the ground is level under the city and

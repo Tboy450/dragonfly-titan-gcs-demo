@@ -679,7 +679,10 @@ export function createInvasionScene(canvas, options = {}) {
   }
 
   function updateZones(b, time) {
-    if (cityGroup) cityGroup.visible = cityFound(b);
+    if (cityGroup) {
+      cityGroup.visible = cityFound(b);
+      if (cityGroup.visible) cityGroup.userData.update?.(time);
+    }
     for (const zone of b.zones) {
       const visual = zoneVisuals.get(zone.id);
       if (!visual) continue;

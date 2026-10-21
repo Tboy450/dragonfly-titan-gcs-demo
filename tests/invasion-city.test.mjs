@@ -164,3 +164,54 @@ test("Corvan battles saved on older maps resume on the world they were played on
   assert.deepEqual([terrain.city.x, terrain.city.z, terrain.city.buildings.length], [80, -120, createCityLayout(first.city).buildings.length]);
   assert.equal(validMissionCheckpoint({ ...firstCity.saved, battle: { ...firstCity.saved.battle, city: { version: 1, seed: 7 } } }), null);
 });
+
+// Saved battles rebuild their city from its spec, so a new style must never move an old city.
+test("Existing metropolis cities are unchanged by later styles", () => {
+  const fingerprint = city => [city.buildings.length, city.buildings.reduce((sum, b) => sum + b.height * 7 + b.x * 3 + b.z + b.w + b.d + b.tiers.length + b.variant, 0).toFixed(6)];
+  const metropolis = { style: "metropolis", blocks: 9, pitch: 100, street: 20, seed: 3109, peak: 150, ground: 0 };
+  assert.deepEqual(fingerprint(createCityLayout({ ...metropolis, x: 1300, z: 100 })), [184, "760667.722123"], "Corvan Prime (Corvan Frontier)");
+  assert.deepEqual(fingerprint(createCityLayout({ ...metropolis, x: 80, z: -120 })), [184, "46747.722123"], "the first Corvan city");
+});
+
+test("A forge city has foundry halls, smokestacks rising through them and cooling towers", () => {
+  const city = createCityLayout({ style: "forge", seed: 4441, x: 0, z: 0, blocks: 9, pitch: 100, street: 20, peak: 110 }), queries = cityQueries(city);
+  const kinds = kind => city.buildings.filter(b => b.kind === kind);
+  assert.ok(kinds("hall").length > 50 && kinds("stack").length > 30 && kinds("tower").length > 3);
+  assert.equal(kinds("hall").length + kinds("stack").length + kinds("tower").length, city.buildings.length);
+  for (const b of city.buildings) {
+    const owner = city.blocks.find(k => Math.abs(b.x - k.x) <= k.size / 2 && Math.abs(b.z - k.z) <= k.size / 2);
+    assert.ok(owner && Math.abs(b.x - owner.x) + b.w / 2 <= owner.size / 2 + 1e-9 && Math.abs(b.z - owner.z) + b.d / 2 <= owner.size / 2 + 1e-9, `${b.id} inside its block`);
+  }
+  for (const stack of kinds("stack")) {
+    assert.ok(kinds("hall").some(h => Math.abs(stack.x - h.x) + stack.w / 2 <= h.w / 2 + 1e-9 && Math.abs(stack.z - h.z) + stack.d / 2 <= h.d / 2 + 1e-9), `${stack.id} stands inside a hall`);
+    assert.ok(stack.height > 45 && queries.roofAt(stack.x, stack.z) === stack.height, "drones climb over the stack");
+  }
+  for (const plaza of city.plazas) assert.ok(queries.clearAt(plaza.x, plaza.z, plaza.radius - 1));
+  for (const yard of city.parks) assert.ok(queries.clearAt(yard.x, yard.z, yard.size / 2 - 1));
+});
+
+test("Ashfall Frontier: a lava-veined valley among volcanoes holds a forge city far from the beacon", () => {
+  const map = planetById("ashfall-frontier"), terrain = createPlanetTerrain(map), city = terrain.city;
+  assert.ok(map.frontier && city.style === "forge" && city.buildings.length > 100);
+  const b = createBattle(map, { terrain, ...missionSupply(createProgress(), map) });
+  const home = b.zones.find(zone => zone.kind === "beachhead");
+  assert.ok(Math.hypot(home.x - city.x, home.z - city.z) > 3000);
+  assert.ok(terrain.isLand(home.x, home.z) && terrain.isLand(city.x, city.z) && city.ground > terrain.liquid + 1);
+  for (const zone of b.zones) assert.ok(terrain.isLand(zone.x, zone.z), `${zone.name} is on solid ground`);
+  for (const zone of b.zones.filter(zone => !zone.urban && zone.kind !== "beachhead")) assert.ok(terrain.siteOK(zone.x, zone.z));
+  let lava = 0, highest = -Infinity;
+  for (let x = -3000; x <= 3000; x += 50) for (let z = -3000; z <= 3000; z += 50) {
+    if (!terrain.isLand(x, z)) lava += 1;
+    highest = Math.max(highest, terrain.heightAt(x, z));
+  }
+  assert.ok(lava > 100, "lava channels cross the low ground");
+  assert.ok(highest > map.landform.floor + 600, `volcanoes reach ${highest.toFixed(0)} m`);
+  const stack = city.buildings.find(building => building.kind === "stack");
+  assert.ok(terrain.roofAt(stack.x, stack.z) >= stack.height && !terrain.walkable(stack.x, stack.z));
+  const saved = JSON.parse(JSON.stringify(missionCheckpoint({ battle: b, cam })));
+  assert.deepEqual(saved.battle.landform, map.landform);
+  const rebuilt = createPlanetTerrain(checkpointPlanet(saved));
+  assert.ok(restoreMissionCheckpoint(saved, rebuilt));
+  for (const [x, z] of [[home.x, home.z], [stack.x, stack.z], [-1325, -651], [1500, -2500]]) assert.equal(rebuilt.heightAt(x, z), terrain.heightAt(x, z));
+  assert.equal(validMissionCheckpoint({ ...saved, battle: { ...saved.battle, landform: { ...map.landform, volcanoes: 99 } } }), null);
+});

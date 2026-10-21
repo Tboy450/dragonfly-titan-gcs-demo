@@ -465,8 +465,19 @@ Free mode (★ owner: "eventually a free mode with a universe or galaxy to pick 
       hides what lies kilometers away.
     - Supply: 650 matter. At least Scout, Link and Striker, and 16 wave slots.
     - Results count toward statistics and achievements, never the campaign bank or conquests.
+  - **Done (Claude, October 21, later):** **Ashfall Frontier**, the second map:
+    - A 6 km volcanic map. Black ridged mountains with three cratered volcano cones up to
+      about 810 m.
+    - A 4.6 km valley veined with lava channels (about 2% of the map). Channels stay away from
+      the beacon, and zones are only placed on solid ground.
+    - **Forgeholm**, about 4 km from the beacon, uses the new forge city style
+      (`city-layout.mjs` "forge"): foundry halls with glowing furnace doors, 1-3 banded
+      smokestacks per block rising 50-95 m through the hall roofs (drones climb over them),
+      cooling towers, slag yards with ore heaps, and smoke from the tallest stacks.
+    - Supply: 750 matter, threat 4, eruptions and ash. Existing metropolis cities are proven
+      unchanged by a fingerprint test.
   - **Still to do:**
-    - More frontier maps (market town, forge city, Skyway for Aurex).
+    - More frontier maps (walled market town, Skyway for Aurex).
     - Owner playtest of distances and balance. Forward drops need a captured outpost.
     - A frontier record (best time, stars), which needs a progress-save field.
     - Overlap with ROAM-01/02 (free roam) to settle with the owner.

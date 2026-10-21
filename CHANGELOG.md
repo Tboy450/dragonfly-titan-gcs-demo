@@ -39,6 +39,40 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Swarmfall Ashfall Frontier and the forge city style
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add Ashfall Frontier with the forge city Forgeholm"
+- **What changed:** The second Frontier map, from the checklist's next step (MODE-22).
+  - **Ashfall Frontier:**
+    - A 6 km volcanic map with black ridged mountains and three cratered volcano cones up to
+      about 810 m.
+    - A 4.6 km valley veined with lava channels, which stay away from the beacon.
+    - The Hive beacon lands in a basin of its own.
+    - Forgeholm is about 4 km away at the valley's far end, hidden until scouted.
+    - Threat 4, with eruptions and ash. Supply: 750 matter.
+  - **Forge city style** (`city-layout.mjs`, drawn in `city-render.mjs` after the lab's forge
+    world):
+    - Foundry halls with glowing furnace doors.
+    - Smokestacks rising 50-95 m through the hall roofs, so drones must climb over them.
+    - Cooling towers, and slag yards with ore heaps.
+    - Smoke from the tallest stacks and every tower.
+  - **Landform options:** `lava` (channels) and `volcanoes` (cones). Checkpoints record and
+    validate both.
+- **Assumptions:** All sizes, heights, the 9-zone / 6-required balance and the supply are
+  invented gameplay choices [EST]. Not yet playtested.
+- **Files:** `dist/invasion/city-layout.mjs`, `city-render.mjs`, `planet-terrain.mjs`,
+  `campaign.mjs`, `mission-save.mjs`, `scene.mjs` (city animation), `tests/invasion-city.test.mjs`,
+  `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (431 pass). A fingerprint test proves both earlier
+  metropolis cities are unchanged. Browser checks:
+  - The Frontier list shows both maps, and Ashfall Frontier starts from the button.
+  - The city is hidden at the start.
+  - Phone (375 px): no sideways scroll, no console errors.
+  - With the city showing: about 274 k triangles and 150 draw calls (smoke trimmed from 240
+    sprites to 88).
+- **Open / next:** A walled market town and Skyway frontier maps, owner playtest, frame rate on
+  a real phone, line of sight through buildings.
+
 ### 2026-10-21: Model battery sensor example and expand the remaining interior roadmap
 - **Signed:** Codex (OpenAI)
 - **Commit:** Add reference-based battery sensor and detailed interior roadmap
