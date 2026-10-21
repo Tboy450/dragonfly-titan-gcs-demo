@@ -39,6 +39,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Sample carousel top hardware (part 06)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add the carousel's photographed foil-wrapped unit, valve block and wiring"
+- **What changed:** From the Connections and Installation list. Codex's carousel is kept; added
+  from NASA's SVS 15003 photo: a foil-wrapped unit with Kapton and gold bands on the lid (fins
+  left out under it), a valve block with bolted round flanges on the cross-link and a white wire
+  loop between them. The handling fixture's posts are not drawn. Part stays credited to Codex.
+- **Assumptions:** identities unknown; positions and sizes [EST].
+- **Archive:** `archive/carousel-2026-10-21/` (tag on `fbf08c1`).
+- **Files:** `dist/sample-carousel.mjs`, `dist/index.html`, `dist/ui/layers-panel.mjs`,
+  `research/carousel-detail-2026-10-21/` (new), `research/PART-SOURCES.md`,
+  `INTERIOR-REALISM-TODO.md`, `archive/`
+- **Checks:** `node --test tests/*.test.mjs` (426 pass; the first wire route touched the DrACO
+  manifold and was moved); isolated and in-context renders.
+- **Open / next:** remaining connection items: attic harness, open-frame wall panels, brackets.
+
 ### 2026-10-21: Main wiring harness, second pass (walls, fans, neighbors)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Extend the harness up the walls to the TWTA and gimbal and back to the fans"

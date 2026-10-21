@@ -696,8 +696,7 @@ waveguide and high-voltage umbilical; sample-transfer lines (#02); the warm and 
   walls, a `harnesses` inspection layer; routes [EST], clearance tests against all rebuilt parts.
   The same photo also confirms the gold aft bulkhead (#16) and the arm shoulder fitting.
 - [ ] Mounting plates, brackets and standoffs for units still shown floating or on pads.
-- [ ] The carousel's top hardware (valve block, foil-wrapped unit, strut) and the drives and
-  posts under its mounting plate, as in the saved carousel photos (#06 follow-up).
+- [x] **Claude:** The carousel's top hardware (October 21): foil-wrapped unit, valve block with bolted flanges, white wire loop; the strut and drives were already modeled, and the posts under the plate are the handling fixture. [Notes](research/carousel-detail-2026-10-21/README.md).
 - [ ] The open-frame wall panels the IEM, PSUs and radio mount to (#11-#13 follow-ups).
 
 ## Exterior: Rotor Arms and Heads

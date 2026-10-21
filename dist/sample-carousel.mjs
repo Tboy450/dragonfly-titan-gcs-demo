@@ -5,7 +5,7 @@ import * as THREE from "./vendor/three/three.module.min.js";
 // A roughly half-width cold zone in fig. 2, against the existing 0.72 m inner attic,
 // gives a nominal 0.36 m drum. Positions and small details remain provisional.
 export const carouselAsset = Object.freeze({
-  revision: "carousel-2026-10-12",
+  revision: "carousel-2026-10-21",
   diameterM: 0.36,
   position: Object.freeze([-0.13, 0.08, -1.30]),
   inlet: Object.freeze([-0.07, 0.305, -0.092]),
@@ -69,12 +69,16 @@ export function buildSampleCarousel({ parent, mesh }) {
     cylinder(r * 0.65, 0.002, 0.234 + h, dark, assembly, x, z);
   }
 
+  // The foil-wrapped unit on the lid (Claude, October 21; see the top hardware below).
+  const foilUnit = { x: 0.13, z: 0.005, r: 0.03, h: 0.07 };
+
   // Dense pyramid fin field, instanced to keep the detailed close-up affordable on phones.
   // Exterior fins only: a sealed opaque lid hides internal fins/cups until a future cutaway.
   const positions = [];
   for (let x = -0.153; x <= 0.154; x += 0.013) for (let z = -0.153; z <= 0.154; z += 0.013) {
     if (Math.hypot(x, z) > 0.165 || Math.abs(z + 0.126) < 0.014) continue;
     if (ports.some(p => Math.hypot(x - p.x, z - p.z) < p.r + 0.014)) continue;
+    if (Math.hypot(x - foilUnit.x, z - foilUnit.z) < foilUnit.r + 0.012) continue;   // under the foil-wrapped unit
     positions.push([x, 0.252, z]);
   }
   const fins = new THREE.InstancedMesh(new THREE.ConeGeometry(0.0045, 0.061, 4), aluminum, positions.length);
@@ -95,6 +99,42 @@ export function buildSampleCarousel({ parent, mesh }) {
     bearing.rotation.z = Math.PI / 2;
     mesh(new THREE.BoxGeometry(0.034, 0.012, 0.045), titanium, [x, -0.008, -0.06], assembly);
   }
+
+  // Top hardware from NASA's SVS 15003 photos (Claude, October 21): a foil-wrapped unit with
+  // Kapton and gold tape bands standing on the lid, a valve block with round bolted flanges on
+  // the cross-link, and a white wire loop between them (kept clear of the sample inlet's manifold). On the Wonderwall side, as photographed.
+  // What the foil-wrapped unit and the block are is not stated; positions and sizes are [EST].
+  const top = new THREE.Group();
+  top.name = "carousel-top-hardware";
+  top.userData.inspectionLayer = "interfaces";
+  assembly.add(top);
+  const foil = new THREE.MeshStandardMaterial({ color: 0xd9dde0, metalness: 0.9, roughness: 0.22 });
+  const gold = new THREE.MeshStandardMaterial({ color: 0xd4a531, metalness: 0.75, roughness: 0.3 });
+  const whiteWire = new THREE.MeshStandardMaterial({ color: 0xeeeeea, metalness: 0.05, roughness: 0.6 });
+  const wrap = new THREE.CylinderGeometry(foilUnit.r, foilUnit.r, foilUnit.h, 24, 6);
+  const wp = wrap.attributes.position;
+  for (let i = 0; i < wp.count; i += 1) {   // crinkled foil (a repeatable jitter)
+    const k = 1 + 0.04 * Math.sin(i * 7.31) * Math.cos(i * 3.17);
+    wp.setX(i, wp.getX(i) * k); wp.setZ(i, wp.getZ(i) * k);
+  }
+  wrap.computeVertexNormals();
+  mesh(wrap, foil, [foilUnit.x, 0.23 + foilUnit.h / 2, foilUnit.z], top).name = "carousel-foil-wrapped-unit";
+  for (const [y, mat] of [[0.245, tape], [0.268, gold], [0.29, tape]]) {
+    cylinder(foilUnit.r * 1.05, 0.009, y, mat, top, foilUnit.x, foilUnit.z).name = "carousel-foil-unit-band";
+  }
+  const valve = mesh(new THREE.BoxGeometry(0.034, 0.034, 0.034), titanium, [0.142, 0.256, -0.126], top);
+  valve.name = "carousel-valve-block";
+  for (const dz of [-1, 1]) {
+    const flange = cylinder(0.016, 0.006, 0, titanium, top, 0.142, -0.126 + dz * 0.02);
+    flange.position.y = 0.256; flange.rotation.x = Math.PI / 2; flange.name = "carousel-valve-flange";
+    for (let k = 0; k < 4; k += 1) {
+      const a = k * Math.PI / 2 + Math.PI / 4;
+      const bolt = cylinder(0.0025, 0.004, 0, dark, top, 0.142 + Math.cos(a) * 0.011, -0.126 + dz * 0.0235);
+      bolt.position.y = 0.256 + Math.sin(a) * 0.011; bolt.rotation.x = Math.PI / 2;
+    }
+  }
+  const loop = new THREE.CatmullRomCurve3([[foilUnit.x, 0.302, foilUnit.z], [0.155, 0.335, -0.04], [0.15, 0.31, -0.1], [0.142, 0.276, -0.122]].map(p => new THREE.Vector3(...p)));
+  mesh(new THREE.TubeGeometry(loop, 24, 0.0025, 6, false), whiteWire, [0, 0, 0], top).name = "carousel-white-wire";
 
   const drives = new THREE.Group();
   drives.name = "carousel-warm-drives";
