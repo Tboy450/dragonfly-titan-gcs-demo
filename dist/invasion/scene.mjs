@@ -11,6 +11,7 @@ import { dropDurationS, droneTypes } from "./units.mjs?v=dev";
 import { droneModels, figureModel, interceptorModel, structureModels, buildingModels, dragonflyTemplate, societyColors } from "./models.mjs?v=dev";
 import { projectedDiameter } from './drone-markers.mjs?v=dev';
 import { buildCity } from './city-render.mjs?v=dev';
+import { cityFound, hiddenUnits } from "./battle.mjs?v=dev";
 
 export const swarmColor = "#7ce7ff";
 export const nativeColor = "#ff8a4a";
@@ -259,6 +260,7 @@ export function createInvasionScene(canvas, options = {}) {
   // ---- Planet ----
   let world = null, titan = null, terrain = null, look = biomeLooks.desert;
   const zoneVisuals = new Map();
+  let cityGroup = null;
   const skyCanvas = document.createElement("canvas");
   skyCanvas.width = 2; skyCanvas.height = 256;
   const skyTexture = new THREE.CanvasTexture(skyCanvas);
@@ -300,6 +302,7 @@ export function createInvasionScene(canvas, options = {}) {
     world = null;
     if (titan) titan.group.visible = false;
     zoneVisuals.clear();
+    cityGroup = null;
     for (const d of dragonflies) d.parent?.remove(d);
     dragonflies.length = 0;
     shots = [];
@@ -337,22 +340,27 @@ export function createInvasionScene(canvas, options = {}) {
     } else {
       paintSky(look.top, look.bottom);
       scene.background = skyTexture;
-      // Haze was tuned for ~0.9 km maps; larger planetary maps (with cities) thin it to match.
-      const density = look.density * Math.min(1, 460 / (battle.map.half || 460));
+      // Haze is tuned for ~0.9 km campaign maps; a frontier map sets its own (map.fog), thin
+      // enough to see across a valley but thick enough to hide what lies kilometers away.
+      const density = battle.map.fog ?? look.density;
       scene.fog = new THREE.FogExp2(new THREE.Color(look.fog), density);
       baseFog = density;
       world.add(groundMesh(planet, battle));
       if (look.liquid) world.add(liquidMesh(battle));
     }
     decorate(planet, battle, rand);
-    // A city on this planet (city-layout.mjs) is drawn from the same layout the rules use.
-    if (planetTerrain.city) buildCity(world, planetTerrain.city);
+    // A city on this planet (city-layout.mjs) is drawn from the same layout the rules use. On a
+    // frontier map it stays hidden until scouted (updateZones).
+    cityGroup = planetTerrain.city ? buildCity(world, planetTerrain.city) : null;
     for (const zone of battle.zones) buildZone(zone, battle, planet);
   }
 
   function groundMesh(planet, battle) {
     const { centerX, centerZ, half } = battle.map;
-    const size = half * 3.6, segments = 220;
+    // Frontier maps (several km) get a tighter skirt and more segments, about 26 m apart, so
+    // their mountains keep their ridges; the haze hides the edge.
+    const large = half > 1200;
+    const size = large ? half * 2.6 : half * 3.6, segments = large ? 300 : 220;
     const geometry = new THREE.PlaneGeometry(size, size, segments, segments).rotateX(-Math.PI / 2);
     const position = geometry.attributes.position;
     let low = Infinity, high = -Infinity;
@@ -366,12 +374,14 @@ export function createInvasionScene(canvas, options = {}) {
     const normal = geometry.attributes.normal;
     const colors = new Float32Array(position.count * 3);
     const lowC = new THREE.Color(look.low), highC = new THREE.Color(look.high), steepC = new THREE.Color(look.steep);
-    const sand = new THREE.Color("#c9b98a"), c = new THREE.Color();
+    const sand = new THREE.Color("#c9b98a"), c = new THREE.Color(), cliffC = new THREE.Color(look.rock || look.steep).multiplyScalar(0.55);
     for (let i = 0; i < position.count; i += 1) {
       const y = position.getY(i);
       c.copy(lowC).lerp(highC, Math.min(1, Math.max(0, (y - low) / Math.max(1, high - low))));
       const slope = 1 - normal.getY(i);
       c.lerp(steepC, Math.min(1, Math.max(0, (slope - 0.08) / 0.25)));
+      // Frontier mountains: bare dark rock shows on the steepest faces, so ridges read from afar.
+      if (large) c.lerp(cliffC, Math.min(0.85, Math.max(0, (slope - 0.22) / 0.3)));
       if (terrain.liquid !== null && !terrain.solidLiquid && y < terrain.liquid + 1.6 && planet.biome !== "volcanic") c.lerp(sand, 0.6);
       const x = position.getX(i), z = position.getZ(i);
       const v = 0.92 + 0.16 * (Math.sin(x * 0.37 + z * 0.11) * Math.sin(z * 0.29 - x * 0.07) * 0.5 + 0.5);
@@ -404,7 +414,11 @@ export function createInvasionScene(canvas, options = {}) {
     const inCity = (x, z) => city && x > city.minX - 40 && x < city.maxX + 40 && z > city.minZ - 40 && z < city.maxZ + 40;
     const clear = (x, z, margin) => !inCity(x, z) && battle.zones.every(zone => Math.hypot(zone.x - x, zone.z - z) > zone.radius + margin);
     const dry = (x, z) => terrain.liquid === null || terrain.solidLiquid || terrain.heightAt(x, z) > terrain.liquid + 0.5;
+    // Counts are for campaign maps; a frontier map gets up to six times as many, kept closer in.
+    const large = half > 1200, more = large ? Math.min(6, (half / 460) ** 2) : 1;
     const place = (count, margin, spread = 1.5) => {
+      count = Math.round(count * more);
+      if (large) spread = Math.min(spread, 1.15);
       const spots = [];
       for (let i = 0; i < count * 3 && spots.length < count; i += 1) {
         const x = centerX + (rand() * 2 - 1) * half * spread, z = centerZ + (rand() * 2 - 1) * half * spread;
@@ -521,7 +535,7 @@ export function createInvasionScene(canvas, options = {}) {
     }
     if (beacon) { beacon.position.x = zone.x; beacon.position.z = zone.z; beacon.position.y += y; group.add(beacon); }
     if (battle.tier > 0 && zone.kind !== "beachhead" && !zone.urban) houses(zone, battle, group, rand);
-    zoneVisuals.set(zone.id, { base, control, beacon });
+    zoneVisuals.set(zone.id, { group, base, control, beacon });
   }
 
   function houses(zone, battle, group, rand) {
@@ -588,7 +602,9 @@ export function createInvasionScene(canvas, options = {}) {
     for (const mesh of Object.values(structureMeshes)) { mesh.body.count = 0; mesh.glow.count = 0; }
     figures.count = 0; interceptors.count = 0;
     let dragonflyIndex = 0;
+    const hidden = hiddenUnits(b);
     for (const unit of b.units) {
+      if (hidden.has(unit.id)) continue;
       if (unit.side === "swarm" && !unit.structure) {
         if (unit.type === "dragonfly") {
           let clone = dragonflies[dragonflyIndex];
@@ -663,9 +679,13 @@ export function createInvasionScene(canvas, options = {}) {
   }
 
   function updateZones(b, time) {
+    if (cityGroup) cityGroup.visible = cityFound(b);
     for (const zone of b.zones) {
       const visual = zoneVisuals.get(zone.id);
       if (!visual) continue;
+      // Frontier maps: a zone, its houses and beacon appear once a drone scouts it.
+      visual.group.visible = zone.scouted !== false;
+      if (!visual.group.visible) continue;
       const owned = zone.captured;
       visual.base.material.uniforms.color.value.set(owned ? swarmColor : zone.kind === "beacon" || zone.kind === "relic" || b.tier === 0 ? "#e8e2d0" : nativeColor);
       visual.base.material.uniforms.opacity.value = zone.contested ? 0.35 + 0.35 * (0.5 + 0.5 * Math.sin(time * 8)) : owned ? 0.55 : 0.35;

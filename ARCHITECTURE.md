@@ -131,12 +131,12 @@ same split as the simulator: plain modules with tests, plus a page layer.
 | File | What it does |
 |---|---|
 | `invasion/units.mjs` | Drone, defender and society types; weapons per target class (ground, structure, air) so drones can later carry different arms against rival drones; pod slots and costs |
-| `invasion/campaign.mjs` | The seven planets in campaign order, rewards, per-planet supply, saved progress (validated field by field) and `applyMissionResult` |
-| `invasion/mission-save.mjs` | Versioned JSON battle checkpoints, validation and terrain callback/pad restoration; stored with campaign progress by the page; `checkpointPlanet` rebuilds pre-city saves on their old landscape |
-| `invasion/battle.mjs` | One mission: zones, drops, orders (group pace, attack-move), movement, combat, capture (damage or control path, converted defenses), public alarm, reinforcements, artillery, income, objectives, stars, outcome |
+| `invasion/campaign.mjs` | The seven planets in campaign order, rewards, per-planet supply, saved progress (validated field by field) and `applyMissionResult`; Frontier maps (`frontiers`), `missionSupply` and `applyFrontierResult`, which never touch the campaign bank |
+| `invasion/mission-save.mjs` | Versioned JSON battle checkpoints, validation and terrain callback/pad restoration; stored with campaign progress by the page; battles record their map, city and landform, and `checkpointPlanet` rebuilds exactly that world (older Corvan saves included) |
+| `invasion/battle.mjs` | One mission: zones, drops, orders (group pace, attack-move), movement, combat, capture (damage or control path, converted defenses), public alarm, reinforcements, artillery, income, objectives, stars, outcome; frontier scouting (`cityFound`, `hiddenUnits` for the page) |
 | `invasion/hazards.mjs` | Seeded environmental threats with advance warning; shelter in held zones |
 | `invasion/achievements.mjs` | Twelve campaign achievements, checked live and at the end of a mission |
-| `invasion/planet-terrain.mjs` | Ground height per planet: Titan reuses `terrainHeight`; the other worlds are invented noise landscapes with liquid levels and level zone pads; a planet with `city` gets level city ground, `walkable`, `roofAt` and a building-aware `canDropAt` |
+| `invasion/planet-terrain.mjs` | Ground height per planet: Titan reuses `terrainHeight`; the other worlds are invented noise landscapes with liquid levels and level zone pads; a planet with `city` gets level city ground, `walkable`, `roofAt` and a building-aware `canDropAt`; a `landform` (frontier valley) gives ridged mountains, a flat valley, the beacon's basin and a pass, plus `siteOK` for gentle zone sites |
 | `invasion/city-layout.mjs` | A seeded, versioned city district (blocks, lots, tiered buildings, streets, squares, parks) and fast `buildingAt` / `roofAt` / `clearAt` queries; the one source for city rules and drawing |
 | `invasion/city-render.mjs` | Draws a city layout with the Environment Lab kit: streets, sidewalks, squares, parks, merged facade buildings and rooftop gear |
 | `invasion/random.mjs` | Seeded random numbers stored on the battle (reproducible missions) |

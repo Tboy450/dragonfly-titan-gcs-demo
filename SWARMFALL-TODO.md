@@ -450,6 +450,26 @@ Free mode (★ owner: "eventually a free mode with a universe or galaxy to pick 
   details (builds on `galaxy.mjs`).
 - [ ] **MODE-03 (P2)** Custom settings (starting matter, pod slots, hazards on or off) and
   shareable seeds.
+- [ ] **MODE-22 ★ (P2)** Frontier maps (owner, October 21: "make the large map variants with
+  cities a different mode"). Large variants of campaign worlds, apart from the campaign, each
+  with rough terrain and a city to find.
+  - **Done (Claude, October 21):** Title-screen **Frontier maps** button and list, and
+    **Corvan Frontier**:
+    - A 6 km map. Ridged ice mountains peak around 450 m.
+    - A flat valley 4.5 km long and 2.5 km wide (five times the city across).
+    - Corvan Prime's 900 m district sits deep in the valley, about 3.8 km from the Hive beacon.
+      The beacon lands in a basin of its own, with a lower pass into the valley.
+    - Only the beacon is known at the start. Each outpost, and the city as a whole, appears
+      once a drone comes within its sight plus 200 m. Hidden defenders aren't drawn.
+    - The minimap shows shaded relief. The camera pulls back at most 1.8 km, and the haze
+      hides what lies kilometers away.
+    - Supply: 650 matter. At least Scout, Link and Striker, and 16 wave slots.
+    - Results count toward statistics and achievements, never the campaign bank or conquests.
+  - **Still to do:**
+    - More frontier maps (market town, forge city, Skyway for Aurex).
+    - Owner playtest of distances and balance. Forward drops need a captured outpost.
+    - A frontier record (best time, stars), which needs a progress-save field.
+    - Overlap with ROAM-01/02 (free roam) to settle with the owner.
 
 Local versus (★ owner: "a larger local versus mode where you fight to see who can take over a
 planet first", with drones using different weapons against each other than against the NPCs
@@ -481,23 +501,29 @@ and other threats on the planet):
   saves. Start with a separate city battle test and a roughly 0.8–1 km playable district inside
   the full city; retain Aurex and existing campaign saves until validated. See FIX-02/FIX-03,
   VIS-10 through VIS-12, MODE-20 and the [code review](research/fantasy-city-2026-10-16/GAME-INTEGRATION.md).
-  - **Progress (Claude, October 21):** The owner said cities belong inside the larger planetary
-    maps, so the first district is built into Corvan's campaign map rather than a separate test
-    mission. Done for that district:
+  - **Progress (Claude, October 21):** The owner said cities belong inside larger planetary
+    maps. The first district went into campaign Corvan (published as `9b77399`). The owner then
+    found it took up most of the map and was visible from the start. They asked for rougher
+    terrain, a valley five times bigger and an even bigger map, possibly as a separate mode.
+    Cities now live in Frontier mode (MODE-22), and campaign Corvan is its snowfield again
+    (first city version archived in `archive/swarmfall-corvan-city-2026-10-21/`). Done for the
+    district:
     - One seeded, versioned layout (`city-layout.mjs`) with stable building IDs.
     - Level city ground blended into the terrain.
     - Building-aware walking, roof-aware flight, and pod landings only on open ground.
     - Squares as capture zones, plus countryside zones outside the city.
-    - Minimap footprints.
-    - A city stamp on checkpoints; pre-city Corvan saves resume on their old landscape.
+    - Minimap footprints once the city is found.
+    - Checkpoints record the whole world (map, city, landform). Saves made on any earlier
+      Corvan map resume on that map.
     - Tests in `tests/invasion-city.test.mjs`.
     Still open:
     - Line of sight: shots pass through buildings.
     - Real routes for ground troops (FIX-03).
     - Building damage and destruction.
-    - District culling and async loading (not needed yet: about 133 k triangles).
-    - City types for other planets (market town, forge city, Skyway for Aurex).
-    - Owner playtest of the 7-zone / 5-required balance.
+    - District culling and async loading. Corvan Frontier draws about 250 k triangles at the
+      start and about 380 k with the city; measure on a real phone.
+    - City types for other frontier maps (market town, forge city, Skyway for Aurex).
+    - Owner playtest of Corvan Frontier's 9-zone / 6-required balance.
 
 - [ ] **VIS-16 ★ (P2)** Contoured coastal setting for cyberpunk City / Skyway (Codex,
   October 16): individual source contact points shape smooth ground, separate footing pads,

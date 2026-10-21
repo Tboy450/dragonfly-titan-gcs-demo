@@ -171,6 +171,9 @@ a { color: var(--swarm); }
 .achievement-list li { padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; }
 .achievement-list li.earned { border-color: rgba(255, 212, 121, 0.7); background: rgba(255, 212, 121, 0.07); }
 .achievement-list li small { display: block; color: var(--muted); }
+.frontier-note { color: var(--muted); margin: 0 0 6px; }
+.frontier-list p { margin: 6px 0; }
+.frontier-list button { margin-top: 8px; width: 100%; }
 .no-webgl { position: fixed; inset: auto 16px 16px 16px; padding: 12px; background: #301010; border: 1px solid var(--danger); border-radius: 8px; }
 
 @media (max-width: 720px) {

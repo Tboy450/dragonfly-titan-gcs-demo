@@ -39,6 +39,46 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Swarmfall Frontier mode and Corvan Frontier
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add Frontier mode with Corvan Frontier and return campaign Corvan to its snowfield"
+- **What changed:** The owner found the city on campaign Corvan took up most of the map and
+  was visible from the start. They asked for rougher terrain, a flat valley five times bigger,
+  an even bigger map, and suggested large city maps become their own mode. Now:
+  - **Frontier maps** on the title screen lists large maps apart from the campaign. Results
+    count toward statistics and achievements, never the campaign bank or conquests.
+  - **Corvan Frontier:**
+    - A 6 km map with ridged ice mountains up to about 450 m.
+    - A flat valley 4.5 km long, five times the city across.
+    - Corvan Prime's 900 m district sits deep in the valley, about 3.8 km from the Hive
+      beacon. The beacon is in its own basin, with a lower pass into the valley.
+    - Only the beacon is known at the start. Outposts and the city appear on screen and on
+      the minimap once a drone comes within its sight plus 200 m. Defenders of unscouted
+      zones aren't drawn.
+    - The minimap shows shaded relief. The camera pulls back at most 1.8 km, and the haze
+      hides what lies kilometers away. Steep faces show dark rock.
+    - Supply: 650 matter, at least Scout, Link and Striker, and 16 wave slots.
+  - **Campaign Corvan** is its original snowfield again, so its balance and fog are as before.
+  - **Saves:** checkpoints now record the whole world (map, city spec, landform). Saves made
+    on the snowfield, on the first city version, or on a frontier all resume on the world
+    they were played on.
+- **Assumptions:** Every size, height, distance, the 9-zone / 6-required balance and the
+  supply are invented gameplay choices [EST]. Not yet playtested.
+- **Archive:** `archive/swarmfall-corvan-city-2026-10-21/` (tag on `fbf08c1`). The snowfield
+  archive notes its return.
+- **Files:** `dist/invasion/campaign.mjs`, `planet-terrain.mjs` (valley landform),
+  `battle.mjs` (scouting, world record), `mission-save.mjs`, `scene.mjs`, `main.mjs`,
+  `index.html`, `invasion.css`, `tests/invasion-city.test.mjs`, `archive/`
+- **Checks:** `node --test tests/*.test.mjs` (428 pass). Browser checks:
+  - The title button and list work, and a Corvan Frontier mission starts and resumes.
+  - The city stays hidden until scouted, along with the 14 defenders at unscouted outposts.
+  - A real save from the first city version resumes on its 900 m map.
+  - Phone (375 px): no sideways scroll, no console errors. About 250 k triangles at the start,
+    about 380 k with the city.
+- **Open / next:** More frontier maps (market town, forge city, Skyway), owner playtest, a
+  frontier record, frame rate on a real phone, line of sight through buildings and troop
+  routes (VIS-18, MODE-22 in `SWARMFALL-TODO.md`).
+
 ### 2026-10-21: Part 09 rotor drive electronics closed out as an approved approximation
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Close out the rotor drive electronics as an owner-approved approximation"

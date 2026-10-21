@@ -131,6 +131,30 @@ function validWaves(b, squads, entityIds) {
   return true;
 }
 
+// Saves from the first city version (October 21, 2026, before Frontier mode) recorded only
+// { version: 1, seed }; this is the city they were built on. See
+// archive/swarmfall-corvan-city-2026-10-21/.
+const firstCities = Object.freeze({
+  corvan: Object.freeze({ style: "metropolis", x: 80, z: -120, blocks: 9, pitch: 100, street: 20, seed: 3109, peak: 150 }),
+});
+const firstCity = (b) => (b.city && b.city.x === undefined ? firstCities[b.planetId] || null : null);
+
+// The world a battle was built on (battle.city, battle.landform): only shapes this version can
+// rebuild exactly, within sizes that stay quick to generate. Changing CITY_LAYOUT_VERSION or the
+// landform code needs a migration, or the old code kept, so older saves still resume.
+function validWorld(b) {
+  if (b.explore !== undefined && typeof b.explore !== "boolean") return false;
+  if (!b.zones.every(z => z.scouted === undefined || typeof z.scouted === "boolean")) return false;
+  const city = b.city ?? null, land = b.landform ?? null;
+  if (city !== null && (city.x === undefined
+    ? !(firstCity(b) && city.version === 1 && city.seed === firstCity(b).seed)
+    : !(city.version === CITY_LAYOUT_VERSION && text(city.style, 40) && (city.name === undefined || text(city.name, 80))
+      && point(city) && integer(city.blocks, 3, 21) && city.blocks % 2 === 1 && between(city.pitch, 30, 400)
+      && between(city.street, 2, city.pitch / 2) && integer(city.seed, 0, 0xffffffff) && between(city.peak, 9, 1000)))) return false;
+  return land === null || land.kind === "valley" && point(land) && between(land.length, 50, 1e5) && between(land.width, 50, 1e5)
+    && between(land.angle ?? 0, -10, 10) && between(land.floor ?? 0, -1000, 1000) && between(land.rim ?? 500, 10, 1e4) && between(land.peak ?? 400, 0, 5000);
+}
+
 function migrateCheckpoint(value) {
   if (!object(value) || ![1, 2, MISSION_SAVE_VERSION].includes(value.version)) return null;
   if (value.version === MISSION_SAVE_VERSION) return value;
@@ -178,10 +202,7 @@ export function validMissionCheckpoint(value) {
       || !between(b.reinforceIn, -1, 1e6) || !between(b.strikeIn, -1, 1e6)) return null;
     if (b.lastDropAt !== null && !between(b.lastDropAt, 0, b.time)) return null;
     if (!point({ x: b.map?.centerX, z: b.map?.centerZ }) || !between(b.map.half, 1, 1e5)) return null;
-    // A city stamp must match the planet's current layout. Changing CITY_LAYOUT_VERSION or a
-    // city's seed needs a migration (or the old layout kept); a missing stamp is a pre-city save.
-    if ((b.city ?? null) !== null && !(p.city && fields(b.city, ["version", "seed"])
-      && b.city.version === CITY_LAYOUT_VERSION && b.city.seed === p.city.seed)) return null;
+    if (!validWorld(b)) return null;
     const statKeys = ["drops", "podsLaunched", "dronesDropped", "dronesLost", "hazardLosses", "zonesCaptured", "defensesDestroyed", "militiaDefeated", "matterHarvested", "hazardEvents", "maxAlive", "alarmPeak", "damageDealt"];
     if (!fields(b.stats, statKeys, n => between(n, 0, 1e12)) || !Object.values(b.stats).every(n => between(n, 0, 1e12))) return null;
     if (!statKeys.filter(key => !["matterHarvested", "alarmPeak", "damageDealt"].includes(key)).every(key => integer(b.stats[key], 0, 1e12))
@@ -225,12 +246,12 @@ export function validMissionCheckpoint(value) {
   } catch { return null; }
 }
 
-// The planet to rebuild a checkpoint's terrain from. A battle saved before its planet gained a
-// city (no city stamp) resumes on the landscape and map size it was saved on.
+// The planet to rebuild a checkpoint's terrain from: the map, city and landform the battle was
+// built on, whatever the planet uses today (a pre-city save has neither and gets its old ground).
 export function checkpointPlanet(checkpoint) {
-  const planet = planetById(checkpoint?.battle?.planetId);
-  if (!planet?.city || checkpoint.battle.city) return planet;
-  return { ...planet, city: null, map: checkpoint.battle.map };
+  const b = checkpoint?.battle, planet = planetById(b?.planetId);
+  if (!planet) return null;
+  return { ...planet, map: b.map, city: firstCity(b) || b.city || null, landform: b.landform || null };
 }
 
 export function restoreMissionCheckpoint(value, terrain) {

@@ -3,7 +3,7 @@
 // same value-noise approach. Pure functions (three.js is only pulled in by titan-terrain.mjs).
 import { terrainHeight } from "../titan-terrain.mjs?v=dev";
 import { overLiquid } from "../mission-systems.mjs?v=dev";
-import { createCityLayout, cityQueries } from "./city-layout.mjs?v=dev";
+import { createCityLayout, cityQueries, CITY_LAYOUT_VERSION } from "./city-layout.mjs?v=dev";
 
 function hash(x, z, seed) {
   const value = Math.sin(x * 127.1 + z * 311.7 + seed * 74.7) * 43758.5453;
@@ -101,7 +101,8 @@ export function createPlanetTerrain(planet) {
     x: centerX + (hash(i, 1, seed) * 1.6 - 0.8) * half, z: centerZ + (hash(i, 2, seed) * 1.6 - 0.8) * half,
     r: 140 + hash(i, 3, seed) * 80, h: 45 + hash(i, 4, seed) * 35,
   }));
-  const raw = (x, z) => biome.height(x, z, seed, base, cones);
+  const landform = planet.landform ? valleyLandform(planet.landform, seed, beach) : null;
+  const raw = landform ? landform.height : (x, z) => biome.height(x, z, seed, base, cones);
   let pads = [];
   const liquid = biome.liquid;
   const terrain = {
@@ -128,8 +129,65 @@ export function createPlanetTerrain(planet) {
     },
   };
   terrain.walkable = terrain.isLand;
+  if (landform) {
+    terrain.landformSpec = planet.landform;
+    // Zone sites keep to the valley floor, the beacon's basin, the pass and low foothills.
+    terrain.siteOK = (x, z) => landform.mountain(x, z) < 0.3;
+  }
   if (planet.city) attachCity(terrain, planet.city, raw, liquid);
   return terrain;
+}
+
+// Ridged fractal noise, roughly 0-1: sharp crests where plain noise is smooth.
+function ridged(x, z, seed, octaves = 5) {
+  let sum = 0, amplitude = 1, frequency = 1, total = 0, weight = 1;
+  for (let i = 0; i < octaves; i += 1) {
+    let n = 1 - Math.abs(noise(x * frequency, z * frequency, seed + i * 31) * 2 - 1);
+    n = n * n * weight;
+    weight = Math.min(1, n * 1.6);
+    sum += n * amplitude;
+    total += amplitude;
+    amplitude *= 0.5;
+    frequency *= 2.1;
+  }
+  return sum / total;
+}
+
+const toSegment = (x, z, a, b) => {
+  const dx = b.x - a.x, dz = b.z - a.z;
+  const t = Math.max(0, Math.min(1, ((x - a.x) * dx + (z - a.z) * dz) / (dx * dx + dz * dz)));
+  return Math.hypot(x - a.x - dx * t, z - a.z - dz * t);
+};
+
+// A frontier landform (planet.landform, kind "valley"): rough ridged mountains around one large,
+// nearly flat valley (an ellipse `length` x `width` m from its center, turned by `angle`). The
+// Hive beacon sits in a basin of its own, joined to the valley by a lower pass. mountain() is 0
+// on the valley floor, in the basin and 0.15 along the pass, rising to 1 in the mountains over
+// `rim` m with a ragged edge; peaks reach about `peak` m above the `floor` level. Invented [EST].
+function valleyLandform(spec, seed, beach) {
+  const { x: vx, z: vz, length, width, angle = 0, floor = 6, rim = 500, peak = 400 } = spec;
+  const ca = Math.cos(angle), sa = Math.sin(angle);
+  const local = (x, z) => ({ u: (x - vx) * ca + (z - vz) * sa, v: -(x - vx) * sa + (z - vz) * ca });
+  // The pass runs from the basin to 200 m inside the valley edge nearest the beacon.
+  const b = local(beach.x, beach.z), reach = Math.hypot(b.u / length, b.v / width);
+  const inside = Math.max(0.2, 1 - 200 / width) / reach;
+  const passEnd = { x: vx + (b.u * ca - b.v * sa) * inside, z: vz + (b.u * sa + b.v * ca) * inside };
+  const mountain = (x, z) => {
+    const { u, v } = local(x, z);
+    const wobble = (fbm(x / 350, z / 350, seed + 21) - 0.5) * 260;
+    const outside = (Math.hypot(u / length, v / width) - 1) * width;
+    const valley = smooth(0, rim, outside + wobble);
+    const basin = smooth(260, 700, Math.hypot(x - beach.x, z - beach.z) + wobble * 0.5);
+    const pass = 0.15 + 0.85 * smooth(110, 420, toSegment(x, z, beach, passEnd) + wobble * 0.4);
+    return valley * basin * pass;
+  };
+  const height = (x, z) => {
+    const m = mountain(x, z);
+    const ground = floor + (fbm(x / 240, z / 240, seed + 5) - 0.5) * 7 + 0.3 * noise(x / 5, z / 5, seed);
+    if (m <= 0) return ground;
+    return ground + m * (peak * ridged(x / 700, z / 700, seed + 40) + 70 * fbm(x / 160, z / 160, seed + 9));
+  };
+  return { height, mountain, passEnd };
 }
 
 // A planet with a city (planet.city, see city-layout.mjs): the ground is level under the city and
@@ -142,6 +200,7 @@ function attachCity(terrain, spec, raw, liquid) {
   const { minX, maxX, minZ, maxZ } = city.bounds, margin = 70;
   const natural = terrain.heightAt.bind(terrain);
   terrain.city = city;
+  terrain.citySpec = { version: CITY_LAYOUT_VERSION, ...spec };
   terrain.heightAt = (x, z) => {
     const outside = Math.max(minX - x, x - maxX, minZ - z, z - maxZ, 0);
     if (outside >= margin) return natural(x, z);

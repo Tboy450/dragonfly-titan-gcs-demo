@@ -3,11 +3,12 @@
 // this file only reads them, sends player commands and draws the page.
 import {
   planets, planetById, createProgress, isPlanetUnlocked, nextPlanet,
-  applyMissionResult, missionMatter,
+  applyMissionResult, missionMatter, frontiers, missionSupply, applyFrontierResult,
 } from "./campaign.mjs?v=dev";
 import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, orderHold, battleSummary,
   objectiveStatus, starsEarned, missionResult, retreat, publicMood, dropZoneAt, extractVictory, continueCapturing,
+  cityFound, hiddenUnits,
 } from "./battle.mjs?v=dev";
 import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
 import { packDropPods, podRadius, podStaggerS } from "./drop-waves.mjs?v=dev";
@@ -250,6 +251,30 @@ $("galaxy-back").addEventListener("click", () => show("title"));
 $("achievements-button").addEventListener("click", showAchievements);
 $("achievements-close").addEventListener("click", () => $("achievements-dialog").close());
 
+// ---- Frontier maps (large worlds apart from the campaign) ----
+function showFrontiers() {
+  $("frontier-list").innerHTML = frontiers.map(map => {
+    const society = societies[map.society], supply = missionSupply(progress, map);
+    return `<li><strong>${escapeHtml(map.name)}</strong>
+      <small>${escapeHtml(map.subtitle)} · ${(map.map.half * 2 / 1000).toFixed(0)} km across · ${escapeHtml(society.name)} society · threat ${escapeHtml(threatNames[map.threat])}</small>
+      <p>${escapeHtml(map.description)}</p>
+      <small>Hold ${map.required} of ${map.zoneCount} zones · ${supply.matter} matter · ${supply.podSlots} slots per wave · ${escapeHtml(supply.unlocks.map(t => droneTypes[t].name).join(", "))}</small>
+      <button class="primary" type="button" data-frontier="${escapeHtml(map.id)}">Land on ${escapeHtml(map.name)}</button></li>`;
+  }).join("");
+  for (const button of $("frontier-list").querySelectorAll("[data-frontier]")) {
+    button.addEventListener("click", async () => {
+      const map = planetById(button.dataset.frontier);
+      $("frontier-dialog").close();
+      if (savedMission && !await confirmDialog("Start a new mission and replace your saved battle? Campaign progress will be kept.")) return;
+      startMission(map);
+    });
+  }
+  resetPointers();
+  $("frontier-dialog").showModal();
+}
+$("frontier-button").addEventListener("click", showFrontiers);
+$("frontier-close").addEventListener("click", () => $("frontier-dialog").close());
+
 // ---- Mission ----
 let scene = null;
 let mission = null;
@@ -291,7 +316,7 @@ function startMission(planet, checkpoint = null) {
   const restored = checkpoint ? restoreMissionCheckpoint(checkpoint, terrain) : null;
   if (checkpoint && !restored) return;
   const battle = restored?.battle || createBattle(planet, {
-    matter: missionMatter(progress, planet), unlocks: progress.unlocks, podSlots: progress.podSlots, terrain, seed: planet.seed,
+    ...missionSupply(progress, planet), terrain, seed: planet.seed,
     missionId: globalThis.crypto?.randomUUID?.() || `attempt-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`,
   });
   scene.load(planet, terrain, battle);
@@ -362,8 +387,9 @@ function clampCamera() {
   const { centerX, centerZ, half } = battle.map;
   cam.focus.x = Math.min(centerX + half * 1.1, Math.max(centerX - half * 1.1, cam.focus.x));
   cam.focus.z = Math.min(centerZ + half * 1.1, Math.max(centerZ - half * 1.1, cam.focus.z));
-  // Larger planetary maps allow the camera to pull back far enough to see the whole map.
-  cam.distance = Math.min(Math.max(750, mission.battle.map.half * 1.3), Math.max(35, cam.distance));
+  // A frontier map sets how far the camera may pull back (map.view): far enough to take in a
+  // valley, never the whole map at once, so the minimap and scouting still matter.
+  cam.distance = Math.min(battle.map.view || 750, Math.max(35, cam.distance));
   cam.pitch = Math.min(1.45, Math.max(0.3, cam.pitch));
 }
 function pan(dx, dy) {
@@ -834,6 +860,7 @@ function drawOverlay() {
   ctx.font = "600 12px system-ui, sans-serif";
   ctx.textAlign = "center";
   for (const zone of b.zones) {
+    if (zone.scouted === false) continue;
     const p = scene.project(zone.x, scene.heightAt(zone.x, zone.z) + (zone.kind === "beachhead" ? 28 : 18), zone.z, width, height);
     if (!p.visible || p.x < -80 || p.x > width + 80 || p.y < -20 || p.y > height + 20) continue;
     const status = zone.kind === "beachhead" ? "Hive beacon" : zone.captured ? "held" : `${Math.round(zone.control)}%${zone.contested ? " · contested" : ""}`;
@@ -867,8 +894,9 @@ function drawOverlay() {
     const label = scene.project(point.x, y + 5, point.z, width, height);
     if (label.visible) { ctx.fillStyle = swarmColor; ctx.fillText(`Pod ${index + 1}`, label.x, label.y); }
   }
+  const hidden = hiddenUnits(b);
   for (const unit of b.units) {
-    if (!unit.alive) continue;
+    if (!unit.alive || hidden.has(unit.id)) continue;
     const selected = isDrone(unit) && mission.selected.has(unit.squad);
     const damaged = unit.hp < unit.maxHp - 0.5;
     if (!isDrone(unit) && !selected && !damaged) continue;
@@ -925,12 +953,18 @@ function drawMinimap() {
     }
     ctx.drawImage(mission.liquidMap, 0, 0, width, height);
   }
-  // City buildings, from the same layout that blocks troops and lifts drones.
-  for (const building of mission.terrain.city?.buildings || []) {
+  // Frontier maps: shaded relief, so the valley and passes can be read before they are scouted.
+  if (mission.terrain.landformSpec) {
+    mission.reliefMap ||= reliefMap(mission.terrain, b.map);
+    ctx.drawImage(mission.reliefMap, 0, 0, width, height);
+  }
+  // City buildings, from the same layout that blocks troops and lifts drones (once found).
+  for (const building of cityFound(b) ? mission.terrain.city?.buildings || [] : []) {
     ctx.fillStyle = "rgba(160, 170, 185, 0.55)";
     ctx.fillRect(sx(building.x - building.w / 2), sz(building.z - building.d / 2), Math.max(1, building.w / (half * 2) * width), Math.max(1, building.d / (half * 2) * height));
   }
   for (const zone of b.zones) {
+    if (zone.scouted === false) continue;
     ctx.strokeStyle = zone.captured ? swarmColor : zone.kind === "beacon" || zone.kind === "relic" || b.tier === 0 ? "#e8e2d0" : nativeColor;
     ctx.lineWidth = 1.5;
     ctx.beginPath();
@@ -938,7 +972,9 @@ function drawMinimap() {
     ctx.stroke();
   }
   const squadColor = new Map(b.squads.map(s => [s.id, s.color]));
+  const hidden = hiddenUnits(b);
   for (const unit of b.units) {
+    if (hidden.has(unit.id)) continue;
     ctx.fillStyle = unit.side === "swarm" ? (squadColor.get(unit.squad) || swarmColor) : nativeColor;
     const s = unit.structure ? 3 : 2;
     ctx.fillRect(sx(unit.x) - s / 2, sz(unit.z) - s / 2, s, s);
@@ -973,6 +1009,28 @@ function drawMinimap() {
       ctx.restore();
     } else mission.minimapPing = null;
   }
+}
+
+// Height shading for a frontier map's minimap: brighter and lit from the north-west where the
+// ground rises, so mountains, passes and the valley floor read at a glance.
+function reliefMap(terrain, { centerX, centerZ, half }) {
+  const n = 96, heights = new Float32Array(n * n), canvas = document.createElement("canvas");
+  canvas.width = canvas.height = n;
+  let low = Infinity, high = -Infinity;
+  for (let j = 0; j < n; j += 1) for (let i = 0; i < n; i += 1) {
+    const h = terrain.heightAt(centerX - half + (i + 0.5) / n * half * 2, centerZ - half + (j + 0.5) / n * half * 2);
+    heights[j * n + i] = h; low = Math.min(low, h); high = Math.max(high, h);
+  }
+  const context = canvas.getContext("2d"), image = context.createImageData(n, n), cell = half * 2 / n;
+  for (let j = 0; j < n; j += 1) for (let i = 0; i < n; i += 1) {
+    const h = heights[j * n + i], level = (h - low) / Math.max(1, high - low);
+    const west = heights[j * n + Math.max(0, i - 1)], north = heights[Math.max(0, j - 1) * n + i];
+    const light = Math.max(-1, Math.min(1, ((h - west) + (h - north)) / cell * 0.8));
+    const shade = 34 + level * 120 + light * 40, k = (j * n + i) * 4;
+    image.data[k] = shade * 0.82; image.data[k + 1] = shade * 0.92; image.data[k + 2] = shade + 18; image.data[k + 3] = 150;
+  }
+  context.putImageData(image, 0, 0);
+  return canvas;
 }
 
 const minimap = $("minimap"), minimapPointers = new Map();
@@ -1066,7 +1124,7 @@ function finishMission() {
   const b = mission.battle, planet = mission.planet;
   const result = missionResult(b);
   const objectives = objectiveStatus(b);
-  const applied = applyMissionResult(progress, planet, result);
+  const applied = planet.frontier ? applyFrontierResult(progress, planet, result) : applyMissionResult(progress, planet, result);
   const earned = newAchievements(applied.progress, achievementContext(applied.progress, planet, result, false));
   progress = recordAchievements(applied.progress, earned);
   savedMission = null;
@@ -1107,10 +1165,11 @@ $("settlement-retry").addEventListener("click", retrySettlementSave);
 $("debrief-retry").addEventListener("click", () => { const planet = mission.planet; $("debrief").close(); startMission(planet); });
 function returnToGalaxy() {
   $("debrief").close();
+  const frontier = mission?.planet.frontier;
   selectedPlanet = nextPlanet(progress).id;
   mission = null;
   scene?.unload();
-  show("galaxy");
+  show(frontier ? "title" : "galaxy");
 }
 $("debrief-galaxy").addEventListener("click", returnToGalaxy);
 $("debrief").addEventListener("cancel", event => { event.preventDefault(); returnToGalaxy(); });

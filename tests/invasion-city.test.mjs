@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createCityLayout, cityQueries, CITY_LAYOUT_VERSION } from "../dist/invasion/city-layout.mjs";
-import { planetById } from "../dist/invasion/campaign.mjs";
+import { planetById, frontiers, missionSupply, applyFrontierResult, createProgress } from "../dist/invasion/campaign.mjs";
 import { createPlanetTerrain } from "../dist/invasion/planet-terrain.mjs";
-import { createBattle, stepBattle, requestDrop, orderSquads } from "../dist/invasion/battle.mjs";
+import { createBattle, stepBattle, requestDrop, orderSquads, cityFound } from "../dist/invasion/battle.mjs";
 import { missionCheckpoint, restoreMissionCheckpoint, validMissionCheckpoint, checkpointPlanet } from "../dist/invasion/mission-save.mjs";
 
 const spec = { seed: 7, x: 50, z: -40, blocks: 9, pitch: 100, street: 20, peak: 150 };
@@ -29,79 +29,138 @@ test("A city layout is seeded and versioned, with buildings only inside blocks a
   assert.equal(queries.roofAt(city.plazas[0].x, city.plazas[0].z), 0);
 });
 
-test("Corvan's planetary map holds the city: level ground, blocked buildings, open squares as zones", () => {
-  const planet = planetById("corvan"), terrain = createPlanetTerrain(planet), city = terrain.city;
+test("Corvan Frontier: a flat valley among rough mountains holds the city, far from the beacon", () => {
+  const map = planetById("corvan-frontier"), terrain = createPlanetTerrain(map), city = terrain.city;
+  assert.ok(frontiers.includes(map) && map.frontier && map.map.half >= 2500);
   assert.ok(city && city.buildings.length > 100);
-  assert.ok(planet.map.half >= 900, "a larger planetary map around the city");
+  const { minX, maxX, minZ, maxZ } = city.bounds, floor = map.landform.floor;
   for (const [dx, dz] of [[0, 0], [300, 200], [-350, -300]]) assert.equal(terrain.heightAt(city.x + dx, city.z + dz), city.ground);
-  const tower = city.buildings[0];
-  assert.equal(terrain.walkable(tower.x, tower.z), false);
-  assert.equal(terrain.canDropAt(tower.x, tower.z), false);
-  assert.ok(terrain.roofAt(tower.x, tower.z) > 0);
-  const b = createBattle(planet, { terrain });
-  const urban = b.zones.filter(z => z.urban);
+  // The valley is about five times the city across and nearly flat; the mountains are not.
+  const { x, z, length, angle } = map.landform;
+  assert.ok(length * 2 >= 4.5 * (maxX - minX));
+  for (const t of [-0.8, -0.4, 0.1]) {
+    const h = terrain.heightAt(x + Math.cos(angle) * length * t, z + Math.sin(angle) * length * t);
+    assert.ok(Math.abs(h - floor) < 6, `valley floor at ${t}: ${h.toFixed(1)} m`);
+  }
+  let highest = -Infinity;
+  for (let px = -3000; px <= 3000; px += 100) for (let pz = -3000; pz <= 3000; pz += 100) highest = Math.max(highest, terrain.heightAt(px, pz));
+  assert.ok(highest > floor + 300, `peaks reach ${highest.toFixed(0)} m`);
+  const b = createBattle(map, { terrain, ...missionSupply(createProgress(), map) });
+  const home = b.zones.find(zone => zone.kind === "beachhead");
+  assert.ok(Math.hypot(home.x - city.x, home.z - city.z) > 3000, "the city is far from the landing");
+  assert.ok(Math.abs(terrain.heightAt(home.x, home.z) - floor) < 6, "the beacon sits in a level basin");
+  const urban = b.zones.filter(zone => zone.urban);
   assert.equal(urban.length, city.plazas.length);
   for (const zone of urban) assert.ok(terrain.canDropAt(zone.x, zone.z, { radius: 6 }), `${zone.name} takes pods`);
-  for (const zone of b.zones.filter(z => !z.urban && z.kind !== "beachhead")) {
-    const { minX, maxX, minZ, maxZ } = city.bounds;
+  for (const zone of b.zones.filter(zone => !zone.urban && zone.kind !== "beachhead")) {
     assert.ok(zone.x < minX - 89 || zone.x > maxX + 89 || zone.z < minZ - 89 || zone.z > maxZ + 89, `${zone.name} is outside the city`);
+    assert.ok(terrain.siteOK(zone.x, zone.z), `${zone.name} is on gentle ground`);
   }
   assert.ok(b.units.filter(u => u.structure).every(u => terrain.walkable(u.x, u.z)), "no defenses inside buildings");
   for (let t = 0; t < 60; t += 0.1) {
     stepBattle(b, 0.1);
     assert.ok(b.units.filter(u => u.side === "native" && !u.structure).every(u => terrain.walkable(u.x, u.z)), "troops walk around buildings");
   }
+  // Nothing but the beacon is known at the start.
+  assert.deepEqual(b.zones.filter(zone => zone.scouted).map(zone => zone.kind), ["beachhead"]);
+  assert.equal(cityFound(b), false);
 });
 
-test("Drones climb over city buildings, and a saved mission keeps its city after reloading", () => {
-  // Corvan's city with nobody living there, so the flight is not interrupted by combat.
-  const planet = { ...planetById("corvan"), society: 0, threat: 0, objectives: [], hazards: [] };
-  const terrain = createPlanetTerrain(planet), city = terrain.city;
-  const b = createBattle(planet, { terrain, matter: 500, unlocks: ["scout"] });
-  const home = b.zones.find(z => z.kind === "beachhead");
+test("Frontier scouting finds zones and the city; drones climb over its roofs; saves keep the world", () => {
+  // Corvan Frontier with nobody living there, so the flight is not interrupted by combat.
+  const map = { ...planetById("corvan-frontier"), society: 0, threat: 0, objectives: [], hazards: [] };
+  const terrain = createPlanetTerrain(map), city = terrain.city;
+  const b = createBattle(map, { terrain, matter: 500, unlocks: ["scout"] });
+  const home = b.zones.find(zone => zone.kind === "beachhead");
   assert.ok(requestDrop(b, { x: home.x, z: home.z, payload: { scout: 6 } }).ok);
   for (let t = 0; t < 30; t += 0.1) stepBattle(b, 0.1);
+  const swarm = () => b.units.filter(u => u.side === "swarm");
+  // An outpost is found when a drone comes near it, and only then.
+  const outpost = b.zones.find(zone => !zone.urban && zone.kind !== "beachhead");
+  for (const u of swarm()) { u.x = outpost.x + 500; u.z = outpost.z; }
+  stepBattle(b, 0.1);
+  assert.equal(outpost.scouted, false);
+  for (const u of swarm()) u.x = outpost.x + 250;
+  stepBattle(b, 0.1);
+  assert.equal(outpost.scouted, true);
+  assert.ok(b.log.some(entry => entry.text === `Scouts found ${outpost.name}.`));
+  // Reaching the edge of the streets reveals every square at once.
+  for (const u of swarm()) { u.x = city.bounds.minX - 200; u.z = city.z; }
+  stepBattle(b, 0.1);
+  assert.equal(cityFound(b), true);
+  assert.ok(b.log.some(entry => /^Scouts found Corvan Prime: 5 squares/.test(entry.text)));
   const far = { x: city.bounds.maxX - 30, z: city.bounds.minZ + 30 };
   orderSquads(b, b.squads.map(s => s.id), { kind: "move", x: far.x, z: far.z });
   let overRoofs = 0, highest = 0;
-  for (let t = 0; t < 120; t += 0.1) {
+  for (let t = 0; t < 90; t += 0.1) {
     stepBattle(b, 0.1);
-    for (const u of b.units.filter(u => u.side === "swarm")) {
+    for (const u of swarm()) {
       const roof = terrain.roofAt(u.x, u.z);
       if (roof > 25) { overRoofs += 1; highest = Math.max(highest, roof); assert.ok(u.alt > roof - 3, `drone at ${u.alt.toFixed(1)} m over a ${roof.toFixed(1)} m roof`); }
     }
   }
   assert.ok(overRoofs > 0 && highest > 40, "the route crossed tall buildings");
   const saved = JSON.parse(JSON.stringify(missionCheckpoint({ battle: b, cam: { focus: { x: 0, z: 0 }, distance: 300, yaw: 0, pitch: 0.8 } })));
-  const restored = restoreMissionCheckpoint(saved, createPlanetTerrain(planet));
+  assert.deepEqual(saved.battle.city, { version: CITY_LAYOUT_VERSION, ...map.city });
+  assert.deepEqual(saved.battle.landform, map.landform);
+  const restored = restoreMissionCheckpoint(saved, createPlanetTerrain(checkpointPlanet(saved)));
   assert.ok(restored, "checkpoint restores");
   const tower = city.buildings[0];
   assert.equal(restored.battle.walkable(tower.x, tower.z), false);
   assert.ok(restored.battle.roofAt(tower.x, tower.z) > 0);
-  assert.deepEqual(saved.battle.city, { version: CITY_LAYOUT_VERSION, seed: planet.city.seed });
-  assert.equal(validMissionCheckpoint({ ...saved, battle: { ...saved.battle, city: { version: CITY_LAYOUT_VERSION, seed: 1 } } }), null, "a different city is refused");
+  assert.equal(cityFound(restored.battle), true, "what was scouted stays scouted");
+  for (const bad of [{ ...saved.battle.city, blocks: 8 }, { ...saved.battle.city, blocks: 999 }, { ...saved.battle.city, version: 99 }])
+    assert.equal(validMissionCheckpoint({ ...saved, battle: { ...saved.battle, city: bad } }), null);
+  assert.equal(validMissionCheckpoint({ ...saved, battle: { ...saved.battle, landform: { ...map.landform, kind: "ring" } } }), null);
 });
 
-test("A Corvan battle saved before the city existed resumes on its original landscape", () => {
-  const corvan = planetById("corvan");
-  // Corvan as it was before October 21: no city, a 460 m map and five zones.
-  const before = { ...corvan, city: undefined, map: { centerX: 0, centerZ: 0, half: 460 }, zoneCount: 5, required: 4 };
-  const terrain = createPlanetTerrain(before), b = createBattle(before, { terrain });
+test("Frontier supply and results stay apart from the campaign bank and conquests", () => {
+  const map = planetById("corvan-frontier"), progress = { ...createProgress(), matter: 9000 };
+  const supply = missionSupply(progress, map);
+  assert.equal(supply.matter, map.supply);
+  assert.ok(map.kit.unlocks.every(type => supply.unlocks.includes(type)) && supply.podSlots >= map.kit.podSlots);
+  assert.equal(missionSupply(progress, planetById("corvan")).matter, 9000);
+  const { progress: next } = applyFrontierResult(progress, map, { outcome: "won", matter: 12, stars: 3, time: 900, stats: { zonesCaptured: 6 }, missionId: "frontier-test-1" });
+  assert.equal(next.matter, 9000);
+  assert.deepEqual(next.captured, {});
+  assert.equal(next.stats.missionsWon, 1);
+  assert.equal(next.stats.zonesCaptured, 6);
+  assert.equal(applyFrontierResult(next, map, { outcome: "won", stats: { zonesCaptured: 6 }, missionId: "frontier-test-1" }).progress.stats.zonesCaptured, 6, "settled once");
+});
+
+const cam = { focus: { x: 0, z: 0 }, distance: 230, yaw: 0, pitch: 0.9 };
+const plain = ({ isLand, heightAt, canDropAt, walkable, roofAt, events, ...data }) => data;
+function playAndSave(planet) {
+  const terrain = createPlanetTerrain(planet), b = createBattle(planet, { terrain });
   const home = b.zones.find(z => z.kind === "beachhead");
   assert.ok(requestDrop(b, { x: home.x, z: home.z, payload: { scout: 2, link: 2 } }).ok);
   for (let t = 0; t < 5; t += 0.05) stepBattle(b, 0.05);
-  const saved = JSON.parse(JSON.stringify(missionCheckpoint({ battle: b, cam: { focus: { x: 0, z: 0 }, distance: 230, yaw: 0, pitch: 0.9 } })));
-  delete saved.battle.city; // Older saves have no city stamp.
-  const planet = checkpointPlanet(saved);
-  assert.equal(planet.city, null);
-  assert.equal(planet.map.half, 460);
-  const fresh = createPlanetTerrain(planet), restored = restoreMissionCheckpoint(saved, fresh);
+  return { b, saved: JSON.parse(JSON.stringify(missionCheckpoint({ battle: b, cam }))) };
+}
+function sameFuture(before, saved) {
+  const planet = checkpointPlanet(saved), terrain = createPlanetTerrain(planet);
+  const restored = restoreMissionCheckpoint(saved, terrain);
   assert.ok(restored);
-  assert.equal(fresh.city, undefined);
-  for (const z of b.zones) assert.equal(fresh.heightAt(z.x, z.z), terrain.heightAt(z.x, z.z));
-  for (let t = 0; t < 40; t += 0.05) { stepBattle(b, 0.05); stepBattle(restored.battle, 0.05); }
-  const plain = ({ isLand, heightAt, canDropAt, walkable, roofAt, events, city, ...data }) => data;
-  assert.deepEqual(plain(restored.battle), plain(b), "the same future as before the city was added");
-  // A new Corvan save carries its stamp and rebuilds the city.
-  assert.ok(checkpointPlanet(missionCheckpoint({ battle: createBattle(corvan, { terrain: createPlanetTerrain(corvan) }), cam: saved.cam })).city);
+  for (const z of before.zones) assert.equal(terrain.heightAt(z.x, z.z), before.heightAt(z.x, z.z));
+  for (let t = 0; t < 40; t += 0.05) { stepBattle(before, 0.05); stepBattle(restored.battle, 0.05); }
+  assert.deepEqual(plain(restored.battle), plain(before), "the same future after reloading");
+  return { planet, terrain };
+}
+
+test("Corvan battles saved on older maps resume on the world they were played on", () => {
+  const corvan = planetById("corvan");
+  assert.equal(corvan.city, undefined, "campaign Corvan is the snowfield again");
+  // Saved before the city existed: no city stamp, a 460 m map.
+  const early = playAndSave(corvan);
+  for (const battle of [early.b, early.saved.battle]) { delete battle.city; delete battle.landform; delete battle.explore; }
+  assert.equal(sameFuture(early.b, early.saved).terrain.city, undefined);
+  // Saved on the first city version (October 21): a 900 m map, the city stamped { version: 1, seed }.
+  const first = { ...corvan, map: { centerX: 0, centerZ: 0, half: 900 }, zoneCount: 7, required: 5,
+    city: { style: "metropolis", x: 80, z: -120, blocks: 9, pitch: 100, street: 20, seed: 3109, peak: 150 } };
+  const firstCity = playAndSave(first);
+  for (const battle of [firstCity.b, firstCity.saved.battle]) { battle.city = { version: 1, seed: 3109 }; delete battle.landform; delete battle.explore; }
+  const { planet, terrain } = sameFuture(firstCity.b, firstCity.saved);
+  assert.equal(planet.map.half, 900);
+  assert.deepEqual([terrain.city.x, terrain.city.z, terrain.city.buildings.length], [80, -120, createCityLayout(first.city).buildings.length]);
+  assert.equal(validMissionCheckpoint({ ...firstCity.saved, battle: { ...firstCity.saved.battle, city: { version: 1, seed: 7 } } }), null);
 });

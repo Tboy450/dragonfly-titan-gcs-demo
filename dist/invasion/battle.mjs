@@ -42,8 +42,10 @@ export function createBattle(planet, options = {}) {
     missionId: options.missionId || `simulation-${planet.id}-${seed >>> 0}`,
     victoryAvailable: false, victoryAvailableAt: null, victoryChoiceMade: false,
     map: { centerX: 0, centerZ: 0, half: 420, ...planet.map },
-    // Which city layout this battle was built on, so a checkpoint resumes on the same streets.
-    city: terrain.city ? { version: terrain.city.version, seed: terrain.city.seed } : null,
+    // The city and landform this battle was built on, so a checkpoint rebuilds the same world.
+    city: terrain.citySpec || null, landform: terrain.landformSpec || null,
+    // Frontier maps: zones and the city stay hidden until a drone scouts them.
+    explore: !!planet.explore,
     matter, unlocks: [...unlocks], podSlots, required: planet.required, objectives: planet.objectives || [],
     alarm: 0, alarmStage: 0, zones: [], units: [], squads: [], pods: [], strikes: [],
     events: [], log: [], nextId: 1, lastDropAt: -Infinity,
@@ -84,6 +86,7 @@ function makeZone(b, spec) {
     id: spec.id, name: spec.name, kind, x: spec.x, z: spec.z, special: spec.special || null,
     radius: spec.radius || zoneRadius[kind] || 45, value: zoneValue[kind] ?? 0.5,
     control: owned ? 100 : 0, captured: owned, contested: false, urban: !!spec.urban,
+    ...(b.explore ? { scouted: owned } : {}),
     population: kind === "beachhead" || b.tier === 0 ? 0 : Math.round((kind === "capital" ? 9000 : kind === "mine" ? 600 : 2400) * (0.6 + nextRandom(b) * 0.8) * (1 + b.tier)),
   };
 }
@@ -116,6 +119,7 @@ function placeZones(b, planet, terrain) {
       if (zones.some(zone => Math.hypot(zone.x - x, zone.z - z) < (zone.kind === "beachhead" ? Math.max(minimum, 240) : minimum))) continue;
       if (inCity(x, z)) continue;
       if (attempt < 500 && !dry(x, z, r)) continue;
+      if (attempt < 500 && terrain.siteOK && !terrain.siteOK(x, z)) continue;
       placed = { x, z };
     }
     if (!placed) placed = { x: centerX + randomRange(b, -0.5, 0.5) * half, z: centerZ + randomRange(b, -0.5, 0.5) * half };
@@ -807,6 +811,7 @@ export function stepBattle(b, dt) {
   const natives = b.units.filter(u => u.alive && u.side === "native");
   const auras = collectAuras(b);
   moveUnits(b, dt, auras, swarm, natives);
+  scout(b, swarm);
   // Converted structures fight for the swarm, so targets are gathered per side, not per drone.
   const swarmSide = b.units.filter(u => u.alive && u.side === "swarm");
   fight(b, dt, auras, swarmSide, natives);
@@ -822,6 +827,52 @@ export function stepBattle(b, dt) {
   if (b.events.length > 600) b.events.splice(0, b.events.length - 600);
   if (b.log.length > 40) b.log.splice(0, b.log.length - 40);
   checkOutcome(b);
+}
+
+// ---- Scouting (frontier maps) ----
+// A hidden zone is found once a drone comes within its sight plus the Hive's sensor reach. The
+// city is found as a whole: reaching any square, or the edge of its streets, reveals them all.
+// Hidden zones still fight and can be captured; only the page hides them.
+export const scoutReach = 200;
+export const cityFound = (b) => !b.explore || !b.zones.some(zone => zone.urban && !zone.scouted);
+
+// For the page only: IDs of defenders the swarm cannot see yet, those of unscouted zones that
+// are not within sight of a drone. Rules never use this.
+export function hiddenUnits(b) {
+  const hidden = new Set();
+  if (!b.explore) return hidden;
+  const unseen = new Set(b.zones.filter(zone => !zone.scouted).map(zone => zone.id));
+  if (!unseen.size) return hidden;
+  const drones = b.units.filter(isDrone);
+  for (const unit of b.units) {
+    if (unit.side !== "native" || !unseen.has(unit.home)) continue;
+    if (!drones.some(drone => dist2(drone, unit) < (defOf(drone).sight || 120) ** 2)) hidden.add(unit.id);
+  }
+  return hidden;
+}
+
+function scout(b, swarm) {
+  if (!b.explore || b.zones.every(zone => zone.scouted)) return;
+  const spec = b.city?.x === undefined ? null : b.city, half = spec ? spec.blocks * spec.pitch / 2 : 0;
+  for (const unit of swarm) {
+    const reach = (defOf(unit).sight || 120) + scoutReach;
+    for (const zone of b.zones) {
+      if (zone.scouted || dist2(unit, zone) > (reach + zone.radius) ** 2) continue;
+      if (zone.urban) revealCity(b);
+      else {
+        zone.scouted = true;
+        b.log.push({ t: b.time, tone: "info", text: `Scouts found ${zone.name}.` });
+      }
+    }
+    if (spec && !cityFound(b) && Math.max(Math.abs(unit.x - spec.x), Math.abs(unit.z - spec.z)) < half + reach) revealCity(b);
+  }
+}
+
+function revealCity(b) {
+  if (cityFound(b)) return;
+  const squares = b.zones.filter(zone => zone.urban);
+  for (const zone of squares) zone.scouted = true;
+  b.log.push({ t: b.time, tone: "good", text: `Scouts found ${b.city?.name || "the city"}: ${squares.length} squares to take.` });
 }
 
 // ---- Summaries for the page and the campaign ----

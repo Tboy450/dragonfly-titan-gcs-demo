@@ -18,6 +18,7 @@
         <div class="title-actions">
           <button id="resume-button" class="primary" type="button" hidden>Resume mission</button>
           <button id="play-button" class="primary" type="button">Play campaign</button>
+          <button id="frontier-button" type="button" title="Large maps with a city to find, apart from the campaign">Frontier maps</button>
           <button id="reset-button" class="ghost" type="button">Reset progress</button>
           <button id="save-files-button" class="ghost" type="button">Save files</button>
         </div>
@@ -123,6 +124,13 @@
         <button id="debrief-retry" type="button">Try again</button>
         <button id="debrief-galaxy" class="primary" type="button">Back to the galaxy</button>
       </div>
+    </dialog>
+
+    <dialog id="frontier-dialog" class="dialog" aria-labelledby="frontier-title">
+      <h2 id="frontier-title">Frontier maps</h2>
+      <p class="frontier-note">Large worlds apart from the campaign. The Hive lands far from everything: only the beacon is known, so send scouts to find outposts and the city. Results never change your campaign matter or conquests.</p>
+      <ul id="frontier-list" class="achievement-list frontier-list"></ul>
+      <div class="dialog-actions"><button id="frontier-close" class="ghost" type="button">Close</button></div>
     </dialog>
 
     <dialog id="achievements-dialog" class="dialog">

@@ -59,10 +59,8 @@ export const planets = Object.freeze([
     id: "corvan", order: 4, name: "Corvan", subtitle: "Ice world", supply: 380,
     society: 3, threat: 3, biome: "ice", hazards: ["blizzard"], color: "#bfe3f2",
     galaxy: { x: 0.5, y: 0.6 },
-    description: "Frozen ridges around Corvan Prime, an industrial city of brick and glass. Its squares are the districts to take; flak and radar cover them, towers force your drones to climb, and a full alarm brings artillery. Factory towns hold the passes outside.",
-    // A city inside a larger planetary map (city-layout.mjs): 9 x 9 blocks, five open squares.
-    map: { centerX: 0, centerZ: 0, half: 900 }, zoneCount: 7, required: 5, seed: 3109,
-    city: { style: "metropolis", x: 80, z: -120, blocks: 9, pitch: 100, street: 20, seed: 3109, peak: 150 },
+    description: "Frozen ridges and factory towns. Flak and radar cover the passes, and a full alarm brings artillery.",
+    map: { centerX: 0, centerZ: 0, half: 460 }, zoneCount: 5, required: 4, seed: 3109,
     reward: { matter: 220, podSlots: 4 },
     objectives: [
       { id: "no-artillery", kind: "alarmBelow", value: 70, text: "Never let the alarm reach 70 (no artillery)" },
@@ -107,7 +105,31 @@ export const planets = Object.freeze([
   },
 ].map(Object.freeze));
 
-export const planetById = (id) => planets.find(planet => planet.id === id) || null;
+// Frontier mode (owner, October 21): large maps with a city to find, apart from the campaign.
+// Each is a bigger variant of a campaign world: a landform (planet-terrain.mjs) shapes mountains
+// and a valley, the city (city-layout.mjs) sits deep inside it, and explore hides every zone and
+// the city until a drone scouts them. kit: the least drones and wave slots offered, so a
+// frontier is playable before the campaign unlocks them. Results never change the campaign bank
+// or conquests. Sizes and balance are invented gameplay choices [EST].
+export const frontiers = Object.freeze([
+  {
+    id: "corvan-frontier", frontier: true, base: "corvan", name: "Corvan Frontier", subtitle: "Ice world · large map",
+    supply: 650, kit: { unlocks: ["scout", "link", "striker"], podSlots: 16 },
+    society: 3, threat: 3, biome: "ice", hazards: ["blizzard"], color: "#bfe3f2",
+    description: "Six kilometers of jagged ice mountains. Corvan Prime, an industrial city of brick and glass, lies somewhere in a great flat valley beyond the ridges; the Hive beacon is set down in a basin far away. Scout through the pass, find the outposts and the city, and take its squares. Flak, radar and artillery defend it.",
+    // view: farthest camera pull-back (m); fog: haze density, so distant ground fades out.
+    map: { centerX: 0, centerZ: 0, half: 3000, view: 1800, fog: 0.00045 },
+    landform: { kind: "valley", x: 600, z: -600, length: 2250, width: 1250, angle: 0.785, floor: 6, rim: 520, peak: 430 },
+    city: { name: "Corvan Prime", style: "metropolis", x: 1300, z: 100, blocks: 9, pitch: 100, street: 20, seed: 3109, peak: 150 },
+    zoneCount: 9, required: 6, seed: 3109, explore: true,
+    objectives: [
+      { id: "no-artillery", kind: "alarmBelow", value: 70, text: "Never let the alarm reach 70 (no artillery)" },
+      { id: "weather", kind: "noHazardLosses", text: "Lose no drones to the blizzard" },
+    ],
+  },
+].map(Object.freeze));
+
+export const planetById = (id) => planets.find(planet => planet.id === id) || frontiers.find(map => map.id === id) || null;
 
 export const PROGRESS_VERSION = 2;
 export const SAVE_KEY = "drone-invasion-progress";
@@ -144,6 +166,31 @@ export const availableDrones = (progress) => droneOrder.filter(type => progress.
 
 // Matter available at the start of an attempt on this planet.
 export const missionMatter = (progress, planet) => Math.max(progress.matter, planet.supply || 0);
+
+// What an attempt starts with. A frontier brings its own matter and at least its kit; the
+// campaign bank is neither used nor changed.
+export function missionSupply(progress, planet) {
+  if (!planet.frontier) return { matter: missionMatter(progress, planet), unlocks: [...progress.unlocks], podSlots: progress.podSlots };
+  const unlocks = droneOrder.filter(type => progress.unlocks.includes(type) || planet.kit.unlocks.includes(type));
+  return { matter: planet.supply, unlocks, podSlots: Math.max(progress.podSlots, planet.kit.podSlots) };
+}
+
+// A finished frontier mission: statistics and its settlement only (never counted twice).
+export function applyFrontierResult(progress, map, result) {
+  const next = structuredClone(progress);
+  next.version = PROGRESS_VERSION;
+  next.settledMissions ||= {};
+  if (result.missionId && !validMissionId(result.missionId)) throw new TypeError("Invalid mission settlement identity.");
+  if (result.missionId && Object.hasOwn(next.settledMissions, result.missionId))
+    return { progress: next, notes: ["This mission result was already settled; no statistics were added again."] };
+  for (const name of statNames) next.stats[name] += Math.max(0, Math.round(result.stats?.[name] || 0));
+  next.stats.missionsPlayed += 1;
+  if (result.outcome === "won") next.stats.missionsWon += 1;
+  if (result.missionId) Object.defineProperty(next.settledMissions, result.missionId, {
+    value: { planetId: map.id, outcome: result.outcome }, enumerable: true, writable: true, configurable: true,
+  });
+  return { progress: next, notes: [`${map.name} is a frontier map: the campaign bank and conquests are unchanged.`] };
+}
 
 // result: { outcome: "won" | "lost" | "retreated", matter, stars, time, stats, recovered: [unlock ids] }
 // Returns the new progress (the old one is not changed) and plain-language notes for the debrief.

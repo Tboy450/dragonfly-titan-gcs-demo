@@ -8,6 +8,10 @@ Hive beacon and five zones (a citadel, a deposit and three factory towns of smal
 needed to win. It was replaced by a 1.8 km map (`half: 900`) with a 900 m city district whose
 five squares are capture zones, plus two countryside zones (seven zones, five needed).
 
+**Restored October 21 (later the same day):** the owner moved large city maps into their own
+mode, so campaign Corvan uses this map again. The city version is archived in
+[`../swarmfall-corvan-city-2026-10-21/`](../swarmfall-corvan-city-2026-10-21/README.md).
+
 ## Files here
 
 - `campaign.mjs`, `planet-terrain.mjs`: exact copies at `52dc4a8`. Corvan's old definition is
