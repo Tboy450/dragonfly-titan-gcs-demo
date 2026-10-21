@@ -39,6 +39,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-20: Wonderwall photo detail (part 07)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add the photographed frame, port fitting, Kapton and clips to the Wonderwall"
+- **What changed:** The owner felt something was missing from the attic apparatus. Compared
+  with NASA's SVS 15003 photos, Codex's Wonderwall was a plain panel. Kept Codex's panel and
+  added what the photos show: khaki facesheets, a machined pocketed frame around the port on the
+  carousel side, the port's spoked fitting (middle left open for the DraMS neck), orange Kapton
+  (replacing a small amber patch) and clip tabs along the edges. Part stays credited to Codex.
+- **Assumptions:** All traced on the photos [EST]. The photos put the port lower than drawn;
+  not moved, because DraMS is keyed to it (follow-up).
+- **Archive:** `archive/wonderwall-2026-10-20/` (tag on `9c2eaef`).
+- **Files:** `dist/wonderwall.mjs`, `dist/index.html`, `dist/ui/layers-panel.mjs`,
+  `research/wonderwall-detail-2026-10-20/` (new), `research/PART-SOURCES.md`,
+  `INTERIOR-REALISM-TODO.md`, `archive/`
+- **Checks:** `node --test tests/*.test.mjs` (418 pass); carousel gap 14 mm (8 required);
+  isolated and in-context renders, carousel and DraMS sides.
+- **Open / next:** DraMS visible hardware (harness bundles, tubes, valves), then the main
+  wiring harness.
+
 ### 2026-10-20: Market town and forge city join the lab
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add the walled market town and forge city to the lab"

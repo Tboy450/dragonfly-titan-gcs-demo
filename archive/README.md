@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [wonderwall-2026-10-20](wonderwall-2026-10-20/README.md) | Codex's plain Wonderwall panel (pale/metal facings, amber patch) before the photo detail pass; exact module and test, eight in-context and four isolated pictures | 2026-10-20 | `archive/wonderwall-2026-10-20` on 9c2eaef |
 | [arm-shoulder-2026-10-20](arm-shoulder-2026-10-20/README.md) | Round tan foam ring and round flange at each arm root (turned across the body, not along the arm); exact builder and four close renders | 2026-10-20 | `archive/arm-shoulder-2026-10-20` on 8dad2ea |
 | [mmrtg-sensor-2026-10-20](mmrtg-sensor-2026-10-20/README.md) | Part 21 green sphere at the MMRTG's top fin root (passed through the fin; floated alone when isolated); exact builder, inspector, panel, HTML and part 20 test, four-angle and isolated pictures, real-Edge baseline at 1440/390/360 px | 2026-10-20 | `archive/mmrtg-sensor-2026-10-20` on d016f12 |
 | [swarmfall-phone-hud-2026-10-20](swarmfall-phone-hud-2026-10-20/README.md) | HUD before one-time phone collapse/log toggle; exact source/harness, dated historical picture and restore steps | 2026-10-20 | `archive/swarmfall-phone-hud-2026-10-20` on a7261bb |
