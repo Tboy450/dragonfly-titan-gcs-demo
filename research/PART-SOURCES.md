@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part21 latest (Codex, October21):** [RTD example and process comparison](fin-root-sensor-2026-10-21/README.md).
+[Omega source pages](sources/omega-rtd-family/README.md): original catalog pp3/4 (C-117/118),
+real F2020/family photos, dimensional drawing, Class B band and separately labeled construction
+illustration. Original NASA/APL input and NASA MMRTG rating retained. Flight package unknown;
+initial pass complete as a labeled family approximation. Annotation-only notes below historical.
+
 **Part20 latest (October21, Codex):** [family approximation, actual samples and limits](battery-sensor-2026-10-21/README.md).
 [TE/Measurement Specialties source archive](sources/te44909-family/README.md): DS0059 Rev A
 pp1-2 real44909 photograph and dimension drawing; DS0050 Rev A pp1-2 real family photo and
@@ -50,6 +56,7 @@ scanner vendor, installed routing and completed housing remain unresolved; no mo
 
 | Folder | Source | Pages saved | Used by |
 |---|---|---|---|
+| [omega-rtd-family](sources/omega-rtd-family/README.md) | Omega OMEGAFILM catalog: product photographs, dimension/rating table and separately labeled construction illustration | PDF pp3/4, full-page PNGs |21 fin-root RTD family example, adoption unconfirmed |
 | [te44909-family](sources/te44909-family/README.md) | TE TESS-ANDO-DS0059/DS0050 Rev A via public distributors; manufacturer photographs, drawing and table | Both documents pp1-2, original full-page PNGs |20 battery sensor, family approximation only |
 | [`sources/nasa-harness-workmanship`](sources/nasa-harness-workmanship/README.md) | NASA-STD8739.4A Change4, public active record | Complete original pages29-31 | RDE installation principles only; not flight route, cable type or qualification |
 | [`sources/nasa-mmrtg-factsheet`](sources/nasa-mmrtg-factsheet/README.md) | NASA MMRTG fact sheet NF-2020-05-619-HQ | both pages | 21: 157 C fin-root rating; generator size |

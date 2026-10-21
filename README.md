@@ -15,7 +15,13 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
-October 21 Codex: [battery-temperature sensor example](research/battery-sensor-2026-10-21/README.md)
+October 21 Codex: [fin-root RTD example](research/fin-root-sensor-2026-10-21/README.md)
+completes the last numbered initial pass: **24/24 (9 Codex / 15 Claude)**. Real Omega catalog
+photos/drawing guide a temperature-appropriate family approximation with separate layers and
+macro inspection. Actual flight package/installation remain unconfirmed. The MMRTG body,
+structural wall layers and extensive connections/UI roadmap are still open, in that order.
+
+Earlier October 21 Codex: [battery-temperature sensor example](research/battery-sensor-2026-10-21/README.md)
 replaces part20's annotation with a small TE thermistor-family approximation, estimated bonding
 and paired leads. Real manufacturer photographs and drawing archived; actual Dragonfly package
 unconfirmed. Bead close-up and independent layers preserve physical scale. **23/24 initial

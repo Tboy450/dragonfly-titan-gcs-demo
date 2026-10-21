@@ -39,6 +39,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Complete fin-root RTD example and initial numbered parts
+- **Signed:** Codex (OpenAI)
+- **Commit:** Add reference-based fin-root RTD and close initial part list
+- **What changed:** Part21 annotation replaced with a labeled Omega F2020 Class B example
+  at nominal2 x2 x0.8 mm, paired10 mm x0.2 mm leads and an estimated curved bond on the
+  current generator housing. Independent Casings/Mounts/Harnesses and actual-scale macro
+  selectors. Pose follows canted MMRTG. App/checklist now24/24 initial passes (9 Codex/15 Claude).
+- **Evidence:** Original Omega catalog hardware photographs/drawing/rating pages saved and
+  inspected; separate construction illustration labeled. Class B range covers157 C but is
+  not evidence of flight qualification or Dragonfly adoption. Exact type/count/mount/route
+  unknown; lead ends explicitly unmodeled. No hidden circuit or new temperature/controller
+  solver. Thermal retains existing gas reading. Generator/battery/part20 geometry unchanged.
+- **Archive:** Exact pre21 files and fresh before screenshots/manifests, tag on5bf3431.
+  Historic part20 test now compares the archived pre21 annotation because21 has its own pass.
+- **Checks:**444 full tests pass (`research/fin-root-sensor-2026-10-21/tests.txt`). Package/lead scale, curved contact, eight fins, pose/label, masks and assumptions
+  unit checks; actual Edge local viewport/detail/macro and preserved-neighbor checks.
+- **Next:** MMRTG body, first structural wall, then detailed connections/layer/UI packages.
+  Initial pass count is not a claim of a complete or flight-verified engineering model.
+
 ### 2026-10-21: Swarmfall city buildings block line of sight
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Make city buildings block line of sight and give cover"

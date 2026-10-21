@@ -1,0 +1,16 @@
+{
+  "sensor-macro": {
+    "count": 201540,
+    "minX": 275,
+    "maxX": 724,
+    "minY": 137,
+    "maxY": 699
+  },
+  "sensor-installation": {
+    "count": 35162,
+    "minX": 412,
+    "maxX": 585,
+    "minY": 101,
+    "maxY": 604
+  }
+}

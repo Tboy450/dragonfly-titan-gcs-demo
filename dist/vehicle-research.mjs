@@ -454,7 +454,7 @@ export function buildResearchModel(kit) {
   buildBatteryMeasurement({ parent: buildTarget, mesh });
   // Part 21 (Oct 20): an annotation on the generator's housing beside the top fin's root, not
   // sensor hardware; the green sphere it replaces is in archive/mmrtg-sensor-2026-10-20.
-  interiorPart("mmrtg-sensor", "mmrtg", "MMRTG fin-root temperature input (annotation, not sensor hardware)", "TFAWS 2023 slides 7/9: control input; NASA MMRTG fact sheet: 157 C fin-root rating; annotation beside the top fin's root, exact sensing point/package/count unknown", 0x9fe870, "exterior");
+  interiorPart("mmrtg-sensor", "mmrtg", "MMRTG fin-root sensor (RTD family approximation)", "NASA/APL: fin-root feedback, 157 C rating; Omega F2020 family example; flight package/count and installation unconfirmed", 0x9fe870, "exterior");
   buildMmrtgMeasurement({ parent: buildTarget, mesh });
   // Externally mounted items described in the same paper, visible in every layer.
   interiorPart("nose-sensors", "external-sensors", "DraGMet: EFIELD / METHAN", "IPM 2025 pp184-187: EFIELD engineering-model photo; METHAN published design and CAPS 2024 slide42 diagram. Exact installation estimated; METHAN NOT photo-matched", 0x6b7278, "exterior");

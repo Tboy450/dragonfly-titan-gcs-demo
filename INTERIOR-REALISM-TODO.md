@@ -19,27 +19,34 @@ explicitly estimated, not flight CAD. Do not repeatedly search the same closed l
    annotation-only geometry. Real maker photo/drawing; 2.4 mm maximum envelope, paired leads,
    estimated bond pads/side-wall placement. Macro selector at unchanged scale. Exact flight
    type/count/installation remain open. [Sources, samples and checks](research/battery-sensor-2026-10-21/README.md).
-2. [ ] **Part21 MMRTG fin-root sensor:** same source-first process, posed with the generator;
-   keep separate from a generator-body redraw. No invented telemetry accuracy or pinout.
+2. [x] **Codex, Part21 MMRTG fin-root sensor:** Omega F2020 Class B hardware-family example,
+   2 x2 x0.8 mm element, paired10 mm leads, estimated curved bond and placement. Real catalog
+   photos/drawing; range covers157 C. Independent layers and actual-scale macro inspection.
+   Flight type/count/mount/routing remain open. [Sources and samples](research/fin-root-sensor-2026-10-21/README.md).
 3. [ ] **MMRTG generator body:** photo/dimension review, archive and redraw the actual housing,
    fins and interfaces as evidence permits; preserve thermal model and completed neighbors.
 4. [ ] **Structural wall layers:** start one side-wall panel, then skin/deck/insulation and
    mounting layers separately. Add hide/ghost controls as needed; preserve interior access
    and camera penetrations. Do not invent undocumented honeycomb/core construction.
 
-Other harness work stays queued behind this order. Current count23/24 initial passes
-(8 Codex / 15 Claude), NOT 23 flight replicas or a complete interior. Only21 remains an
-annotation. Follow the expanded installation/layer/UI work packages below after the ordered
+Other harness work stays queued behind this order. Current count24/24 initial passes
+(9 Codex / 15 Claude), with labeled hardware-family/design approximations. The generator body,
+installation and construction work are still open. Follow the expanded packages below after the ordered
 items; do not confuse finishing the numbered list with finishing construction and connections.
 
-Part20 closeout:438 tests pass;18 real-Edge Internal/Thermal/selector cases at1440/390/360px,
+Current Part21 closeout:444 tests pass,18 local browser viewport/layer/subassembly cases,
+four orbit angles, independent masks and Pilot return, raw macro/full-installation pixel
+checks and no numbered-neighbor intersections. Generator/battery/part20 manifest unchanged.
+Photo/drawing/illustration/model comparison archived. Next: MMRTG body, then first wall panel.
+
+Historical Part20 closeout:438 tests passed;18 real-Edge Internal/Thermal/selector cases at1440/390/360px,
 four orbit angles, independent masks/restore and Pilot return passed. Installed-frame clearance
 check has no overlaps with other numbered parts. Battery and21 mesh manifests match the
 pre-pass baseline. Source photographs/drawing/CAD/model comparison and both finish drafts
 saved. Release83ff28a/tag pushed; Pages39636392679 succeeded. Current public builddde1292
 includes the concurrent game release and passes18 production browser cases plus masks,
 sources, module stamp, restoration and Pilot return; receipt in the part20 research folder.
-Preview server stopped. Next remains21; no need to rerun20 research or restore its annotation.
+At that checkpoint21 was next; its completed pass is now recorded above.
 
 Owner's efficiency direction: batch independent reads and related implementation steps;
 reuse saved sources and helpers, run focused checks during development and a full suite at
@@ -721,8 +728,8 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **19 follow-up:** the cold duct's real section and the meaning of the "split cold duct" (TFAWS 2024); flap hinge sides and actuators.
 - [x] **Codex:** **20 Battery temperature sensor** (`battery-sensor`): October21 labeled TE44909-family approximation: real manufacturer photo/drawing, 2.4 mm maximum envelope, black/gray epoxy bead and two 3-inch 32 AWG leads. Bond pads, profile/depth, side-wall installation and local route are estimates. Independent Casings/Mounts/Harnesses and bead macro focus; existing battery reading, physical battery and21 unchanged. [Current sources, archive and sample](research/battery-sensor-2026-10-21/README.md). October20 annotation retained in archive.
 - [ ] **20 follow-up:** identified Dragonfly sensor hardware, actual count, cell/pack sensing locations, mounting/bonding, harness destination and electrical interface. TE family adoption is unconfirmed; no claimed per-cell telemetry, accuracy or new temperature solver. The example's -55 to +90 C rating is not suitable for the fin-root example or Titan ambient.
-- [ ] **21 MMRTG fin-root sensor** (`mmrtg-sensor`): same distinction, with verified placement rather than a floating green sphere. **Claude, October 20:** the sphere (which passed through the top fin) is replaced by a labeled measurement annotation on the generator's housing beside the top fin's root, posed with the generator; isolation shows the MMRTG; no hardware claimed. Fin-root temperature as a controller input [PUB, TFAWS 2023 slides 7/9]; 157 C rating [PUB, NASA MMRTG fact sheet]. [Sources and checks](research/mmrtg-measurement-2026-10-20/README.md).
-- [ ] **21 follow-up:** the flight sensor's type, count, mounting point, bonding and harness, and whether it belongs to the generator or the lander; redraw the MMRTG itself from MMRTG photos (the target's test flags that change).
+- [x] **Codex:** **21 MMRTG fin-root sensor** (`mmrtg-sensor`): October21 Omega F2020 Class B family approximation replaces Claude's archived annotation. Real catalog photo/drawing:2 x2 x0.8 mm, two10 mm x0.2 mm leads; -70 to+500 C catalog range covers NASA's157 C fin-root rating. Ceramic/blue-glass package, estimated curved bond/local route/placement beside top fin; independently hidden Casings/Mounts/Harnesses, element/installation macro selectors. Posed with current generator; actual flight hardware/count/qualification unknown. Existing modeled gas temperature retained. [Current sources and samples](research/fin-root-sensor-2026-10-21/README.md); [historical Claude annotation](research/mmrtg-measurement-2026-10-20/README.md).
+- [ ] **21 follow-up:** flight type/supplier/count, exact sensing point/bond, radiation and flight qualification, generator-versus-lander ownership and harness destination. Recheck installation against the upcoming MMRTG-body redraw; current housing/fin dimensions are provisional. The reference RTD's temperature rating alone does not establish suitability for flight. No separate fin-root solver or controller implemented.
 - [x] **Codex:** **22 Nose methane/E-field instruments** (`nose-sensors`): photo-referenced EFIELD assemblies plus owner-approved, labeled METHAN design approximation; independently removable housings/covers, supports and fiber entry. [Sources, estimates and verification](research/methan-2026-10-18/README.md).
   - [x] **Codex, October 17:** both EFIELD probes from an engineering-model photo and
     published stalk/ball dimensions; estimated preamp and co-mounted TEMP/MICRO; independent

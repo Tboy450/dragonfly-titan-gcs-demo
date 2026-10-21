@@ -4,6 +4,15 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October21 fin-root RTD example (Codex):** [sources and model](research/fin-root-sensor-2026-10-21/README.md).
+[PUB-family] Omega F2020 Class B: nominal2 x2 x0.8 mm, two10 mm x0.2 mm leads; catalog
+-70..500 C band covers NASA's157 C rating. Real product photos guide ceramic/blue-glass
+appearance; construction graphic is an illustration. [EST] coating proportions, curved
+bond, sensing location and local bends. No Dragonfly/RTG supplier adoption established;
+no flight qualification, count or harness destination claimed. Thermal retains existing gas
+temperature, not a fin-root solver. All24 numbered initial passes complete (9 Codex/15 Claude);
+generator body, installation and construction/view/UI work remain separate open packages.
+
 **October21 battery sensor family pass (Codex):** [sources, actual samples and handoff](research/battery-sensor-2026-10-21/README.md).
 [PUB-family] TE44909 real product photo, maximum2.4 mm body and two32 AWG leads from
 TESS-ANDO-DS0059 Rev A; black/gray code and -55 to +90 C rating from DS0050 Rev A.

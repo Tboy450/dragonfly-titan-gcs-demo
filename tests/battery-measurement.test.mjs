@@ -6,7 +6,6 @@ import { buildBatteryMeasurement, batteryMeasurementAsset as A } from "../dist/b
 import { buildBattery, batteryAsset } from "../dist/battery.mjs";
 import { inspectionGroups, inspectionSubassemblies, inspectionFocusRadius, createInspector, selectInspectionSubassembly } from "../dist/vehicle-inspector.mjs";
 import { createInspectionVisibility } from "../dist/inspection-visibility.mjs";
-import { buildMmrtgMeasurement } from "../dist/mmrtg-measurement.mjs";
 const mesh = (g, m, p, parent) => { const o = new T.Mesh(g, m); o.position.fromArray(p); parent.add(o); return o; };
 const fixture = () => { const parent = new T.Group(); parent.name = "battery-sensor"; const result = buildBatteryMeasurement({ parent, mesh }); parent.updateMatrixWorld(true); return { parent, ...result }; };
 const box = object => new T.Box3().setFromObject(object);
@@ -122,12 +121,16 @@ test("Part20 completes an initial approximation while flight-specific follow-ups
   assert.match(ui, /one example does not establish the flight sensor count/);
 });
 
-test("Battery and Claude's current part21 match the immediate pre-pass mesh manifests", () => {
+test("Battery and the part21 snapshot preserved during part20 match its pre-pass manifests", () => {
   const prior = JSON.parse(readFileSync(new URL("../archive/battery-sensor-2026-10-21/before/mesh-manifest.json", import.meta.url), "utf8"));
-  for (const [name, builder] of [["battery", buildBattery], ["mmrtg-sensor", buildMmrtgMeasurement]]) {
+  for (const [name, builder] of [["battery", buildBattery]]) {
     const parent = new T.Group(); builder({ parent, mesh }); parent.updateMatrixWorld(true);
     const actual = [];
     parent.traverse(o => { if (o.isMesh) actual.push({ name: o.name, matrix: o.matrixWorld.toArray(), positions: Array.from(o.geometry.attributes.position.array) }); });
     assert.equal(JSON.stringify(actual), JSON.stringify(prior[name]), name);
   }
+  // Part21 now has its own rebuild. Its pre-rebuild archive proves that part20
+  // preserved Claude's annotation; comparing today's new model would be invalid.
+  const before21 = JSON.parse(readFileSync(new URL("../archive/fin-root-sensor-2026-10-21/before/mesh-manifest.json", import.meta.url), "utf8"));
+  assert.equal(JSON.stringify(before21['mmrtg-sensor']), JSON.stringify(prior['mmrtg-sensor']));
 });
