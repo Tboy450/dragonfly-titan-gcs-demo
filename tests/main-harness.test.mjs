@@ -46,7 +46,7 @@ test("One trunk and a branch to each unit, silver bundles on the harness layer",
   assert.equal(harness.userData.inspectionLayer, "harnesses");
   assert.equal(mounts.userData.inspectionLayer, "mounts");
   assert.equal(parent.userData.assetRevision, A.revision);
-  assert.equal(bundles(harness).length, 1 + A.branches.length);
+  assert.equal(bundles(harness).length, 1 + A.branches.length + A.strands.length + A.crossBundles.length);
   for (const b of A.branches) {
     const start = new THREE.Vector3(...b.points[0]);
     const trunk = new THREE.CatmullRomCurve3(A.trunk.points.map(p => new THREE.Vector3(...p)));

@@ -43,9 +43,18 @@ diagram, routes or which unit connects to which.
 - Tests now also check the two new risers meet those cable ends, and the clearance check covers
   the TWTA, gimbal and fans. Renders: `pass2-*.png`.
 
+## Third pass (October 21, revision `main-harness-2026-10-21c`)
+
+- Three thinner strands laid with the trunk (port, starboard and on top), since the photo's
+  bundles travel in groups rather than as one cable.
+- Two more cross-floor bundles: IEM side to power unit 2's run (toward the radio), and power
+  unit 1's run to drive-electronics box 1, kept in the centerline gap past the box.
+- Still estimated; this adds density toward the photo's look, not a wiring diagram.
+  Render: `pass3-oblique-fwd.png`.
+
 ## Not drawn yet
 
-- The photo's density: dozens of looping bundles. This pass draws the main trunks only.
+- Much of the photo's density: dozens of looping bundles and service loops at the connectors.
 - The diagonal brace runs and the attic (DraMS, carousel) harness; more of the photo's density.
 - The port down camera: its wall pass-through is behind power unit 1.
 

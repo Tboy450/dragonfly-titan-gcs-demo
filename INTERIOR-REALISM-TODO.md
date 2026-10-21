@@ -684,7 +684,8 @@ waveguide and high-voltage umbilical; sample-transfer lines (#02); the warm and 
 (#17-19); METHAN fiber entry and EFIELD harness exits (#22); PSU/IEM face connectors.
 - [x] **Claude:** Main wiring harness, first pass (October 21): trunk down the bay floor's centerline and branches to the power units, IEM, battery, radio, drive electronics, navigation units and lower-camera pass-throughs, meeting the stubs the unit passes left; lacing and floor clamps; routes [EST]. [Notes](research/main-harness-2026-10-21/README.md).
 - [x] **Claude:** Harness, second pass (October 21): bundles beside the trunk (IEM to power unit 1, power unit 2 to radio), wall risers to the TWTA power-supply cable and the gimbal drive cable, and a starboard-wall run past the battery to the fans.
-- [ ] Harness, next passes: more of the photo's density (looping bundles), the diagonal brace runs, the attic harness (DraMS, carousel), the port down camera (pass-through behind power unit 1).
+- [x] **Claude:** Harness, third pass (October 21): three strands laid with the trunk and two more cross-floor bundles, for some of the photo's density.
+- [ ] Harness, next passes: service loops at the connectors, the diagonal brace runs, the attic harness (DraMS, carousel), the port down camera (pass-through behind power unit 1).
 - [ ] (Original note) Main wiring harness: NASA's September 2, 2026 photo shows dozens of silver cables
   running around and through the structure (saved for #03 in `research/nose-bulkhead-2026-10-19/`).
   Draw the main trunks between the PSUs, IEM, radio, instruments and arms, as photographed.
@@ -697,7 +698,7 @@ waveguide and high-voltage umbilical; sample-transfer lines (#02); the warm and 
   The same photo also confirms the gold aft bulkhead (#16) and the arm shoulder fitting.
 - [ ] Mounting plates, brackets and standoffs for units still shown floating or on pads.
 - [x] **Claude:** The carousel's top hardware (October 21): foil-wrapped unit, valve block with bolted flanges, white wire loop; the strut and drives were already modeled, and the posts under the plate are the handling fixture. [Notes](research/carousel-detail-2026-10-21/README.md).
-- [ ] The open-frame wall panels the IEM, PSUs and radio mount to (#11-#13 follow-ups).
+- [ ] The open-frame wall panels the IEM, PSUs and radio mount to (#11-#13 follow-ups). Note (Claude, October 21): side panels would have to be ghosted like the body shell in Internal view, and need openings where the lower cameras pass through the wall; the diagonal brace in the September photo has no position source yet.
 
 ## Exterior: Rotor Arms and Heads
 

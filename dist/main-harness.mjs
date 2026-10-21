@@ -15,7 +15,7 @@ const onFloor = (r) => floorY + r + 0.004;   // on low standoffs
 const T = onFloor(0.012);
 const B = -0.27;   // branches' floor height: 4-5 mm above the floor and the units' mounting flanges
 export const mainHarnessAsset = Object.freeze({
-  revision: "main-harness-2026-10-21b",
+  revision: "main-harness-2026-10-21c",
   trunk: Object.freeze({ radiusM: 0.012, points: Object.freeze([[0, T, -1.0], [0, T, -0.75], [0, T, -0.4], [0, T, -0.1], [0, T, 0.12], [-0.02, T, 0.27]].map(Object.freeze)) }),
   // [name, radius, points]: each branch starts on the trunk and ends at its unit.
   branches: Object.freeze([
@@ -43,6 +43,17 @@ export const mainHarnessAsset = Object.freeze({
     ["antenna-gimbal-drive", 0.006, [[-0.08, B, -0.735], [-0.2, B, -0.745], [-0.325, B, -0.73], [-0.335, -0.2, -0.70], [-0.335, -0.05, -0.66], [-0.32, 0.03, -0.64], [-0.304, 0.055, -0.632]]],
     // Back along the starboard wall in the gap beside the battery to the circulation fans.
     ["circulation-fans", 0.006, [[-0.02, T, 0.27], [0.1, B, 0.283], [0.3, B, 0.283], [0.333, B, 0.292], [0.344, B, 0.33], [0.344, B, 0.55], [0.343, B, 0.80], [0.25, -0.24, 0.93], [0.15, -0.2, 0.99]]],
+  ].map(([name, r, pts]) => Object.freeze({ name, radiusM: r, points: Object.freeze(pts.map(Object.freeze)) }))),
+  // Third pass: thinner strands laid with the trunk (the photo's bundles travel in groups), as
+  // [dx, dy] offsets from the trunk's path, and two more cross-floor bundles [EST].
+  strands: Object.freeze([
+    Object.freeze({ name: "trunk-strand-port", radiusM: 0.005, offset: Object.freeze([-0.019, -0.006]) }),
+    Object.freeze({ name: "trunk-strand-starboard", radiusM: 0.005, offset: Object.freeze([0.019, -0.006]) }),
+    Object.freeze({ name: "trunk-strand-top", radiusM: 0.0045, offset: Object.freeze([0.004, 0.0155]) }),
+  ]),
+  crossBundles: Object.freeze([
+    ["iem-to-radio", 0.0055, [[-0.05, B, -0.25], [-0.02, B, -0.2], [0.03, B, -0.15], [0.055, B, -0.15]]],
+    ["power-unit-1-to-rde-1", 0.005, [[-0.05, B, -0.05], [-0.031, B, -0.2], [-0.031, B, -0.4], [-0.031, B, -0.69], [-0.045, B, -0.722], [-0.08, B, -0.735]]],
   ].map(([name, r, pts]) => Object.freeze({ name, radiusM: r, points: Object.freeze(pts.map(Object.freeze)) }))),
   clampSpacingM: 0.16,
 });
@@ -81,5 +92,7 @@ export function buildMainHarness({ parent, mesh }) {
   };
   run("trunk", A.trunk.radiusM, A.trunk.points);
   for (const b of A.branches) run(b.name, b.radiusM, b.points);
+  for (const s of A.strands) run(s.name, s.radiusM, A.trunk.points.map(([x, y, z]) => [x + s.offset[0], y + s.offset[1], z]));
+  for (const b of A.crossBundles) run(b.name, b.radiusM, b.points);
   return { harness, mounts };
 }

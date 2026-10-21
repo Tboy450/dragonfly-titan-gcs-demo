@@ -39,6 +39,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Main wiring harness, third pass (strands and cross bundles)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Lay strands with the harness trunk and add two cross-floor bundles"
+- **What changed:** `dist/main-harness.mjs` (revision `main-harness-2026-10-21c`): three thinner
+  strands laid with the trunk and two more cross-floor bundles between units, toward the grouped
+  bundles in NASA/APL's September 2026 wiring photo.
+- **Assumptions:** estimated, like the earlier passes.
+- **Files:** `dist/main-harness.mjs`, `tests/main-harness.test.mjs`,
+  `research/main-harness-2026-10-21/`, `INTERIOR-REALISM-TODO.md`
+- **Checks:** harness tests pass (the first cross-bundle route cut through drive-electronics
+  box 1 and was moved). Full suite 423/426: the three failures are Swarmfall Corvan-city tests
+  from that chat's uncommitted work at the same time, not this change.
+- **Open / next:** service loops, wall panels (notes in the checklist), attic harness.
+
 ### 2026-10-21: Sample carousel top hardware (part 06)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add the carousel's photographed foil-wrapped unit, valve block and wiring"
