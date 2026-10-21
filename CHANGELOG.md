@@ -39,6 +39,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-20: Arm shoulders drawn as the machined fittings in the flight-frame photo
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Draw the arm shoulders as the machined hexagonal fittings from the frame photo"
+- **What changed:** The owner's October 15 note ("looks more like a little hexagon at the
+  shoulder"), done after part 21 while the other open parts wait on evidence. Each arm root's
+  round foam ring and round flange (turned straight across the body) is replaced by the fitting
+  in NASA/APL's May 2026 frame photo: a dark six-sided collar with ribs, narrowing along the arm
+  to a round flange with 12 bolts; the arm's fairing starts at the flange.
+- **Assumptions:** Sizes [EST] from the photo against the arm tube; the base plate (under the
+  foam) and the lifting lug (possibly ground-handling) are not drawn.
+- **Archive:** `archive/arm-shoulder-2026-10-20/` (tag on `8dad2ea`) with four close renders.
+- **Files:** `dist/arm-shoulder.mjs` (new), `dist/vehicle-research.mjs`, `dist/index.html`,
+  `tests/arm-shoulder.test.mjs` (new), `research/arm-shoulder-2026-10-20/` (new),
+  `research/PART-SOURCES.md`, `INTERIOR-REALISM-TODO.md`, `ARCHITECTURE.md`, `archive/`
+- **Checks:** `node --test tests/*.test.mjs` (418 pass, 4 new); close renders from four
+  angles; Pilot view and phone width checked in the app.
+- **Open / next:** bare flight arm and harness; 03, 09, 20, 21 still wait on evidence or the
+  owner's choice of approved approximations.
+
 ### 2026-10-20: Kit-built lab worlds: varied Metropolis, orbital ring, asteroid colony, Titan outpost
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add kit-built lab worlds and rebuild Metropolis from modular parts"

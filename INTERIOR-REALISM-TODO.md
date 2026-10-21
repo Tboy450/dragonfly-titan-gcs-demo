@@ -24,6 +24,9 @@ evidence; Pioneer's RTG fin-root sensors are context only. No flight sensor pack
 position is published, so **21 stays unchecked**. Archive and tag `archive/mmrtg-sensor-2026-10-20`
 on `d016f12`. 414 tests pass; real Edge at 1440/390/360 px, before and after.
 
+**Also October 20:** the arm shoulder fitting (exterior item, owner's October 15 note) is drawn
+from the May 2026 frame photo; see the Exterior section below.
+
 **All four remaining parts (03, 09, 20, 21) now wait on evidence**, not on modeling. As of
 October 20 NASA's Dragonfly blog has nothing after September 2 and APL nothing after July 9.
 Options for the owner: approved, labeled approximations (as for 05 and 22), or waiting for new
@@ -673,7 +676,7 @@ DraMS neck intentionally passes through the wall aperture.
   upper and lower machined motor drums) and bolted hub plates, from APL/NASA's *Revolutionary
   Rotors* video, NASA's tunnel photos and the flight lander-frame photo.
   [References/limits](research/rotor-heads-2026-10-15/README.md).
-- [ ] **Arm shoulder joint (owner, October 15, future update):** the arm does not go straight into
+- [x] **Claude:** **Arm shoulder joint (owner, October 15; done October 20):** now the machined fitting from the frame photo: a six-sided ribbed collar narrowing along the arm to a round 12-bolt flange, seated at the foam surface; base plate (under foam) and lifting lug not drawn; sizes [EST]. [References/limits](research/arm-shoulder-2026-10-20/README.md). Original note: the arm does not go straight into
   the body; at the shoulder it meets a small hexagonal fitting. Redraw the shoulder (now a round
   foam ring and a round metal flange) from the real photos: the flight lander-frame tap-test photo
   (`research/rotor-heads-2026-10-15/nasa-apl-lander-frame-tap-test-2026-05.jpg`, the arm root at

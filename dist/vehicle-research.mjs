@@ -16,6 +16,7 @@ import { buildMmrtgMeasurement } from "./mmrtg-measurement.mjs?v=dev";
 import { buildNoseSensors } from "./nose-sensors.mjs?v=dev";
 import { buildAftBulkhead, aftBulkheadAsset, aftFaceZ, poseMmrtg } from "./aft-bulkhead.mjs?v=dev";
 import { buildRotorHead, buildHubPlate, rotorHeadAsset } from "./rotor-heads.mjs?v=dev";
+import { buildArmShoulder } from "./arm-shoulder.mjs?v=dev";
 import { buildRotorDriveElectronics } from "./rotor-drive-electronics.mjs?v=dev";
 import { buildIem } from "./iem.mjs?v=dev";
 import { buildPowerUnits } from "./power-units.mjs?v=dev";
@@ -349,9 +350,11 @@ export function buildResearchModel(kit) {
       const hub = [x, 0.02, z];
       const fairingEnd = root.map((value, axis) => value + (hub[axis] - value) * 0.22);
       subsystem("arms", "exterior-structure");
-      mesh(new THREE.CylinderGeometry(0.13, 0.13, 0.075, 20), foamSeam, [side * 0.46, 0.01, armRoots[index]]).rotation.z = Math.PI / 2;
-      mesh(new THREE.CylinderGeometry(0.092, 0.092, 0.085, 20), metal, [side * 0.50, 0.01, armRoots[index]]).rotation.z = Math.PI / 2;
-      taper(root, fairingEnd, 0.1, 0.065, armMaterial);
+      // The machined shoulder fitting (arm-shoulder.mjs; NASA/APL's May 2026 frame photo), then
+      // the arm's fairing from its flange. The round foam ring and flange before October 20 are
+      // in archive/arm-shoulder-2026-10-20.
+      const flangeEnd = buildArmShoulder({ parent: buildTarget, mesh, root, hub });
+      taper(flangeEnd, fairingEnd, 0.058, 0.045, armMaterial);
       strut(fairingEnd, hub, 0.036, armMaterial);
       subsystem("motors", "motors");
       buildRotorHead({ parent: buildTarget, mesh, x, z, armRoot: root });
