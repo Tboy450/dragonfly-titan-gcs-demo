@@ -25,11 +25,12 @@ const mesh = (g,m,p,parent) => { const o=new THREE.Mesh(g,m); o.position.fromArr
 const fixture = () => { const parent=new THREE.Group(); return {parent,...buildNoseBulkhead({parent,mesh})}; };
 const meshes = root => { const out=[]; root.updateMatrixWorld(true); root.traverse(o=>{if(o.isMesh)out.push(o);}); return out; };
 
-test("Provisional nose panel preserves the original envelope and labels its evidence limits", () => {
+test("Nose panel preserves the original envelope and labels its evidence limits", () => {
   const {parent,assembly}=fixture();
   assert.deepEqual(assembly.position.toArray(),[0,-0.13,-1.56]);
   assert.equal(A.widthM,0.7); assert.equal(A.heightM,0.4); assert.equal(A.depthM,0.02);
-  assert.equal(parent.userData.partialRebuild,true);
+  // Codex's provisional panel became an owner-approved design approximation on October 21.
+  assert.equal(parent.userData.approvedApproximation,true);
   assert.equal(parent.userData.dimensionConfidence,"EST");
   assert.match(parent.userData.appearanceEvidence,/complete nose face unresolved/);
   assert.ok(meshes(parent).every(o=>o.material.isMeshStandardMaterial));
@@ -79,10 +80,22 @@ test("Nose panel clears individually rebuilt hardware without moving it",()=>{
   assert.deepEqual(hits,[]);
 });
 
-test("Provisional panel does not increment the completed-part count",()=>{
+test("The approved approximation is counted, credited to Codex and labeled as such",()=>{
   const html=readFileSync(new URL("../dist/index.html",import.meta.url),"utf8");
-  assert.doesNotMatch(html,/data-assumption="nose-bulkhead"/);
-  assert.match(html,/data-provisional="nose-bulkhead"/);
+  assert.match(html,/data-assumption="nose-bulkhead"><strong>03 Nose bulkhead<\/strong> \(Codex\)[^<]*approved design approximation/);
+  assert.doesNotMatch(html,/data-provisional="nose-bulkhead"/);
   const todo=readFileSync(new URL("../INTERIOR-REALISM-TODO.md",import.meta.url),"utf8");
-  assert.match(todo,/- \[ \] \*\*03 Nose bulkhead/);
+  assert.match(todo,/- \[x\] \*\*Codex:\*\* \*\*03 Nose bulkhead/);
+});
+
+test("Bay-side construction: pocketed edge frame, bolted stiffener, edge fasteners, tape tabs",()=>{
+  const {parent,aft}=fixture(), list=meshes(parent);
+  assert.equal(aft.userData.inspectionLayer,"mounts");
+  assert.ok(list.filter(o=>o.name==="nose-bulkhead-frame-pocket").length>=16);
+  assert.ok(list.filter(o=>o.name==="nose-bulkhead-stiffener-bolt").length>=6);
+  assert.ok(list.filter(o=>o.name==="nose-bulkhead-edge-fastener").length>=40);
+  assert.ok(list.some(o=>o.name==="nose-bulkhead-tape-tab"));
+  // Everything new sits on the bay side, within the mounts' existing depth.
+  const b=new THREE.Box3().setFromObject(aft);
+  assert.ok(b.min.z>=-1.551&&b.max.z<=-1.539);
 });

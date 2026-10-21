@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Part 03 nose bulkhead closed out as an approved approximation
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Close out the nose bulkhead as an owner-approved approximation"
+- **What changed:** The owner approved labeled approximations for 03 and 09. Codex's provisional
+  panel is kept; its bay side gains the construction the flight structure shows elsewhere: a
+  pocketed machined edge frame, a bolted center stiffener and crosswise rib, edge fastener rows
+  and gold tape tabs. No apertures (unpublished). Part 03 is counted: 21 of 24 (6 Codex, 15
+  Claude); credit stays with Codex for the panel, with Claude's closeout noted.
+- **Tests:** Codex's nose-bulkhead tests moved from provisional to approximation (flag, count,
+  new construction test); Codex's part-05 test no longer hard-codes "20 of the 24".
+- **Archive:** `archive/nose-bulkhead-2026-10-21/` (tag on `46c4814`).
+- **Files:** `dist/nose-bulkhead.mjs`, `dist/index.html`, `dist/ui/layers-panel.mjs`,
+  `tests/nose-bulkhead.test.mjs`, `tests/nose-electronics.test.mjs`,
+  `research/nose-bulkhead-2026-10-21/` (new), `research/PART-SOURCES.md`,
+  `INTERIOR-REALISM-TODO.md`, `archive/`
+- **Checks:** `node --test tests/*.test.mjs` (428 pass); isolated and in-context renders.
+- **Open / next:** 09 rotor drive electronics as an approximation.
+
 ### 2026-10-21: Main wiring harness, third pass (strands and cross bundles)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Lay strands with the harness trunk and add two cross-floor bundles"

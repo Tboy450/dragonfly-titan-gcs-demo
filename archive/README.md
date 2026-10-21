@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [nose-bulkhead-2026-10-21](nose-bulkhead-2026-10-21/README.md) | Codex's provisional nose panel before the owner-approved approximation closeout; exact module, test and HTML, Codex's renders | 2026-10-21 | `archive/nose-bulkhead-2026-10-21` on 46c4814 |
 | [carousel-2026-10-21](carousel-2026-10-21/README.md) | Codex's sample carousel before the top-hardware pass; exact module and test, three in-context and two isolated pictures | 2026-10-21 | `archive/carousel-2026-10-21` on fbf08c1 |
 | [swarmfall-corvan-map-2026-10-21](swarmfall-corvan-map-2026-10-21/README.md) | Corvan's open 920 m snowfield with five zones, before the city district; exact campaign and terrain modules, before and after pictures; pre-city saves still resume on it | 2026-10-21 | `archive/swarmfall-corvan-map-2026-10-21` on 52dc4a8 |
 | [drams-2026-10-20](drams-2026-10-20/README.md) | Codex's enclosure-level DraMS before the visible-hardware pass; exact module and test, two in-context and two isolated pictures | 2026-10-20 | `archive/drams-2026-10-20` on 28197a2 |

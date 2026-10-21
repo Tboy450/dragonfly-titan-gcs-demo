@@ -14,7 +14,8 @@ The owner asked Claude to check Codex's work and continue ("do like 3-6 of the p
 after each). **Review:** Codex's October 16-20 passes (#22 EFIELD/METHAN, #05 Ocellus/MIMU,
 provisional #03, #09 inspection, #20 annotation) are committed and published; 409 tests passed
 before this pass. Claude's unpublished #22 research draft was dropped, not merged: Codex's #22
-already covers it. Count **20 of 24 (5 Codex, 15 Claude)**, unchanged.
+already covers it. Count **20 of 24 (5 Codex, 15 Claude)** at that point; **21 of 24 (6 Codex, 15 Claude)** after the
+owner approved approximations on October 21 (03 closed out; 09 next; 20 and 21 stay annotations).
 
 **Part 21:** [sources, changes and checks](research/mmrtg-measurement-2026-10-20/README.md). The
 green sphere passed through the MMRTG's top fin and floated alone when isolated. It is now a
@@ -609,7 +610,8 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **01 follow-up:** real part sizes; exact fore-aft position (sources span 0.34-0.45 m forward of center; model 0.43 m). The #02 pass now connects to the moving swivel port; preserve that connection through the full drill stroke.
 - [x] **Claude:** **02 Sample-transfer lines** (`sample-lines`): flexible hose from each drill's port (follows the drill down), rigid tubes forward under the body edges and up into the attic, flow-diverter manifold on the carousel inlet, return tube down the port side to the blowers; topology from DrACO fig. 1, routes and the 13 mm size [EST]. [References/limits](research/draco-plumbing-2026-10-14/README.md).
 - [ ] **02 follow-up:** real tube sizes and routes; separate LDMS and GCMS elevators at the carousel (the carousel models one inlet).
-- [ ] **03 Nose bulkhead** (`nose-bulkhead`): October 19 provisional thin-panel/perimeter/mount pass, not photo-matched. Complete nose-face profile, thickness, apertures and real attachment remain unresolved. [Evidence/model/process comparison](research/nose-bulkhead-2026-10-19/README.md). Do not count as completed or invent a hidden core.
+- [x] **Codex:** **03 Nose bulkhead** (`nose-bulkhead`): Codex's October 19 provisional thin-panel/perimeter/mount pass, not photo-matched; owner-approved design approximation October 21 (closeout by Claude): bay-side pocketed edge frame, bolted stiffener, rib, edge fasteners and tape tabs in the flight structure's photographed style. [Evidence/model/process comparison](research/nose-bulkhead-2026-10-19/README.md); [approximation notes](research/nose-bulkhead-2026-10-21/README.md).
+- [ ] **03 follow-up:** a photo of the actual nose bulkhead; its face profile, thickness, apertures (camera and harness pass-throughs), layup and attachment. Do not invent a hidden core.
 - [x] **Claude:** **04 Nose cameras** (`nose-cameras-inside`): Forward MAC (hooded lens), Forward WAC, two Side Cameras and two NavCams (yellow top plates) on a camera panel behind the nose cap, each behind a window; same ECAM body throughout, differences from DragonCam fig. 1; positions from figs. 2-3. [References/limits](research/nose-cameras-2026-10-13/README.md).
 - [ ] **04 follow-up:** pointing angles and which low unit is the WAC or the NavCams; the fuller 2026 chin (the low cameras stand out of the older nose shell, noted for the fuselage nose redraw).
 - [x] **Codex:** **05 IMU/lidar electronics, FEB/MEB** (`nose-electronics`): owner-approved Ocellus outer-structure approximation within historical 2023 envelopes; estimated machined MEB frame/stiffeners/lid, FEB base/returns/receiver barrel/angled collimator housing. Real related hardware informs construction, identified CAD arrangement/scale only. Not photo-matched flight units. Existing two MIMU family models/poses preserved. Independent casings/covers/mounts/interfaces, four units plus shelf focus, original05 anchor; no hidden boards, detailed optics or harness. [Current sources, model samples and limits](research/ocellus-outer-structure-2026-10-19/README.md).

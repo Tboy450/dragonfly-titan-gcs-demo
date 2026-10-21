@@ -139,7 +139,8 @@ test("MIMU exterior does not fabricate its unphotographed internals or flight ha
 
 test("Part 05 initial pass is counted as an explicit approximation, not verified flight hardware",()=>{
  const html=readFileSync(new URL("../dist/index.html",import.meta.url),"utf8"),todo=readFileSync(new URL("../INTERIOR-REALISM-TODO.md",import.meta.url),"utf8");
- assert.match(html,/20 of the 24 interior parts/);assert.match(html,/data-assumption="nose-electronics"/);
+ // The running count changes as parts are closed (21 after #03 on October 21); part-assumptions.test.mjs checks it exactly.
+ assert.match(html,/\d+ of the 24 interior parts/);assert.match(html,/data-assumption="nose-electronics"/);
  assert.match(todo,/- \[x\] \*\*Codex:\*\* \*\*05 IMU\/lidar electronics/);
  assert.match(html,/Ocellus outer-structure approximation/);
 });
