@@ -15,6 +15,13 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
+October 21 (Claude): [main wiring harness, first pass](research/main-harness-2026-10-21/README.md):
+silver bundles on the bay floor, a centerline trunk with branches to the units, after NASA/APL's
+September 2026 wiring photo (routes estimated). October 20: photo-detail passes on the
+[Wonderwall](research/wonderwall-detail-2026-10-20/README.md) and
+[DraMS](research/drams-detail-2026-10-20/README.md), and the
+[arm shoulder fittings](research/arm-shoulder-2026-10-20/README.md).
+
 October 20 (Claude): [part 21 MMRTG fin-root annotation](research/mmrtg-measurement-2026-10-20/README.md)
 replaces the green sphere that passed through the generator's top fin with a labeled target on
 the housing beside the fin's root, and shows the MMRTG when part 21 is isolated. Like part 20,

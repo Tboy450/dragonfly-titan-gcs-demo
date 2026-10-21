@@ -28,8 +28,8 @@ on `d016f12`. 414 tests pass; real Edge at 1440/390/360 px, before and after.
 from the May 2026 frame photo; see the Exterior section below.
 
 **Also October 20 (owner's attic note):** Wonderwall (#07) and DraMS (#08) got photo-detail
-passes (Codex's parts kept underneath). Next in the owner-approved order: the main wiring
-harness (Connections and Installation section).
+passes (Codex's parts kept underneath). The main wiring harness's first pass (bay-floor trunk
+and branches) followed on October 21 (Connections and Installation section).
 
 **All four remaining parts (03, 09, 20, 21) now wait on evidence**, not on modeling. As of
 October 20 NASA's Dragonfly blog has nothing after September 2 and APL nothing after July 9.
@@ -682,7 +682,9 @@ DraMS neck intentionally passes through the wall aperture.
 The owner notes that a lot of connecting equipment is still missing. Done so far: TWTA coax,
 waveguide and high-voltage umbilical; sample-transfer lines (#02); the warm and cold ducts
 (#17-19); METHAN fiber entry and EFIELD harness exits (#22); PSU/IEM face connectors.
-- [ ] Main wiring harness: NASA's September 2, 2026 photo shows dozens of silver cables
+- [x] **Claude:** Main wiring harness, first pass (October 21): trunk down the bay floor's centerline and branches to the power units, IEM, battery, radio, drive electronics, navigation units and lower-camera pass-throughs, meeting the stubs the unit passes left; lacing and floor clamps; routes [EST]. [Notes](research/main-harness-2026-10-21/README.md).
+- [ ] Harness, next passes: the photo's density (dozens of looping bundles), runs up the walls and brace, the attic harness (DraMS, carousel), the port down camera (pass-through behind power unit 1).
+- [ ] (Original note) Main wiring harness: NASA's September 2, 2026 photo shows dozens of silver cables
   running around and through the structure (saved for #03 in `research/nose-bulkhead-2026-10-19/`).
   Draw the main trunks between the PSUs, IEM, radio, instruments and arms, as photographed.
   **What the photo shows (Claude, October 20):** silver-sheathed bundles (roughly 1-3 cm) in a

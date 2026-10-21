@@ -39,6 +39,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Main wiring harness, first pass (bay floor)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Lay the main wiring harness on the bay floor from the September wiring photo"
+- **What changed:** Last item of the owner-approved order after the Wonderwall and DraMS passes.
+  New `dist/main-harness.mjs`: silver-sheathed bundles on the equipment-bay floor, a centerline
+  trunk from the navigation units to the battery and branches that meet the cable stubs earlier
+  passes left (power units, IEM, battery) or end at connector faces (radio, drive electronics,
+  navigation units, lower-camera pass-throughs); blue-green lacing ties and floor clamps.
+  Registered as the unnumbered `main-harness` subsystem (Internal and Thermal).
+- **Assumptions:** routes, sizes, topology [EST]; no pin or signal assignment. Much sparser than
+  the photo; walls, brace, attic and the port down camera are next (checklist).
+- **Archive:** none needed (nothing replaced).
+- **Files:** `dist/main-harness.mjs` (new), `dist/vehicle-research.mjs`, `dist/index.html`,
+  `tests/main-harness.test.mjs` (new), `research/main-harness-2026-10-21/` (new),
+  `research/PART-SOURCES.md`, `INTERIOR-REALISM-TODO.md`, `ARCHITECTURE.md`, `README.md`
+- **Checks:** `node --test tests/*.test.mjs` (426 pass; 4 new: topology, stub meeting points,
+  floor and wall bounds, clearance with 19 rebuilt parts). Renders from above and in the app.
+- **Open / next:** harness density, wall and attic runs.
+
 ### 2026-10-21: Swarmfall city district on Corvan's planetary map
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Build a city district into Corvan's planetary map"

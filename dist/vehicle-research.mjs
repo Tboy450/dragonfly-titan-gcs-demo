@@ -17,6 +17,7 @@ import { buildNoseSensors } from "./nose-sensors.mjs?v=dev";
 import { buildAftBulkhead, aftBulkheadAsset, aftFaceZ, poseMmrtg } from "./aft-bulkhead.mjs?v=dev";
 import { buildRotorHead, buildHubPlate, rotorHeadAsset } from "./rotor-heads.mjs?v=dev";
 import { buildArmShoulder } from "./arm-shoulder.mjs?v=dev";
+import { buildMainHarness } from "./main-harness.mjs?v=dev";
 import { buildRotorDriveElectronics } from "./rotor-drive-electronics.mjs?v=dev";
 import { buildIem } from "./iem.mjs?v=dev";
 import { buildPowerUnits } from "./power-units.mjs?v=dev";
@@ -462,6 +463,13 @@ export function buildResearchModel(kit) {
   buildSideCameras({ parent: buildTarget, mesh });
   interiorPart("drill-blower", "drills", "DrACO blowers: forward and aft centrifugal blowers behind the port forward arm", "LPSC 2022 fig. 1 and schematic; ICES-2023 p5, p7; sizes and layout estimated", 0x8c8f93, "exterior");
   buildBlowers({ parent: buildTarget, mesh });
+
+  // Main wiring harness on the bay floor (main-harness.mjs; NASA/APL's September 2026 harness
+  // photo): a trunk down the centerline and branches to the units' cable stubs and connectors.
+  // Not a numbered part; it shows in Internal and Thermal like the other interior hardware.
+  subsystem("main-harness", "equipment-bay");
+  subsystems["main-harness"].userData.layer = "interior";
+  buildMainHarness({ parent: buildTarget, mesh });
 
   // Circulation loop (ICES-2023 p2-p3): MMRTG -> fan -> under-floor duct forward -> into the body
   // below the nose -> aft through the bay -> back into the MMRTG. Arrows move along it at a speed

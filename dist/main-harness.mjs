@@ -1,0 +1,75 @@
+import * as THREE from "./vendor/three/three.module.min.js";
+
+// Main wiring harness on the equipment-bay floor (owner, October 20: "a lot of connecting
+// equipment is left"). NASA/APL's September 2, 2026 photo of the flight fuselage being wired
+// (research/nose-bulkhead-2026-10-19/nasa-apl-harness-integration.jpg; NASA/Johns Hopkins
+// APL/Ed Whitman) shows silver-sheathed bundles, roughly 1-3 cm across, laid in a network on the
+// bay floor and up the walls, laced at tie points and clamped to the structure, branching to each
+// unit's connectors. Drawn here: one trunk down the floor's centerline and branches that pick up
+// the cable stubs the unit passes already left (power units, IEM, battery) or end at a unit's
+// connector face (radio, rotor drive electronics, navigation units, lower cameras' wall
+// pass-throughs). Routes, sizes and clamp spacing are [EST]; the photo does not give a wiring
+// diagram, and no pin, signal or power assignment is implied. The attic's harness is not drawn.
+const floorY = -0.284;
+const onFloor = (r) => floorY + r + 0.004;   // on low standoffs
+const T = onFloor(0.012);
+const B = -0.27;   // branches' floor height: 4-5 mm above the floor and the units' mounting flanges
+export const mainHarnessAsset = Object.freeze({
+  revision: "main-harness-2026-10-21",
+  trunk: Object.freeze({ radiusM: 0.012, points: Object.freeze([[0, T, -1.0], [0, T, -0.75], [0, T, -0.4], [0, T, -0.1], [0, T, 0.12], [-0.02, T, 0.27]].map(Object.freeze)) }),
+  // [name, radius, points]: each branch starts on the trunk and ends at its unit.
+  branches: Object.freeze([
+    ["iem", 0.009, [[0, T, -0.36], [-0.045, B, -0.355], [-0.088, B, -0.341]]],
+    ["power-unit-2", 0.009, [[0, T, -0.30], [0.06, B, -0.29], [0.122, B, -0.278]]],
+    ["power-unit-1", 0.009, [[0, T, 0.03], [-0.06, B, 0.031], [-0.122, B, 0.032]]],
+    ["battery", 0.007, [[-0.02, T, 0.27], [-0.1, B, 0.281], [-0.17, B, 0.281], [-0.213, -0.264, 0.29]]],
+    ["radio", 0.007, [[0, T, 0.17], [0.07, B, 0.172], [0.112, -0.245, 0.178]]],
+    ["rde-1", 0.007, [[0, T, -0.75], [-0.08, B, -0.735], [-0.16, -0.25, -0.70]]],
+    ["rde-2", 0.007, [[0, T, -0.75], [0.08, B, -0.735], [0.16, -0.25, -0.70]]],
+    ["navigation-feb-imu", 0.008, [[0, T, -1.0], [0.1, B, -1.005], [0.2, -0.24, -1.014]]],
+    ["navigation-meb", 0.008, [[0, T, -1.0], [-0.12, B, -1.02], [-0.2, B, -1.14], [-0.2, -0.235, -1.262]]],
+    // Lower cameras: to the inner ends of the camera modules' own wall pass-through cables. The
+    // port down camera's pass-through is behind power unit 1 and gets no branch here.
+    ["starboard-down-camera", 0.005, [[0, T, 0.12], [0.2, B, 0.118], [0.33, B, 0.125], [0.345, -0.24, 0.15], [0.352, -0.208, 0.16]]],
+    ["microscopic-camera", 0.005, [[-0.1, B, 0.281], [-0.3, B, 0.282], [-0.335, B, 0.29], [-0.341, B, 0.31], [-0.341, -0.255, 0.37], [-0.345, -0.21, 0.41], [-0.352, -0.185, 0.418]]],
+    ["led-array", 0.004, [[-0.341, -0.255, 0.37], [-0.345, -0.258, 0.42], [-0.352, -0.259, 0.434]]],
+  ].map(([name, r, pts]) => Object.freeze({ name, radiusM: r, points: Object.freeze(pts.map(Object.freeze)) }))),
+  clampSpacingM: 0.16,
+});
+
+export function buildMainHarness({ parent, mesh }) {
+  const A = mainHarnessAsset;
+  const harness = new THREE.Group();
+  harness.name = "main-harness";
+  harness.userData.inspectionLayer = "harnesses";
+  parent.add(harness);
+  const mounts = new THREE.Group(); mounts.name = "main-harness-clamps"; mounts.userData.inspectionLayer = "mounts";
+  parent.add(mounts);
+  Object.assign(parent.userData, { assetRevision: A.revision, dimensionConfidence: "EST" });
+  // Silver overwrap as photographed; blue-green lacing at tie points; dark clamps.
+  const sheath = new THREE.MeshStandardMaterial({ color: 0xc9ced2, roughness: 0.38, metalness: 0.72 });
+  const lacing = new THREE.MeshStandardMaterial({ color: 0x5fb3a6, roughness: 0.6, metalness: 0.05 });
+  const clamp = new THREE.MeshStandardMaterial({ color: 0x4d5257, roughness: 0.5, metalness: 0.5 });
+  const run = (name, r, points) => {
+    const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)), false, "centripetal", 0.5);
+    const bundle = mesh(new THREE.TubeGeometry(curve, Math.max(24, points.length * 16), r, 10, false), sheath, [0, 0, 0], harness);
+    bundle.name = `main-harness-${name}`;
+    // Lacing ties about every 6 cm and floor clamps every clampSpacingM where the run is low.
+    const length = curve.getLength();
+    for (let s = 0.03; s < length - 0.02; s += 0.06) {
+      const t = s / length, p = curve.getPointAt(t), d = curve.getTangentAt(t);
+      const tie = mesh(new THREE.TorusGeometry(r + 0.0012, 0.0012, 4, 12), lacing, p.toArray(), harness);
+      tie.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), d); tie.name = "main-harness-tie";
+    }
+    for (let s = 0.08; s < length - 0.04; s += A.clampSpacingM) {
+      const t = s / length, p = curve.getPointAt(t), d = curve.getTangentAt(t);
+      if (p.y > floorY + r + 0.02 || Math.abs(d.y) > 0.3) continue;
+      const foot = mesh(new THREE.BoxGeometry(0.03, 0.003, 0.012), clamp, [p.x, floorY + 0.0015, p.z], mounts);
+      foot.rotation.y = Math.atan2(d.x, d.z); foot.name = "main-harness-clamp";   // across the run
+    }
+    return bundle;
+  };
+  run("trunk", A.trunk.radiusM, A.trunk.points);
+  for (const b of A.branches) run(b.name, b.radiusM, b.points);
+  return { harness, mounts };
+}
