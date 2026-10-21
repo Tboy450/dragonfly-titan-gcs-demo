@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Part 09 rotor drive electronics closed out as an approved approximation
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Close out the rotor drive electronics as an owner-approved approximation"
+- **What changed:** Second of the two approved approximations. Codex's enclosures are kept
+  mesh-for-mesh; added in the style of APL's photographed avionics on this vehicle (APL builds
+  the RDE): black finned heat-sink tops, side slice seams, mated plugs with backshells and short
+  leads to the main harness. Part 09 counted: 22 of 24 (7 Codex, 15 Claude); only 20 and 21
+  (temperature annotations) remain open. Credit stays with Codex, closeout noted.
+- **Tests:** Codex's RDE manifest check now covers Codex's meshes exactly and the new
+  `-approx-` meshes separately; the unchecked test became the approximation test.
+- **Archive:** `archive/rde-2026-10-21/` (tag on `e26d133`).
+- **Files:** `dist/rotor-drive-electronics.mjs`, `dist/index.html`, `dist/ui/layers-panel.mjs`,
+  `tests/rotor-drive-electronics.test.mjs`, `tests/nose-electronics.test.mjs`,
+  `research/rde-2026-10-21/` (new), `INTERIOR-REALISM-TODO.md`, `archive/`
+- **Checks:** `node --test tests/*.test.mjs` (428 pass; the first fins touched the TWTA waveguide
+  flange and were shortened 2 mm); isolated, in-context and Thermal renders.
+- **Open / next:** 20 and 21 stay annotations until the flight sensors are documented.
+
 ### 2026-10-21: Part 03 nose bulkhead closed out as an approved approximation
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Close out the nose bulkhead as an owner-approved approximation"

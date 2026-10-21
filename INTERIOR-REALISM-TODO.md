@@ -15,7 +15,8 @@ after each). **Review:** Codex's October 16-20 passes (#22 EFIELD/METHAN, #05 Oc
 provisional #03, #09 inspection, #20 annotation) are committed and published; 409 tests passed
 before this pass. Claude's unpublished #22 research draft was dropped, not merged: Codex's #22
 already covers it. Count **20 of 24 (5 Codex, 15 Claude)** at that point; **21 of 24 (6 Codex, 15 Claude)** after the
-owner approved approximations on October 21 (03 closed out; 09 next; 20 and 21 stay annotations).
+owner approved approximations on October 21 (03 closed out), and **22 of 24 (7 Codex, 15 Claude)** after 09.
+20 and 21 stay annotations.
 
 **Part 21:** [sources, changes and checks](research/mmrtg-measurement-2026-10-20/README.md). The
 green sphere passed through the MMRTG's top fin and floated alone when isolated. It is now a
@@ -625,9 +626,11 @@ DraMS neck intentionally passes through the wall aperture.
 - [x] **Claude:** **07/08 visible detail, DraMS half (October 20):** insulation blanket over the analyzer, three valve bodies with lines into the GC enclosure, a brass cylinder and a wire bundle from the SVS 15003 photo; the photo's test cables and connector table left out as ground equipment. [Notes](research/drams-detail-2026-10-20/README.md).
 - [x] **07/08 visible-detail pass (owner, October 20: "something may be missing from the apparatus"; compared by Claude against the saved NASA/Mike Guinto photos):** the real Wonderwall has a machined, pocketed gray frame over its upper part, a bolted circular interface fitting with a cross of spokes, orange Kapton covers around it and mounting tabs along its edges; the model is a plain panel with a round hole. The real DraMS is an open assembly (no outer walls, as in the model) but dense with visible hardware: foil-wrapped harness bundles, tubes, valves, small cylinders and wiring on a gold-toned frame; the model has an open frame with one cylinder and two boxes. Draw what the photos show on the outside; keep hidden internals out (see the 08 follow-up below). **Both halves done (above).**
 - [ ] **08 detailed follow-up:** independently source ITMS electrodes, UV laser/LDMS interface, GC hardware, carousel-side pyrolysis oven, fan and actual seals/transfer paths. Do not invent hidden internals or treat the current casings as flight CAD.
-- [ ] **09 Rotorcraft drive electronics** (`rde`): Codex provisional enclosure pass October 15;
+- [x] **Codex:** **09 Rotorcraft drive electronics** (`rde`): Codex provisional enclosure pass October 15;
   two hollow cases, separate lids/mounts, illustrative internal fans and real vent openings.
-  Remains unchecked: no clear flight-hardware photo or dimensions found. [Sources/limits](research/rde-2026-10-15/README.md).
+  Owner-approved design approximation October 21 (closeout by Claude): black finned heat-sink tops, slice seams and
+  mated plugs with backshells and leads to the main harness, in the style of APL's photographed avionics.
+  [Sources/limits](research/rde-2026-10-15/README.md); [approximation notes](research/rde-2026-10-21/README.md).
 - [ ] **09 follow-up (Claude's review, October 15):** sources and labels check out; APL's gallery and
   NASA's pages still have no RDE photo. ICES-2023 fig. 4 places the two hot RDE boxes just aft of
   the attic, as drawn, but they appear side by side on one side of the bay rather than split across

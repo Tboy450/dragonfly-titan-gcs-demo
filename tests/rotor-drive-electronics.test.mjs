@@ -72,7 +72,7 @@ test("RDE unit focus and removable layers retain installed positions and restore
     assert.equal(state.inspector.subassembly, unit.group.name);
     assert.equal(unit.group.userData.flightConfigurationConfirmed, false);
     assert.equal(unit.group.userData.unmodeledInternals, true);
-    assert.match(unit.group.userData.inspectionLabel, /provisional/);
+    assert.match(unit.group.userData.inspectionLabel, /approved approximation/);
     assert.ok(unit.group.userData.labelAnchor.y > rdeAsset.topY);
   }
   selectInspectionSubassembly(state, parent, "unknown");
@@ -95,13 +95,17 @@ test("RDE inspection regrouping preserves every archived mesh vertex, pose and f
     color: o.material.color.getHex(), metalness: o.material.metalness, roughness: o.material.roughness }); });
   manifest.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
   const archived = JSON.parse(readFileSync(new URL("../archive/rde-inspection-2026-10-19/before/mesh-manifest.json", import.meta.url), "utf8"));
-  assert.deepEqual(manifest, archived);
+  // Since the October 21 approximation, the added meshes carry "-approx-"; Codex's own meshes
+  // must still match the archive exactly.
+  assert.deepEqual(manifest.filter(o => !/-approx-/.test(o.name)), archived);
+  assert.ok(manifest.some(o => /-approx-heat-sink-fin/.test(o.name)) && manifest.some(o => /-approx-backshell/.test(o.name)));
   assert.ok(!manifest.some(o => /pcb|circuit|pinout|cable/.test(o.name)));
 });
 
-test("RDE remains an unchecked initial pass with no new cooling or flight solver", () => {
+test("RDE is counted as an owner-approved approximation, with no new cooling or flight solver", () => {
   const todo = readFileSync(new URL("../INTERIOR-REALISM-TODO.md", import.meta.url), "utf8");
-  assert.match(todo, /- \[ \] \*\*09 /);
+  assert.match(todo, /- \[x\] \*\*Codex:\*\* \*\*09 /);
+  assert.equal(build().parent.userData.approvedApproximation, true);
   assert.equal(build().parent.userData.flightConfigurationConfirmed, false);
 });
 

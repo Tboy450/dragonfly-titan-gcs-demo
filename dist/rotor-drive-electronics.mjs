@@ -2,9 +2,13 @@ import * as THREE from "./vendor/three/three.module.min.js";
 
 // [PUB] ICES-2023-389 pp. 5/7: two RDE boxes with internal fans.
 // [EST] All visual details below. The CAPS 2024 test photo does not resolve flight
-// casing geometry. This is a provisional enclosure illustration, not a photo replica.
+// casing geometry. Codex's provisional enclosures (October 15/19) are kept unchanged.
+// Owner-approved design approximation (October 21; Claude): APL builds the RDE (APL G-RADNEXT
+// 2026 abstract), so the boxes gain the look of APL's photographed avionics on this vehicle:
+// the IEM's black finned heat-sink top, the power units' slice seams and their mated,
+// backshelled connectors with short cables to the main harness. Not a photo of the RDE.
 export const rdeAsset = Object.freeze({
-  revision: "rde-provisional-inspection-2026-10-19",
+  revision: "rde-2026-10-21-approximation",
   confidence: "EST",
   unitCount: 2,
   centers: Object.freeze([Object.freeze([-0.16, -0.55]), Object.freeze([0.16, -0.55])]),
@@ -17,7 +21,8 @@ export function buildRotorDriveElectronics({ parent, mesh }) {
   assembly.name = "rde-provisional-assemblies";
   parent.add(assembly);
   Object.assign(parent.userData, { assetRevision: rdeAsset.revision, dimensionConfidence: "EST",
-    appearanceEvidence: "Provisional illustration; no resolved flight-casing photo", flightConfigurationConfirmed: false });
+    appearanceEvidence: "Owner-approved design approximation in the style of APL's photographed avionics; no resolved flight-casing photo",
+    approvedApproximation: true, flightConfigurationConfirmed: false });
   const silver = new THREE.MeshStandardMaterial({ color: 0xb4bec3, metalness: 0.6, roughness: 0.4 });
   const dark = new THREE.MeshStandardMaterial({ color: 0x343d43, metalness: 0.4, roughness: 0.53 });
   const fastener = new THREE.MeshStandardMaterial({ color: 0x747c82, metalness: 0.7, roughness: 0.32 });
@@ -31,7 +36,7 @@ export function buildRotorDriveElectronics({ parent, mesh }) {
     // Identity roots preserve every existing vehicle-frame mesh position and the original part 09.
     const group = new THREE.Group(); group.name = prefix; assembly.add(group);
     Object.assign(group.userData, {
-      inspectionLabel: `RDE ${i + 1} (provisional illustration)`,
+      inspectionLabel: `RDE ${i + 1} (approved approximation)`,
       labelAnchor: new THREE.Vector3(x, top + skin, z), dimensionConfidence: "EST",
       flightConfigurationConfirmed: false, unmodeledInternals: true,
     });
@@ -91,6 +96,29 @@ export function buildRotorDriveElectronics({ parent, mesh }) {
     // Connector blanks only: no claimed flight pinout, channel allocation or cable route.
     for (const dx of [-0.06, 0.06]) {
       box([0.036, 0.014, 0.006], [x + dx, bottom + 0.022, z - d / 2 - 0.004], dark, layers.connectors, `${prefix}-connector-blank`);
+    }
+    // ---- Approximation detail (October 21): names carry "-approx-" ----
+    const black = new THREE.MeshStandardMaterial({ color: 0x1f2326, metalness: 0.45, roughness: 0.5 });
+    const shell = new THREE.MeshStandardMaterial({ color: 0x9aa1a6, metalness: 0.75, roughness: 0.32 });
+    const wrap = new THREE.MeshStandardMaterial({ color: 0xc9ced2, metalness: 0.72, roughness: 0.38 });
+    // Black finned heat sink on the lid, clear of the lid fasteners (IEM style) and 2 mm under
+    // the TWTA waveguide flange above box 2.
+    box([0.19, 0.002, d - 0.03], [x, top + skin + 0.001, z], black, layers.covers, `${prefix}-approx-heat-sink-base`);
+    for (let k = 0; k < 11; k += 1) {
+      box([0.0028, 0.009, d - 0.034], [x - 0.09 + k * 0.018, top + skin + 0.0065, z], black, layers.covers, `${prefix}-approx-heat-sink-fin`);
+    }
+    // Slice seams on both sides (power-unit style).
+    for (const side of [-1, 1]) for (const dz of [-0.065, 0, 0.065]) {
+      box([0.0008, h - 0.012, 0.003], [x + side * (w / 2 + 0.0004), cy, z + dz], black, layers.casings, `${prefix}-approx-slice-seam`);
+    }
+    // Mated plugs and backshells on Codex's connector blanks, with short cables that meet the
+    // main harness branch in front of the box (main-harness.mjs).
+    const face = z - d / 2 - 0.007;
+    for (const dx of [-0.06, 0.06]) {
+      box([0.034, 0.016, 0.004], [x + dx, bottom + 0.022, face - 0.002], shell, layers.connectors, `${prefix}-approx-plug`);
+      box([0.022, 0.013, 0.007], [x + dx, bottom + 0.022, face - 0.0075], wrap, layers.connectors, `${prefix}-approx-backshell`);
+      const lead = new THREE.CatmullRomCurve3([[x + dx, bottom + 0.016, face - 0.008], [x + dx * 0.5, -0.256, face - 0.009], [x, -0.252, face - 0.01]].map(p => new THREE.Vector3(...p)));
+      mesh(new THREE.TubeGeometry(lead, 12, 0.0025, 6, false), wrap, [0, 0, 0], layers.connectors).name = `${prefix}-approx-lead`;
     }
     return { group, ...layers };
   });
