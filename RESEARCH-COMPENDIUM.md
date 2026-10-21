@@ -4,6 +4,13 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October21 RDE installation pass (Codex):** [source audit and actual samples](research/rde-service-loops-2026-10-21/README.md).
+NASA/APL's real flight wiring photo informs curved silver bundles/lacing; NASA-STD8739.4A
+Change4 pages29-31 support general stress-relief/offset principles. Neither establishes RDE
+flight lead routing or cable construction. Four [EST] bows retain existing endpoints, wire-only
+inspection masks, unchanged non-wire RDE geometry/main trunk. No standard compliance or
+qualified bend radius claimed; initial count22/24 unchanged, only20/21 remain annotations.
+
 **October 20 part 21 fin-root annotation (Claude):** [sources and checks](research/mmrtg-measurement-2026-10-20/README.md).
 TFAWS 2023 slides 7/9: the MMRTG fin-root temperature is the second controller input (fans'
 speed). NASA's MMRTG fact sheet: 157 C at the fin root [PUB]. Pioneer's one fin-root sensor

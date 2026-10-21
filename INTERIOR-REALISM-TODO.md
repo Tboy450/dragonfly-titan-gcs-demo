@@ -8,7 +8,21 @@ Codex's October 16-20 passes reviewed and part 21 annotated October 20, 2026 by 
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: Part 21 Annotated Like Part 20; Hardware Open (October 20, Claude)
+## Resume Here: 22 Initial Passes; RDE Connector Service Loops
+
+October21 Codex: [current source comparison, archive and handoff](research/rde-service-loops-2026-10-21/README.md).
+Claude's 03/09 closeouts retained as approved approximations. **22/24 initial passes**;
+only20/21 remain annotations. RDE cables/ties now have their own Harnesses/lines mask,
+separate from Interfaces. Four estimated slack bows retain the original connector/trunk
+endpoints; enclosures, other parts and main-harness routes unchanged. No hidden pinout or
+qualified bend-radius claim. Saved NASA/APL wiring photo and NASA workmanship pages support
+appearance/general principles only.432full tests pass; real-Edge18unit/layer/viewport cases,
+six independent wire/interface-mask cases, restoration/Pilot and raw-pixel framing pass.
+Archive/tag5f9e1bb. Read current research README for publication status.
+Next installation items: other units' service loops, attic wiring, supports and ghostable wall
+panels, one scoped pass at a time. Do not restart completed parts or touch game assets.
+
+## Previous Checkpoint: Part 21 Annotated Like Part 20; Hardware Open (October 20, Claude)
 
 The owner asked Claude to check Codex's work and continue ("do like 3-6 of the parts", pushing
 after each). **Review:** Codex's October 16-20 passes (#22 EFIELD/METHAN, #05 Ocellus/MIMU,
@@ -33,10 +47,11 @@ from the May 2026 frame photo; see the Exterior section below.
 passes (Codex's parts kept underneath). The main wiring harness's first pass (bay-floor trunk
 and branches) followed on October 21 (Connections and Installation section).
 
-**All four remaining parts (03, 09, 20, 21) now wait on evidence**, not on modeling. As of
-October 20 NASA's Dragonfly blog has nothing after September 2 and APL nothing after July 9.
-Options for the owner: approved, labeled approximations (as for 05 and 22), or waiting for new
-photos. Don't re-search the same sources without a new lead.
+At this October20 checkpoint,03/09/20/21 awaited evidence. The owner subsequently approved
+labeled approximations for03/09, now counted; **only20/21 remain unbuilt sensor hardware**.
+Flight-specific details of completed approximations remain follow-ups, not missing initial
+passes. Do not repeat searches of the same sources without a new lead; continue the separate
+Connections and Installation work below.
 
 ## Previous Checkpoint: Part 20 Annotation Corrected; Hardware Open (Codex)
 
@@ -690,7 +705,8 @@ waveguide and high-voltage umbilical; sample-transfer lines (#02); the warm and 
 - [x] **Claude:** Main wiring harness, first pass (October 21): trunk down the bay floor's centerline and branches to the power units, IEM, battery, radio, drive electronics, navigation units and lower-camera pass-throughs, meeting the stubs the unit passes left; lacing and floor clamps; routes [EST]. [Notes](research/main-harness-2026-10-21/README.md).
 - [x] **Claude:** Harness, second pass (October 21): bundles beside the trunk (IEM to power unit 1, power unit 2 to radio), wall risers to the TWTA power-supply cable and the gimbal drive cable, and a starboard-wall run past the battery to the fans.
 - [x] **Claude:** Harness, third pass (October 21): three strands laid with the trunk and two more cross-floor bundles, for some of the photo's density.
-- [ ] Harness, next passes: service loops at the connectors, the diagonal brace runs, the attic harness (DraMS, carousel), the port down camera (pass-through behind power unit 1).
+- [x] **Codex:** RDE connector service-loop pass (October21): four estimated slack bows/lacing on existing leads, original entries/endpoints preserved, independent Harnesses/Interfaces masks. Enclosures and main trunk unchanged. General NASA workmanship guidance, not flight-route or bend qualification. [Sources, archive and sample](research/rde-service-loops-2026-10-21/README.md).
+- [ ] Harness, next passes: service loops at other units' connectors, the diagonal brace runs, the attic harness (DraMS, carousel), the port down camera (pass-through behind power unit 1).
 - [ ] (Original note) Main wiring harness: NASA's September 2, 2026 photo shows dozens of silver cables
   running around and through the structure (saved for #03 in `research/nose-bulkhead-2026-10-19/`).
   Draw the main trunks between the PSUs, IEM, radio, instruments and arms, as photographed.

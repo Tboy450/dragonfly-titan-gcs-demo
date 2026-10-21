@@ -15,6 +15,11 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
+October21 Codex: [RDE connector installation](research/rde-service-loops-2026-10-21/README.md)
+adds estimated slack loops and lacing to the four existing leads, with a wire-only Harnesses
+mask independent from connector Interfaces. Claude's casings and main trunk remain unchanged.
+Initial parts count22/24;20/21 still annotations. Other units' loops/installation remain open.
+
 October 21 (Claude): [main wiring harness, first pass](research/main-harness-2026-10-21/README.md):
 silver bundles on the bay floor, a centerline trunk with branches to the units, after NASA/APL's
 September 2026 wiring photo (routes estimated). October 20: photo-detail passes on the

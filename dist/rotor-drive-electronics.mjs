@@ -8,12 +8,13 @@ import * as THREE from "./vendor/three/three.module.min.js";
 // the IEM's black finned heat-sink top, the power units' slice seams and their mated,
 // backshelled connectors with short cables to the main harness. Not a photo of the RDE.
 export const rdeAsset = Object.freeze({
-  revision: "rde-2026-10-21-approximation",
+  revision: "rde-2026-10-21-service-loops",
   confidence: "EST",
   unitCount: 2,
   centers: Object.freeze([Object.freeze([-0.16, -0.55]), Object.freeze([0.16, -0.55])]),
   widthM: 0.24, depthM: 0.26, bottomY: -0.266, topY: -0.09, floorY: -0.284,
   fanRadiusM: 0.031,
+  leadRadiusM: 0.0025, leadControlReachM: 0.075,
 });
 
 export function buildRotorDriveElectronics({ parent, mesh }) {
@@ -43,7 +44,7 @@ export function buildRotorDriveElectronics({ parent, mesh }) {
     const layers = {};
     for (const [key, category] of Object.entries({
       mounts: "mounts", casings: "equipment-casings", covers: "equipment-covers",
-      cooling: "interfaces", connectors: "interfaces",
+      cooling: "interfaces", connectors: "interfaces", harnesses: "harnesses",
     })) {
       const g = new THREE.Group(); g.name = `${prefix}-${key}`;
       g.userData.inspectionLayer = category; group.add(g); layers[key] = g;
@@ -117,8 +118,24 @@ export function buildRotorDriveElectronics({ parent, mesh }) {
     for (const dx of [-0.06, 0.06]) {
       box([0.034, 0.016, 0.004], [x + dx, bottom + 0.022, face - 0.002], shell, layers.connectors, `${prefix}-approx-plug`);
       box([0.022, 0.013, 0.007], [x + dx, bottom + 0.022, face - 0.0075], wrap, layers.connectors, `${prefix}-approx-backshell`);
-      const lead = new THREE.CatmullRomCurve3([[x + dx, bottom + 0.016, face - 0.008], [x + dx * 0.5, -0.256, face - 0.009], [x, -0.252, face - 0.01]].map(p => new THREE.Vector3(...p)));
-      mesh(new THREE.TubeGeometry(lead, 12, 0.0025, 6, false), wrap, [0, 0, 0], layers.connectors).name = `${prefix}-approx-lead`;
+      // [EST] Broad slack bow, not an identified flight route or a certified bend radius.
+      // Endpoints retain Claude's backshell and main-harness interfaces; no electrical splice implied.
+      const lead = new THREE.CubicBezierCurve3(
+        new THREE.Vector3(x + dx, bottom + 0.016, face - 0.008),
+        new THREE.Vector3(x + dx, -0.242, face - 0.008 - rdeAsset.leadControlReachM),
+        new THREE.Vector3(x, -0.242, face - 0.01 - rdeAsset.leadControlReachM),
+        new THREE.Vector3(x, -0.252, face - 0.01),
+      );
+      const cable = mesh(new THREE.TubeGeometry(lead, 40, rdeAsset.leadRadiusM, 8, false), wrap, [0, 0, 0], layers.harnesses);
+      cable.name = `${prefix}-approx-lead`;
+      cable.userData.routeConfidence = "EST";
+      const lacing = new THREE.MeshStandardMaterial({ color: 0x5fb3a6, metalness: 0.05, roughness: 0.6 });
+      for (const t of [0.22, 0.72]) {
+        const tie = mesh(new THREE.TorusGeometry(rdeAsset.leadRadiusM + 0.0006, 0.0006, 4, 12),
+          lacing, lead.getPointAt(t).toArray(), layers.harnesses);
+        tie.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), lead.getTangentAt(t));
+        tie.name = `${prefix}-approx-lead-tie`;
+      }
     }
     return { group, ...layers };
   });

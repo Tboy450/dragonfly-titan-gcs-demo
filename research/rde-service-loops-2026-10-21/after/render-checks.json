@@ -1,0 +1,121 @@
+{
+  "status": "passed",
+  "baseline": false,
+  "checks": [
+    {
+      "unit": "",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "unit": "",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "unit": "",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "unit": "",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "unit": "",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "unit": "",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "unit": "rde-1",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "unit": "rde-1",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "unit": "rde-1",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "unit": "rde-1",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "unit": "rde-1",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "unit": "rde-1",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "unit": "rde-2",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "unit": "rde-2",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "unit": "rde-2",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "unit": "rde-2",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "unit": "rde-2",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "unit": "rde-2",
+      "layer": "thermal",
+      "width": 360
+    }
+  ],
+  "samples": [
+    {
+      "name": "rde-pair-closed.png",
+      "pixels": {
+        "count": 158917,
+        "minX": 203,
+        "maxX": 821,
+        "minY": 154,
+        "maxY": 554
+      }
+    },
+    {
+      "name": "rde-pair-covers-hidden.png",
+      "pixels": {
+        "count": 154090,
+        "minX": 203,
+        "maxX": 821,
+        "minY": 154,
+        "maxY": 550
+      }
+    }
+  ],
+  "errors": [],
+  "coverHideRestore": true,
+  "pilotReturn": true
+}

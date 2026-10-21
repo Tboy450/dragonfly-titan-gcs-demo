@@ -39,6 +39,26 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: RDE connector slack loops and independent wire inspection
+- **Signed:** Codex (OpenAI)
+- **Commit:** Add RDE service loops and independent harness inspection
+- **What changed:** Four existing RDE leads gain estimated slack bows/lacing and a Harnesses
+  layer independent of connector/cooling Interfaces. Original endpoints/anchors/casing poses
+  preserved; Claude's non-wire meshes/materials match baseline exactly. Main trunk unchanged.
+  Checklist and RDE app text now distinguish completed approved initial passes from flight
+  follow-ups. Count22/24 unchanged;20/21 remain annotations.
+- **Evidence:** Existing NASA/APL/Ed Whitman flight wiring photo plus original NASA-STD8739.4A
+  Change4 pages29-31 saved/inspected. General appearance/principles, not qualified flight routing,
+  cable construction or bend-radius compliance. No hidden pins/circuits or physics changes.
+- **Archive:** Exact prior module/test/UI, fresh renders/manifest and restore notes; tag
+  `archive/rde-service-loops-2026-10-21` on5f9e1bb. No model draft discarded.
+- **Checks:** Focused masks, stable geometry/endpoints, own-case/neighbor clearance tests pass;
+  real Edge18viewport/layer/unit cases plus independent mask checks at1440/390/360 Internal/
+  Thermal, cover restoration/Pilot and nonblank/raw-pixel framing pass.432full tests pass,
+  output in current research folder. Public receipt recorded after deployment. No game source edited.
+- **Next:** Other units' connector loops, attic wiring and ghostable wall panels remain separate
+  scoped installation work; do not reopen completed initial assets without new evidence.
+
 ### 2026-10-21: Swarmfall Frontier mode and Corvan Frontier
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add Frontier mode with Corvan Frontier and return campaign Corvan to its snowfield"

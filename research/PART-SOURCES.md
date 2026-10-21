@@ -6,6 +6,10 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**RDE installation follow-up:** [real/CAD/before/current comparison and audit](rde-service-loops-2026-10-21/README.md).
+Existing NASA/APL/Ed Whitman wiring photograph plus original NASA harness-workmanship
+pages29-31 below; appearance/general practice only, not identified RDE flight geometry.
+
 **Part 21 (Claude, October 20):** [fin-root annotation, sources and checks](mmrtg-measurement-2026-10-20/README.md).
 TFAWS 2023 slides 7 and 9 (saved with part 20) name the MMRTG fin-root temperature as a controller
 input; the [NASA MMRTG fact sheet](sources/nasa-mmrtg-factsheet/README.md) rates it at 157 C;
@@ -39,6 +43,7 @@ scanner vendor, installed routing and completed housing remain unresolved; no mo
 
 | Folder | Source | Pages saved | Used by |
 |---|---|---|---|
+| [`sources/nasa-harness-workmanship`](sources/nasa-harness-workmanship/README.md) | NASA-STD8739.4A Change4, public active record | Complete original pages29-31 | RDE installation principles only; not flight route, cable type or qualification |
 | [`sources/nasa-mmrtg-factsheet`](sources/nasa-mmrtg-factsheet/README.md) | NASA MMRTG fact sheet NF-2020-05-619-HQ | both pages | 21: 157 C fin-root rating; generator size |
 | [`sources/pioneer-rtg-fin-root-2007`](sources/pioneer-rtg-fin-root-2007/README.md) | Toth and Turyshev 2007, arXiv:0710.2656 | pp. 3, 5 | 21: context only (one fin-root sensor per Pioneer RTG); not Dragonfly evidence |
 | [`sources/tfaws2023-battery-feedback`](sources/tfaws2023-battery-feedback/README.md) | Holtzman/Castano, NASA/APL TFAWS2023 | Complete original pages7-9 |20 control-input evidence only; not sensor appearance, scale or count. Also 21 (Claude): slides 7/9 MMRTG fin-root input |

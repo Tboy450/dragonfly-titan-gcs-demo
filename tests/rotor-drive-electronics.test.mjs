@@ -19,6 +19,7 @@ import { buildDramsAssembly } from "../dist/drams-assembly.mjs";
 import { buildWonderwall } from "../dist/wonderwall.mjs";
 import { createInspectionVisibility } from "../dist/inspection-visibility.mjs";
 import { inspectionSubassemblies, createInspector, selectInspectionSubassembly } from "../dist/vehicle-inspector.mjs";
+import { mainHarnessAsset } from "../dist/main-harness.mjs";
 
 function mesh(geometry, material, position, parent) {
   const part = new THREE.Mesh(geometry, material); part.position.fromArray(position); parent.add(part); return part;
@@ -59,6 +60,7 @@ test("RDE keeps two explicitly provisional enclosures and stable layer groups", 
     assert.equal(unit.casings.userData.inspectionLayer, "equipment-casings");
     assert.equal(unit.cooling.userData.inspectionLayer, "interfaces");
     assert.equal(unit.connectors.userData.inspectionLayer, "interfaces");
+    assert.equal(unit.harnesses.userData.inspectionLayer, "harnesses");
   }
 });
 
@@ -78,7 +80,7 @@ test("RDE unit focus and removable layers retain installed positions and restore
   selectInspectionSubassembly(state, parent, "unknown");
   assert.equal(state.inspector.subassembly, "rde-2");
   const visibility = createInspectionVisibility({ rde: parent });
-  for (const [id, key] of [["equipment-covers", "covers"], ["equipment-casings", "casings"], ["mounts", "mounts"], ["interfaces", "cooling"]]) {
+  for (const [id, key] of [["equipment-covers", "covers"], ["equipment-casings", "casings"], ["mounts", "mounts"], ["interfaces", "cooling"], ["harnesses", "harnesses"]]) {
     const previous = new Map(); visibility.apply({ hiddenPartLayers: { rde: [id] } }, previous);
     for (const unit of parts.units) assert.equal(unit[key].visible, false);
     for (const [object, value] of previous) object.visible = value;
@@ -113,7 +115,78 @@ test("RDE mounts rest on the bay floor and stay under the gimbal/deck", () => {
   const { parent } = build(), b = new THREE.Box3().setFromObject(parent);
   assert.ok(Math.abs(b.min.y - rdeAsset.floorY) < 1e-6);
   assert.ok(b.max.y < -0.067 && b.min.x > -0.30 && b.max.x < 0.30);
-  assert.ok(b.min.z > -0.70 && b.max.z < -0.40);
+  assert.ok(b.min.z > -0.76 && b.max.z < -0.40, "slack leads extend forward of the unchanged enclosures");
+});
+
+test("RDE harness mask removes only leads and ties, independently from connector interfaces", () => {
+  const { parent, parts } = build(), visibility = createInspectionVisibility({ rde: parent });
+  assert.equal(visibility.available("harnesses", "rde"), true);
+  const poses = parts.units.map(u => u.group.matrixWorld.toArray()), previous = new Map();
+  visibility.apply({ hiddenPartLayers: { rde: ["harnesses"] } }, previous);
+  for (const unit of parts.units) {
+    assert.equal(unit.harnesses.visible, false); assert.equal(unit.connectors.visible, true);
+    assert.equal(unit.cooling.visible, true); assert.equal(unit.covers.visible, true);
+    assert.equal(unit.casings.visible, true);
+  }
+  for (const [o, v] of previous) o.visible = v;
+  visibility.apply({ hiddenPartLayers: { rde: ["interfaces"] } }, new Map());
+  for (const unit of parts.units) { assert.equal(unit.harnesses.visible, true); assert.equal(unit.connectors.visible, false); }
+  parent.updateMatrixWorld(true); assert.deepEqual(parts.units.map(u => u.group.matrixWorld.toArray()), poses);
+});
+
+test("Four estimated RDE slack leads retain their original connector and trunk endpoints", () => {
+  const { parent } = build(), leads = [];
+  parent.traverse(o => { if (/-approx-lead$/.test(o.name)) leads.push(o); });
+  assert.equal(leads.length, 4);
+  leads.forEach((lead, i) => {
+    const [x, z] = rdeAsset.centers[Math.floor(i / 2)], dx = i % 2 ? .06 : -.06;
+    const face = z - rdeAsset.depthM / 2 - .007, curve = lead.geometry.parameters.path;
+    assert.deepEqual(curve.getPoint(0).toArray(), [x + dx, rdeAsset.bottomY + .016, face - .008]);
+    assert.deepEqual(curve.getPoint(1).toArray(), [x, -.252, face - .01]);
+    assert.equal(curve.type, "CubicBezierCurve3");
+    assert.equal(lead.userData.routeConfidence, "EST");
+    const branch = mainHarnessAsset.branches.find(b => b.name === `rde-${Math.floor(i / 2) + 1}`);
+    assert.ok(curve.getPoint(1).distanceTo(new THREE.Vector3(...branch.points.at(-1))) < branch.radiusM + rdeAsset.leadRadiusM,
+      "lead ends inside the unchanged main-harness branch, not in empty space");
+    assert.ok(curve.getLength() > curve.getPoint(0).distanceTo(curve.getPoint(1)) * 1.8, "visible slack, not a taut cable");
+    for (let n = 0; n <= 200; n++) {
+      const p = curve.getPoint(n / 200);
+      assert.ok(p.y - rdeAsset.leadRadiusM > rdeAsset.floorY);
+      assert.ok(p.z < z - rdeAsset.depthM / 2 && p.z > -.76);
+    }
+  });
+});
+
+test("RDE slack leads clear both cases and plugs except their own backshell entry", () => {
+  const { parent } = build(), leads = [], solids = [];
+  parent.traverse(o => {
+    if (!o.isMesh) return;
+    if (/-approx-lead$/.test(o.name)) leads.push(o);
+    else if (!/-approx-lead-tie$/.test(o.name)) solids.push(o);
+  });
+  for (const lead of leads) {
+    const curve = lead.geometry.parameters.path, start = curve.getPoint(0);
+    for (let i = 0; i <= 250; i++) {
+      const p = curve.getPoint(i / 250), b = new THREE.Box3().setFromCenterAndSize(p, new THREE.Vector3().setScalar(rdeAsset.leadRadiusM * 2));
+      for (const other of solids) {
+        if (/-approx-backshell$/.test(other.name) && p.distanceTo(start) < .008) continue;
+        assert.ok(!b.intersectsBox(new THREE.Box3().setFromObject(other)), `${lead.name} intersects ${other.name}`);
+      }
+    }
+  }
+});
+
+test("Service-loop update preserves Claude's non-wire RDE geometry and finish exactly", () => {
+  const { parent } = build(), actual = [];
+  parent.traverse(o => { if (o.isMesh && !/-approx-lead(?:-tie)?$/.test(o.name)) actual.push({
+    name: o.name, matrix: o.matrixWorld.toArray(), position: Array.from(o.geometry.attributes.position.array),
+    index: o.geometry.index ? Array.from(o.geometry.index.array) : null,
+    color: o.material.color.getHex(), metalness: o.material.metalness, roughness: o.material.roughness,
+  }); });
+  const prior = JSON.parse(readFileSync(new URL("../archive/rde-service-loops-2026-10-21/before/mesh-manifest.json", import.meta.url), "utf8"))
+    .filter(o => !/-approx-lead$/.test(o.name));
+  const sort = values => values.sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+  assert.equal(JSON.stringify(sort(actual)), JSON.stringify(sort(prior)));
 });
 
 test("RDE vents are open geometry with internal fans, not opaque painted circles", () => {

@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [rde-service-loops-2026-10-21](rde-service-loops-2026-10-21/README.md) | Claude's exact approved RDE module/test/UI, fresh before pictures/manifest; short leads shared Interfaces before independent wire masks/slack bows |2026-10-21| `archive/rde-service-loops-2026-10-21` on5f9e1bb |
 | [rde-2026-10-21](rde-2026-10-21/README.md) | Codex's provisional rotor-drive enclosures before the owner-approved approximation closeout; exact module and test, Codex's renders | 2026-10-21 | `archive/rde-2026-10-21` on e26d133 |
 | [nose-bulkhead-2026-10-21](nose-bulkhead-2026-10-21/README.md) | Codex's provisional nose panel before the owner-approved approximation closeout; exact module, test and HTML, Codex's renders | 2026-10-21 | `archive/nose-bulkhead-2026-10-21` on 46c4814 |
 | [carousel-2026-10-21](carousel-2026-10-21/README.md) | Codex's sample carousel before the top-hardware pass; exact module and test, three in-context and two isolated pictures | 2026-10-21 | `archive/carousel-2026-10-21` on fbf08c1 |
