@@ -18,7 +18,10 @@ endpoints; enclosures, other parts and main-harness routes unchanged. No hidden 
 qualified bend-radius claim. Saved NASA/APL wiring photo and NASA workmanship pages support
 appearance/general principles only.432full tests pass; real-Edge18unit/layer/viewport cases,
 six independent wire/interface-mask cases, restoration/Pilot and raw-pixel framing pass.
-Archive/tag5f9e1bb. Read current research README for publication status.
+Archive/tag5f9e1bb. Model/source/archive releasee7f7993 pushed with recovery tag;
+Pages39558352175 succeeded. Public Edge build e7f7993 passes six Internal/Thermal
+1440/390/360 cases, independent masks/restore, source links/count22, stamped module and Pilot
+return; no page/network failures or overflow. Current research `live-e7f7993/` saves receipt.
 Next installation items: other units' service loops, attic wiring, supports and ghostable wall
 panels, one scoped pass at a time. Do not restart completed parts or touch game assets.
 

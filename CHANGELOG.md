@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Verify published RDE wire-layer and service-loop pass
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record public RDE service-loop acceptance
+- **Checks:** Model/source/archive releasee7f7993 and tag pushed; Pages39558352175 succeeded.
+  Actual public Edge build e7f7993 passes six1440/390/360 Internal/Thermal cases, independent
+  Harnesses/Interfaces masks and restoration, both unit focuses, source links/count22,
+  stamped module/revision and Pilot return. No page/network failures or overflow. Twelve
+  public pictures/JSON in current research `live-e7f7993/`; full local suite432pass.
+- **Scope:** Verification/handoff only; no app/game/physics changes. Preview server stopped.
+
 ### 2026-10-21: RDE connector slack loops and independent wire inspection
 - **Signed:** Codex (OpenAI)
 - **Commit:** Add RDE service loops and independent harness inspection

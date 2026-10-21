@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "build": "e7f7993",
+  "checks": [
+    {
+      "width": 1440,
+      "layer": "internal",
+      "independentHarnessAndInterfaces": true
+    },
+    {
+      "width": 1440,
+      "layer": "thermal",
+      "independentHarnessAndInterfaces": true
+    },
+    {
+      "width": 390,
+      "layer": "internal",
+      "independentHarnessAndInterfaces": true
+    },
+    {
+      "width": 390,
+      "layer": "thermal",
+      "independentHarnessAndInterfaces": true
+    },
+    {
+      "width": 360,
+      "layer": "internal",
+      "independentHarnessAndInterfaces": true
+    },
+    {
+      "width": 360,
+      "layer": "thermal",
+      "independentHarnessAndInterfaces": true
+    }
+  ],
+  "errors": [],
+  "failed": [],
+  "links": [
+    "https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content",
+    "https://www.a-a-c.com/wp-content/uploads/2023/04/JHU-APL-Titan-PR.pdf",
+    "https://indico.cern.ch/event/1577141/page/42829-speakers-information",
+    "https://science.nasa.gov/blogs/dragonfly/2026/09/02/nasas-dragonfly-gets-wired-up-while-titan-landing-area-is-named/",
+    "https://standards.nasa.gov/standard/NASA/NASA-STD-87394",
+    "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php"
+  ],
+  "pilotReturn": true
+}

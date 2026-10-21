@@ -57,6 +57,12 @@ tag on5f9e1bb, preserve exact prior source/tests/UI and fresh pre-change picture
   rebuilt-neighbor clearances and exact non-wire preservation. Full-suite result recorded
   with publication; local renders alone do not prove the public build changed.
 - Full local suite **432 pass**, no failures/skips, output `test-results.txt`.
+- Model/source/archive release `e7f7993` pushed to main and feature branch with recovery tag.
+  Pages39558352175 succeeded. Public actual Edge build e7f7993 passes six Internal/Thermal
+  cases at1440/390/360: independent Harnesses/Interfaces hide/restore, both unit focuses,
+  source links, count22, stamped module revision and Pilot return. No page/network errors
+  or horizontal overflow. Twelve public pictures and JSON in `live-e7f7993/`.
+  Receipt-only follow-up changes no app code; local preview server stopped after verification.
 
 ## Next / handoff
 
