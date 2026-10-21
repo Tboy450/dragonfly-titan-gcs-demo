@@ -27,6 +27,10 @@ on `d016f12`. 414 tests pass; real Edge at 1440/390/360 px, before and after.
 **Also October 20:** the arm shoulder fitting (exterior item, owner's October 15 note) is drawn
 from the May 2026 frame photo; see the Exterior section below.
 
+**Also October 20 (owner's attic note):** Wonderwall (#07) and DraMS (#08) got photo-detail
+passes (Codex's parts kept underneath). Next in the owner-approved order: the main wiring
+harness (Connections and Installation section).
+
 **All four remaining parts (03, 09, 20, 21) now wait on evidence**, not on modeling. As of
 October 20 NASA's Dragonfly blog has nothing after September 2 and APL nothing after July 9.
 Options for the owner: approved, labeled approximations (as for 05 and 22), or waiting for new
@@ -681,6 +685,13 @@ waveguide and high-voltage umbilical; sample-transfer lines (#02); the warm and 
 - [ ] Main wiring harness: NASA's September 2, 2026 photo shows dozens of silver cables
   running around and through the structure (saved for #03 in `research/nose-bulkhead-2026-10-19/`).
   Draw the main trunks between the PSUs, IEM, radio, instruments and arms, as photographed.
+  **What the photo shows (Claude, October 20):** silver-sheathed bundles (roughly 1-3 cm) in a
+  network across the bay floor and up the side walls and a diagonal brace, laced together with
+  tie points and clamped to the structure, branching to each unit's connectors. Plan: one module
+  (`dist/main-harness.mjs`) with trunks along the floor perimeter and centerline, branches ending
+  at the modeled connector faces (PSUs, IEM, radio, battery, DraMS, cameras), P-clips on the
+  walls, a `harnesses` inspection layer; routes [EST], clearance tests against all rebuilt parts.
+  The same photo also confirms the gold aft bulkhead (#16) and the arm shoulder fitting.
 - [ ] Mounting plates, brackets and standoffs for units still shown floating or on pads.
 - [ ] The carousel's top hardware (valve block, foil-wrapped unit, strut) and the drives and
   posts under its mounting plate, as in the saved carousel photos (#06 follow-up).
