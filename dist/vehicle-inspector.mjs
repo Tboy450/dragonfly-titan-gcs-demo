@@ -44,6 +44,13 @@ export function inspectionSubassemblies(group) {
 export function inspectionSubassembly(group, inspector) {
   return inspectionSubassemblies(group).find(child => child.name === inspector?.subassembly) ?? null;
 }
+export function inspectionFocusRadius(boundsRadiusM, subassembly = null) {
+  const requested = subassembly?.userData.inspectionMinimumRadiusM;
+  // Millimeter hardware gets a macro view, never oversized geometry. Other parts
+  // retain their original framing; malformed metadata cannot collapse the camera.
+  const minimum = Number.isFinite(requested) && requested >= .003 && requested <= .22 ? requested : .22;
+  return Math.max(minimum, Number.isFinite(boundsRadiusM) && boundsRadiusM >= 0 ? boundsRadiusM : 0);
+}
 export function selectInspectionSubassembly(state, group, name) {
   if (!group || inspectionTarget(state) !== group.name) return;
   const child = inspectionSubassemblies(group).find(child => child.name === name);

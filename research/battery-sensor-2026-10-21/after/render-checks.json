@@ -1,0 +1,120 @@
+{
+  "status": "passed",
+  "base": "http://127.0.0.1:4195/",
+  "build": "Build local",
+  "baseline": false,
+  "checks": [
+    {
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "part": "battery-sensor-head",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "part": "battery-sensor-head",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "part": "battery-sensor-head",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "part": "battery-sensor-head",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "part": "battery-sensor-head",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "part": "battery-sensor-head",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "part": "battery-sensor-installation",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "part": "battery-sensor-installation",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "part": "battery-sensor-installation",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "part": "battery-sensor-installation",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "part": "battery-sensor-installation",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "part": "battery-sensor-installation",
+      "layer": "thermal",
+      "width": 360
+    }
+  ],
+  "errors": [],
+  "rawPixels": {
+    "count": 207971,
+    "minX": 194,
+    "maxX": 827,
+    "minY": 71,
+    "maxY": 636
+  },
+  "macroPixels": {
+    "count": 85920,
+    "minX": 390,
+    "maxX": 1099,
+    "minY": 271,
+    "maxY": 551
+  },
+  "installationPixels": {
+    "count": 4702,
+    "minX": 247,
+    "maxX": 851,
+    "minY": 363,
+    "maxY": 433
+  },
+  "coverHideRestore": true,
+  "sensorMasksRestore": true,
+  "macroFocus": true,
+  "clearance": [],
+  "pilotReturn": true,
+  "unchangedBatteryAndPart21": true
+}

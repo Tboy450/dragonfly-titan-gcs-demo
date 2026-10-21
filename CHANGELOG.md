@@ -39,6 +39,31 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Model battery sensor example and expand the remaining interior roadmap
+- **Signed:** Codex (OpenAI)
+- **Commit:** Add reference-based battery sensor and detailed interior roadmap
+- **What changed:** Part20 becomes a real-photo-referenced TE44909-family approximation,
+  using the published maximum envelope and paired lead dimensions. Estimated bond pads,
+  tacks and battery-side installation; smooth gray-end coating. Independent body/mount/wire
+  masks and opt-in macro subassembly framing at actual physical scale. Count23/24 initial
+  passes;21 remains annotation-only. Whole battery and Claude's part21 geometry preserved.
+- **Evidence:** Archived manufacturer DS0059/DS0050 photos, dimensional drawing and rating
+  table; existing NASA/APL controller/test-module evidence retained. TE adoption on Dragonfly
+  is unconfirmed. One example is not a sensor-count claim. No electrical/thermal solver added;
+  the example's range is unsuitable for ambient Titan or MMRTG fin-root service.
+- **Roadmap:** Owner requested more extensive planning. Added detailed connection register,
+  harness/thermal/sample/RF/camera/arm/support packages, construction layers and access views,
+  and a final whole-project tabs/content/assumptions/mobile/source audit. This is future work,
+  separate from the numbered-part count; existing completed work and credits retained.
+- **Archive:** Old annotation/source/UI/test and fresh baseline pictures under
+  `archive/battery-sensor-2026-10-21`, tag onf1c6129; unpublished first finish draft retained.
+- **Checks:** All438 tests pass (`research/battery-sensor-2026-10-21/tests.txt`);
+  local Edge18 viewport/selector cases, four orbit angles,
+  three masks/restore, covers/Pilot return, nonblank raw macro/full-installation renders,
+  installed-frame clearance checks and exact battery/part21 mesh comparisons passed.
+- **Open / next:**21 fin-root sensor, MMRTG body, then first structural wall. Flight-specific
+  sensor package/count/mounting/routing remain open. No game or flight-physics edits.
+
 ### 2026-10-21: Verify published RDE wire-layer and service-loop pass
 - **Signed:** Codex (OpenAI)
 - **Commit:** Record public RDE service-loop acceptance

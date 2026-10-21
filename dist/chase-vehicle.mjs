@@ -1,5 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js";
-import { inspectionGroups, inspectionModified, inspectionSubassemblies, inspectionSubassembly } from "./vehicle-inspector.mjs?v=dev";
+import { inspectionGroups, inspectionModified, inspectionSubassemblies, inspectionSubassembly, inspectionFocusRadius } from "./vehicle-inspector.mjs?v=dev";
 import { createInspectionVisibility, visibleInspectionHardware } from "./inspection-visibility.mjs?v=dev";
 import { cameraPose } from "./flight-camera.mjs?v=dev";
 import { createTitanTerrain, terrainHeight } from "./titan-terrain.mjs?v=dev";
@@ -404,7 +404,7 @@ export function createChaseRenderer(options = {}) {
           else for (const name of groups) if (subsystems[name]) bounds.union(new THREE.Box3().setFromObject(subsystems[name]));
           bounds.getCenter(center);
           // A bounding sphere keeps the entire selected assembly framed at every orbit angle.
-          const radius = Math.max(0.22, bounds.getSize(new THREE.Vector3()).length() / 2);
+          const radius = inspectionFocusRadius(bounds.getSize(new THREE.Vector3()).length() / 2, subassembly);
           halfHeight = radius * 1.35 * Math.max(1, h / w);
         }
         halfHeight /= inspector.zoom;

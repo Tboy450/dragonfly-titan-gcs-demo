@@ -4,6 +4,17 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October21 battery sensor family pass (Codex):** [sources, actual samples and handoff](research/battery-sensor-2026-10-21/README.md).
+[PUB-family] TE44909 real product photo, maximum2.4 mm body and two32 AWG leads from
+TESS-ANDO-DS0059 Rev A; black/gray code and -55 to +90 C rating from DS0050 Rev A.
+[CALC] 3 inches =76.2 mm; nominal32 AWG bare diameter about.202 mm. [EST] body depth/profile,
+bonding pads/tacks, battery-side position and local lead routing. No established Dragonfly
+adoption, count, cell sensing point or harness destination. Original controller input/bulk
+temperature model unchanged. Independent masks and macro inspection use actual scale.
+Do not reuse this family for the157 C fin root or Titan ambient. Count23/24 initial passes;
+only21 remains an annotation. Installation, structural access and UI audit remain extensive
+separate checklist packages; an initial pass is not a validated flight replica.
+
 **October21 RDE installation pass (Codex):** [source audit and actual samples](research/rde-service-loops-2026-10-21/README.md).
 NASA/APL's real flight wiring photo informs curved silver bundles/lacing; NASA-STD8739.4A
 Change4 pages29-31 support general stress-relief/offset principles. Neither establishes RDE

@@ -15,10 +15,17 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
-October21 Codex: [RDE connector installation](research/rde-service-loops-2026-10-21/README.md)
+October 21 Codex: [battery-temperature sensor example](research/battery-sensor-2026-10-21/README.md)
+replaces part20's annotation with a small TE thermistor-family approximation, estimated bonding
+and paired leads. Real manufacturer photographs and drawing archived; actual Dragonfly package
+unconfirmed. Bead close-up and independent layers preserve physical scale. **23/24 initial
+passes**;21 remains an annotation. The checklist now details missing connections, construction
+layers, view presets and the final whole-project UI/source audit. Next:21, MMRTG body, side wall.
+
+Earlier October21 Codex: [RDE connector installation](research/rde-service-loops-2026-10-21/README.md)
 adds estimated slack loops and lacing to the four existing leads, with a wire-only Harnesses
 mask independent from connector Interfaces. Claude's casings and main trunk remain unchanged.
-Initial parts count22/24;20/21 still annotations. Other units' loops/installation remain open.
+At that checkpoint the count was22/24; other units' loops/installation remain open.
 
 October 21 (Claude): [main wiring harness, first pass](research/main-harness-2026-10-21/README.md):
 silver bundles on the bay floor, a centerline trunk with branches to the units, after NASA/APL's

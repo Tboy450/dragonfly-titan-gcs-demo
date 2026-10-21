@@ -450,7 +450,7 @@ export function buildResearchModel(kit) {
   // The durable id stays "trim-chimneys"; the device drawn is the later cold bypass duct.
   interiorPart("trim-chimneys", "trim-device", "Trim device: cold bypass duct under the belly with fore and aft diverter flaps", "TFAWS 2023 slides 4, 7, 8; TFAWS 2024 slides 6-16; section and flap details estimated", 0xb04a9a, "exterior");
   const trimDevice = buildTrimDevice({ parent: buildTarget, mesh });
-  interiorPart("battery-sensor", "battery", "Battery temperature input (annotation, not sensor hardware)", "TFAWS 2023 slides7/9: control input; annotation beside estimated battery, exact sensing point/package/count unknown", 0x9fe870);
+  interiorPart("battery-sensor", "battery", "Battery temperature sensor (family approximation)", "TFAWS 2023: battery input; TE 44909 example, not identified flight hardware; installation/count estimated", 0x9fe870);
   buildBatteryMeasurement({ parent: buildTarget, mesh });
   // Part 21 (Oct 20): an annotation on the generator's housing beside the top fin's root, not
   // sensor hardware; the green sphere it replaces is in archive/mmrtg-sensor-2026-10-20.

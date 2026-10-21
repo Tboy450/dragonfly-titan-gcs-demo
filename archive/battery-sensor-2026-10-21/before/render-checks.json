@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "baseline": true,
+  "checks": [
+    {
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "layer": "thermal",
+      "width": 360
+    }
+  ],
+  "errors": [],
+  "rawPixels": {
+    "count": 207971,
+    "minX": 194,
+    "maxX": 827,
+    "minY": 71,
+    "maxY": 636
+  },
+  "coverHideRestore": true,
+  "pilotReturn": true,
+  "unchangedBatteryAndPart21": false
+}

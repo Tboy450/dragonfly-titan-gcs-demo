@@ -6,6 +6,13 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part20 latest (October21, Codex):** [family approximation, actual samples and limits](battery-sensor-2026-10-21/README.md).
+[TE/Measurement Specialties source archive](sources/te44909-family/README.md): DS0059 Rev A
+pp1-2 real44909 photograph and dimension drawing; DS0050 Rev A pp1-2 real family photo and
+black/gray/rating table. Published family envelope, estimated installation. Exact Dragonfly
+sensor remains unidentified. Initial pass now complete; earlier annotation-only status below
+is historical. Comparison retains APL's test-module CAD as separately labeled context.
+
 **RDE installation follow-up:** [real/CAD/before/current comparison and audit](rde-service-loops-2026-10-21/README.md).
 Existing NASA/APL/Ed Whitman wiring photograph plus original NASA harness-workmanship
 pages29-31 below; appearance/general practice only, not identified RDE flight geometry.
@@ -43,6 +50,7 @@ scanner vendor, installed routing and completed housing remain unresolved; no mo
 
 | Folder | Source | Pages saved | Used by |
 |---|---|---|---|
+| [te44909-family](sources/te44909-family/README.md) | TE TESS-ANDO-DS0059/DS0050 Rev A via public distributors; manufacturer photographs, drawing and table | Both documents pp1-2, original full-page PNGs |20 battery sensor, family approximation only |
 | [`sources/nasa-harness-workmanship`](sources/nasa-harness-workmanship/README.md) | NASA-STD8739.4A Change4, public active record | Complete original pages29-31 | RDE installation principles only; not flight route, cable type or qualification |
 | [`sources/nasa-mmrtg-factsheet`](sources/nasa-mmrtg-factsheet/README.md) | NASA MMRTG fact sheet NF-2020-05-619-HQ | both pages | 21: 157 C fin-root rating; generator size |
 | [`sources/pioneer-rtg-fin-root-2007`](sources/pioneer-rtg-fin-root-2007/README.md) | Toth and Turyshev 2007, arXiv:0710.2656 | pp. 3, 5 | 21: context only (one fin-root sensor per Pioneer RTG); not Dragonfly evidence |

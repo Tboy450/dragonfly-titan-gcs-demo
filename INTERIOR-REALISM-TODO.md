@@ -8,7 +8,37 @@ Codex's October 16-20 passes reviewed and part 21 annotated October 20, 2026 by 
 Keep this file updated across context resets and assistant handoffs. Do not rebuild the
 whole interior in one pass. Complete, verify and archive one part before moving on.
 
-## Resume Here: 22 Initial Passes; RDE Connector Service Loops
+## Owner's Ordered Continuation (October21)
+
+Owner: "ok do those then begin on this and add this to the checklist first then continue".
+Recorded BEFORE further model edits. Finish one scoped part with source/archive/tests and
+samples before starting the next. Real hardware first; unverified Dragonfly details remain
+explicitly estimated, not flight CAD. Do not repeatedly search the same closed leads.
+
+1. [x] **Codex, Part20 battery-temperature sensor:** TE44909-family approximation replaces
+   annotation-only geometry. Real maker photo/drawing; 2.4 mm maximum envelope, paired leads,
+   estimated bond pads/side-wall placement. Macro selector at unchanged scale. Exact flight
+   type/count/installation remain open. [Sources, samples and checks](research/battery-sensor-2026-10-21/README.md).
+2. [ ] **Part21 MMRTG fin-root sensor:** same source-first process, posed with the generator;
+   keep separate from a generator-body redraw. No invented telemetry accuracy or pinout.
+3. [ ] **MMRTG generator body:** photo/dimension review, archive and redraw the actual housing,
+   fins and interfaces as evidence permits; preserve thermal model and completed neighbors.
+4. [ ] **Structural wall layers:** start one side-wall panel, then skin/deck/insulation and
+   mounting layers separately. Add hide/ghost controls as needed; preserve interior access
+   and camera penetrations. Do not invent undocumented honeycomb/core construction.
+
+Other harness work stays queued behind this order. Current count23/24 initial passes
+(8 Codex / 15 Claude), NOT 23 flight replicas or a complete interior. Only21 remains an
+annotation. Follow the expanded installation/layer/UI work packages below after the ordered
+items; do not confuse finishing the numbered list with finishing construction and connections.
+
+Part20 closeout:438 tests pass;18 real-Edge Internal/Thermal/selector cases at1440/390/360px,
+four orbit angles, independent masks/restore and Pilot return passed. Installed-frame clearance
+check has no overlaps with other numbered parts. Battery and21 mesh manifests match the
+pre-pass baseline. Source photographs/drawing/CAD/model comparison and both finish drafts
+saved. Public release receipt will be recorded in the part20 research folder after deployment.
+
+## Previous Checkpoint: 22 Initial Passes; RDE Connector Service Loops
 
 October21 Codex: [current source comparison, archive and handoff](research/rde-service-loops-2026-10-21/README.md).
 Claude's 03/09 closeouts retained as approved approximations. **22/24 initial passes**;
@@ -680,7 +710,8 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **18 follow-up:** real duct height; the round perforated feature on the duct in the slide 3 plan view; old nose-electronics placeholder reaches into the duct zone (fix with that part). Battery clearance is covered by the October 15 duct adjustment (duct 7.5 mm lower); #16 now clears the duct/fans with an estimated collar.
 - [x] **Claude:** **19 Trim device** (`trim-chimneys`, durable id kept): the cold bypass duct under the belly, outside the foam, with fore and aft diverter flaps in foam-wrapped housings that open with the trim setting; TFAWS 2023 slides 4, 7, 8 and TFAWS 2024. ICES-2023's side-chimney concept archived. [References/limits](research/thermal-loop-2026-10-14/README.md).
 - [ ] **19 follow-up:** the cold duct's real section and the meaning of the "split cold duct" (TFAWS 2024); flap hinge sides and actuators.
-- [ ] **20 Battery temperature sensor** (`battery-sensor`): October20 intersecting sphere replaced with explicit measurement annotation tied to battery context; no hardware claimed. Actual package/count/mounting still unverified. [Sources and sample](research/battery-measurement-2026-10-20/README.md).
+- [x] **Codex:** **20 Battery temperature sensor** (`battery-sensor`): October21 labeled TE44909-family approximation: real manufacturer photo/drawing, 2.4 mm maximum envelope, black/gray epoxy bead and two 3-inch 32 AWG leads. Bond pads, profile/depth, side-wall installation and local route are estimates. Independent Casings/Mounts/Harnesses and bead macro focus; existing battery reading, physical battery and21 unchanged. [Current sources, archive and sample](research/battery-sensor-2026-10-21/README.md). October20 annotation retained in archive.
+- [ ] **20 follow-up:** identified Dragonfly sensor hardware, actual count, cell/pack sensing locations, mounting/bonding, harness destination and electrical interface. TE family adoption is unconfirmed; no claimed per-cell telemetry, accuracy or new temperature solver. The example's -55 to +90 C rating is not suitable for the fin-root example or Titan ambient.
 - [ ] **21 MMRTG fin-root sensor** (`mmrtg-sensor`): same distinction, with verified placement rather than a floating green sphere. **Claude, October 20:** the sphere (which passed through the top fin) is replaced by a labeled measurement annotation on the generator's housing beside the top fin's root, posed with the generator; isolation shows the MMRTG; no hardware claimed. Fin-root temperature as a controller input [PUB, TFAWS 2023 slides 7/9]; 157 C rating [PUB, NASA MMRTG fact sheet]. [Sources and checks](research/mmrtg-measurement-2026-10-20/README.md).
 - [ ] **21 follow-up:** the flight sensor's type, count, mounting point, bonding and harness, and whether it belongs to the generator or the lander; redraw the MMRTG itself from MMRTG photos (the target's test flags that change).
 - [x] **Codex:** **22 Nose methane/E-field instruments** (`nose-sensors`): photo-referenced EFIELD assemblies plus owner-approved, labeled METHAN design approximation; independently removable housings/covers, supports and fiber entry. [Sources, estimates and verification](research/methan-2026-10-18/README.md).
@@ -772,6 +803,118 @@ actual geometry, interfaces and materials before extending the model.
   flow paths and real measured values. Current airflow arrows intentionally draw over parts.
 - [ ] Audit new-to-new part intersections after every update; preserve structural-envelope checks and track legacy neighbors separately.
 - [ ] Keep explanatory text and construction/source notes under expandable sections.
+
+## Remaining Work Packages (expanded October21 at owner's request)
+
+This is an implementation backlog, not a claim that every suggested item is flight hardware.
+Existing installation passes above are retained. Each unchecked package starts with an evidence
+review and an inventory of what is already modeled; do not duplicate Claude's harnesses.
+Publicly undocumented internals stay omitted or explicitly estimated. Complete one package,
+with archive/source comparison/clearance/render checks, before the next. Keep four separate
+statuses: initial part, installation, construction access, and final UI/integration acceptance.
+
+### Connection Register and Mechanical Installation
+
+- [ ] **Endpoint register:** table per connection with stable name, owning part, source/figure,
+  confidence, existing start/end transforms, medium (power/data/RF/fiber/air/sample), modeled
+  extent and missing destination. Distinguish real interfaces from illustrative stubs; never
+  infer pinout or cable count from connector silhouette. Use this before adding more wires.
+- [ ] **Avionics service loops:** IEM, both PSUs, radio, navigation boxes and battery, one unit
+  per pass; retain actual modeled connector positions, add justified slack/backshell relief,
+  lacing and attachment points. RDE's October21 pass is already done, not a new open item.
+- [ ] **Floor/perimeter routing audit:** review existing three harness passes together; remove
+  no geometry without archiving. Separate actual bundled routes from accidental doubled runs;
+  locate crossings/branches in 3D and tie supports to real modeled structure.
+- [ ] **Wall/brace runs:** reconcile photographed diagonal brace, wall risers and cable clips
+  with eventual side panels; no arbitrary brace location promoted to published geometry.
+- [ ] **Attic instrument harness:** DraMS, Wonderwall and carousel visible wiring/valve lines,
+  with equipment entries, local branches, supports and service slack based on saved photos.
+  Do not invent hidden spectrometer/sample-processing circuits or plumbing topology.
+- [ ] **Camera/navigation harness:** front-camera panel, Ocellus FEB/MEB and both MIMUs;
+  port Down Camera pass-through behind PSU1 and lower camera/window clearances. Mark unknown
+  destinations; preserve current photo/dimension-based camera poses and optical openings.
+- [ ] **Sensor connections:** finish20/21 local-installation checks, then EFIELD preamps,
+  METHAN fiber entry and their warm/cold penetrations where documented. Distinguish atmospheric
+  sensors from battery and generator feedback; no invented DPU internals or fiber count.
+- [ ] **Arm/motor runs:** bare arm structure under foam, shoulder fittings, cable path to
+  coaxial motor heads and root strain relief. Confirm documented routing before adding it;
+  keep rotor animation separate from stationary cables and motor casings.
+- [ ] **RF chain continuity:** review existing Frontier/TWTA coax, EPC umbilical, waveguide,
+  deck crossing and HGA actuator cable; connector mating, slack and gimbal travel clearance.
+  Existing paths are not permission to invent flight frequency/power/connector pin details.
+- [ ] **Thermal interfaces:** fan collar, MMRTG enclosure, hot/cold ducts, flaps and trim
+  outlet; check junctions, seal/attachment appearance and service access. Do not turn Titan's
+  atmospheric gas ducting into an undocumented operational liquid loop.
+- [ ] **Sample plumbing continuity:** drill diverters/blowers, transfer lines, carousel and
+  Wonderwall entrances; review supports, unions and clipping only where sourced. Inspect
+  ports/endpoints, not just visually continuous tubes; hidden valve internals stay unmodeled.
+- [ ] **Equipment supports:** wall-mounted IEM/PSUs/radio, battery base, navigation shelf,
+  attic trays, fan and generator brackets; track load paths to deck/frame. An estimated pad
+  is not proof of a flight bracket. Fix floating assemblies one support family at a time.
+- [ ] **Installation acceptance:** connection register has no unexplained floating endpoints;
+  intended mating/contact pairs explicitly whitelisted, all other new-to-new intersections
+  checked. Report legacy placeholders separately. Harness/interface/mount masks restore
+  without moving the hardware; no qualified bend-radius or workmanship-compliance claim.
+
+### Construction Layers and Access
+
+- [ ] **Layer inventory:** map each existing skin, foam, deck, bulkhead, tray and equipment
+  cover to its owner/source and what it obscures. Record combined meshes needing separation;
+  do not assume a continuous inner metal liner, empty boxes or undocumented sandwich cores.
+- [ ] **First side panel:** source-supported outline/frame/openings, separate structural
+  facing from equipment covers; check camera apertures, wall-mounted units and shoulder roots.
+- [ ] **Opposite side and end interfaces:** extend only after first-panel acceptance; reconcile
+  nose and canted aft bulkheads, fasteners and duct/harness penetrations with completed parts.
+- [ ] **Deck and attic boundary:** upper/lower deck supports, instrument access and service
+  penetrations, keeping sample paths and camera views clear; no unsupported hidden cavities.
+- [ ] **Insulation regions:** distinguish body/attic/arm foam and warm/cold boundaries from
+  structural skin. Use published thickness where applicable; retain local-thickness unknowns,
+  lower-camera blister follow-up and any unmodeled mounting isolation.
+- [ ] **Equipment-specific housing audit:** casing/lid/base/thermal attachment per unit;
+  closed housings show only referenced internal hardware when opened. An empty approximation
+  must not be described as an actual hollow flight enclosure.
+
+### Layered View Packages
+
+- [ ] **As-installed preset:** reference exterior plus covers, mounts and connections in
+  place; no default all-transparent vehicle. Restore installed poses and stable labels.
+- [ ] **Construction preset:** separately hide/ghost outer skin, foam, frame/deck/bulkheads
+  and equipment housings. Clearly distinguish global structural layers and part-level covers.
+- [ ] **Electrical/communications preset:** retain supports and connector context, emphasize
+  supported harness/RF/fiber routes; unknown routes visibly distinguished, no implied pinout.
+- [ ] **Thermal/airflow preset:** show published duct regions and estimated temperature fields,
+  insulation and generator/fan interfaces. Current overlay arrows and modeled temperatures
+  stay labeled; no fictitious sensor network or hardware-specific heat-transfer solver.
+- [ ] **Sampling-path preset:** drill/transfer/blowers/carousel/Wonderwall/DraMS connected
+  view with removable obstructing structure, linked to the existing shared science sequence.
+- [ ] **Service/detail preset:** part/subassembly close-up with selectively hidden local
+  covers/supports; optional section plane only if clipping caps/labels are correct. Any
+  exploded offsets are viewing aids, never installed geometry or collision-test coordinates.
+- [ ] **View acceptance:** each preset names what it covers and reveals, preserves user
+  selections, resets reliably, keeps labels on real anchors and works by touch/keyboard.
+  Do not add six competing top-level tabs if compact presets in existing controls suffice.
+
+### Whole-Project UI and Documentation Review (after parts/installations)
+
+- [ ] **Mission tabs:** inventory Exterior/Internal/Thermal/vehicle layers, part selector,
+  macro/subassembly controls, source links and live readouts. Remove stale placeholders/counts
+  only when their replacements are complete; archive any replaced visual arrangement.
+- [ ] **Pilot and operations:** review shared mission state, telemetry meaning and mission
+  reset discoverability; preserve below-canvas scrolling/content, Ctrl browser zoom and the
+  optional fullscreen behavior. No unrelated flight/physics tuning during hardware passes.
+- [ ] **Science/notebook/debrief:** verify terminology and sequence still match implemented
+  hardware and instruments; existing long sections stay expandable and easy to find.
+- [ ] **Model/part assumptions:** reconcile initial passes vs flight verification, all family
+  approximations, illustrative environment, missing internals/routes and displayed temperature
+  zones. No screen may imply 24 initial passes equals a validated full engineering model.
+- [ ] **Source/archive consistency:** credits, public links, stored photo/drawing/model
+  comparisons, recovery tags and checklist status agree; keep real/CAD/render labels distinct.
+- [ ] **Interaction/layout audit:** desktop and360/390 px phones, tabs/accordions/layer masks,
+  orbit/zoom/isolation/reset, dark/thermal visibility, label stacking and no overflow. No
+  information removed just to make a viewport fit; hover is not the only way to use controls.
+- [ ] **Release acceptance:** full tests, new-to-new clearance matrix, nonblank/framed canvas
+  checks, local/public screenshots and stamped-build verification. Check other assistants'
+  branches before publishing; preserve unrelated game work and record remaining gaps.
 
 ## Reference Starting Points
 
