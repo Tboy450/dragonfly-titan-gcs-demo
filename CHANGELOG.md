@@ -39,6 +39,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-20: DraMS visible hardware (part 08)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add DraMS's photographed blanket, valves, brass cylinder and wiring"
+- **What changed:** Second half of the owner's attic note. Codex's DraMS is kept; added from
+  NASA's SVS 15003 photo: a copper-gold insulation blanket over the analyzer, three valve bodies
+  with lines into the gas chromatograph enclosure, a brass cylinder and a wire bundle. The
+  photo's tan connector table and rising foil-wrapped cables are clean-room test equipment and
+  are not drawn; nor are the blue protective caps. Part stays credited to Codex.
+- **Assumptions:** identities, positions and sizes [EST]; no hidden internals.
+- **Archive:** `archive/drams-2026-10-20/` (tag on `28197a2`).
+- **Files:** `dist/drams-assembly.mjs`, `dist/index.html`, `dist/ui/layers-panel.mjs`,
+  `research/drams-detail-2026-10-20/` (new), `research/PART-SOURCES.md`,
+  `INTERIOR-REALISM-TODO.md`, `archive/`
+- **Checks:** DraMS, Wonderwall and carousel tests pass; full suite 417/418, the failure is the
+  Swarmfall chat's in-progress save test, not this change. Renders isolated, in context, Thermal.
+- **Open / next:** the main wiring harness (Connections and Installation in the checklist).
+
 ### 2026-10-20: Wonderwall photo detail (part 07)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add the photographed frame, port fitting, Kapton and clips to the Wonderwall"

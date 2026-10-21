@@ -6,7 +6,7 @@ import { wonderwallAsset } from "./wonderwall.mjs?v=dev";
 const [wallX, wallY, wallZ] = wonderwallAsset.position;
 const [portZ, portY] = wonderwallAsset.aperture;
 export const dramsAsset = Object.freeze({
-  revision: "drams-2026-10-12",
+  revision: "drams-2026-10-20",
   interfaceCenter: Object.freeze([wallX, wallY + portY, wallZ + portZ]),
   interfaceRadiusM: 0.024,
   bodyBounds: Object.freeze({ min: [0.15, 0.08, -1.54], max: [0.35, 0.45, -0.96] }),
@@ -96,5 +96,42 @@ export function buildDramsAssembly({ parent, mesh }) {
   // Fan casing is diagrammatic: ICES-2023 establishes a DraMS cooling fan, not its CAD.
   cylinderX(0.025,0.016,[0.333,0.13,-1.077],dark,cases,"drams-fan-housing");
   for(const y of [0.117,0.13,0.143])box([0.002,0.002,0.039],[0.342,y,-1.077],silver,covers,"drams-fan-grille");
-  return { assembly, frame, cases, covers, interfaces, plumbing };
+  // ---- Visible hardware from NASA's SVS 15003 photo (Claude, October 20) ----
+  // The photo shows DraMS during integration: a copper-gold insulation blanket over its upper
+  // units, stainless valve and fitting bodies, a brass cylinder and short wire bundles. Only
+  // those are drawn, in free space on Codex's frame [EST positions, sizes and identities]. Not
+  // drawn: the tan connector table and the foil-wrapped bundles rising out of the photo (clean-
+  // room test equipment), and the blue caps on the fittings (likely protective covers).
+  const blanket = group("drams-insulation-blanket", "insulation");
+  const fittings = group("drams-photo-fittings", "interfaces");
+  const mliMaterial = new THREE.MeshStandardMaterial({ color: 0xc27a3c, roughness: 0.32, metalness: 0.75, side: THREE.DoubleSide });
+  const brass = new THREE.MeshStandardMaterial({ color: 0xb8913f, roughness: 0.35, metalness: 0.8 });
+  const wire = new THREE.MeshStandardMaterial({ color: 0xe4e4dc, roughness: 0.55, metalness: 0.1 });
+  // Blanket over the analyzer's top half, crinkled a little (a repeatable jitter, not physics).
+  const mli = new THREE.CylinderGeometry(0.092, 0.092, 0.135, 28, 3, true, 0, Math.PI);
+  const p = mli.attributes.position;
+  for (let i = 0; i < p.count; i += 1) {
+    const k = 1 + 0.02 * Math.sin(i * 12.9898) * Math.cos(i * 4.1414);
+    p.setX(i, p.getX(i) * k); p.setZ(i, p.getZ(i) * k);
+  }
+  mli.computeVertexNormals();
+  const wrap = mesh(mli, mliMaterial, [0.259, cy, cz], blanket);
+  wrap.rotation.z = Math.PI / 2; wrap.name = "drams-analyzer-mli";
+  // Valve and fitting bodies on the electronics lid, just aft of the analyzer.
+  const lidTop = 0.2205, fz = -1.17;
+  for (const x of [0.205, 0.235, 0.265]) {
+    const body = mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.045, 16), silver, [x, lidTop + 0.0245, fz], fittings);
+    body.name = "drams-valve-body";
+    const nut = mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.008, 6), silver, [x, lidTop + 0.051, fz], fittings);
+    nut.name = "drams-valve-fitting";
+    // Short stainless line up and aft into the GC enclosure's forward face.
+    const line = new THREE.CatmullRomCurve3([[x, lidTop + 0.055, fz], [x, 0.30, -1.152], [x, 0.30, -1.096]].map(q => new THREE.Vector3(...q)));
+    mesh(new THREE.TubeGeometry(line, 12, 0.0028, 6, false), silver, [0, 0, 0], fittings).name = "drams-valve-line";
+  }
+  const can = mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.06, 20), brass, [0.305, lidTop + 0.0215, fz], fittings);
+  can.rotation.z = Math.PI / 2; can.name = "drams-brass-cylinder";
+  // A short wire bundle from the brass cylinder down to the electronics box's connectors.
+  const bundle = new THREE.CatmullRomCurve3([[0.336, 0.244, fz], [0.34, 0.205, -1.2], [0.338, 0.172, -1.23]].map(q => new THREE.Vector3(...q)));
+  mesh(new THREE.TubeGeometry(bundle, 12, 0.004, 6, false), wire, [0, 0, 0], plumbing).name = "drams-wire-bundle";
+  return { assembly, frame, cases, covers, interfaces, plumbing, blanket, fittings };
 }
