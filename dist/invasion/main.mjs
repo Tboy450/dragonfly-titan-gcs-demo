@@ -16,7 +16,7 @@ import { achievements, achievementContext, newAchievements, recordAchievements }
 import { createPlanetTerrain } from "./planet-terrain.mjs?v=dev";
 import { drawGalaxy, drawStarfield } from "./galaxy.mjs?v=dev";
 import { createInvasionScene, swarmColor, nativeColor } from "./scene.mjs?v=dev";
-import { missionCheckpoint, restoreMissionCheckpoint } from "./mission-save.mjs?v=dev";
+import { missionCheckpoint, restoreMissionCheckpoint, checkpointPlanet } from "./mission-save.mjs?v=dev";
 import { pointerIntent, exceedsTapSlop } from './pointer-controls.mjs?v=dev';
 import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
 import { minimapWorldPoint } from './minimap-controls.mjs?v=dev';
@@ -286,7 +286,8 @@ function startMission(planet, checkpoint = null) {
   resetPointers();
   $("debrief").open && $("debrief").close();
   $("victory-dialog").open && $("victory-dialog").close();
-  const terrain = createPlanetTerrain(planet);
+  // A battle saved before its planet gained a city resumes on the landscape it was saved on.
+  const terrain = createPlanetTerrain(checkpoint && checkpointPlanet(checkpoint) || planet);
   const restored = checkpoint ? restoreMissionCheckpoint(checkpoint, terrain) : null;
   if (checkpoint && !restored) return;
   const battle = restored?.battle || createBattle(planet, {
@@ -361,7 +362,8 @@ function clampCamera() {
   const { centerX, centerZ, half } = battle.map;
   cam.focus.x = Math.min(centerX + half * 1.1, Math.max(centerX - half * 1.1, cam.focus.x));
   cam.focus.z = Math.min(centerZ + half * 1.1, Math.max(centerZ - half * 1.1, cam.focus.z));
-  cam.distance = Math.min(750, Math.max(35, cam.distance));
+  // Larger planetary maps allow the camera to pull back far enough to see the whole map.
+  cam.distance = Math.min(Math.max(750, mission.battle.map.half * 1.3), Math.max(35, cam.distance));
   cam.pitch = Math.min(1.45, Math.max(0.3, cam.pitch));
 }
 function pan(dx, dy) {
@@ -922,6 +924,11 @@ function drawMinimap() {
       mission.liquidMap = map;
     }
     ctx.drawImage(mission.liquidMap, 0, 0, width, height);
+  }
+  // City buildings, from the same layout that blocks troops and lifts drones.
+  for (const building of mission.terrain.city?.buildings || []) {
+    ctx.fillStyle = "rgba(160, 170, 185, 0.55)";
+    ctx.fillRect(sx(building.x - building.w / 2), sz(building.z - building.d / 2), Math.max(1, building.w / (half * 2) * width), Math.max(1, building.d / (half * 2) * height));
   }
   for (const zone of b.zones) {
     ctx.strokeStyle = zone.captured ? swarmColor : zone.kind === "beacon" || zone.kind === "relic" || b.tier === 0 ? "#e8e2d0" : nativeColor;

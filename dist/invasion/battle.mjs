@@ -42,6 +42,8 @@ export function createBattle(planet, options = {}) {
     missionId: options.missionId || `simulation-${planet.id}-${seed >>> 0}`,
     victoryAvailable: false, victoryAvailableAt: null, victoryChoiceMade: false,
     map: { centerX: 0, centerZ: 0, half: 420, ...planet.map },
+    // Which city layout this battle was built on, so a checkpoint resumes on the same streets.
+    city: terrain.city ? { version: terrain.city.version, seed: terrain.city.seed } : null,
     matter, unlocks: [...unlocks], podSlots, required: planet.required, objectives: planet.objectives || [],
     alarm: 0, alarmStage: 0, zones: [], units: [], squads: [], pods: [], strikes: [],
     events: [], log: [], nextId: 1, lastDropAt: -Infinity,
@@ -55,6 +57,9 @@ export function createBattle(planet, options = {}) {
     isLand: terrain.isLand,
     heightAt: terrain.heightAt,
     canDropAt: terrain.canDropAt,
+    // Cities (city-layout.mjs): where troops can walk and how high roofs rise above the ground.
+    walkable: terrain.walkable || terrain.isLand,
+    roofAt: terrain.roofAt,
   };
   placeZones(b, planet, terrain);
   terrain.setPads?.(b.zones);
@@ -78,7 +83,7 @@ function makeZone(b, spec) {
   return {
     id: spec.id, name: spec.name, kind, x: spec.x, z: spec.z, special: spec.special || null,
     radius: spec.radius || zoneRadius[kind] || 45, value: zoneValue[kind] ?? 0.5,
-    control: owned ? 100 : 0, captured: owned, contested: false,
+    control: owned ? 100 : 0, captured: owned, contested: false, urban: !!spec.urban,
     population: kind === "beachhead" || b.tier === 0 ? 0 : Math.round((kind === "capital" ? 9000 : kind === "mine" ? 600 : 2400) * (0.6 + nextRandom(b) * 0.8) * (1 + b.tier)),
   };
 }
@@ -90,8 +95,15 @@ function placeZones(b, planet, terrain) {
   }
   const { centerX, centerZ, half } = b.map;
   const zones = [makeZone(b, { id: "beachhead", name: "Hive beacon", kind: "beachhead", x: centerX - half * 0.68, z: centerZ + half * 0.68 })];
-  const count = planet.zoneCount || 4;
-  const kinds = Array.from({ length: count }, (_, index) => index === 0 && b.tier >= 3 ? "capital" : index === 1 ? "mine" : "settlement");
+  // A city's open squares are its districts to capture; the central one is the capital.
+  const city = terrain.city;
+  for (const plaza of city?.plazas || []) {
+    const kind = plaza.central && b.tier >= 3 ? "capital" : "settlement";
+    zones.push(makeZone(b, { id: `city-${plaza.id}`, name: `${zoneName(b, "settlement")} ${plaza.central ? "Square" : "District"}`, kind, x: plaza.x, z: plaza.z, radius: Math.min(plaza.radius - 2, zoneRadius[kind]), urban: true }));
+  }
+  const inCity = (x, z) => city && x > city.bounds.minX - 90 && x < city.bounds.maxX + 90 && z > city.bounds.minZ - 90 && z < city.bounds.maxZ + 90;
+  const count = Math.max(0, (planet.zoneCount || 4) - (city?.plazas.length || 0));
+  const kinds = Array.from({ length: count }, (_, index) => index === 0 && b.tier >= 3 && !city ? "capital" : index === (city ? 0 : 1) ? "mine" : "settlement");
   const dry = (x, z, r) => terrain.isLand(x, z) && [0, 1, 2, 3, 4, 5].every(i => terrain.isLand(x + Math.cos(i * 1.05) * r * 0.7, z + Math.sin(i * 1.05) * r * 0.7));
   let minimum = 175;
   for (const kind of kinds) {
@@ -102,6 +114,7 @@ function placeZones(b, planet, terrain) {
       const x = centerX + randomRange(b, -0.82, 0.82) * half, z = centerZ + randomRange(b, -0.82, 0.82) * half;
       // The Hive beacon keeps a wider berth so long-range defenses cannot reach fresh drops.
       if (zones.some(zone => Math.hypot(zone.x - x, zone.z - z) < (zone.kind === "beachhead" ? Math.max(minimum, 240) : minimum))) continue;
+      if (inCity(x, z)) continue;
       if (attempt < 500 && !dry(x, z, r)) continue;
       placed = { x, z };
     }
@@ -442,17 +455,23 @@ function moveUnits(b, dt, auras, swarm, natives) {
     unit.vz += (wantZ - unit.vz) * blend;
     let nx = Math.min(centerX + half, Math.max(centerX - half, unit.x + unit.vx * dt));
     let nz = Math.min(centerZ + half, Math.max(centerZ - half, unit.z + unit.vz * dt));
-    if (unit.side === "native" && !def.air && !b.isLand(nx, nz)) {
-      // At the shore: slide along it if one direction is still dry, otherwise stop.
-      if (b.isLand(nx, unit.z)) nz = unit.z;
-      else if (b.isLand(unit.x, nz)) nx = unit.x;
+    const walkable = b.walkable || b.isLand;
+    if (unit.side === "native" && !def.air && !walkable(nx, nz)) {
+      // At a shore or a building: slide along it if one direction is still open, otherwise stop.
+      if (walkable(nx, unit.z)) nz = unit.z;
+      else if (walkable(unit.x, nz)) nx = unit.x;
       else { nx = unit.x; nz = unit.z; unit.vx = 0; unit.vz = 0; }
     }
     unit.x = nx;
     unit.z = nz;
     if (unit.vx * unit.vx + unit.vz * unit.vz > 0.5) unit.heading = Math.atan2(unit.vx, unit.vz);
-    const cruise = unit.landed ? 0 : def.cruise || 0;
-    unit.alt += (cruise - unit.alt) * Math.min(1, dt * 1.2);
+    // Flying units climb over buildings: the highest roof under them or ~3 s ahead, plus clearance.
+    let cruise = unit.landed ? 0 : def.cruise || 0;
+    if (cruise > 0 && b.roofAt) {
+      const roof = Math.max(b.roofAt(unit.x, unit.z, 4), b.roofAt(unit.x + unit.vx * 3, unit.z + unit.vz * 3, 4));
+      if (roof > 0) cruise = Math.max(cruise, roof + 10);
+    }
+    unit.alt += (cruise - unit.alt) * Math.min(1, dt * (cruise > unit.alt ? 2.5 : 1.2));
   }
 }
 

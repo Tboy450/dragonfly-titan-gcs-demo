@@ -3,6 +3,7 @@
 // same value-noise approach. Pure functions (three.js is only pulled in by titan-terrain.mjs).
 import { terrainHeight } from "../titan-terrain.mjs?v=dev";
 import { overLiquid } from "../mission-systems.mjs?v=dev";
+import { createCityLayout, cityQueries } from "./city-layout.mjs?v=dev";
 
 function hash(x, z, seed) {
   const value = Math.sin(x * 127.1 + z * 311.7 + seed * 74.7) * 43758.5453;
@@ -126,5 +127,28 @@ export function createPlanetTerrain(planet) {
       return h;
     },
   };
+  terrain.walkable = terrain.isLand;
+  if (planet.city) attachCity(terrain, planet.city, raw, liquid);
   return terrain;
+}
+
+// A planet with a city (planet.city, see city-layout.mjs): the ground is level under the city and
+// eases back into the natural terrain over 70 m; troops cannot walk through buildings, drones
+// read roof heights to climb over them, and pods only land where no building stands.
+function attachCity(terrain, spec, raw, liquid) {
+  const level = Math.max(raw(spec.x, spec.z), liquid === null ? -Infinity : liquid + 2);
+  const city = createCityLayout({ ...spec, ground: level });
+  const queries = cityQueries(city);
+  const { minX, maxX, minZ, maxZ } = city.bounds, margin = 70;
+  const natural = terrain.heightAt.bind(terrain);
+  terrain.city = city;
+  terrain.heightAt = (x, z) => {
+    const outside = Math.max(minX - x, x - maxX, minZ - z, z - maxZ, 0);
+    if (outside >= margin) return natural(x, z);
+    const blend = smooth(0, margin, outside);
+    return level * (1 - blend) + natural(x, z) * blend;
+  };
+  terrain.walkable = (x, z) => terrain.isLand(x, z) && !queries.buildingAt(x, z, 1.5);
+  terrain.roofAt = (x, z, pad = 0) => queries.roofAt(x, z, pad);
+  terrain.canDropAt = (x, z, { radius = 6 } = {}) => queries.clearAt(x, z, radius + 1);
 }

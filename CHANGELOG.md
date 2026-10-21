@@ -39,6 +39,43 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Swarmfall city district on Corvan's planetary map
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Build a city district into Corvan's planetary map"
+- **What changed:** The owner said the cities were meant to sit inside the larger planetary
+  maps. Corvan, the industrial world, now has a 900 m district (9 × 9 blocks, 184 buildings)
+  inside a map twice as wide (half-size 460 → 900 m). One seeded, versioned layout
+  (`city-layout.mjs`) drives both the rules and the drawing:
+  - Ground is level under the city and blends back into the snowfields.
+  - Troops walk around buildings, and defenses are never placed inside one.
+  - Drones climb over roofs.
+  - Pods land only on open ground.
+  - The five open squares are capture zones (the central one is the capital).
+  - Two more zones lie in the countryside.
+  - The minimap shows building footprints.
+  - Fog and camera zoom scale with the bigger map.
+  The renderer (`city-render.mjs`) reuses the Environment Lab kit: streets, sidewalks, paved
+  squares, parks with trees, tiered buildings with procedural facades, and rooftop gear.
+  Each battle records its city layout. A Corvan battle saved before this change resumes on the
+  landscape it was saved on; a checkpoint with a different city is refused.
+- **Assumptions:** City size, block and street sizes, heights and the 7-zone / 5-required
+  balance are invented gameplay choices [EST]. Balance is not playtested.
+- **Archive:** `archive/swarmfall-corvan-map-2026-10-21/` (tag on `52dc4a8`).
+- **Files:** `dist/invasion/city-layout.mjs` (new), `dist/invasion/city-render.mjs` (new),
+  `planet-terrain.mjs`, `battle.mjs`, `mission-save.mjs`, `campaign.mjs`, `scene.mjs`, `main.mjs`,
+  `environments/kit/core.mjs` (imports three.js by path so the game page can use the kit),
+  `tests/invasion-city.test.mjs` (new), `tests/invasion-mission-save.test.mjs`
+- **Checks:** All 426 tests ran. 425 pass; the one failure is `tests/main-harness.test.mjs`,
+  another session's harness work in progress, not this change. Browser checks:
+  - The city renders on Corvan at desktop and phone size (375 px), with no console errors.
+  - Phone size: no sideways scroll; 72 draw calls and about 133,000 triangles.
+  - Drones held 79 m over a 69 m roof.
+  - The lab's Metropolis still loads.
+- **Open / next:** Shots still pass through buildings (line of sight). Ground troops slide
+  along walls rather than path-finding (FIX-03). Buildings can't be destroyed yet. Other planets
+  could get their own city types (market town on Velm, forge city on Ashfall). See VIS-18 in
+  `SWARMFALL-TODO.md`.
+
 ### 2026-10-20: DraMS visible hardware (part 08)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add DraMS's photographed blanket, valves, brass cylinder and wiring"

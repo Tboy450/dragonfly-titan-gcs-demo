@@ -10,6 +10,7 @@ import { edlStateAt } from "../edl.mjs?v=dev";
 import { dropDurationS, droneTypes } from "./units.mjs?v=dev";
 import { droneModels, figureModel, interceptorModel, structureModels, buildingModels, dragonflyTemplate, societyColors } from "./models.mjs?v=dev";
 import { projectedDiameter } from './drone-markers.mjs?v=dev';
+import { buildCity } from './city-render.mjs?v=dev';
 
 export const swarmColor = "#7ce7ff";
 export const nativeColor = "#ff8a4a";
@@ -336,12 +337,16 @@ export function createInvasionScene(canvas, options = {}) {
     } else {
       paintSky(look.top, look.bottom);
       scene.background = skyTexture;
-      scene.fog = new THREE.FogExp2(new THREE.Color(look.fog), look.density);
-      baseFog = look.density;
+      // Haze was tuned for ~0.9 km maps; larger planetary maps (with cities) thin it to match.
+      const density = look.density * Math.min(1, 460 / (battle.map.half || 460));
+      scene.fog = new THREE.FogExp2(new THREE.Color(look.fog), density);
+      baseFog = density;
       world.add(groundMesh(planet, battle));
       if (look.liquid) world.add(liquidMesh(battle));
     }
     decorate(planet, battle, rand);
+    // A city on this planet (city-layout.mjs) is drawn from the same layout the rules use.
+    if (planetTerrain.city) buildCity(world, planetTerrain.city);
     for (const zone of battle.zones) buildZone(zone, battle, planet);
   }
 
@@ -395,7 +400,9 @@ export function createInvasionScene(canvas, options = {}) {
   // Rocks, trees, ice spikes or a skyline, kept clear of the zones.
   function decorate(planet, battle, rand) {
     const { centerX, centerZ, half } = battle.map;
-    const clear = (x, z, margin) => battle.zones.every(zone => Math.hypot(zone.x - x, zone.z - z) > zone.radius + margin);
+    const city = terrain.city?.bounds;
+    const inCity = (x, z) => city && x > city.minX - 40 && x < city.maxX + 40 && z > city.minZ - 40 && z < city.maxZ + 40;
+    const clear = (x, z, margin) => !inCity(x, z) && battle.zones.every(zone => Math.hypot(zone.x - x, zone.z - z) > zone.radius + margin);
     const dry = (x, z) => terrain.liquid === null || terrain.solidLiquid || terrain.heightAt(x, z) > terrain.liquid + 0.5;
     const place = (count, margin, spread = 1.5) => {
       const spots = [];
@@ -513,7 +520,7 @@ export function createInvasionScene(canvas, options = {}) {
       }
     }
     if (beacon) { beacon.position.x = zone.x; beacon.position.z = zone.z; beacon.position.y += y; group.add(beacon); }
-    if (battle.tier > 0 && zone.kind !== "beachhead") houses(zone, battle, group, rand);
+    if (battle.tier > 0 && zone.kind !== "beachhead" && !zone.urban) houses(zone, battle, group, rand);
     zoneVisuals.set(zone.id, { base, control, beacon });
   }
 

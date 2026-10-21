@@ -131,11 +131,13 @@ same split as the simulator: plain modules with tests, plus a page layer.
 |---|---|
 | `invasion/units.mjs` | Drone, defender and society types; weapons per target class (ground, structure, air) so drones can later carry different arms against rival drones; pod slots and costs |
 | `invasion/campaign.mjs` | The seven planets in campaign order, rewards, per-planet supply, saved progress (validated field by field) and `applyMissionResult` |
-| `invasion/mission-save.mjs` | Versioned JSON battle checkpoints, validation and terrain callback/pad restoration; stored with campaign progress by the page |
+| `invasion/mission-save.mjs` | Versioned JSON battle checkpoints, validation and terrain callback/pad restoration; stored with campaign progress by the page; `checkpointPlanet` rebuilds pre-city saves on their old landscape |
 | `invasion/battle.mjs` | One mission: zones, drops, orders (group pace, attack-move), movement, combat, capture (damage or control path, converted defenses), public alarm, reinforcements, artillery, income, objectives, stars, outcome |
 | `invasion/hazards.mjs` | Seeded environmental threats with advance warning; shelter in held zones |
 | `invasion/achievements.mjs` | Twelve campaign achievements, checked live and at the end of a mission |
-| `invasion/planet-terrain.mjs` | Ground height per planet: Titan reuses `terrainHeight`; the other worlds are invented noise landscapes with liquid levels and level zone pads |
+| `invasion/planet-terrain.mjs` | Ground height per planet: Titan reuses `terrainHeight`; the other worlds are invented noise landscapes with liquid levels and level zone pads; a planet with `city` gets level city ground, `walkable`, `roofAt` and a building-aware `canDropAt` |
+| `invasion/city-layout.mjs` | A seeded, versioned city district (blocks, lots, tiered buildings, streets, squares, parks) and fast `buildingAt` / `roofAt` / `clearAt` queries; the one source for city rules and drawing |
+| `invasion/city-render.mjs` | Draws a city layout with the Environment Lab kit: streets, sidewalks, squares, parks, merged facade buildings and rooftop gear |
 | `invasion/random.mjs` | Seeded random numbers stored on the battle (reproducible missions) |
 | `invasion/models.mjs` | Procedural drone, defender, structure and building geometry (vertex colors, merged for instancing) and the compacted Dragonfly research model |
 | `invasion/scene.mjs` | three.js view: planet ground/sky/liquid/decor (Titan via `createTitanTerrain`), zone rings, instanced units, shots, explosions, strike markers, weather particles, pods via `createArrivalHardware` + `edlStateAt` |

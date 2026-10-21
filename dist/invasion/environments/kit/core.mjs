@@ -1,7 +1,9 @@
 // Shared building blocks for the Environment Lab worlds: seeded randomness and noise, cached
 // materials and geometry, instanced batching, merged boxes with world-scaled facade UVs, and
 // matrix helpers. Everything here is drawing code; no game rules.
-import * as THREE from "three";
+// A path rather than the bare "three" name, so the game page (which has no import map) can use
+// this kit too; it resolves to the same module the lab's import map names.
+import * as THREE from "../../../vendor/three/three.module.min.js";
 
 export { THREE };
 

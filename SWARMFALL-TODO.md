@@ -481,6 +481,23 @@ and other threats on the planet):
   saves. Start with a separate city battle test and a roughly 0.8–1 km playable district inside
   the full city; retain Aurex and existing campaign saves until validated. See FIX-02/FIX-03,
   VIS-10 through VIS-12, MODE-20 and the [code review](research/fantasy-city-2026-10-16/GAME-INTEGRATION.md).
+  - **Progress (Claude, October 21):** The owner said cities belong inside the larger planetary
+    maps, so the first district is built into Corvan's campaign map rather than a separate test
+    mission. Done for that district:
+    - One seeded, versioned layout (`city-layout.mjs`) with stable building IDs.
+    - Level city ground blended into the terrain.
+    - Building-aware walking, roof-aware flight, and pod landings only on open ground.
+    - Squares as capture zones, plus countryside zones outside the city.
+    - Minimap footprints.
+    - A city stamp on checkpoints; pre-city Corvan saves resume on their old landscape.
+    - Tests in `tests/invasion-city.test.mjs`.
+    Still open:
+    - Line of sight: shots pass through buildings.
+    - Real routes for ground troops (FIX-03).
+    - Building damage and destruction.
+    - District culling and async loading (not needed yet: about 133 k triangles).
+    - City types for other planets (market town, forge city, Skyway for Aurex).
+    - Owner playtest of the 7-zone / 5-required balance.
 
 - [ ] **VIS-16 ★ (P2)** Contoured coastal setting for cyberpunk City / Skyway (Codex,
   October 16): individual source contact points shape smooth ground, separate footing pads,
@@ -556,6 +573,8 @@ and other threats on the planet):
     foundries, stacks with smoke, cooling towers, ore railway, volcanoes).
   - Measure Light mode on a phone (Metropolis is about 4 M triangles on High); add distance-based
     detail if needed. Let kit worlds join the destruction study (they currently opt out).
+  - The lab downloads three.js twice: `aftermath.mjs`, `asset-viewer.mjs` and `city-damage.mjs`
+    import it with `?v=dev`, while `lab.mjs` and the kit import it without. Use one URL.
 
 - [ ] **VIS-15 ★ (P2)** Space/alien asset continuation: planetary bases, orbital stations,
   intricate alien architecture, vessels and appropriate environments. Follow the library's

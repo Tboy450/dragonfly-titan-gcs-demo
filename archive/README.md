@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [swarmfall-corvan-map-2026-10-21](swarmfall-corvan-map-2026-10-21/README.md) | Corvan's open 920 m snowfield with five zones, before the city district; exact campaign and terrain modules, before and after pictures; pre-city saves still resume on it | 2026-10-21 | `archive/swarmfall-corvan-map-2026-10-21` on 52dc4a8 |
 | [drams-2026-10-20](drams-2026-10-20/README.md) | Codex's enclosure-level DraMS before the visible-hardware pass; exact module and test, two in-context and two isolated pictures | 2026-10-20 | `archive/drams-2026-10-20` on 28197a2 |
 | [wonderwall-2026-10-20](wonderwall-2026-10-20/README.md) | Codex's plain Wonderwall panel (pale/metal facings, amber patch) before the photo detail pass; exact module and test, eight in-context and four isolated pictures | 2026-10-20 | `archive/wonderwall-2026-10-20` on 9c2eaef |
 | [arm-shoulder-2026-10-20](arm-shoulder-2026-10-20/README.md) | Round tan foam ring and round flange at each arm root (turned across the body, not along the arm); exact builder and four close renders | 2026-10-20 | `archive/arm-shoulder-2026-10-20` on 8dad2ea |

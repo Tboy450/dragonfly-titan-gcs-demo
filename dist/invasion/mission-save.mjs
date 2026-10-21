@@ -6,6 +6,7 @@ import { validPayload, podStaggerS, dronesPerPod } from "./drop-waves.mjs?v=dev"
 import { payloadCount, payloadSlots, dropDurationS } from "./units.mjs?v=dev";
 import { legacyMissionId, validMissionId } from "./mission-id.mjs?v=dev";
 import { commandCheckpoint, restoreCommandState } from './command-state.mjs?v=dev';
+import { CITY_LAYOUT_VERSION } from "./city-layout.mjs?v=dev";
 
 export const MISSION_SAVE_VERSION = 3;
 // Recovery bounds [EST], deliberately above current campaign sizes, not gameplay caps.
@@ -152,7 +153,7 @@ function migrateCheckpoint(value) {
 
 export function missionCheckpoint(mission) {
   if (!mission || mission.battle.outcome) return null;
-  const { isLand, heightAt, canDropAt, ...battle } = mission.battle;
+  const { isLand, heightAt, canDropAt, walkable, roofAt, ...battle } = mission.battle;
   return jsonClone({ version: MISSION_SAVE_VERSION, battle, cam: mission.cam, command: commandCheckpoint(mission) });
 }
 
@@ -177,6 +178,10 @@ export function validMissionCheckpoint(value) {
       || !between(b.reinforceIn, -1, 1e6) || !between(b.strikeIn, -1, 1e6)) return null;
     if (b.lastDropAt !== null && !between(b.lastDropAt, 0, b.time)) return null;
     if (!point({ x: b.map?.centerX, z: b.map?.centerZ }) || !between(b.map.half, 1, 1e5)) return null;
+    // A city stamp must match the planet's current layout. Changing CITY_LAYOUT_VERSION or a
+    // city's seed needs a migration (or the old layout kept); a missing stamp is a pre-city save.
+    if ((b.city ?? null) !== null && !(p.city && fields(b.city, ["version", "seed"])
+      && b.city.version === CITY_LAYOUT_VERSION && b.city.seed === p.city.seed)) return null;
     const statKeys = ["drops", "podsLaunched", "dronesDropped", "dronesLost", "hazardLosses", "zonesCaptured", "defensesDestroyed", "militiaDefeated", "matterHarvested", "hazardEvents", "maxAlive", "alarmPeak", "damageDealt"];
     if (!fields(b.stats, statKeys, n => between(n, 0, 1e12)) || !Object.values(b.stats).every(n => between(n, 0, 1e12))) return null;
     if (!statKeys.filter(key => !["matterHarvested", "alarmPeak", "damageDealt"].includes(key)).every(key => integer(b.stats[key], 0, 1e12))
@@ -220,6 +225,14 @@ export function validMissionCheckpoint(value) {
   } catch { return null; }
 }
 
+// The planet to rebuild a checkpoint's terrain from. A battle saved before its planet gained a
+// city (no city stamp) resumes on the landscape and map size it was saved on.
+export function checkpointPlanet(checkpoint) {
+  const planet = planetById(checkpoint?.battle?.planetId);
+  if (!planet?.city || checkpoint.battle.city) return planet;
+  return { ...planet, city: null, map: checkpoint.battle.map };
+}
+
 export function restoreMissionCheckpoint(value, terrain) {
   const saved = validMissionCheckpoint(value);
   if (!saved) return null;
@@ -229,6 +242,8 @@ export function restoreMissionCheckpoint(value, terrain) {
   battle.isLand = terrain.isLand;
   battle.heightAt = terrain.heightAt;
   battle.canDropAt = terrain.canDropAt;
+  battle.walkable = terrain.walkable || terrain.isLand;
+  battle.roofAt = terrain.roofAt;
   battle.events = []; // One-frame effects must not replay after loading.
   terrain.setPads?.(battle.zones);
   return { planet: planetById(battle.planetId), battle, cam: saved.cam, command: saved.command };

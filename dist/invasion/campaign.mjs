@@ -59,8 +59,10 @@ export const planets = Object.freeze([
     id: "corvan", order: 4, name: "Corvan", subtitle: "Ice world", supply: 380,
     society: 3, threat: 3, biome: "ice", hazards: ["blizzard"], color: "#bfe3f2",
     galaxy: { x: 0.5, y: 0.6 },
-    description: "Frozen ridges and factory towns. Flak and radar cover the passes, and a full alarm brings artillery.",
-    map: { centerX: 0, centerZ: 0, half: 460 }, zoneCount: 5, required: 4, seed: 3109,
+    description: "Frozen ridges around Corvan Prime, an industrial city of brick and glass. Its squares are the districts to take; flak and radar cover them, towers force your drones to climb, and a full alarm brings artillery. Factory towns hold the passes outside.",
+    // A city inside a larger planetary map (city-layout.mjs): 9 x 9 blocks, five open squares.
+    map: { centerX: 0, centerZ: 0, half: 900 }, zoneCount: 7, required: 5, seed: 3109,
+    city: { style: "metropolis", x: 80, z: -120, blocks: 9, pitch: 100, street: 20, seed: 3109, peak: 150 },
     reward: { matter: 220, podSlots: 4 },
     objectives: [
       { id: "no-artillery", kind: "alarmBelow", value: 70, text: "Never let the alarm reach 70 (no artillery)" },
