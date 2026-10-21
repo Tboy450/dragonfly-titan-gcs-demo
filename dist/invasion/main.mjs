@@ -255,11 +255,12 @@ $("achievements-close").addEventListener("click", () => $("achievements-dialog")
 // ---- Frontier maps (large worlds apart from the campaign) ----
 function showFrontiers() {
   $("frontier-list").innerHTML = frontiers.map(map => {
-    const society = societies[map.society], supply = missionSupply(progress, map);
+    const society = societies[map.society], supply = missionSupply(progress, map), record = progress.frontier?.[map.id];
     return `<li><strong>${escapeHtml(map.name)}</strong>
       <small>${escapeHtml(map.subtitle)} · ${(map.map.half * 2 / 1000).toFixed(0)} km across · ${escapeHtml(society.name)} society · threat ${escapeHtml(threatNames[map.threat])}</small>
       <p>${escapeHtml(map.description)}</p>
       <small>Hold ${map.required} of ${map.zoneCount} zones · ${supply.matter} matter · ${supply.podSlots} slots per wave · ${escapeHtml(supply.unlocks.map(t => droneTypes[t].name).join(", "))}</small>
+      <small class="frontier-record">${record ? `Your record: ${"★".repeat(record.stars)}${"☆".repeat(3 - record.stars)} · best ${clock(record.best)} · ${record.wins} ${record.wins === 1 ? "win" : "wins"}` : "Not yet won"}</small>
       <button class="primary" type="button" data-frontier="${escapeHtml(map.id)}">Land on ${escapeHtml(map.name)}</button></li>`;
   }).join("");
   for (const button of $("frontier-list").querySelectorAll("[data-frontier]")) {

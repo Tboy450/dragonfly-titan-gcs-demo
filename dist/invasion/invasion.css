@@ -179,6 +179,7 @@ a { color: var(--swarm); }
 .frontier-note { color: var(--muted); margin: 0 0 6px; }
 .frontier-list p { margin: 6px 0; }
 .frontier-list button { margin-top: 8px; width: 100%; }
+.frontier-list .frontier-record { color: #ffd479; margin-top: 4px; }
 .no-webgl { position: fixed; inset: auto 16px 16px 16px; padding: 12px; background: #301010; border: 1px solid var(--danger); border-radius: 8px; }
 
 @media (max-width: 720px) {

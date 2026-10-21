@@ -493,7 +493,8 @@ Free mode (★ owner: "eventually a free mode with a universe or galaxy to pick 
   - **Still to do:**
     - More frontier maps (walled market town, Skyway for Aurex).
     - Owner playtest of distances and balance. Forward drops need a captured outpost.
-    - A frontier record (best time, stars), which needs a progress-save field.
+    - ~~A frontier record (best time, stars).~~ Done October 21: wins, best stars and fastest win
+      per map, saved with progress and shown in the Frontier list.
     - Overlap with ROAM-01/02 (free roam) to settle with the owner.
 
 Local versus (★ owner: "a larger local versus mode where you fight to see who can take over a

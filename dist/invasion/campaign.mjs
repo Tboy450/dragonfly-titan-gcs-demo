@@ -161,6 +161,8 @@ export function createProgress() {
     podSlots: basePodSlots,
     achievements: {},
     settledMissions: {},
+    // Frontier records by map: { wins, stars (best, 1-3), best (fastest win, s) }.
+    frontier: {},
     stats: Object.fromEntries(statNames.map(name => [name, 0])),
   };
 }
@@ -199,11 +201,19 @@ export function applyFrontierResult(progress, map, result) {
     return { progress: next, notes: ["This mission result was already settled; no statistics were added again."] };
   for (const name of statNames) next.stats[name] += Math.max(0, Math.round(result.stats?.[name] || 0));
   next.stats.missionsPlayed += 1;
-  if (result.outcome === "won") next.stats.missionsWon += 1;
+  const notes = [`${map.name} is a frontier map: the campaign bank and conquests are unchanged.`];
+  if (result.outcome === "won") {
+    next.stats.missionsWon += 1;
+    next.frontier ||= {};
+    const before = next.frontier[map.id], time = Math.round(result.time), stars = Math.min(3, Math.max(1, result.stars || 1));
+    next.frontier[map.id] = { wins: (before?.wins || 0) + 1, stars: Math.max(before?.stars || 0, stars), best: before ? Math.min(before.best, time) : time };
+    if (!before) notes.push(`First win on ${map.name} recorded.`);
+    else if (time < before.best) notes.push(`New best time on ${map.name}.`);
+  }
   if (result.missionId) Object.defineProperty(next.settledMissions, result.missionId, {
     value: { planetId: map.id, outcome: result.outcome }, enumerable: true, writable: true, configurable: true,
   });
-  return { progress: next, notes: [`${map.name} is a frontier map: the campaign bank and conquests are unchanged.`] };
+  return { progress: next, notes };
 }
 
 // result: { outcome: "won" | "lost" | "retreated", matter, stars, time, stats, recovered: [unlock ids] }
@@ -275,6 +285,11 @@ export function validProgress(raw) {
   clean.podSlots = Math.max(basePodSlots, Math.min(basePodSlots + 32, count(raw.podSlots)));
   if (raw.achievements && typeof raw.achievements === "object") {
     for (const [id, at] of Object.entries(raw.achievements)) if (/^[a-z0-9-]{1,40}$/.test(id) && Number.isFinite(at)) clean.achievements[id] = at;
+  }
+  for (const map of frontiers) {
+    const record = raw.frontier?.[map.id];
+    if (Number.isInteger(record?.wins) && record.wins >= 1 && Number.isInteger(record.stars) && record.stars >= 1 && record.stars <= 3 && Number.isFinite(record.best) && record.best > 0)
+      clean.frontier[map.id] = { wins: Math.min(1e6, record.wins), stars: record.stars, best: Math.round(record.best) };
   }
   for (const name of statNames) clean.stats[name] = count(raw.stats?.[name]);
   if (raw.settledMissions && typeof raw.settledMissions === "object" && !Array.isArray(raw.settledMissions)) {

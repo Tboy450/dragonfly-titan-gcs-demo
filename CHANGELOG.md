@@ -39,6 +39,19 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Swarmfall Frontier records
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Keep a record for each Frontier map"
+- **What changed:** Each Frontier map now remembers your wins, best stars and fastest win.
+  The Frontier list shows them ("Your record: ★★☆ · best 12:30 · 2 wins", or "Not yet won").
+  The debrief notes a first win or a new best time. Records are saved with campaign progress,
+  checked field by field (unknown maps and bad values are dropped). The campaign bank and
+  conquests are still untouched by frontier results.
+- **Files:** `dist/invasion/campaign.mjs`, `main.mjs`, `invasion.css`,
+  `tests/invasion-city.test.mjs`, `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (446 pass). The new checks cover a first win, a
+  faster win, a save round trip and bad records being dropped.
+
 ### 2026-10-21: Swarmfall free camera, ridges blocking sight, blocked-shot lines
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add a free camera, ridge line of sight and blocked-shot lines"

@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createCityLayout, cityQueries, CITY_LAYOUT_VERSION } from "../dist/invasion/city-layout.mjs";
-import { planetById, frontiers, missionSupply, applyFrontierResult, createProgress } from "../dist/invasion/campaign.mjs";
+import { planetById, frontiers, missionSupply, applyFrontierResult, createProgress, validProgress } from "../dist/invasion/campaign.mjs";
 import { createPlanetTerrain } from "../dist/invasion/planet-terrain.mjs";
 import { createBattle, stepBattle, requestDrop, orderSquads, cityFound } from "../dist/invasion/battle.mjs";
 import { missionCheckpoint, restoreMissionCheckpoint, validMissionCheckpoint, checkpointPlanet } from "../dist/invasion/mission-save.mjs";
@@ -127,6 +127,13 @@ test("Frontier supply and results stay apart from the campaign bank and conquest
   assert.equal(next.stats.missionsWon, 1);
   assert.equal(next.stats.zonesCaptured, 6);
   assert.equal(applyFrontierResult(next, map, { outcome: "won", stats: { zonesCaptured: 6 }, missionId: "frontier-test-1" }).progress.stats.zonesCaptured, 6, "settled once");
+  // Each frontier keeps a record: wins, best stars and fastest win, kept through a save.
+  assert.deepEqual(next.frontier[map.id], { wins: 1, stars: 3, best: 900 });
+  const faster = applyFrontierResult(next, map, { outcome: "won", stars: 2, time: 700, stats: {}, missionId: "frontier-test-2" });
+  assert.deepEqual(faster.progress.frontier[map.id], { wins: 2, stars: 3, best: 700 });
+  assert.ok(faster.notes.some(note => /New best time/.test(note)));
+  assert.deepEqual(validProgress(JSON.parse(JSON.stringify(faster.progress))).frontier, faster.progress.frontier);
+  assert.deepEqual(validProgress({ ...faster.progress, frontier: { [map.id]: { wins: 0, stars: 9, best: -1 }, nowhere: { wins: 1, stars: 1, best: 5 } } }).frontier, {});
 });
 
 const cam = { focus: { x: 0, z: 0 }, distance: 230, yaw: 0, pitch: 0.9 };
