@@ -615,6 +615,7 @@ DraMS neck intentionally passes through the wall aperture.
 - [x] **Codex:** **07 Wonderwall thermal barrier** (`wonderwall`): contoured reference-based warm/cold partition, interface openings and separate face/core/mount groups. [References and limits](research/wonderwall-2026-10-12.md). Not a verified flight material stack.
 - [ ] **07 dimensional/interface follow-up:** authoritative wall thickness, material stack and real sealed instrument penetrations. The #08 neck now aligns with the modeled opening; that is not confirmation of the real seal design. Published ~5 cm instrument separation is not wall thickness.
 - [x] **Codex:** **08 DraMS assembly** (`drams`): first enclosure-level pass, with separate covers/casings/frame and simplified connection through #07. [References/limits](research/drams-2026-10-12/README.md). Dimensions and details remain estimated.
+- [ ] **07/08 visible-detail pass (owner, October 20: "something may be missing from the apparatus"; compared by Claude against the saved NASA/Mike Guinto photos):** the real Wonderwall has a machined, pocketed gray frame over its upper part, a bolted circular interface fitting with a cross of spokes, orange Kapton covers around it and mounting tabs along its edges; the model is a plain panel with a round hole. The real DraMS is an open assembly (no outer walls, as in the model) but dense with visible hardware: foil-wrapped harness bundles, tubes, valves, small cylinders and wiring on a gold-toned frame; the model has an open frame with one cylinder and two boxes. Draw what the photos show on the outside; keep hidden internals out (see the 08 follow-up below).
 - [ ] **08 detailed follow-up:** independently source ITMS electrodes, UV laser/LDMS interface, GC hardware, carousel-side pyrolysis oven, fan and actual seals/transfer paths. Do not invent hidden internals or treat the current casings as flight CAD.
 - [ ] **09 Rotorcraft drive electronics** (`rde`): Codex provisional enclosure pass October 15;
   two hollow cases, separate lids/mounts, illustrative internal fans and real vent openings.
@@ -669,6 +670,19 @@ DraMS neck intentionally passes through the wall aperture.
 - [ ] **23 follow-up:** the foam blister the Microscopic Camera needs (it is thicker than the 7.62 cm average foam); Down Cameras' exact position; the camera electronics box (ECAM-DVR8P) inside the bay. #19 has replaced the old side-chimney placeholder with the under-belly trim device; retain the rebuilt-set clearance checks.
 - [x] **Claude:** **24 DrACO blowers** (`drill-blower`): forward and aft centrifugal blowers (volute, motor, axial inlet, tangential exhaust out and down) behind the port forward arm, fed by an inlet flow diverter; per DrACO fig. 1 and ICES-2023. [References/limits](research/draco-plumbing-2026-10-14/README.md).
 - [ ] **24 follow-up:** real blower size and shape; the unidentified cylinder-and-cone unit under the port attic seen in APL's CAD movie.
+
+## Connections and Installation (owner, October 20)
+
+The owner notes that a lot of connecting equipment is still missing. Done so far: TWTA coax,
+waveguide and high-voltage umbilical; sample-transfer lines (#02); the warm and cold ducts
+(#17-19); METHAN fiber entry and EFIELD harness exits (#22); PSU/IEM face connectors.
+- [ ] Main wiring harness: NASA's September 2, 2026 photo shows dozens of silver cables
+  running around and through the structure (saved for #03 in `research/nose-bulkhead-2026-10-19/`).
+  Draw the main trunks between the PSUs, IEM, radio, instruments and arms, as photographed.
+- [ ] Mounting plates, brackets and standoffs for units still shown floating or on pads.
+- [ ] The carousel's top hardware (valve block, foil-wrapped unit, strut) and the drives and
+  posts under its mounting plate, as in the saved carousel photos (#06 follow-up).
+- [ ] The open-frame wall panels the IEM, PSUs and radio mount to (#11-#13 follow-ups).
 
 ## Exterior: Rotor Arms and Heads
 
