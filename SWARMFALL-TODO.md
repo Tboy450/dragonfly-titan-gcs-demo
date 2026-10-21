@@ -490,8 +490,17 @@ Free mode (★ owner: "eventually a free mode with a universe or galaxy to pick 
       cooling towers, slag yards with ore heaps, and smoke from the tallest stacks.
     - Supply: 750 matter, threat 4, eruptions and ash. Existing metropolis cities are proven
       unchanged by a fingerprint test.
+  - **Done (Claude, October 21, later still):** **Velm Frontier**, the third map:
+    - Jungle hills around a 4.2 km swamp valley crossed by rivers.
+    - **Brackenford**, a walled market town (`city-layout.mjs` style "town"):
+      - 528 plastered and brick houses with red tile roofs around courtyards, and garden blocks.
+      - A stone keep with a flag.
+      - A crenellated 10 m town wall with two gates per side and four turrets. Troops must
+        use the gates; drones fly over.
+    - About 3.3 km from the beacon. Agrarian society, threat 2, acid rain. Supply: 600 matter.
+    - Frontier maps get lighter jungle trees.
   - **Still to do:**
-    - More frontier maps (walled market town, Skyway for Aurex).
+    - More frontier maps (Skyway for Aurex, a storm-ocean harbor for Halcyon).
     - Owner playtest of distances and balance. Forward drops need a captured outpost.
     - ~~A frontier record (best time, stars).~~ Done October 21: wins, best stars and fastest win
       per map, saved with progress and shown in the Frontier list.

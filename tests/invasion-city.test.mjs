@@ -280,3 +280,37 @@ test("Buildings block line of sight: cover from city defenses, and an attack ord
   for (let t = 0; t < 15; t += 0.1) stepBattle(b, 0.1);
   assert.ok(drone.alive && !b.lineBlocked(drone.x, drone.z, drone.alt + 0.6, flak.x, flak.z, 4), "a clear line to the target");
 });
+
+test("Velm Frontier: a walled market town where troops use the gates and drones fly over the walls", () => {
+  const map = planetById("velm-frontier"), terrain = createPlanetTerrain(map), city = terrain.city;
+  const kinds = kind => city.buildings.filter(b => b.kind === kind);
+  assert.ok(city.style === "town" && kinds("house").length > 300 && kinds("keep").length === 1 && kinds("turret").length === 4 && kinds("wall").length >= 8);
+  const keep = kinds("keep")[0];
+  assert.ok(keep.height > Math.max(...kinds("house").map(h => h.height)), "the keep stands over the roofs");
+  for (const house of kinds("house")) {
+    assert.ok(house.height > house.eaves && house.eaves >= 5);
+    const owner = city.blocks.find(k => Math.abs(house.x - k.x) + house.w / 2 <= k.size / 2 + 1e-9 && Math.abs(house.z - k.z) + house.d / 2 <= k.size / 2 + 1e-9);
+    assert.ok(owner, `${house.id} inside its block`);
+  }
+  // The wall rings the town outside its streets, inside the city bounds, with gaps for gates.
+  const queries = cityQueries(city), { minX, maxX, minZ, maxZ } = city.bounds;
+  for (const wall of kinds("wall")) assert.ok(wall.x - wall.w / 2 >= minX && wall.x + wall.w / 2 <= maxX && wall.z - wall.d / 2 >= minZ && wall.z + wall.d / 2 <= maxZ);
+  const southWall = kinds("wall").filter(w => w.d === 3 && w.z < city.z);
+  const wallZ = southWall[0].z;
+  let gaps = 0, blocked = 0;
+  for (let x = minX + 12; x < maxX - 12; x += 2) (queries.buildingAt(x, wallZ) ? blocked++ : gaps++);
+  assert.ok(blocked > gaps * 5 && gaps >= 8, "mostly wall, with gates");
+  assert.ok(terrain.walkable(city.x - city.half + 3 * city.pitch, wallZ), "a gate is open to troops");
+  assert.ok(!terrain.walkable(southWall[0].x, wallZ) && terrain.roofAt(southWall[0].x, wallZ) === 10, "the wall is not, and drones climb 10 m over it");
+  // The map: far from the beacon, rivers in the valley, zones on dry ground.
+  const b = createBattle(map, { terrain, ...missionSupply(createProgress(), map) });
+  const home = b.zones.find(zone => zone.kind === "beachhead");
+  assert.ok(Math.hypot(home.x - city.x, home.z - city.z) > 3000);
+  for (const zone of b.zones) assert.ok(terrain.isLand(zone.x, zone.z), `${zone.name} is dry`);
+  let water = 0;
+  for (let x = -3000; x <= 3000; x += 50) for (let z = -3000; z <= 3000; z += 50) if (!terrain.isLand(x, z)) water += 1;
+  assert.ok(water > 50, "rivers run through the valley");
+  assert.equal(b.zones.filter(zone => zone.urban).length, 5);
+  const saved = JSON.parse(JSON.stringify(missionCheckpoint({ battle: b, cam })));
+  assert.ok(restoreMissionCheckpoint(saved, createPlanetTerrain(checkpointPlanet(saved))));
+});

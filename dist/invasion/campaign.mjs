@@ -141,6 +141,20 @@ export const frontiers = Object.freeze([
       { id: "losses", kind: "maxLosses", value: 40, text: "Lose 40 drones or fewer" },
     ],
   },
+  {
+    id: "velm-frontier", frontier: true, base: "velm", name: "Velm Frontier", subtitle: "Swamp jungle · large map",
+    supply: 600, kit: { unlocks: ["scout", "link", "striker"], podSlots: 16 },
+    society: 2, threat: 2, biome: "jungle", hazards: ["acidRain"], color: "#5fae6a",
+    description: "Steaming jungle hills around a long valley of swamp rivers. Brackenford, a walled market town of tile-roofed houses and a stone keep, guards the fords at its far end; the Hive beacon lands in a basin beyond the hills. Troops must come and go through the town gates, while drones fly over the walls; rifles answer from the windows, and the rain eats through rotor housings.",
+    map: { centerX: 0, centerZ: 0, half: 3000, view: 1800, fog: 0.00045 },
+    landform: { kind: "valley", x: 400, z: 300, length: 2100, width: 1100, angle: 1.2, floor: 3, rim: 420, peak: 320, rivers: 1 },
+    city: { name: "Brackenford", style: "town", x: 74, z: -539, blocks: 9, pitch: 60, street: 10, seed: 2207, peak: 34 },
+    zoneCount: 9, required: 6, seed: 2207, explore: true,
+    objectives: [
+      { id: "keep-calm", kind: "alarmBelow", value: 60, text: "Keep the alarm under 60" },
+      { id: "weather", kind: "noHazardLosses", text: "Lose no drones to the acid rain" },
+    ],
+  },
 ].map(Object.freeze));
 
 export const planetById = (id) => planets.find(planet => planet.id === id) || frontiers.find(map => map.id === id) || null;

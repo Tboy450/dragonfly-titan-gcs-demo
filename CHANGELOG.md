@@ -39,6 +39,33 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Swarmfall Velm Frontier and the walled market town
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add Velm Frontier with the walled market town Brackenford"
+- **What changed:** The third Frontier map.
+  - **Velm Frontier:** jungle hills around a 4.2 km swamp valley with rivers (the landform's
+    new `rivers` option, water instead of lava). The Hive beacon is about 3.3 km from the
+    town. Agrarian society, threat 2, acid rain. Supply: 600 matter.
+  - **Town style** (`city-layout.mjs` "town", drawn by `buildTown`):
+    - About 530 small houses with plastered or brick walls and red tile roofs around
+      courtyards, plus garden blocks with trees.
+    - A stone keep with corner towers, battlements and a flag.
+    - A crenellated 10 m town wall outside the streets, with two gates per side and four
+      conical-roofed turrets. The wall blocks troops and line of sight; the gates are open,
+      and drones climb over the wall.
+  - **Lighter jungle on big maps:** fewer, simpler trees, so a frontier jungle doesn't cost
+    millions of triangles.
+  - Existing cities are unchanged (fingerprint test).
+- **Assumptions:** All sizes, the 9-zone / 6-required balance and the supply are invented
+  [EST]. Not yet playtested.
+- **Files:** `dist/invasion/city-layout.mjs`, `city-render.mjs`, `planet-terrain.mjs`,
+  `mission-save.mjs`, `scene.mjs`, `campaign.mjs`, `tests/invasion-city.test.mjs`,
+  `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (447 pass). The new test covers houses in blocks,
+  the keep above the roofs, a mostly solid wall with gates, gates walkable and the wall not,
+  rivers, dry zones, and a save round trip. In the browser the town renders (64 draw calls,
+  about 337 k triangles) with no console errors.
+
 ### 2026-10-21: Swarmfall Frontier records
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Keep a record for each Frontier map"

@@ -447,8 +447,9 @@ export function createInvasionScene(canvas, options = {}) {
     if (planet.biome === "titan") return;
     if (planet.biome === "jungle" || planet.biome === "storm") {
       const trunk = new THREE.CylinderGeometry(0.25, 0.4, 1, 6).translate(0, 0.5, 0);
-      const crown = new THREE.SphereGeometry(1, 8, 6).translate(0, 0, 0);
-      const spots = place(planet.biome === "jungle" ? 900 : 350, 6);
+      // Frontier maps get simpler crowns and fewer trees per km², or a jungle would cost millions of triangles.
+      const crown = large ? new THREE.IcosahedronGeometry(1, 0) : new THREE.SphereGeometry(1, 8, 6).translate(0, 0, 0);
+      const spots = place(planet.biome === "jungle" ? (large ? 300 : 900) : 350, 6);
       const heights = spots.map(() => 6 + rand() * 10);
       scatter(trunk, new THREE.MeshStandardMaterial({ color: 0x4a3a28, roughness: 1 }), spots, (d, x, z, c) => {
         const h = heights[spots.findIndex(s => s[0] === x && s[1] === z)] || 8;

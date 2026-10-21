@@ -166,11 +166,13 @@ const toSegment = (x, z, a, b) => {
 // Hive beacon sits in a basin of its own, joined to the valley by a lower pass. mountain() is 0
 // on the valley floor, in the basin and 0.15 along the pass, rising to 1 in the mountains over
 // `rim` m with a ragged edge; peaks reach about `peak` m above the `floor` level. Options:
-// `lava` (0-1) cuts winding channels into the low ground that fill with the planet's liquid (kept
-// away from the beacon), and `volcanoes` raises that many cratered cones deep in the mountains.
+// `lava` or `rivers` (0-1) cuts winding channels into the low ground that fill with the planet's
+// liquid, lava or water (kept away from the beacon), and `volcanoes` raises that many cratered
+// cones deep in the mountains.
 // Invented [EST].
 function valleyLandform(spec, seed, beach, map) {
-  const { x: vx, z: vz, length, width, angle = 0, floor = 6, rim = 500, peak = 400, lava = 0, volcanoes = 0 } = spec;
+  const { x: vx, z: vz, length, width, angle = 0, floor = 6, rim = 500, peak = 400, lava = 0, rivers = 0, volcanoes = 0 } = spec;
+  const channels = Math.max(lava, rivers);
   const ca = Math.cos(angle), sa = Math.sin(angle);
   const local = (x, z) => ({ u: (x - vx) * ca + (z - vz) * sa, v: -(x - vx) * sa + (z - vz) * ca });
   // The pass runs from the basin to 200 m inside the valley edge nearest the beacon.
@@ -198,9 +200,9 @@ function valleyLandform(spec, seed, beach, map) {
   const height = (x, z) => {
     const m = mountain(x, z);
     let ground = floor + (fbm(x / 240, z / 240, seed + 5) - 0.5) * 7 + 0.3 * noise(x / 5, z / 5, seed);
-    if (lava > 0) {
+    if (channels > 0) {
       const channel = 1 - smooth(0.02, 0.07, Math.abs(noise(x / 380, z / 380, seed + 13) * 2 - 1));
-      ground -= lava * 6 * channel * smooth(350, 700, Math.hypot(x - beach.x, z - beach.z));
+      ground -= channels * 6 * channel * smooth(350, 700, Math.hypot(x - beach.x, z - beach.z));
     }
     let h = m <= 0 ? ground : ground + m * (peak * ridged(x / 700, z / 700, seed + 40) + 70 * fbm(x / 160, z / 160, seed + 9));
     for (const cone of cones) {
