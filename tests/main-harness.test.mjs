@@ -65,6 +65,8 @@ test("Branches meet the cable stubs the unit passes left", () => {
   assert.ok(near(ends["power-unit-1"], psu, 0.02) && near(ends["power-unit-2"], psu, 0.02));
   assert.ok(near(ends.iem, stubEnds(buildIem, /iem-harness-cable/), 0.02));
   assert.ok(near(ends.battery, stubEnds(buildBattery, /battery-cable/), 0.03));
+  assert.ok(near(ends["twta-power-supply"], stubEnds(buildTwta, /twta-epc-bus-harness/), 0.02), "meets the TWTA power-supply cable");
+  assert.ok(near(ends["antenna-gimbal-drive"], stubEnds(buildHgaGimbal, /hga-drive-harness/), 0.02), "meets the gimbal drive cable");
 });
 
 test("The harness stays on the bay floor and inside the cavity", () => {
@@ -73,13 +75,13 @@ test("The harness stays on the bay floor and inside the cavity", () => {
     const r = o.geometry.parameters.radius;
     assert.ok(p.y - r >= -0.284, `${o.name} above the floor`);
     assert.ok(Math.abs(p.x) + r <= 0.36, `${o.name} inside the side walls`);
-    assert.ok(p.y < 0.07 && p.z > -1.30 && p.z < 0.45);
+    assert.ok(p.y < 0.07 && p.z > -1.30 && p.z < 1.0);
   }
 });
 
 test("The harness clears every rebuilt part except where a branch meets its own unit", () => {
   const { harness } = build();
-  const ownUnit = { iem: "buildIem", "power-unit-1": "buildPowerUnits", "power-unit-2": "buildPowerUnits", battery: "buildBattery", radio: "buildFrontierRadio", "rde-1": "buildRotorDriveElectronics", "rde-2": "buildRotorDriveElectronics", "navigation-feb-imu": "buildNoseElectronics", "navigation-meb": "buildNoseElectronics", "starboard-down-camera": "buildSideCameras", "microscopic-camera": "buildSideCameras", "led-array": "buildSideCameras" };
+  const ownUnit = { iem: "buildIem", "power-unit-1": "buildPowerUnits", "power-unit-2": "buildPowerUnits", battery: "buildBattery", radio: "buildFrontierRadio", "rde-1": "buildRotorDriveElectronics", "rde-2": "buildRotorDriveElectronics", "navigation-feb-imu": "buildNoseElectronics", "navigation-meb": "buildNoseElectronics", "starboard-down-camera": "buildSideCameras", "microscopic-camera": "buildSideCameras", "led-array": "buildSideCameras", "twta-power-supply": "buildTwta", "antenna-gimbal-drive": "buildHgaGimbal", "circulation-fans": "buildFans" };
   const hits = [];
   for (const [unitName, builder] of Object.entries(units)) {
     const boxes = partBoxes(builder);

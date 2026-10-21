@@ -15,7 +15,7 @@ const onFloor = (r) => floorY + r + 0.004;   // on low standoffs
 const T = onFloor(0.012);
 const B = -0.27;   // branches' floor height: 4-5 mm above the floor and the units' mounting flanges
 export const mainHarnessAsset = Object.freeze({
-  revision: "main-harness-2026-10-21",
+  revision: "main-harness-2026-10-21b",
   trunk: Object.freeze({ radiusM: 0.012, points: Object.freeze([[0, T, -1.0], [0, T, -0.75], [0, T, -0.4], [0, T, -0.1], [0, T, 0.12], [-0.02, T, 0.27]].map(Object.freeze)) }),
   // [name, radius, points]: each branch starts on the trunk and ends at its unit.
   branches: Object.freeze([
@@ -30,9 +30,19 @@ export const mainHarnessAsset = Object.freeze({
     ["navigation-meb", 0.008, [[0, T, -1.0], [-0.12, B, -1.02], [-0.2, B, -1.14], [-0.2, -0.235, -1.262]]],
     // Lower cameras: to the inner ends of the camera modules' own wall pass-through cables. The
     // port down camera's pass-through is behind power unit 1 and gets no branch here.
-    ["starboard-down-camera", 0.005, [[0, T, 0.12], [0.2, B, 0.118], [0.33, B, 0.125], [0.345, -0.24, 0.15], [0.352, -0.208, 0.16]]],
+    ["starboard-down-camera", 0.005, [[0.058, B, 0.12], [0.2, B, 0.118], [0.33, B, 0.125], [0.345, -0.24, 0.15], [0.352, -0.208, 0.16]]],
     ["microscopic-camera", 0.005, [[-0.1, B, 0.281], [-0.3, B, 0.282], [-0.335, B, 0.29], [-0.341, B, 0.31], [-0.341, -0.255, 0.37], [-0.345, -0.21, 0.41], [-0.352, -0.185, 0.418]]],
     ["led-array", 0.004, [[-0.341, -0.255, 0.37], [-0.345, -0.258, 0.42], [-0.352, -0.259, 0.434]]],
+    // Second pass (October 21): bundles beside the trunk between neighbors, and runs up the walls
+    // and back past the battery, as the photo's wall runs and denser floor suggest [EST].
+    ["iem-to-power-unit-1", 0.008, [[-0.045, B, -0.355], [-0.05, B, -0.25], [-0.05, B, -0.05], [-0.06, B, 0.031]]],
+    ["power-unit-2-to-radio", 0.008, [[0.06, B, -0.29], [0.055, B, -0.15], [0.055, B, -0.015], [0.058, B, 0.12], [0.07, B, 0.172]]],
+    // Up the starboard wall just aft of power unit 2 to the TWTA power supply's cable end.
+    ["twta-power-supply", 0.0065, [[0.055, B, -0.015], [0.2, B, -0.013], [0.325, B, -0.012], [0.343, -0.258, -0.011], [0.348, -0.2, -0.011], [0.348, -0.1, -0.010], [0.347, -0.058, -0.010]]],
+    // Up the port wall forward of drive-electronics box 1 to the antenna gimbal drive's cable end.
+    ["antenna-gimbal-drive", 0.006, [[-0.08, B, -0.735], [-0.2, B, -0.745], [-0.325, B, -0.73], [-0.335, -0.2, -0.70], [-0.335, -0.05, -0.66], [-0.32, 0.03, -0.64], [-0.304, 0.055, -0.632]]],
+    // Back along the starboard wall in the gap beside the battery to the circulation fans.
+    ["circulation-fans", 0.006, [[-0.02, T, 0.27], [0.1, B, 0.283], [0.3, B, 0.283], [0.333, B, 0.292], [0.344, B, 0.33], [0.344, B, 0.55], [0.343, B, 0.80], [0.25, -0.24, 0.93], [0.15, -0.2, 0.99]]],
   ].map(([name, r, pts]) => Object.freeze({ name, radiusM: r, points: Object.freeze(pts.map(Object.freeze)) }))),
   clampSpacingM: 0.16,
 });

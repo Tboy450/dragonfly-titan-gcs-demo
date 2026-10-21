@@ -39,6 +39,21 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Main wiring harness, second pass (walls, fans, neighbors)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Extend the harness up the walls to the TWTA and gimbal and back to the fans"
+- **What changed:** `dist/main-harness.mjs` (revision `main-harness-2026-10-21b`) adds bundles
+  beside the trunk between neighboring units, a starboard-wall riser to the TWTA power supply's
+  cable end, a port-wall riser to the antenna gimbal drive's cable end under the deck, and a run
+  along the starboard wall beside the battery to the circulation fans, following the wall runs
+  in NASA/APL's September 2026 wiring photo.
+- **Assumptions:** routes [EST], as in the first pass.
+- **Files:** `dist/main-harness.mjs`, `tests/main-harness.test.mjs`,
+  `research/main-harness-2026-10-21/`, `INTERIOR-REALISM-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (426 pass); the risers meet the TWTA and gimbal
+  cable ends; clearance now also against the TWTA, gimbal and fans. Renders from three angles.
+- **Open / next:** attic harness, brace runs, more density, the port down camera.
+
 ### 2026-10-21: Main wiring harness, first pass (bay floor)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Lay the main wiring harness on the bay floor from the September wiring photo"

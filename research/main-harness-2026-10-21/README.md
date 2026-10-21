@@ -30,12 +30,24 @@ diagram, routes or which unit connects to which.
   implied. The drive-electronics blanks are Codex's "connector blanks only, no claimed route";
   the branches to them are likewise illustrative.
 
+## Second pass (October 21, revision `main-harness-2026-10-21b`)
+
+- Two bundles beside the trunk between neighbors: IEM to power unit 1 (port) and power unit 2
+  to the radio (starboard); the starboard camera branch now leaves from the latter.
+- A riser up the starboard wall, just aft of power unit 2, to the end of the TWTA power
+  supply's cable (Claude's TWTA module, October 14).
+- A riser up the port wall, forward of drive-electronics box 1, to the end of the antenna
+  gimbal drive's cable under the deck (Claude's gimbal module, October 14).
+- A run back along the starboard wall in the 2.6 cm gap beside the battery to the circulation
+  fans' front flange.
+- Tests now also check the two new risers meet those cable ends, and the clearance check covers
+  the TWTA, gimbal and fans. Renders: `pass2-*.png`.
+
 ## Not drawn yet
 
 - The photo's density: dozens of looping bundles. This pass draws the main trunks only.
-- Runs up the walls and brace, and the attic (DraMS, carousel) harness.
+- The diagonal brace runs and the attic (DraMS, carousel) harness; more of the photo's density.
 - The port down camera: its wall pass-through is behind power unit 1.
-- Under-deck units (TWTA harness exists in its own module; gimbal drive).
 
 ## Checks
 

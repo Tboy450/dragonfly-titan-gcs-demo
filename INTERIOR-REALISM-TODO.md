@@ -683,7 +683,8 @@ The owner notes that a lot of connecting equipment is still missing. Done so far
 waveguide and high-voltage umbilical; sample-transfer lines (#02); the warm and cold ducts
 (#17-19); METHAN fiber entry and EFIELD harness exits (#22); PSU/IEM face connectors.
 - [x] **Claude:** Main wiring harness, first pass (October 21): trunk down the bay floor's centerline and branches to the power units, IEM, battery, radio, drive electronics, navigation units and lower-camera pass-throughs, meeting the stubs the unit passes left; lacing and floor clamps; routes [EST]. [Notes](research/main-harness-2026-10-21/README.md).
-- [ ] Harness, next passes: the photo's density (dozens of looping bundles), runs up the walls and brace, the attic harness (DraMS, carousel), the port down camera (pass-through behind power unit 1).
+- [x] **Claude:** Harness, second pass (October 21): bundles beside the trunk (IEM to power unit 1, power unit 2 to radio), wall risers to the TWTA power-supply cable and the gimbal drive cable, and a starboard-wall run past the battery to the fans.
+- [ ] Harness, next passes: more of the photo's density (looping bundles), the diagonal brace runs, the attic harness (DraMS, carousel), the port down camera (pass-through behind power unit 1).
 - [ ] (Original note) Main wiring harness: NASA's September 2, 2026 photo shows dozens of silver cables
   running around and through the structure (saved for #03 in `research/nose-bulkhead-2026-10-19/`).
   Draw the main trunks between the PSUs, IEM, radio, instruments and arms, as photographed.
