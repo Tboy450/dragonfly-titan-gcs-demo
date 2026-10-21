@@ -39,6 +39,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Swarmfall camera assist (follow, alerts, edge-scroll, reset)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add camera follow, jump to alert, edge-scroll and view reset"
+- **What changed:** Checklist CTRL-05.
+  - **Follow · G** keeps the camera on the selected squads until you pan.
+  - **Alert · J** jumps to the newest alert (a lost drone, artillery or lightning marked, an
+    eruption), which also shows as a red ring on the minimap for 20 s.
+  - A mouse resting at the screen edge scrolls the view.
+  - **Home** returns to the starting view over the Hive beacon.
+  - Both buttons sit under the minimap. Follow and alert jumps also work with the free camera.
+- **Files:** `dist/invasion/camera-assist.mjs` (new), `main.mjs`, `index.html`, `invasion.css`,
+  `tests/invasion-camera-assist.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (450 pass). Browser checks:
+  - J with no alert says so, and J jumps to an alert.
+  - G refuses with no squad selected and follows once one is.
+  - Home resets the view.
+  - No console errors.
+  Edge scrolling isn't checked in the browser.
+
 ### 2026-10-21: Swarmfall Velm Frontier and the walled market town
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add Velm Frontier with the walled market town Brackenford"

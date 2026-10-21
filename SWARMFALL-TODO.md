@@ -309,10 +309,18 @@ complete solely because its assets download or its unit tests pass.
   landing placement; only Launch here purchases the previewed wave. **380 tests pass**;
   [evidence](research/swarmfall-pointer-controls-2026-10-19/README.md). Real browser/device
   acceptance remains open under TEST tasks; box selection and order queues remain CTRL-01/03.
-- [ ] **CTRL-05 (P1)** Camera: follow the selected squad, jump to the last alert, edge-scroll,
-  reset view.
+- [x] **CTRL-05 (P1) — Claude (October 21)** Camera: follow the selected squad, jump to the
+  last alert, edge-scroll, reset view (`camera-assist.mjs`).
+  - **Follow · G** tracks the selected squads until you pan.
+  - **Alert · J** jumps to the newest alert (a lost drone, artillery or lightning marked, an
+    eruption). The alert also shows as a red ring on the minimap for 20 s.
+  - A mouse at the screen edge scrolls, and **Home** returns to the starting view.
+  - Evidence: `tests/invasion-camera-assist.test.mjs`, plus browser checks of G, J and Home.
 - [ ] **CTRL-06 (P1)** Alerts with minimap pings and tap-to-jump: squad under attack, zone being
   retaken, hazard incoming, artillery marked.
+  - **Progress (Claude, October 21):** the newest alert (drone lost, artillery or lightning
+    marked, eruption) shows as a minimap ring, and J or the Alert button jumps there. Still
+    open: a zone being retaken, tappable alert toasts, and a list of recent alerts.
 - [ ] **CTRL-07 (P2)** Formation choices (spread, tight, line) and stances (aggressive, hold
   fire for a quiet takeover).
 - [x] **CTRL-08 (P2) — Codex, October 20; implementation and automated checks** Minimap

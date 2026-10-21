@@ -143,6 +143,7 @@ same split as the simulator: plain modules with tests, plus a page layer.
 | `invasion/models.mjs` | Procedural drone, defender, structure and building geometry (vertex colors, merged for instancing) and the compacted Dragonfly research model |
 | `invasion/scene.mjs` | three.js view: planet ground/sky/liquid/decor (Titan via `createTitanTerrain`), zone rings, instanced units, shots, explosions, strike markers, weather particles, pods via `createArrivalHardware` + `edlStateAt` |
 | `invasion/galaxy.mjs` | The campaign galaxy drawing |
+| `invasion/camera-assist.mjs` | Follow the selected squads' center, the newest alert to jump to, edge scrolling and the starting view |
 | `invasion/free-camera.mjs` | The free camera's movement: start from and return to the orbit camera, fly with limits (ground, roofs, ceiling, map edge, no flying into buildings) |
 | `invasion/main.mjs` | Screens, saving, the mission loop, camera and touch controls, selection, orders, drop panel, HUD, minimap, debrief |
 | `invasion/index.html`, `invasion/invasion.css` | Markup and styles (phone layout in the last section) |

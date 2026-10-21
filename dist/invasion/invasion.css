@@ -116,6 +116,9 @@ a { color: var(--swarm); }
 #minimap-mode[aria-pressed="true"] { border-color: var(--swarm); color: var(--swarm); }
 #free-camera { width: 100%; min-height: 36px; margin-top: 4px; padding: 4px 3px; font-size: 11px; }
 #free-camera[aria-pressed="true"] { border-color: var(--swarm); color: var(--swarm); }
+.camera-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 4px; }
+.camera-buttons button { min-height: 34px; padding: 3px 2px; font-size: 11px; }
+#follow-button[aria-pressed="true"] { border-color: var(--swarm); color: var(--swarm); }
 .free-controls { position: absolute; left: 10px; bottom: 72px; z-index: 8; display: grid; grid-template-columns: repeat(2, 48px); gap: 6px; }
 .free-controls[hidden] { display: none; }
 .free-controls button { min-height: 48px; padding: 0; font-size: 18px; touch-action: none; opacity: 0.9; }

@@ -21,6 +21,7 @@ import { missionCheckpoint, restoreMissionCheckpoint, checkpointPlanet } from ".
 import { pointerIntent, exceedsTapSlop } from './pointer-controls.mjs?v=dev';
 import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
 import { enterFree, exitFree, placeFree, moveFree, freeLimits } from "./free-camera.mjs?v=dev";
+import { squadCenter, latestAlert, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
 import { minimapWorldPoint } from './minimap-controls.mjs?v=dev';
 import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecoveryBackups } from './save-recovery.mjs?v=dev';
 
@@ -322,12 +323,9 @@ function startMission(planet, checkpoint = null) {
     missionId: globalThis.crypto?.randomUUID?.() || `attempt-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`,
   });
   scene.load(planet, terrain, battle);
-  const home = battle.zones.find(z => z.kind === "beachhead");
-  const away = { x: home.x - battle.map.centerX, z: home.z - battle.map.centerZ };
-  const length = Math.hypot(away.x, away.z) || 1;
   mission = {
-    planet, battle, terrain,
-    cam: restored?.cam || { focus: { x: home.x - away.x / length * 70, z: home.z - away.z / length * 70 }, distance: 230, yaw: Math.atan2(away.x, away.z), pitch: 0.9 },
+    planet, battle, terrain, follow: false, lastAlert: null, mouse: null,
+    cam: restored?.cam || homeView(battle),
     selected: new Set(restored?.command.selected || []), speed: 1, paused: !!restored,
     payload: restored?.command.payload ?? defaultPayload(battle), placing: false, dropPoint: null, dropPreview: null, dropPanelOpen: false,
     cleanView: false, minimapOrders: false, minimapPing: null, phoneHudCollapsed: false, freeCam: null, freeInput: { up: 0, look: 0 },
@@ -344,6 +342,7 @@ function startMission(planet, checkpoint = null) {
   clampCamera();
   setCleanView(false);
   updateFreeCameraUi();
+  updateFollowUi();
   $("pause-button").textContent = mission.paused ? "Resume" : "Pause";
   $("speed-button").textContent = "1×";
   show("mission");
@@ -443,7 +442,54 @@ for (const button of document.querySelectorAll("#free-controls [data-free]")) {
   for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) button.addEventListener(type, release);
 }
 
+// ---- Camera assist (camera-assist.mjs): follow squads, jump to alerts, edge-scroll, reset ----
+function updateFollowUi() {
+  $("follow-button").setAttribute("aria-pressed", String(!!mission?.follow));
+}
+function setFollow(enabled) {
+  if (!mission) return;
+  if (enabled && !mission.selected.size) { toast("Select a squad to follow.", "info"); enabled = false; }
+  mission.follow = enabled;
+  updateFollowUi();
+}
+function lookAt(x, z) {
+  if (mission.freeCam) placeFree(mission.freeCam, x, z, mission.freeCam.y, freeWorld());
+  else { mission.cam.focus = { x, z }; clampCamera(); }
+}
+function jumpToAlert() {
+  const alert = mission?.lastAlert;
+  if (!alert) { toast("No alerts yet.", "info"); return; }
+  setFollow(false);
+  lookAt(alert.x, alert.z);
+  mission.minimapPing = { x: alert.x, z: alert.z, at: performance.now() };
+}
+function resetView() {
+  setFreeCamera(false);
+  setFollow(false);
+  mission.cam = homeView(mission.battle);
+  clampCamera();
+}
+// Each frame: follow the selected squads, and scroll when a mouse rests at the screen edge.
+function assistCamera(dt) {
+  if (mission.follow && !mission.freeCam) {
+    const center = squadCenter(mission.battle.units, mission.selected), cam = mission.cam;
+    if (center) {
+      const k = Math.min(1, dt * 3);
+      cam.focus = { x: cam.focus.x + (center.x - cam.focus.x) * k, z: cam.focus.z + (center.z - cam.focus.z) * k };
+      clampCamera();
+    }
+  }
+  const mouse = mission.mouse;
+  if (mouse && !gesture && document.hasFocus()) {
+    const { dx, dy } = edgeScroll(mouse.x, mouse.y, overlay.clientWidth, overlay.clientHeight);
+    if (dx || dy) pan(dx * 700 * dt, dy * 700 * dt);
+  }
+}
+$("follow-button").addEventListener("click", () => setFollow(!mission?.follow));
+$("alert-button").addEventListener("click", jumpToAlert);
+
 function pan(dx, dy) {
+  if (mission.follow) setFollow(false);
   if (mission.freeCam) {
     const k = freeScale();
     nudgeFree(dy * k, -dx * k, 0);
@@ -512,6 +558,10 @@ overlay.addEventListener("pointerdown", (event) => {
   }
 });
 overlay.addEventListener("pointermove", (event) => {
+  if (event.pointerType === "mouse" && mission) {
+    const rect = overlay.getBoundingClientRect();
+    mission.mouse = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+  }
   if (!pointers.has(event.pointerId)) return;
   if (!battlefieldActive()) { resetPointers(); return; }
   pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
@@ -562,6 +612,7 @@ overlay.addEventListener("pointerup", endPointer);
 overlay.addEventListener("pointercancel", endPointer);
 overlay.addEventListener("lostpointercapture", (event) => { if (pointers.has(event.pointerId)) resetPointers(); });
 overlay.addEventListener("contextmenu", (event) => event.preventDefault());
+overlay.addEventListener("pointerleave", () => { if (mission) mission.mouse = null; });
 overlay.addEventListener("wheel", (event) => {
   if (!battlefieldActive()) return;
   event.preventDefault();
@@ -812,6 +863,9 @@ window.addEventListener("keydown", (event) => {
   const key = event.key.toLowerCase();
   if (key === "v" && !event.repeat) { setCleanView(!mission.cleanView); event.preventDefault(); return; }
   if (key === "c" && !event.repeat) { setFreeCamera(!mission.freeCam); event.preventDefault(); return; }
+  if (key === "g" && !event.repeat) { setFollow(!mission.follow); return; }
+  if (key === "j" && !event.repeat) { jumpToAlert(); return; }
+  if (key === "home") { resetView(); event.preventDefault(); return; }
   if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
   if (key === "escape") { resetPointers(); setCleanView(false); cancelPlacement(); closeDropPanel(); return; }
   if (key === "b") { $("drop-panel").hidden ? openDropPanel() : closeDropPanel(); return; }
@@ -1094,6 +1148,11 @@ function drawMinimap() {
   ctx.lineTo(fx + Math.sin(yaw) * 6 - Math.cos(yaw) * 6, fz + Math.cos(yaw) * 6 + Math.sin(yaw) * 6);
   ctx.closePath();
   ctx.stroke();
+  // The newest alert (camera-assist.mjs) for 20 s: a red ring; J or the Alert button jumps there.
+  if (mission.lastAlert && b.time - mission.lastAlert.at < 20) {
+    ctx.strokeStyle = "#ff4a3a"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(sx(mission.lastAlert.x), sz(mission.lastAlert.z), 6, 0, Math.PI * 2); ctx.stroke();
+  }
   if (mission.minimapPing) {
     const elapsed = performance.now() - mission.minimapPing.at;
     if (elapsed < 900) {
@@ -1294,7 +1353,9 @@ function tick(now) {
   const b = mission.battle;
   if (!mission.paused) for (let i = 0; i < mission.speed; i += 1) stepBattle(b, dt);
   keyboardCamera(dt);
+  assistCamera(dt);
   const events = b.events.splice(0);
+  mission.lastAlert = latestAlert(mission.lastAlert, events, b);
   handleEvents(events);
   offerVictoryChoice();
   if (mission.freeCam) syncFreeFocus();
