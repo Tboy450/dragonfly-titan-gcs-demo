@@ -1,0 +1,112 @@
+{
+  "status": "passed",
+  "build": "6189cd8",
+  "checks": [
+    {
+      "subassembly": "",
+      "width": 1440,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "",
+      "width": 1440,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "",
+      "width": 390,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "",
+      "width": 390,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "",
+      "width": 360,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "",
+      "width": 360,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "fin-root-rtd-element",
+      "width": 1440,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "fin-root-rtd-element",
+      "width": 1440,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "fin-root-rtd-element",
+      "width": 390,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "fin-root-rtd-element",
+      "width": 390,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "fin-root-rtd-element",
+      "width": 360,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "fin-root-rtd-element",
+      "width": 360,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "fin-root-rtd-installation",
+      "width": 1440,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "fin-root-rtd-installation",
+      "width": 1440,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "fin-root-rtd-installation",
+      "width": 390,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "fin-root-rtd-installation",
+      "width": 390,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "fin-root-rtd-installation",
+      "width": 360,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "fin-root-rtd-installation",
+      "width": 360,
+      "layer": "thermal"
+    }
+  ],
+  "errors": [],
+  "failed": [],
+  "loaded": [
+    "https://tboy450.github.io/dragonfly-titan-gcs-demo/mmrtg-measurement.mjs?v=6189cd8",
+    "https://tboy450.github.io/dragonfly-titan-gcs-demo/mmrtg-measurement.mjs?v=6189cd8"
+  ],
+  "links": [
+    "https://tfaws.nasa.gov/wp-content/uploads/TFAWS23-AT-14-Presentation.pdf",
+    "https://science.nasa.gov/wp-content/uploads/2024/02/mmrtg-factsheet-updated-5-18-20-1.pdf",
+    "https://assets.omega.com/pdf/test-and-measurement-equipment/temperature/sensors/rtds/F1500_F2000_F4000.pdf",
+    "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php"
+  ],
+  "sensorMaskRestore": true,
+  "macroFocus": true,
+  "coverHideRestore": true,
+  "pilotReturn": true
+}

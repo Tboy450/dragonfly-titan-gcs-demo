@@ -52,8 +52,25 @@ generator frame. Other source-based parts remain installed in their existing pos
 
 ## Next
 
+Published release **6189cd8**, recovery tag and both branches pushed. Pages39639698393
+succeeded. Actual public Edge verification passed18 desktop/mobile Internal/Thermal and
+subassembly cases, independent masks/restore, source links, count/revision/module stamp,
+battery-cover restoration and Pilot return. No page/network failures or horizontal overflow;
+screenshots/JSON in `live-6189cd8/`. Local preview server stopped. Verification-only follow-up
+uses `[skip ci]`; deployed app code is unchanged and remains the verified6189cd8 build.
+
 **MMRTG body** next, then **first structural side wall**. Do not restart the completed sensors.
 Use real generator photographs for appearance and NASA64 cm tip-to-tip /66 cm length for
 scale; current core radius, fin thickness/profile and end features are still provisional.
 Recheck21 placement/contact when that envelope changes. The detailed connections/construction/
 views/UI roadmap remains in `INTERIOR-REALISM-TODO.md`;24 initial passes do not close it.
+
+Bounded next-pass leads (located during publication, not yet visually extracted):
+[NASA Mars2020 MMRTG hardware photo page](https://science.nasa.gov/photojournal/mars-2020s-mmrtg/)
+for real exterior appearance; [Cataldo/Bennett NASA report](https://ntrs.nasa.gov/api/citations/20120000731/downloads/20120000731.pdf)
+for historical construction/cutaway context. Inspect/save credited source images before
+modeling. Existing NASA fact-sheet pages already establish64 cm fin-tip diameter and66 cm
+length. Review current eight rectangular fins, housing radius, end covers, mounting collar
+and visible interfaces as one generator-body pass; keep Dragonfly-specific gas ducting and
+the canted bulkhead fit distinct from Mars installation details. Do not add internal fuel
+or thermoelectric geometry from a cutaway during the exterior-body pass.

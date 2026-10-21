@@ -39,6 +39,17 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Record fin-root sensor public acceptance
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record fin-root public acceptance [skip ci]
+- **Checks:** Release6189cd8/tag pushed; Pages39639698393 succeeded. Public Edge18
+  desktop/mobile layer/subassembly cases, masks/restore, source/count/revision/module stamp,
+  battery covers and Pilot return pass with no page/network failures or overflow. Screenshots
+  and JSON saved in the part21 research folder. Local444-test record retained; preview stopped.
+- **Handoff:** All24 initial numbered passes complete; generator body and first wall next.
+  Source leads recorded for generator photos/cutaway. Receipt-only commit skips another
+  identical deployment; live app remains verified6189cd8. No app/game/test files changed.
+
 ### 2026-10-21: Complete fin-root RTD example and initial numbered parts
 - **Signed:** Codex (OpenAI)
 - **Commit:** Add reference-based fin-root RTD and close initial part list

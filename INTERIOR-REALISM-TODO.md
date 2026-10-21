@@ -38,6 +38,10 @@ Current Part21 closeout:444 tests pass,18 local browser viewport/layer/subassemb
 four orbit angles, independent masks and Pilot return, raw macro/full-installation pixel
 checks and no numbered-neighbor intersections. Generator/battery/part20 manifest unchanged.
 Photo/drawing/illustration/model comparison archived. Next: MMRTG body, then first wall panel.
+Release6189cd8/tag pushed; Pages39639698393 succeeded. Public Edge18 cases, source/count/
+revision/module stamp, masks/restore, covers and Pilot return passed with no page/network
+failures or overflow. Receipt in `research/fin-root-sensor-2026-10-21/live-6189cd8/`.
+Preview server stopped; NASA generator photo/cutaway leads recorded for the next body pass.
 
 Historical Part20 closeout:438 tests passed;18 real-Edge Internal/Thermal/selector cases at1440/390/360px,
 four orbit angles, independent masks/restore and Pilot return passed. Installed-frame clearance
