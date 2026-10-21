@@ -43,4 +43,24 @@ export const moduleWorlds = {
     },
     load: () => import("./titan.mjs?v=dev"),
   },
+  oldtown: {
+    info: {
+      title: "Walled market town", span: "Hill town, castle, river and farms",
+      description: "A fortified hill town grown from Kenney's fantasy parts: timber-and-stone houses with varied roofs, a market square of stalls and carts, a castle keep, a windmill and a watermill with turning sails and wheel, and farmland outside the walls. Try Dusk.",
+      credit: "Walls, windows, doors, eaves, banners, stalls, carts, fountain, lanterns, trees, hedges, rocks, windmill sails and water wheel from Kenney's Fantasy Town Kit 2.0 (CC0). Town plan, roofs, terrain, town walls, castle, mills and fields are original procedural art by Claude.",
+      sky: [0x5d8fbf, 0xdbe2d2], ground: 0x5f7d4a, sun: 0xfff0d2, fog: 0.00022,
+      views: { vista: [[300, 170, 360], [0, 18, -30]], district: [[95, 48, 120], [0, 14, 0]], street: [[3, 12.5, 120], [0, 15, 30]] },
+    },
+    load: () => import("./oldtown.mjs?v=dev"),
+  },
+  forge: {
+    info: {
+      title: "Forge city", span: "Industrial city over lava rivers",
+      description: "Foundries, smoke stacks, blast furnaces and cooling towers on basalt terraces between glowing lava channels, crossed by heavy bridges and an ore railway, under an ash-red sky and smoking volcanoes. A setting for the volcanic world Ashfall. Try Dusk.",
+      credit: "Original procedural architecture, lava, smoke, embers and terrain by Claude. Visual study; dimensions invented.",
+      sky: [0x2a0f0a, 0x8a3a20], ground: 0x2b2523, sun: 0xffb27a, fog: 0.00026,
+      views: { vista: [[900, 460, 980], [0, 40, 0]], district: [[240, 120, 280], [0, 30, 0]], street: [[30, 26, 120], [0, 34, 0]] },
+    },
+    load: () => import("./forge.mjs?v=dev"),
+  },
 };

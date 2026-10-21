@@ -551,9 +551,9 @@ and other threats on the planet):
   - **Owner decision on the orbital ring:** it does not fit the story yet and is too small for a
     battle map. Options raised: the Hive's own mothership shown between missions (no rescale), or a
     late-campaign target such as Aurex's habitat, rebuilt at 10-15 km with a ~1 km playable arc.
-  - **Walled market town** from the full Kenney Fantasy Town Kit (copied to
-    `assets/fantasy-kit/`, all 167 models; 1 m grid, wall panels sit on a cell's +x side) and a
-    **forge city** over lava. Neither is built; both were removed from the menu until they are.
+  - Done October 20 (later): **walled market town** (about 400 houses from Kenney wall panels with
+    drawn roofs, walls, castle, turning windmill sails and water wheel) and **forge city** (lava,
+    foundries, stacks with smoke, cooling towers, ore railway, volcanoes).
   - Measure Light mode on a phone (Metropolis is about 4 M triangles on High); add distance-based
     detail if needed. Let kit worlds join the destruction study (they currently opt out).
 

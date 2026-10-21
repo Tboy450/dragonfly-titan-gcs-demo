@@ -39,6 +39,21 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-20: Market town and forge city join the lab
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add the walled market town and forge city to the lab"
+- **What changed:** Two more kit-built worlds. **Walled market town:** about 400 houses built cell by
+  cell from Kenney Fantasy Town Kit wall panels (stone ground floors, timber upper floors, street
+  doors, eaves, banners) with drawn tiled gable roofs and lamplit interiors at dusk, a market
+  square with stalls, carts, fountain and lanterns, town walls with towers and a gate, a castle on
+  its hill, a windmill and a watermill with Kenney's sails and wheel turning, a river, bridge,
+  fields, trees and haystacks. **Forge city:** basalt terraces and flowing lava, about 600
+  foundries, stacks, blast furnaces and cooling towers, smoke and embers, bridges, an ore railway
+  and volcanoes (a setting for Ashfall).
+- **Checks:** both load in the browser with no errors (town about 1.5 M triangles, forge 0.2 M);
+  every module parses; game and page tests pass.
+- **Open / next:** VIS-20 (the ring decision; phone/Light-mode measurements; destruction support).
+
 ### 2026-10-20: Arm shoulders drawn as the machined fittings in the flight-frame photo
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Draw the arm shoulders as the machined hexagonal fittings from the frame photo"
