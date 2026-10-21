@@ -1,0 +1,113 @@
+{
+  "status": "passed",
+  "build": "dde1292",
+  "checks": [
+    {
+      "subassembly": "",
+      "width": 1440,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "",
+      "width": 1440,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "",
+      "width": 390,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "",
+      "width": 390,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "",
+      "width": 360,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "",
+      "width": 360,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "battery-sensor-head",
+      "width": 1440,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "battery-sensor-head",
+      "width": 1440,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "battery-sensor-head",
+      "width": 390,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "battery-sensor-head",
+      "width": 390,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "battery-sensor-head",
+      "width": 360,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "battery-sensor-head",
+      "width": 360,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "battery-sensor-installation",
+      "width": 1440,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "battery-sensor-installation",
+      "width": 1440,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "battery-sensor-installation",
+      "width": 390,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "battery-sensor-installation",
+      "width": 390,
+      "layer": "thermal"
+    },
+    {
+      "subassembly": "battery-sensor-installation",
+      "width": 360,
+      "layer": "internal"
+    },
+    {
+      "subassembly": "battery-sensor-installation",
+      "width": 360,
+      "layer": "thermal"
+    }
+  ],
+  "errors": [],
+  "failed": [],
+  "loaded": [
+    "https://tboy450.github.io/dragonfly-titan-gcs-demo/battery-measurement.mjs?v=dde1292",
+    "https://tboy450.github.io/dragonfly-titan-gcs-demo/battery-measurement.mjs?v=dde1292"
+  ],
+  "links": [
+    "https://tfaws.nasa.gov/wp-content/uploads/TFAWS23-AT-14-Presentation.pdf",
+    "https://www.allelcoelec.com/datasheets.4a/11029759-00.pdf",
+    "https://www.cdiweb.com/datasheets/te/te-44900-series.pdf",
+    "https://ttu-ir.tdl.org/items/a6b6bdc1-a09e-43a2-bc62-dbbea2e80660",
+    "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php"
+  ],
+  "sensorMaskRestore": true,
+  "macroFocus": true,
+  "coverHideRestore": true,
+  "pilotReturn": true
+}

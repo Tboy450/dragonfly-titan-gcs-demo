@@ -8,10 +8,10 @@ const assert = require('node:assert/strict'), fs = require('node:fs'), path = re
     const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' }), errors = [], checks = [];
     page.on('pageerror', e => errors.push(e.message));
     await page.addInitScript(() => localStorage.setItem('dragonfly-arrival-seen', '1'));
-    const base = process.env.DRAGONFLY_URL || 'http://127.0.0.1:4195/';
+    // Local-only renderer introspection. Use verify-live.cjs for production UI checks.
+    const base = 'http://127.0.0.1:4195/';
     await page.goto(base); await page.waitForFunction(() => window.dragonflyRenderer);
     const build = await page.locator('#build-label').textContent();
-    if (process.env.DRAGONFLY_BUILD) assert.ok(build.includes(process.env.DRAGONFLY_BUILD), `expected published build ${process.env.DRAGONFLY_BUILD}, got ${build}`);
     assert.equal(await page.evaluate(() => window.dragonflyRenderer.subsystems['battery-sensor'].userData.assetRevision), 'battery-sensor-family-estimate-2026-10-21');
     await page.evaluate(() => Object.assign(window.dragonflyState, { view: 'mission', hold: true, vehicleModel: 'research' }));
     await page.locator('[data-layer="internal"]').click(); await page.locator('#inspection-part').selectOption('battery-sensor');

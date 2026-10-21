@@ -39,6 +39,18 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Verify public battery sensor and record efficient continuation
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record battery sensor public acceptance [skip ci]
+- **Checks:** Release83ff28a/tag pushed; Pages39636392679 succeeded. Concurrent game build
+  dde1292 contains the unchanged sensor release. Public Edge18 desktop/mobile Internal/Thermal
+  and subassembly cases, independent masks/restore, source links/count/module revision, covers
+  and Pilot return pass with no overflow/page/network errors. Saved `live-dde1292/` receipt.
+  Local438-test record retained; no additional simulator changes. Preview server stopped.
+- **Handoff:**21 next, then generator and wall layers. Owner asks for batched steps and fewer
+  repeated audits. Separate local debug helper from production UI verification. Receipt and
+  research-helper-only commit skips another identical deployment; verified live builddde1292.
+
 ### 2026-10-21: Swarmfall Ashfall Frontier and the forge city style
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add Ashfall Frontier with the forge city Forgeholm"

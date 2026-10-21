@@ -36,7 +36,16 @@ Part20 closeout:438 tests pass;18 real-Edge Internal/Thermal/selector cases at14
 four orbit angles, independent masks/restore and Pilot return passed. Installed-frame clearance
 check has no overlaps with other numbered parts. Battery and21 mesh manifests match the
 pre-pass baseline. Source photographs/drawing/CAD/model comparison and both finish drafts
-saved. Public release receipt will be recorded in the part20 research folder after deployment.
+saved. Release83ff28a/tag pushed; Pages39636392679 succeeded. Current public builddde1292
+includes the concurrent game release and passes18 production browser cases plus masks,
+sources, module stamp, restoration and Pilot return; receipt in the part20 research folder.
+Preview server stopped. Next remains21; no need to rerun20 research or restore its annotation.
+
+Owner's efficiency direction: batch independent reads and related implementation steps;
+reuse saved sources and helpers, run focused checks during development and a full suite at
+the completed change boundary. Repeat checks only for changed behavior or unresolved faults.
+Finish/record one part, then proceed when appropriate; do not equate more reasoning effort
+with a need to re-audit settled details or perform another identical documentation deployment.
 
 ## Previous Checkpoint: 22 Initial Passes; RDE Connector Service Loops
 

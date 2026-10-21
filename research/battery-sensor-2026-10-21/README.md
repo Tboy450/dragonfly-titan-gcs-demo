@@ -61,6 +61,19 @@ CAD in the process comparison is the existing 2022 test-module layout, not a sen
 
 ## Continuation
 
+Publication: release83ff28a and recovery tag pushed to GitHub; Pages39636392679 succeeded.
+Concurrent game releasedde1292 contains83ff28a and leaves the simulator modules unchanged.
+Public Edge verification on **dde1292** passed18 viewport/layer/subassembly cases, source links,
+count/revision/module stamp, three independent mask restores, battery covers and Pilot return,
+with no page/network failures or horizontal overflow. Screenshots and JSON are in
+`live-dde1292/`; `verify-live.cjs` uses production controls. Local renderer introspection is
+intentionally unavailable on the public site; use the separate public script, not the local
+helper. The first public attempts detected that distinction and a superseded build stamp;
+neither required a simulator change. The local preview server is stopped.
+
+Verification-only follow-up uses `[skip ci]`: no deployed app/test files changed, so another
+identical Pages rebuild is unnecessary. Main's public app remains the verified dde1292 build.
+
 Next: **21 fin-root sensor**, then **MMRTG body**, then **first structural wall**. Finish each
 with its own source/photo/dimension review, archive, installed clearance checks and comparison.
 Do not restart20 or previously completed parts to inflate completion counts.
