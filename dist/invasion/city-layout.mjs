@@ -186,5 +186,30 @@ export function cityQueries(layout) {
       for (const b of near(x, z, radius)) if (inside(b, x, z, radius)) return false;
       return true;
     },
+    // True when a building stands in the way of a straight line between two points; heights are
+    // meters above the city ground. Each footprint is a box from the ground to the building's top.
+    lineBlocked(ax, az, ay, bx, bz, by) {
+      const { minX, maxX, minZ, maxZ } = layout.bounds;
+      if (Math.max(ax, bx) < minX || Math.min(ax, bx) > maxX || Math.max(az, bz) < minZ || Math.min(az, bz) > maxZ) return false;
+      const dx = bx - ax, dz = bz - az, seen = new Set();
+      const i0 = Math.floor(Math.min(ax, bx) / cell), i1 = Math.floor(Math.max(ax, bx) / cell);
+      const j0 = Math.floor(Math.min(az, bz) / cell), j1 = Math.floor(Math.max(az, bz) / cell);
+      for (let i = i0; i <= i1; i += 1) for (let j = j0; j <= j1; j += 1) {
+        for (const b of buckets.get(`${i},${j}`) || []) {
+          if (seen.has(b)) continue;
+          seen.add(b);
+          // Where the line crosses the footprint (slab test), then its lowest height there.
+          let t0 = 0, t1 = 1;
+          for (const [a, d, lo, hi] of [[ax, dx, b.x - b.w / 2, b.x + b.w / 2], [az, dz, b.z - b.d / 2, b.z + b.d / 2]]) {
+            if (Math.abs(d) < 1e-9) { if (a < lo || a > hi) t1 = -1; continue; }
+            const ta = (lo - a) / d, tb = (hi - a) / d;
+            t0 = Math.max(t0, Math.min(ta, tb)); t1 = Math.min(t1, Math.max(ta, tb));
+          }
+          if (t0 > t1) continue;
+          if (Math.min(ay + (by - ay) * t0, ay + (by - ay) * t1) < b.height) return true;
+        }
+      }
+      return false;
+    },
   };
 }

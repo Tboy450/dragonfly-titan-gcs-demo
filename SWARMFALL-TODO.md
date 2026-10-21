@@ -528,7 +528,7 @@ and other threats on the planet):
       Corvan map resume on that map.
     - Tests in `tests/invasion-city.test.mjs`.
     Still open:
-    - Line of sight: shots pass through buildings.
+    - ~~Line of sight: shots pass through buildings.~~ Done October 21 (see COMBAT-03).
     - Real routes for ground troops (FIX-03).
     - Building damage and destruction.
     - District culling and async loading. Corvan Frontier draws about 250 k triangles at the
@@ -912,6 +912,18 @@ These extend FIX-02/FIX-03; new cities cannot rely on decorative geometry for ga
 - [ ] **COMBAT-03 (P1)** Use consistent world heights for weapon range and targeting. Add
   line of sight/cover against shared geometry and distinguish air, ground and structures.
   Explain a blocked shot; test street-to-roof and under-bridge cases before city release.
+  - **Progress (Claude, October 21):** Line of sight and cover for city buildings:
+    - `cityQueries().lineBlocked` tests a line against every building box (city-layout.mjs).
+      `terrain.lineBlocked` turns each unit's height above its own ground into city heights.
+    - Units fire from different heights: defenses from a 4 m mount, troops from 1.6 m, flying
+      units from their altitude.
+    - Direct fire needs a clear line; artillery stays indirect.
+    - Drones on an attack order, and troops chasing drones, close in when a building is in
+      the way.
+    - Tested: cover, getting hit in the open, an attack order finding a clear line, and
+      down-the-street and over-the-roof lines. A 56-drone city fight costs under 1 ms per step.
+    - Still open: showing the player why a shot is blocked, bridges and multi-level surfaces,
+      and terrain (hills) blocking sight.
 - [ ] **COMBAT-04 (P2)** Make squad intent legible: target/retarget cue, movement destination,
   attack range and stop/disengage feedback. Show jammer/shield coverage and why a capture or
   weapon is blocked. Coordinate FIX-05, CTRL-06 and CTRL-07 rather than duplicating controls.

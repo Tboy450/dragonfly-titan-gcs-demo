@@ -61,7 +61,7 @@ export function createBattle(planet, options = {}) {
     canDropAt: terrain.canDropAt,
     // Cities (city-layout.mjs): where troops can walk and how high roofs rise above the ground.
     walkable: terrain.walkable || terrain.isLand,
-    roofAt: terrain.roofAt,
+    roofAt: terrain.roofAt, lineBlocked: terrain.lineBlocked,
   };
   placeZones(b, planet, terrain);
   terrain.setPads?.(b.zones);
@@ -375,6 +375,12 @@ function buildGrid(units, cell) {
   return grid;
 }
 
+// Weapons fire from about this high above the ground: defenses from their mount, troops from the
+// shoulder, flying units from where they fly. Buildings between two units block direct fire
+// (b.lineBlocked, from a city); artillery strikes are indirect and are not affected.
+const eyeHeight = (unit) => unit.alt + (unit.structure ? 4 : unit.side === "native" && !unit.alt ? 1.6 : 0.6);
+const clearShot = (b, unit, other) => !b.lineBlocked || !b.lineBlocked(unit.x, unit.z, eyeHeight(unit), other.x, other.z, eyeHeight(other));
+
 function nearestEnemy(unit, enemies, reach) {
   let best = null, bestD = reach * reach;
   for (const other of enemies) {
@@ -410,7 +416,8 @@ function moveUnits(b, dt, auras, swarm, natives) {
           order.x = target.x; order.z = target.z;
           const reach = Math.max(6, reachFor(def, target) * effects.range * 0.8);
           destination = { x: target.x, z: target.z, radius: reach };
-          if (Math.sqrt(dist2(unit, target)) > reach) { tx = target.x + unit.slot.dx; tz = target.z + unit.slot.dz; arrive = 2; }
+          // Out of reach, or a building in the way: close in (drones climb over roofs on the way).
+          if (Math.sqrt(dist2(unit, target)) > reach || !clearShot(b, unit, target)) { tx = target.x + unit.slot.dx; tz = target.z + unit.slot.dz; arrive = 2; }
         } else {
           unit.order = { kind: "hold", x: unit.x, z: unit.z };
           unit.slot = { dx: 0, dz: 0 };
@@ -431,7 +438,7 @@ function moveUnits(b, dt, auras, swarm, natives) {
       const leashOk = !home || unit.raid || !target || Math.sqrt(dist2(home, target)) < 280;
       if (target && leashOk) {
         unit.target = target.id;
-        if (Math.sqrt(dist2(unit, target)) > def.range * 0.85) { tx = target.x; tz = target.z; arrive = 2; }
+        if (Math.sqrt(dist2(unit, target)) > def.range * 0.85 || !clearShot(b, unit, target)) { tx = target.x; tz = target.z; arrive = 2; }
       } else if (unit.raid) {
         const zone = zoneById(b, unit.raid);
         tx = zone.x + unit.slot.dx; tz = zone.z + unit.slot.dz;
@@ -522,7 +529,7 @@ function fight(b, dt, auras, swarm, natives) {
     if (!def.weapons.length || stunned(b, unit)) continue;
     const enemies = unit.side === "swarm" ? natives : swarm;
     const rangeScale = unit.side === "swarm" ? effects.range : 1;
-    const armed = (other) => other?.alive && other.side !== unit.side && weaponFor(def, other, Math.sqrt(dist2(unit, other)), rangeScale);
+    const armed = (other) => other?.alive && other.side !== unit.side && weaponFor(def, other, Math.sqrt(dist2(unit, other)), rangeScale) && clearShot(b, unit, other);
     let target = null;
     if (unit.side === "swarm" && unit.order?.kind === "attack") {
       const ordered = unitById(b, unit.order.target);

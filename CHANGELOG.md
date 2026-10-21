@@ -39,6 +39,31 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-21: Swarmfall city buildings block line of sight
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Make city buildings block line of sight and give cover"
+- **What changed:** Shots used to pass straight through skyscrapers and foundry halls. Now:
+  - Direct fire needs a clear line between the shooter's weapon height and the target.
+    Defenses fire from a 4 m mount, troops from 1.6 m, and drones and interceptors from
+    where they fly.
+  - Buildings in between give cover. A drone behind a tower is safe from a square's flak gun
+    and is hit once it moves into the open.
+  - Drones on an attack order, and troops chasing drones, close in when a building is in the
+    way. Drones climb over roofs on the way, as before.
+  - Artillery strikes stay indirect.
+  - Saves are unchanged; the check is rebuilt from the city like the other terrain helpers.
+- **Assumptions:** Weapon mount heights are invented [EST]. Buildings are solid boxes up to
+  their top tier; terrain (hills) doesn't block sight yet.
+- **Files:** `dist/invasion/city-layout.mjs` (`lineBlocked`), `planet-terrain.mjs`,
+  `battle.mjs`, `mission-save.mjs`, `tests/invasion-city.test.mjs`,
+  `tests/invasion-mission-save.test.mjs`, `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (442 pass). New test: cover, a hit in the open,
+  an attack order finding a clear line, and lines down a street and over a roof. A 56-drone
+  fight inside each frontier city runs under 1 ms per step. The game page loads with no
+  console errors.
+- **Open / next:** Show the player when a shot is blocked; terrain blocking sight; bridges and
+  multi-level surfaces (COMBAT-03).
+
 ### 2026-10-21: Verify public battery sensor and record efficient continuation
 - **Signed:** Codex (OpenAI)
 - **Commit:** Record battery sensor public acceptance [skip ci]

@@ -230,4 +230,11 @@ function attachCity(terrain, spec, raw, liquid) {
   terrain.walkable = (x, z) => terrain.isLand(x, z) && !queries.buildingAt(x, z, 1.5);
   terrain.roofAt = (x, z, pad = 0) => queries.roofAt(x, z, pad);
   terrain.canDropAt = (x, z, { radius = 6 } = {}) => queries.clearAt(x, z, radius + 1);
+  // Line of sight between two points given as heights above their own ground (a drone's
+  // altitude, a gun's mount): buildings in between block it.
+  terrain.lineBlocked = (ax, az, ah, bx, bz, bh) => {
+    const { minX, maxX, minZ, maxZ } = city.bounds;
+    if (Math.max(ax, bx) < minX || Math.min(ax, bx) > maxX || Math.max(az, bz) < minZ || Math.min(az, bz) > maxZ) return false;
+    return queries.lineBlocked(ax, az, terrain.heightAt(ax, az) + ah - level, bx, bz, terrain.heightAt(bx, bz) + bh - level);
+  };
 }

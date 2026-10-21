@@ -5,6 +5,7 @@ import { planetById, frontiers, missionSupply, applyFrontierResult, createProgre
 import { createPlanetTerrain } from "../dist/invasion/planet-terrain.mjs";
 import { createBattle, stepBattle, requestDrop, orderSquads, cityFound } from "../dist/invasion/battle.mjs";
 import { missionCheckpoint, restoreMissionCheckpoint, validMissionCheckpoint, checkpointPlanet } from "../dist/invasion/mission-save.mjs";
+import { defenderTypes } from "../dist/invasion/units.mjs";
 
 const spec = { seed: 7, x: 50, z: -40, blocks: 9, pitch: 100, street: 20, peak: 150 };
 
@@ -129,7 +130,7 @@ test("Frontier supply and results stay apart from the campaign bank and conquest
 });
 
 const cam = { focus: { x: 0, z: 0 }, distance: 230, yaw: 0, pitch: 0.9 };
-const plain = ({ isLand, heightAt, canDropAt, walkable, roofAt, events, ...data }) => data;
+const plain = ({ isLand, heightAt, canDropAt, walkable, roofAt, lineBlocked, events, ...data }) => data;
 function playAndSave(planet) {
   const terrain = createPlanetTerrain(planet), b = createBattle(planet, { terrain });
   const home = b.zones.find(z => z.kind === "beachhead");
@@ -214,4 +215,47 @@ test("Ashfall Frontier: a lava-veined valley among volcanoes holds a forge city 
   assert.ok(restoreMissionCheckpoint(saved, rebuilt));
   for (const [x, z] of [[home.x, home.z], [stack.x, stack.z], [-1325, -651], [1500, -2500]]) assert.equal(rebuilt.heightAt(x, z), terrain.heightAt(x, z));
   assert.equal(validMissionCheckpoint({ ...saved, battle: { ...saved.battle, landform: { ...map.landform, volcanoes: 99 } } }), null);
+});
+
+test("Buildings block line of sight: cover from city defenses, and an attack order closes in", () => {
+  const city = createCityLayout(spec), queries = cityQueries(city);
+  const tall = city.buildings.reduce((best, b) => (b.height > best.height ? b : best));
+  const west = tall.x - tall.w / 2 - 15, east = tall.x + tall.w / 2 + 15;
+  assert.equal(queries.lineBlocked(west, tall.z, 2, east, tall.z, 2), true, "through the tallest tower");
+  assert.equal(queries.lineBlocked(west, tall.z, tall.height + 5, east, tall.z, tall.height + 5), false, "over its roof");
+  const street = city.streets.find(s => s.id === "street-x1");
+  assert.equal(queries.lineBlocked(street.x1 + 5, street.z1, 2, street.x2 - 5, street.z1, 2), false, "down an open street");
+
+  const map = { ...planetById("corvan-frontier"), hazards: [] };
+  const terrain = createPlanetTerrain(map), b = createBattle(map, { terrain, matter: 500, unlocks: ["scout"] });
+  const home = b.zones.find(zone => zone.kind === "beachhead");
+  assert.ok(requestDrop(b, { x: home.x, z: home.z, payload: { scout: 1 } }).ok);
+  for (let t = 0; t < 30; t += 0.1) stepBattle(b, 0.1);
+  const drone = b.units.find(u => u.side === "swarm" && !u.structure);
+  const flak = b.units.find(u => u.type === "flak" && b.zones.find(zone => zone.id === u.home)?.urban);
+  assert.ok(drone && flak);
+  b.units = [flak, drone];
+  // Over open street (so the drone keeps its cruise height), in flak range: one spot behind a
+  // building, one in the open.
+  let hidden = null, open = null;
+  for (const share of [0.6, 0.5, 0.4, 0.7]) for (let a = 0; a < 360; a += 2) {
+    const x = flak.x + Math.cos(a * Math.PI / 180) * defenderTypes.flak.range * share, z = flak.z + Math.sin(a * Math.PI / 180) * defenderTypes.flak.range * share;
+    if (terrain.roofAt(x, z, 8) > 0) continue;
+    if (terrain.lineBlocked(flak.x, flak.z, 4, x, z, drone.alt + 0.6)) hidden ||= { x, z }; else open ||= { x, z };
+  }
+  assert.ok(hidden && open);
+  const place = spot => Object.assign(drone, { x: spot.x, z: spot.z, vx: 0, vz: 0, order: { kind: "hold", x: spot.x, z: spot.z }, slot: { dx: 0, dz: 0 } });
+  const hp = drone.hp;
+  place(hidden);
+  for (let t = 0; t < 2; t += 0.1) stepBattle(b, 0.1);
+  assert.equal(drone.hp, hp, "the building gives cover");
+  place(open);
+  for (let t = 0; t < 2; t += 0.1) stepBattle(b, 0.1);
+  assert.ok(drone.hp < hp, "in the open the flak hits");
+  // Ordered to attack from cover, the drone moves until it has a clear line.
+  flak.damageScale = 1e-6;
+  place(hidden);
+  orderSquads(b, [drone.squad], { kind: "attack", target: flak.id, x: flak.x, z: flak.z });
+  for (let t = 0; t < 15; t += 0.1) stepBattle(b, 0.1);
+  assert.ok(drone.alive && !b.lineBlocked(drone.x, drone.z, drone.alt + 0.6, flak.x, flak.z, 4), "a clear line to the target");
 });

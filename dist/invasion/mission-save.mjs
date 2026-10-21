@@ -178,7 +178,7 @@ function migrateCheckpoint(value) {
 
 export function missionCheckpoint(mission) {
   if (!mission || mission.battle.outcome) return null;
-  const { isLand, heightAt, canDropAt, walkable, roofAt, ...battle } = mission.battle;
+  const { isLand, heightAt, canDropAt, walkable, roofAt, lineBlocked, ...battle } = mission.battle;
   return jsonClone({ version: MISSION_SAVE_VERSION, battle, cam: mission.cam, command: commandCheckpoint(mission) });
 }
 
@@ -266,6 +266,7 @@ export function restoreMissionCheckpoint(value, terrain) {
   battle.canDropAt = terrain.canDropAt;
   battle.walkable = terrain.walkable || terrain.isLand;
   battle.roofAt = terrain.roofAt;
+  battle.lineBlocked = terrain.lineBlocked;
   battle.events = []; // One-frame effects must not replay after loading.
   terrain.setPads?.(battle.zones);
   return { planet: planetById(battle.planetId), battle, cam: saved.cam, command: saved.command };

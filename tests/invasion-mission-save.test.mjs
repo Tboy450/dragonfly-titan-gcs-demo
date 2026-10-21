@@ -8,7 +8,7 @@ import { missionCheckpoint, validMissionCheckpoint, restoreMissionCheckpoint } f
 const cam = { focus: { x: 0, z: 0 }, distance: 230, yaw: 0, pitch: 0.9 };
 const snapshot = battle => missionCheckpoint({ battle, cam });
 const advance = (b, seconds) => { for (let i = 0; i < seconds * 20; i++) stepBattle(b, 0.05); };
-const comparable = b => { const { isLand, heightAt, canDropAt, walkable, roofAt, events, ...data } = b; return data; };
+const comparable = b => { const { isLand, heightAt, canDropAt, walkable, roofAt, lineBlocked, events, ...data } = b; return data; };
 
 test("Save before the first drop restores the unlimited initial cooldown", () => {
   const battle = createBattle(planets[0]);
