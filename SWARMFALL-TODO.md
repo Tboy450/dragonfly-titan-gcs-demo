@@ -779,6 +779,11 @@ The game is silent today.
   are deprecated (`configure-pages@v5`, `deploy-pages@v4`, the upload step); update them when
   newer versions are available. `ubuntu-latest` moves to Ubuntu 26 from October 19, 2026:
   watch the first run after that.
+  - **Progress (Claude, October 22):** updated to `configure-pages@v6`, `upload-pages-artifact@v5`
+    and `deploy-pages@v5`, all on Node 24. Their release notes list no breaking change for this
+    workflow; v5's only addition is an optional `include-hidden-files` input. Check the first
+    publish run after this change for the Node 20 warning, then tick this item. Runs on
+    October 21-22 (Ubuntu 26 already) all passed.
 - [ ] **OPS-03 (P2)** Owner decision: a "Play Swarmfall" button on the simulator page (not
   added; the game links back to the simulator).
 - [ ] **OPS-04 (P2)** A short link that ignores capitals in the project name, for example a

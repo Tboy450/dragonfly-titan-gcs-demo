@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Publish workflow on Node 24 actions
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Move the publish workflow to the Node 24 Pages actions"
+- **What changed:** GitHub warned that the Pages actions still ran on the deprecated Node 20
+  (checklist OPS-02). Updated `actions/configure-pages` v5 → v6, `actions/upload-pages-artifact`
+  v4 → v5 and `actions/deploy-pages` v4 → v5. Their release notes show only the Node 24
+  upgrade and an optional new input, so nothing else in the workflow changes.
+- **Files:** `.github/workflows/pages.yml`, `SWARMFALL-TODO.md`
+- **Checks:** Release notes reviewed. The first publish run after pushing confirms it.
+
 ### 2026-10-22: Swarmfall alerts: squad under attack, zone being retaken, tappable warnings
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Alert on squads under fire and zones being retaken; tap warnings to jump"
