@@ -39,6 +39,29 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Add the first independently inspectable structural wall
+- **Signed:** Codex (OpenAI)
+- **Commit:** Add sourced starboard structural wall inspection
+- **What changed:** Standalone starboard wall, two published-thickness 0.254 mm aluminum
+  faces, estimated closeouts/fasteners/tape and actual open relief around the unchanged Down
+  Camera installation. Three focuses and per-part Covers/Casings/Mounts masks, plus global
+  Structural wall panels control. Physical structure under the body shell, not interior
+  equipment. Original 24 numbered parts and their geometry/poses unchanged.
+- **Sources / limits:** NASA April23 primary-structure article confirms aluminum facesheet
+  thickness and honeycomb construction; real May frame/April fit-check photos inform finish
+  and joints, credited NASA/Johns Hopkins APL/Ed Whitman. CAD is arrangement-only. Panel
+  outline, 12 mm separation, details and camera relief estimated. Core cells, bonds/inserts,
+  hidden connections unmodeled; older combined foam remains unchanged. No new solver.
+- **Archive:** Baseline b4559dc, tag `archive/side-wall-2026-10-22`; exact prior files, before
+  views and numbered-part manifests. Inboard draft crossing PSU/TWTA harness saved with
+  code/pictures/failures; final wall alone moved 9.5 mm outward to clear the completed parts.
+- **Checks:** 463 full tests pass. Local Edge 24 Internal/Thermal viewport/subassembly cases,
+  masks/restore, source links, unchanged numbered geometry, wall-face/neighbor/shoulder
+  clearance, Pilot return and three nonblank/framed raw model views passed. Comparison
+  visually reviewed; evidence in `research/side-wall-2026-10-22/`. No game code changed.
+- **Next:** Opposite wall/end connections, deck/attic boundary and independent foam regions.
+  First-panel initial pass checked off; broader construction package stays open.
+
 ### 2026-10-22: Record MMRTG public acceptance
 - **Signed:** Codex (OpenAI)
 - **Commit:** Record MMRTG public acceptance [skip ci]

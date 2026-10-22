@@ -6,6 +6,13 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**First structural wall (Codex, October22):** [photo/CAD/model/app comparison and notes](side-wall-2026-10-22/README.md).
+Reuses original [real frame photo](rotor-heads-2026-10-15/nasa-apl-lander-frame-tap-test-2026-05.jpg)
+and [April fit-check photo](lander-structure-2026/nasa-apl-top-deck-fit-check.jpg), both
+NASA/Johns Hopkins APL/Ed Whitman; ICES2023 p5 CAD is arrangement-only. NASA April23
+primary-structure article confirms honeycomb panels with 0.01-inch aluminum facesheets.
+No unverified core microstructure reconstructed; panel outline/separation/fit estimated.
+
 **MMRTG exterior follow-up (Codex, October22):** [photo/cutaway/model comparison and audit](mmrtg-body-2026-10-22/README.md).
 [NASA original photo and technical page](sources/nasa-mmrtg-hardware/README.md): PIA23306
 real pre-fueling Mars generator; Cataldo/Bennett p15 fig12 historical cutaway (DOE credit),

@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [side-wall-2026-10-22](side-wall-2026-10-22/README.md) | Before first additive structural wall: exact builder/UI/masks/HTML, six before views and all-numbered geometry; failed inboard draft retained | 2026-10-22 | `archive/side-wall-2026-10-22` on b4559dc |
 | [mmrtg-body-2026-10-22](mmrtg-body-2026-10-22/README.md) | Dark cylinder/thick rectangular fins, provisional collar and20 cm sensor radius; exact builder/UI/tests, fresh before pictures/manifests |2026-10-22| `archive/mmrtg-body-2026-10-22` on6276276 |
 | [fin-root-sensor-2026-10-21](fin-root-sensor-2026-10-21/README.md) | Claude's exact fin-root annotation, associated test/UI/builder/HTML, fresh before images and installed-pose manifests before RTD-family approximation |2026-10-21| `archive/fin-root-sensor-2026-10-21` on5bf3431 |
 | [battery-sensor-2026-10-21](battery-sensor-2026-10-21/README.md) | Part20 measurement target before TE-family hardware approximation; exact source/UI/tests, fresh baseline images/manifests and unpublished finish draft |2026-10-21| `archive/battery-sensor-2026-10-21` onf1c6129 |

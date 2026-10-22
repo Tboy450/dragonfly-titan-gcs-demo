@@ -31,13 +31,28 @@ explicitly estimated, not flight CAD. Do not repeatedly search the same closed l
 4. [ ] **Structural wall layers:** start one side-wall panel, then skin/deck/insulation and
    mounting layers separately. Add hide/ghost controls as needed; preserve interior access
    and camera penetrations. Do not invent undocumented honeycomb/core construction.
+   First starboard panel initial pass complete October22: separate 0.254 mm aluminum faces,
+   estimated edge closeouts and camera relief; outer/inner/edge focuses and independent masks.
+   [Sources, process, sample and limits](research/side-wall-2026-10-22/README.md).
+   Opposite wall/end joints, deck and independent foam regions keep this overall item open.
 
 Other harness work stays queued behind this order. Current count24/24 initial passes
 (9 Codex / 15 Claude), with labeled hardware-family/design approximations. Installation and
 construction work are still open. Follow the expanded packages below after the ordered
 items; do not confuse finishing the numbered list with finishing construction and connections.
 
-Current October22 body closeout: own MMRTG exterior pass complete;458 combined tests pass
+Current October22 wall checkpoint: first starboard panel added without altering any of the
+24 numbered parts. Real frame photos and NASA's published 0.01-inch aluminum faces used;
+outline, 12 mm separation, fittings and camera relief estimated. Core cells/layup unmodeled.
+Initial inboard draft crossed PSU/TWTA harness, archived; wall alone moved 9.5 mm outboard.
+Local 24 viewport/subassembly cases, independent masks/restore, sources, Pilot return,
+all-numbered geometry manifests and wall-face/neighbor clearance pass. Raw model views
+are nonblank/framed. Body/attic foam remain combined; new wall is physical structure,
+not a box of equipment inside the bay. Opposite side and end joints are next.
+Full suite: 463 pass, zero failures. Current source/model comparison visually reviewed;
+release/public verification recorded in the current research folder after deployment.
+
+Historical October22 body closeout: own MMRTG exterior pass complete;458 combined tests pass
 (450 before merging concurrent game work through2190944),24 numbers unchanged.
 Local24 viewport/subassembly cases, layer masks/restore, refitted21, source links, raw model
 pixel/framing and numbered-neighbor/stabilizer clearance pass. Battery/20 geometry unchanged.
@@ -895,8 +910,11 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [ ] **Layer inventory:** map each existing skin, foam, deck, bulkhead, tray and equipment
   cover to its owner/source and what it obscures. Record combined meshes needing separation;
   do not assume a continuous inner metal liner, empty boxes or undocumented sandwich cores.
-- [ ] **First side panel:** source-supported outline/frame/openings, separate structural
-  facing from equipment covers; check camera apertures, wall-mounted units and shoulder roots.
+- [x] **First side panel initial pass:** starboard structural facing separate from equipment
+  covers, two published-thickness faces, estimated edge closeouts and camera relief. Numbered
+  hardware unchanged; wall-face/numbered/shoulder clearance checked. [Evidence and limits](research/side-wall-2026-10-22/README.md).
+  Exact frame dimensions, core/layup/inserts, shoulder load-path connections and local foam
+  remain open follow-ups, not a claim of completed flight construction.
 - [ ] **Opposite side and end interfaces:** extend only after first-panel acceptance; reconcile
   nose and canted aft bulkheads, fasteners and duct/harness penetrations with completed parts.
 - [ ] **Deck and attic boundary:** upper/lower deck supports, instrument access and service

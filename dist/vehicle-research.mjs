@@ -14,6 +14,7 @@ import { buildBattery } from "./battery.mjs?v=dev";
 import { buildBatteryMeasurement } from "./battery-measurement.mjs?v=dev";
 import { buildMmrtgMeasurement } from "./mmrtg-measurement.mjs?v=dev";
 import { buildMmrtg } from "./mmrtg.mjs?v=dev";
+import { buildSideWall } from "./side-wall.mjs?v=dev";
 import { buildNoseSensors } from "./nose-sensors.mjs?v=dev";
 import { buildAftBulkhead, aftBulkheadAsset, aftFaceZ } from "./aft-bulkhead.mjs?v=dev";
 import { buildRotorHead, buildHubPlate, rotorHeadAsset } from "./rotor-heads.mjs?v=dev";
@@ -165,6 +166,9 @@ export function buildResearchModel(kit) {
   profileBody(atticShape, 0.87, foam, 0.055).name = "forward-attic-cover";
   subsystem("fuselage", "insulated-shell");
   for (const z of [-0.45, 0.2, 0.84]) mesh(new THREE.BoxGeometry(0.875, 0.5, 0.018), foamSeam, [0, -0.13, z]);
+  subsystem("starboard-wall", "equipment-bay");
+  buildTarget.userData.layer = "structure";
+  buildSideWall({ parent: buildTarget, mesh });
   subsystem("navigation-sensors", "external-sensors");
   for (const x of [-0.22, 0, 0.22]) {
     mesh(new THREE.BoxGeometry(0.108, 0.10, 0.048), armMaterial, [x, -0.11, -1.93]);

@@ -1,0 +1,26 @@
+[
+  {
+    "part": "power-units",
+    "mesh": "psu-chassis"
+  },
+  {
+    "part": "power-units",
+    "mesh": "psu-mounting-flange"
+  },
+  {
+    "part": "power-units",
+    "mesh": "psu-mounting-flange"
+  },
+  {
+    "part": "twta",
+    "mesh": "twta-epc-bus-harness"
+  },
+  {
+    "part": "twta",
+    "mesh": "twta-harness-tie"
+  },
+  {
+    "part": "twta",
+    "mesh": "twta-harness-tie"
+  }
+]

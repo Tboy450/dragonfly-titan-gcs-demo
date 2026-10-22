@@ -15,7 +15,13 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
-October22 Codex: [MMRTG generator exterior](research/mmrtg-body-2026-10-22/README.md)
+October22 Codex: [first structural side wall](research/side-wall-2026-10-22/README.md)
+adds separate aluminum faces and edge fittings, with NASA's published 0.254 mm face-sheet
+thickness. Select **Starboard structural wall** for its three targets and independent masks;
+the original 24 parts remain unchanged. Outline, panel separation and fittings are estimates.
+Opposite wall, end joints, deck and separate insulation regions remain queued.
+
+Earlier October22 Codex: [MMRTG generator exterior](research/mmrtg-body-2026-10-22/README.md)
 now follows NASA's real generator photo: pale thin fins, narrower housing, root attachments
 and stepped metal covers within the published64 x66 cm envelope. Detail/finish remain
 estimated. Select **MMRTG generator body** in the existing inspector for housing/fins/ends

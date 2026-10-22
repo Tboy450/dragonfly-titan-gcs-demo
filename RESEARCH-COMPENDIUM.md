@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October22 first structural wall (Codex):** [sources, samples and installation limits](research/side-wall-2026-10-22/README.md).
+[PUB] NASA April23: honeycomb primary panels designed by APL, manufactured by Lockheed
+Martin Space, aluminum facesheets 0.01 in (0.254 mm). Real May frame photo informs finish
+and edge joints. [EST] first starboard outline, 12 mm separation, closeouts, tape/fasteners,
+camera relief and installed x=.3605..+.3725 m. No core cell geometry, alloy or adhesive
+inferred; older combined foam still unresolved. Thermal remains shared bay node. Numbered
+parts unchanged. Opposite side/end connections, deck and separate foam regions remain open.
+
 **October22 MMRTG body (Codex):** [sources and actual samples](research/mmrtg-body-2026-10-22/README.md).
 [PUB]64 cm fin-tip diameter,66 cm overall length, eight-fin architecture. Real PIA23306
 pre-fueling Mars2020 hardware informs pale thin fins, root attachments, narrower housing
