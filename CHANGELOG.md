@@ -39,6 +39,21 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall box selection
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add drag-box selection: Shift+drag, or hold then drag on touch"
+- **What changed:** Checklist CTRL-01.
+  - **Shift+drag** with a mouse draws a dashed selection box. Every squad with a living drone
+    inside is selected, replacing the selection.
+  - On touch, **press and hold, then drag** does the same. Quick drags still pan.
+  - An empty box keeps the current selection and never moves the camera.
+- **Files:** `dist/invasion/pointer-controls.mjs`, `main.mjs`,
+  `tests/invasion-box-select.test.mjs` (new), `tests/invasion-pointer-controls.test.mjs`,
+  `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (498 pass). In the page harness, Shift+drag picks
+  both squads, then one from either corner order, and an empty box changes nothing. The touch
+  hold isn't checked on a real phone yet.
+
 ### 2026-10-22: Record top-deck public acceptance
 - **Signed:** Codex (OpenAI)
 - **Commit:** Record top deck public acceptance [skip ci]

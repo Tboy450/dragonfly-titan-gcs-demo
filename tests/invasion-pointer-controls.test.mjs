@@ -156,3 +156,19 @@ test('Drop placement only previews on primary/touch; right-click cancels without
 test('Battlefield suppresses its native context menu', () => {
   const h=arena();assert.equal(h.pointer('contextmenu').defaultPrevented,true);
 });
+
+test('Shift+drag selects every squad with a drone in the box; an empty box keeps the selection and never pans', () => {
+  const h = arena();
+  const drag = (x0, y0, x1, y1) => {
+    h.pointer('pointerdown', { clientX: x0, clientY: y0, shiftKey: true });
+    h.pointer('pointermove', { clientX: x1, clientY: y1, shiftKey: true });
+    h.pointer('pointerup', { clientX: x1, clientY: y1, shiftKey: true, buttons: 0 });
+  };
+  drag(50, 50, 350, 150); assert.deepEqual(h.selected(), [1, 2]);
+  drag(150, 150, 50, 50); assert.deepEqual(h.selected(), [1], 'any corner order');
+  const before = h.json('mission.cam');
+  drag(500, 500, 600, 560); assert.deepEqual(h.selected(), [1]);
+  assert.deepEqual(h.json('mission.cam'), before);
+  assert.equal(h.json('mission.selectBox'), null);
+  assert.deepEqual(h.orders(), []);
+});

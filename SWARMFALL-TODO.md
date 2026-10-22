@@ -331,8 +331,16 @@ complete solely because its assets download or its unit tests pass.
 
 ## 3. Controls and HUD (CTRL)
 
-- [ ] **CTRL-01 (P1)** Drag-box selection on desktop and a lasso or two-finger selection on
-  touch screens.
+- [x] **CTRL-01 (P1) — Claude (October 22)** Drag-box selection on desktop and a lasso or
+  two-finger selection on touch screens.
+  - **Shift+drag** with a mouse draws a dashed box, and every squad with a living drone inside
+    is selected (`pointer-controls.mjs` `boxRect`, `squadsInBox`). Plain drags still pan; an
+    empty box keeps the selection and never pans.
+  - On touch, **press and hold (~0.45 s), then drag** draws the box; a quick drag still pans.
+    This replaces a lasso, since two fingers already pinch, turn and pan.
+  - Evidence: `tests/invasion-box-select.test.mjs` and a Shift+drag test in
+    `tests/invasion-pointer-controls.test.mjs`. The touch hold isn't covered by an automated
+    test or a real-phone check yet.
 - [x] **CTRL-02 (P1) — Claude (October 22)** Squad tools: merge, split, rename, select by drone
   type, renumber keys. The **Squad ▾** menu next to Hold (`battle.mjs` `mergeSquads`,
   `splitSquad`, `renameSquad`):

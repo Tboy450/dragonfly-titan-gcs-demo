@@ -20,7 +20,7 @@ import { createPlanetTerrain } from "./planet-terrain.mjs?v=dev";
 import { drawGalaxy, drawStarfield } from "./galaxy.mjs?v=dev";
 import { createInvasionScene, swarmColor, nativeColor } from "./scene.mjs?v=dev";
 import { missionCheckpoint, restoreMissionCheckpoint, checkpointPlanet } from "./mission-save.mjs?v=dev";
-import { pointerIntent, exceedsTapSlop } from './pointer-controls.mjs?v=dev';
+import { pointerIntent, exceedsTapSlop, holdToBoxMs, boxRect, squadsInBox } from './pointer-controls.mjs?v=dev';
 import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
 import { enterFree, exitFree, placeFree, moveFree, freeLimits } from "./free-camera.mjs?v=dev";
 import { squadCenter, latestAlert, zoneAlerts, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
@@ -607,7 +607,18 @@ function resetPointers() {
   resetMinimapPointers();
   const captured = [...pointers.keys()];
   pointers.clear(); gesture = null;
+  if (mission) mission.selectBox = null;
   for (const id of captured) if (overlay.hasPointerCapture(id)) overlay.releasePointerCapture(id);
+}
+// Select every squad with a drone inside the drawn box (replacing the selection).
+function boxSelect() {
+  const box = mission.selectBox;
+  mission.selectBox = null;
+  if (!box) return;
+  const ids = squadsInBox(mission.battle.units, unit => scene.project(unit.x, scene.unitTop(unit), unit.z, box.a.width, box.a.height), boxRect(box.a, box.b));
+  if (!ids.length) { toast("No drones in that box.", "info", 1800); return; }
+  mission.selected = new Set(ids);
+  updateSquadBar();
 }
 function pinchState() {
   const [a, b] = [...pointers.values()];
@@ -622,7 +633,9 @@ overlay.addEventListener("pointerdown", (event) => {
   pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
   if (pointers.size === 1) {
     gesture = { ...intent, x: event.clientX, y: event.clientY, lastX: event.clientX, lastY: event.clientY,
-      moved: event.buttons !== undefined && event.buttons !== intent.buttons };
+      moved: event.buttons !== undefined && event.buttons !== intent.buttons,
+      // Shift+left-drag draws a selection box (CTRL-01); touch and pen do after a hold.
+      box: intent.action === "select" && event.shiftKey, downAt: performance.now() };
   } else if (gesture) {
     gesture.moved = true;
     gesture.pinch = pinchState();
@@ -655,6 +668,12 @@ overlay.addEventListener("pointermove", (event) => {
     return;
   }
   if (!gesture) return;
+  if (!gesture.box && !gesture.moved && gesture.action === "smart" && performance.now() - gesture.downAt > holdToBoxMs && exceedsTapSlop(gesture, event)) gesture.box = true;
+  if (gesture.box) {
+    if (exceedsTapSlop(gesture, event)) gesture.moved = true;
+    if (gesture.moved) mission.selectBox = { a: screenPoint(gesture.x, gesture.y), b: screenPoint(event.clientX, event.clientY) };
+    return;
+  }
   const dx = event.clientX - gesture.lastX, dy = event.clientY - gesture.lastY;
   if (exceedsTapSlop(gesture, event)) gesture.moved = true;
   if (gesture.moved) {
@@ -670,7 +689,8 @@ const endPointer = (event) => {
   const finished = gesture;
   if (pointers.size === 0) {
     gesture = null;
-    if (finished && !finished.moved && !exceedsTapSlop(finished, event) && finished.action)
+    if (finished?.box && finished.moved) boxSelect();
+    else if (finished && !finished.moved && !exceedsTapSlop(finished, event) && finished.action)
       tap(event.clientX, event.clientY, finished.additive, finished.action);
   } else if (gesture) {
     gesture.moved = true;
@@ -1178,6 +1198,14 @@ function drawOverlay() {
     ctx.stroke();
     const label = scene.project(point.x, y + 5, point.z, width, height);
     if (label.visible) { ctx.fillStyle = swarmColor; ctx.fillText(`Pod ${index + 1}`, label.x, label.y); }
+  }
+  // The selection box being drawn (Shift+drag, or hold then drag on touch).
+  if (mission.selectBox) {
+    const { left, top, right, bottom } = boxRect(mission.selectBox.a, mission.selectBox.b);
+    ctx.save();
+    ctx.fillStyle = "rgba(124, 231, 255, 0.12)"; ctx.strokeStyle = swarmColor; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]);
+    ctx.fillRect(left, top, right - left, bottom - top); ctx.strokeRect(left, top, right - left, bottom - top);
+    ctx.restore();
   }
   // Waypoints of selected squads: a dashed line in the squad's color through each queued order,
   // closing the loop when the squad patrols.
