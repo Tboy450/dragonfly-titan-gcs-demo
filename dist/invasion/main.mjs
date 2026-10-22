@@ -21,7 +21,9 @@ import { missionCheckpoint, restoreMissionCheckpoint, checkpointPlanet } from ".
 import { pointerIntent, exceedsTapSlop } from './pointer-controls.mjs?v=dev';
 import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
 import { enterFree, exitFree, placeFree, moveFree, freeLimits } from "./free-camera.mjs?v=dev";
-import { squadCenter, latestAlert, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
+import { squadCenter, latestAlert, zoneAlerts, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
+import { cycleSound, soundLabel, updateBattleSound, quietSound } from "./sound.mjs?v=dev";
+import { qualityLevels, nextQuality } from "./quality.mjs?v=dev";
 import { minimapWorldPoint } from './minimap-controls.mjs?v=dev';
 import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecoveryBackups } from './save-recovery.mjs?v=dev';
 
@@ -283,10 +285,23 @@ let scene = null;
 let mission = null;
 const overlay = $("mission-overlay");
 
+// Graphics quality (PERF-04), chosen on the title screen and remembered on this device.
+let graphics = "high";
+try { if (qualityLevels[localStorage.getItem("swarmfall-graphics")]) graphics = localStorage.getItem("swarmfall-graphics"); } catch { /* optional */ }
+const showGraphics = () => { $("quality-button").textContent = `Graphics: ${qualityLevels[graphics].label}`; };
+$("quality-button").addEventListener("click", () => {
+  graphics = nextQuality(graphics);
+  try { localStorage.setItem("swarmfall-graphics", graphics); } catch { /* optional */ }
+  scene?.setQuality?.(graphics);
+  showGraphics();
+});
+showGraphics();
+
 function ensureScene() {
   if (scene) return scene;
   try {
     scene = createInvasionScene($("mission-canvas"));
+    scene.setQuality?.(graphics);
   } catch (error) {
     console.error(error);
     $("no-webgl").hidden = false;
@@ -324,7 +339,7 @@ function startMission(planet, checkpoint = null) {
   });
   scene.load(planet, terrain, battle);
   mission = {
-    planet, battle, terrain, follow: false, lastAlert: null, mouse: null,
+    planet, battle, terrain, follow: false, lastAlert: null, mouse: null, zoneWatch: new Set(),
     cam: restored?.cam || homeView(battle),
     selected: new Set(restored?.command.selected || []), speed: 1, paused: !!restored,
     payload: restored?.command.payload ?? defaultPayload(battle), placing: false, dropPoint: null, dropPreview: null, dropPanelOpen: false,
@@ -486,6 +501,8 @@ function assistCamera(dt) {
   }
 }
 $("follow-button").addEventListener("click", () => setFollow(!mission?.follow));
+$("sound-button").addEventListener("click", () => { $("sound-button").textContent = cycleSound(); });
+$("sound-button").textContent = soundLabel();
 $("alert-button").addEventListener("click", jumpToAlert);
 
 function pan(dx, dy) {
@@ -864,6 +881,7 @@ window.addEventListener("keydown", (event) => {
   if (key === "v" && !event.repeat) { setCleanView(!mission.cleanView); event.preventDefault(); return; }
   if (key === "c" && !event.repeat) { setFreeCamera(!mission.freeCam); event.preventDefault(); return; }
   if (key === "g" && !event.repeat) { setFollow(!mission.follow); return; }
+  if (key === "m" && !event.repeat) { $("sound-button").textContent = cycleSound(); return; }
   if (key === "j" && !event.repeat) { jumpToAlert(); return; }
   if (key === "home") { resetView(); event.preventDefault(); return; }
   if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
@@ -885,11 +903,13 @@ window.addEventListener("blur", () => { keys.clear(); resetPointers(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden) resetPointers(); });
 
 // ---- HUD ----
-function toast(text, tone = "info", ms = 3600) {
+// onClick makes the toast tappable (warnings jump the camera to the newest alert).
+function toast(text, tone = "info", ms = 3600, onClick = null) {
   const box = $("toasts");
-  const item = document.createElement("div");
-  item.className = `toast ${tone}`;
+  const item = document.createElement(onClick ? "button" : "div");
+  item.className = `toast ${tone}${onClick ? " clickable" : ""}`;
   item.textContent = text;
+  if (onClick) { item.type = "button"; item.addEventListener("click", () => { onClick(); item.remove(); }); }
   box.append(item);
   while (box.children.length > 4) box.firstElementChild.remove();
   setTimeout(() => item.remove(), ms);
@@ -1265,7 +1285,7 @@ function handleEvents(events) {
   for (const entry of b.log) {
     if (mission.seenLog.has(entry)) continue;
     mission.seenLog.add(entry);
-    if (entry.tone === "warn" || entry.tone === "bad") toast(entry.text, entry.tone);
+    if (entry.tone === "warn" || entry.tone === "bad") toast(entry.text, entry.tone, 3600, mission.lastAlert ? jumpToAlert : null);
   }
 }
 
@@ -1330,6 +1350,7 @@ $("settlement-retry").addEventListener("click", retrySettlementSave);
 $("debrief-retry").addEventListener("click", () => { const planet = mission.planet; $("debrief").close(); startMission(planet); });
 function returnToGalaxy() {
   $("debrief").close();
+  quietSound();
   const frontier = mission?.planet.frontier;
   selectedPlanet = nextPlanet(progress).id;
   mission = null;
@@ -1346,6 +1367,7 @@ function frame(now) {
   tick(now);
 }
 function tick(now) {
+  if (current === "mission" && scene && !document.hidden) scene.adapt?.(now - last);
   const dt = Math.min(0.05, Math.max(0, (now - last) / 1000));
   last = now;
   if (current === "galaxy") drawGalaxyScreen(now / 1000);
@@ -1356,11 +1378,19 @@ function tick(now) {
   assistCamera(dt);
   const events = b.events.splice(0);
   mission.lastAlert = latestAlert(mission.lastAlert, events, b);
+  for (const alert of zoneAlerts(mission.zoneWatch, b)) {
+    mission.lastAlert = alert;
+    toast(`${alert.text}. Tap to view (J).`, "bad", 6000, jumpToAlert);
+  }
   handleEvents(events);
   offerVictoryChoice();
   if (mission.freeCam) syncFreeFocus();
   scene.frame(b, mission.freeCam ? { ...mission.cam, free: mission.freeCam } : mission.cam, events, mission.paused ? 0 : dt * mission.speed, now / 1000);
   drawOverlay();
+  // Sound hears what the camera sees: around the view's focus, as far as the view reaches.
+  const listener = mission.freeCam ? { x: mission.freeCam.x, z: mission.freeCam.z, radius: 150 + Math.max(0, mission.freeCam.y - groundAt(mission.freeCam.x, mission.freeCam.z)) * 1.2 }
+    : { x: mission.cam.focus.x, z: mission.cam.focus.z, radius: 80 + mission.cam.distance * 0.9 };
+  updateBattleSound(b, listener, mission.paused ? [] : events);
   if (now - mission.lastHud > 120) { updateHud(); mission.lastHud = now; }
   if (now - mission.lastMinimap > 150) { drawMinimap(); mission.lastMinimap = now; }
   if (now - mission.lastAchievements > 1000) { checkLiveAchievements(); mission.lastAchievements = now; }

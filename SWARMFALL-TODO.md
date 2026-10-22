@@ -316,11 +316,17 @@ complete solely because its assets download or its unit tests pass.
     eruption). The alert also shows as a red ring on the minimap for 20 s.
   - A mouse at the screen edge scrolls, and **Home** returns to the starting view.
   - Evidence: `tests/invasion-camera-assist.test.mjs`, plus browser checks of G, J and Home.
-- [ ] **CTRL-06 (P1)** Alerts with minimap pings and tap-to-jump: squad under attack, zone being
-  retaken, hazard incoming, artillery marked.
-  - **Progress (Claude, October 21):** the newest alert (drone lost, artillery or lightning
-    marked, eruption) shows as a minimap ring, and J or the Alert button jumps there. Still
-    open: a zone being retaken, tappable alert toasts, and a list of recent alerts.
+- [x] **CTRL-06 (P1) — Claude (October 21-22)** Alerts with minimap pings and tap-to-jump: squad
+  under attack, zone being retaken, hazard incoming, artillery marked. Done:
+  - The newest alert (`camera-assist.mjs`) is any of: a squad under fire, a drone lost,
+    artillery or lightning marked, an eruption, or a held zone being retaken.
+  - It shows as a red minimap ring for 20 s. J or the Alert button jumps there.
+  - A held zone being retaken raises its own warning toast, once until it is back at full
+    control. Warning toasts are tappable and jump the camera to the alert.
+  - Evidence: `tests/invasion-camera-assist.test.mjs`. In the browser the "being retaken"
+    toast appeared and tapping it centered the view on the zone.
+  - Weather fronts that cover the whole map have no single place to jump to. A list of
+    recent alerts could come later.
 - [ ] **CTRL-07 (P2)** Formation choices (spread, tight, line) and stances (aggressive, hold
   fire for a quiet takeover).
 - [x] **CTRL-08 (P2) — Codex, October 20; implementation and automated checks** Minimap
@@ -708,14 +714,24 @@ and other threats on the planet):
 
 ## 11. Sound (AUD)
 
-The game is silent today.
+Optional, generated sound since October 22 (`battle-sound.mjs` decides, `sound.mjs` plays).
 
-- [ ] **AUD-01 (P1)** Effects: a swarm hum that grows with the number of drones in view (the
-  simulator's `sound-mix.mjs` approach), shots per weapon, explosions, capture chime, alarm
-  stages.
-- [ ] **AUD-02 (P1)** Hazard sounds (rain, wind, thunder, eruptions) and the pod's entry and
-  parachute.
-- [ ] **AUD-03 (P1)** A sound toggle and volume, off by default like the simulator.
+- [x] **AUD-01 (P1) — Claude (October 22)** Effects:
+  - A swarm hum that grows with the number of drones in view (the simulator's `sound-mix.mjs`
+    approach: a pure mix module plus a Web Audio player).
+  - Shots per weapon: tracer, laser, missile, flak, spear, charge.
+  - Explosions sized by what was destroyed, a capture chime, a loss tone, and alarm sirens by
+    stage.
+  - Shots are limited per weapon so steady fire rattles rather than roars.
+- [x] **AUD-02 (P1) — Claude (October 22)** Hazard sounds:
+  - Rain (methane and acid rain, lightning storms).
+  - Wind (blizzard, gusts, dust, ash).
+  - Thunder on lightning strikes, and an eruption rumble that grows nearer the view.
+  - The pod's entry roar on each drop, and parachute flutter at nearby landings.
+- [x] **AUD-03 (P1) — Claude (October 22)** **♪** button in the mission bar, or M: off, quiet,
+  medium, loud. Off by default, remembered on the device, and it starts only after a click or
+  tap. Evidence: `tests/invasion-sound.test.mjs`. Browser: the button switched sound on and
+  saved the level, with no errors. Listening on real speakers is still the owner's call.
 - [ ] **AUD-04 (P3)** Music by society level.
 
 ## 12. Performance (PERF)
@@ -727,8 +743,15 @@ The game is silent today.
 - [ ] **PERF-03 (P2)** Profile the 2,400 CPU-updated weather particles on target devices.
   Move animation to the GPU or reduce cost only if measured frame time justifies it; verify
   storm appearance, paused state and deterministic game hazards stay correct.
-- [ ] **PERF-04 (P1)** Adaptive resolution and a graphics quality setting (decor density,
-  effects).
+- [x] **PERF-04 (P1) — Claude (October 22)** Adaptive resolution and a graphics quality setting
+  (decor density, effects), in `quality.mjs`.
+  - **Graphics: Low / Medium / High** on the title screen, remembered on the device. It sets
+    decor density, city detail (park trees, forge smoke), frontier ground detail and the
+    sharpest pixel ratio.
+  - Resolution also adapts on its own: about 2 s under ~40 fps steps it down (to half at
+    most), and 5 s over ~57 fps steps it back up.
+  - Evidence: `tests/invasion-quality.test.mjs`. On Velm Frontier at the start, Low draws
+    about 126 k triangles at 0.75 pixel ratio, against about 250 k or more on High.
 - [ ] **PERF-05 (P2)** Combat checks every unit against every enemy each step. Use the
   spatial grid already used for drone spacing.
 - [ ] **PERF-06 (P2)** Run the simulation in a background worker if the page gets busy.
@@ -773,6 +796,11 @@ The game is silent today.
   are deprecated (`configure-pages@v5`, `deploy-pages@v4`, the upload step); update them when
   newer versions are available. `ubuntu-latest` moves to Ubuntu 26 from October 19, 2026:
   watch the first run after that.
+  - **Progress (Claude, October 22):** updated to `configure-pages@v6`, `upload-pages-artifact@v5`
+    and `deploy-pages@v5`, all on Node 24. Their release notes list no breaking change for this
+    workflow; v5's only addition is an optional `include-hidden-files` input. Check the first
+    publish run after this change for the Node 20 warning, then tick this item. Runs on
+    October 21-22 (Ubuntu 26 already) all passed.
 - [ ] **OPS-03 (P2)** Owner decision: a "Play Swarmfall" button on the simulator page (not
   added; the game links back to the simulator).
 - [ ] **OPS-04 (P2)** A short link that ignores capitals in the project name, for example a

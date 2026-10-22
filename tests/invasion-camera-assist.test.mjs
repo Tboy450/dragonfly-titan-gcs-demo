@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { squadCenter, latestAlert, edgeScroll, homeView } from "../dist/invasion/camera-assist.mjs";
+import { squadCenter, latestAlert, zoneAlerts, edgeScroll, homeView } from "../dist/invasion/camera-assist.mjs";
 import { createBattle } from "../dist/invasion/battle.mjs";
 import { planets } from "../dist/invasion/campaign.mjs";
 
@@ -27,7 +27,27 @@ test("The newest alert wins: a marked strike, an eruption or a drone lost this f
   alert = latestAlert(alert, [{ kind: "destroyed", side: "native", structure: false, x: 3, z: 3 }], b);
   assert.equal(alert.text, "Drone lost", "a defender lost is not an alert, and an older strike does not replace it");
   b.time = 60; b.hazards.events.push({ kind: "eruption", x: 7, z: 8, startedAt: 58, name: "Eruption" });
-  assert.deepEqual(latestAlert(alert, [], b), { x: 7, z: 8, at: 58, text: "Eruption" });
+  alert = latestAlert(alert, [], b);
+  assert.deepEqual(alert, { x: 7, z: 8, at: 58, text: "Eruption" });
+  b.time = 61; b.units = [{ id: 4, side: "swarm", structure: false, x: 30, z: 40 }, { id: 5, side: "native", structure: true, x: 0, z: 0 }];
+  assert.deepEqual(latestAlert(alert, [{ kind: "shot", side: "native", from: 5, to: 4 }], b), { x: 30, z: 40, at: 61, text: "Squad under attack" });
+  assert.deepEqual(latestAlert(alert, [{ kind: "shot", side: "swarm", from: 4, to: 5 }], b), alert, "the swarm firing is no alert");
+});
+
+test("A held zone being retaken raises one alert until it is back at full control", () => {
+  const zone = { id: "z1", name: "Ithro", kind: "settlement", x: 5, z: 6, captured: true, control: 100 };
+  const b = { time: 10, zones: [{ id: "beachhead", kind: "beachhead", captured: true, control: 100 }, zone] }, watch = new Set();
+  assert.deepEqual(zoneAlerts(watch, b), []);
+  zone.control = 90;
+  assert.deepEqual(zoneAlerts(watch, b), [{ x: 5, z: 6, at: 10, text: "Ithro is being retaken" }]);
+  zone.control = 60;
+  assert.deepEqual(zoneAlerts(watch, b), [], "only once while it falls");
+  zone.control = 100;
+  zoneAlerts(watch, b);
+  zone.control = 95; b.time = 20;
+  assert.equal(zoneAlerts(watch, b).length, 1, "again after recovering");
+  zone.captured = false;
+  assert.deepEqual(zoneAlerts(watch, b), [], "a lost zone is no longer watched");
 });
 
 test("Edge scrolling and the starting view", () => {

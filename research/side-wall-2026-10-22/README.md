@@ -73,6 +73,10 @@ Long explanation stays under the existing component/assumptions expandable secti
   Geometry manifests for all24 numbered parts match the baseline; wall-face crossings are
   empty. Source/model comparison and raw views visually reviewed. Physical wall is classified
   as structure, not equipment inside the insulated cavity. Public acceptance follows deployment.
+- Concurrent work through `22e7df8` merged intact: game alerts/sound/graphics quality and
+  Pages actions update. Both changelog blocks retained; no game or workflow code manually
+  edited. Combined **469 tests pass**, saved in `merged-tests.txt`. Simulator implementation
+  unchanged by that merge.
 
 ## Next
 

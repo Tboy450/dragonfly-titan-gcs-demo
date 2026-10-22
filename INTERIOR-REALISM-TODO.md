@@ -51,6 +51,8 @@ are nonblank/framed. Body/attic foam remain combined; new wall is physical struc
 not a box of equipment inside the bay. Opposite side and end joints are next.
 Full suite: 463 pass, zero failures. Current source/model comparison visually reviewed;
 release/public verification recorded in the current research folder after deployment.
+Concurrent game/workflow changes through22e7df8 merged intact; combined469 tests pass.
+No manual game/workflow edits, simulator implementation unchanged by merge.
 
 Historical October22 body closeout: own MMRTG exterior pass complete;458 combined tests pass
 (450 before merging concurrent game work through2190944),24 numbers unchanged.

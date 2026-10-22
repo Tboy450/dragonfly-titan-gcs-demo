@@ -61,6 +61,71 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   visually reviewed; evidence in `research/side-wall-2026-10-22/`. No game code changed.
 - **Next:** Opposite wall/end connections, deck/attic boundary and independent foam regions.
   First-panel initial pass checked off; broader construction package stays open.
+- **Concurrent work:** Preserved remote game/workflow commits through22e7df8 intact;
+  both log blocks retained. Combined469 tests pass (`merged-tests.txt`), no manual edits
+  to game or workflow code. Simulator implementation unchanged by merge.
+
+### 2026-10-22: Swarmfall graphics quality and adaptive resolution
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a graphics quality setting and adaptive resolution"
+- **What changed:** Checklist PERF-04.
+  - **Graphics: Low / Medium / High** on the title screen, remembered on the device. It sets
+    decor density, city detail (park trees, forge smoke), the ground detail of frontier maps
+    and the sharpest pixel ratio. High is today's look.
+  - Resolution also adapts during a mission: about 2 s of slow frames (under ~40 fps) steps it
+    down, to half at most, and 5 s of fast frames steps it back up. A hidden tab is ignored.
+- **Assumptions:** Thresholds and per-level values are invented [EST]. Not yet measured on a
+  real phone (PERF-01).
+- **Files:** `dist/invasion/quality.mjs` (new), `scene.mjs`, `main.mjs`, `index.html`,
+  `tests/invasion-quality.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (458 pass). Browser: the button cycles and is
+  remembered. Velm Frontier on Low draws about 126 k triangles at 0.75 pixel ratio, about half
+  of High. No console errors.
+
+### 2026-10-22: Swarmfall sound
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add optional generated sound to Swarmfall"
+- **What changed:** The game was silent (checklist AUD-01 to AUD-03). A **♪** button in the
+  mission bar (or M) cycles sound off, quiet, medium and loud. It's off by default, remembered
+  on the device, and starts only after a click or tap. Everything is generated with Web Audio,
+  with no sound files:
+  - The swarm's hum grows with the drones in view.
+  - Shots have a sound per weapon, limited so steady fire rattles rather than roars.
+  - Explosions are sized by what was destroyed. There's a capture chime, a loss tone, and
+    alarm sirens by stage.
+  - Weather: rain, wind, thunder on lightning strikes, and an eruption rumble that grows
+    nearer the view.
+  - Pods: an entry roar on each drop, and parachute flutter at nearby landings.
+  As in the simulator, a pure module decides the sound (`battle-sound.mjs`) and a player plays
+  it (`sound.mjs`).
+- **Assumptions:** All sounds and levels are artistic [EST].
+- **Files:** `dist/invasion/battle-sound.mjs` (new), `sound.mjs` (new), `main.mjs`,
+  `index.html`, `tests/invasion-sound.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (456 pass). Browser: the button switched sound on
+  and saved the level, with no errors. Not yet listened to on real speakers.
+
+### 2026-10-22: Publish workflow on Node 24 actions
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Move the publish workflow to the Node 24 Pages actions"
+- **What changed:** GitHub warned that the Pages actions still ran on the deprecated Node 20
+  (checklist OPS-02). Updated `actions/configure-pages` v5 → v6, `actions/upload-pages-artifact`
+  v4 → v5 and `actions/deploy-pages` v4 → v5. Their release notes show only the Node 24
+  upgrade and an optional new input, so nothing else in the workflow changes.
+- **Files:** `.github/workflows/pages.yml`, `SWARMFALL-TODO.md`
+- **Checks:** Release notes reviewed. The first publish run after pushing confirms it.
+
+### 2026-10-22: Swarmfall alerts: squad under attack, zone being retaken, tappable warnings
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Alert on squads under fire and zones being retaken; tap warnings to jump"
+- **What changed:** Checklist CTRL-06.
+  - The newest alert (J or the Alert button, plus the red minimap ring) now also covers drones
+    under enemy fire and held zones being retaken.
+  - A zone being retaken raises its own warning toast, once until it is back at full control.
+  - Warning toasts are tappable and jump the camera to the alert.
+- **Files:** `dist/invasion/camera-assist.mjs`, `main.mjs`, `invasion.css`,
+  `tests/invasion-camera-assist.test.mjs`, `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (453 pass). In the browser the "being retaken"
+  toast appeared as a button, and tapping it centered the view on the zone. No console errors.
 
 ### 2026-10-22: Record MMRTG public acceptance
 - **Signed:** Codex (OpenAI)
