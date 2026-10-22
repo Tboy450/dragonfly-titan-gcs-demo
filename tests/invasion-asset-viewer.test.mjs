@@ -6,12 +6,13 @@ import { assetCatalog, assetById, createAssetDisplay, loadAssetDisplay } from '.
 
 test('Public asset catalog uses known bundled models and retains creator/license links',()=>{
   assert.equal(new Set(assetCatalog.map(a=>a.id)).size,assetCatalog.length);
-  assert.equal(assetCatalog.length,18);
+  assert.equal(assetCatalog.length,34);
   assert.equal(assetById('../../private-file'),null);
   for(const entry of assetCatalog){
     assert.ok(entry.creator&&entry.license&&entry.category);
     assert.match(entry.source,/^https:\/\//);
     if(entry.url)assert.ok(existsSync(new URL(`../dist/invasion/environments/${entry.url}`,import.meta.url)),entry.id);
+    else if(entry.piece)assert.match(entry.piece,/^(dragonfly|figure:[1-5]|interceptor|structure:(watchtower|flak|radar|sam|jammer|laser|shield)|houses|city:(metropolis|forge|town))$/);
     else assert.ok(['scout','link','striker','breacher'].includes(entry.drone));
   }
 });
@@ -74,4 +75,22 @@ test('Original and polished Scout lab routes keep the same footprint/stand scale
       for(const geometry of geometries)geometry.dispose();for(const material of materials)material.dispose();
     }
   }
+});
+
+test('Swarmfall defenders, defenses and settlements inspect from the game\'s own models, intact',async()=>{
+  const pieces=assetCatalog.filter(a=>a.piece&&!['dragonfly'].includes(a.piece)&&!a.piece.startsWith('city:'));
+  assert.equal(pieces.length,12);
+  for(const entry of pieces){
+    const world=await loadAssetDisplay(entry,null);
+    assert.equal(world.group.userData.asset.id,entry.id);
+    assert.equal(entry.intact,true);
+    let meshes=0;
+    world.group.getObjectByName('Inspection asset').traverse(object=>{
+      if(!object.isMesh)return;meshes+=1;
+      assert.ok([...object.geometry.attributes.position.array].every(Number.isFinite),entry.id);
+    });
+    assert.ok(meshes>=1,entry.id);
+  }
+  const houses=await loadAssetDisplay(assetById('settlements'),null);
+  assert.equal(houses.group.getObjectByName('Inspection asset').children[0].children.length,9,'a hut and four houses with roofs');
 });

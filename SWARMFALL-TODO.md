@@ -1232,6 +1232,15 @@ checklist completion; LAB-05 search/categories and LAB-03 counts remain open.
 - [ ] **LAB-05 (P2)** Improve inspection/comparison workflow: asset categories/search,
   focus/reset, useful isolated detail views and shareable camera/stage links. Preserve stage
   selection across map navigation and make the current city/damage version unmistakable.
+  - **Progress (Claude, October 22):** Swarmfall's own pieces are now in the inspector (18 → 34
+    entries), built by the game's code (`asset-viewer.mjs` `gamePiece`). New categories:
+    - Defenders: three militia in society colors, and the interceptor.
+    - Defenses: all seven.
+    - Settlements: houses at society levels 1-5.
+    - City styles: metropolis, forge and town sample blocks.
+    - The Dragonfly lander drone, under Drones.
+    They show intact (no damage preview), and `?asset=` links work for each. Search is still
+    open.
 - [ ] **LAB-06 (P2)** Measure repeated asset/map/stage switches for stalls, retained GPU
   resources and memory growth. Precompute or schedule expensive damage work as justified;
   keep the Intact view and controls responsive while variants prepare.

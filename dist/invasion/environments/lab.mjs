@@ -149,7 +149,7 @@ try{
   document.body.dataset.ready='true';
 }catch(error){console.error(error);$('loading-text').textContent='A source asset could not load. Reload this page to retry.';$('status').textContent='Environment could not load';throw error;}
 
-let damageSource=assetEntry?.drone||world.noDamage?null:world.source?{parts:assets.SourceDamageParts,originals:new Set([assets.SourceCity])}
+let damageSource=assetEntry?.drone||assetEntry?.intact||world.noDamage?null:world.source?{parts:assets.SourceDamageParts,originals:new Set([assets.SourceCity])}
   :collectDamageParts(assetEntry?world.group.getObjectByName('Inspection asset'):world.group);
 if(assetEntry&&damageSource&&!damageAnchors(damageSource.parts).length)damageSource=null;
 $('damage-preview').hidden=!damageSource;

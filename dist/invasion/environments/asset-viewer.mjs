@@ -8,12 +8,33 @@ const fantasy = (id, name, file) => ({id, name, category:'Fantasy architecture',
   creator:'Kenney', license:'CC0 1.0', source:'https://kenney.nl/assets/fantasy-town-kit'});
 const drone = (id, name, description) => ({id:`drone-${id}`, name, drone:id, category:'Swarmfall drones',
   description, creator:'Swarmfall', license:'Original game asset', source:'https://github.com/Tboy450/dragonfly-titan-gcs-demo'});
+// Other Swarmfall pieces, built by the game's own code (models.mjs, city-layout.mjs, city-render.mjs)
+// so the lab shows exactly what battles draw. piece: "dragonfly", "figure:<society level>",
+// "interceptor", "structure:<type>", "houses" or "city:<style>". Shown intact (no damage preview).
+const game = (id, name, category, piece, description) => ({id, name, category, piece, description, intact:true,
+  creator:'Swarmfall', license:'Original game asset', source:'https://github.com/Tboy450/dragonfly-titan-gcs-demo'});
 
 export const assetCatalog = Object.freeze([
   drone('scout','Scout drone','The light reconnaissance drone. Compare its original hull with the first hull/sensor polish pass; art review is still pending.'),
   drone('link','Link drone','The control-path drone used to capture zones and turn defenses.'),
   drone('striker','Striker drone','The assault drone used in the Swarmfall campaign.'),
   drone('breacher','Breacher drone','The heavy structure-attack drone, shown separately from a battle.'),
+  game('drone-dragonfly','Dragonfly lander drone','Swarmfall drones','dragonfly','NASA\'s Dragonfly as the game flies it once recovered on Titan: the research model\'s exterior, merged for battle, with its eight rotors.'),
+  game('militia-spearman','Spear thrower','Swarmfall defenders','figure:1','Tribal militia (society level 1), in the tribal color. Throws spears at low drones.'),
+  game('militia-rifleman','Rifle militia','Swarmfall defenders','figure:2','Agrarian militia (level 2), in the farming-town color.'),
+  game('militia-trooper','Trooper','Swarmfall defenders','figure:3','Industrial and networked troops (levels 3-4), in the industrial color.'),
+  game('interceptor','Interceptor drone','Swarmfall defenders','interceptor','The spacefaring society\'s own delta drone, which hunts the swarm in the air.'),
+  game('defense-watchtower','Watchtower','Swarmfall defenses','structure:watchtower','Timber lookout with a bolt thrower; the glowing lamp shows its side.'),
+  game('defense-flak','Flak gun','Swarmfall defenses','structure:flak','Twin-barrel anti-air gun with splash damage out to 110 m.'),
+  game('defense-radar','Radar mast','Swarmfall defenses','structure:radar','Makes nearby defenders hit harder.'),
+  game('defense-sam','Missile battery','Swarmfall defenses','structure:sam','Four-tube launcher reaching 150 m.'),
+  game('defense-jammer','Signal jammer','Swarmfall defenses','structure:jammer','Ringed mast that slows drones and stops Links hacking nearby.'),
+  game('defense-laser','Laser turret','Swarmfall defenses','structure:laser','Domed turret that burns drones, troops and structures.'),
+  game('defense-shield','Shield pylon','Swarmfall defenses','structure:shield','Hexagonal pylon that cuts damage to nearby defenses.'),
+  game('settlements','Settlement houses by society','Swarmfall settlements','houses','A row from tribal huts to spacefaring towers (society levels 1-5), sized and colored as zones draw them.'),
+  game('city-metropolis','Metropolis block (Corvan Prime)','Swarmfall city styles','city:metropolis','A 3 × 3 block sample of the metropolis style: tiered towers, a square, rooftop gear.'),
+  game('city-forge','Forge city block (Forgeholm)','Swarmfall city styles','city:forge','A 3 × 3 block sample of the forge style: foundry halls, smokestacks, cooling towers.'),
+  game('city-town','Walled market town (Brackenford)','Swarmfall city styles','city:town','A 3 × 3 block sample of the town style: tile-roofed houses, a keep and the town wall with gates.'),
   urban('building-large','Large downtown building','Building_Large_2','Textured urban building from Downtown City MegaKit Standard.'),
   urban('building-medium','Medium downtown building','Building_Medium_2_001','A complete medium-height building for urban districts.'),
   urban('building-small','Small downtown building','Building_Small_1','A smaller complete building for street-level composition.'),
@@ -50,6 +71,35 @@ export function createAssetDisplay(root, entry) {
   return {group,moving:[],target:new THREE.Vector3(0,size.y*scale*.45,0),asset:true};
 }
 
+async function gamePiece(piece){
+  const [kind,arg]=piece.split(':'),root=new THREE.Group();
+  const models=await import('../models.mjs?v=dev');
+  const shaded=(geometry,color=0xffffff)=>new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({vertexColors:true,color,metalness:.3,roughness:.6}));
+  if(kind==='dragonfly')root.add(models.dragonflyTemplate());
+  else if(kind==='figure')root.add(shaded(models.figureModel(),models.societyColors[Number(arg)]));
+  else if(kind==='interceptor')root.add(shaded(models.interceptorModel()));
+  else if(kind==='structure'){
+    const all=models.structureModels(),model=all[arg];
+    for(const [type,other] of Object.entries(all))if(type!==arg){other.body.dispose();other.glow.dispose();}
+    root.add(shaded(model.body),new THREE.Mesh(model.glow,new THREE.MeshBasicMaterial({vertexColors:true,color:0xff8a4a})));
+  }else if(kind==='houses'){
+    // As zones draw them (scene.mjs houses): huts at level 1, then walls and roofs growing with the level.
+    const parts=models.buildingModels(),sizes=[[4,4],[5,4],[6,8],[8,15],[9,20]];
+    sizes.forEach(([w,h],i)=>{
+      const tier=i+1,x=(i-2)*14,color=models.societyColors[tier];
+      if(tier===1){const hut=shaded(parts.hut,color);hut.scale.setScalar(w);hut.position.x=x;root.add(hut);return;}
+      const body=shaded(parts.body,color);body.scale.set(w,h,w);body.position.x=x;
+      const roof=shaded(parts.roof,tier>=4?0x9fb3c8:0x7a3b2a);roof.scale.set(w*1.05,tier>=4?0.3:2.4,w*1.05);roof.position.set(x,h,0);
+      root.add(body,roof);
+    });
+  }else if(kind==='city'){
+    const [{createCityLayout},{buildCity}]=await Promise.all([import('../city-layout.mjs?v=dev'),import('../city-render.mjs?v=dev')]);
+    const town=arg==='town';
+    buildCity(root,createCityLayout({style:arg,blocks:3,pitch:town?60:100,street:town?10:20,seed:7,peak:arg==='forge'?110:town?34:150,x:0,z:0,ground:0}));
+  }else throw new Error(`Unknown game piece ${piece}`);
+  return root;
+}
+
 export async function loadAssetDisplay(entry, loader, { scoutVersion = 'polished' } = {}) {
   let root;
   if(entry.drone){
@@ -67,7 +117,8 @@ export async function loadAssetDisplay(entry, loader, { scoutVersion = 'polished
       new THREE.Mesh(model.glow,new THREE.MeshBasicMaterial({vertexColors:true})));
     const material=new THREE.MeshStandardMaterial({color:0x93b6c7,transparent:true,opacity:.23,side:THREE.DoubleSide});
     for(const [x,y,z,r] of model.rotors){const disc=new THREE.Mesh(new THREE.CircleGeometry(r,24).rotateX(-Math.PI/2),material);disc.position.set(x,y,z);root.add(disc);}
-  }else root=(await loader.loadAsync(entry.url)).scene;
+  }else if(entry.piece)root=await gamePiece(entry.piece);
+  else root=(await loader.loadAsync(entry.url)).scene;
   const display=createAssetDisplay(root,entry);
   if(entry.drone==='scout')display.group.userData.asset.version=scoutVersion==='original'?'original':'polished';
   return display;

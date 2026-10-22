@@ -39,6 +39,29 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall's own assets in the Asset & Environment Lab
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add Swarmfall defenders, defenses, settlements, city styles and the Dragonfly to the lab"
+- **What changed:** The owner assigned bringing Swarmfall's assets into the lab to this chat
+  (the local asset studio chat added the Campaign planets world, `a79c25b`). The inspector
+  grows from 18 to 34 pieces, each built by the game's own code, so the lab shows exactly what
+  battles draw:
+  - The **Dragonfly lander drone**.
+  - **Defenders:** spear thrower, rifle militia and trooper in their society colors, and the
+    interceptor drone.
+  - **Defenses:** watchtower, flak gun, radar mast, missile battery, signal jammer, laser
+    turret and shield pylon, with the defender glow.
+  - **Settlement houses** by society level 1-5.
+  - **City styles:** 3 × 3 block samples of metropolis (Corvan Prime), forge (Forgeholm) and
+    walled market town (Brackenford).
+  They show as intact models (no destruction preview).
+- **Files:** `dist/invasion/environments/asset-viewer.mjs`, `lab.mjs` (intact flag),
+  `tests/invasion-asset-viewer.test.mjs`, `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (506 pass). The new test builds all 12 defenders,
+  defenses and settlement pieces. The Dragonfly and city samples draw textures, so they were
+  checked in the browser: all four city and Dragonfly views and the laser turret loaded with no
+  console errors.
+
 ### 2026-10-22: Lab — Campaign planets world with a planet picker
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app), from the asset studio chat
 - **Commit:** "Add a Campaign planets world to the Asset & Environment Lab"
