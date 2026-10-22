@@ -53,6 +53,11 @@ has a recorded bounded1.46 mm embedding, to resolve in a later actual-mount/bond
 24 numbers, Pilot return, optical rays and visualization clearance checks pass. Real/CAD/
 model/phone comparison and raw/context views saved. Deck/attic boundary next, then separate
 foam regions, camera blisters and remaining structural connections. Do not restart parts.
+Releasedd1343f2 and recovery tag pushed; Pages39731139711 succeeded. Public Edge42
+viewport/subassembly cases (24 port/18 joints), independent part/global masks and restore,
+sources, original24 rows and Pilot return pass without page/network failures or overflow.
+Receipt/screenshots in current research `live-d1343f2-port/` and `live-d1343f2-joints/`.
+Local preview server stopped. Deck/attic boundary is next; no repeated initial part passes.
 
 Historical October22 wall checkpoint: first starboard panel added without altering any of the
 24 numbered parts. Real frame photos and NASA's published 0.01-inch aluminum faces used;

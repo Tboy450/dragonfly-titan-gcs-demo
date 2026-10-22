@@ -39,6 +39,17 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Record port-wall and joint public acceptance
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record port wall and joint public acceptance [skip ci]
+- **Release:**d1343f2 and recovery tag pushed; Pages39731139711 succeeded.481 tests pass.
+- **Checks:** Public Edge42 viewport/subassembly cases (24 port/18 joints) at1440/390/360px,
+  independent part/global masks and restore, original24 numbered rows, sources, installed
+  context and Pilot return pass without page/network failures or overflow. Receipts and
+  screenshots in current research `live-d1343f2-port/` and `live-d1343f2-joints/`.
+  Local preview stopped. Documentation/screenshots only; no duplicate test/deployment cycle.
+- **Next:** Deck/attic boundary, then separate insulation regions and local camera blisters.
+
 ### 2026-10-22: Add port wall and estimated end-joint inspection
 - **Signed:** Codex (OpenAI)
 - **Commit:** Add port structural wall and estimated end joints

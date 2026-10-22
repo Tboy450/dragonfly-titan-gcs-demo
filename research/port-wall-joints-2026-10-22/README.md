@@ -95,6 +95,17 @@ resolve the actual termination rather than silently moving the equipment now.
 - Three views per new assembly and two contextual details pass nonblank/framed WebGL
   pixel checks. Comparison and raw/detail renders visually reviewed before publication.
 
+## Published Acceptance
+
+Release `d1343f2` and recovery tag pushed. [Pages run39731139711](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/39731139711)
+completed successfully, including the full suite. [Public build](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=d1343f2)
+passed **42** actual Edge viewport/subassembly cases:24 port,18 joints, at1440/390/360px.
+Independent part/global masks and restore, original24 numbered rows, source links, installed
+context and Pilot return pass with no page/network failures or horizontal overflow.
+Receipts/screenshots are in [live-d1343f2-port](live-d1343f2-port/checks.json) and
+[live-d1343f2-joints](live-d1343f2-joints/checks.json). Local preview server stopped.
+Public receipt is documentation/screenshots only, skips CI and does not redeploy unchanged app.
+
 ## Next / Handoff
 
 **Deck and attic boundary next:** inventory the current deck geometry, its source and
