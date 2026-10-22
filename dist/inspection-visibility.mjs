@@ -46,6 +46,8 @@ export function createInspectionVisibility(subsystems) {
   add("body-shell", subsystems.fuselage);
   add("attic-shell", subsystems.attic);
   add("structural-panels", subsystems["starboard-wall"]);
+  add("structural-panels", subsystems["port-wall"]);
+  add("structural-panels", subsystems["wall-end-joints"]);
   for (const name of ["nose-bulkhead", "aft-bulkhead"]) add("partitions", subsystems[name]);
   for (const name of ["airflow", "sample-flow"]) add("flow-markers", subsystems[name]);
   for (const [name, group] of Object.entries(subsystems)) {

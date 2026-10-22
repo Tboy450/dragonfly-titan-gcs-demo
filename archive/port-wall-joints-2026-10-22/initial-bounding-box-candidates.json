@@ -1,0 +1,10 @@
+[
+  {
+    "part": "sample-lines",
+    "mesh": "draco-intake-tube-port"
+  },
+  {
+    "part": "sample-lines",
+    "mesh": "draco-intake-tube-starboard"
+  }
+]

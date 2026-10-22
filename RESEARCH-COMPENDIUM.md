@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October22 port wall/end joints (Codex):** [current evidence and sample](research/port-wall-joints-2026-10-22/README.md).
+Uses the same [PUB]0.254 mm aluminum facesheets as first wall; opposite-side outline and
+camera reliefs [EST]. Simple1.5 mm webs/returns follow the existing nose edge and25-degree
+aft frame; all fitting dimensions/counts [EST]. No seal, hidden insert/core/bondline or
+structural/electrical-bond qualification inferred. Original24 parts/starboard unchanged.
+Existing IEM bolt tips contact inner face; shallow prior strap endpoint explicitly documented,
+not a flight bond model. Deck/attic boundary and independent insulation regions remain next.
+
 **October22 first structural wall (Codex):** [sources, samples and installation limits](research/side-wall-2026-10-22/README.md).
 [PUB] NASA April23: honeycomb primary panels designed by APL, manufactured by Lockheed
 Martin Space, aluminum facesheets 0.01 in (0.254 mm). Real May frame photo informs finish

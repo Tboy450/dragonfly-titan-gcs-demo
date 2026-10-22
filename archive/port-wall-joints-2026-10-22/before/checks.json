@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "before": true,
+  "live": false,
+  "build": "Build local",
+  "target": "port-wall",
+  "cases": 6,
+  "stable24Numbers": true,
+  "errors": [],
+  "failed": []
+}

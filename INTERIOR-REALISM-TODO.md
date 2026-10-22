@@ -35,13 +35,26 @@ explicitly estimated, not flight CAD. Do not repeatedly search the same closed l
    estimated edge closeouts and camera relief; outer/inner/edge focuses and independent masks.
    [Sources, process, sample and limits](research/side-wall-2026-10-22/README.md).
    Opposite wall/end joints, deck and independent foam regions keep this overall item open.
+   Port wall and estimated nose/canted-aft joint initial passes now complete; deck/attic
+   boundary is next. [Current sources, samples and handoff](research/port-wall-joints-2026-10-22/README.md).
 
 Other harness work stays queued behind this order. Current count24/24 initial passes
 (9 Codex / 15 Claude), with labeled hardware-family/design approximations. Installation and
 construction work are still open. Follow the expanded packages below after the ordered
 items; do not confuse finishing the numbered list with finishing construction and connections.
 
-Current October22 wall checkpoint: first starboard panel added without altering any of the
+Current October22 port/joint checkpoint: two new unnumbered inspection choices, port
+wall with separate Down Camera and Microscopic Camera/LED reliefs; nose and canted aft
+joint pairs follow existing bulkhead edges. New detail is estimated; no core/seal/insert
+or qualified load/bond claim. All24 numbered parts and accepted starboard geometry/poses
+match baseline8ac4e59. Existing IEM bolt tips meet the inner face; prior ground-bond endpoint
+has a recorded bounded1.46 mm embedding, to resolve in a later actual-mount/bond pass.
+481 tests pass;42 local Edge viewport/subassembly cases, masks/restore, sources, original
+24 numbers, Pilot return, optical rays and visualization clearance checks pass. Real/CAD/
+model/phone comparison and raw/context views saved. Deck/attic boundary next, then separate
+foam regions, camera blisters and remaining structural connections. Do not restart parts.
+
+Historical October22 wall checkpoint: first starboard panel added without altering any of the
 24 numbered parts. Real frame photos and NASA's published 0.01-inch aluminum faces used;
 outline, 12 mm separation, fittings and camera relief estimated. Core cells/layup unmodeled.
 Initial inboard draft crossed PSU/TWTA harness, archived; wall alone moved 9.5 mm outboard.
@@ -921,8 +934,11 @@ statuses: initial part, installation, construction access, and final UI/integrat
   hardware unchanged; wall-face/numbered/shoulder clearance checked. [Evidence and limits](research/side-wall-2026-10-22/README.md).
   Exact frame dimensions, core/layup/inserts, shoulder load-path connections and local foam
   remain open follow-ups, not a claim of completed flight construction.
-- [ ] **Opposite side and end interfaces:** extend only after first-panel acceptance; reconcile
-  nose and canted aft bulkheads, fasteners and duct/harness penetrations with completed parts.
+- [x] **Opposite side/end-interface initial passes:** port panel has separate reliefs for
+  Down Camera and Microscopic Camera/LED; separately selectable estimated nose/aft web/return
+  pairs meet existing bulkhead edges. Original24 parts and starboard unchanged. [Sources and checks](research/port-wall-joints-2026-10-22/README.md).
+  Exact flight fitting/insert/bond/seal details, IEM ground-bond termination, shoulder load
+  paths and insulation penetrations remain open follow-ups, not claimed complete construction.
 - [ ] **Deck and attic boundary:** upper/lower deck supports, instrument access and service
   penetrations, keeping sample paths and camera views clear; no unsupported hidden cavities.
 - [ ] **Insulation regions:** distinguish body/attic/arm foam and warm/cold boundaries from

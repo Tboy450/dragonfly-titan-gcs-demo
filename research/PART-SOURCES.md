@@ -6,6 +6,11 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Port wall/end joints (Codex, October22):** [real/CAD/model/context comparison and source limits](port-wall-joints-2026-10-22/README.md).
+Reuses original April fit-check and May frame photos (NASA/Johns Hopkins APL/Ed Whitman),
+NASA April23 thickness report, ICES2023 p5 arrangement-only CAD and saved DragonCam pages.
+Port apertures and hidden joint shapes remain estimated; not photos of exact flight fittings.
+
 **First structural wall (Codex, October22):** [photo/CAD/model/app comparison and notes](side-wall-2026-10-22/README.md).
 Reuses original [real frame photo](rotor-heads-2026-10-15/nasa-apl-lander-frame-tap-test-2026-05.jpg)
 and [April fit-check photo](lander-structure-2026/nasa-apl-top-deck-fit-check.jpg), both

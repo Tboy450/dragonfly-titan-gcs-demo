@@ -15,6 +15,7 @@ import { buildBatteryMeasurement } from "./battery-measurement.mjs?v=dev";
 import { buildMmrtgMeasurement } from "./mmrtg-measurement.mjs?v=dev";
 import { buildMmrtg } from "./mmrtg.mjs?v=dev";
 import { buildSideWall } from "./side-wall.mjs?v=dev";
+import { buildWallEndJoints } from "./wall-end-joints.mjs?v=dev";
 import { buildNoseSensors } from "./nose-sensors.mjs?v=dev";
 import { buildAftBulkhead, aftBulkheadAsset, aftFaceZ } from "./aft-bulkhead.mjs?v=dev";
 import { buildRotorHead, buildHubPlate, rotorHeadAsset } from "./rotor-heads.mjs?v=dev";
@@ -169,6 +170,12 @@ export function buildResearchModel(kit) {
   subsystem("starboard-wall", "equipment-bay");
   buildTarget.userData.layer = "structure";
   buildSideWall({ parent: buildTarget, mesh });
+  subsystem("port-wall", "equipment-bay");
+  buildTarget.userData.layer = "structure";
+  buildSideWall({ parent: buildTarget, mesh, side: -1 });
+  subsystem("wall-end-joints", "equipment-bay");
+  buildTarget.userData.layer = "structure";
+  buildWallEndJoints({ parent: buildTarget, mesh });
   subsystem("navigation-sensors", "external-sensors");
   for (const x of [-0.22, 0, 0.22]) {
     mesh(new THREE.BoxGeometry(0.108, 0.10, 0.048), armMaterial, [x, -0.11, -1.93]);

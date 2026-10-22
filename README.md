@@ -15,7 +15,13 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
-October22 Codex: [first structural side wall](research/side-wall-2026-10-22/README.md)
+October22 Codex: [port wall and end joints](research/port-wall-joints-2026-10-22/README.md)
+extend the construction view with separate port camera reliefs and estimated nose/canted-aft
+joint pairs. Select **Port structural wall** or **Wall end joints (estimated)** for their
+targets and independent masks. Original24 numbered parts and starboard geometry unchanged.
+Next: deck/attic boundary, then separate foam regions and local camera insulation.
+
+Earlier October22 Codex: [first structural side wall](research/side-wall-2026-10-22/README.md)
 adds separate aluminum faces and edge fittings, with NASA's published 0.254 mm face-sheet
 thickness. Select **Starboard structural wall** for its three targets and independent masks;
 the original 24 parts remain unchanged. Outline, panel separation and fittings are estimates.

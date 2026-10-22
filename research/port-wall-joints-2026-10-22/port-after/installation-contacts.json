@@ -1,0 +1,8 @@
+[
+  {
+    "part": "iem",
+    "mesh": "iem-ground-strap-braid",
+    "reason": "existing estimated wall-bond endpoint",
+    "depthM": 0.001458121001720436
+  }
+]

@@ -11,28 +11,38 @@ export const sideWallAsset = Object.freeze({
   bottomY: -0.31, topY: 0.07, edgeM: 0.012,
   cameraRelief: Object.freeze({ frontZ: 0.10, aftZ: 0.22, topY: -0.19 }),
 });
+export const portWallAsset = Object.freeze({
+  ...sideWallAsset, revision: "port-wall-2026-10-22",
+  cameraReliefs: Object.freeze([
+    sideWallAsset.cameraRelief,
+    Object.freeze({ frontZ: .29, aftZ: .455, topY: -.148 }),
+  ]),
+});
 
-export function buildSideWall({ parent, mesh }) {
-  const A = sideWallAsset, C = A.cameraRelief;
+export function buildSideWall({ parent, mesh, side = 1 }) {
+  const port = side === -1, A = port ? portWallAsset : sideWallAsset;
+  const reliefs = A.cameraReliefs ?? [A.cameraRelief], prefix = port ? "port-wall" : "side-wall";
+  const target = port ? new THREE.Group() : parent;
+  if (port) { target.name = "port-wall-reflection"; target.scale.x = -1; parent.add(target); }
   Object.assign(parent.userData, {
-    inspectionTitle: "Starboard structural wall", assetRevision: A.revision,
+    inspectionTitle: port ? "Port structural wall" : "Starboard structural wall", assetRevision: A.revision,
     dimensionConfidence: "PUB+EST", coreMicrostructureModeled: false,
     source: "NASA/APL real2026 frame photo; NASA April23 aluminum facesheet thickness. Outline, separation, closeouts and camera relief estimated",
   });
   const layer = (name, label, category) => {
     const g = new THREE.Group(); g.name = name;
-    Object.assign(g.userData, { inspectionLabel: label, inspectionLayer: category }); parent.add(g); return g;
+    Object.assign(g.userData, { inspectionLabel: label, inspectionLayer: category }); target.add(g); return g;
   };
-  const outer = layer("side-wall-outer-focus", "Outer aluminum face (0.254 mm)", "equipment-covers");
-  const inner = layer("side-wall-inner-focus", "Inner aluminum face (0.254 mm)", "equipment-casings");
-  const edges = layer("side-wall-edge-focus", "Estimated edge closeouts and fasteners", "mounts");
+  const outer = layer(`${prefix}-outer-focus`, "Outer aluminum face (0.254 mm)", "equipment-covers");
+  const inner = layer(`${prefix}-inner-focus`, "Inner aluminum face (0.254 mm)", "equipment-casings");
+  const edges = layer(`${prefix}-edge-focus`, "Estimated edge closeouts and fasteners", "mounts");
   const silver = new THREE.MeshStandardMaterial({ color: 0xb8bec3, metalness: 0.72, roughness: 0.4, side: THREE.DoubleSide });
   const edgeMat = new THREE.MeshStandardMaterial({ color: 0x929ca4, metalness: 0.65, roughness: 0.45 });
   const steel = new THREE.MeshStandardMaterial({ color: 0x6b7378, metalness: 0.8, roughness: 0.3 });
   const tape = new THREE.MeshStandardMaterial({ color: 0xcda937, metalness: 0.15, roughness: 0.52 });
   const outline = [
     [A.frontZ, A.bottomY + .025], [A.frontZ + .025, A.bottomY],
-    [C.frontZ, A.bottomY], [C.frontZ, C.topY], [C.aftZ, C.topY], [C.aftZ, A.bottomY],
+    ...reliefs.flatMap(C => [[C.frontZ, A.bottomY], [C.frontZ, C.topY], [C.aftZ, C.topY], [C.aftZ, A.bottomY]]),
     [A.aftZ - .025, A.bottomY], [A.aftZ, A.bottomY + .025],
     [A.aftZ, A.topY - .012], [A.aftZ - .012, A.topY],
     [A.frontZ + .012, A.topY], [A.frontZ, A.topY - .012],
@@ -45,8 +55,8 @@ export function buildSideWall({ parent, mesh }) {
   const facing = (name, x, owner) => {
     const o = mesh(faceGeometry, silver, [x,0,0], owner); o.name = name; return o;
   };
-  facing("side-wall-outer-aluminum-face", A.outerX - A.faceM, outer);
-  facing("side-wall-inner-aluminum-face", A.innerX, inner);
+  facing(`${prefix}-outer-aluminum-face`, A.outerX - A.faceM, outer);
+  facing(`${prefix}-inner-aluminum-face`, A.innerX, inner);
   const box = (name, dimensions, p, mat, owner = edges) => {
     const o = mesh(new THREE.BoxGeometry(...dimensions), mat, p, owner); o.name = name; return o;
   };
@@ -72,7 +82,7 @@ export function buildSideWall({ parent, mesh }) {
   };
   for (let z=A.frontZ+.045; z<A.aftZ-.025; z+=.075) {
     screw(z,A.topY-.012);
-    if (z<C.frontZ-.012 || z>C.aftZ+.012) screw(z,A.bottomY+.012);
+    if (reliefs.every(C => z<C.frontZ-.012 || z>C.aftZ+.012)) screw(z,A.bottomY+.012);
   }
   for (const z of [A.frontZ+.012,A.aftZ-.012]) for (const y of [-.24,-.16,-.08,0]) screw(z,y);
   for (const z of [-1.28,-.93,-.38,.36,.68]) {

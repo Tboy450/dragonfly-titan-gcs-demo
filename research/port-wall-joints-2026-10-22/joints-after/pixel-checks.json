@@ -1,0 +1,14 @@
+{
+  "outer": {
+    "count": 13615,
+    "edge": 0
+  },
+  "inner": {
+    "count": 12457,
+    "edge": 0
+  },
+  "edge": {
+    "count": 11353,
+    "edge": 0
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "before": false,
+  "live": false,
+  "build": "Build local",
+  "target": "wall-end-joints",
+  "cases": 18,
+  "stable24Numbers": true,
+  "errors": [],
+  "failed": []
+}

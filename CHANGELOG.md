@@ -39,6 +39,29 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Add port wall and estimated end-joint inspection
+- **Signed:** Codex (OpenAI)
+- **Commit:** Add port structural wall and estimated end joints
+- **What changed:** Shared panel builder adds a distinct port wall with two camera reliefs;
+  new side webs/returns bridge existing nose/canted-aft edges. Separate unnumbered selector
+  entries, outer/inner/edge and nose/aft focuses, independent part/global masks and source
+  notes. Exact numbered24 and existing starboard geometry/poses unchanged; no game edits.
+- **Evidence / assumptions:** Rechecked NASA April23/APL July9 reports, reused real April/May
+  photos and saved CAD/DragonCam pages. Aluminum face thickness published; outlines, reliefs,
+  12 mm separation,1.5 mm joint thickness/fasteners and connections estimated. No hidden
+  core, inserts, seals, bondlines or qualified structural/electrical-bond performance invented.
+  IEM bolt tips meet inner face; prior1.46 mm strap endpoint embedding recorded as bounded
+  estimated installation contact, not hidden by moving hardware or waiving other collisions.
+- **Checks:**481 full tests pass;42 local Edge Internal/Thermal viewport/subassembly cases,
+  independent masks/restore, sources, original24 rows, Pilot return, exact manifests, camera
+  rays and visualization clearance pass. Tube broad-phase candidates use actual centerline/
+  radius narrow phase; no routes moved. Three raw views per assembly plus two contextual
+  detail views pass nonblank/framed pixels; real/CAD/model/app comparison visually reviewed.
+- **Archive:** Exact before files/views/manifests, baseline8ac4e59 recovery tag and tube
+  candidate report. No rejected geometry draft; helper tolerances/IDs/text checks corrected.
+- **Next:** Deck/attic boundary, separate insulation regions/blisters, shoulder/mount/seal
+  follow-ups and broader connection/layer/UI packages. Overall construction item stays open.
+
 ### 2026-10-22: Swarmfall field guide
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add a field guide generated from the rules"
