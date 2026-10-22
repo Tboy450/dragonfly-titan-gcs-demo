@@ -185,6 +185,10 @@ a { color: var(--swarm); }
 .achievement-list li.earned { border-color: rgba(255, 212, 121, 0.7); background: rgba(255, 212, 121, 0.07); }
 .achievement-list li small { display: block; color: var(--muted); }
 .frontier-note { color: var(--muted); margin: 0 0 6px; }
+.upgrade-list li { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 10px; }
+.upgrade-list li small { grid-column: 1; }
+.upgrade-list li button { grid-column: 2; grid-row: 1 / span 2; min-width: 96px; }
+.upgrade-list .pips { color: var(--swarm); letter-spacing: 2px; font-size: 12px; }
 .guide-dialog { width: min(640px, calc(100% - 24px)); }
 .guide-dialog h3 { margin: 14px 0 4px; }
 .guide-list ul { margin: 4px 0 0; padding-left: 18px; color: var(--muted); font-size: 13px; }

@@ -33,7 +33,7 @@ const isDrone = (unit) => unit.alive && unit.side === "swarm" && !unit.structure
 
 // options: seed, unlocks, podSlots, matter (the campaign bank), terrain ({ heightAt, isLand, setPads? }).
 export function createBattle(planet, options = {}) {
-  const { seed = planet.seed ?? 1, unlocks = ["scout", "link"], podSlots = 12, matter = 160, terrain = flatTerrain } = options;
+  const { seed = planet.seed ?? 1, unlocks = ["scout", "link"], podSlots = 12, matter = 160, terrain = flatTerrain, upgrades = {} } = options;
   const society = societies[planet.society] || societies[0];
   const b = {
     planetId: planet.id, practice: !!planet.practice, threat: planet.threat || 0, tier: society.tier,
@@ -46,6 +46,8 @@ export function createBattle(planet, options = {}) {
     city: terrain.citySpec || null, landform: terrain.landformSpec || null,
     // Frontier maps: zones and the city stay hidden until a drone scouts them.
     explore: !!planet.explore,
+    // Hive upgrade levels bought in the campaign (campaign.mjs hiveUpgrades), fixed for the battle.
+    upgrades: Object.fromEntries(Object.entries(upgrades).filter(([id, n]) => upgradeIds.includes(id) && Number.isInteger(n) && n > 0)),
     matter, unlocks: [...unlocks], podSlots, required: planet.required, objectives: planet.objectives || [],
     alarm: 0, alarmStage: 0, zones: [], units: [], squads: [], pods: [], strikes: [],
     events: [], log: [], nextId: 1, lastDropAt: -Infinity,
@@ -131,9 +133,18 @@ function placeZones(b, planet, terrain) {
 // Defender strength grows with the planet's threat level.
 const strength = (b) => ({ hp: 1 + 0.1 * Math.max(0, b.threat - 1), damage: 1 + 0.08 * Math.max(0, b.threat - 1) });
 
+// Hive upgrades in battle: multipliers from the levels in b.upgrades (none on older battles).
+export const upgradeIds = Object.freeze(["launch", "armor", "engines", "weapons", "sealing", "firmware"]);
+export function upgradeEffects(b) {
+  const level = (id) => b.upgrades?.[id] || 0;
+  return { cooldown: level("launch"), health: 1 + 0.1 * level("armor"), speed: 1 + 0.08 * level("engines"),
+    damage: 1 + 0.1 * level("weapons"), hazard: 1 - 0.2 * level("sealing"), hack: 1 + 0.2 * level("firmware") };
+}
+
 function spawnUnit(b, side, type, x, z, extra = {}) {
   const def = side === "swarm" && droneTypes[type] ? droneTypes[type] : defenderTypes[type] || droneTypes[type];
-  const scale = side === "native" ? strength(b) : { hp: 1, damage: 1 };
+  const boost = upgradeEffects(b);
+  const scale = side === "native" ? strength(b) : droneTypes[type] ? { hp: boost.health, damage: boost.damage } : { hp: 1, damage: 1 };
   const unit = {
     id: b.nextId++, side, type, x, z, alt: extra.alt ?? (def.cruise || 0), vx: 0, vz: 0,
     hp: def.hp * scale.hp, maxHp: def.hp * scale.hp, damageScale: scale.damage,
@@ -190,7 +201,7 @@ export function dropZoneAt(b, x, z) {
 }
 
 export function dropReadyIn(b) {
-  return Math.max(0, dropCooldownS - (b.time - b.lastDropAt));
+  return Math.max(0, dropCooldownS - upgradeEffects(b).cooldown - (b.time - b.lastDropAt));
 }
 
 // Checks a drop without making it. Returns { ok: true } or { ok: false, reason }.
@@ -503,7 +514,8 @@ function moveUnits(b, dt, auras, swarm, natives) {
     let tx = unit.x, tz = unit.z, speed = def.speed, arrive = 8;
     if (unit.side === "swarm") {
       const jammed = inAura(auras.jam, unit, "native");
-      speed *= effects.speed * (stunned(b, unit) ? 0.3 : 1) * (jammed ? 0.6 : 1);
+      const engines = upgradeEffects(b).speed;
+      speed *= effects.speed * engines * (stunned(b, unit) ? 0.3 : 1) * (jammed ? 0.6 : 1);
       const order = unit.order;
       let destination = order;
       // Attack-move: armed drones turn on the nearest defender in sight, then go on.
@@ -530,7 +542,7 @@ function moveUnits(b, dt, auras, swarm, natives) {
           unit.slot = { dx: 0, dz: 0 };
         }
       } else { tx = order.x + unit.slot.dx; tz = order.z + unit.slot.dz; }
-      if (order.pace && Math.sqrt(dist2(unit, destination)) > (destination.radius || 0) + 50) speed = Math.min(speed, order.pace * effects.speed);
+      if (order.pace && Math.sqrt(dist2(unit, destination)) > (destination.radius || 0) + 50) speed = Math.min(speed, order.pace * effects.speed * engines);
       // The Dragonfly lands to drill matter when it has arrived in a held zone with no locals near.
       if (def.harvest) {
         const settled = Math.hypot(tx - unit.x, tz - unit.z) < 3 && order.kind !== "attack";
@@ -721,7 +733,7 @@ function hazardDamage(b, dt, swarm) {
     if (!unit.alive) continue;
     let damage = effects.damage * (heldZoneAt(b, unit) || unit.landed ? 0.5 : 1);
     for (const zone of effects.zones) if (dist2(unit, zone) <= zone.radius ** 2) damage += zone.damage;
-    hurt(b, unit, damage * dt, "hazard");
+    hurt(b, unit, damage * upgradeEffects(b).hazard * dt, "hazard");
   }
 }
 
@@ -775,8 +787,9 @@ function captureZones(b, dt, auras) {
         drones += 1;
         if (stunned(b, unit) || inAura(auras.jam, unit, "native")) continue;
         const def = droneTypes[unit.type];
-        power += def.capture;
-        if (def.hack) hack += def.capture;
+        const capture = def.capture * (def.hack ? upgradeEffects(b).hack : 1);
+        power += capture;
+        if (def.hack) hack += capture;
       } else if (unit.side === "native") {
         if (unit.structure) defenses += 1; else locals += 1;
       }

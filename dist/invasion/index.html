@@ -39,6 +39,7 @@
           <span title="Total payload slots per squad wave; up to 3 drones in each pod">Wave <strong id="bank-pod">12</strong> slots</span>
           <span>Drones <strong id="bank-drones"></strong></span>
         </div>
+        <button id="upgrades-button" class="ghost" type="button" title="Spend banked matter on the Hive: bigger pods, faster launches, armor, engines, weapons, weather sealing, Link firmware">Upgrades</button>
         <button id="achievements-button" class="ghost" type="button">Achievements <span id="achievement-count"></span></button>
       </header>
       <div class="galaxy-body">
@@ -152,6 +153,13 @@
       <p class="frontier-note">Large worlds apart from the campaign. The Hive lands far from everything: only the beacon is known, so send scouts to find outposts and the city. Results never change your campaign matter or conquests.</p>
       <ul id="frontier-list" class="achievement-list frontier-list"></ul>
       <div class="dialog-actions"><button id="frontier-close" class="ghost" type="button">Close</button></div>
+    </dialog>
+
+    <dialog id="upgrades-dialog" class="dialog" aria-labelledby="upgrades-title">
+      <h2 id="upgrades-title">Hive upgrades</h2>
+      <p class="frontier-note">Spend banked matter on the Hive. Upgrades apply to every new mission. Bank: <strong id="upgrade-bank">0</strong> matter.</p>
+      <ul id="upgrade-list" class="achievement-list upgrade-list"></ul>
+      <div class="dialog-actions"><button id="upgrades-close" class="ghost" type="button">Close</button></div>
     </dialog>
 
     <dialog id="achievements-dialog" class="dialog">

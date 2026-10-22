@@ -4,6 +4,7 @@
 import {
   planets, planetById, createProgress, isPlanetUnlocked, nextPlanet,
   applyMissionResult, missionMatter, frontiers, missionSupply, applyFrontierResult,
+  hiveUpgrades, upgradeLevel, buyUpgrade,
 } from "./campaign.mjs?v=dev";
 import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, orderHold, battleSummary,
@@ -270,6 +271,32 @@ $("reset-button").addEventListener("click", async () => {
 $("galaxy-back").addEventListener("click", () => show("title"));
 $("achievements-button").addEventListener("click", showAchievements);
 $("achievements-close").addEventListener("click", () => $("achievements-dialog").close());
+
+// ---- Hive upgrades (ECON-01), bought with banked matter ----
+function showUpgrades() {
+  $("upgrade-bank").textContent = Math.round(progress.matter);
+  $("upgrade-list").innerHTML = Object.entries(hiveUpgrades).map(([id, upgrade]) => {
+    const level = upgradeLevel(progress, id), max = upgrade.cost.length, cost = upgrade.cost[level];
+    const pips = "●".repeat(level) + "○".repeat(max - level);
+    const button = level >= max ? `<button type="button" disabled>Maxed</button>`
+      : `<button type="button" class="primary" data-upgrade="${id}"${progress.matter < cost ? " disabled" : ""}>Buy · ${cost}</button>`;
+    return `<li><strong>${escapeHtml(upgrade.name)} <span class="pips">${pips}</span></strong><small>${escapeHtml(upgrade.effect)} per level</small>${button}</li>`;
+  }).join("");
+  for (const button of $("upgrade-list").querySelectorAll("[data-upgrade]")) {
+    button.addEventListener("click", () => {
+      const result = buyUpgrade(progress, button.dataset.upgrade);
+      toast(result.reason, result.ok ? "good" : "warn");
+      if (!result.ok) return;
+      progress = result.progress;
+      saveProgress();
+      renderPlanetPanel();
+      showUpgrades();
+    });
+  }
+  if (!$("upgrades-dialog").open) { resetPointers(); $("upgrades-dialog").showModal(); }
+}
+$("upgrades-button").addEventListener("click", showUpgrades);
+$("upgrades-close").addEventListener("click", () => $("upgrades-dialog").close());
 
 // ---- Frontier maps (large worlds apart from the campaign) ----
 function showFrontiers() {

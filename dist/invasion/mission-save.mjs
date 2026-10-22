@@ -7,6 +7,7 @@ import { payloadCount, payloadSlots, dropDurationS } from "./units.mjs?v=dev";
 import { legacyMissionId, validMissionId } from "./mission-id.mjs?v=dev";
 import { commandCheckpoint, restoreCommandState } from './command-state.mjs?v=dev';
 import { CITY_LAYOUT_VERSION } from "./city-layout.mjs?v=dev";
+import { upgradeIds } from "./battle.mjs?v=dev";
 
 export const MISSION_SAVE_VERSION = 3;
 // Recovery bounds [EST], deliberately above current campaign sizes, not gameplay caps.
@@ -219,6 +220,8 @@ export function validMissionCheckpoint(value) {
     if (!validObjectives(b.objectives, zones) || !unique(b.specials) || !b.specials.every(s => nameId(s) && b.zones.some(z => z.special === s))) return null;
     if (!b.squads.every(s => positiveId(s.id) && text(s.name) && text(s.color, 128)
       && (s.order === undefined || validOrder(s.order, b, zones, true)))) return null;
+    // Hive upgrades (ECON-01): known IDs only, levels 1-3.
+    if (b.upgrades !== undefined && !(object(b.upgrades) && Object.entries(b.upgrades).every(([id, n]) => upgradeIds.includes(id) && integer(n, 1, 3)))) return null;
     // Waypoint queues and patrol (CTRL-03): at most 8 queued orders, each a full order.
     if (!b.squads.every(s => (s.queue === undefined || Array.isArray(s.queue) && s.queue.length <= 8 && s.queue.every(o => validOrder(o, b, zones)))
       && (s.patrol === undefined || typeof s.patrol === "boolean"))) return null;

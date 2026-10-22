@@ -39,6 +39,29 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall Hive upgrades
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add Hive upgrades bought with banked matter"
+- **What changed:** Checklist ECON-01. **Upgrades** on the galaxy screen spends banked matter.
+  There are seven lines with three levels each (the effect is per level):
+  - Bigger pods: +4 wave slots.
+  - Fast launch: -1 s between drop waves.
+  - Armor plating: +10% drone health.
+  - Engines: +8% drone speed.
+  - Weapons: +10% drone damage.
+  - Weather sealing: -20% hazard damage.
+  - Link firmware: +20% Link capture speed.
+  Every new mission, Frontier ones included, gets them. Levels are saved with progress and fixed
+  on each battle, so checkpoints resume exactly; older battles have none and play as before.
+- **Assumptions:** Effects and costs (100-420 matter) are invented [EST]. Because each planet
+  guarantees a minimum supply, spending the bank early costs little. It's flagged for
+  playtesting.
+- **Files:** `dist/invasion/campaign.mjs`, `battle.mjs`, `mission-save.mjs`, `main.mjs`,
+  `index.html`, `invasion.css`, `tests/invasion-upgrades.test.mjs` (new), `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (491 pass). The new tests cover buying, limits,
+  saving, mission supply (slots capped at 44), battle effects (cooldown, health, damage) and
+  checkpoint validation. Browser: the dialog lists all seven with prices, with no errors.
+
 ### 2026-10-22: Swarmfall waypoints, patrol and attack-move
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add waypoint queues, patrol and attack-move orders"

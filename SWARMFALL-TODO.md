@@ -400,9 +400,25 @@ complete solely because its assets download or its unit tests pass.
 
 ## 4. Economy and progression (ECON)
 
-- [ ] **ECON-01 (P1)** Hive upgrades bought with banked matter between missions: pod slots,
-  pod cooldown, drone armor, speed and damage, hazard resistance, Link hack speed. New screen;
-  rules in `campaign.mjs`.
+- [x] **ECON-01 (P1) — Claude (October 22)** Hive upgrades bought with banked matter between
+  missions: pod slots, pod cooldown, drone armor, speed and damage, hazard resistance, Link hack
+  speed. New screen; rules in `campaign.mjs`.
+  - **Upgrades** on the galaxy screen. Seven lines, three levels each [EST], with the effect
+    per level:
+    - Bigger pods: +4 wave slots.
+    - Fast launch: -1 s between waves.
+    - Armor plating: +10% drone health.
+    - Engines: +8% speed.
+    - Weapons: +10% damage.
+    - Weather sealing: -20% hazard damage.
+    - Link firmware: +20% Link capture.
+  - Bought from the bank (`buyUpgrade`) and saved with progress. Each battle fixes its levels
+    in `b.upgrades` (`battle.mjs` `upgradeEffects`), so saves resume exactly; battles without
+    upgrades are unchanged.
+  - Evidence: `tests/invasion-upgrades.test.mjs`; in the browser the dialog lists all seven.
+  - **Balance note for playtesting:** each planet's minimum supply means spending the bank
+    early costs little. Consider charging upgrades against the supply floor, or raising costs
+    (ECON-03).
 - [ ] **ECON-02 (P2)** A research tree that unlocks drones and abilities, instead of fixed
   planet rewards.
 - [ ] **ECON-03 (P2)** Review every matter source and cost (zone income, salvage, Dragonfly

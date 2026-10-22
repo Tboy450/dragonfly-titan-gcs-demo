@@ -157,6 +157,34 @@ export const frontiers = Object.freeze([
   },
 ].map(Object.freeze));
 
+// Hive upgrades (ECON-01), bought with banked matter between missions; three levels each.
+// Effects per level [EST]: pods +4 wave slots; launch -1 s pod cooldown; armor +10% drone health;
+// engines +8% drone speed; weapons +10% drone damage; sealing -20% hazard damage; firmware +20%
+// Link capture speed. Battles read the levels from b.upgrades (battle.mjs upgradeEffects).
+export const hiveUpgrades = Object.freeze({
+  pods: Object.freeze({ name: "Bigger pods", effect: "+4 wave slots", cost: [150, 260, 400] }),
+  launch: Object.freeze({ name: "Fast launch", effect: "-1 s between drop waves", cost: [100, 180, 300] }),
+  armor: Object.freeze({ name: "Armor plating", effect: "+10% drone health", cost: [140, 240, 380] }),
+  engines: Object.freeze({ name: "Engines", effect: "+8% drone speed", cost: [120, 210, 340] }),
+  weapons: Object.freeze({ name: "Weapons", effect: "+10% drone damage", cost: [160, 270, 420] }),
+  sealing: Object.freeze({ name: "Weather sealing", effect: "-20% hazard damage", cost: [100, 180, 300] }),
+  firmware: Object.freeze({ name: "Link firmware", effect: "+20% Link capture speed", cost: [120, 200, 320] }),
+});
+export const upgradeLevel = (progress, id) => progress.upgrades?.[id] || 0;
+
+// Buy the next level of an upgrade from the bank. Returns { progress, ok, reason }.
+export function buyUpgrade(progress, id) {
+  const upgrade = hiveUpgrades[id], level = upgradeLevel(progress, id);
+  if (!upgrade) return { progress, ok: false, reason: "Unknown upgrade." };
+  if (level >= upgrade.cost.length) return { progress, ok: false, reason: `${upgrade.name} is fully upgraded.` };
+  const cost = upgrade.cost[level];
+  if (progress.matter < cost) return { progress, ok: false, reason: `${upgrade.name} needs ${cost} matter; the bank has ${Math.round(progress.matter)}.` };
+  const next = structuredClone(progress);
+  next.matter -= cost;
+  next.upgrades = { ...(next.upgrades || {}), [id]: level + 1 };
+  return { progress: next, ok: true, reason: `${upgrade.name} level ${level + 1}: ${upgrade.effect}.` };
+}
+
 export const planetById = (id) => planets.find(planet => planet.id === id) || frontiers.find(map => map.id === id) || null;
 
 export const PROGRESS_VERSION = 2;
@@ -177,6 +205,8 @@ export function createProgress() {
     settledMissions: {},
     // Frontier records by map: { wins, stars (best, 1-3), best (fastest win, s) }.
     frontier: {},
+    // Hive upgrade levels by ID (hiveUpgrades).
+    upgrades: {},
     stats: Object.fromEntries(statNames.map(name => [name, 0])),
   };
 }
@@ -200,9 +230,11 @@ export const missionMatter = (progress, planet) => Math.max(progress.matter, pla
 // What an attempt starts with. A frontier brings its own matter and at least its kit; the
 // campaign bank is neither used nor changed.
 export function missionSupply(progress, planet) {
-  if (!planet.frontier) return { matter: missionMatter(progress, planet), unlocks: [...progress.unlocks], podSlots: progress.podSlots };
+  const upgrades = Object.fromEntries(Object.keys(hiveUpgrades).filter(id => id !== "pods").map(id => [id, upgradeLevel(progress, id)]).filter(([, n]) => n > 0));
+  const extraSlots = 4 * upgradeLevel(progress, "pods"), slots = (base) => Math.min(44, base + extraSlots);
+  if (!planet.frontier) return { matter: missionMatter(progress, planet), unlocks: [...progress.unlocks], podSlots: slots(progress.podSlots), upgrades };
   const unlocks = droneOrder.filter(type => progress.unlocks.includes(type) || planet.kit.unlocks.includes(type));
-  return { matter: planet.supply, unlocks, podSlots: Math.max(progress.podSlots, planet.kit.podSlots) };
+  return { matter: planet.supply, unlocks, podSlots: slots(Math.max(progress.podSlots, planet.kit.podSlots)), upgrades };
 }
 
 // A finished frontier mission: statistics and its settlement only (never counted twice).
@@ -299,6 +331,10 @@ export function validProgress(raw) {
   clean.podSlots = Math.max(basePodSlots, Math.min(basePodSlots + 32, count(raw.podSlots)));
   if (raw.achievements && typeof raw.achievements === "object") {
     for (const [id, at] of Object.entries(raw.achievements)) if (/^[a-z0-9-]{1,40}$/.test(id) && Number.isFinite(at)) clean.achievements[id] = at;
+  }
+  for (const [id, upgrade] of Object.entries(hiveUpgrades)) {
+    const level = raw.upgrades?.[id];
+    if (Number.isInteger(level) && level >= 1 && level <= upgrade.cost.length) clean.upgrades[id] = level;
   }
   for (const map of frontiers) {
     const record = raw.frontier?.[map.id];
