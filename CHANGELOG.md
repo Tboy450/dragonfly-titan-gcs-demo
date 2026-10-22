@@ -39,6 +39,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall troops find their way round walls and water
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Route troops on foot round water, buildings and town walls"
+- **What changed:** Checklist FIX-03. Troops used to walk straight at their goal and stop
+  against shores, buildings and walls. Now:
+  - A unit on foot that bumps into something plans a route (`paths.mjs`, a grid search on
+    walkable ground) and follows it. That means through Brackenford's gates, round Aurex's
+    towers, and along Velm's rivers and swamps.
+  - Routes are saved with the battle, so a reloaded mission plays out the same.
+  - At most 3 searches per step, so a crowd at a wall doesn't stall the game.
+  - Unreachable goals are remembered, and the unit slides as before.
+- **Assumptions:** Cell size, search limits and the step budget are invented [EST].
+- **Files:** `dist/invasion/paths.mjs` (new), `battle.mjs`, `mission-save.mjs`,
+  `tests/invasion-paths.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (496 pass). The new tests cover walls 6, 3 and
+  1.5 m thick, identical routes on repeat, unreachable goals, and a rifleman going from 187 m
+  outside Brackenford's wall to its square, also after a save mid-route. Four-wave battles on
+  Halcyon, Velm, Aurex and two Frontier maps stay under 3.5 ms for the worst step.
+
 ### 2026-10-22: Swarmfall Aurex towers are solid; smoother climbing
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Make Aurex's skyline solid and look further ahead when climbing"

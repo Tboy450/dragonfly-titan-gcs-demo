@@ -262,8 +262,18 @@ complete solely because its assets download or its unit tests pass.
   - Older Aurex saves resume without towers. Old look archived in
     `archive/swarmfall-aurex-skyline-2026-10-22/`. Evidence: `tests/invasion-skyline.test.mjs`.
   - Not done: alternate routes where climbing is unsuitable (drones always climb).
-- [ ] **FIX-03 (P1)** Ground troops walk in straight lines and simply stop at shorelines. Add
-  pathfinding (a grid search on `isLand`, or flow fields).
+- [x] **FIX-03 (P1) — Claude (October 22)** Ground troops walk in straight lines and simply stop
+  at shorelines. Add pathfinding (a grid search on `isLand`, or flow fields).
+  - `paths.mjs` `findRoute`: a deterministic grid search on walkable ground (land, not buildings
+    or town walls), with 6 m cells. It checks the ground between cells so walls thinner than a
+    cell still block it, then drops waypoints a straight walk can skip.
+  - A unit on foot that bumps into water, a building or a wall plans a route to its goal and
+    follows it (`battle.mjs`, `unit.route`, saved and validated with the battle). At most 3
+    searches per step. A goal with no route is remembered until it moves, and the unit slides
+    as before.
+  - Evidence: `tests/invasion-paths.test.mjs`. A rifleman outside Brackenford's wall walks home
+    through a gate, and the same happens after a save mid-route. Four-wave battles on five
+    maps stay under 3.5 ms for the worst step.
 - [x] **FIX-04 (P1) — Codex, October 19; implementation and automated checks** Show a
   squad-colored diamond for living friendly drones when their projected model bounds fall
   below 8 CSS pixels. Use actual model/rotor bounds and camera depth; retain selection rings

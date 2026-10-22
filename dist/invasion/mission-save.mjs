@@ -239,7 +239,8 @@ export function validMissionCheckpoint(value) {
           : u.squad === null && (u.side === "native" && !u.converted || u.side === "swarm" && u.structure && u.converted))
         && validOrder(u.order, b, zones) && slot(u.slot)
         && (u.home === null || zones.has(u.home)) && (u.raid === null || zones.has(u.raid))
-        && (u.target === null || positiveId(u.target) && u.target < b.nextId);
+        && (u.target === null || positiveId(u.target) && u.target < b.nextId)
+        && (u.route === undefined || object(u.route) && point(u.route.to) && Array.isArray(u.route.points) && u.route.points.length <= 64 && u.route.points.every(point));
     })) return null;
     const entityIds = [...b.units, ...b.pods].map(e => e.id);
     if (!entityIds.every(positiveId) || new Set(entityIds).size !== entityIds.length

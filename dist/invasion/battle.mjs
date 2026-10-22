@@ -15,6 +15,7 @@ import { nextRandom, randomRange, randomPick } from "./random.mjs?v=dev";
 import { createHazardState, stepHazards } from "./hazards.mjs?v=dev";
 import { validPayload, packDropPods, planDropLandings, podStaggerS } from "./drop-waves.mjs?v=dev";
 import { objectiveText } from './objective-rules.mjs?v=dev';
+import { findRoute } from "./paths.mjs?v=dev";
 
 const zoneRadius = { beachhead: 50, beacon: 42, relic: 40, settlement: 46, mine: 40, capital: 60 };
 // Matter per second while the swarm holds the zone.
@@ -505,9 +506,16 @@ function nearestEnemy(unit, enemies, reach) {
   return best;
 }
 
+// Ground routes (FIX-03, paths.mjs): a unit on foot that bumps into water, a building or a wall
+// plans a route to where it is going and follows it (unit.route, saved with the battle). At most
+// routeBudget searches per step, so a crowd at a wall spreads the work over a few steps; a goal
+// with no route is remembered (empty points) until the goal moves, and the unit slides as before.
+const routeBudget = 3;
+
 function moveUnits(b, dt, auras, swarm, natives) {
   const effects = b.hazards.effects;
   const grid = buildGrid(swarm, 8);
+  let routes = routeBudget;
   const huntable = swarm.filter(drone => !inBeachhead(b, drone));
   const { centerX, centerZ, half } = b.map;
   for (const unit of b.units) {
@@ -567,6 +575,16 @@ function moveUnits(b, dt, auras, swarm, natives) {
         tx = home.x + unit.slot.dx; tz = home.z + unit.slot.dz;
       }
     }
+    const goal = { x: tx, z: tz };
+    if (unit.side === "native" && !def.air && unit.route) {
+      const route = unit.route;
+      if (Math.hypot(route.to.x - goal.x, route.to.z - goal.z) > 20) delete unit.route;
+      else {
+        while (route.points.length && Math.hypot(route.points[0].x - unit.x, route.points[0].z - unit.z) < 4) route.points.shift();
+        if (route.points.length) { tx = route.points[0].x; tz = route.points[0].z; arrive = 2; }
+        else if (Math.hypot(goal.x - unit.x, goal.z - unit.z) < 6) delete unit.route;
+      }
+    }
     const dx = tx - unit.x, dz = tz - unit.z, d = Math.hypot(dx, dz);
     let wantX = 0, wantZ = 0;
     if (d > 0.4) { const s = speed * Math.min(1, d / arrive); wantX = dx / d * s; wantZ = dz / d * s; }
@@ -589,6 +607,12 @@ function moveUnits(b, dt, auras, swarm, natives) {
     let nz = Math.min(centerZ + half, Math.max(centerZ - half, unit.z + unit.vz * dt));
     const walkable = b.walkable || b.isLand;
     if (unit.side === "native" && !def.air && !walkable(nx, nz)) {
+      // Blocked: plan a route if there is none to this goal yet (and the step budget allows).
+      if (!unit.route && routes > 0) {
+        routes -= 1;
+        const points = findRoute(walkable, unit, goal, { limit: 3000, margin: 120 });
+        unit.route = { to: goal, points: (points || []).slice(0, 48) };
+      }
       // At a shore or a building: slide along it if one direction is still open, otherwise stop.
       if (walkable(nx, unit.z)) nz = unit.z;
       else if (walkable(unit.x, nz)) nx = unit.x;
