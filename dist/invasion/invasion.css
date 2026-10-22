@@ -156,6 +156,7 @@ a { color: var(--swarm); }
 .toast { padding: 7px 14px; border-radius: 10px; background: rgba(10, 14, 26, 0.92); border: 1px solid var(--line); animation: toast-in 0.25s ease-out; text-align: center; }
 .toast.good { border-color: rgba(141, 255, 176, 0.6); }
 .toast.bad { border-color: rgba(255, 90, 90, 0.7); }
+.toast.tip { border-color: rgba(255, 212, 121, 0.6); text-align: left; }
 .toast.clickable { pointer-events: auto; cursor: pointer; font: inherit; color: inherit; min-height: 0; }
 .toast.clickable:hover { border-color: var(--swarm); }
 .toast.warn { border-color: rgba(255, 212, 121, 0.7); }

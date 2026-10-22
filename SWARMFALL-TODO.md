@@ -287,8 +287,15 @@ complete solely because its assets download or its unit tests pass.
 - [ ] **TUT-01 (P1)** Interactive Titan tutorial with highlighted buttons and checked steps
   (drop, select, move, capture, ride out a hazard, recover the Dragonfly); skippable. Replaces
   the coach text in `main.mjs`.
-- [ ] **TUT-02 (P1)** First-time tips when something new appears: first defenders, first
-  jammer, each alarm stage, first artillery, first converted defense.
+- [x] **TUT-02 (P1) — Claude (October 22)** First-time tips when something new appears: first
+  defenders, first jammer, each alarm stage, first artillery, first converted defense.
+  `tips.mjs` gives a tip:
+  - the first time any defender is in a drone's sight;
+  - for each new kind of defense (watchtower, flak, radar, missile battery, jammer, laser,
+    shield pylon, interceptor), with how to beat it;
+  - at each alarm stage, the first artillery and the first captured defense.
+  Each shows once per device as a gold-edged toast. Evidence: `tests/invasion-tips.test.mjs`;
+  in the browser the defenders and watchtower tips appeared once and were remembered.
 - [ ] **TUT-03 (P2)** Encyclopedia: every drone, defender, society and hazard with its numbers
   and what beats it (generated from `units.mjs` and `hazards.mjs`).
 - [ ] **TUT-04 (P2)** Tooltips on drop-panel rows and HUD items (alarm thresholds, hazard
@@ -792,7 +799,7 @@ Optional, generated sound since October 22 (`battle-sound.mjs` decides, `sound.m
   The earlier aft-bulkhead/inspection work was completed, archived and published. Its old
   uncommitted/failing-test note is preserved in the checklist archive. Continue protecting the
   game's Dragonfly rendering from simulator changes under TEST-04 rather than reopening this task.
-- [ ] **OPS-02 (P1)** GitHub Actions warnings on the publish run: actions that target Node 20
+- [x] **OPS-02 (P1) — Claude (October 22)** GitHub Actions warnings on the publish run: actions that target Node 20
   are deprecated (`configure-pages@v5`, `deploy-pages@v4`, the upload step); update them when
   newer versions are available. `ubuntu-latest` moves to Ubuntu 26 from October 19, 2026:
   watch the first run after that.
@@ -801,6 +808,8 @@ Optional, generated sound since October 22 (`battle-sound.mjs` decides, `sound.m
     workflow; v5's only addition is an optional `include-hidden-files` input. Check the first
     publish run after this change for the Node 20 warning, then tick this item. Runs on
     October 21-22 (Ubuntu 26 already) all passed.
+  - **Done October 22:** run 39727869683 (`22e7df8`) passed with no Node 20 warning. Only
+    GitHub's general Ubuntu 26 notice remains, and runs on it pass.
 - [ ] **OPS-03 (P2)** Owner decision: a "Play Swarmfall" button on the simulator page (not
   added; the game links back to the simulator).
 - [ ] **OPS-04 (P2)** A short link that ignores capitals in the project name, for example a

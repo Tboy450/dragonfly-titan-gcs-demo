@@ -24,6 +24,20 @@ import { enterFree, exitFree, placeFree, moveFree, freeLimits } from "./free-cam
 import { squadCenter, latestAlert, zoneAlerts, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
 import { cycleSound, soundLabel, updateBattleSound, quietSound } from "./sound.mjs?v=dev";
 import { qualityLevels, nextQuality } from "./quality.mjs?v=dev";
+import { newTips } from "./tips.mjs?v=dev";
+
+// First-time tips (tips.mjs), each shown once per device.
+const TIPS_KEY = "swarmfall-tips";
+const seenTips = new Set();
+try { for (const id of JSON.parse(localStorage.getItem(TIPS_KEY) || "[]")) if (typeof id === "string") seenTips.add(id); } catch { /* optional */ }
+let tipEvents = [];
+function showTips(b) {
+  const tips = newTips(seenTips, b, tipEvents);
+  tipEvents = [];
+  if (!tips.length) return;
+  try { localStorage.setItem(TIPS_KEY, JSON.stringify([...seenTips])); } catch { /* optional */ }
+  for (const tip of tips) toast(`Tip: ${tip.text}`, "tip", 9000);
+}
 import { minimapWorldPoint } from './minimap-controls.mjs?v=dev';
 import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecoveryBackups } from './save-recovery.mjs?v=dev';
 
@@ -1378,6 +1392,7 @@ function tick(now) {
   assistCamera(dt);
   const events = b.events.splice(0);
   mission.lastAlert = latestAlert(mission.lastAlert, events, b);
+  for (const event of events) if (event.kind === "alarm" || event.kind === "artillery") tipEvents.push(event);
   for (const alert of zoneAlerts(mission.zoneWatch, b)) {
     mission.lastAlert = alert;
     toast(`${alert.text}. Tap to view (J).`, "bad", 6000, jumpToAlert);
@@ -1393,7 +1408,7 @@ function tick(now) {
   updateBattleSound(b, listener, mission.paused ? [] : events);
   if (now - mission.lastHud > 120) { updateHud(); mission.lastHud = now; }
   if (now - mission.lastMinimap > 150) { drawMinimap(); mission.lastMinimap = now; }
-  if (now - mission.lastAchievements > 1000) { checkLiveAchievements(); mission.lastAchievements = now; }
+  if (now - mission.lastAchievements > 1000) { checkLiveAchievements(); showTips(b); mission.lastAchievements = now; }
   if (b.outcome && !mission.ended) {
     updateHud();
     finishMission();

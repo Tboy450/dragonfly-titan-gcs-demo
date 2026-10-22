@@ -39,6 +39,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall first-time tips; publish warnings cleared
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add first-time tips for defenders, alarm stages, artillery and captures"
+- **What changed:**
+  - **Tips** (checklist TUT-02, `tips.mjs`) appear as gold-edged toasts, once per device:
+    - the first time a drone sees any defender;
+    - for each new kind of defense (watchtower, flak, radar, missile battery, jammer, laser,
+      shield pylon, interceptor), with how to beat it;
+    - at each alarm stage, the first artillery and the first captured defense.
+  - **OPS-02** checked off: the first publish run on the Node 24 actions (`22e7df8`) showed no
+    Node 20 warning.
+- **Files:** `dist/invasion/tips.mjs` (new), `main.mjs`, `invasion.css`,
+  `tests/invasion-tips.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (466 pass). In the browser on Kepra, the
+  defenders and watchtower tips appeared once and were remembered. No errors.
+
 ### 2026-10-22: Record structural-wall public acceptance
 - **Signed:** Codex (OpenAI)
 - **Commit:** Record structural wall public acceptance [skip ci]
