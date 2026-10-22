@@ -1239,8 +1239,13 @@ checklist completion; LAB-05 search/categories and LAB-03 counts remain open.
     - Settlements: houses at society levels 1-5.
     - City styles: metropolis, forge and town sample blocks.
     - The Dragonfly lander drone, under Drones.
-    They show intact (no damage preview), and `?asset=` links work for each. Search is still
-    open.
+    They show intact (no damage preview), and `?asset=` links work for each.
+  - **Search (October 22, later):** a search box above the picker (`searchAssets`). Every word
+    must match the name, category, description or creator, and the picker shows the matches
+    with a count ("6 of 34 match"). The asset on show stays listed, and Enter opens the first
+    match.
+  - Still open: focus/reset, isolated detail views, shareable camera and stage links, and
+    keeping the stage across map changes.
 - [ ] **LAB-06 (P2)** Measure repeated asset/map/stage switches for stalls, retained GPU
   resources and memory growth. Precompute or schedule expensive damage work as justified;
   keep the Intact view and controls responsive while variants prepare.

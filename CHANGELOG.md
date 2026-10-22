@@ -39,6 +39,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Search in the Asset & Environment Lab
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a search box to the lab's asset inspector"
+- **What changed:** The lab's asset picker gets a search box (LAB-05):
+  - Every typed word must match an asset's name, category, description or creator ("flak",
+    "forge city", "kenney roof").
+  - The picker lists only the matches, with a count. The asset on show always stays listed,
+    and Enter opens the first match.
+  - The list is rebuilt rather than hiding options, so it works on iPhones too.
+- **Files:** `dist/invasion/environments/asset-viewer.mjs` (`searchAssets`), `lab.mjs`,
+  `index.html`, `lab.css`, `tests/invasion-asset-viewer.test.mjs`, `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (514 pass). Browser: on the Flak gun page,
+  "roof" showed "6 of 34 match" with the Flak gun kept. No errors.
+
 ### 2026-10-22: Swarmfall's own assets in the Asset & Environment Lab
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add Swarmfall defenders, defenses, settlements, city styles and the Dragonfly to the lab"

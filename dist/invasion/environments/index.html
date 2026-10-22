@@ -14,7 +14,9 @@
     <nav class="lab-modes" aria-label="Lab mode"><a href="?scene=alien" data-mode="environments">Environments</a><a href="?asset=drone-scout" data-mode="assets">Assets</a></nav>
     <p class="eyebrow" id="lab-eyebrow">WORLDS IN DEVELOPMENT</p><h1 id="title">Building the world…</h1><p id="description" class="description"></p><nav id="world-choices" class="lab-modes" aria-label="Planet" hidden></nav>
     <section id="asset-browser" hidden aria-label="Asset inspector">
-      <label for="asset-choice" class="section-label">CHOOSE AN ASSET</label><select id="asset-choice"></select>
+      <label for="asset-choice" class="section-label">CHOOSE AN ASSET</label>
+      <input id="asset-search" type="search" placeholder="Search: flak, roof, Swarmfall…" aria-label="Search assets" autocomplete="off"><small id="asset-count" class="help" aria-live="polite"></small>
+      <select id="asset-choice"></select>
       <nav id="scout-versions" class="lab-modes" aria-label="Scout model version" hidden><a href="?asset=drone-scout&amp;scout=original" data-scout-version="original">Original</a><a href="?asset=drone-scout&amp;scout=polished" data-scout-version="polished">Polish pass</a></nav>
       <p id="asset-license" class="help"></p><a id="asset-source" target="_blank" rel="noopener">Creator &amp; source ↗</a>
       <p class="help">Fit-to-view display scale. Orbit and zoom to inspect each model.</p>
