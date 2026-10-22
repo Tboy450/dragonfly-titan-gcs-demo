@@ -296,8 +296,15 @@ complete solely because its assets download or its unit tests pass.
   - at each alarm stage, the first artillery and the first captured defense.
   Each shows once per device as a gold-edged toast. Evidence: `tests/invasion-tips.test.mjs`;
   in the browser the defenders and watchtower tips appeared once and were remembered.
-- [ ] **TUT-03 (P2)** Encyclopedia: every drone, defender, society and hazard with its numbers
-  and what beats it (generated from `units.mjs` and `hazards.mjs`).
+- [x] **TUT-03 (P2) — Claude (October 22)** Encyclopedia: every drone, defender, society and
+  hazard with its numbers and what beats it (generated from `units.mjs` and `hazards.mjs`).
+  **Field guide** on the title screen (`field-guide.mjs`), generated from the rules:
+  - Drones: cost, slots, health, speed, height, sight, capture and weapons, and the defenses
+    most dangerous to them.
+  - Defenders: health, weapons and effect auras, and the drones that beat them.
+  - Societies: troops, defenses, capture speed and artillery.
+  - Hazards: warning time, duration and advice.
+  Evidence: `tests/invasion-field-guide.test.mjs`; the browser shows 31 entries in 4 sections.
 - [ ] **TUT-04 (P2)** Tooltips on drop-panel rows and HUD items (alarm thresholds, hazard
   effects, supply).
 - [ ] **TUT-05 (P3)** A short intro screen for the Hive and the campaign.

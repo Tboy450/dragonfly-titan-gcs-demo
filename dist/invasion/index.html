@@ -19,6 +19,7 @@
           <button id="resume-button" class="primary" type="button" hidden>Resume mission</button>
           <button id="play-button" class="primary" type="button">Play campaign</button>
           <button id="frontier-button" type="button" title="Large maps with a city to find, apart from the campaign">Frontier maps</button>
+          <button id="guide-button" type="button" title="Every drone, defender, society and hazard, with its numbers and what beats it">Field guide</button>
           <button id="reset-button" class="ghost" type="button">Reset progress</button>
           <button id="save-files-button" class="ghost" type="button">Save files</button>
           <button id="quality-button" class="ghost" type="button" title="Graphics quality: decor density, city detail and the sharpest resolution. The resolution also adapts on its own when frames slow down.">Graphics: High</button>
@@ -137,6 +138,12 @@
         <button id="debrief-retry" type="button">Try again</button>
         <button id="debrief-galaxy" class="primary" type="button">Back to the galaxy</button>
       </div>
+    </dialog>
+
+    <dialog id="guide-dialog" class="dialog guide-dialog" aria-labelledby="guide-title">
+      <h2 id="guide-title">Field guide</h2>
+      <div id="guide-body"></div>
+      <div class="dialog-actions"><button id="guide-close" class="ghost" type="button">Close</button></div>
     </dialog>
 
     <dialog id="frontier-dialog" class="dialog" aria-labelledby="frontier-title">

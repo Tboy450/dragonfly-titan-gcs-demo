@@ -39,6 +39,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall field guide
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a field guide generated from the rules"
+- **What changed:** Checklist TUT-03. **Field guide** on the title screen lists every drone,
+  defender, society and hazard with its numbers and what beats it:
+  - Drones: cost, slots, health, speed, height, sight, capture and weapons, plus the defenses
+    most dangerous to them.
+  - Defenders: health, weapons and effect auras, plus the two drones that hit them hardest.
+  - Societies: troops, defenses, capture speed and whether artillery answers.
+  - Hazards: warning time, duration and advice.
+  It's generated from `units.mjs` and `hazards.mjs`, so it changes when the rules do.
+- **Files:** `dist/invasion/field-guide.mjs` (new), `main.mjs`, `index.html`, `invasion.css`,
+  `tests/invasion-field-guide.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (468 pass). The browser shows 31 entries in 4
+  sections, with no errors.
+
 ### 2026-10-22: Swarmfall combat searches nearby only (same results, faster)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Search for targets and splash victims in a spatial grid"

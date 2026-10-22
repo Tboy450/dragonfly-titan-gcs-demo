@@ -25,6 +25,7 @@ import { squadCenter, latestAlert, zoneAlerts, edgeScroll, homeView } from "./ca
 import { cycleSound, soundLabel, updateBattleSound, quietSound } from "./sound.mjs?v=dev";
 import { qualityLevels, nextQuality } from "./quality.mjs?v=dev";
 import { newTips } from "./tips.mjs?v=dev";
+import { fieldGuide } from "./field-guide.mjs?v=dev";
 
 // First-time tips (tips.mjs), each shown once per device.
 const TIPS_KEY = "swarmfall-tips";
@@ -292,6 +293,17 @@ function showFrontiers() {
   $("frontier-dialog").showModal();
 }
 $("frontier-button").addEventListener("click", showFrontiers);
+
+// ---- Field guide (field-guide.mjs, generated from the rules) ----
+function showFieldGuide() {
+  $("guide-body").innerHTML = fieldGuide().map(({ section, items }) => `<h3>${escapeHtml(section)}</h3><ul class="achievement-list guide-list">${items.map(item => `
+    <li><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.summary)}</small>
+      <ul>${item.facts.map(fact => `<li>${escapeHtml(fact)}</li>`).join("")}</ul></li>`).join("")}</ul>`).join("");
+  resetPointers();
+  $("guide-dialog").showModal();
+}
+$("guide-button").addEventListener("click", showFieldGuide);
+$("guide-close").addEventListener("click", () => $("guide-dialog").close());
 $("frontier-close").addEventListener("click", () => $("frontier-dialog").close());
 
 // ---- Mission ----

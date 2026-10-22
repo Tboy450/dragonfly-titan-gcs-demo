@@ -149,6 +149,7 @@ same split as the simulator: plain modules with tests, plus a page layer.
 | `invasion/sound.mjs` | Plays it with Web Audio (no sound files): beds, shots, explosions, chimes, sirens, thunder, pod entry and parachutes; off by default |
 | `invasion/quality.mjs` | Graphics quality levels (decor, city detail, ground, pixel ratio) and adaptive resolution from frame time |
 | `invasion/tips.mjs` | First-time tips: first defenders in sight, each kind of defense, alarm stages, first artillery and captured defense |
+| `invasion/field-guide.mjs` | The Field guide: every drone, defender, society and hazard with numbers and counters, generated from the rules |
 | `invasion/camera-assist.mjs` | Follow the selected squads' center, the newest alert to jump to, edge scrolling and the starting view |
 | `invasion/free-camera.mjs` | The free camera's movement: start from and return to the orbit camera, fly with limits (ground, roofs, ceiling, map edge, no flying into buildings) |
 | `invasion/main.mjs` | Screens, saving, the mission loop, camera and touch controls, selection, orders, drop panel, HUD, minimap, debrief |
