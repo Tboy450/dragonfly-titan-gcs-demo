@@ -53,6 +53,10 @@ Full suite: 463 pass, zero failures. Current source/model comparison visually re
 release/public verification recorded in the current research folder after deployment.
 Concurrent game/workflow changes through22e7df8 merged intact; combined469 tests pass.
 No manual game/workflow edits, simulator implementation unchanged by merge.
+Model25a1dae/release1d05c6d and recovery tag pushed; Pages39729103197 succeeded. Public
+24 viewport/subassembly cases, three part masks and global wall mask/restore, original24
+numbers, sources and Pilot return passed without page/network failures or overflow.
+Receipt in `research/side-wall-2026-10-22/live-1d05c6d/`. Local preview server stopped.
 
 Historical October22 body closeout: own MMRTG exterior pass complete;458 combined tests pass
 (450 before merging concurrent game work through2190944),24 numbers unchanged.

@@ -127,6 +127,10 @@ const fs = require('node:fs'), path = require('node:path'), assert = require('no
         await page.locator('#flight-canvas').screenshot({ path: path.join(out, `hidden-${id}.png`) });
         await page.locator('#inspection-restore-layers').click(); assert.equal(await input.isChecked(), true);
       }
+      const globalWall=page.locator('#inspection-global-structural-panels');
+      await globalWall.uncheck();
+      await page.locator('#flight-canvas').screenshot({path:path.join(out,'hidden-structural-wall.png')});
+      await page.locator('#inspection-restore-layers').click(); assert.equal(await globalWall.isChecked(),true);
       await page.locator('#inspection-isolate').uncheck();
       await page.locator('#flight-canvas').screenshot({ path: path.join(out, 'installed-context.png') });
       const links = await page.locator('#part-sources a').evaluateAll(a => a.map(x => x.href));

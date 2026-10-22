@@ -78,6 +78,17 @@ Long explanation stays under the existing component/assumptions expandable secti
   edited. Combined **469 tests pass**, saved in `merged-tests.txt`. Simulator implementation
   unchanged by that merge.
 
+## Published acceptance
+
+Model commit `25a1dae`, combined release `1d05c6d`. [Pages run39729103197](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/39729103197)
+succeeded, including the updated Node24 Pages actions. Pre-wall recovery tag is pushed.
+[Public build](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=1d05c6d) passed24
+Internal/Thermal viewport/subassembly cases at1440/390/360px, original24 numbered rows,
+all three part masks and global Structural wall panels hide/restore, source links and
+Pilot return with no page/network failures or horizontal overflow. Receipt/screenshots
+are in [live-1d05c6d](live-1d05c6d/checks.json). Local preview server stopped.
+Receipt-only commit skips CI; app unchanged, no repeat tests or duplicate deployment.
+
 ## Next
 
 ### Construction inventory at this checkpoint

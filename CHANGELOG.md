@@ -39,6 +39,18 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Record structural-wall public acceptance
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record structural wall public acceptance [skip ci]
+- **Release:** Model25a1dae, combined1d05c6d, Pages39729103197 succeeded; recovery tag
+  pushed. Concurrent changes through22e7df8 intact; combined469 tests pass.
+- **Checks:** Public Edge24 Internal/Thermal viewport/subassembly cases at1440/390/360px,
+  three part masks and global structural-wall mask/restore, original24 numbered rows,
+  source links and Pilot return passed without page/network failures or overflow. Receipt
+  and screenshots in `research/side-wall-2026-10-22/live-1d05c6d/`; local server stopped.
+- **Scope:** Documentation, acceptance helper and screenshots only. App unchanged; no
+  duplicate deployment/test cycle. Next: opposite side/end joints, deck and foam separation.
+
 ### 2026-10-22: Add the first independently inspectable structural wall
 - **Signed:** Codex (OpenAI)
 - **Commit:** Add sourced starboard structural wall inspection
