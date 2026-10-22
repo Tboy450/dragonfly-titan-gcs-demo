@@ -28,6 +28,7 @@ import { cycleSound, soundLabel, updateBattleSound, quietSound } from "./sound.m
 import { qualityLevels, nextQuality } from "./quality.mjs?v=dev";
 import { newTips } from "./tips.mjs?v=dev";
 import { fieldGuide } from "./field-guide.mjs?v=dev";
+import { tutorialState } from "./tutorial.mjs?v=dev";
 
 // First-time tips (tips.mjs), each shown once per device.
 const TIPS_KEY = "swarmfall-tips";
@@ -1067,14 +1068,35 @@ function toast(text, tone = "info", ms = 3600, onClick = null) {
   setTimeout(() => item.remove(), ms);
 }
 
-function coachText(b) {
-  if (!b.practice) return "";
-  if (b.stats.drops === 0) return "Press Drop wave, choose Scouts and Links, then land on the Hive beacon. Each pod carries up to 3 drones; the wave stays one squad.";
-  if (!b.units.some(isDrone)) return "The pods are coming down under their parachutes. Drones release just above the ground; you can already select their squad and give an order.";
-  if (!mission.selected.size) return "Left-click or touch-tap a squad card at the bottom (or one of your drones) to select it.";
-  if (b.stats.zonesCaptured === 0) return "Right-click (or touch-tap) inside a white beacon ring: the squad flies there and captures it. Drag to move the view, scroll or pinch to zoom, right-drag or Q/E to turn.";
-  return "Hold 3 beacons to win. Optional: capture the Dragonfly landing site to unlock NASA's Dragonfly as a drone.";
+// ---- Titan tutorial (TUT-01, tutorial.mjs): checked steps, the next button highlighted ----
+// Skipping or finishing is remembered on this device; Reset progress does not bring it back.
+const TUTORIAL_KEY = "swarmfall-tutorial";
+let tutorialOff = false;
+try { tutorialOff = ["skipped", "done"].includes(localStorage.getItem(TUTORIAL_KEY)); } catch { /* optional */ }
+function endTutorial(how) {
+  tutorialOff = true;
+  try { localStorage.setItem(TUTORIAL_KEY, how); } catch { /* optional */ }
 }
+function updateTutorial(b) {
+  const coach = $("coach");
+  const state = b.practice && !tutorialOff ? tutorialState(b, { selected: mission.selected.size }) : null;
+  if (b.practice && !tutorialOff && !state) { endTutorial("done"); toast("Tutorial complete. The Field guide on the title screen has every drone and defender.", "good", 6000); }
+  const key = state ? `${state.step.id}|${state.checks.join(",")}` : "";
+  if (coach.dataset.key !== key) {
+    coach.dataset.key = key;
+    coach.innerHTML = state ? `<span class="steps" aria-label="Step ${state.index + 1} of ${state.total}">${state.checks.map((done, i) => (done ? "✓" : i === state.index ? "●" : "○")).join(" ")}</span>
+      <span>${escapeHtml(state.step.text)}</span> <button type="button" class="link" data-tutorial="skip">Skip tutorial</button>` : "";
+  }
+  coach.hidden = !state;
+  for (const element of document.querySelectorAll(".tutorial-target")) if (element.id !== state?.step.target) element.classList.remove("tutorial-target");
+  if (state?.step.target) $(state.step.target)?.classList.add("tutorial-target");
+}
+$("coach").addEventListener("click", (event) => {
+  if (!event.target.closest?.("[data-tutorial='skip']")) return;
+  endTutorial("skipped");
+  if (mission) updateTutorial(mission.battle);
+  toast("Tutorial skipped. The Field guide on the title screen explains every drone and defender.", "info", 5000);
+});
 
 function updateSquadBar() {
   if (!mission) return;
@@ -1147,9 +1169,7 @@ function updateHud() {
     const state = o.done ? "done" : o.failed ? "failed" : "";
     return `<li class="${state}"><span class="mark">${o.done ? "✓" : o.failed ? "✗" : o.primary ? "•" : "☆"}</span><span>${escapeHtml(o.text)}</span>${o.progress ? `<small>${escapeHtml(o.progress)}</small>` : ""}</li>`;
   }).join("");
-  const coach = coachText(b);
-  $("coach").hidden = !coach;
-  $("coach").textContent = coach;
+  updateTutorial(b);
   $("hud-log").innerHTML = b.log.slice(-4).map(entry => `<li class="${entry.tone}">${escapeHtml(entry.text)}</li>`).join("");
   updateSquadBar();
   updateDropPanel();

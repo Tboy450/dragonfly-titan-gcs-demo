@@ -39,6 +39,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall interactive Titan tutorial
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add an interactive Titan tutorial with checked steps"
+- **What changed:** Checklist TUT-01. On Titan the coach box is now a tutorial:
+  - Seven checked steps follow what you actually do: drop a wave, watch the landing, select
+    the squad, send it somewhere, capture a beacon, recover the Dragonfly, then hold 3 beacons.
+  - A weather step appears while the first front passes.
+  - The button to press next pulses.
+  - **Skip tutorial** hides it. Skipping or finishing is remembered on the device, and
+    finishing points to the Field guide.
+- **Files:** `dist/invasion/tutorial.mjs` (new), `main.mjs`, `index.html`, `invasion.css`,
+  `tests/invasion-tutorial.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (500 pass). The new tests walk a real Titan battle
+  through every step and the weather interruption. Browser: step 1 with Drop wave pulsing;
+  Skip hid it and was remembered. No errors.
+
 ### 2026-10-22: Swarmfall box selection
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add drag-box selection: Shift+drag, or hold then drag on touch"

@@ -104,6 +104,10 @@ a { color: var(--swarm); }
 #objective-list li.failed .mark { color: var(--danger); }
 #objective-list li small { color: var(--muted); margin-left: auto; white-space: nowrap; }
 .coach { margin: 8px 0 2px; padding: 6px 8px; border-radius: 6px; background: rgba(124, 231, 255, 0.12); border-left: 3px solid var(--swarm); }
+.coach .steps { display: block; color: var(--swarm); letter-spacing: 2px; font-size: 12px; margin-bottom: 2px; }
+.coach button.link { background: none; border: 0; padding: 0 0 0 4px; min-height: 0; color: var(--muted); text-decoration: underline; font-size: 12px; }
+.tutorial-target { animation: tutorial-pulse 1.3s ease-in-out infinite; }
+@keyframes tutorial-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(124, 231, 255, 0.75); } 50% { box-shadow: 0 0 0 7px rgba(124, 231, 255, 0); } }
 .hud-log { list-style: none; margin: 0; padding: 0; font-size: 12.5px; text-shadow: 0 1px 2px #000; }
 .hud-log li { margin: 2px 0; padding: 3px 8px; border-radius: 6px; background: rgba(6, 8, 16, 0.55); }
 .hud-log .good { color: var(--good); }

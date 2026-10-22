@@ -304,9 +304,17 @@ complete solely because its assets download or its unit tests pass.
 
 ## 2. Tutorial and onboarding (TUT)
 
-- [ ] **TUT-01 (P1)** Interactive Titan tutorial with highlighted buttons and checked steps
-  (drop, select, move, capture, ride out a hazard, recover the Dragonfly); skippable. Replaces
-  the coach text in `main.mjs`.
+- [x] **TUT-01 (P1) — Claude (October 22)** Interactive Titan tutorial with highlighted buttons and
+  checked steps (drop, select, move, capture, ride out a hazard, recover the Dragonfly);
+  skippable. Replaces the coach text in `main.mjs`.
+  - `tutorial.mjs` works out the step from the battle: drop, land, select, move, capture,
+    Dragonfly, win. A weather step interrupts while the first front is warned or active.
+  - The coach box shows checked progress dots and the step, and the button to press pulses
+    (Drop wave, the squad bar).
+  - **Skip tutorial** in the box. Skipping or finishing is remembered on the device.
+  - Evidence: `tests/invasion-tutorial.test.mjs` walks a real Titan battle through every step.
+    In the browser, step 1 showed with Drop wave pulsing, and Skip hid it and was
+    remembered.
 - [x] **TUT-02 (P1) — Claude (October 22)** First-time tips when something new appears: first
   defenders, first jammer, each alarm stage, first artillery, first converted defense.
   `tips.mjs` gives a tip:
