@@ -4,6 +4,13 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October22 top deck (Codex):** [sources, samples and limits](research/top-deck-2026-10-22/README.md).
+[PUB] NASA0.01in aluminum facesheets, top-deck telecom role; ICES2020/2023 TWTA under-deck
+mounting. [EST]0.07m existing underside datum,12mm depth,121mm opening, outline, fittings,
+18mm lip and stow-lock foundation examples. Opening sized to unchanged modeled dome, not
+flight dimensions. No full attic bulkhead, core cells, seal, cooling loop or strength/conduction
+solver invented. Numbered parts/structure/foam unchanged. Insulation-region separation next.
+
 **October22 port wall/end joints (Codex):** [current evidence and sample](research/port-wall-joints-2026-10-22/README.md).
 Uses the same [PUB]0.254 mm aluminum facesheets as first wall; opposite-side outline and
 camera reliefs [EST]. Simple1.5 mm webs/returns follow the existing nose edge and25-degree

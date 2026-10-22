@@ -6,6 +6,11 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Top deck / attic edge (Codex, October22):** [real/CAD/model/context comparison and evidence](top-deck-2026-10-22/README.md).
+Reuses original April real fit-check (NASA/Johns Hopkins APL/Ed Whitman), NASA April23
+facesheet report, saved ICES2020 p5 and ICES2023 pp3/5/7, plus existing HGA arm reference.
+Deck outline/depth/opening/support/lip dimensions estimated; not hidden flight joint/layup CAD.
+
 **Port wall/end joints (Codex, October22):** [real/CAD/model/context comparison and source limits](port-wall-joints-2026-10-22/README.md).
 Reuses original April fit-check and May frame photos (NASA/Johns Hopkins APL/Ed Whitman),
 NASA April23 thickness report, ICES2023 p5 arrangement-only CAD and saved DragonCam pages.

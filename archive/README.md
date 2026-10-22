@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [top-deck-2026-10-22](top-deck-2026-10-22/README.md) | Before separate top deck: exact builder/masks/UI/HTML, six views and equipment/structure/foam manifests; rejected89mm opening module/test/renders/report | 2026-10-22 | `archive/top-deck-2026-10-22` on1bee304 |
 | [swarmfall-aurex-skyline-2026-10-22](swarmfall-aurex-skyline-2026-10-22/README.md) | Aurex's scenery-only towers (drones flew through them) before the solid skyline; exact scene/terrain modules, before and after pictures; older saves keep open ground | 2026-10-22 | `archive/swarmfall-aurex-skyline-2026-10-22` on ce9b949 |
 | [port-wall-joints-2026-10-22](port-wall-joints-2026-10-22/README.md) | Starboard-only builder, wall module, inspector/masks/UI/HTML; six before views, exact numbered/starboard manifests and initial tube broad-phase candidates | 2026-10-22 | `archive/port-wall-joints-2026-10-22` on8ac4e59 |
 | [side-wall-2026-10-22](side-wall-2026-10-22/README.md) | Before first additive structural wall: exact builder/UI/masks/HTML, six before views and all-numbered geometry; failed inboard draft retained | 2026-10-22 | `archive/side-wall-2026-10-22` on b4559dc |

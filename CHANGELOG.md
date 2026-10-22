@@ -39,6 +39,29 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Add top-deck and attic-edge inspection
+- **Signed:** Codex (OpenAI)
+- **Commit:** Add sourced top deck and attic edge inspection
+- **What changed:** Independent unnumbered deck: separate faces, gimbal/dome clearance
+  opening, edge closeouts/short attic lip, estimated stow-lock foundations. Three targets,
+  four part masks and separate global deck mask. Existing24 equipment, walls/joints and
+  combined body/attic foam geometry/poses unchanged; no game/flight/save changes.
+- **Sources / limits:** NASA April23 real fit-check/primary-panel thickness; saved ICES2020
+  p5 and ICES2023 arrangement/TWTA text, existing HGA arm reference.0.254mm face thickness
+  published;12mm depth, outline,121mm opening, foundations/lip/fasteners estimated. Datum
+  follows existing HGA/TWTA. No core cells, inserts/bonds/seals, new thermal barrier or
+  conduction/strength solver. Old combined foam still needs region separation.
+- **Archive:** Baseline1bee304 recovery tag; exact before files/views/manifests. Rejected
+  89mm opening module/test/three renders/report retained; final opening clears unchanged
+  rotating dome. Existing parts were not moved to make the fit pass.
+- **Checks:**503 full tests pass;24 local Edge Internal/Thermal viewport/subassembly cases,
+  independent masks/global restore, sources, original24 rows, exact manifests, Pilot return,
+  face clearance and three raw/two context nonblank/framed WebGL views pass.15 gimbal
+  deploy/pointing states clear faces; foundations meet lock bases, TWTA pads meet underside.
+  Real/CAD/model/app comparison visually reviewed; sources and credits saved/reused.
+- **Next:** Body/deck insulation regions, then attic/local HGA/camera foam and remaining
+  structural/support/connection packages. Initial deck pass checked, overall construction open.
+
 ### 2026-10-22: Swarmfall troops find their way round walls and water
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Route troops on foot round water, buildings and town walls"

@@ -37,13 +37,25 @@ explicitly estimated, not flight CAD. Do not repeatedly search the same closed l
    Opposite wall/end joints, deck and independent foam regions keep this overall item open.
    Port wall and estimated nose/canted-aft joint initial passes now complete; deck/attic
    boundary is next. [Current sources, samples and handoff](research/port-wall-joints-2026-10-22/README.md).
+   Initial deck/attic-edge pass now complete; separate body/deck insulation regions next,
+   then attic/local camera/HGA foam. [Current deck source/sample/handoff](research/top-deck-2026-10-22/README.md).
 
 Other harness work stays queued behind this order. Current count24/24 initial passes
 (9 Codex / 15 Claude), with labeled hardware-family/design approximations. Installation and
 construction work are still open. Follow the expanded packages below after the ordered
 items; do not confuse finishing the numbered list with finishing construction and connections.
 
-Current October22 port/joint checkpoint: two new unnumbered inspection choices, port
+Current October22 deck checkpoint: unnumbered Top deck / attic edge, separate0.254mm
+faces and estimated12mm depth, opening, edges/lip and lock foundations. Existing HGA/TWTA
+share unchanged y=.07m mounting plane; foundations meet existing lock bases. Initial89mm
+opening crossed unchanged dome; draft archived,121mm final opening passes15 deploy/pointing
+states. Original24 parts, walls/joints and body/attic foam geometry/poses match baseline1bee304.
+503 tests and24 local Edge viewport/subassembly cases pass, four part/global masks restore,
+sources/count24/Pilot return and raw/context pixel/framing checks pass. Comparison reviewed.
+Next is body/deck insulation-region separation, then attic/local foam. Exact core/layup,
+supports, seals and conduction/strength remain unmodeled, not new flight-engineering claims.
+
+Historical October22 port/joint checkpoint: two new unnumbered inspection choices, port
 wall with separate Down Camera and Microscopic Camera/LED reliefs; nose and canted aft
 joint pairs follow existing bulkhead edges. New detail is estimated; no core/seal/insert
 or qualified load/bond claim. All24 numbered parts and accepted starboard geometry/poses
@@ -944,8 +956,11 @@ statuses: initial part, installation, construction access, and final UI/integrat
   pairs meet existing bulkhead edges. Original24 parts and starboard unchanged. [Sources and checks](research/port-wall-joints-2026-10-22/README.md).
   Exact flight fitting/insert/bond/seal details, IEM ground-bond termination, shoulder load
   paths and insulation penetrations remain open follow-ups, not claimed complete construction.
-- [ ] **Deck and attic boundary:** upper/lower deck supports, instrument access and service
-  penetrations, keeping sample paths and camera views clear; no unsupported hidden cavities.
+- [x] **Deck/attic-edge initial pass:** separate top-deck faces, estimated opening/edge lip
+  and stow-lock foundations at existing HGA/TWTA mounting plane. Cameras/sample routes and
+  completed assets unchanged; deck faces clear gimbal motion. [Sources and checks](research/top-deck-2026-10-22/README.md).
+  Further lower-deck/support details, exact apertures/layup, local inserts/bonds/seals and
+  complete attic boundary remain open; short lip is not a full thermal barrier.
 - [ ] **Insulation regions:** distinguish body/attic/arm foam and warm/cold boundaries from
   structural skin. Use published thickness where applicable; retain local-thickness unknowns,
   lower-camera blister follow-up and any unmodeled mounting isolation.

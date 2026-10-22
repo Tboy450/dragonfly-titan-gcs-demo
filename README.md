@@ -15,7 +15,13 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
-October22 Codex: [port wall and end joints](research/port-wall-joints-2026-10-22/README.md)
+October22 Codex: [top deck / attic edge](research/top-deck-2026-10-22/README.md)
+adds separate faces, a gimbal/dome clearance opening, short attic-edge lip and estimated
+stow-lock foundations. Three focus targets and independent masks; HGA/TWTA/shared mounting
+plane and original24 parts unchanged. Core/layup and local construction remain estimates.
+Next: body/deck insulation-region separation, then attic foam and local camera/HGA regions.
+
+Earlier October22 Codex: [port wall and end joints](research/port-wall-joints-2026-10-22/README.md)
 extend the construction view with separate port camera reliefs and estimated nose/canted-aft
 joint pairs. Select **Port structural wall** or **Wall end joints (estimated)** for their
 targets and independent masks. Original24 numbered parts and starboard geometry unchanged.

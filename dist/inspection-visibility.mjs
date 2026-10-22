@@ -5,6 +5,7 @@ export const globalInspectionLayers = Object.freeze([
   { id: "insulation", label: "Insulating foam" },
   { id: "partitions", label: "Compartment panels" },
   { id: "structural-panels", label: "Structural wall panels" },
+  { id: "deck-panels", label: "Deck / attic edge" },
   { id: "flow-markers", label: "Flow markers" },
 ]);
 export const partInspectionLayers = Object.freeze([
@@ -48,6 +49,7 @@ export function createInspectionVisibility(subsystems) {
   add("structural-panels", subsystems["starboard-wall"]);
   add("structural-panels", subsystems["port-wall"]);
   add("structural-panels", subsystems["wall-end-joints"]);
+  add("deck-panels", subsystems["top-deck"]);
   for (const name of ["nose-bulkhead", "aft-bulkhead"]) add("partitions", subsystems[name]);
   for (const name of ["airflow", "sample-flow"]) add("flow-markers", subsystems[name]);
   for (const [name, group] of Object.entries(subsystems)) {
