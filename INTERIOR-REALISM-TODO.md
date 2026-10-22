@@ -37,7 +37,8 @@ Other harness work stays queued behind this order. Current count24/24 initial pa
 construction work are still open. Follow the expanded packages below after the ordered
 items; do not confuse finishing the numbered list with finishing construction and connections.
 
-Current October22 body closeout: own MMRTG exterior pass complete;450 tests pass,24 numbers unchanged.
+Current October22 body closeout: own MMRTG exterior pass complete;458 combined tests pass
+(450 before merging concurrent game work through2190944),24 numbers unchanged.
 Local24 viewport/subassembly cases, layer masks/restore, refitted21, source links, raw model
 pixel/framing and numbered-neighbor/stabilizer clearance pass. Battery/20 geometry unchanged.
 Next is the first structural side-wall panel. Flight coating, detailed fin/root/end/connection

@@ -57,6 +57,9 @@ generator-gas zone rather than separate fin/housing temperatures.
 - Full suite: **450 pass, zero failures**, saved in `tests.txt`. Local24 viewport/layer/
   subassembly cases pass without page/network failures or overflow. Reference/model comparison
   and raw three-quarter/front/mount images visually inspected before publication.
+- Concurrent game work through2190944 merged intact; shared changelog resolved by retaining
+  both complete entries. Combined suite **458 pass**, saved `merged-tests.txt`. No game code
+  manually edited; simulator/body files are unchanged by the merge.
 
 ## Next
 

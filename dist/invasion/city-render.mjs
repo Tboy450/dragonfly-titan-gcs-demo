@@ -2,7 +2,8 @@
 // parks, and every building as merged facade boxes in tiers, with rooftop gear. Uses the
 // Environment Lab's kit (procedural facades, no downloads), sized for phones: buildings merge into
 // one mesh per facade style. The same layout drives the rules, so what you see is what blocks.
-// A forge city (style "forge") is drawn by buildForge, after the lab's forge world.
+// A forge city (style "forge") is drawn by buildForge, after the lab's forge world; a market town
+// (style "town") by buildTown.
 // group.userData.update(time), when present, animates the city (smoke); the scene calls it.
 import { THREE, rng, Batches, Massing, paint, unitBox, unitCylinder, unitCone, lathe, shape } from "./environments/kit/core.mjs?v=dev";
 import { facadeMaterials, roofMaterial, groundPatch, tree } from "./environments/kit/scenery.mjs?v=dev";
@@ -14,6 +15,7 @@ export function buildCity(parent, city, { high = true } = {}) {
   group.name = "City";
   parent.add(group);
   if (city.style === "forge") return buildForge(group, city, high);
+  if (city.style === "town") return buildTown(group, city, high);
   const y0 = city.ground, random = rng(city.seed * 31 + 7);
   const span = city.half * 2;
   // Sidewalk slab under everything, asphalt streets, paved squares and grassy parks on top.
@@ -52,14 +54,59 @@ export function buildCity(parent, city, { high = true } = {}) {
 }
 
 function streetsAndSquares(group, city, slab, squares) {
-  const y0 = city.ground;
-  groundPatch(group, slab, city.x, city.z, city.half * 2 + 24, city.half * 2 + 24, y0 + 0.04, 14);
+  const y0 = city.ground, span = city.bounds.maxX - city.bounds.minX;
+  groundPatch(group, slab, city.x, city.z, span + 24, span + 24, y0 + 0.04, 14);
   for (const street of city.streets) {
     const along = street.x1 === street.x2;
     groundPatch(group, "asphalt", (street.x1 + street.x2) / 2, (street.z1 + street.z2) / 2,
       along ? street.width : Math.abs(street.x2 - street.x1) + street.width, along ? Math.abs(street.z2 - street.z1) + street.width : street.width, y0 + 0.08, 20);
   }
   for (const plaza of city.plazas) groundPatch(group, squares, plaza.x, plaza.z, city.block, city.block, y0 + 0.12, 6);
+}
+
+// A walled market town: cobbled lanes, plastered and brick houses under red tile roofs around
+// courtyards, gardens with trees, a stone keep with a flag, and a crenellated town wall with
+// gates and conical-roofed corner turrets.
+function buildTown(group, city, high) {
+  const y0 = city.ground, random = rng(city.seed * 31 + 7);
+  streetsAndSquares(group, city, "cobble", "plaza");
+  const parts = new Batches(group, { shadows: false });
+  const tiles = [paint(0x8a3b2a, { rough: 0.85 }), paint(0x6f3426, { rough: 0.85 }), paint(0x9a5a3a, { rough: 0.85 })];
+  const stone = paint(0x8d8a80, { rough: 0.95 }), slate = paint(0x4a4e58, { rough: 0.8 }), cloth = paint(0xc8a040, { rough: 0.7 });
+  const ridge = shape("ridge-roof", () => new THREE.CylinderGeometry(1, 1, 1, 3, 1).rotateZ(Math.PI / 2).rotateX(Math.PI / 6).translate(0, 0.5, 0));
+  for (const park of city.parks) {
+    groundPatch(group, "grass", park.x, park.z, park.size, park.size, y0 + 0.12, 12);
+    for (let k = 0; k < (high ? 16 : 8); k += 1) tree(parts, park.x + (random() - 0.5) * park.size * 0.85, y0 + 0.12, park.z + (random() - 0.5) * park.size * 0.85, 5 + random() * 5, random);
+  }
+  const massing = new Massing(), wallMaterials = {};
+  for (const b of city.buildings) {
+    if (b.kind === "house") {
+      const key = `${b.facade}/${b.variant}`;
+      wallMaterials[key] ??= facadeMaterials(b.facade, b.variant).day;
+      massing.box(key, "roof", b.x, y0, b.z, b.w, b.eaves, b.d, 0, [6, 6]);
+      const along = b.w >= b.d, long = along ? b.w : b.d, short = along ? b.d : b.w;
+      parts.put(ridge, tiles[b.variant - 1], b.x, y0 + b.eaves, b.z, along ? 0 : Math.PI / 2, long * 1.04, (b.height - b.eaves) / 1.5, short * 0.62);
+    } else if (b.kind === "keep") {
+      parts.put(unitBox(), stone, b.x, y0, b.z, 0, b.w, b.height, b.d);
+      for (const [sx, sz] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) parts.put(unitCylinder(12), stone, b.x + sx * b.w / 2, y0, b.z + sz * b.d / 2, 0, 2.6, b.height + 4, 2.6);
+      for (let k = -2; k <= 2; k += 1) for (const side of [-1, 1]) {
+        parts.put(unitBox(), stone, b.x + k * 4, y0 + b.height, b.z + side * b.d / 2, 0, 2, 2, 1.2);
+        parts.put(unitBox(), stone, b.x + side * b.w / 2, y0 + b.height, b.z + k * 4, 0, 1.2, 2, 2);
+      }
+      parts.put(unitCylinder(6), slate, b.x, y0 + b.height, b.z, 0, 0.2, 10, 0.2);
+      parts.put(unitBox(), cloth, b.x + 2, y0 + b.height + 7, b.z, 0, 4, 2.4, 0.15);
+    } else if (b.kind === "wall") {
+      parts.put(unitBox(), stone, b.x, y0, b.z, 0, b.w, b.height, b.d);
+      const along = b.w >= b.d, long = along ? b.w : b.d;
+      for (let t = -long / 2 + 1.5; t < long / 2 - 1; t += 4) parts.put(unitBox(), stone, b.x + (along ? t : 0), y0 + b.height, b.z + (along ? 0 : t), 0, along ? 2 : b.w, 1.6, along ? b.d : 2);
+    } else if (b.kind === "turret") {
+      parts.put(unitCylinder(16), stone, b.x, y0, b.z, 0, b.w / 2, b.height, b.d / 2);
+      parts.put(unitCone(16), tiles[0], b.x, y0 + b.height, b.z, 0, b.w / 2 + 1, 8, b.d / 2 + 1);
+    }
+  }
+  massing.build(group, wallMaterials, { roof: roofMaterial("#6e4a3a"), default: roofMaterial("#6e4a3a") });
+  parts.finish();
+  return group;
 }
 
 // A forge city: brick and concrete foundry halls with ridge roofs and glowing furnace doors,

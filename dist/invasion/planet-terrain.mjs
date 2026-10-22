@@ -133,6 +133,8 @@ export function createPlanetTerrain(planet) {
     terrain.landformSpec = planet.landform;
     // Zone sites keep to the valley floor, the beacon's basin, the pass and low foothills.
     terrain.siteOK = (x, z) => landform.mountain(x, z) < 0.3;
+    // Ridges and hills block direct fire on these rough maps.
+    terrain.lineBlocked = groundSight(terrain);
   }
   if (planet.city) attachCity(terrain, planet.city, raw, liquid);
   return terrain;
@@ -164,11 +166,13 @@ const toSegment = (x, z, a, b) => {
 // Hive beacon sits in a basin of its own, joined to the valley by a lower pass. mountain() is 0
 // on the valley floor, in the basin and 0.15 along the pass, rising to 1 in the mountains over
 // `rim` m with a ragged edge; peaks reach about `peak` m above the `floor` level. Options:
-// `lava` (0-1) cuts winding channels into the low ground that fill with the planet's liquid (kept
-// away from the beacon), and `volcanoes` raises that many cratered cones deep in the mountains.
+// `lava` or `rivers` (0-1) cuts winding channels into the low ground that fill with the planet's
+// liquid, lava or water (kept away from the beacon), and `volcanoes` raises that many cratered
+// cones deep in the mountains.
 // Invented [EST].
 function valleyLandform(spec, seed, beach, map) {
-  const { x: vx, z: vz, length, width, angle = 0, floor = 6, rim = 500, peak = 400, lava = 0, volcanoes = 0 } = spec;
+  const { x: vx, z: vz, length, width, angle = 0, floor = 6, rim = 500, peak = 400, lava = 0, rivers = 0, volcanoes = 0 } = spec;
+  const channels = Math.max(lava, rivers);
   const ca = Math.cos(angle), sa = Math.sin(angle);
   const local = (x, z) => ({ u: (x - vx) * ca + (z - vz) * sa, v: -(x - vx) * sa + (z - vz) * ca });
   // The pass runs from the basin to 200 m inside the valley edge nearest the beacon.
@@ -196,9 +200,9 @@ function valleyLandform(spec, seed, beach, map) {
   const height = (x, z) => {
     const m = mountain(x, z);
     let ground = floor + (fbm(x / 240, z / 240, seed + 5) - 0.5) * 7 + 0.3 * noise(x / 5, z / 5, seed);
-    if (lava > 0) {
+    if (channels > 0) {
       const channel = 1 - smooth(0.02, 0.07, Math.abs(noise(x / 380, z / 380, seed + 13) * 2 - 1));
-      ground -= lava * 6 * channel * smooth(350, 700, Math.hypot(x - beach.x, z - beach.z));
+      ground -= channels * 6 * channel * smooth(350, 700, Math.hypot(x - beach.x, z - beach.z));
     }
     let h = m <= 0 ? ground : ground + m * (peak * ridged(x / 700, z / 700, seed + 40) + 70 * fbm(x / 160, z / 160, seed + 9));
     for (const cone of cones) {
@@ -232,9 +236,27 @@ function attachCity(terrain, spec, raw, liquid) {
   terrain.canDropAt = (x, z, { radius = 6 } = {}) => queries.clearAt(x, z, radius + 1);
   // Line of sight between two points given as heights above their own ground (a drone's
   // altitude, a gun's mount): buildings in between block it.
+  const ground = terrain.lineBlocked;
   terrain.lineBlocked = (ax, az, ah, bx, bz, bh) => {
+    if (ground?.(ax, az, ah, bx, bz, bh)) return true;
     const { minX, maxX, minZ, maxZ } = city.bounds;
     if (Math.max(ax, bx) < minX || Math.min(ax, bx) > maxX || Math.max(az, bz) < minZ || Math.min(az, bz) > maxZ) return false;
     return queries.lineBlocked(ax, az, terrain.heightAt(ax, az) + ah - level, bx, bz, terrain.heightAt(bx, bz) + bh - level);
+  };
+}
+
+// Line of sight over rough ground (frontier landforms): the line is sampled every ~30 m and is
+// blocked where the ground rises above it. Short lines (under 40 m) are never blocked by ground.
+function groundSight(terrain) {
+  return (ax, az, ah, bx, bz, bh) => {
+    const length = Math.hypot(bx - ax, bz - az);
+    if (length < 40) return false;
+    const ya = terrain.heightAt(ax, az) + ah, yb = terrain.heightAt(bx, bz) + bh;
+    const steps = Math.min(8, Math.floor(length / 30));
+    for (let k = 1; k <= steps; k += 1) {
+      const t = k / (steps + 1);
+      if (terrain.heightAt(ax + (bx - ax) * t, az + (bz - az) * t) > ya + (yb - ya) * t + 0.5) return true;
+    }
+    return false;
   };
 }

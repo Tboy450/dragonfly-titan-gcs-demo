@@ -12,6 +12,7 @@ import { droneModels, figureModel, interceptorModel, structureModels, buildingMo
 import { projectedDiameter } from './drone-markers.mjs?v=dev';
 import { buildCity } from './city-render.mjs?v=dev';
 import { cityFound, hiddenUnits } from "./battle.mjs?v=dev";
+import { freeTarget } from "./free-camera.mjs?v=dev";
 
 export const swarmColor = "#7ce7ff";
 export const nativeColor = "#ff8a4a";
@@ -446,8 +447,9 @@ export function createInvasionScene(canvas, options = {}) {
     if (planet.biome === "titan") return;
     if (planet.biome === "jungle" || planet.biome === "storm") {
       const trunk = new THREE.CylinderGeometry(0.25, 0.4, 1, 6).translate(0, 0.5, 0);
-      const crown = new THREE.SphereGeometry(1, 8, 6).translate(0, 0, 0);
-      const spots = place(planet.biome === "jungle" ? 900 : 350, 6);
+      // Frontier maps get simpler crowns and fewer trees per km², or a jungle would cost millions of triangles.
+      const crown = large ? new THREE.IcosahedronGeometry(1, 0) : new THREE.SphereGeometry(1, 8, 6).translate(0, 0, 0);
+      const spots = place(planet.biome === "jungle" ? (large ? 300 : 900) : 350, 6);
       const heights = spots.map(() => 6 + rand() * 10);
       scatter(trunk, new THREE.MeshStandardMaterial({ color: 0x4a3a28, roughness: 1 }), spots, (d, x, z, c) => {
         const h = heights[spots.findIndex(s => s[0] === x && s[1] === z)] || 8;
@@ -899,8 +901,19 @@ export function createInvasionScene(canvas, options = {}) {
     camera.updateProjectionMatrix();
   }
 
-  // view: { focus: {x, z}, distance, yaw, pitch }
+  // view: { focus: {x, z}, distance, yaw, pitch }, or with free: { x, y, z, yaw, pitch } a free
+  // camera (free-camera.mjs) placed and aimed directly.
   function setCamera(view) {
+    if (view.free) {
+      const f = view.free, look = freeTarget(f), ground = terrain ? terrain.heightAt(look.x, look.z) : 0;
+      camera.position.set(f.x, f.y, f.z);
+      camera.lookAt(look.x, look.y, look.z);
+      camera.updateMatrixWorld();
+      sun.position.set(look.x - 300, ground + 500, look.z - 200);
+      sun.target.position.set(look.x, ground, look.z);
+      if (titan?.group.visible) titan.update(look.x, look.z);
+      return;
+    }
     const ground = terrain ? terrain.heightAt(view.focus.x, view.focus.z) : 0;
     const horizontal = Math.cos(view.pitch) * view.distance;
     camera.position.set(view.focus.x + Math.sin(view.yaw) * horizontal, ground + Math.sin(view.pitch) * view.distance, view.focus.z + Math.cos(view.yaw) * horizontal);

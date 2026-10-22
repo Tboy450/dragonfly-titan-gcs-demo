@@ -141,6 +141,20 @@ export const frontiers = Object.freeze([
       { id: "losses", kind: "maxLosses", value: 40, text: "Lose 40 drones or fewer" },
     ],
   },
+  {
+    id: "velm-frontier", frontier: true, base: "velm", name: "Velm Frontier", subtitle: "Swamp jungle · large map",
+    supply: 600, kit: { unlocks: ["scout", "link", "striker"], podSlots: 16 },
+    society: 2, threat: 2, biome: "jungle", hazards: ["acidRain"], color: "#5fae6a",
+    description: "Steaming jungle hills around a long valley of swamp rivers. Brackenford, a walled market town of tile-roofed houses and a stone keep, guards the fords at its far end; the Hive beacon lands in a basin beyond the hills. Troops must come and go through the town gates, while drones fly over the walls; rifles answer from the windows, and the rain eats through rotor housings.",
+    map: { centerX: 0, centerZ: 0, half: 3000, view: 1800, fog: 0.00045 },
+    landform: { kind: "valley", x: 400, z: 300, length: 2100, width: 1100, angle: 1.2, floor: 3, rim: 420, peak: 320, rivers: 1 },
+    city: { name: "Brackenford", style: "town", x: 74, z: -539, blocks: 9, pitch: 60, street: 10, seed: 2207, peak: 34 },
+    zoneCount: 9, required: 6, seed: 2207, explore: true,
+    objectives: [
+      { id: "keep-calm", kind: "alarmBelow", value: 60, text: "Keep the alarm under 60" },
+      { id: "weather", kind: "noHazardLosses", text: "Lose no drones to the acid rain" },
+    ],
+  },
 ].map(Object.freeze));
 
 export const planetById = (id) => planets.find(planet => planet.id === id) || frontiers.find(map => map.id === id) || null;
@@ -161,6 +175,8 @@ export function createProgress() {
     podSlots: basePodSlots,
     achievements: {},
     settledMissions: {},
+    // Frontier records by map: { wins, stars (best, 1-3), best (fastest win, s) }.
+    frontier: {},
     stats: Object.fromEntries(statNames.map(name => [name, 0])),
   };
 }
@@ -199,11 +215,19 @@ export function applyFrontierResult(progress, map, result) {
     return { progress: next, notes: ["This mission result was already settled; no statistics were added again."] };
   for (const name of statNames) next.stats[name] += Math.max(0, Math.round(result.stats?.[name] || 0));
   next.stats.missionsPlayed += 1;
-  if (result.outcome === "won") next.stats.missionsWon += 1;
+  const notes = [`${map.name} is a frontier map: the campaign bank and conquests are unchanged.`];
+  if (result.outcome === "won") {
+    next.stats.missionsWon += 1;
+    next.frontier ||= {};
+    const before = next.frontier[map.id], time = Math.round(result.time), stars = Math.min(3, Math.max(1, result.stars || 1));
+    next.frontier[map.id] = { wins: (before?.wins || 0) + 1, stars: Math.max(before?.stars || 0, stars), best: before ? Math.min(before.best, time) : time };
+    if (!before) notes.push(`First win on ${map.name} recorded.`);
+    else if (time < before.best) notes.push(`New best time on ${map.name}.`);
+  }
   if (result.missionId) Object.defineProperty(next.settledMissions, result.missionId, {
     value: { planetId: map.id, outcome: result.outcome }, enumerable: true, writable: true, configurable: true,
   });
-  return { progress: next, notes: [`${map.name} is a frontier map: the campaign bank and conquests are unchanged.`] };
+  return { progress: next, notes };
 }
 
 // result: { outcome: "won" | "lost" | "retreated", matter, stars, time, stats, recovered: [unlock ids] }
@@ -275,6 +299,11 @@ export function validProgress(raw) {
   clean.podSlots = Math.max(basePodSlots, Math.min(basePodSlots + 32, count(raw.podSlots)));
   if (raw.achievements && typeof raw.achievements === "object") {
     for (const [id, at] of Object.entries(raw.achievements)) if (/^[a-z0-9-]{1,40}$/.test(id) && Number.isFinite(at)) clean.achievements[id] = at;
+  }
+  for (const map of frontiers) {
+    const record = raw.frontier?.[map.id];
+    if (Number.isInteger(record?.wins) && record.wins >= 1 && Number.isInteger(record.stars) && record.stars >= 1 && record.stars <= 3 && Number.isFinite(record.best) && record.best > 0)
+      clean.frontier[map.id] = { wins: Math.min(1e6, record.wins), stars: record.stars, best: Math.round(record.best) };
   }
   for (const name of statNames) clean.stats[name] = count(raw.stats?.[name]);
   if (raw.settledMissions && typeof raw.settledMissions === "object" && !Array.isArray(raw.settledMissions)) {

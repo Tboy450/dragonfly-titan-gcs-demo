@@ -8,7 +8,7 @@ import {
 import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, orderHold, battleSummary,
   objectiveStatus, starsEarned, missionResult, retreat, publicMood, dropZoneAt, extractVictory, continueCapturing,
-  cityFound, hiddenUnits,
+  cityFound, hiddenUnits, shotBlocked,
 } from "./battle.mjs?v=dev";
 import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
 import { packDropPods, podRadius, podStaggerS } from "./drop-waves.mjs?v=dev";
@@ -20,6 +20,8 @@ import { createInvasionScene, swarmColor, nativeColor } from "./scene.mjs?v=dev"
 import { missionCheckpoint, restoreMissionCheckpoint, checkpointPlanet } from "./mission-save.mjs?v=dev";
 import { pointerIntent, exceedsTapSlop } from './pointer-controls.mjs?v=dev';
 import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
+import { enterFree, exitFree, placeFree, moveFree, freeLimits } from "./free-camera.mjs?v=dev";
+import { squadCenter, latestAlert, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
 import { minimapWorldPoint } from './minimap-controls.mjs?v=dev';
 import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecoveryBackups } from './save-recovery.mjs?v=dev';
 
@@ -254,11 +256,12 @@ $("achievements-close").addEventListener("click", () => $("achievements-dialog")
 // ---- Frontier maps (large worlds apart from the campaign) ----
 function showFrontiers() {
   $("frontier-list").innerHTML = frontiers.map(map => {
-    const society = societies[map.society], supply = missionSupply(progress, map);
+    const society = societies[map.society], supply = missionSupply(progress, map), record = progress.frontier?.[map.id];
     return `<li><strong>${escapeHtml(map.name)}</strong>
       <small>${escapeHtml(map.subtitle)} · ${(map.map.half * 2 / 1000).toFixed(0)} km across · ${escapeHtml(society.name)} society · threat ${escapeHtml(threatNames[map.threat])}</small>
       <p>${escapeHtml(map.description)}</p>
       <small>Hold ${map.required} of ${map.zoneCount} zones · ${supply.matter} matter · ${supply.podSlots} slots per wave · ${escapeHtml(supply.unlocks.map(t => droneTypes[t].name).join(", "))}</small>
+      <small class="frontier-record">${record ? `Your record: ${"★".repeat(record.stars)}${"☆".repeat(3 - record.stars)} · best ${clock(record.best)} · ${record.wins} ${record.wins === 1 ? "win" : "wins"}` : "Not yet won"}</small>
       <button class="primary" type="button" data-frontier="${escapeHtml(map.id)}">Land on ${escapeHtml(map.name)}</button></li>`;
   }).join("");
   for (const button of $("frontier-list").querySelectorAll("[data-frontier]")) {
@@ -320,15 +323,12 @@ function startMission(planet, checkpoint = null) {
     missionId: globalThis.crypto?.randomUUID?.() || `attempt-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`,
   });
   scene.load(planet, terrain, battle);
-  const home = battle.zones.find(z => z.kind === "beachhead");
-  const away = { x: home.x - battle.map.centerX, z: home.z - battle.map.centerZ };
-  const length = Math.hypot(away.x, away.z) || 1;
   mission = {
-    planet, battle, terrain,
-    cam: restored?.cam || { focus: { x: home.x - away.x / length * 70, z: home.z - away.z / length * 70 }, distance: 230, yaw: Math.atan2(away.x, away.z), pitch: 0.9 },
+    planet, battle, terrain, follow: false, lastAlert: null, mouse: null,
+    cam: restored?.cam || homeView(battle),
     selected: new Set(restored?.command.selected || []), speed: 1, paused: !!restored,
     payload: restored?.command.payload ?? defaultPayload(battle), placing: false, dropPoint: null, dropPreview: null, dropPanelOpen: false,
-    cleanView: false, minimapOrders: false, minimapPing: null, phoneHudCollapsed: false,
+    cleanView: false, minimapOrders: false, minimapPing: null, phoneHudCollapsed: false, freeCam: null, freeInput: { up: 0, look: 0 },
     seenLog: new WeakSet(), ended: false, lastHud: 0, lastMinimap: 0, lastAchievements: 0, cards: new Map(), dropTypes: "",
   };
   $("squad-bar").replaceChildren();
@@ -341,6 +341,8 @@ function startMission(planet, checkpoint = null) {
   $('placement-launch').disabled = true;
   clampCamera();
   setCleanView(false);
+  updateFreeCameraUi();
+  updateFollowUi();
   $("pause-button").textContent = mission.paused ? "Resume" : "Pause";
   $("speed-button").textContent = "1×";
   show("mission");
@@ -392,7 +394,107 @@ function clampCamera() {
   cam.distance = Math.min(battle.map.view || 750, Math.max(35, cam.distance));
   cam.pitch = Math.min(1.45, Math.max(0.3, cam.pitch));
 }
+// ---- Free camera (free-camera.mjs): fly anywhere, up and down, and look around ----
+const groundAt = (x, z) => mission.terrain.heightAt(x, z);
+// Buildings stop the free camera only once the city has been found (no peeking through them).
+const freeWorld = () => ({ groundAt, map: mission.battle.map, roofAt: cityFound(mission.battle) && mission.battle.roofAt ? (x, z) => mission.battle.roofAt(x, z, 1) : null });
+function nudgeFree(forward, right, up) {
+  const f = mission.freeCam;
+  placeFree(f, f.x - Math.sin(f.yaw) * forward + Math.cos(f.yaw) * right, f.z - Math.cos(f.yaw) * forward - Math.sin(f.yaw) * right, f.y + up, freeWorld());
+}
+const freeScale = () => Math.max(4, mission.freeCam.y - groundAt(mission.freeCam.x, mission.freeCam.z)) * 0.0021;
+function lookFree(dx, dy) {
+  const f = mission.freeCam;
+  f.yaw -= dx * 0.006;
+  f.pitch = Math.min(freeLimits.lookDown, Math.max(freeLimits.lookUp, f.pitch + dy * 0.004));
+}
+function updateFreeCameraUi() {
+  const on = !!mission?.freeCam;
+  $("free-camera").setAttribute("aria-pressed", String(on));
+  $("free-camera").textContent = on ? "Orbit cam · C" : "Free cam · C";
+  $("free-controls").hidden = !on;
+}
+function setFreeCamera(enabled) {
+  if (!mission || !!mission.freeCam === enabled) return;
+  if (enabled) mission.freeCam = enterFree(mission.cam, groundAt);
+  else {
+    exitFree(mission.freeCam, mission.cam, groundAt, mission.battle.map.view || 750);
+    mission.freeCam = null;
+    clampCamera();
+  }
+  mission.freeInput = { up: 0, look: 0 };
+  updateFreeCameraUi();
+}
+// The minimap and squad focus move cam.focus; the free camera follows such jumps, and otherwise
+// cam.focus tracks the point under the free camera so the minimap marker stays right.
+function syncFreeFocus() {
+  const f = mission.freeCam, cam = mission.cam;
+  if (f.syncX !== undefined && (cam.focus.x !== f.syncX || cam.focus.z !== f.syncZ)) placeFree(f, cam.focus.x, cam.focus.z, f.y, freeWorld());
+  cam.focus.x = f.syncX = f.x;
+  cam.focus.z = f.syncZ = f.z;
+  cam.yaw = f.yaw;
+}
+$("free-camera").addEventListener("click", () => setFreeCamera(!mission?.freeCam));
+for (const button of document.querySelectorAll("#free-controls [data-free]")) {
+  const [axis, value] = { up: ["up", 1], down: ["up", -1], lookup: ["look", -1], lookdown: ["look", 1] }[button.dataset.free];
+  const release = () => { if (mission) mission.freeInput[axis] = 0; };
+  button.addEventListener("pointerdown", (event) => { if (!mission?.freeCam) return; event.preventDefault(); button.setPointerCapture(event.pointerId); mission.freeInput[axis] = value; });
+  for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) button.addEventListener(type, release);
+}
+
+// ---- Camera assist (camera-assist.mjs): follow squads, jump to alerts, edge-scroll, reset ----
+function updateFollowUi() {
+  $("follow-button").setAttribute("aria-pressed", String(!!mission?.follow));
+}
+function setFollow(enabled) {
+  if (!mission) return;
+  if (enabled && !mission.selected.size) { toast("Select a squad to follow.", "info"); enabled = false; }
+  mission.follow = enabled;
+  updateFollowUi();
+}
+function lookAt(x, z) {
+  if (mission.freeCam) placeFree(mission.freeCam, x, z, mission.freeCam.y, freeWorld());
+  else { mission.cam.focus = { x, z }; clampCamera(); }
+}
+function jumpToAlert() {
+  const alert = mission?.lastAlert;
+  if (!alert) { toast("No alerts yet.", "info"); return; }
+  setFollow(false);
+  lookAt(alert.x, alert.z);
+  mission.minimapPing = { x: alert.x, z: alert.z, at: performance.now() };
+}
+function resetView() {
+  setFreeCamera(false);
+  setFollow(false);
+  mission.cam = homeView(mission.battle);
+  clampCamera();
+}
+// Each frame: follow the selected squads, and scroll when a mouse rests at the screen edge.
+function assistCamera(dt) {
+  if (mission.follow && !mission.freeCam) {
+    const center = squadCenter(mission.battle.units, mission.selected), cam = mission.cam;
+    if (center) {
+      const k = Math.min(1, dt * 3);
+      cam.focus = { x: cam.focus.x + (center.x - cam.focus.x) * k, z: cam.focus.z + (center.z - cam.focus.z) * k };
+      clampCamera();
+    }
+  }
+  const mouse = mission.mouse;
+  if (mouse && !gesture && document.hasFocus()) {
+    const { dx, dy } = edgeScroll(mouse.x, mouse.y, overlay.clientWidth, overlay.clientHeight);
+    if (dx || dy) pan(dx * 700 * dt, dy * 700 * dt);
+  }
+}
+$("follow-button").addEventListener("click", () => setFollow(!mission?.follow));
+$("alert-button").addEventListener("click", jumpToAlert);
+
 function pan(dx, dy) {
+  if (mission.follow) setFollow(false);
+  if (mission.freeCam) {
+    const k = freeScale();
+    nudgeFree(dy * k, -dx * k, 0);
+    return;
+  }
   const cam = mission.cam, k = cam.distance * 0.0021;
   const fx = -Math.sin(cam.yaw), fz = -Math.cos(cam.yaw), rx = Math.cos(cam.yaw), rz = -Math.sin(cam.yaw);
   cam.focus.x += (-rx * dx + fx * dy) * k;
@@ -400,6 +502,16 @@ function pan(dx, dy) {
   clampCamera();
 }
 function keyboardCamera(dt) {
+  if (mission.freeCam) {
+    const on = (...names) => (names.some(name => keys.has(name)) ? 1 : 0);
+    const input = {
+      forward: on("w", "arrowup") - on("s", "arrowdown"), right: on("d", "arrowright") - on("a", "arrowleft"),
+      up: on("r", "pageup") - on("f", "pagedown") + mission.freeInput.up, turn: on("e") - on("q"),
+      look: on("x") - on("z") + mission.freeInput.look, fast: keys.has("shift"),
+    };
+    if (input.forward || input.right || input.up || input.turn || input.look) moveFree(mission.freeCam, input, dt, freeWorld());
+    return;
+  }
   if (!keys.size) return;
   const cam = mission.cam, step = cam.distance * 1.1 * dt / 0.0021 / cam.distance;
   if (keys.has("w") || keys.has("arrowup")) pan(0, step);
@@ -446,6 +558,10 @@ overlay.addEventListener("pointerdown", (event) => {
   }
 });
 overlay.addEventListener("pointermove", (event) => {
+  if (event.pointerType === "mouse" && mission) {
+    const rect = overlay.getBoundingClientRect();
+    mission.mouse = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+  }
   if (!pointers.has(event.pointerId)) return;
   if (!battlefieldActive()) { resetPointers(); return; }
   pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
@@ -453,6 +569,14 @@ overlay.addEventListener("pointermove", (event) => {
   if (gesture && event.buttons !== undefined && event.buttons !== gesture.buttons) gesture.moved = true;
   if (pointers.size >= 2 && gesture?.pinch) {
     const now = pinchState(), before = gesture.pinch;
+    if (mission.freeCam) {
+      // Free camera: spread to fly forward, pinch to back away, twist to turn, drag to slide.
+      mission.freeCam.yaw -= now.angle - before.angle;
+      nudgeFree((now.dist - before.dist) * freeScale() * 2, 0, 0);
+      pan(now.x - before.x, now.y - before.y);
+      gesture.pinch = now;
+      return;
+    }
     mission.cam.distance *= Math.max(10, before.dist) / Math.max(10, now.dist);
     mission.cam.yaw -= now.angle - before.angle;
     pan(now.x - before.x, now.y - before.y);
@@ -463,7 +587,8 @@ overlay.addEventListener("pointermove", (event) => {
   const dx = event.clientX - gesture.lastX, dy = event.clientY - gesture.lastY;
   if (exceedsTapSlop(gesture, event)) gesture.moved = true;
   if (gesture.moved) {
-    if (gesture.rotate) { mission.cam.yaw -= dx * 0.006; mission.cam.pitch += dy * 0.004; clampCamera(); } else pan(dx, dy);
+    if (gesture.rotate && mission.freeCam) lookFree(dx, dy);
+    else if (gesture.rotate) { mission.cam.yaw -= dx * 0.006; mission.cam.pitch += dy * 0.004; clampCamera(); } else pan(dx, dy);
   }
   gesture.lastX = event.clientX; gesture.lastY = event.clientY;
 });
@@ -487,9 +612,12 @@ overlay.addEventListener("pointerup", endPointer);
 overlay.addEventListener("pointercancel", endPointer);
 overlay.addEventListener("lostpointercapture", (event) => { if (pointers.has(event.pointerId)) resetPointers(); });
 overlay.addEventListener("contextmenu", (event) => event.preventDefault());
+overlay.addEventListener("pointerleave", () => { if (mission) mission.mouse = null; });
 overlay.addEventListener("wheel", (event) => {
   if (!battlefieldActive()) return;
   event.preventDefault();
+  // The wheel raises and lowers the free camera; it zooms the orbit camera.
+  if (mission.freeCam) { nudgeFree(0, 0, event.deltaY * (0.15 + freeScale() * 0.9)); return; }
   mission.cam.distance *= Math.exp(event.deltaY * 0.0012);
   clampCamera();
 }, { passive: false });
@@ -734,6 +862,10 @@ window.addEventListener("keydown", (event) => {
   if (current !== "mission" || !mission || event.target.closest?.("input, textarea") || document.querySelector("dialog[open]")) return;
   const key = event.key.toLowerCase();
   if (key === "v" && !event.repeat) { setCleanView(!mission.cleanView); event.preventDefault(); return; }
+  if (key === "c" && !event.repeat) { setFreeCamera(!mission.freeCam); event.preventDefault(); return; }
+  if (key === "g" && !event.repeat) { setFollow(!mission.follow); return; }
+  if (key === "j" && !event.repeat) { jumpToAlert(); return; }
+  if (key === "home") { resetView(); event.preventDefault(); return; }
   if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
   if (key === "escape") { resetPointers(); setCleanView(false); cancelPlacement(); closeDropPanel(); return; }
   if (key === "b") { $("drop-panel").hidden ? openDropPanel() : closeDropPanel(); return; }
@@ -746,7 +878,7 @@ window.addEventListener("keydown", (event) => {
     return;
   }
   keys.add(key);
-  if (key.startsWith("arrow")) event.preventDefault();
+  if (key.startsWith("arrow") || key.startsWith("page")) event.preventDefault();
 });
 window.addEventListener("keyup", (event) => keys.delete(event.key.toLowerCase()));
 window.addEventListener("blur", () => { keys.clear(); resetPointers(); });
@@ -894,10 +1026,26 @@ function drawOverlay() {
     const label = scene.project(point.x, y + 5, point.z, width, height);
     if (label.visible) { ctx.fillStyle = swarmColor; ctx.fillText(`Pod ${index + 1}`, label.x, label.y); }
   }
-  const hidden = hiddenUnits(b);
+  const hidden = hiddenUnits(b), byId = new Map(b.units.map(u => [u.id, u])), noShot = new Set();
   for (const unit of b.units) {
     if (!unit.alive || hidden.has(unit.id)) continue;
     const selected = isDrone(unit) && mission.selected.has(unit.squad);
+    // A selected drone's attack target: a faint line when it can fire, a dashed red one (and a
+    // "No clear shot" note at the target) while a building or ridge is in the way.
+    const aimed = selected && unit.order?.kind === "attack" ? byId.get(unit.order.target) : null;
+    if (aimed?.alive && !hidden.has(aimed.id)) {
+      const from = scene.project(unit.x, scene.unitTop(unit), unit.z, width, height), to = scene.project(aimed.x, scene.unitTop(aimed), aimed.z, width, height);
+      if (from.visible && to.visible) {
+        const blocked = shotBlocked(b, unit, aimed);
+        if (blocked) noShot.add(aimed);
+        ctx.save();
+        ctx.strokeStyle = blocked ? "rgba(255, 90, 70, 0.85)" : "rgba(124, 231, 255, 0.35)";
+        ctx.lineWidth = blocked ? 1.5 : 1;
+        if (blocked) ctx.setLineDash([5, 5]);
+        ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y); ctx.stroke();
+        ctx.restore();
+      }
+    }
     const damaged = unit.hp < unit.maxHp - 0.5;
     if (!isDrone(unit) && !selected && !damaged) continue;
     const p = scene.project(unit.x, scene.unitTop(unit), unit.z, width, height);
@@ -930,6 +1078,7 @@ function drawOverlay() {
       ctx.fillRect(p.x - w / 2, p.y - 5, w * f, 3);
     }
   }
+  drawNoShotNotes(ctx, noShot, width, height);
 }
 
 function drawMinimap() {
@@ -999,6 +1148,11 @@ function drawMinimap() {
   ctx.lineTo(fx + Math.sin(yaw) * 6 - Math.cos(yaw) * 6, fz + Math.cos(yaw) * 6 + Math.sin(yaw) * 6);
   ctx.closePath();
   ctx.stroke();
+  // The newest alert (camera-assist.mjs) for 20 s: a red ring; J or the Alert button jumps there.
+  if (mission.lastAlert && b.time - mission.lastAlert.at < 20) {
+    ctx.strokeStyle = "#ff4a3a"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(sx(mission.lastAlert.x), sz(mission.lastAlert.z), 6, 0, Math.PI * 2); ctx.stroke();
+  }
   if (mission.minimapPing) {
     const elapsed = performance.now() - mission.minimapPing.at;
     if (elapsed < 900) {
@@ -1031,6 +1185,17 @@ function reliefMap(terrain, { centerX, centerZ, half }) {
   }
   context.putImageData(image, 0, 0);
   return canvas;
+}
+
+function drawNoShotNotes(ctx, targets, width, height) {
+  for (const target of targets) {
+    const p = scene.project(target.x, scene.unitTop(target) + 6, target.z, width, height);
+    if (!p.visible) continue;
+    ctx.fillStyle = "rgba(6, 8, 16, 0.72)";
+    ctx.fillRect(p.x - 52, p.y - 22, 104, 16);
+    ctx.fillStyle = "#ff8a6a";
+    ctx.fillText("No clear shot", p.x, p.y - 10);
+  }
 }
 
 const minimap = $("minimap"), minimapPointers = new Map();
@@ -1188,10 +1353,13 @@ function tick(now) {
   const b = mission.battle;
   if (!mission.paused) for (let i = 0; i < mission.speed; i += 1) stepBattle(b, dt);
   keyboardCamera(dt);
+  assistCamera(dt);
   const events = b.events.splice(0);
+  mission.lastAlert = latestAlert(mission.lastAlert, events, b);
   handleEvents(events);
   offerVictoryChoice();
-  scene.frame(b, mission.cam, events, mission.paused ? 0 : dt * mission.speed, now / 1000);
+  if (mission.freeCam) syncFreeFocus();
+  scene.frame(b, mission.freeCam ? { ...mission.cam, free: mission.freeCam } : mission.cam, events, mission.paused ? 0 : dt * mission.speed, now / 1000);
   drawOverlay();
   if (now - mission.lastHud > 120) { updateHud(); mission.lastHud = now; }
   if (now - mission.lastMinimap > 150) { drawMinimap(); mission.lastMinimap = now; }

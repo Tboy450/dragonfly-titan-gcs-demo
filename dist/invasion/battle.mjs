@@ -380,6 +380,8 @@ function buildGrid(units, cell) {
 // (b.lineBlocked, from a city); artillery strikes are indirect and are not affected.
 const eyeHeight = (unit) => unit.alt + (unit.structure ? 4 : unit.side === "native" && !unit.alt ? 1.6 : 0.6);
 const clearShot = (b, unit, other) => !b.lineBlocked || !b.lineBlocked(unit.x, unit.z, eyeHeight(unit), other.x, other.z, eyeHeight(other));
+// For the page: true when something stands between a unit and its target.
+export const shotBlocked = (b, unit, other) => !clearShot(b, unit, other);
 
 function nearestEnemy(unit, enemies, reach) {
   let best = null, bestD = reach * reach;

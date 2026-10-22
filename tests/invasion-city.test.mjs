@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createCityLayout, cityQueries, CITY_LAYOUT_VERSION } from "../dist/invasion/city-layout.mjs";
-import { planetById, frontiers, missionSupply, applyFrontierResult, createProgress } from "../dist/invasion/campaign.mjs";
+import { planetById, frontiers, missionSupply, applyFrontierResult, createProgress, validProgress } from "../dist/invasion/campaign.mjs";
 import { createPlanetTerrain } from "../dist/invasion/planet-terrain.mjs";
 import { createBattle, stepBattle, requestDrop, orderSquads, cityFound } from "../dist/invasion/battle.mjs";
 import { missionCheckpoint, restoreMissionCheckpoint, validMissionCheckpoint, checkpointPlanet } from "../dist/invasion/mission-save.mjs";
@@ -127,6 +127,13 @@ test("Frontier supply and results stay apart from the campaign bank and conquest
   assert.equal(next.stats.missionsWon, 1);
   assert.equal(next.stats.zonesCaptured, 6);
   assert.equal(applyFrontierResult(next, map, { outcome: "won", stats: { zonesCaptured: 6 }, missionId: "frontier-test-1" }).progress.stats.zonesCaptured, 6, "settled once");
+  // Each frontier keeps a record: wins, best stars and fastest win, kept through a save.
+  assert.deepEqual(next.frontier[map.id], { wins: 1, stars: 3, best: 900 });
+  const faster = applyFrontierResult(next, map, { outcome: "won", stars: 2, time: 700, stats: {}, missionId: "frontier-test-2" });
+  assert.deepEqual(faster.progress.frontier[map.id], { wins: 2, stars: 3, best: 700 });
+  assert.ok(faster.notes.some(note => /New best time/.test(note)));
+  assert.deepEqual(validProgress(JSON.parse(JSON.stringify(faster.progress))).frontier, faster.progress.frontier);
+  assert.deepEqual(validProgress({ ...faster.progress, frontier: { [map.id]: { wins: 0, stars: 9, best: -1 }, nowhere: { wins: 1, stars: 1, best: 5 } } }).frontier, {});
 });
 
 const cam = { focus: { x: 0, z: 0 }, distance: 230, yaw: 0, pitch: 0.9 };
@@ -217,6 +224,20 @@ test("Ashfall Frontier: a lava-veined valley among volcanoes holds a forge city 
   assert.equal(validMissionCheckpoint({ ...saved, battle: { ...saved.battle, landform: { ...map.landform, volcanoes: 99 } } }), null);
 });
 
+test("On frontier maps ridges block line of sight; the valley floor does not; campaign maps are unchanged", () => {
+  const map = planetById("corvan-frontier"), terrain = createPlanetTerrain(map);
+  let peak = null;
+  for (let x = -2800; x <= 2800; x += 100) for (let z = -2800; z <= 2800; z += 100) {
+    const h = terrain.heightAt(x, z);
+    if (!peak || h > peak.h) peak = { x, z, h };
+  }
+  assert.equal(terrain.lineBlocked(peak.x - 120, peak.z, 1.6, peak.x + 120, peak.z, 1.6), true, "across the highest peak");
+  assert.equal(terrain.lineBlocked(peak.x - 120, peak.z, peak.h + 20, peak.x + 120, peak.z, peak.h + 20), false, "high above it");
+  const { x, z } = map.landform;
+  assert.equal(terrain.lineBlocked(x, z, 4, x + 120, z - 60, 22.6), false, "a gun and a drone across the valley floor");
+  assert.equal(createPlanetTerrain(planetById("corvan")).lineBlocked, undefined, "campaign Corvan has no sight checks");
+});
+
 test("Buildings block line of sight: cover from city defenses, and an attack order closes in", () => {
   const city = createCityLayout(spec), queries = cityQueries(city);
   const tall = city.buildings.reduce((best, b) => (b.height > best.height ? b : best));
@@ -258,4 +279,38 @@ test("Buildings block line of sight: cover from city defenses, and an attack ord
   orderSquads(b, [drone.squad], { kind: "attack", target: flak.id, x: flak.x, z: flak.z });
   for (let t = 0; t < 15; t += 0.1) stepBattle(b, 0.1);
   assert.ok(drone.alive && !b.lineBlocked(drone.x, drone.z, drone.alt + 0.6, flak.x, flak.z, 4), "a clear line to the target");
+});
+
+test("Velm Frontier: a walled market town where troops use the gates and drones fly over the walls", () => {
+  const map = planetById("velm-frontier"), terrain = createPlanetTerrain(map), city = terrain.city;
+  const kinds = kind => city.buildings.filter(b => b.kind === kind);
+  assert.ok(city.style === "town" && kinds("house").length > 300 && kinds("keep").length === 1 && kinds("turret").length === 4 && kinds("wall").length >= 8);
+  const keep = kinds("keep")[0];
+  assert.ok(keep.height > Math.max(...kinds("house").map(h => h.height)), "the keep stands over the roofs");
+  for (const house of kinds("house")) {
+    assert.ok(house.height > house.eaves && house.eaves >= 5);
+    const owner = city.blocks.find(k => Math.abs(house.x - k.x) + house.w / 2 <= k.size / 2 + 1e-9 && Math.abs(house.z - k.z) + house.d / 2 <= k.size / 2 + 1e-9);
+    assert.ok(owner, `${house.id} inside its block`);
+  }
+  // The wall rings the town outside its streets, inside the city bounds, with gaps for gates.
+  const queries = cityQueries(city), { minX, maxX, minZ, maxZ } = city.bounds;
+  for (const wall of kinds("wall")) assert.ok(wall.x - wall.w / 2 >= minX && wall.x + wall.w / 2 <= maxX && wall.z - wall.d / 2 >= minZ && wall.z + wall.d / 2 <= maxZ);
+  const southWall = kinds("wall").filter(w => w.d === 3 && w.z < city.z);
+  const wallZ = southWall[0].z;
+  let gaps = 0, blocked = 0;
+  for (let x = minX + 12; x < maxX - 12; x += 2) (queries.buildingAt(x, wallZ) ? blocked++ : gaps++);
+  assert.ok(blocked > gaps * 5 && gaps >= 8, "mostly wall, with gates");
+  assert.ok(terrain.walkable(city.x - city.half + 3 * city.pitch, wallZ), "a gate is open to troops");
+  assert.ok(!terrain.walkable(southWall[0].x, wallZ) && terrain.roofAt(southWall[0].x, wallZ) === 10, "the wall is not, and drones climb 10 m over it");
+  // The map: far from the beacon, rivers in the valley, zones on dry ground.
+  const b = createBattle(map, { terrain, ...missionSupply(createProgress(), map) });
+  const home = b.zones.find(zone => zone.kind === "beachhead");
+  assert.ok(Math.hypot(home.x - city.x, home.z - city.z) > 3000);
+  for (const zone of b.zones) assert.ok(terrain.isLand(zone.x, zone.z), `${zone.name} is dry`);
+  let water = 0;
+  for (let x = -3000; x <= 3000; x += 50) for (let z = -3000; z <= 3000; z += 50) if (!terrain.isLand(x, z)) water += 1;
+  assert.ok(water > 50, "rivers run through the valley");
+  assert.equal(b.zones.filter(zone => zone.urban).length, 5);
+  const saved = JSON.parse(JSON.stringify(missionCheckpoint({ battle: b, cam })));
+  assert.ok(restoreMissionCheckpoint(saved, createPlanetTerrain(checkpointPlanet(saved))));
 });

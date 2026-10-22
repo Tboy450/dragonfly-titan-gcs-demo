@@ -309,10 +309,18 @@ complete solely because its assets download or its unit tests pass.
   landing placement; only Launch here purchases the previewed wave. **380 tests pass**;
   [evidence](research/swarmfall-pointer-controls-2026-10-19/README.md). Real browser/device
   acceptance remains open under TEST tasks; box selection and order queues remain CTRL-01/03.
-- [ ] **CTRL-05 (P1)** Camera: follow the selected squad, jump to the last alert, edge-scroll,
-  reset view.
+- [x] **CTRL-05 (P1) — Claude (October 21)** Camera: follow the selected squad, jump to the
+  last alert, edge-scroll, reset view (`camera-assist.mjs`).
+  - **Follow · G** tracks the selected squads until you pan.
+  - **Alert · J** jumps to the newest alert (a lost drone, artillery or lightning marked, an
+    eruption). The alert also shows as a red ring on the minimap for 20 s.
+  - A mouse at the screen edge scrolls, and **Home** returns to the starting view.
+  - Evidence: `tests/invasion-camera-assist.test.mjs`, plus browser checks of G, J and Home.
 - [ ] **CTRL-06 (P1)** Alerts with minimap pings and tap-to-jump: squad under attack, zone being
   retaken, hazard incoming, artillery marked.
+  - **Progress (Claude, October 21):** the newest alert (drone lost, artillery or lightning
+    marked, eruption) shows as a minimap ring, and J or the Alert button jumps there. Still
+    open: a zone being retaken, tappable alert toasts, and a list of recent alerts.
 - [ ] **CTRL-07 (P2)** Formation choices (spread, tight, line) and stances (aggressive, hold
   fire for a quiet takeover).
 - [x] **CTRL-08 (P2) — Codex, October 20; implementation and automated checks** Minimap
@@ -331,6 +339,20 @@ complete solely because its assets download or its unit tests pass.
   Clean view hides mission panels, minimap, toasts and battlefield labels. A small restore
   button remains; V toggles and Escape restores the HUD. Drop controls/mission end restore
   the HUD; camera controls remain available. V preserves the existing R/F pitch controls.
+- [x] **CTRL-14 ★ (P2) — Claude (October 21)** Free camera (owner: "a free camera there we can
+  move up and down freely would be nice"). **Free cam · C** under the minimap switches between
+  the orbit camera and a camera that flies anywhere (`free-camera.mjs`):
+  - Keys: W A S D fly, R/F or Page Up/Down rise and fall, Q/E turn, Z/X look up and down,
+    Shift faster.
+  - Mouse: the wheel rises and falls, right-drag looks, left-drag slides.
+  - Touch: one finger slides; two fingers spread to fly forward and twist to turn. On-screen
+    ▲ ▼ ◠ ◡ buttons rise, fall and look.
+  - Speed grows with height. The camera stays over the map, above the ground and roofs,
+    below 2.5 km, and out of buildings once the city is found.
+  - Tapping still gives orders, and the minimap still jumps the view. Leaving returns to
+    orbiting the point ahead. Free view isn't saved with a mission.
+  - Evidence: `tests/invasion-free-camera.test.mjs`. Browser: street level in Corvan Prime;
+    R rose 45 m and W flew 46 m in one second of frames.
 
 ## 4. Economy and progression (ECON)
 
@@ -476,10 +498,20 @@ Free mode (★ owner: "eventually a free mode with a universe or galaxy to pick 
       cooling towers, slag yards with ore heaps, and smoke from the tallest stacks.
     - Supply: 750 matter, threat 4, eruptions and ash. Existing metropolis cities are proven
       unchanged by a fingerprint test.
+  - **Done (Claude, October 21, later still):** **Velm Frontier**, the third map:
+    - Jungle hills around a 4.2 km swamp valley crossed by rivers.
+    - **Brackenford**, a walled market town (`city-layout.mjs` style "town"):
+      - 528 plastered and brick houses with red tile roofs around courtyards, and garden blocks.
+      - A stone keep with a flag.
+      - A crenellated 10 m town wall with two gates per side and four turrets. Troops must
+        use the gates; drones fly over.
+    - About 3.3 km from the beacon. Agrarian society, threat 2, acid rain. Supply: 600 matter.
+    - Frontier maps get lighter jungle trees.
   - **Still to do:**
-    - More frontier maps (walled market town, Skyway for Aurex).
+    - More frontier maps (Skyway for Aurex, a storm-ocean harbor for Halcyon).
     - Owner playtest of distances and balance. Forward drops need a captured outpost.
-    - A frontier record (best time, stars), which needs a progress-save field.
+    - ~~A frontier record (best time, stars).~~ Done October 21: wins, best stars and fastest win
+      per map, saved with progress and shown in the Frontier list.
     - Overlap with ROAM-01/02 (free roam) to settle with the owner.
 
 Local versus (★ owner: "a larger local versus mode where you fight to see who can take over a
@@ -922,8 +954,12 @@ These extend FIX-02/FIX-03; new cities cannot rely on decorative geometry for ga
       the way.
     - Tested: cover, getting hit in the open, an attack order finding a clear line, and
       down-the-street and over-the-roof lines. A 56-drone city fight costs under 1 ms per step.
-    - Still open: showing the player why a shot is blocked, bridges and multi-level surfaces,
-      and terrain (hills) blocking sight.
+    - Later the same day:
+      - On frontier maps, ridges and hills block sight too (the line is sampled every ~30 m;
+        campaign maps unchanged).
+      - A selected drone's attack target gets a faint line when it can fire, and a dashed red
+        one with "No clear shot" while blocked.
+    - Still open: bridges and multi-level surfaces (none in the game yet).
 - [ ] **COMBAT-04 (P2)** Make squad intent legible: target/retarget cue, movement destination,
   attack range and stop/disengage feedback. Show jammer/shield coverage and why a capture or
   weapon is blocked. Coordinate FIX-05, CTRL-06 and CTRL-07 rather than duplicating controls.

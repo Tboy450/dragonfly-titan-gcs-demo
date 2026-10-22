@@ -8,9 +8,11 @@
 // building whose height falls off from the center. Buildings are axis-aligned boxes stacked in
 // tiers (setbacks); collision uses each building's full footprint up to its top.
 //
-// Styles: "metropolis" (the default, above) and "forge", an industrial city of foundry halls,
-// smokestacks and cooling towers (forgeBlock). Forge buildings carry a kind ("hall", "stack" or
-// "tower") for the renderer; metropolis buildings have none. A new style must never change the
+// Styles: "metropolis" (the default, above); "forge", an industrial city of foundry halls,
+// smokestacks and cooling towers (forgeBlock); and "town", a walled market town of small
+// pitched-roof houses around courtyards, a stone keep, and a town wall with gates and corner
+// turrets just outside the streets (townBlock, townWalls). Forge and town buildings carry a kind
+// for the renderer; metropolis buildings have none. A new style must never change the
 // random sequence of an existing one, or saved cities would move.
 
 export const CITY_LAYOUT_VERSION = 1;
@@ -62,6 +64,7 @@ export function createCityLayout(spec) {
     }
     if (parkCells.has(key)) { parks.push({ id: `park-${parks.length}`, x: bx, z: bz, size: block }); continue; }
     if (style === "forge") { forgeBlock(buildings, rand, { bx, bz, block, distance: Math.hypot(bx - x, bz - z) / half, style, peak }); continue; }
+    if (style === "town") { townBlock(buildings, rand, { bx, bz, block, style, peak, keep: i === centerIndex && j === centerIndex - 1 }); continue; }
     const distance = Math.hypot(bx - x, bz - z) / half;      // 0 at the center, ~1.4 at a corner
     const ring = distance < 0.45 ? 0 : distance < 0.85 ? 1 : 2;
     const pattern = LOT_PATTERNS[Math.floor(rand() * LOT_PATTERNS.length) % LOT_PATTERNS.length];
@@ -88,6 +91,9 @@ export function createCityLayout(spec) {
       });
     }
   }
+  if (style === "town") townWalls(buildings, { x, z, half, pitch, street, blocks, style });
+  // Everything the city stands on, its wall included (a town's wall stands outside the streets).
+  const reach = style === "town" ? half + street / 2 + 8 : half;
   const streets = [];
   for (let k = 0; k <= blocks; k += 1) {
     const offset = -half + k * pitch;
@@ -96,7 +102,7 @@ export function createCityLayout(spec) {
   }
   return {
     version: CITY_LAYOUT_VERSION, style, seed, x, z, ground, pitch, street, block, half,
-    bounds: { minX: x - half, maxX: x + half, minZ: z - half, maxZ: z + half },
+    bounds: { minX: x - reach, maxX: x + reach, minZ: z - reach, maxZ: z + reach },
     plazas, parks, buildings, streets, blocks: blockList,
   };
 }
@@ -144,6 +150,53 @@ function forgeBlock(buildings, rand, { bx, bz, block, distance, style, peak }) {
     if (stacks.some(other => Math.max(Math.abs(other.x - stack.x) - (other.w + stack.w) / 2, Math.abs(other.z - stack.z) - (other.d + stack.d) / 2) < 4)) continue;
     stacks.push(stack);
     add(stack);
+  }
+}
+
+// A market town block [EST]: up to eight houses around a courtyard, each with plastered or brick
+// walls up to its eaves and a pitched roof above (height is the ridge). One block near the
+// market holds the stone keep instead, its height from the town's peak.
+const TOWN_FACADES = ["residential", "brick", "residential", "amber"];
+
+function townBlock(buildings, rand, { bx, bz, block, style, peak, keep }) {
+  const add = (building) => buildings.push({
+    id: `${style}-b${buildings.length}`, ...building,
+    tiers: [{ w: building.w, d: building.d, y: 0, h: building.height }],
+  });
+  if (keep) {
+    add({ kind: "keep", x: bx, z: bz, w: 20, d: 20, height: peak * (0.85 + rand() * 0.15), facade: "concrete", variant: 2 });
+    return;
+  }
+  const cell = block / 3;
+  for (let i = 0; i < 3; i += 1) for (let j = 0; j < 3; j += 1) {
+    if (i === 1 && j === 1) continue;
+    const skip = rand() < 0.12, w = cell * (0.62 + rand() * 0.3), d = cell * (0.62 + rand() * 0.3);
+    const x = bx + (i - 1) * cell + (rand() - 0.5) * (cell - w), z = bz + (j - 1) * cell + (rand() - 0.5) * (cell - d);
+    const eaves = 5 + rand() * 5, roof = Math.min(w, d) * 0.35 + rand() * 2, facade = TOWN_FACADES[Math.floor(rand() * TOWN_FACADES.length) % TOWN_FACADES.length];
+    if (skip) continue;
+    add({ kind: "house", x, z, w, d, eaves, height: eaves + roof, facade, variant: 1 + Math.floor(rand() * 3) });
+  }
+}
+
+// The town wall: 10 m stone segments just outside the outer streets, with gates where the third
+// streets meet it and round turrets on the corners. No randomness, so it never moves.
+function townWalls(buildings, { x, z, half, pitch, street, blocks, style }) {
+  const off = half + street / 2 + 2.5, thick = 3, height = 10, turret = 5;
+  const gates = [Math.round(blocks / 3), Math.round(blocks * 2 / 3)].map(k => -half + k * pitch);
+  const add = (building) => buildings.push({
+    id: `${style}-b${buildings.length}`, ...building, facade: "concrete", variant: 1,
+    tiers: [{ w: building.w, d: building.d, y: 0, h: building.height }],
+  });
+  for (const [sx, sz] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) add({ kind: "turret", x: x + sx * off, z: z + sz * off, w: turret * 2, d: turret * 2, height: 16 });
+  for (const side of [-1, 1]) {
+    let start = -off + turret;
+    for (const end of [...gates.map(g => g - street / 2), off - turret]) {
+      if (end > start) {
+        add({ kind: "wall", x: x + (start + end) / 2, z: z + side * off, w: end - start, d: thick, height });
+        add({ kind: "wall", x: x + side * off, z: z + (start + end) / 2, w: thick, d: end - start, height });
+      }
+      start = end + street;
+    }
   }
 }
 

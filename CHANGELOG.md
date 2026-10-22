@@ -61,6 +61,99 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   three-view pixel/framing, source links/Pilot return, numbered/stabilizer clearance pass.
 - **Next:** First structural side wall; detailed connections, construction/layer presets and
   whole-project UI/source audit remain in the checklist. Count24/24 initial passes unchanged.
+- **Concurrent work:** Preserved game commits through2190944 intact; shared log retains both
+  entries. Combined458 tests pass (`merged-tests.txt`); no game code manually edited.
+
+### 2026-10-21: Swarmfall camera assist (follow, alerts, edge-scroll, reset)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add camera follow, jump to alert, edge-scroll and view reset"
+- **What changed:** Checklist CTRL-05.
+  - **Follow · G** keeps the camera on the selected squads until you pan.
+  - **Alert · J** jumps to the newest alert (a lost drone, artillery or lightning marked, an
+    eruption), which also shows as a red ring on the minimap for 20 s.
+  - A mouse resting at the screen edge scrolls the view.
+  - **Home** returns to the starting view over the Hive beacon.
+  - Both buttons sit under the minimap. Follow and alert jumps also work with the free camera.
+- **Files:** `dist/invasion/camera-assist.mjs` (new), `main.mjs`, `index.html`, `invasion.css`,
+  `tests/invasion-camera-assist.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (450 pass). Browser checks:
+  - J with no alert says so, and J jumps to an alert.
+  - G refuses with no squad selected and follows once one is.
+  - Home resets the view.
+  - No console errors.
+  Edge scrolling isn't checked in the browser.
+
+### 2026-10-21: Swarmfall Velm Frontier and the walled market town
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add Velm Frontier with the walled market town Brackenford"
+- **What changed:** The third Frontier map.
+  - **Velm Frontier:** jungle hills around a 4.2 km swamp valley with rivers (the landform's
+    new `rivers` option, water instead of lava). The Hive beacon is about 3.3 km from the
+    town. Agrarian society, threat 2, acid rain. Supply: 600 matter.
+  - **Town style** (`city-layout.mjs` "town", drawn by `buildTown`):
+    - About 530 small houses with plastered or brick walls and red tile roofs around
+      courtyards, plus garden blocks with trees.
+    - A stone keep with corner towers, battlements and a flag.
+    - A crenellated 10 m town wall outside the streets, with two gates per side and four
+      conical-roofed turrets. The wall blocks troops and line of sight; the gates are open,
+      and drones climb over the wall.
+  - **Lighter jungle on big maps:** fewer, simpler trees, so a frontier jungle doesn't cost
+    millions of triangles.
+  - Existing cities are unchanged (fingerprint test).
+- **Assumptions:** All sizes, the 9-zone / 6-required balance and the supply are invented
+  [EST]. Not yet playtested.
+- **Files:** `dist/invasion/city-layout.mjs`, `city-render.mjs`, `planet-terrain.mjs`,
+  `mission-save.mjs`, `scene.mjs`, `campaign.mjs`, `tests/invasion-city.test.mjs`,
+  `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (447 pass). The new test covers houses in blocks,
+  the keep above the roofs, a mostly solid wall with gates, gates walkable and the wall not,
+  rivers, dry zones, and a save round trip. In the browser the town renders (64 draw calls,
+  about 337 k triangles) with no console errors.
+
+### 2026-10-21: Swarmfall Frontier records
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Keep a record for each Frontier map"
+- **What changed:** Each Frontier map now remembers your wins, best stars and fastest win.
+  The Frontier list shows them ("Your record: ★★☆ · best 12:30 · 2 wins", or "Not yet won").
+  The debrief notes a first win or a new best time. Records are saved with campaign progress,
+  checked field by field (unknown maps and bad values are dropped). The campaign bank and
+  conquests are still untouched by frontier results.
+- **Files:** `dist/invasion/campaign.mjs`, `main.mjs`, `invasion.css`,
+  `tests/invasion-city.test.mjs`, `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (446 pass). The new checks cover a first win, a
+  faster win, a save round trip and bad records being dropped.
+
+### 2026-10-21: Swarmfall free camera, ridges blocking sight, blocked-shot lines
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a free camera, ridge line of sight and blocked-shot lines"
+- **What changed:**
+  - **Free camera** (the owner asked for one that moves up and down freely). **Free cam · C**
+    under the minimap switches between the orbit camera and a camera that flies anywhere:
+    - Keys: W A S D fly, R/F or Page Up/Down rise and fall, Q/E turn, Z/X look up and down,
+      Shift faster.
+    - Mouse: the wheel rises and falls, right-drag looks around.
+    - Touch: spread or twist two fingers. Phones get ▲ ▼ ◠ ◡ buttons.
+    - It stays above the ground and roofs and out of buildings once the city is found. Speed
+      grows with height.
+    - Tapping still gives orders, and leaving returns to orbiting the point ahead.
+  - **Ridges block sight** on frontier maps: direct fire across a mountain is blocked.
+    Campaign maps are unchanged.
+  - **Blocked shots are visible:** a selected drone's attack target gets a faint line when it
+    can fire, and a dashed red one with "No clear shot" while a building or ridge is in the way.
+- **Assumptions:** Camera speeds and limits are invented [EST]. Ground sight is sampled every
+  ~30 m and ignores lines under 40 m.
+- **Files:** `dist/invasion/free-camera.mjs` (new), `scene.mjs`, `main.mjs`, `index.html`,
+  `invasion.css`, `battle.mjs` (`shotBlocked`), `planet-terrain.mjs` (ground sight),
+  `tests/invasion-free-camera.test.mjs` (new), `tests/invasion-city.test.mjs`,
+  `SWARMFALL-TODO.md` (CTRL-14, COMBAT-03), `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (446 pass). Browser:
+  - The free camera at street level in Corvan Prime, looking up between towers.
+  - The C key and the button both toggle it, and the phone buttons appear.
+  - R and W moved it 45 m in one second of frames.
+  - No console errors.
+  The wheel, touch gestures and the blocked-shot line weren't driven in the browser (the
+  pane was in the background).
+- **Open / next:** Try the free camera on a real phone; camera speed settings (CTRL-10).
 
 ### 2026-10-21: Record fin-root sensor public acceptance
 - **Signed:** Codex (OpenAI)
