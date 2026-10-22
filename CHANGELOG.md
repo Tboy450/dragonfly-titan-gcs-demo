@@ -39,6 +39,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall graphics quality and adaptive resolution
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a graphics quality setting and adaptive resolution"
+- **What changed:** Checklist PERF-04.
+  - **Graphics: Low / Medium / High** on the title screen, remembered on the device. It sets
+    decor density, city detail (park trees, forge smoke), the ground detail of frontier maps
+    and the sharpest pixel ratio. High is today's look.
+  - Resolution also adapts during a mission: about 2 s of slow frames (under ~40 fps) steps it
+    down, to half at most, and 5 s of fast frames steps it back up. A hidden tab is ignored.
+- **Assumptions:** Thresholds and per-level values are invented [EST]. Not yet measured on a
+  real phone (PERF-01).
+- **Files:** `dist/invasion/quality.mjs` (new), `scene.mjs`, `main.mjs`, `index.html`,
+  `tests/invasion-quality.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (458 pass). Browser: the button cycles and is
+  remembered. Velm Frontier on Low draws about 126 k triangles at 0.75 pixel ratio, about half
+  of High. No console errors.
+
 ### 2026-10-22: Swarmfall sound
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add optional generated sound to Swarmfall"

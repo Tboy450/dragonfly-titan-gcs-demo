@@ -743,8 +743,15 @@ Optional, generated sound since October 22 (`battle-sound.mjs` decides, `sound.m
 - [ ] **PERF-03 (P2)** Profile the 2,400 CPU-updated weather particles on target devices.
   Move animation to the GPU or reduce cost only if measured frame time justifies it; verify
   storm appearance, paused state and deterministic game hazards stay correct.
-- [ ] **PERF-04 (P1)** Adaptive resolution and a graphics quality setting (decor density,
-  effects).
+- [x] **PERF-04 (P1) — Claude (October 22)** Adaptive resolution and a graphics quality setting
+  (decor density, effects), in `quality.mjs`.
+  - **Graphics: Low / Medium / High** on the title screen, remembered on the device. It sets
+    decor density, city detail (park trees, forge smoke), frontier ground detail and the
+    sharpest pixel ratio.
+  - Resolution also adapts on its own: about 2 s under ~40 fps steps it down (to half at
+    most), and 5 s over ~57 fps steps it back up.
+  - Evidence: `tests/invasion-quality.test.mjs`. On Velm Frontier at the start, Low draws
+    about 126 k triangles at 0.75 pixel ratio, against about 250 k or more on High.
 - [ ] **PERF-05 (P2)** Combat checks every unit against every enemy each step. Use the
   spatial grid already used for drone spacing.
 - [ ] **PERF-06 (P2)** Run the simulation in a background worker if the page gets busy.

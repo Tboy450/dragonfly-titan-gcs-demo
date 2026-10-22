@@ -13,6 +13,7 @@ import { projectedDiameter } from './drone-markers.mjs?v=dev';
 import { buildCity } from './city-render.mjs?v=dev';
 import { cityFound, hiddenUnits } from "./battle.mjs?v=dev";
 import { freeTarget } from "./free-camera.mjs?v=dev";
+import { qualityLevels, createAdaptive, adaptFrame } from "./quality.mjs?v=dev";
 
 export const swarmColor = "#7ce7ff";
 export const nativeColor = "#ff8a4a";
@@ -107,7 +108,17 @@ function instanced(geometry, material, capacity) {
 
 export function createInvasionScene(canvas, options = {}) {
   const renderer = options.renderer || new THREE.WebGLRenderer({ canvas, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+  // Graphics quality (quality.mjs): decor, city detail and ground take effect on the next
+  // mission; resolution at once. Adaptive resolution scales the pixel ratio with frame time.
+  let quality = qualityLevels.high, viewSize = null;
+  const adaptive = createAdaptive();
+  const applyRatio = () => {
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, quality.ratio) * adaptive.scale);
+    if (viewSize) renderer.setSize(viewSize.width, viewSize.height, false);
+  };
+  applyRatio();
+  function setQuality(name) { quality = qualityLevels[name] || qualityLevels.high; applyRatio(); }
+  function adapt(frameMs) { if (adaptFrame(adaptive, frameMs)) applyRatio(); return adaptive.scale; }
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(48, 1, 0.5, 9000);
@@ -352,7 +363,7 @@ export function createInvasionScene(canvas, options = {}) {
     decorate(planet, battle, rand);
     // A city on this planet (city-layout.mjs) is drawn from the same layout the rules use. On a
     // frontier map it stays hidden until scouted (updateZones).
-    cityGroup = planetTerrain.city ? buildCity(world, planetTerrain.city) : null;
+    cityGroup = planetTerrain.city ? buildCity(world, planetTerrain.city, { high: quality.city }) : null;
     for (const zone of battle.zones) buildZone(zone, battle, planet);
   }
 
@@ -361,7 +372,7 @@ export function createInvasionScene(canvas, options = {}) {
     // Frontier maps (several km) get a tighter skirt and more segments, about 26 m apart, so
     // their mountains keep their ridges; the haze hides the edge.
     const large = half > 1200;
-    const size = large ? half * 2.6 : half * 3.6, segments = large ? 300 : 220;
+    const size = large ? half * 2.6 : half * 3.6, segments = large ? quality.ground : 220;
     const geometry = new THREE.PlaneGeometry(size, size, segments, segments).rotateX(-Math.PI / 2);
     const position = geometry.attributes.position;
     let low = Infinity, high = -Infinity;
@@ -416,7 +427,7 @@ export function createInvasionScene(canvas, options = {}) {
     const clear = (x, z, margin) => !inCity(x, z) && battle.zones.every(zone => Math.hypot(zone.x - x, zone.z - z) > zone.radius + margin);
     const dry = (x, z) => terrain.liquid === null || terrain.solidLiquid || terrain.heightAt(x, z) > terrain.liquid + 0.5;
     // Counts are for campaign maps; a frontier map gets up to six times as many, kept closer in.
-    const large = half > 1200, more = large ? Math.min(6, (half / 460) ** 2) : 1;
+    const large = half > 1200, more = (large ? Math.min(6, (half / 460) ** 2) : 1) * quality.decor;
     const place = (count, margin, spread = 1.5) => {
       count = Math.round(count * more);
       if (large) spread = Math.min(spread, 1.15);
@@ -896,6 +907,7 @@ export function createInvasionScene(canvas, options = {}) {
   }
 
   function resize(width, height) {
+    viewSize = { width, height };
     renderer.setSize(width, height, false);
     camera.aspect = width / Math.max(1, height);
     camera.updateProjectionMatrix();
@@ -973,5 +985,5 @@ export function createInvasionScene(canvas, options = {}) {
     return projectedDiameter(markerRadii.get(unit.type), -markerPosition.z, camera.projectionMatrix.elements[5], height);
   }
 
-  return { renderer, scene, camera, load, unload, frame, resize, setCamera, pickGround, project, unitTop, unitPixelSize, heightAt: (x, z) => terrain?.heightAt(x, z) ?? 0 };
+  return { renderer, scene, camera, load, unload, frame, resize, setCamera, pickGround, project, unitTop, unitPixelSize, setQuality, adapt, heightAt: (x, z) => terrain?.heightAt(x, z) ?? 0 };
 }

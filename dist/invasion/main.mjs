@@ -23,6 +23,7 @@ import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
 import { enterFree, exitFree, placeFree, moveFree, freeLimits } from "./free-camera.mjs?v=dev";
 import { squadCenter, latestAlert, zoneAlerts, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
 import { cycleSound, soundLabel, updateBattleSound, quietSound } from "./sound.mjs?v=dev";
+import { qualityLevels, nextQuality } from "./quality.mjs?v=dev";
 import { minimapWorldPoint } from './minimap-controls.mjs?v=dev';
 import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecoveryBackups } from './save-recovery.mjs?v=dev';
 
@@ -284,10 +285,23 @@ let scene = null;
 let mission = null;
 const overlay = $("mission-overlay");
 
+// Graphics quality (PERF-04), chosen on the title screen and remembered on this device.
+let graphics = "high";
+try { if (qualityLevels[localStorage.getItem("swarmfall-graphics")]) graphics = localStorage.getItem("swarmfall-graphics"); } catch { /* optional */ }
+const showGraphics = () => { $("quality-button").textContent = `Graphics: ${qualityLevels[graphics].label}`; };
+$("quality-button").addEventListener("click", () => {
+  graphics = nextQuality(graphics);
+  try { localStorage.setItem("swarmfall-graphics", graphics); } catch { /* optional */ }
+  scene?.setQuality?.(graphics);
+  showGraphics();
+});
+showGraphics();
+
 function ensureScene() {
   if (scene) return scene;
   try {
     scene = createInvasionScene($("mission-canvas"));
+    scene.setQuality?.(graphics);
   } catch (error) {
     console.error(error);
     $("no-webgl").hidden = false;
@@ -1353,6 +1367,7 @@ function frame(now) {
   tick(now);
 }
 function tick(now) {
+  if (current === "mission" && scene && !document.hidden) scene.adapt?.(now - last);
   const dt = Math.min(0.05, Math.max(0, (now - last) / 1000));
   last = now;
   if (current === "galaxy") drawGalaxyScreen(now / 1000);
