@@ -714,14 +714,24 @@ and other threats on the planet):
 
 ## 11. Sound (AUD)
 
-The game is silent today.
+Optional, generated sound since October 22 (`battle-sound.mjs` decides, `sound.mjs` plays).
 
-- [ ] **AUD-01 (P1)** Effects: a swarm hum that grows with the number of drones in view (the
-  simulator's `sound-mix.mjs` approach), shots per weapon, explosions, capture chime, alarm
-  stages.
-- [ ] **AUD-02 (P1)** Hazard sounds (rain, wind, thunder, eruptions) and the pod's entry and
-  parachute.
-- [ ] **AUD-03 (P1)** A sound toggle and volume, off by default like the simulator.
+- [x] **AUD-01 (P1) — Claude (October 22)** Effects:
+  - A swarm hum that grows with the number of drones in view (the simulator's `sound-mix.mjs`
+    approach: a pure mix module plus a Web Audio player).
+  - Shots per weapon: tracer, laser, missile, flak, spear, charge.
+  - Explosions sized by what was destroyed, a capture chime, a loss tone, and alarm sirens by
+    stage.
+  - Shots are limited per weapon so steady fire rattles rather than roars.
+- [x] **AUD-02 (P1) — Claude (October 22)** Hazard sounds:
+  - Rain (methane and acid rain, lightning storms).
+  - Wind (blizzard, gusts, dust, ash).
+  - Thunder on lightning strikes, and an eruption rumble that grows nearer the view.
+  - The pod's entry roar on each drop, and parachute flutter at nearby landings.
+- [x] **AUD-03 (P1) — Claude (October 22)** **♪** button in the mission bar, or M: off, quiet,
+  medium, loud. Off by default, remembered on the device, and it starts only after a click or
+  tap. Evidence: `tests/invasion-sound.test.mjs`. Browser: the button switched sound on and
+  saved the level, with no errors. Listening on real speakers is still the owner's call.
 - [ ] **AUD-04 (P3)** Music by society level.
 
 ## 12. Performance (PERF)

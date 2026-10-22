@@ -22,6 +22,7 @@ import { pointerIntent, exceedsTapSlop } from './pointer-controls.mjs?v=dev';
 import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
 import { enterFree, exitFree, placeFree, moveFree, freeLimits } from "./free-camera.mjs?v=dev";
 import { squadCenter, latestAlert, zoneAlerts, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
+import { cycleSound, soundLabel, updateBattleSound, quietSound } from "./sound.mjs?v=dev";
 import { minimapWorldPoint } from './minimap-controls.mjs?v=dev';
 import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecoveryBackups } from './save-recovery.mjs?v=dev';
 
@@ -486,6 +487,8 @@ function assistCamera(dt) {
   }
 }
 $("follow-button").addEventListener("click", () => setFollow(!mission?.follow));
+$("sound-button").addEventListener("click", () => { $("sound-button").textContent = cycleSound(); });
+$("sound-button").textContent = soundLabel();
 $("alert-button").addEventListener("click", jumpToAlert);
 
 function pan(dx, dy) {
@@ -864,6 +867,7 @@ window.addEventListener("keydown", (event) => {
   if (key === "v" && !event.repeat) { setCleanView(!mission.cleanView); event.preventDefault(); return; }
   if (key === "c" && !event.repeat) { setFreeCamera(!mission.freeCam); event.preventDefault(); return; }
   if (key === "g" && !event.repeat) { setFollow(!mission.follow); return; }
+  if (key === "m" && !event.repeat) { $("sound-button").textContent = cycleSound(); return; }
   if (key === "j" && !event.repeat) { jumpToAlert(); return; }
   if (key === "home") { resetView(); event.preventDefault(); return; }
   if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
@@ -1332,6 +1336,7 @@ $("settlement-retry").addEventListener("click", retrySettlementSave);
 $("debrief-retry").addEventListener("click", () => { const planet = mission.planet; $("debrief").close(); startMission(planet); });
 function returnToGalaxy() {
   $("debrief").close();
+  quietSound();
   const frontier = mission?.planet.frontier;
   selectedPlanet = nextPlanet(progress).id;
   mission = null;
@@ -1367,6 +1372,10 @@ function tick(now) {
   if (mission.freeCam) syncFreeFocus();
   scene.frame(b, mission.freeCam ? { ...mission.cam, free: mission.freeCam } : mission.cam, events, mission.paused ? 0 : dt * mission.speed, now / 1000);
   drawOverlay();
+  // Sound hears what the camera sees: around the view's focus, as far as the view reaches.
+  const listener = mission.freeCam ? { x: mission.freeCam.x, z: mission.freeCam.z, radius: 150 + Math.max(0, mission.freeCam.y - groundAt(mission.freeCam.x, mission.freeCam.z)) * 1.2 }
+    : { x: mission.cam.focus.x, z: mission.cam.focus.z, radius: 80 + mission.cam.distance * 0.9 };
+  updateBattleSound(b, listener, mission.paused ? [] : events);
   if (now - mission.lastHud > 120) { updateHud(); mission.lastHud = now; }
   if (now - mission.lastMinimap > 150) { drawMinimap(); mission.lastMinimap = now; }
   if (now - mission.lastAchievements > 1000) { checkLiveAchievements(); mission.lastAchievements = now; }

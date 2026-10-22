@@ -39,6 +39,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall sound
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add optional generated sound to Swarmfall"
+- **What changed:** The game was silent (checklist AUD-01 to AUD-03). A **♪** button in the
+  mission bar (or M) cycles sound off, quiet, medium and loud. It's off by default, remembered
+  on the device, and starts only after a click or tap. Everything is generated with Web Audio,
+  with no sound files:
+  - The swarm's hum grows with the drones in view.
+  - Shots have a sound per weapon, limited so steady fire rattles rather than roars.
+  - Explosions are sized by what was destroyed. There's a capture chime, a loss tone, and
+    alarm sirens by stage.
+  - Weather: rain, wind, thunder on lightning strikes, and an eruption rumble that grows
+    nearer the view.
+  - Pods: an entry roar on each drop, and parachute flutter at nearby landings.
+  As in the simulator, a pure module decides the sound (`battle-sound.mjs`) and a player plays
+  it (`sound.mjs`).
+- **Assumptions:** All sounds and levels are artistic [EST].
+- **Files:** `dist/invasion/battle-sound.mjs` (new), `sound.mjs` (new), `main.mjs`,
+  `index.html`, `tests/invasion-sound.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (456 pass). Browser: the button switched sound on
+  and saved the level, with no errors. Not yet listened to on real speakers.
+
 ### 2026-10-22: Publish workflow on Node 24 actions
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Move the publish workflow to the Node 24 Pages actions"
