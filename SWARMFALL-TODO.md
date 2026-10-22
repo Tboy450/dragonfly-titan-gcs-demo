@@ -248,10 +248,20 @@ complete solely because its assets download or its unit tests pass.
   its terrain callback/pads. Title-screen Resume mission; autosave every 5 s and on page exit/
   hiding, resumed missions paused, malformed/version-mismatched saves ignored. New-mission
   replacement confirmation; unavailable-storage warning. Release status in CHANGELOG.
-- [ ] **FIX-02 (P1)** Drones pass through Aurex's towers (skyline up to about 48 m; drones
-  cruise at 15–28 m). The renderer already adds ground height, but battle rules lack obstacle
-  clearance, look-ahead and climb/descent limits. Add one shared terrain/building clearance
-  model, with alternate routes where climbing is unsuitable; keep rules in `battle.mjs`.
+- [x] **FIX-02 (P1) — Claude (October 22)** Drones pass through Aurex's towers (skyline up to
+  about 48 m; drones cruise at 15–28 m). The renderer already adds ground height, but battle
+  rules lack obstacle clearance, look-ahead and climb/descent limits. Add one shared
+  terrain/building clearance model, with alternate routes where climbing is unsuitable; keep
+  rules in `battle.mjs`.
+  - Aurex's skyline is now solid (`planet-terrain.mjs` `attachSkyline`): 420 seeded towers kept
+    clear of zones and drawn from the same data. Drones climb over them, troops walk round
+    them, pods avoid them, and they block direct fire. It uses the same clearance model as the
+    city districts (`roofAt`, `walkable`, `canDropAt`, `lineBlocked`).
+  - The climb look-ahead now samples five points over the next 3 s of flight. The old two
+    samples let a drone clip a narrow tower; the new test caught it, 44 m over a 48 m roof.
+  - Older Aurex saves resume without towers. Old look archived in
+    `archive/swarmfall-aurex-skyline-2026-10-22/`. Evidence: `tests/invasion-skyline.test.mjs`.
+  - Not done: alternate routes where climbing is unsuitable (drones always climb).
 - [ ] **FIX-03 (P1)** Ground troops walk in straight lines and simply stop at shorelines. Add
   pathfinding (a grid search on `isLand`, or flow fields).
 - [x] **FIX-04 (P1) — Codex, October 19; implementation and automated checks** Show a

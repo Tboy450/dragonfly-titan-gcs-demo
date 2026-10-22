@@ -137,7 +137,45 @@ export function createPlanetTerrain(planet) {
     terrain.lineBlocked = groundSight(terrain);
   }
   if (planet.city) attachCity(terrain, planet.city, raw, liquid);
+  else if (planet.biome === "city" && planet.skyline !== false) attachSkyline(terrain, seed, { centerX, centerZ, half });
   return terrain;
+}
+
+// A city world's skyline (FIX-02; Aurex): towers the rules know about, so drones climb over them,
+// troops walk round them and they block direct fire. Seeded from the planet and kept clear of the
+// zones, so they are built when the zones are known (setPads) and rebuilt the same way when a
+// saved battle is restored. Spread and sizes follow the earlier scenery [EST]; see
+// archive/swarmfall-aurex-skyline-2026-10-22/. Battles record skylineVersion (battle.skyline).
+export const skylineVersion = 1;
+function skylineTowers(seed, { centerX, centerZ, half }, zones) {
+  const towers = [];
+  for (let i = 0; towers.length < 420 && i < 1260; i += 1) {
+    const x = centerX + (hash(i, 31, seed) * 2 - 1) * half * 1.6, z = centerZ + (hash(i, 32, seed) * 2 - 1) * half * 1.6;
+    const w = 8 + hash(i, 33, seed) * 14, d = 8 + hash(i, 34, seed) * 14, height = 8 + hash(i, 35, seed) ** 2 * 40;
+    if (zones.some(zone => Math.hypot(zone.x - x, zone.z - z) < zone.radius + 16 + Math.max(w, d) / 2)) continue;
+    towers.push({ id: `tower-${i}`, x, z, w, d, height, shade: hash(i, 36, seed), tiers: [{ w, d, y: 0, h: height }] });
+  }
+  return towers;
+}
+function attachSkyline(terrain, seed, map) {
+  const reach = map.half * 1.6 + 30, setPads = terrain.setPads;
+  let queries = null;
+  terrain.skylineVersion = skylineVersion;
+  terrain.skyline = [];
+  terrain.setPads = (zones) => {
+    setPads(zones);
+    terrain.skyline = skylineTowers(seed, map, zones);
+    queries = cityQueries({ buildings: terrain.skyline, bounds: { minX: map.centerX - reach, maxX: map.centerX + reach, minZ: map.centerZ - reach, maxZ: map.centerZ + reach } });
+  };
+  terrain.walkable = (x, z) => terrain.isLand(x, z) && !queries?.buildingAt(x, z, 1.5);
+  terrain.roofAt = (x, z, pad = 0) => (queries ? queries.roofAt(x, z, pad) : 0);
+  terrain.canDropAt = (x, z, { radius = 6 } = {}) => !queries || queries.clearAt(x, z, radius + 1);
+  // Towers stand on gently stepped ground: heights are taken relative to the ground midway.
+  terrain.lineBlocked = (ax, az, ah, bx, bz, bh) => {
+    if (!queries) return false;
+    const ref = terrain.heightAt((ax + bx) / 2, (az + bz) / 2);
+    return queries.lineBlocked(ax, az, terrain.heightAt(ax, az) + ah - ref, bx, bz, terrain.heightAt(bx, bz) + bh - ref);
+  };
 }
 
 // Ridged fractal noise, roughly 0-1: sharp crests where plain noise is smooth.

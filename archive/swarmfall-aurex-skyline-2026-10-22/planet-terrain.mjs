@@ -1,0 +1,262 @@
+// Ground shape for each campaign planet. Titan reuses the simulator's Ahmakiq Undae terrain
+// (titan-terrain.mjs) unchanged; the other worlds are invented landscapes [EST] built from the
+// same value-noise approach. Pure functions (three.js is only pulled in by titan-terrain.mjs).
+import { terrainHeight } from "../titan-terrain.mjs?v=dev";
+import { overLiquid } from "../mission-systems.mjs?v=dev";
+import { createCityLayout, cityQueries, CITY_LAYOUT_VERSION } from "./city-layout.mjs?v=dev";
+
+function hash(x, z, seed) {
+  const value = Math.sin(x * 127.1 + z * 311.7 + seed * 74.7) * 43758.5453;
+  return value - Math.floor(value);
+}
+
+function noise(x, z, seed) {
+  const ix = Math.floor(x), iz = Math.floor(z);
+  let u = x - ix, v = z - iz;
+  u = u * u * (3 - 2 * u);
+  v = v * v * (3 - 2 * v);
+  const a = hash(ix, iz, seed) * (1 - u) + hash(ix + 1, iz, seed) * u;
+  const b = hash(ix, iz + 1, seed) * (1 - u) + hash(ix + 1, iz + 1, seed) * u;
+  return a * (1 - v) + b * v;
+}
+
+// Fractal noise, roughly 0-1.
+function fbm(x, z, seed, octaves = 4) {
+  let sum = 0, amplitude = 0.5, frequency = 1, total = 0;
+  for (let i = 0; i < octaves; i += 1) {
+    sum += amplitude * noise(x * frequency, z * frequency, seed + i * 17);
+    total += amplitude;
+    amplitude *= 0.5;
+    frequency *= 2.03;
+  }
+  return sum / total;
+}
+
+const smooth = (edge0, edge1, value) => {
+  const t = Math.max(0, Math.min(1, (value - edge0) / (edge1 - edge0)));
+  return t * t * (3 - 2 * t);
+};
+
+// liquid: level of standing liquid (m) or null; solidLiquid: frozen, so it counts as ground.
+const biomes = {
+  desert: {
+    liquid: null,
+    height(x, z, s) {
+      const along = x * Math.cos(0.5) + z * Math.sin(0.5);
+      const dunes = 7 * (0.5 + 0.5 * Math.sin(along / 26 + 4 * noise(x / 220, z / 220, s))) ** 2;
+      const mesa = smooth(0.63, 0.67, noise(x / 260, z / 260, s + 3)) * 24;
+      return 8 * fbm(x / 180, z / 180, s) + dunes * (1 - mesa / 24) + mesa + 0.4 * noise(x / 6, z / 6, s);
+    },
+  },
+  jungle: {
+    liquid: 0.6,
+    height(x, z, s, base) {
+      const river = Math.abs(noise(x / 300, z / 300, s + 5) * 2 - 1);
+      return 3 + 18 * fbm(x / 220, z / 220, s) - 10 * (1 - smooth(0, 0.12, river)) + base(x, z, 10);
+    },
+  },
+  ice: {
+    liquid: 2, solidLiquid: true,
+    height(x, z, s) {
+      const ridge = 1 - Math.abs(noise(x / 240, z / 240, s) * 2 - 1);
+      return 34 * ridge ** 2.2 + 6 * fbm(x / 90, z / 90, s + 2) + 0.3 * noise(x / 5, z / 5, s);
+    },
+  },
+  volcanic: {
+    liquid: 1.2,
+    height(x, z, s, base, cones) {
+      let h = 2.5 + 6 * fbm(x / 140, z / 140, s) - 4 * (1 - smooth(0.05, 0.2, Math.abs(noise(x / 200, z / 200, s + 9) * 2 - 1)));
+      for (const cone of cones) {
+        const r = Math.hypot(x - cone.x, z - cone.z) / cone.r;
+        if (r < 1) h += cone.h * (1 - r) ** 1.6 - (r < 0.18 ? cone.h * 0.35 * (1 - r / 0.18) : 0);
+      }
+      return h + base(x, z, 8) + 0.5 * noise(x / 4, z / 4, s);
+    },
+  },
+  storm: {
+    liquid: 0,
+    height(x, z, s, base) {
+      return 30 * (fbm(x / 240, z / 240, s) - 0.53) + 4 * fbm(x / 60, z / 60, s + 4) + base(x, z, 16);
+    },
+  },
+  city: {
+    liquid: null,
+    height(x, z, s) {
+      return Math.floor(fbm(x / 420, z / 420, s) * 3.2) * 4 + 1.2 * fbm(x / 200, z / 200, s + 1);
+    },
+  },
+};
+
+export function createPlanetTerrain(planet) {
+  if (planet.biome === "titan") {
+    return { biome: "titan", liquid: null, heightAt: (x, z) => terrainHeight(x, z), isLand: (x, z) => !overLiquid(x, z), setPads() {} };
+  }
+  const biome = biomes[planet.biome] || biomes.desert;
+  const seed = (planet.seed || 1) % 997;
+  const { centerX = 0, centerZ = 0, half = 420 } = planet.map || {};
+  // A rise under the Hive beacon so the first drop never lands in liquid.
+  const beach = { x: centerX - half * 0.68, z: centerZ + half * 0.68 };
+  const base = (x, z, lift) => lift * Math.exp(-((x - beach.x) ** 2 + (z - beach.z) ** 2) / (150 * 150));
+  const cones = [0, 1, 2].map(i => ({
+    x: centerX + (hash(i, 1, seed) * 1.6 - 0.8) * half, z: centerZ + (hash(i, 2, seed) * 1.6 - 0.8) * half,
+    r: 140 + hash(i, 3, seed) * 80, h: 45 + hash(i, 4, seed) * 35,
+  }));
+  const landform = planet.landform ? valleyLandform(planet.landform, seed, beach, { centerX, centerZ, half }) : null;
+  const raw = landform ? landform.height : (x, z) => biome.height(x, z, seed, base, cones);
+  let pads = [];
+  const liquid = biome.liquid;
+  const terrain = {
+    biome: planet.biome, liquid, solidLiquid: !!biome.solidLiquid, cones: planet.biome === "volcanic" ? cones : [],
+    raw,
+    isLand: (x, z) => liquid === null || biome.solidLiquid || terrain.heightAt(x, z) > liquid + 0.8,
+    // Zones get a level pad above any liquid, blended into the surrounding ground.
+    setPads(zones) {
+      pads = zones.map(zone => {
+        const r = zone.radius * 0.8;
+        return { x: zone.x, z: zone.z, r, h: Math.max(raw(zone.x, zone.z), liquid === null ? -Infinity : liquid + 1.5) };
+      });
+    },
+    heightAt(x, z) {
+      let h = raw(x, z);
+      for (const pad of pads) {
+        const d = Math.hypot(x - pad.x, z - pad.z);
+        if (d < pad.r + 24) {
+          const blend = smooth(pad.r, pad.r + 24, d);
+          h = pad.h * (1 - blend) + h * blend;
+        }
+      }
+      return h;
+    },
+  };
+  terrain.walkable = terrain.isLand;
+  if (landform) {
+    terrain.landformSpec = planet.landform;
+    // Zone sites keep to the valley floor, the beacon's basin, the pass and low foothills.
+    terrain.siteOK = (x, z) => landform.mountain(x, z) < 0.3;
+    // Ridges and hills block direct fire on these rough maps.
+    terrain.lineBlocked = groundSight(terrain);
+  }
+  if (planet.city) attachCity(terrain, planet.city, raw, liquid);
+  return terrain;
+}
+
+// Ridged fractal noise, roughly 0-1: sharp crests where plain noise is smooth.
+function ridged(x, z, seed, octaves = 5) {
+  let sum = 0, amplitude = 1, frequency = 1, total = 0, weight = 1;
+  for (let i = 0; i < octaves; i += 1) {
+    let n = 1 - Math.abs(noise(x * frequency, z * frequency, seed + i * 31) * 2 - 1);
+    n = n * n * weight;
+    weight = Math.min(1, n * 1.6);
+    sum += n * amplitude;
+    total += amplitude;
+    amplitude *= 0.5;
+    frequency *= 2.1;
+  }
+  return sum / total;
+}
+
+const toSegment = (x, z, a, b) => {
+  const dx = b.x - a.x, dz = b.z - a.z;
+  const t = Math.max(0, Math.min(1, ((x - a.x) * dx + (z - a.z) * dz) / (dx * dx + dz * dz)));
+  return Math.hypot(x - a.x - dx * t, z - a.z - dz * t);
+};
+
+// A frontier landform (planet.landform, kind "valley"): rough ridged mountains around one large,
+// nearly flat valley (an ellipse `length` x `width` m from its center, turned by `angle`). The
+// Hive beacon sits in a basin of its own, joined to the valley by a lower pass. mountain() is 0
+// on the valley floor, in the basin and 0.15 along the pass, rising to 1 in the mountains over
+// `rim` m with a ragged edge; peaks reach about `peak` m above the `floor` level. Options:
+// `lava` or `rivers` (0-1) cuts winding channels into the low ground that fill with the planet's
+// liquid, lava or water (kept away from the beacon), and `volcanoes` raises that many cratered
+// cones deep in the mountains.
+// Invented [EST].
+function valleyLandform(spec, seed, beach, map) {
+  const { x: vx, z: vz, length, width, angle = 0, floor = 6, rim = 500, peak = 400, lava = 0, rivers = 0, volcanoes = 0 } = spec;
+  const channels = Math.max(lava, rivers);
+  const ca = Math.cos(angle), sa = Math.sin(angle);
+  const local = (x, z) => ({ u: (x - vx) * ca + (z - vz) * sa, v: -(x - vx) * sa + (z - vz) * ca });
+  // The pass runs from the basin to 200 m inside the valley edge nearest the beacon.
+  const b = local(beach.x, beach.z), reach = Math.hypot(b.u / length, b.v / width);
+  const inside = Math.max(0.2, 1 - 200 / width) / reach;
+  const passEnd = { x: vx + (b.u * ca - b.v * sa) * inside, z: vz + (b.u * sa + b.v * ca) * inside };
+  const mountain = (x, z) => {
+    const { u, v } = local(x, z);
+    const wobble = (fbm(x / 350, z / 350, seed + 21) - 0.5) * 260;
+    const outside = (Math.hypot(u / length, v / width) - 1) * width;
+    const valley = smooth(0, rim, outside + wobble);
+    const basin = smooth(260, 700, Math.hypot(x - beach.x, z - beach.z) + wobble * 0.5);
+    const pass = 0.15 + 0.85 * smooth(110, 420, toSegment(x, z, beach, passEnd) + wobble * 0.4);
+    return valley * basin * pass;
+  };
+  // Volcano sites: deep in the mountains, apart from each other and from the beacon.
+  const cones = [];
+  for (let i = 0; cones.length < volcanoes && i < 400; i += 1) {
+    const x = map.centerX + (hash(i, 7, seed) * 1.8 - 0.9) * map.half, z = map.centerZ + (hash(i, 8, seed) * 1.8 - 0.9) * map.half;
+    const r = 300 + hash(i, 9, seed) * 120;
+    if (mountain(x, z) < 0.95 || Math.hypot(x - beach.x, z - beach.z) < 900 || cones.some(c => Math.hypot(c.x - x, c.z - z) < 1000)) continue;
+    if ([0, 1, 2, 3].some(k => mountain(x + Math.cos(k * 1.57) * r * 0.9, z + Math.sin(k * 1.57) * r * 0.9) < 0.5)) continue;
+    cones.push({ x, z, r, h: 380 + hash(i, 10, seed) * 170 });
+  }
+  const height = (x, z) => {
+    const m = mountain(x, z);
+    let ground = floor + (fbm(x / 240, z / 240, seed + 5) - 0.5) * 7 + 0.3 * noise(x / 5, z / 5, seed);
+    if (channels > 0) {
+      const channel = 1 - smooth(0.02, 0.07, Math.abs(noise(x / 380, z / 380, seed + 13) * 2 - 1));
+      ground -= channels * 6 * channel * smooth(350, 700, Math.hypot(x - beach.x, z - beach.z));
+    }
+    let h = m <= 0 ? ground : ground + m * (peak * ridged(x / 700, z / 700, seed + 40) + 70 * fbm(x / 160, z / 160, seed + 9));
+    for (const cone of cones) {
+      const r = Math.hypot(x - cone.x, z - cone.z) / cone.r;
+      if (r < 1) h += cone.h * (1 - r) ** 1.6 - (r < 0.16 ? cone.h * 0.3 * (1 - r / 0.16) : 0);
+    }
+    return h;
+  };
+  return { height, mountain, passEnd, cones };
+}
+
+// A planet with a city (planet.city, see city-layout.mjs): the ground is level under the city and
+// eases back into the natural terrain over 70 m; troops cannot walk through buildings, drones
+// read roof heights to climb over them, and pods only land where no building stands.
+function attachCity(terrain, spec, raw, liquid) {
+  const level = Math.max(raw(spec.x, spec.z), liquid === null ? -Infinity : liquid + 2);
+  const city = createCityLayout({ ...spec, ground: level });
+  const queries = cityQueries(city);
+  const { minX, maxX, minZ, maxZ } = city.bounds, margin = 70;
+  const natural = terrain.heightAt.bind(terrain);
+  terrain.city = city;
+  terrain.citySpec = { version: CITY_LAYOUT_VERSION, ...spec };
+  terrain.heightAt = (x, z) => {
+    const outside = Math.max(minX - x, x - maxX, minZ - z, z - maxZ, 0);
+    if (outside >= margin) return natural(x, z);
+    const blend = smooth(0, margin, outside);
+    return level * (1 - blend) + natural(x, z) * blend;
+  };
+  terrain.walkable = (x, z) => terrain.isLand(x, z) && !queries.buildingAt(x, z, 1.5);
+  terrain.roofAt = (x, z, pad = 0) => queries.roofAt(x, z, pad);
+  terrain.canDropAt = (x, z, { radius = 6 } = {}) => queries.clearAt(x, z, radius + 1);
+  // Line of sight between two points given as heights above their own ground (a drone's
+  // altitude, a gun's mount): buildings in between block it.
+  const ground = terrain.lineBlocked;
+  terrain.lineBlocked = (ax, az, ah, bx, bz, bh) => {
+    if (ground?.(ax, az, ah, bx, bz, bh)) return true;
+    const { minX, maxX, minZ, maxZ } = city.bounds;
+    if (Math.max(ax, bx) < minX || Math.min(ax, bx) > maxX || Math.max(az, bz) < minZ || Math.min(az, bz) > maxZ) return false;
+    return queries.lineBlocked(ax, az, terrain.heightAt(ax, az) + ah - level, bx, bz, terrain.heightAt(bx, bz) + bh - level);
+  };
+}
+
+// Line of sight over rough ground (frontier landforms): the line is sampled every ~30 m and is
+// blocked where the ground rises above it. Short lines (under 40 m) are never blocked by ground.
+function groundSight(terrain) {
+  return (ax, az, ah, bx, bz, bh) => {
+    const length = Math.hypot(bx - ax, bz - az);
+    if (length < 40) return false;
+    const ya = terrain.heightAt(ax, az) + ah, yb = terrain.heightAt(bx, bz) + bh;
+    const steps = Math.min(8, Math.floor(length / 30));
+    for (let k = 1; k <= steps; k += 1) {
+      const t = k / (steps + 1);
+      if (terrain.heightAt(ax + (bx - ax) * t, az + (bz - az) * t) > ya + (yb - ya) * t + 0.5) return true;
+    }
+    return false;
+  };
+}

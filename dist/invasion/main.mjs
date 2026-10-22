@@ -1278,7 +1278,7 @@ function drawMinimap() {
     ctx.drawImage(mission.reliefMap, 0, 0, width, height);
   }
   // City buildings, from the same layout that blocks troops and lifts drones (once found).
-  for (const building of cityFound(b) ? mission.terrain.city?.buildings || [] : []) {
+  for (const building of [...(cityFound(b) ? mission.terrain.city?.buildings || [] : []), ...(mission.terrain.skyline || [])]) {
     ctx.fillStyle = "rgba(160, 170, 185, 0.55)";
     ctx.fillRect(sx(building.x - building.w / 2), sz(building.z - building.d / 2), Math.max(1, building.w / (half * 2) * width), Math.max(1, building.d / (half * 2) * height));
   }

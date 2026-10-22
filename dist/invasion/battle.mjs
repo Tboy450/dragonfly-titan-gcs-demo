@@ -46,6 +46,8 @@ export function createBattle(planet, options = {}) {
     city: terrain.citySpec || null, landform: terrain.landformSpec || null,
     // Frontier maps: zones and the city stay hidden until a drone scouts them.
     explore: !!planet.explore,
+    // A city world's solid skyline (planet-terrain.mjs attachSkyline), by version.
+    ...(terrain.skylineVersion ? { skyline: terrain.skylineVersion } : {}),
     // Hive upgrade levels bought in the campaign (campaign.mjs hiveUpgrades), fixed for the battle.
     upgrades: Object.fromEntries(Object.entries(upgrades).filter(([id, n]) => upgradeIds.includes(id) && Number.isInteger(n) && n > 0)),
     matter, unlocks: [...unlocks], podSlots, required: planet.required, objectives: planet.objectives || [],
@@ -595,10 +597,12 @@ function moveUnits(b, dt, auras, swarm, natives) {
     unit.x = nx;
     unit.z = nz;
     if (unit.vx * unit.vx + unit.vz * unit.vz > 0.5) unit.heading = Math.atan2(unit.vx, unit.vz);
-    // Flying units climb over buildings: the highest roof under them or ~3 s ahead, plus clearance.
+    // Flying units climb over buildings: the highest roof under them or along the next ~3 s of
+    // flight (sampled every 0.75 s, so a narrow tower between samples is not missed), plus clearance.
     let cruise = unit.landed ? 0 : def.cruise || 0;
     if (cruise > 0 && b.roofAt) {
-      const roof = Math.max(b.roofAt(unit.x, unit.z, 4), b.roofAt(unit.x + unit.vx * 3, unit.z + unit.vz * 3, 4));
+      let roof = 0;
+      for (let k = 0; k <= 4; k += 1) roof = Math.max(roof, b.roofAt(unit.x + unit.vx * k * 0.75, unit.z + unit.vz * k * 0.75, 4));
       if (roof > 0) cruise = Math.max(cruise, roof + 10);
     }
     unit.alt += (cruise - unit.alt) * Math.min(1, dt * (cruise > unit.alt ? 2.5 : 1.2));

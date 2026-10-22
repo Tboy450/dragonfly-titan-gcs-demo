@@ -473,14 +473,21 @@ export function createInvasionScene(canvas, options = {}) {
       });
     }
     if (planet.biome === "city") {
-      const block = new THREE.BoxGeometry(1, 1, 1).translate(0, 0.5, 0);
-      const spots = place(420, 16, 1.6);
-      scatter(block, new THREE.MeshStandardMaterial({ roughness: 0.6, metalness: 0.4 }), spots, (d, x, z, c) => {
-        const tall = 8 + rand() ** 2 * 40;
-        d.position.set(x, ground(x, z) - 0.5, z); d.rotation.set(0, Math.round(rand() * 4) * Math.PI / 2, 0);
-        d.scale.set(8 + rand() * 14, tall, 8 + rand() * 14);
-        c.setHSL(0.72 + rand() * 0.08, 0.15, 0.3 + rand() * 0.25);
+      // The skyline is solid (planet-terrain.mjs attachSkyline): draw exactly the towers the rules
+      // use, at every quality level. A battle saved before then has none.
+      const towers = terrain.skyline || [];
+      const mesh = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1).translate(0, 0.5, 0), new THREE.MeshStandardMaterial({ roughness: 0.6, metalness: 0.4 }), Math.max(1, towers.length));
+      mesh.count = towers.length;
+      towers.forEach((tower, i) => {
+        dummy.position.set(tower.x, ground(tower.x, tower.z) - 0.5, tower.z); dummy.rotation.set(0, 0, 0);
+        dummy.scale.set(tower.w, tower.height + 0.5, tower.d);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(i, dummy.matrix);
+        mesh.setColorAt(i, color.setHSL(0.72 + tower.shade * 0.08, 0.15, 0.3 + tower.shade * 0.25));
       });
+      if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+      mesh.userData.ownMaterial = true;
+      world.add(mesh);
     }
     if (planet.biome === "ice") {
       const spike = new THREE.ConeGeometry(1, 1, 5).translate(0, 0.5, 0);

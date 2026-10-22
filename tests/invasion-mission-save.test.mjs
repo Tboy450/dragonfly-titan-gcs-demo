@@ -35,6 +35,7 @@ test("All seven planets resume with the same terrain, zones, units and determini
     assert.equal(restored.battle.isLand, freshTerrain.isLand);
     assert.deepEqual(restored.battle.pods, battle.pods);
     for (const z of battle.zones) assert.equal(freshTerrain.heightAt(z.x, z.z), terrain.heightAt(z.x, z.z));
+    assert.deepEqual(freshTerrain.skyline, terrain.skyline, `${planet.id}: the same skyline after reloading`);
     advance(battle, 100); advance(restored.battle, 100);
     assert.deepEqual(comparable(restored.battle), comparable(battle), planet.id);
     const airborne = restoreMissionCheckpoint(snapshot(battle), createPlanetTerrain(planet));

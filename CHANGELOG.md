@@ -39,6 +39,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall Aurex towers are solid; smoother climbing
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Make Aurex's skyline solid and look further ahead when climbing"
+- **What changed:** Checklist FIX-02. Aurex's ~420 towers used to be scenery: drones flew
+  through them, troops walked through them and shots went through them. Now:
+  - The towers are rules data (`planet-terrain.mjs` `attachSkyline`): seeded from the planet
+    with the old spread and sizes, kept clear of zones, and drawn from the same data.
+  - Drones climb over them, troops walk round them, pods avoid them, and they block direct
+    fire.
+  - Drones check five points along the next 3 s of flight for roofs, instead of two, so they
+    no longer clip narrow towers. This also helps the Frontier cities.
+  - Battles record `skyline: 1`; Aurex saves made before resume on open ground.
+- **Archive:** `archive/swarmfall-aurex-skyline-2026-10-22/` (tag on `ce9b949`), with before
+  and after pictures.
+- **Files:** `dist/invasion/planet-terrain.mjs`, `battle.mjs`, `mission-save.mjs`, `scene.mjs`,
+  `main.mjs` (minimap footprints), `tests/invasion-skyline.test.mjs` (new),
+  `tests/invasion-mission-save.test.mjs`, `SWARMFALL-TODO.md`, `archive/`
+- **Checks:** `node --test tests/*.test.mjs` (493 pass). The new tests cover zones staying
+  clear, towers blocking troops and pods, drones staying above towers (this caught the clipping
+  bug), skylines matching after reloading, and older saves keeping open ground. In the browser
+  Aurex shows 420 towers, with no errors.
+
 ### 2026-10-22: Swarmfall Hive upgrades
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add Hive upgrades bought with banked matter"

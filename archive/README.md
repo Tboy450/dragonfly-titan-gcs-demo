@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [swarmfall-aurex-skyline-2026-10-22](swarmfall-aurex-skyline-2026-10-22/README.md) | Aurex's scenery-only towers (drones flew through them) before the solid skyline; exact scene/terrain modules, before and after pictures; older saves keep open ground | 2026-10-22 | `archive/swarmfall-aurex-skyline-2026-10-22` on ce9b949 |
 | [port-wall-joints-2026-10-22](port-wall-joints-2026-10-22/README.md) | Starboard-only builder, wall module, inspector/masks/UI/HTML; six before views, exact numbered/starboard manifests and initial tube broad-phase candidates | 2026-10-22 | `archive/port-wall-joints-2026-10-22` on8ac4e59 |
 | [side-wall-2026-10-22](side-wall-2026-10-22/README.md) | Before first additive structural wall: exact builder/UI/masks/HTML, six before views and all-numbered geometry; failed inboard draft retained | 2026-10-22 | `archive/side-wall-2026-10-22` on b4559dc |
 | [mmrtg-body-2026-10-22](mmrtg-body-2026-10-22/README.md) | Dark cylinder/thick rectangular fins, provisional collar and20 cm sensor radius; exact builder/UI/tests, fresh before pictures/manifests |2026-10-22| `archive/mmrtg-body-2026-10-22` on6276276 |
