@@ -11,15 +11,37 @@ export function squadCenter(units, squads) {
   return n ? { x: x / n, z: z / n } : null;
 }
 
-// The newest alert: marked artillery or lightning, an eruption, or a drone lost this frame.
-// Returns the previous alert when nothing newer happened.
+// The newest alert: marked artillery or lightning, an eruption, a drone under fire or lost this
+// frame. Returns the previous alert when nothing newer happened.
 export function latestAlert(previous, events, b) {
-  let best = previous;
+  let best = previous, units = null;
   const offer = (x, z, at, text) => { if (!best || at >= best.at) best = { x, z, at, text }; };
   for (const strike of b.strikes) if (!strike.hit) offer(strike.x, strike.z, strike.markedAt, strike.source === "lightning" ? "Lightning strike marked" : "Artillery incoming");
   for (const hazard of b.hazards.events) if (hazard.kind === "eruption") offer(hazard.x, hazard.z, hazard.startedAt, hazard.name);
+  for (const event of events) {
+    if (event.kind === "shot" && event.side === "native") {
+      units ??= new Map(b.units.map(unit => [unit.id, unit]));
+      const target = units.get(event.to);
+      if (target && target.side === "swarm" && !target.structure) offer(target.x, target.z, b.time, "Squad under attack");
+    }
+  }
   for (const event of events) if (event.kind === "destroyed" && event.side === "swarm" && !event.structure) offer(event.x, event.z, b.time, "Drone lost");
   return best;
+}
+
+// Held zones being retaken (locals inside and no drones, so control falls): one alert per zone,
+// raised again only after it is back at full control. `watch` (a Set of zone IDs) is the memory.
+export function zoneAlerts(watch, b) {
+  const alerts = [];
+  for (const zone of b.zones) {
+    if (!zone.captured || zone.kind === "beachhead") { watch.delete(zone.id); continue; }
+    if (zone.control >= 100) watch.delete(zone.id);
+    else if (zone.control < 98 && !watch.has(zone.id)) {
+      watch.add(zone.id);
+      alerts.push({ x: zone.x, z: zone.z, at: b.time, text: `${zone.name} is being retaken` });
+    }
+  }
+  return alerts;
 }
 
 // Edge scrolling with a mouse: a drag direction (as if dragging the map) when the pointer is

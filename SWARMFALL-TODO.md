@@ -316,11 +316,17 @@ complete solely because its assets download or its unit tests pass.
     eruption). The alert also shows as a red ring on the minimap for 20 s.
   - A mouse at the screen edge scrolls, and **Home** returns to the starting view.
   - Evidence: `tests/invasion-camera-assist.test.mjs`, plus browser checks of G, J and Home.
-- [ ] **CTRL-06 (P1)** Alerts with minimap pings and tap-to-jump: squad under attack, zone being
-  retaken, hazard incoming, artillery marked.
-  - **Progress (Claude, October 21):** the newest alert (drone lost, artillery or lightning
-    marked, eruption) shows as a minimap ring, and J or the Alert button jumps there. Still
-    open: a zone being retaken, tappable alert toasts, and a list of recent alerts.
+- [x] **CTRL-06 (P1) — Claude (October 21-22)** Alerts with minimap pings and tap-to-jump: squad
+  under attack, zone being retaken, hazard incoming, artillery marked. Done:
+  - The newest alert (`camera-assist.mjs`) is any of: a squad under fire, a drone lost,
+    artillery or lightning marked, an eruption, or a held zone being retaken.
+  - It shows as a red minimap ring for 20 s. J or the Alert button jumps there.
+  - A held zone being retaken raises its own warning toast, once until it is back at full
+    control. Warning toasts are tappable and jump the camera to the alert.
+  - Evidence: `tests/invasion-camera-assist.test.mjs`. In the browser the "being retaken"
+    toast appeared and tapping it centered the view on the zone.
+  - Weather fronts that cover the whole map have no single place to jump to. A list of
+    recent alerts could come later.
 - [ ] **CTRL-07 (P2)** Formation choices (spread, tight, line) and stances (aggressive, hold
   fire for a quiet takeover).
 - [x] **CTRL-08 (P2) — Codex, October 20; implementation and automated checks** Minimap

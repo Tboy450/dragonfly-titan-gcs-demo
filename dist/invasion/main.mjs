@@ -21,7 +21,7 @@ import { missionCheckpoint, restoreMissionCheckpoint, checkpointPlanet } from ".
 import { pointerIntent, exceedsTapSlop } from './pointer-controls.mjs?v=dev';
 import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
 import { enterFree, exitFree, placeFree, moveFree, freeLimits } from "./free-camera.mjs?v=dev";
-import { squadCenter, latestAlert, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
+import { squadCenter, latestAlert, zoneAlerts, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
 import { minimapWorldPoint } from './minimap-controls.mjs?v=dev';
 import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecoveryBackups } from './save-recovery.mjs?v=dev';
 
@@ -324,7 +324,7 @@ function startMission(planet, checkpoint = null) {
   });
   scene.load(planet, terrain, battle);
   mission = {
-    planet, battle, terrain, follow: false, lastAlert: null, mouse: null,
+    planet, battle, terrain, follow: false, lastAlert: null, mouse: null, zoneWatch: new Set(),
     cam: restored?.cam || homeView(battle),
     selected: new Set(restored?.command.selected || []), speed: 1, paused: !!restored,
     payload: restored?.command.payload ?? defaultPayload(battle), placing: false, dropPoint: null, dropPreview: null, dropPanelOpen: false,
@@ -885,11 +885,13 @@ window.addEventListener("blur", () => { keys.clear(); resetPointers(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden) resetPointers(); });
 
 // ---- HUD ----
-function toast(text, tone = "info", ms = 3600) {
+// onClick makes the toast tappable (warnings jump the camera to the newest alert).
+function toast(text, tone = "info", ms = 3600, onClick = null) {
   const box = $("toasts");
-  const item = document.createElement("div");
-  item.className = `toast ${tone}`;
+  const item = document.createElement(onClick ? "button" : "div");
+  item.className = `toast ${tone}${onClick ? " clickable" : ""}`;
   item.textContent = text;
+  if (onClick) { item.type = "button"; item.addEventListener("click", () => { onClick(); item.remove(); }); }
   box.append(item);
   while (box.children.length > 4) box.firstElementChild.remove();
   setTimeout(() => item.remove(), ms);
@@ -1265,7 +1267,7 @@ function handleEvents(events) {
   for (const entry of b.log) {
     if (mission.seenLog.has(entry)) continue;
     mission.seenLog.add(entry);
-    if (entry.tone === "warn" || entry.tone === "bad") toast(entry.text, entry.tone);
+    if (entry.tone === "warn" || entry.tone === "bad") toast(entry.text, entry.tone, 3600, mission.lastAlert ? jumpToAlert : null);
   }
 }
 
@@ -1356,6 +1358,10 @@ function tick(now) {
   assistCamera(dt);
   const events = b.events.splice(0);
   mission.lastAlert = latestAlert(mission.lastAlert, events, b);
+  for (const alert of zoneAlerts(mission.zoneWatch, b)) {
+    mission.lastAlert = alert;
+    toast(`${alert.text}. Tap to view (J).`, "bad", 6000, jumpToAlert);
+  }
   handleEvents(events);
   offerVictoryChoice();
   if (mission.freeCam) syncFreeFocus();

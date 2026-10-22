@@ -39,6 +39,19 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall alerts: squad under attack, zone being retaken, tappable warnings
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Alert on squads under fire and zones being retaken; tap warnings to jump"
+- **What changed:** Checklist CTRL-06.
+  - The newest alert (J or the Alert button, plus the red minimap ring) now also covers drones
+    under enemy fire and held zones being retaken.
+  - A zone being retaken raises its own warning toast, once until it is back at full control.
+  - Warning toasts are tappable and jump the camera to the alert.
+- **Files:** `dist/invasion/camera-assist.mjs`, `main.mjs`, `invasion.css`,
+  `tests/invasion-camera-assist.test.mjs`, `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (453 pass). In the browser the "being retaken"
+  toast appeared as a button, and tapping it centered the view on the zone. No console errors.
+
 ### 2026-10-22: Record MMRTG public acceptance
 - **Signed:** Codex (OpenAI)
 - **Commit:** Record MMRTG public acceptance [skip ci]
