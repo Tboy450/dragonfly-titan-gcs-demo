@@ -90,6 +90,16 @@ details not established by the sources stay open. Existing sample routes stay un
   These are visualization clearance checks, not mechanical/flight qualification. Three raw
   views and two context views pass nonblank/framed WebGL pixel checks.
 
+## Published Acceptance
+
+Release `43f6e21` and recovery tag pushed. [Pages run39764147097](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/39764147097)
+succeeded, including the full suite. [Public build](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=43f6e21)
+passed24 actual Edge Internal/Thermal viewport/subassembly cases at1440/390/360px,
+four part masks and global deck mask/restore, source links, original24 rows, installed
+context and Pilot return, with no page/network failures or horizontal overflow.
+[Receipt and screenshots](live-43f6e21/checks.json) saved. Local preview server stopped.
+Documentation/screenshot receipt skips CI; unchanged app is not redeployed or retested.
+
 ## Next / Handoff
 
 **Separate insulation regions next, beginning with the body/deck region only.** Inventory

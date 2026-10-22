@@ -54,6 +54,10 @@ states. Original24 parts, walls/joints and body/attic foam geometry/poses match 
 sources/count24/Pilot return and raw/context pixel/framing checks pass. Comparison reviewed.
 Next is body/deck insulation-region separation, then attic/local foam. Exact core/layup,
 supports, seals and conduction/strength remain unmodeled, not new flight-engineering claims.
+Release43f6e21 and recovery tag pushed; Pages39764147097 succeeded. Public Edge24
+viewport/subassembly cases, four part/global deck masks and restore, sources, original24
+rows, context and Pilot return passed without page/network failures or overflow. Receipt:
+`research/top-deck-2026-10-22/live-43f6e21/`. Local preview server stopped.
 
 Historical October22 port/joint checkpoint: two new unnumbered inspection choices, port
 wall with separate Down Camera and Microscopic Camera/LED reliefs; nose and canted aft

@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Record top-deck public acceptance
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record top deck public acceptance [skip ci]
+- **Release:**43f6e21 and recovery tag pushed; Pages39764147097 succeeded.503 tests pass.
+- **Checks:** Public Edge24 viewport/subassembly cases at1440/390/360px, four part/global
+  deck masks and restore, source links, original24 rows, installed context and Pilot return
+  pass without page/network failures or overflow. Receipt/screenshots in current research
+  `live-43f6e21/`. Local preview server stopped. Documentation/screenshots only, no duplicate
+  test/deploy cycle. Next: body/deck insulation-region separation, then attic/local foam.
+
 ### 2026-10-22: Add top-deck and attic-edge inspection
 - **Signed:** Codex (OpenAI)
 - **Commit:** Add sourced top deck and attic edge inspection
