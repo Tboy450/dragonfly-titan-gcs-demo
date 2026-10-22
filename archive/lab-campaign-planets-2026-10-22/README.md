@@ -1,7 +1,7 @@
 # Lab before the Campaign planets world
 
 Preserved October 22, 2026 — **Claude (Anthropic)**. Baseline
-`fb7c00b`, tag `archive/lab-campaign-planets-2026-10-22`.
+`8dd1467` (originally `fb7c00b`, renamed when rebased onto main), tag `archive/lab-campaign-planets-2026-10-22`.
 
 The change is additive: a twelfth lab entry, **Campaign planets** (`worlds/planets.mjs`), shows
 each non-Titan campaign planet and Frontier map from the game's own terrain, battle, city and
