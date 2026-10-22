@@ -787,8 +787,15 @@ and other threats on the planet):
   has not been purchased or copied. Compare imported/authored districts from street and aerial
   views; simple material swaps and repeated rectangular buildings do not close this task.
 
-- [ ] **VIS-01 (P1)** Rotor-wash dust under low drones and at pod touchdown (reuse
-  `downwash-dust.mjs`).
+- [x] **VIS-01 (P1) — Claude (October 22)** Rotor-wash dust under low drones and at pod touchdown
+  (reuse `downwash-dust.mjs`).
+  - `swarm-dust.mjs` takes the simulator's dust look and motion (puffs rolling out, rising,
+    growing and fading) and pools 64 puffs for the whole swarm.
+  - Drones below 12 m raise dust, more the lower they fly (the Dragonfly drilling, drones just
+    released), and each pod touchdown raises a burst.
+  - The dust is tinted like the ground, a little lighter, and none rises over water or lava.
+  - Evidence: `tests/invasion-dust.test.mjs`. In the browser, two pods landing on Kepra raised
+    20 puffs, with no errors.
 - [ ] **VIS-02 (P2)** More detailed drones: panel detail, lights, smoke when damaged, banking
   in turns.
 - [ ] **VIS-03 (P2)** Effects: muzzle flashes, missile trails, shock rings, burning wrecks,

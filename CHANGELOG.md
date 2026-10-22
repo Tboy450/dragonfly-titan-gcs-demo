@@ -39,6 +39,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall rotor-wash dust
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add rotor-wash dust under low drones and at pod touchdowns"
+- **What changed:** Checklist VIS-01.
+  - Drones flying below 12 m kick up dust, more the lower they are: the Dragonfly landing to
+    drill, and drones just released from their pods.
+  - Each pod touchdown raises a burst.
+  - Puffs roll outward, rise, grow and fade like the simulator's `downwash-dust.mjs`, tinted a
+    little lighter than the planet's ground. None rise over water or lava.
+  - 64 pooled puffs for the whole swarm keep it cheap.
+- **Files:** `dist/invasion/swarm-dust.mjs` (new), `scene.mjs`, `tests/invasion-dust.test.mjs`
+  (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (516 pass). The new tests cover low against high
+  drones, bursts, drift and fade, water, and the pool limit. Browser: two pods on Kepra raised
+  20 puffs, with no errors.
+
 ### 2026-10-22: Search in the Asset & Environment Lab
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add a search box to the lab's asset inspector"
