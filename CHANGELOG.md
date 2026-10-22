@@ -39,6 +39,21 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall squad tools
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add squad tools: merge, split in half or by type, rename"
+- **What changed:** Checklist CTRL-02. A **Squad ▾** menu next to Hold (a native picker,
+  phone-friendly) offers, depending on the selection:
+  - **Merge** the selected squads: landed drones join the lowest-numbered squad and take its
+    order. Pods still descending land in their own squad.
+  - **Split in half**, or **Split off** one drone type into a new squad holding in place.
+  - **Rename** a squad (1-24 characters).
+  Saves stay valid after every change.
+- **Files:** `dist/invasion/battle.mjs`, `main.mjs`, `index.html`, `invasion.css`,
+  `tests/invasion-squad-tools.test.mjs` (new), `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (476 pass). Browser: on Titan, merging two squads
+  then splitting off the Link gave the expected squads, with no errors.
+
 ### 2026-10-22: Record port-wall and joint public acceptance
 - **Signed:** Codex (OpenAI)
 - **Commit:** Record port wall and joint public acceptance [skip ci]

@@ -313,7 +313,17 @@ complete solely because its assets download or its unit tests pass.
 
 - [ ] **CTRL-01 (P1)** Drag-box selection on desktop and a lasso or two-finger selection on
   touch screens.
-- [ ] **CTRL-02 (P1)** Squad tools: merge, split, rename, select by drone type, renumber keys.
+- [x] **CTRL-02 (P1) — Claude (October 22)** Squad tools: merge, split, rename, select by drone
+  type, renumber keys. The **Squad ▾** menu next to Hold (`battle.mjs` `mergeSquads`,
+  `splitSquad`, `renameSquad`):
+  - Merge the selected squads into the lowest-numbered one, which keeps its order. Pods still
+    descending land in their own squads, so saved waves stay valid.
+  - Split one squad in half, or split off every drone of one type into a new squad that holds
+    in place.
+  - Rename a squad (1-24 characters).
+  - Number keys already follow the squad bar's order, so there was nothing to renumber.
+  Evidence: `tests/invasion-squad-tools.test.mjs`, including saves staying valid after merge
+  and split. In the browser, merge then "Split off Links" behaved as expected.
 - [ ] **CTRL-03 (P1)** Waypoint queues (Shift+tap), patrol and an "attack-move here" order.
 - [x] **CTRL-04 (P1) — Codex, October 19; implementation and automated acceptance**
   Desktop left-click selects a squad; right-click orders an attack, capture or move. Modifier

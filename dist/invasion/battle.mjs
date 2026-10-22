@@ -340,6 +340,46 @@ export function orderHold(b, squadIds) {
   }
 }
 
+// ---- Squad tools (CTRL-02) ----
+// Merge: the landed drones of the given squads join the lowest-numbered one and take its order
+// (or hold where they are). Pods still descending land in their own squads, so a paid wave keeps
+// its squad. Returns the merged squad's ID, or null when there was nothing to merge.
+export function mergeSquads(b, squadIds) {
+  const ids = [...new Set(squadIds)].filter(id => b.squads.some(squad => squad.id === id)).sort((a, c) => a - c);
+  if (ids.length < 2) return null;
+  const keep = b.squads.find(squad => squad.id === ids[0]);
+  const moved = squadDrones(b, ids.slice(1));
+  if (!moved.length) return null;
+  for (const unit of moved) unit.squad = keep.id;
+  const order = keep.order && keep.order.kind !== "hold" ? (({ pace, ...rest }) => rest)(keep.order) : null;
+  if (order) orderSquads(b, [keep.id], order);
+  else for (const unit of moved) { unit.order = { kind: "hold", x: unit.x, z: unit.z }; unit.slot = { dx: 0, dz: 0 }; }
+  b.log.push({ t: b.time, tone: "info", text: `${moved.length} drones joined ${keep.name}.` });
+  return keep.id;
+}
+
+// Split: the newer half of a squad's landed drones, or all of one drone type, form a new squad
+// that holds where it is. Returns the new squad's ID, or null when nothing would be left behind.
+export function splitSquad(b, squadId, type = null) {
+  const squad = b.squads.find(s => s.id === squadId);
+  const drones = squad ? squadDrones(b, [squadId]) : [];
+  const leaving = type ? drones.filter(unit => unit.type === type) : drones.slice(Math.ceil(drones.length / 2));
+  if (!leaving.length || leaving.length === drones.length) return null;
+  const fresh = { id: b.squads.length + 1, name: `Squad ${b.squads.length + 1}`, color: squadColors[b.squads.length % squadColors.length], order: { kind: "hold" } };
+  b.squads.push(fresh);
+  for (const unit of leaving) { unit.squad = fresh.id; unit.order = { kind: "hold", x: unit.x, z: unit.z }; unit.slot = { dx: 0, dz: 0 }; }
+  b.log.push({ t: b.time, tone: "info", text: `${fresh.name}: ${leaving.length} drones split from ${squad.name}.` });
+  return fresh.id;
+}
+
+// Rename: 1-24 characters, spaces tidied. Returns false (and keeps the name) for a blank one.
+export function renameSquad(b, squadId, name) {
+  const squad = b.squads.find(s => s.id === squadId), clean = String(name ?? "").replace(/\s+/g, " ").trim().slice(0, 24);
+  if (!squad || !clean) return false;
+  squad.name = clean;
+  return true;
+}
+
 // ---- Simulation ----
 function collectAuras(b) {
   const auras = { boost: [], jam: [], armor: [] };

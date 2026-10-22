@@ -8,7 +8,7 @@ import {
 import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, orderHold, battleSummary,
   objectiveStatus, starsEarned, missionResult, retreat, publicMood, dropZoneAt, extractVictory, continueCapturing,
-  cityFound, hiddenUnits, shotBlocked,
+  cityFound, hiddenUnits, shotBlocked, mergeSquads, splitSquad, renameSquad,
 } from "./battle.mjs?v=dev";
 import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
 import { packDropPods, podRadius, podStaggerS } from "./drop-waves.mjs?v=dev";
@@ -754,6 +754,44 @@ $("squad-bar").addEventListener("click", (event) => {
   const card = event.target.closest("[data-squad]");
   if (card) selectSquad(Number(card.dataset.squad), event.shiftKey || event.ctrlKey || event.metaKey);
 });
+// ---- Squad tools (CTRL-02): merge, split in half or by drone type, rename ----
+function updateSquadTools() {
+  const select = $("squad-tools"), b = mission.battle, chosen = [...mission.selected].sort((a, c) => a - c);
+  const drones = b.units.filter(u => isDrone(u) && mission.selected.has(u.squad));
+  const types = [...new Set(drones.map(u => u.type))];
+  const options = [["", "Squad ▾"]];
+  if (chosen.length >= 2 && drones.length) options.push(["merge", `Merge ${chosen.length} squads`]);
+  if (chosen.length === 1) {
+    if (drones.length >= 2) options.push(["half", "Split in half"]);
+    if (types.length >= 2) for (const type of types) options.push([`type:${type}`, `Split off ${droneTypes[type].name}s`]);
+    options.push(["rename", "Rename…"]);
+  }
+  const signature = options.map(o => o[0]).join("|");
+  if (select.dataset.signature !== signature) {
+    select.dataset.signature = signature;
+    select.innerHTML = options.map(([value, label]) => `<option value="${value}">${escapeHtml(label)}</option>`).join("");
+  }
+  select.hidden = options.length === 1;
+}
+$("squad-tools").addEventListener("change", (event) => {
+  const select = event.currentTarget, action = select.value, b = mission?.battle;
+  select.value = "";
+  if (!b || !action) return;
+  const chosen = [...mission.selected].sort((a, c) => a - c);
+  if (action === "merge") {
+    const kept = mergeSquads(b, chosen);
+    if (kept) { mission.selected = new Set([kept]); toast("Squads merged.", "good"); }
+  } else if (action === "half" || action.startsWith("type:")) {
+    const fresh = splitSquad(b, chosen[0], action === "half" ? null : action.slice(5));
+    if (fresh) { mission.selected = new Set([fresh]); toast("Squad split; the new squad holds where it is.", "good"); }
+  } else if (action === "rename") {
+    const squad = b.squads.find(s => s.id === chosen[0]);
+    const name = window.prompt("Rename squad (up to 24 characters):", squad?.name || "");
+    if (name !== null && !renameSquad(b, chosen[0], name)) toast("A squad needs a name.", "info");
+  }
+  updateSquadBar();
+  checkpointMission();
+});
 $("squad-bar").addEventListener("dblclick", (event) => {
   const card = event.target.closest("[data-squad]");
   if (card) focusSquad(Number(card.dataset.squad));
@@ -980,6 +1018,7 @@ function updateSquadBar() {
     card.querySelector(".health i").style.width = `${Math.round(health * 100)}%`;
     card.setAttribute("aria-pressed", String(mission.selected.has(squad.id)));
   }
+  updateSquadTools();
 }
 
 function updateHud() {
