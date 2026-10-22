@@ -523,13 +523,40 @@ function kill(b, unit, cause) {
   }
 }
 
+// Enemies in 60 m buckets, keeping each unit's place in its list: searches look only near a unit
+// yet visit candidates in list order, so targets and splash resolve exactly as a full scan would.
+const combatCell = 60;
+function combatIndex(list) {
+  const grid = new Map();
+  list.forEach((unit, i) => {
+    const key = `${Math.floor(unit.x / combatCell)},${Math.floor(unit.z / combatCell)}`;
+    let bucket = grid.get(key);
+    if (!bucket) grid.set(key, bucket = []);
+    bucket.push(i);
+  });
+  return { list, grid };
+}
+function combatNear({ list, grid }, x, z, reach) {
+  const found = [];
+  for (let i = Math.floor((x - reach) / combatCell); i <= Math.floor((x + reach) / combatCell); i += 1)
+    for (let j = Math.floor((z - reach) / combatCell); j <= Math.floor((z + reach) / combatCell); j += 1)
+      for (const k of grid.get(`${i},${j}`) || []) found.push(k);
+  return found.sort((a, c) => a - c).map(k => list[k]);
+}
+const longestReach = new Map();
+const maxRange = (def) => {
+  if (!longestReach.has(def)) longestReach.set(def, Math.max(0, ...def.weapons.map(w => w.range)));
+  return longestReach.get(def);
+};
+
 function fight(b, dt, auras, swarm, natives) {
   const effects = b.hazards.effects;
+  const swarmIndex = combatIndex(swarm), nativeIndex = combatIndex(natives);
   for (const unit of b.units) {
     if (!unit.alive) continue;
     const def = defOf(unit);
     if (!def.weapons.length || stunned(b, unit)) continue;
-    const enemies = unit.side === "swarm" ? natives : swarm;
+    const enemyIndex = unit.side === "swarm" ? nativeIndex : swarmIndex;
     const rangeScale = unit.side === "swarm" ? effects.range : 1;
     const armed = (other) => other?.alive && other.side !== unit.side && weaponFor(def, other, Math.sqrt(dist2(unit, other)), rangeScale) && clearShot(b, unit, other);
     let target = null;
@@ -543,7 +570,7 @@ function fight(b, dt, auras, swarm, natives) {
     }
     if (!target) {
       let bestD = Infinity;
-      for (const other of enemies) {
+      for (const other of combatNear(enemyIndex, unit.x, unit.z, maxRange(def) * rangeScale)) {
         const d = dist2(unit, other);
         if (d < bestD && armed(other)) { bestD = d; target = other; }
       }
@@ -556,7 +583,7 @@ function fight(b, dt, auras, swarm, natives) {
     if (target.structure && inAura(auras.armor, target, target.side)) damage *= 1 - 0.65;
     hurt(b, target, damage, unit);
     if (w.splash) {
-      for (const other of enemies) {
+      for (const other of combatNear(enemyIndex, target.x, target.z, w.splash)) {
         if (other !== target && other.alive && dist2(other, target) <= w.splash ** 2) hurt(b, other, damage * 0.4, unit);
       }
     }

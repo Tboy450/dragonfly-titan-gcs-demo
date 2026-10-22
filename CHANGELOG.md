@@ -39,6 +39,19 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall combat searches nearby only (same results, faster)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Search for targets and splash victims in a spatial grid"
+- **What changed:** Checklist PERF-05. Each unit used to check every enemy each step. Now
+  target and splash searches use 60 m buckets and look only within the unit's longest weapon
+  range or the splash radius. They visit candidates in their original order, so the same
+  targets are chosen and battles play out exactly as before.
+- **Files:** `dist/invasion/battle.mjs`, `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (466 pass). Identical battle state compared with
+  the previous code on Halcyon, Aurex and Corvan Frontier (four drop waves and a capture
+  push). Step time is 25-42% lower: 614 → 453 ms, 368 → 283 ms and 1194 → 695 ms over each
+  run.
+
 ### 2026-10-22: Swarmfall first-time tips; publish warnings cleared
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add first-time tips for defenders, alarm stages, artillery and captures"

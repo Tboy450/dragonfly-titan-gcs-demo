@@ -759,8 +759,13 @@ Optional, generated sound since October 22 (`battle-sound.mjs` decides, `sound.m
     most), and 5 s over ~57 fps steps it back up.
   - Evidence: `tests/invasion-quality.test.mjs`. On Velm Frontier at the start, Low draws
     about 126 k triangles at 0.75 pixel ratio, against about 250 k or more on High.
-- [ ] **PERF-05 (P2)** Combat checks every unit against every enemy each step. Use the
-  spatial grid already used for drone spacing.
+- [x] **PERF-05 (P2) — Claude (October 22)** Combat checks every unit against every enemy each
+  step. Use the spatial grid already used for drone spacing.
+  - Target and splash searches use 60 m buckets per side (`battle.mjs` `combatIndex`). Each
+    search looks only within the unit's longest weapon range or the splash radius, but visits
+    candidates in their original list order, so ties break exactly as before.
+  - Evidence: identical battle state compared with the previous code on Halcyon, Aurex and
+    Corvan Frontier (four waves each). Step time is 25-42% lower.
 - [ ] **PERF-06 (P2)** Run the simulation in a background worker if the page gets busy.
 
 ## 13. Engineering and tests (TECH, TEST)
