@@ -137,6 +137,11 @@ try{
   $('loading-text').textContent=assetEntry?'Preparing asset inspection…':'Composing the district…';world=assetEntry?await loadAssetDisplay(assetEntry,loader,{scoutVersion})
     :moduleWorld?await (await moduleWorld.load()).build({scene,renderer,camera,quality:$('quality').value,progress:(done,total)=>{$('loading-text').textContent=`Loading kit parts · ${done}/${total}`;}})
     :buildWorld(type,assets);scene.add(world.group);
+  // Worlds that vary by query (worlds/planets.mjs) name themselves and offer their choices once built.
+  if(world.title){$('title').textContent=world.title;document.title=`${world.title} · Swarmfall Asset & Environment Lab`;}
+  if(world.description)$('description').textContent=world.description;
+  if(world.views)Object.assign(info.views,world.views);
+  if(world.choices?.length){$('world-choices').replaceChildren(...world.choices.map(choice=>{const link=document.createElement('a');link.href=choice.href;link.textContent=choice.label;if(choice.current)link.setAttribute('aria-current','page');return link;}));$('world-choices').hidden=false;}
   $('loading').classList.add('hidden');
   // Local inspection only, like the game's window.swarmfall: never exposed on the public site.
   if(['localhost','127.0.0.1'].includes(location.hostname))window.labDebug={scene,world,renderer,camera};

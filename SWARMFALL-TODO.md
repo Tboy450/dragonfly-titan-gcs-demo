@@ -1213,6 +1213,10 @@ from local weapon-triggered gameplay, building on ENV-01 through ENV-04 and ENV-
 
 ## 23. Asset & Environment Lab development (LAB)
 
+Claude, October 22: the lab gained **Campaign planets** (entry 12), each campaign planet and
+Frontier map from the game's own modules with its real capture zones; see CHANGELOG. Not a
+checklist completion; LAB-05 search/categories and LAB-03 counts remain open.
+
 - [ ] **LAB-01 (P1)** Add a public route smoke matrix: five maps × four art stages, all
   18 assets, historical foundation variants and game/lab links. Verify case-sensitive
   dependencies, meaningful ready/error state, build stamp and creator/source links on the deployed site.

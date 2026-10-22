@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [lab-campaign-planets-2026-10-22](lab-campaign-planets-2026-10-22/README.md) | Lab files before the Campaign planets world and planet picker (additive change); exact lab.mjs, index.html, lab.css and worlds/index.mjs, before and after pictures | 2026-10-22 | `archive/lab-campaign-planets-2026-10-22` on fb7c00b |
 | [top-deck-2026-10-22](top-deck-2026-10-22/README.md) | Before separate top deck: exact builder/masks/UI/HTML, six views and equipment/structure/foam manifests; rejected89mm opening module/test/renders/report | 2026-10-22 | `archive/top-deck-2026-10-22` on1bee304 |
 | [swarmfall-aurex-skyline-2026-10-22](swarmfall-aurex-skyline-2026-10-22/README.md) | Aurex's scenery-only towers (drones flew through them) before the solid skyline; exact scene/terrain modules, before and after pictures; older saves keep open ground | 2026-10-22 | `archive/swarmfall-aurex-skyline-2026-10-22` on ce9b949 |
 | [port-wall-joints-2026-10-22](port-wall-joints-2026-10-22/README.md) | Starboard-only builder, wall module, inspector/masks/UI/HTML; six before views, exact numbered/starboard manifests and initial tube broad-phase candidates | 2026-10-22 | `archive/port-wall-joints-2026-10-22` on8ac4e59 |

@@ -39,6 +39,26 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Lab — Campaign planets world with a planet picker
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app), from the asset studio chat
+- **Commit:** "Add a Campaign planets world to the Asset & Environment Lab"
+- **What changed:** A twelfth lab entry shows Swarmfall's battle maps as the game builds them:
+  - Kepra, Velm, Corvan, Ashfall, Halcyon and Aurex, plus the three Frontier maps (Titan already
+    has the Titan Hive outpost world). A picker under the description switches planet.
+  - Terrain and liquids from `planet-terrain.mjs`, capture zones and Aurex's solid skyline from
+    `battle.mjs` with each planet's own seed, colours, fog and light from `scene.mjs`, Frontier
+    cities from `city-render.mjs`. True scale (the studio's earlier previews used 4x height).
+  - Not drawn: per-battle rocks, trees, ice spikes, defenders and the Hive beacon.
+  - Worlds may now return `title`, `description`, `views` and `choices`, applied after build.
+- **Files:** `dist/invasion/environments/worlds/planets.mjs` (new), `worlds/index.mjs`,
+  `lab.mjs`, `index.html`, `lab.css`, `tests/invasion-lab-planets.test.mjs` (new),
+  `archive/lab-campaign-planets-2026-10-22/`, `archive/README.md`, `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (505 pass, 5 new: planet list, zones identical to a
+  fresh mission, Aurex towers clear of zones, lab wiring, unchanged kit exports and shared
+  three.js). Browser: all six planets and a Frontier map loaded without console errors; Walled
+  market town and the Scout inspector still load with the picker hidden.
+- **Archive:** `archive/lab-campaign-planets-2026-10-22/`, tag `archive/lab-campaign-planets-2026-10-22`.
+
 ### 2026-10-22: Swarmfall interactive Titan tutorial
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add an interactive Titan tutorial with checked steps"

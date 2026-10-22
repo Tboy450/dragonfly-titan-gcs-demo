@@ -1,6 +1,8 @@
 // Environments built from the shared kit (kit/). Each world module loads only when chosen and
 // exports build(context) -> { group, target, moving: [], animate?, setDusk?, tour?, bounds?,
 // floor?, ceiling?, status?, noDamage? }. The lab reads `info` before loading, for its panel.
+// A world that varies by query (planets) may also return title?, description?, views? and
+// choices?: [{ href, label, current }], which the lab applies after building.
 // views: [camera position, look-at target] for the Vista, District and Street buttons.
 export const moduleWorlds = {
   metropolis: {
@@ -62,5 +64,15 @@ export const moduleWorlds = {
       views: { vista: [[900, 460, 980], [0, 40, 0]], district: [[240, 120, 280], [0, 30, 0]], street: [[30, 26, 120], [0, 34, 0]] },
     },
     load: () => import("./forge.mjs?v=dev"),
+  },
+  planets: {
+    info: {
+      title: "Campaign planets", span: "Swarmfall battle maps from the game's own rules", ownSky: true,
+      description: "Each campaign planet and Frontier map as a mission plays it: the game's terrain, liquids, colors and fog, Aurex's solid skyline, the Frontier cities and the capture zones a new mission places. Pick a planet below.",
+      credit: "Terrain, zones, skyline, cities, colors and light come from the game's own modules (planet-terrain, battle, city-render, scene). Brought over from the independent asset studio's campaign-terrain previews. Rocks, trees, defenders and the Hive beacon are not drawn.",
+      sky: [0xc4733f, 0xf3c98f], ground: 0x7a4a2a, sun: 0xfff0d8,
+      views: { vista: [[480, 320, 520], [0, 0, 0]], district: [[180, 120, 210], [0, 0, 0]], street: [[-260, 12, 260], [0, 10, 0]] },
+    },
+    load: () => import("./planets.mjs?v=dev"),
   },
 };
