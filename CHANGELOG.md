@@ -39,6 +39,26 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall waypoints, patrol and attack-move
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add waypoint queues, patrol and attack-move orders"
+- **What changed:** Checklist CTRL-03.
+  - **Waypoints:** Shift+right-click (or "Queue next order" in the Squad ▾ menu, for touch)
+    adds up to 8 orders after the current one. Each starts when the one before is done: zone
+    captured, target destroyed, or every drone in place. Selected squads show them as a
+    dashed line with numbered stops.
+  - **Patrol (P):** circles the waypoints. Finished captures come back as moves.
+  - **Attack-move (T, then click or tap):** armed drones fight whatever defenders they see on
+    the way.
+  - A new immediate order or Hold replaces the waypoints. Saves keep it all, within limits
+    (at most 8 queued orders).
+- **Files:** `dist/invasion/battle.mjs`, `mission-save.mjs`, `main.mjs`,
+  `tests/invasion-waypoints.test.mjs` (new), `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (480 pass). The new tests cover queues in order,
+  patrol going round, attack-move dealing far more damage than passing at 100 m, and saves.
+  Browser: the waypoint loop drew and P toggled patrol (the menu label bug was fixed). No
+  errors.
+
 ### 2026-10-22: Swarmfall squad tools
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add squad tools: merge, split in half or by type, rename"

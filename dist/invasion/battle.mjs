@@ -316,6 +316,13 @@ export function orderSquads(b, squadIds, order) {
 // One tap or click on the map: attack a defender near the point, capture a zone the swarm does
 // not hold, or otherwise move there. Returns the order given (or null with no drones).
 export function orderAt(b, squadIds, x, z) {
+  const order = orderFor(b, x, z);
+  return orderSquads(b, squadIds, order) ? order : null;
+}
+
+// What a tap or click at (x, z) means, without giving it: attack a defender near the point,
+// capture a zone the swarm does not hold, or otherwise move there.
+export function orderFor(b, x, z) {
   let enemy = null, best = Infinity;
   for (const unit of b.units) {
     if (!unit.alive || unit.side !== "native") continue;
@@ -328,11 +335,63 @@ export function orderAt(b, squadIds, x, z) {
     const zone = zoneAt(b, x, z);
     order = zone && !zone.captured ? { kind: "capture", zone: zone.id, x: zone.x, z: zone.z } : { kind: "move", x, z };
   }
-  return orderSquads(b, squadIds, order) ? order : null;
+  return order;
+}
+
+// ---- Waypoints, patrol and attack-move (CTRL-03) ----
+// A squad keeps up to maxQueue further orders (squad.queue); each starts when the one before is
+// done. With squad.patrol set, each finished order goes back on the end of the queue as a move to
+// the same spot, so the squad circles its waypoints. An order with hunt: true (attack-move) makes
+// armed drones turn on any defender they see on the way before going on.
+export const maxQueue = 8;
+const plainOrder = ({ pace, ...order }) => order;
+
+function orderDone(b, squad) {
+  const order = squad.order;
+  if (!order || order.kind === "hold") return true;
+  if (order.kind === "capture") return !!zoneById(b, order.zone)?.captured;
+  if (order.kind === "attack") return !unitById(b, order.target)?.alive;
+  const drones = squadDrones(b, [squad.id]);
+  return drones.length > 0 && drones.every(u => Math.hypot(u.x - (order.x + u.slot.dx), u.z - (order.z + u.slot.dz)) < 10);
+}
+
+// Give the order now to idle squads, and queue it after the current one for busy squads.
+export function queueOrder(b, squadIds, order) {
+  let queued = 0;
+  for (const id of squadIds) {
+    const squad = b.squads.find(s => s.id === id);
+    if (!squad) continue;
+    if (orderDone(b, squad) && !squad.queue?.length) { orderSquads(b, [id], order); continue; }
+    squad.queue ||= [];
+    if (squad.queue.length < maxQueue) { squad.queue.push(plainOrder(order)); queued += 1; }
+  }
+  return queued;
+}
+
+export function setPatrol(b, squadIds, on) {
+  for (const squad of b.squads) if (squadIds.includes(squad.id)) squad.patrol = !!on;
+}
+
+function advanceQueues(b) {
+  for (const squad of b.squads) {
+    if (!squad.queue?.length || !orderDone(b, squad)) continue;
+    const next = squad.queue.shift();
+    if (squad.patrol && squad.order && squad.order.kind !== "hold") {
+      const done = plainOrder(squad.order);
+      squad.queue.push(done.kind === "move" ? done : { kind: "move", x: done.x, z: done.z, ...(done.hunt ? { hunt: true } : {}) });
+    }
+    orderSquads(b, [squad.id], next);
+  }
+}
+
+// A new order given now (not queued) replaces any waypoints and patrol.
+export function replaceOrders(b, squadIds, order) {
+  for (const squad of b.squads) if (squadIds.includes(squad.id)) { delete squad.queue; delete squad.patrol; }
+  return orderSquads(b, squadIds, order);
 }
 
 export function orderHold(b, squadIds) {
-  for (const squad of b.squads) if (squadIds.includes(squad.id)) squad.order = { kind: "hold" };
+  for (const squad of b.squads) if (squadIds.includes(squad.id)) { squad.order = { kind: "hold" }; delete squad.queue; delete squad.patrol; }
   for (const pod of b.pods) if (!pod.released && squadIds.includes(pod.squad)) delete pod.pendingSlots;
   for (const unit of squadDrones(b, squadIds)) {
     unit.order = { kind: "hold", x: unit.x, z: unit.z };
@@ -447,7 +506,13 @@ function moveUnits(b, dt, auras, swarm, natives) {
       speed *= effects.speed * (stunned(b, unit) ? 0.3 : 1) * (jammed ? 0.6 : 1);
       const order = unit.order;
       let destination = order;
-      if (order.kind === "attack") {
+      // Attack-move: armed drones turn on the nearest defender in sight, then go on.
+      const prey = order.hunt && order.kind === "move" && def.weapons.length ? nearestEnemy(unit, natives, def.sight) : null;
+      if (prey) {
+        const reach = Math.max(6, reachFor(def, prey) * effects.range * 0.8);
+        if (Math.sqrt(dist2(unit, prey)) > reach || !clearShot(b, unit, prey)) { tx = prey.x + unit.slot.dx; tz = prey.z + unit.slot.dz; arrive = 2; }
+        destination = { x: prey.x, z: prey.z, radius: reach };
+      } else if (order.kind === "attack") {
         let target = unitById(b, order.target);
         // Attack-move: when the target falls, go on to the nearest defender near that spot.
         if (!target?.alive) {
@@ -894,6 +959,7 @@ export function stepBattle(b, dt) {
   resolveStrikes(b, swarm);
   hazardDamage(b, dt, swarm);
   captureZones(b, dt, auras);
+  advanceQueues(b);
   economy(b, dt, swarm);
   stepAlarm(b, dt, swarm);
   reinforce(b, dt);

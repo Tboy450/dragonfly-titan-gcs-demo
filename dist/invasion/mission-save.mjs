@@ -58,6 +58,7 @@ function validOrder(order, b, zones, squad = false) {
   if (!object(order) || !["hold", "move", "capture", "attack"].includes(order.kind)) return false;
   if (!(squad && order.kind === "hold" && order.x === undefined && order.z === undefined) && !point(order)) return false;
   if (order.pace !== undefined && !between(order.pace, .001, 1000)) return false;
+  if (order.hunt !== undefined && typeof order.hunt !== "boolean") return false;
   // Fallen targets are pruned after combat. Keep their IDs for normal attack-move/retargeting.
   if (order.kind === "attack" && !(positiveId(order.target) && order.target < b.nextId)) return false;
   return (order.kind !== "capture" || zones.has(order.zone)) && (order.zone === undefined || zones.has(order.zone));
@@ -218,6 +219,9 @@ export function validMissionCheckpoint(value) {
     if (!validObjectives(b.objectives, zones) || !unique(b.specials) || !b.specials.every(s => nameId(s) && b.zones.some(z => z.special === s))) return null;
     if (!b.squads.every(s => positiveId(s.id) && text(s.name) && text(s.color, 128)
       && (s.order === undefined || validOrder(s.order, b, zones, true)))) return null;
+    // Waypoint queues and patrol (CTRL-03): at most 8 queued orders, each a full order.
+    if (!b.squads.every(s => (s.queue === undefined || Array.isArray(s.queue) && s.queue.length <= 8 && s.queue.every(o => validOrder(o, b, zones)))
+      && (s.patrol === undefined || typeof s.patrol === "boolean"))) return null;
     const squads = new Set(b.squads.map(s => s.id));
     if (squads.size !== b.squads.length) return null;
     if (!b.units.every(u => {

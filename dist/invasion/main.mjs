@@ -9,6 +9,7 @@ import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, orderHold, battleSummary,
   objectiveStatus, starsEarned, missionResult, retreat, publicMood, dropZoneAt, extractVictory, continueCapturing,
   cityFound, hiddenUnits, shotBlocked, mergeSquads, splitSquad, renameSquad,
+  orderFor, queueOrder, setPatrol, replaceOrders,
 } from "./battle.mjs?v=dev";
 import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
 import { packDropPods, podRadius, podStaggerS } from "./drop-waves.mjs?v=dev";
@@ -711,12 +712,40 @@ function tap(clientX, clientY, additive, action = "smart") {
     return;
   }
   const enemy = unitAtScreen(x, y, u => u.alive && u.side === "native", 22);
-  if (enemy) {
-    orderSquads(b, [...mission.selected], { kind: "attack", target: enemy.id, x: enemy.x, z: enemy.z });
-    return;
+  let order = enemy ? { kind: "attack", target: enemy.id, x: enemy.x, z: enemy.z } : null;
+  if (!order) {
+    const ground = scene.pickGround(x / width * 2 - 1, -(y / height) * 2 + 1);
+    if (ground) order = orderFor(b, ground.x, ground.z);
   }
-  const ground = scene.pickGround(x / width * 2 - 1, -(y / height) * 2 + 1);
-  if (ground) orderAt(b, [...mission.selected], ground.x, ground.z);
+  // Shift (or "Queue next order") adds a waypoint after the current orders (CTRL-03).
+  if (order) giveOrder(order, additive);
+}
+
+// Orders from the battlefield: now (replacing waypoints), or queued; attack-move if armed.
+function giveOrder(order, queue = false) {
+  const b = mission.battle, ids = [...mission.selected];
+  if (mission.huntNext) {
+    if (order.kind === "move") order = { ...order, hunt: true };
+    mission.huntNext = false;
+  }
+  if (queue || mission.queueNext) {
+    mission.queueNext = false;
+    const queued = queueOrder(b, ids, order);
+    if (queued) toast(`Waypoint added for ${queued} ${queued === 1 ? "squad" : "squads"}.`, "info", 1800);
+  } else replaceOrders(b, ids, order);
+}
+function armAttackMove() {
+  if (!mission?.selected.size) { toast("Select a squad first.", "info"); return; }
+  mission.huntNext = true;
+  toast("Attack-move: click or tap where to go. Armed drones fight whatever they meet.", "info", 3000);
+}
+function togglePatrol() {
+  const ids = [...mission.selected], squads = mission.battle.squads.filter(s => ids.includes(s.id));
+  if (!squads.length) { toast("Select a squad first.", "info"); return; }
+  const on = !squads.every(s => s.patrol);
+  setPatrol(mission.battle, ids, on);
+  toast(on ? "Patrol on: the squad circles its waypoints (Shift+click to add them)." : "Patrol off.", "info", 3000);
+  updateSquadTools();
 }
 
 function selectSquad(id, additive = false) {
@@ -766,7 +795,12 @@ function updateSquadTools() {
     if (types.length >= 2) for (const type of types) options.push([`type:${type}`, `Split off ${droneTypes[type].name}s`]);
     options.push(["rename", "Rename…"]);
   }
-  const signature = options.map(o => o[0]).join("|");
+  if (chosen.length) {
+    options.push(["queue", "Queue next order"], ["hunt", "Attack-move next order (T)"]);
+    const patrolling = b.squads.filter(s => chosen.includes(s.id)).every(s => s.patrol);
+    options.push(["patrol", patrolling ? "Patrol: on → off (P)" : "Patrol: off → on (P)"]);
+  }
+  const signature = options.map(o => o.join(":")).join("|");
   if (select.dataset.signature !== signature) {
     select.dataset.signature = signature;
     select.innerHTML = options.map(([value, label]) => `<option value="${value}">${escapeHtml(label)}</option>`).join("");
@@ -784,7 +818,12 @@ $("squad-tools").addEventListener("change", (event) => {
   } else if (action === "half" || action.startsWith("type:")) {
     const fresh = splitSquad(b, chosen[0], action === "half" ? null : action.slice(5));
     if (fresh) { mission.selected = new Set([fresh]); toast("Squad split; the new squad holds where it is.", "good"); }
-  } else if (action === "rename") {
+  } else if (action === "queue") {
+    mission.queueNext = true;
+    toast("Next order is a waypoint: tap or click where to go.", "info", 2500);
+  } else if (action === "hunt") armAttackMove();
+  else if (action === "patrol") togglePatrol();
+  else if (action === "rename") {
     const squad = b.squads.find(s => s.id === chosen[0]);
     const name = window.prompt("Rename squad (up to 24 characters):", squad?.name || "");
     if (name !== null && !renameSquad(b, chosen[0], name)) toast("A squad needs a name.", "info");
@@ -947,6 +986,8 @@ window.addEventListener("keydown", (event) => {
   if (key === "g" && !event.repeat) { setFollow(!mission.follow); return; }
   if (key === "m" && !event.repeat) { $("sound-button").textContent = cycleSound(); return; }
   if (key === "j" && !event.repeat) { jumpToAlert(); return; }
+  if (key === "t" && !event.repeat) { armAttackMove(); return; }
+  if (key === "p" && !event.repeat) { togglePatrol(); return; }
   if (key === "home") { resetView(); event.preventDefault(); return; }
   if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
   if (key === "escape") { resetPointers(); setCleanView(false); cancelPlacement(); closeDropPanel(); return; }
@@ -1110,6 +1151,23 @@ function drawOverlay() {
     ctx.stroke();
     const label = scene.project(point.x, y + 5, point.z, width, height);
     if (label.visible) { ctx.fillStyle = swarmColor; ctx.fillText(`Pod ${index + 1}`, label.x, label.y); }
+  }
+  // Waypoints of selected squads: a dashed line in the squad's color through each queued order,
+  // closing the loop when the squad patrols.
+  for (const squad of b.squads) {
+    if (!mission.selected.has(squad.id) || !squad.queue?.length) continue;
+    const points = [squad.order, ...squad.queue].filter(o => o && Number.isFinite(o.x))
+      .map(o => scene.project(o.x, scene.heightAt(o.x, o.z) + 2, o.z, width, height));
+    if (points.length < 2 || points.some(p => !p.visible)) continue;
+    ctx.save();
+    ctx.strokeStyle = squad.color; ctx.fillStyle = squad.color; ctx.lineWidth = 1.5; ctx.setLineDash([6, 6]);
+    ctx.beginPath();
+    points.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+    if (squad.patrol) ctx.closePath();
+    ctx.stroke();
+    ctx.setLineDash([]);
+    points.slice(1).forEach((p, i) => { ctx.beginPath(); ctx.arc(p.x, p.y, 7, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = "#04131a"; ctx.fillText(String(i + 1), p.x, p.y + 4); ctx.fillStyle = squad.color; });
+    ctx.restore();
   }
   const hidden = hiddenUnits(b), byId = new Map(b.units.map(u => [u.id, u])), noShot = new Set();
   for (const unit of b.units) {

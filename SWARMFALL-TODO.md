@@ -324,7 +324,21 @@ complete solely because its assets download or its unit tests pass.
   - Number keys already follow the squad bar's order, so there was nothing to renumber.
   Evidence: `tests/invasion-squad-tools.test.mjs`, including saves staying valid after merge
   and split. In the browser, merge then "Split off Links" behaved as expected.
-- [ ] **CTRL-03 (P1)** Waypoint queues (Shift+tap), patrol and an "attack-move here" order.
+- [x] **CTRL-03 (P1) — Claude (October 22)** Waypoint queues (Shift+tap), patrol and an
+  "attack-move here" order (`battle.mjs` `queueOrder`, `setPatrol`, `orderFor`,
+  `replaceOrders`):
+  - **Waypoints:** Shift+right-click, or "Queue next order" in the Squad ▾ menu on touch,
+    adds up to 8 orders. Each starts when the one before is done: zone captured, target
+    destroyed, or every drone in place. Selected squads show them as a dashed line with
+    numbered stops.
+  - **Patrol:** P, or the menu, circles the waypoints. Finished captures and attacks come back
+    as moves, so it never spins on a held zone.
+  - **Attack-move:** T, or the menu, then a click or tap. Armed drones turn on any defender
+    they see on the way, then go on.
+  - A new immediate order or Hold clears the waypoints and patrol. Saves keep queues, patrol
+    and attack-move, within limits.
+  - Evidence: `tests/invasion-waypoints.test.mjs`. In the browser the waypoint loop drew and
+    P toggled patrol.
 - [x] **CTRL-04 (P1) — Codex, October 19; implementation and automated acceptance**
   Desktop left-click selects a squad; right-click orders an attack, capture or move. Modifier
   clicks toggle additional squads; empty primary clicks clear selection. Touch/pen retain
