@@ -1,0 +1,143 @@
+{
+  "status": "passed",
+  "live": false,
+  "build": "Build local",
+  "checks": [
+    {
+      "sub": "",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "sub": "",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "sub": "",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "sub": "",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "sub": "",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "sub": "",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "sub": "mmrtg-housing-focus",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "sub": "mmrtg-housing-focus",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "sub": "mmrtg-housing-focus",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "sub": "mmrtg-housing-focus",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "sub": "mmrtg-housing-focus",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "sub": "mmrtg-housing-focus",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "sub": "mmrtg-fins-focus",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "sub": "mmrtg-fins-focus",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "sub": "mmrtg-fins-focus",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "sub": "mmrtg-fins-focus",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "sub": "mmrtg-fins-focus",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "sub": "mmrtg-fins-focus",
+      "layer": "thermal",
+      "width": 360
+    },
+    {
+      "sub": "mmrtg-ends-focus",
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "sub": "mmrtg-ends-focus",
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "sub": "mmrtg-ends-focus",
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "sub": "mmrtg-ends-focus",
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "sub": "mmrtg-ends-focus",
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "sub": "mmrtg-ends-focus",
+      "layer": "thermal",
+      "width": 360
+    }
+  ],
+  "errors": [],
+  "failed": [],
+  "loaded": [
+    "http://127.0.0.1:4195/mmrtg.mjs?v=dev"
+  ],
+  "links": [
+    "https://science.nasa.gov/photojournal/mars-2020s-mmrtg/",
+    "https://science.nasa.gov/wp-content/uploads/2024/02/mmrtg-factsheet-updated-5-18-20-1.pdf",
+    "https://ntrs.nasa.gov/citations/20120000731",
+    "https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content",
+    "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php"
+  ],
+  "stable24Numbers": true,
+  "masksRestore": true,
+  "sensor21Refit": true,
+  "pilotReturn": true
+}

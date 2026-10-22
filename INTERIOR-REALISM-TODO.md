@@ -23,18 +23,27 @@ explicitly estimated, not flight CAD. Do not repeatedly search the same closed l
    2 x2 x0.8 mm element, paired10 mm leads, estimated curved bond and placement. Real catalog
    photos/drawing; range covers157 C. Independent layers and actual-scale macro inspection.
    Flight type/count/mount/routing remain open. [Sources and samples](research/fin-root-sensor-2026-10-21/README.md).
-3. [ ] **MMRTG generator body:** photo/dimension review, archive and redraw the actual housing,
-   fins and interfaces as evidence permits; preserve thermal model and completed neighbors.
+3. [x] **Codex, October22 MMRTG generator body:** real NASA PIA23306 appearance reference,
+   published64 x66 cm envelope; thinner pale fins, narrower housing, root attachments, end
+   covers/collar and covered connector example. Detailed sizes/finish/variant estimated.
+   Independent inspection targets/masks and unnumbered body selector;24 numbers preserved.
+   Sensor21 refitted via shared dimensions. [Sources, samples and checks](research/mmrtg-body-2026-10-22/README.md).
 4. [ ] **Structural wall layers:** start one side-wall panel, then skin/deck/insulation and
    mounting layers separately. Add hide/ghost controls as needed; preserve interior access
    and camera penetrations. Do not invent undocumented honeycomb/core construction.
 
 Other harness work stays queued behind this order. Current count24/24 initial passes
-(9 Codex / 15 Claude), with labeled hardware-family/design approximations. The generator body,
-installation and construction work are still open. Follow the expanded packages below after the ordered
+(9 Codex / 15 Claude), with labeled hardware-family/design approximations. Installation and
+construction work are still open. Follow the expanded packages below after the ordered
 items; do not confuse finishing the numbered list with finishing construction and connections.
 
-Current Part21 closeout:444 tests pass,18 local browser viewport/layer/subassembly cases,
+Current October22 body closeout: own MMRTG exterior pass complete;450 tests pass,24 numbers unchanged.
+Local24 viewport/subassembly cases, layer masks/restore, refitted21, source links, raw model
+pixel/framing and numbered-neighbor/stabilizer clearance pass. Battery/20 geometry unchanged.
+Next is the first structural side-wall panel. Flight coating, detailed fin/root/end/connection
+dimensions and sensor installation remain open evidence follow-ups, not missing initial parts.
+
+Historical Part21 closeout:444 tests pass,18 local browser viewport/layer/subassembly cases,
 four orbit angles, independent masks and Pilot return, raw macro/full-installation pixel
 checks and no numbered-neighbor intersections. Generator/battery/part20 manifest unchanged.
 Photo/drawing/illustration/model comparison archived. Next: MMRTG body, then first wall panel.

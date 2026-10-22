@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import * as THREE from "../dist/vendor/three/three.module.min.js";
 import { buildMmrtgMeasurement, mmrtgMeasurementAsset as A } from "../dist/mmrtg-measurement.mjs";
 import { poseMmrtg } from "../dist/aft-bulkhead.mjs";
+import { buildMmrtg, mmrtgAsset } from "../dist/mmrtg.mjs";
 import { inspectionGroups } from "../dist/vehicle-inspector.mjs";
 import { createInspectionVisibility } from "../dist/inspection-visibility.mjs";
 
@@ -67,18 +68,21 @@ test("The RTD and leads sit beside the top fin root and clear all eight fins", (
   assert.ok(Math.abs(THREE.MathUtils.radToDeg(Math.atan2(c.y, c.x)) - 90) < 15, "next to the top fin");
 });
 
-test("The modeled MMRTG still has the housing and fins the target was placed against", () => {
+test("The RTD shares the new MMRTG housing and fin dimensions", () => {
   const research = read("../dist/vehicle-research.mjs");
-  assert.match(research, new RegExp(`CylinderGeometry\\(${A.housingRadiusM}, ${A.housingRadiusM}, 0\\.66, 24\\), rtgMaterial`));
-  assert.match(research, new RegExp(`for \\(let i = 0; i < ${A.finCount}; i \\+= 1\\)`));
-  assert.match(research, new RegExp(`BoxGeometry\\(${A.finThicknessM}, 0\\.12, 0\\.62\\), rtgMaterial, \\[Math\\.cos\\(angle\\) \\* 0\\.26`));
+  assert.equal(A.housingRadiusM, mmrtgAsset.housingRadiusM);
+  assert.equal(A.finCount, mmrtgAsset.finCount);
+  assert.equal(A.finThicknessM, mmrtgAsset.finThicknessM);
+  const parent = new THREE.Group(); const { frame } = buildMmrtg({ parent, mesh });
+  assert.ok(frame.quaternion.angleTo(build().frame.quaternion) < 1e-9);
+  assert.match(research, /buildMmrtg\(\{ parent: buildTarget, mesh \}\)/);
   assert.match(research, /interiorPart\("mmrtg-sensor", "mmrtg", "MMRTG fin-root sensor \(RTD family approximation/);
   assert.match(research, /buildMmrtgMeasurement\(\{ parent: buildTarget, mesh \}\)/);
 });
 
 test("Part 21 isolates with the generator and records its evidence limits", () => {
   assert.deepEqual(inspectionGroups("mmrtg-sensor"), ["mmrtg", "mmrtg-sensor"]);
-  assert.deepEqual(inspectionGroups("mmrtg"), ["mmrtg"]);
+  assert.deepEqual(inspectionGroups("mmrtg"), ["mmrtg", "mmrtg-sensor"]);
   const todo = read("../INTERIOR-REALISM-TODO.md");
   assert.match(todo, /- \[x\] \*\*Codex:\*\* \*\*21 MMRTG fin-root sensor\*\*/);
   assert.match(todo, /- \[ \] \*\*21 follow-up/);

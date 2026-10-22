@@ -70,7 +70,7 @@ test("Isolation includes the related transfer and sensor assemblies", () => {
   assert.deepEqual(inspectionGroups("battery"), ["battery", "battery-sensor"]);
   assert.deepEqual(inspectionGroups("sample-lines"), ["drills", "sample-lines", "sample-flow", "sample-carousel", "drill-blower"], "the lines end at the blowers");
   assert.deepEqual(inspectionGroups("drams"), ["drams"], "neighboring covers must not obscure an isolated instrument");
-  assert.deepEqual(inspectionGroups("mmrtg"), ["mmrtg"]);
+  assert.deepEqual(inspectionGroups("mmrtg"), ["mmrtg", "mmrtg-sensor"]);
   assert.deepEqual(inspectionGroups(null), []);
 });
 

@@ -15,7 +15,14 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
-October 21 Codex: [fin-root RTD example](research/fin-root-sensor-2026-10-21/README.md)
+October22 Codex: [MMRTG generator exterior](research/mmrtg-body-2026-10-22/README.md)
+now follows NASA's real generator photo: pale thin fins, narrower housing, root attachments
+and stepped metal covers within the published64 x66 cm envelope. Detail/finish remain
+estimated. Select **MMRTG generator body** in the existing inspector for housing/fins/ends
+and separate masks;24 numbered parts stay unchanged. Sensor21 is refitted at actual scale.
+Next: first structural side wall, then the extensive connections/layer/UI roadmap.
+
+Earlier October 21 Codex: [fin-root RTD example](research/fin-root-sensor-2026-10-21/README.md)
 completes the last numbered initial pass: **24/24 (9 Codex / 15 Claude)**. Real Omega catalog
 photos/drawing guide a temperature-appropriate family approximation with separate layers and
 macro inspection. Actual flight package/installation remain unconfirmed. The MMRTG body,

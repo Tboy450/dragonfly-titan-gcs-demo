@@ -66,6 +66,7 @@ export function inspectionGroups(name) {
     battery: ["battery", "battery-sensor"],
     "battery-sensor": ["battery", "battery-sensor"],
     "mmrtg-sensor": ["mmrtg", "mmrtg-sensor"],
+    mmrtg: ["mmrtg", "mmrtg-sensor"],
     "hga-actuators": ["hga-actuators", "high-gain-antenna"],
     "aft-bulkhead": ["aft-bulkhead", "mmrtg", "fan"],
   };

@@ -1,5 +1,6 @@
 import * as THREE from "./vendor/three/three.module.min.js";
 import { poseMmrtg } from "./aft-bulkhead.mjs?v=dev";
+import { mmrtgAsset } from "./mmrtg.mjs?v=dev";
 
 // [PUB] NASA/APL TFAWS2023 names fin-root feedback; NASA rates the MMRTG fin root
 // at157 C. Omega F2020 Class B is a real 2x2x0.8 mm RTD family rated -70..500 C,
@@ -7,13 +8,13 @@ import { poseMmrtg } from "./aft-bulkhead.mjs?v=dev";
 // [EST] finish proportions, bond, exact sensing point and routing. Current generator
 // envelope/pose is provisional; recheck this installation during the MMRTG-body pass.
 export const mmrtgMeasurementAsset = Object.freeze({
-  revision: "fin-root-rtd-family-estimate-2026-10-21",
+  revision: "fin-root-rtd-family-fit-2026-10-22",
   referenceFamily: "Omega F2020 Class B (Dragonfly adoption unconfirmed)",
   elementM: Object.freeze([.002, .002, .0008]),
   leadLengthM: .010, leadDiameterM: .0002,
   familyRangeC: Object.freeze([-70, 500]),
   bondThicknessM: .0002, bondWidthM: .0045,
-  housingRadiusM: 0.2, finThicknessM: 0.02, finCount: 8,
+  housingRadiusM: mmrtgAsset.housingRadiusM, finThicknessM: mmrtgAsset.finThicknessM, finCount: mmrtgAsset.finCount,
   // Generator frame (poseMmrtg): +z along its axis, aft and up; the top fin is at 90 degrees.
   angleDeg: 78,     // 12 degrees to starboard of the top fin
   axialM: 0.05,     // a little aft of the housing's middle

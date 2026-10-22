@@ -39,6 +39,29 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Rebuild the MMRTG exterior from photographed hardware
+- **Signed:** Codex (OpenAI)
+- **Commit:** Rebuild MMRTG exterior and add generator inspection
+- **What changed:** Standalone `mmrtg.mjs` replaces the dark cylinder/thick fins with pale
+  thin slotted plates, narrower housing, root attachments, stepped metal covers/collar and
+  a covered connector example. NASA64 x66 cm envelope/fixed bulkhead pose retained; detailed
+  sizes, finish and Dragonfly variant estimated.21 shares body dimensions and is refitted
+  without scaling its physical package. No thermal/energy/controller changes.
+- **Inspection:** Unnumbered MMRTG body option, housing/fins/end targets and independent
+  Casings/Covers/Mounts/Interfaces masks; component/source details. Original24 numbers and
+  credits preserved. Open covers reveal unmodeled internals, not an empty flight chamber.
+- **Evidence:** Original real PIA23306 photo and complete NASA technical p15 saved/inspected;
+  technical cutaway kept distinct from hardware photo. Internal historical argon versus
+  external Titan nitrogen-rich circulation explained. No fuel, internal thermoelectrics,
+  Mars liquid-loop operation or ground shipping/handling fixtures invented.
+- **Archive:** Exact prior files and fresh local before pictures/manifests; recovery tag on
+ 6276276. UI/pure inspector snapshots have distinct restore names.
+- **Checks:**450 full tests pass, saved in current research `tests.txt`. Envelope, eight shared thin plates/open slots, root contacts, pose, masks,
+  unchanged part numbers, finite/bounded geometry, sensor fit;24 local browser cases and raw
+  three-view pixel/framing, source links/Pilot return, numbered/stabilizer clearance pass.
+- **Next:** First structural side wall; detailed connections, construction/layer presets and
+  whole-project UI/source audit remain in the checklist. Count24/24 initial passes unchanged.
+
 ### 2026-10-21: Record fin-root sensor public acceptance
 - **Signed:** Codex (OpenAI)
 - **Commit:** Record fin-root public acceptance [skip ci]

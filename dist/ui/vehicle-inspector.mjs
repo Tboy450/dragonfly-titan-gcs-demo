@@ -6,14 +6,16 @@ import { focusInspector, inspectionAvailable, inspectionTarget, resetInspector, 
 import { globalInspectionLayers, partInspectionLayers, inspectionLayerVisible, setInspectionLayer,
   restoreInspectionLayers, hiddenInspectionCount } from "../inspection-visibility.mjs?v=dev";
 
-const parts = Object.values(chaseRenderer?.subsystems ?? {}).filter(group => group.userData.label);
+const numberedParts = Object.values(chaseRenderer?.subsystems ?? {}).filter(group => group.userData.label);
+const parts = [...numberedParts, ...Object.values(chaseRenderer?.subsystems ?? {}).filter(group => group.userData.inspectionTitle && !group.userData.label)];
+const partTitle = part => part.userData.label ?? part.userData.inspectionTitle;
 const select = $("inspection-part");
 const subassemblySelect = $("inspection-subassembly");
 let subassemblyTarget;
 for (const part of parts) {
   const option = document.createElement("option");
   option.value = part.name;
-  option.textContent = part.userData.label;
+  option.textContent = partTitle(part);
   select.append(option);
 }
 const layerControls = [];
@@ -64,13 +66,15 @@ export function updateInspectorUI() {
     if (!option.value) continue;
     const part = parts.find(part => part.name === option.value);
     const count = i.hiddenPartLayers?.[option.value]?.length ?? 0;
-    const text = `${part.userData.label}${count ? ` / ${count} hidden` : ""}`;
+    const text = `${partTitle(part)}${count ? ` / ${count} hidden` : ""}`;
     if (option.textContent !== text) option.textContent = text;
   }
   $("inspection-hidden-count").textContent = hidden ? `${hidden} hidden` : "All visible";
   $("inspection-restore-layers").disabled = !hidden;
-  const partNumber = parts.findIndex(part => part.name === target) + 1;
-  $("inspection-part-layer-title").textContent = target ? `Component ${String(partNumber).padStart(2, "0")}` : "Component (none selected)";
+  const partNumber = numberedParts.findIndex(part => part.name === target) + 1;
+  $("inspection-part-layer-title").textContent = target
+    ? partNumber ? `Component ${String(partNumber).padStart(2, "0")}` : group?.userData.inspectionTitle ?? "Component"
+    : "Component (none selected)";
   for (const { input, id, scope } of layerControls) {
     const part = scope === "part" ? target : null;
     const exists = (scope !== "part" || !!target) && chaseRenderer.inspectionLayers.available(id, part);

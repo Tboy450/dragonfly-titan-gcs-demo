@@ -13,8 +13,9 @@ import { buildHgaGimbal, hgaAsset } from "./hga-gimbal.mjs?v=dev";
 import { buildBattery } from "./battery.mjs?v=dev";
 import { buildBatteryMeasurement } from "./battery-measurement.mjs?v=dev";
 import { buildMmrtgMeasurement } from "./mmrtg-measurement.mjs?v=dev";
+import { buildMmrtg } from "./mmrtg.mjs?v=dev";
 import { buildNoseSensors } from "./nose-sensors.mjs?v=dev";
-import { buildAftBulkhead, aftBulkheadAsset, aftFaceZ, poseMmrtg } from "./aft-bulkhead.mjs?v=dev";
+import { buildAftBulkhead, aftBulkheadAsset, aftFaceZ } from "./aft-bulkhead.mjs?v=dev";
 import { buildRotorHead, buildHubPlate, rotorHeadAsset } from "./rotor-heads.mjs?v=dev";
 import { buildArmShoulder } from "./arm-shoulder.mjs?v=dev";
 import { buildMainHarness } from "./main-harness.mjs?v=dev";
@@ -45,7 +46,6 @@ export function buildResearchModel(kit) {
   const foam = new THREE.MeshStandardMaterial({ color: 0xdcd3c1, metalness: 0.04, roughness: 0.82 });
   const foamSeam = new THREE.MeshStandardMaterial({ color: 0xaea593, metalness: 0.05, roughness: 0.9 });
   const finMaterial = new THREE.MeshStandardMaterial({ color: 0xb39a48, metalness: 0.35, roughness: 0.5 });
-  const rtgMaterial = new THREE.MeshStandardMaterial({ color: 0x2d3135, metalness: 0.55, roughness: 0.45 });
   const armMaterial = new THREE.MeshStandardMaterial({ color: 0xc9ccc6, metalness: 0.35, roughness: 0.5 });
   const lens = new THREE.MeshStandardMaterial({ color: 0x0b1318, metalness: 0.6, roughness: 0.15 });
 
@@ -180,19 +180,9 @@ export function buildResearchModel(kit) {
   strut([0.43, 0.1, 1.08], [0.64, 0.36, 1.3], 0.012, metal);
   mesh(new THREE.SphereGeometry(0.03, 12, 8), metal, [0.64, 0.36, 1.3]);
 
-  // MMRTG at the tail: core cylinder with eight radial fins, bolted to the canted aft bulkhead and
-  // pointing aft and up about 25 degrees (aft-bulkhead.mjs; NASA/APL 2026 photos, APL 2024 CAD).
-  // It was level at (0, 0.05, 1.6) before October 15.
+  // Photo-referenced MMRTG exterior, retaining the canted bulkhead pose.
   subsystem("mmrtg", "mmrtg");
-  const generator = poseMmrtg(new THREE.Group());
-  buildTarget.add(generator);
-  mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.66, 24), rtgMaterial, [0, 0, 0], generator).rotation.x = Math.PI / 2;
-  for (let i = 0; i < 8; i += 1) {
-    const angle = i / 8 * Math.PI * 2;
-    const rib = mesh(new THREE.BoxGeometry(0.02, 0.12, 0.62), rtgMaterial, [Math.cos(angle) * 0.26, Math.sin(angle) * 0.26, 0], generator);
-    rib.rotation.z = angle - Math.PI / 2;
-  }
-  mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.04, 24), metal, [0, 0, -0.34], generator).rotation.x = Math.PI / 2;
+  buildMmrtg({ parent: buildTarget, mesh });
 
   // Two tall stabilizing fins flank the MMRTG and splay outward toward the rear.
   const finOutline = new THREE.Shape();

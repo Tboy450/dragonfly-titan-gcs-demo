@@ -4,6 +4,16 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October22 MMRTG body (Codex):** [sources and actual samples](research/mmrtg-body-2026-10-22/README.md).
+[PUB]64 cm fin-tip diameter,66 cm overall length, eight-fin architecture. Real PIA23306
+pre-fueling Mars2020 hardware informs pale thin fins, root attachments, narrower housing
+and metal covers. [EST]14.5 cm housing radius,2.5 mm fin plates,48 cm fin length, slots,
+fasteners, finish, end/connector detail and25-degree installed pose. Related Mars hardware
+does not establish Dragonfly coating/interfaces. Historical NASA section describes internal
+argon cover gas; external Titan nitrogen-rich circulation is distinct. No fuel/thermoelectric
+internals or active Mars liquid loop modeled. Sensor21 refitted from shared dimensions;
+temperature remains existing modeled gas zone. Numbered count24/24 unchanged. First wall next.
+
 **October21 fin-root RTD example (Codex):** [sources and model](research/fin-root-sensor-2026-10-21/README.md).
 [PUB-family] Omega F2020 Class B: nominal2 x2 x0.8 mm, two10 mm x0.2 mm leads; catalog
 -70..500 C band covers NASA's157 C rating. Real product photos guide ceramic/blue-glass

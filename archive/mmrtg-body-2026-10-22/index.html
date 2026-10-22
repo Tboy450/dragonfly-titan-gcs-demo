@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dragonfly Titan Simulator: NASA Dragonfly rotorcraft flight demo on Titan</title>
+    <meta
+      name="description"
+      content="Interactive NASA Dragonfly-inspired Titan rotorcraft simulator: fly and plan autonomous flights, watch the entry, descent and landing, and explore a research-based 3D model with internal and thermal views. Educational, not an official NASA product."
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://tboy450.github.io/dragonfly-titan-gcs-demo/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Dragonfly Titan Simulator" />
+    <meta property="og:description" content="Fly a NASA Dragonfly-inspired rotorcraft on Saturn's moon Titan: flight planning, leapfrog scouting, science instruments and thermal views." />
+    <meta property="og:url" content="https://tboy450.github.io/dragonfly-titan-gcs-demo/" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23081018'/%3E%3Ccircle cx='32' cy='32' r='18' fill='none' stroke='%23ffb457' stroke-width='4'/%3E%3Cpath d='M14 32h36M32 14v36' stroke='%237ce7ff' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23e9f2ff'/%3E%3C/svg%3E" />
+    <link rel="preload" as="image" href="./assets/titan-mountain-reference.jpg" />
+    <link rel="stylesheet" href="./styles.css?v=dev" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar" aria-label="Mission status">
+        <div class="brand">
+          <span class="mission-chip">New Frontiers Demo</span>
+          <span id="build-label" class="build-label" title="Published version. Local copies show 'Build local'." data-build-stamp>Build local</span>
+          <h1>Dragonfly Titan GCS</h1>
+        </div>
+        <div class="view-switch" role="group" aria-label="View and sound">
+          <button id="mission-view-button" class="active" type="button" aria-pressed="true">Mission</button>
+          <button id="pilot-view-button" type="button" aria-pressed="false">Pilot</button>
+          <button id="sound-toggle" class="sound-toggle" type="button" aria-pressed="false" aria-label="Sound off" title="Rotor, wind and landing sounds (synthesized). Off until you turn it on.">&#9834; Off</button>
+        </div>
+        <div class="status-strip">
+          <div class="status-item">
+            <span>Mode</span>
+            <strong id="mode-value">Preflight</strong>
+          </div>
+          <div class="status-item">
+            <span>MET</span>
+            <strong id="met-value">00:00</strong>
+          </div>
+          <div class="status-item">
+            <span>Altitude</span>
+            <strong id="altitude-value">0.0 m</strong>
+          </div>
+          <div class="status-item">
+            <span>Speed</span>
+            <strong id="speed-value">0.0 m/s</strong>
+          </div>
+          <div class="status-item">
+            <span>Power</span>
+            <strong id="power-value">5.6 kW</strong>
+          </div>
+          <div class="status-item">
+            <span>Battery</span>
+            <strong id="battery-value">96%</strong>
+          </div>
+        </div>
+      </header>
+
+      <section class="flight-bar" aria-label="Shared flight controls">
+        <div class="flight-commands">
+          <button id="auto-button" data-command="auto" class="primary" type="button" aria-pressed="true">Auto</button>
+          <button id="takeoff-button" data-command="takeoff" type="button">Takeoff</button>
+          <button id="cruise-button" data-command="cruise" type="button">Cruise</button>
+          <button id="land-button" data-command="land" type="button">Land</button>
+          <button id="hold-button" data-command="hold" type="button" aria-pressed="false">Pause</button>
+        </div>
+        <output id="pilot-navigation" aria-label="Local position">N 0 / E 0 m</output>
+        <button id="plan-button" type="button">Plan flight</button>
+        <button id="systems-button" type="button">Diagnostics</button>
+        <button id="start-over" class="start-over reset-icon" data-reset-icon type="button" aria-label="Reset mission" title="Reset mission from the landing (tap twice)">&#8635;</button>
+        <span class="simulation-label">Simulated telemetry</span>
+        <span id="vehicle-alert" role="status">Systems nominal</span>
+      </section>
+
+      <nav class="section-nav" aria-label="Page sections">
+        <a href="#flight-canvas">Flight</a><a href="#expedition-title">Objectives</a><a href="#science-section">Science</a><a href="#operations-title">Operations</a><a href="#expedition-notebook-button">Notebook</a><a href="#engineering-title">References</a>
+      </nav>
+
+      <section id="weather-strip" class="weather-strip" role="status" hidden>
+        <strong id="weather-title">Weather advisory</strong>
+        <span id="weather-strip-status"></span>
+        <small>Compressed training weather, not a real Titan forecast. Settings in Diagnostics.</small>
+      </section>
+
+      <section class="panel expedition-panel" aria-labelledby="expedition-title">
+        <div class="expedition-heading">
+          <div><span id="expedition-step">3 sites / 1 science story</span><h2 id="expedition-title">First expedition</h2></div>
+          <div class="expedition-actions">
+            <button id="expedition-action" class="primary" type="button">Begin expedition</button>
+          </div>
+        </div>
+        <p id="expedition-why">Compare three sites, scout a new landing area and send the evidence home.</p>
+        <p id="expedition-hint">Free flight remains available. Progress is saved on the ground.</p>
+        <p id="expedition-feedback" role="status"></p>
+        <div id="expedition-downlink-speed" class="expedition-actions" aria-label="Downlink simulation speed" hidden>
+          <button type="button" data-warp="1" aria-pressed="true">1x</button>
+          <button type="button" data-warp="20" aria-pressed="false">20x</button>
+          <button type="button" data-warp="100" aria-pressed="false">100x</button>
+        </div>
+        <details id="expedition-notebook">
+          <summary id="expedition-notebook-button">Science notebook and debrief <span id="expedition-notebook-count">0 / 3 sites</span></summary>
+          <p id="expedition-summary"></p>
+          <div id="expedition-records"></div>
+          <p id="expedition-comparison"></p>
+          <p class="expedition-disclaimer">Illustrative, compressed-scale dune/interdune terrain inspired by the Ahmakiq Undae landing-area description. Not a surveyed map, flight-qualified planner or real science data.</p>
+        </details>
+      </section>
+
+      <details class="quick-survey">
+        <summary>Optional quick survey</summary>
+      <section class="mission-strip" aria-label="Survey objective">
+        <div><strong id="objective-title">Interdune survey</strong><span id="objective-status">Survey the edge of a rain-darkened interdune from dry ground.</span></div>
+        <output id="objective-distance">171 m to outcrop</output>
+        <button id="mission-action" type="button">Begin survey</button>
+      </section>
+      </details>
+
+      <section id="day-strip" class="day-strip" aria-label="Titan day">
+        <div class="day-clock"><strong id="day-title">Titan day 1</strong><span id="day-time">12:00 local / Afternoon (Earth in view)</span></div>
+        <div class="day-bar" aria-hidden="true"><span class="day-bar-night"></span><span id="day-marker" class="day-marker"></span></div>
+        <ul class="day-tasks" aria-label="Operations for this Titan day">
+          <li id="day-task-downlink">&#9675; Send data home</li>
+          <li id="day-task-flight">&#9675; One flight</li>
+          <li id="day-task-science">&#9675; Sample science</li>
+          <li class="night-task">Night: recharge, seismic and weather</li>
+        </ul>
+        <button id="day-sleep" type="button">Sleep until morning</button>
+        <p class="day-scale">Time scale: a real Titan day lasts 382.7 hours (about 16 Earth days), with about one flight per day. Sampling offers a 30 s demo or estimated extended profiles. Accelerated operations advance the shared simulation clock; sleeping through the rest of the day and night takes a few seconds.</p>
+      </section>
+
+      <section id="plan-strip" class="plan-strip" aria-label="Autonomous flight" hidden>
+        <div><strong id="plan-strip-title">Autonomous flight</strong><span id="plan-strip-status" role="status">Plan uplinked</span></div>
+        <div class="warp-switch" role="group" aria-label="Simulation speed">
+          <button type="button" data-warp="1" aria-pressed="true">1x</button>
+          <button type="button" data-warp="5" aria-pressed="false">5x</button>
+          <button type="button" data-warp="20" aria-pressed="false">20x</button>
+        </div>
+        <button id="plan-abort" type="button">Stop plan</button>
+        <button id="plan-dismiss" type="button" hidden>Done</button>
+      </section>
+
+      <section class="layout-grid" aria-label="Dragonfly simulator">
+        <aside class="panel stack left-rail" aria-label="Mission data">
+          <div class="panel-heading">
+            <span>Vehicle</span>
+            <strong>Demo Baseline</strong>
+          </div>
+          <div class="data-grid compact">
+            <div><span>Mass</span><strong id="mass-value">875 kg</strong></div>
+            <div><span>Envelope</span><strong>3.85 x 3.85 x 1.75 m</strong></div>
+            <div><span>Rotors</span><strong>8 coaxial bladesets</strong></div>
+            <div><span>Rotor diameter</span><strong>1.35 m</strong></div>
+            <div><span>Shared disk area</span><strong id="disk-area">5.73 m2</strong></div>
+            <div><span>Titan weight</span><strong id="weight-value">1,183 N</strong></div>
+          </div>
+
+          <div class="panel-heading">
+            <span>Titan</span>
+            <strong>Environment Model</strong>
+          </div>
+          <div class="meter-list">
+            <div class="meter">
+              <label for="wind-slider">Surface wind</label>
+              <output id="wind-output">0.8 m/s</output>
+              <input id="wind-slider" type="range" min="0" max="5" step="0.1" value="0.8" />
+              <small id="wind-note" class="rest-status">Within the 1.6 m/s design maximum</small>
+              <small class="rest-status">Changing the slider selects Fixed wind; automatic weather is controlled in Diagnostics.</small>
+            </div>
+            <div class="meter">
+              <label for="payload-slider">Payload margin</label>
+              <output id="payload-output">0 kg</output>
+              <input id="payload-slider" type="range" min="-35" max="60" step="5" value="0" />
+            </div>
+          </div>
+          <div class="data-grid compact">
+            <div><span>Gravity</span><strong>1.352 m/s2</strong></div>
+            <div><span>Air density</span><strong id="density-value">5.440 kg/m3</strong></div>
+            <div><span>Pressure</span><strong id="pressure-value">146.0 kPa</strong></div>
+            <div><span>Temperature</span><strong>94 K</strong></div>
+            <div><span>Atmosphere</span><strong>N2 + CH4</strong></div>
+            <div><span>Local day</span><strong>15.95 Earth days</strong></div>
+          </div>
+
+          <div class="controls-block">
+          <div class="panel-heading">
+            <span>Controls</span>
+            <strong>Mode 2 RC</strong>
+          </div>
+          <div class="stick-row">
+            <div class="stick" aria-label="Throttle and yaw stick">
+              <span>Throttle / Yaw</span>
+              <div class="stick-box">
+                <i id="left-stick"></i>
+                <b class="axis x"></b>
+                <b class="axis y"></b>
+              </div>
+              <small id="left-stick-readout">THR 50% / YAW 0%</small>
+            </div>
+            <div class="stick" aria-label="Pitch and roll stick">
+              <span>Pitch / Roll</span>
+              <div class="stick-box">
+                <i id="right-stick"></i>
+                <b class="axis x"></b>
+                <b class="axis y"></b>
+              </div>
+              <small id="right-stick-readout">PIT 0% / ROL 0%</small>
+            </div>
+          </div>
+          <div class="throttle-toggles">
+            <button class="throttle-mode" type="button" data-throttle-mode aria-pressed="false" title="Sticky: the throttle stays where you leave it. Centering: it springs back to 50% (hold altitude) when released.">Throttle: sticky</button>
+            <button class="throttle-mode reverse-brake" type="button" data-reverse-brake aria-pressed="false" aria-describedby="reverse-brake-help" title="Fictional training assist: at 0% manual throttle above 1 m, a small downward pulse continues through the apex until descent reaches 0.6 m/s. No reverse over liquid or during automated flight.">Reverse (sim): off</button>
+          </div>
+          <small id="reverse-brake-help" class="reverse-brake-help">Fictional reverse thrust: at 0% manual throttle above 1 m, adds a small downward pulse through the climb apex, stopping at 0.6 m/s descent. Not real Dragonfly hardware; normal landing flare remains active.</small>
+          </div>
+        </aside>
+
+        <section class="center-stage">
+          <div class="visual-wrap">
+            <canvas id="flight-canvas" aria-label="Scaled Dragonfly octocopter over Titan terrain"></canvas>
+            <div class="visual-overlay top-left">
+              <span id="vehicle-view-label">Vehicle / North up</span>
+              <strong id="vehicle-view-reference">Rotor diameter 1.35 m</strong>
+            </div>
+            <div id="backdrop-picker" class="backdrop-picker" role="group" aria-label="Exterior background">
+              <button type="button" data-choice="0" aria-pressed="true" title="a: Titan landing area">a</button>
+              <button type="button" data-choice="1" aria-pressed="false" title="b: Assembly clean room">b</button>
+              <button type="button" data-choice="2" aria-pressed="false" title="c: Titan and Saturn poster">c</button>
+              <span id="backdrop-name">Titan landing area</span>
+            </div>
+            <div class="visual-overlay bottom-right" id="vehicle-heading-overlay">
+              <span>Heading</span>
+              <strong id="heading-value">084 deg</strong>
+            </div>
+            <button id="model-toggle" class="model-toggle" type="button" aria-pressed="true" title="Research model: 2023 thermal layout, refined from APL CAD and NASA's 2026 print guide. Switch to the original demo model.">Model: NASA / APL</button>
+            <button id="pilot-fullscreen" class="pilot-fullscreen" type="button" aria-label="Enter Pilot fullscreen" aria-pressed="false" title="Enter Pilot fullscreen">&#9974;</button>
+            <section id="pilot-hud" class="pilot-hud" aria-label="Vehicle systems">
+              <div><span>Battery</span><strong id="hud-battery">96% / 10 C</strong></div>
+              <div><span>Bay air</span><strong id="hud-bay">12 C</strong></div>
+              <div><span>Flight left</span><strong id="hud-endurance">Landed</strong></div>
+              <div><span>Link</span><strong id="hud-link">Ready</strong></div>
+              <div><span>Plan</span><strong id="hud-plan">None</strong></div>
+              <div><span>Weather</span><strong id="hud-weather">0.8 m/s / quiet</strong></div>
+            </section>
+            <section id="arrival-overlay" class="arrival-overlay" aria-label="Arrival at Titan, time-compressed" hidden>
+              <div class="arrival-head">
+                <span class="arrival-kicker">Arrival at Titan</span>
+                <strong id="arrival-title" aria-live="polite">Entry interface</strong>
+                <b id="arrival-altitude">1270 km</b>
+                <b id="arrival-time">E+0:00</b>
+                <button id="arrival-skip" type="button">Skip</button>
+              </div>
+              <p id="arrival-detail"></p>
+              <div class="arrival-progress" aria-hidden="true"><i id="arrival-progress"></i></div>
+            </section>
+            <div class="camera-switch" role="group" aria-label="Chase camera mode">
+              <button id="fixed-camera-button" class="active" type="button" aria-pressed="true">Fixed</button>
+              <button id="free-camera-button" type="button" aria-pressed="false" title="Drag the flight view to orbit; scroll or pinch to zoom">Free</button>
+              <button id="zoom-in-button" class="camera-zoom" type="button" aria-label="Zoom in" title="Zoom in (or scroll / pinch)">+</button>
+              <button id="zoom-out-button" class="camera-zoom" type="button" aria-label="Zoom out" title="Zoom out (or scroll / pinch)">&minus;</button>
+            </div>
+            <section class="pilot-deck" aria-label="Pilot controls">
+              <div class="pilot-control">
+                <span>Throttle / Yaw</span>
+                <div class="pilot-stick-box" aria-label="Pilot throttle and yaw stick">
+                  <b class="pilot-axis horizontal"></b>
+                  <b class="pilot-axis vertical"></b>
+                  <i id="pilot-left-stick"></i>
+                  <em class="axis-label up">UP</em>
+                  <em class="axis-label down">DN</em>
+                  <em class="axis-label left">L</em>
+                  <em class="axis-label right">R</em>
+                </div>
+                <small id="pilot-left-readout">THR 50% / YAW 0%</small>
+                <div class="throttle-toggles">
+                  <button class="throttle-mode" type="button" data-throttle-mode aria-pressed="false" title="Sticky: the throttle stays where you leave it. Centering: it springs back to 50% (hold altitude) when released.">Throttle: sticky</button>
+                  <button class="throttle-mode reverse-brake" type="button" data-reverse-brake aria-pressed="false" aria-describedby="reverse-brake-help" title="Fictional training assist: at 0% manual throttle above 1 m, a small downward pulse continues through the apex until descent reaches 0.6 m/s. No reverse over liquid or during automated flight.">Reverse (sim): off</button>
+                </div>
+              </div>
+
+              <div class="attitude-wrap">
+                <span>Attitude</span>
+                <div class="attitude-indicator">
+                  <div id="attitude-horizon" class="attitude-horizon"></div>
+                  <i></i>
+                </div>
+                <small id="attitude-readout">P +0.0 / R +0.0</small>
+              </div>
+
+              <div class="pilot-rotors">
+                <span>Rotors</span>
+                <div id="pilot-rotor-grid" class="pilot-rotor-grid"></div>
+                <small id="pilot-rotor-summary">8 / 8 nominal</small>
+              </div>
+
+              <div class="pilot-control">
+                <span>Pitch / Roll</span>
+                <div class="pilot-stick-box" aria-label="Pilot pitch and roll stick">
+                  <b class="pilot-axis horizontal"></b>
+                  <b class="pilot-axis vertical"></b>
+                  <i id="pilot-right-stick"></i>
+                  <em class="axis-label up">FWD</em>
+                  <em class="axis-label down">AFT</em>
+                  <em class="axis-label left">L</em>
+                  <em class="axis-label right">R</em>
+                </div>
+                <small id="pilot-right-readout">PIT 0% / ROL 0%</small>
+              </div>
+            </section>
+          </div>
+
+          <section class="panel layer-panel" aria-labelledby="layer-title">
+            <div id="vehicle-inspector" class="vehicle-inspector" hidden>
+              <label class="inspection-select">Component
+                <select id="inspection-part" aria-label="Inspect component"><option value="">Whole vehicle</option></select>
+              </label>
+              <label id="inspection-subassembly-label" class="inspection-select" hidden>Subassembly
+                <select id="inspection-subassembly" aria-label="Inspect subassembly"><option value="">All subassemblies</option></select>
+              </label>
+              <div class="inspection-tools" role="group" aria-label="Inspection camera">
+                <button id="inspection-rotate" type="button" aria-label="Enable model rotation" aria-pressed="false" title="Rotate model: drag or focus the canvas and use arrow keys"><img src="./vendor/lucide/rotate-3d.svg?v=dev" alt=""></button>
+                <button id="inspection-zoom-out" type="button" aria-label="Zoom out" title="Zoom out"><img src="./vendor/lucide/zoom-out.svg?v=dev" alt=""></button>
+                <output id="inspection-zoom-value" aria-label="Inspection zoom">100%</output>
+                <button id="inspection-zoom-in" type="button" aria-label="Zoom in" title="Zoom in"><img src="./vendor/lucide/zoom-in.svg?v=dev" alt=""></button>
+                <button id="inspection-focus" type="button" aria-label="Focus selected component" title="Focus selected component" disabled><img src="./vendor/lucide/focus.svg?v=dev" alt=""></button>
+                <button id="inspection-reset" type="button" aria-label="Reset inspection camera" title="Reset inspection camera and show the whole vehicle"><img src="./vendor/lucide/rotate-ccw.svg?v=dev" alt=""></button>
+                <button id="inspection-pause" type="button" aria-label="Pause simulation and sampling" title="Pause simulation and sampling" disabled><img src="./vendor/lucide/pause.svg?v=dev" alt=""></button>
+              </div>
+              <div class="inspection-options">
+                <label><input id="inspection-isolate" type="checkbox" disabled>Isolate assembly</label>
+                <label><input id="inspection-follow" type="checkbox">Follow sampling</label>
+                <output id="inspection-status" role="status">Whole vehicle</output>
+              </div>
+              <details id="inspection-layers" class="inspection-layers">
+                <summary>Inspection layers <span id="inspection-hidden-count">All visible</span></summary>
+                <div class="inspection-layer-grid">
+                  <fieldset id="inspection-global-layers"><legend>Vehicle</legend></fieldset>
+                  <fieldset id="inspection-part-layers"><legend id="inspection-part-layer-title">Component</legend></fieldset>
+                </div>
+                <button id="inspection-restore-layers" class="inspection-restore" type="button" title="Restore all inspection layers without moving the camera" disabled><img src="./vendor/lucide/rotate-ccw.svg?v=dev" alt="">Restore layers</button>
+              </details>
+            </div>
+            <div class="panel-heading">
+              <span id="layer-title">Vehicle Layers</span>
+              <div class="layer-switch" role="group" aria-label="Vehicle layer">
+                <button type="button" data-layer="exterior" aria-pressed="true">Exterior</button>
+                <button type="button" data-layer="internal" aria-pressed="false">Internal</button>
+                <button type="button" data-layer="thermal" aria-pressed="false">Thermal</button>
+              </div>
+            </div>
+            <p id="mock-banner" class="mock-banner" hidden>Mock-up views: the original demo model is not based on the real Dragonfly design, so its interior and thermal layout are made up for illustration. Switch <b>Model</b> to NASA / APL for the research-based views.</p>
+            <p id="layer-hint" class="rest-status">Research model: 2023 thermal layout, refined with APL CAD and NASA's 2026 print guide. Component shapes and placement are approximate; readings are simulated.</p>
+            <p id="vehicle-sample-status" class="rest-status" hidden></p>
+            <a id="backdrop-credit" class="rest-status backdrop-credit" href="https://science.nasa.gov/mission/dragonfly/multimedia/" target="_blank" rel="noopener noreferrer">NASA / Johns Hopkins APL - artist's concept</a>
+            <details id="component-temperatures" class="component-temperatures" hidden>
+              <summary>Component temperatures <span>Live / illustrative</span></summary>
+              <div id="thermal-legend" class="thermal-legend" hidden>
+                <span id="thermal-min">-180 C</span><i id="thermal-bar" aria-hidden="true"></i><span id="thermal-max">40 C</span>
+                <button id="thermal-range" type="button" title="Zoom the legend range; a given temperature keeps the same color.">Scale: whole lander</button>
+              </div>
+              <p class="rest-status">Blue = cold; green = 0-20 C equipment/battery reference band; yellow = warming; red = 35 C or above. Range changes only zoom the legend. Cold exterior parts and hot MMRTG gas have different operating targets: these colors are not fault indicators.</p>
+              <ol id="part-list" class="part-list" hidden></ol>
+              <div id="part-detail" class="part-detail" hidden>
+                <h3 id="part-title"></h3>
+                <p id="part-temperature"></p>
+                <p id="part-role"></p>
+                <p id="part-live"></p>
+                <p id="part-placement" class="rest-status"></p>
+                <nav id="part-sources" aria-label="Component sources"></nav>
+              </div>
+              <small id="layer-note" class="rest-status" hidden>Placement follows ICES-2023-389 (text and figs. 3-4) and the TFAWS 2023 top view. Temperatures: modeled = the simulator's heat balance; estimate = placed from NASA's published thermal-model figures; published = documented set point.</small>
+            </details>
+            <section id="airflow-panel" class="airflow-panel" aria-label="Warm-air loop" hidden>
+              <h4>Warm-air loop <small>(orange arrows warm, blue through the cold duct; slowed for viewing)</small></h4>
+              <dl>
+                <div><dt>How it moves</dt><dd id="air-moves">--</dd></div>
+                <div><dt>How it is regulated</dt><dd id="air-regulated">--</dd></div>
+                <div><dt>How it is measured</dt><dd id="air-measured">--</dd></div>
+              </dl>
+            </section>
+            <details id="vehicle-references" class="vehicle-references">
+              <summary>NASA / APL references <span>CAD, payload and print files</span></summary>
+              <div class="reference-body">
+                <div class="reference-tabs" role="tablist" aria-label="Official vehicle reference">
+                  <button id="reference-tab-payload" type="button" role="tab" aria-selected="true" aria-controls="reference-payload" data-reference="payload">Payload cutaway</button>
+                  <button id="reference-tab-cad" type="button" role="tab" aria-selected="false" aria-controls="reference-cad" tabindex="-1" data-reference="cad">CAD rotation</button>
+                </div>
+                <section id="reference-payload" role="tabpanel" aria-labelledby="reference-tab-payload">
+                  <div class="reference-media">
+                    <img id="reference-image" width="1649" height="1001" alt="APL Dragonfly payload cutaway: raised forward instrument bay, central electronics, aft generator, four coaxial rotor pairs and landing skids." />
+                    <p id="reference-image-status" class="reference-status" role="status">Loading APL payload cutaway...</p>
+                  </div>
+                  <p class="reference-caption">Payload layout visualization. The source does not state a revision date. Colors identify instruments, not temperatures.</p>
+                  <a href="./assets/vehicle-references/payload-cutaway.webp?v=dev" target="_blank" rel="noopener noreferrer">Open full-size cutaway &#8599;</a>
+                  <button id="reference-image-retry" class="reference-retry" type="button" hidden>Retry image</button>
+                </section>
+                <section id="reference-cad" role="tabpanel" aria-labelledby="reference-tab-cad" hidden>
+                  <div class="reference-media">
+                    <video id="reference-video" controls playsinline preload="none" aria-label="APL 2024 Dragonfly rotating CAD visualization"></video>
+                    <p id="reference-video-status" class="reference-status" role="status" hidden></p>
+                  </div>
+                  <p class="reference-caption">APL 2024 CAD visualization: internal equipment, structure and exterior. Approximately 84 seconds; reduced-resolution viewing copy.</p>
+                  <a href="https://dragonfly.jhuapl.edu/What-Is-Dragonfly/img/Dragonfly_2024_RotatingCADmodel_ver3-slower.mp4" target="_blank" rel="noopener noreferrer">Open original movie &#8599;</a>
+                  <button id="reference-video-retry" class="reference-retry" type="button" hidden>Retry video</button>
+                </section>
+                <p class="reference-credit">Credit: Johns Hopkins Applied Physics Laboratory. <a href="https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php" target="_blank" rel="noopener noreferrer">Spacecraft and Science Payload &#8599;</a></p>
+                <div class="print-reference">
+                  <h3>NASA printable model <span>August 2026</span></h3>
+                  <p>STL / 3MF parts and assembly guides. A physical display model; some details are adapted for printing.</p>
+                  <nav aria-label="NASA printable model sources">
+                    <a href="https://science.nasa.gov/3d-resources/dragonfly/" target="_blank" rel="noopener noreferrer">Model files &#8599;</a>
+                    <a href="https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/printable/dragonfly/Assembly_Guide.pdf" target="_blank" rel="noopener noreferrer">Assembly guide (PDF) &#8599;</a>
+                    <a href="https://assets.science.nasa.gov/content/dam/science/cds/3d/resources/printable/dragonfly/Print_Guide.pdf" target="_blank" rel="noopener noreferrer">Print guide (PDF) &#8599;</a>
+                  </nav>
+                  <p class="reference-credit">Credit: Gary Allen Backus / Backus Creative Imaging.</p>
+                </div>
+              </div>
+            </details>
+          </section>
+
+          <section class="telemetry-band" aria-label="Primary telemetry">
+            <div>
+              <span>Hover induced velocity</span>
+              <strong id="induced-value">4.36 m/s</strong>
+            </div>
+            <div>
+              <span>Ideal hover power</span>
+              <strong id="ideal-power-value">5.16 kW</strong>
+            </div>
+            <div>
+              <span>Modeled hover power</span>
+              <strong id="hover-power-value">5.60 kW</strong>
+            </div>
+            <div>
+              <span>Ideal Earth hover</span>
+              <strong id="earth-power-value">212 kW</strong>
+            </div>
+          </section>
+
+          <section class="panel chart-panel" aria-label="Flight profile chart">
+            <div class="panel-heading">
+              <span>Flight Profile</span>
+              <strong id="profile-note">Takeoff, hover, traverse, descent</strong>
+            </div>
+            <canvas id="chart-canvas" aria-label="Altitude, power, and speed over time"></canvas>
+          </section>
+
+          <details class="engineering-reference" id="engineering-reference">
+            <summary id="engineering-title">Engineering references <span>Published test context</span></summary>
+            <div class="engineering-columns">
+              <div>
+                <h2>APL TITAN Chamber</h2>
+                <dl>
+                  <div><dt>Test environment</dt><dd>Cryogenic nitrogen</dd></div>
+                  <div><dt>Temperature range</dt><dd>-180 to +150 C</dd></div>
+                  <div><dt>Pressure range</dt><dd>380-700 Torr</dd></div>
+                  <div><dt>Test article</dt><dd>Full-scale thermal mock-up</dd></div>
+                </dl>
+                <p>Earth-gravity thermal testing, not free flight. The chamber pressure range differs from Titan's 146 kPa surface pressure.</p>
+                <a href="https://tfaws.nasa.gov/wp-content/uploads/TFAWS2024-AT-02.pdf" target="_blank" rel="noreferrer">APL thermal test report, 2024 (PDF)</a>
+              </div>
+              <div>
+                <h2>Rotor &amp; Thermal Systems</h2>
+                <p>NASA Langley wind-tunnel campaigns test rotor loads and aerodynamics. Sikorsky supports aeromechanics and flight-hardware modeling.</p>
+                <a href="https://www.jhuapl.edu/news/news-releases/260123-engineers-lift-dragonfly" target="_blank" rel="noreferrer">APL rotor testing, January 2026</a>
+                <p>Lockheed Martin's mission roles include the cruise stage and aeroshell.</p>
+                <a href="https://www.lockheedmartin.com/en-us/capabilities/space/deep-space-exploration.html" target="_blank" rel="noreferrer">Lockheed Martin mission hardware</a>
+                <p>The real lander's thermal system circulates MMRTG waste heat through insulated equipment bays and rejects excess heat through a cold duct.</p>
+              </div>
+            </div>
+            <details id="part-references">
+              <summary>Vehicle part references <span>Papers, photos and patents behind the redrawn parts</span></summary>
+              <ul>
+                <li><strong>EFIELD / METHAN:</strong> <a href="https://zenodo.org/records/17056361" target="_blank" rel="noreferrer">IPM 2025: Lorenz et al., DraGMet design, printed pp. 184-185; Seese et al., EFIELD, pp. 186-187</a>: real EFIELD engineering-model photos and published probe sizes; METHAN's filtered exterior mirror cell and fiber-fed warm light engine. <a href="https://www.nationalacademies.org/cdn/materials/9fba0b12-d11a-482c-a46a-0b8de31e5dbd" target="_blank" rel="noreferrer">CAPS 2024 slide 42</a> is a design diagram, not a hardware photo. METHAN's detailed casing and installation are an approved illustrative estimate. <a href="https://www.jhuapl.edu/destinations/instruments/dragmet" target="_blank" rel="noreferrer">APL DraGMet overview</a>.</li>
+                <li><strong>Cameras:</strong> <a href="https://arxiv.org/abs/2601.13221" target="_blank" rel="noreferrer">DragonCam Microscopic Camera paper (Malin Space Science Systems, 2026)</a>: the nine cameras and where they sit, Microscopic Camera size and its 986 mm, 52-degree view of the drill site.</li>
+                <li><strong>Sampling system:</strong> <a href="https://www.hou.usra.edu/meetings/lpsc2022/pdf/1069.pdf" target="_blank" rel="noreferrer">DrACO, LPSC 2022 (Honeybee Robotics, APL, NASA Goddard)</a>: drills, the cross-strapped pneumatic transfer (hoses, tubes, flow diverters, two blowers) and cups; <a href="https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content" target="_blank" rel="noreferrer">ICES-2023</a> for the blower behind the port forward arm; <a href="https://www.tighecosta.com/draco" target="_blank" rel="noreferrer">DrACO test-hardware photos (Tighe Costa, Honeybee)</a>; <a href="https://science.nasa.gov/3d-resources/dragonfly/" target="_blank" rel="noreferrer">NASA printable model</a> for the drill's place on the body.</li>
+                <li><strong>Carousel, Wonderwall, DraMS:</strong> <a href="https://ntrs.nasa.gov/api/citations/20230017316/downloads/AIAA_SCITECH2024_final_proof.pdf" target="_blank" rel="noreferrer">DraMS / carousel thermal interface, AIAA SciTech 2024 (NASA Goddard)</a> and <a href="https://svs.gsfc.nasa.gov/15003" target="_blank" rel="noreferrer">NASA integration photos (NASA/Mike Guinto)</a>.</li>
+                <li><strong>Electronics:</strong> <a href="https://www.jhuapl.edu/news/news-releases/260312-dragonfly-integration-begins" target="_blank" rel="noreferrer">NASA/APL integration photos, March 2026</a> (IEM and power switching units); connector sizes from the MIL-DTL-83513 Micro-D and MIL-DTL-24308 D-sub standards.</li>
+                <li><strong>Radio:</strong> <a href="https://science.nasa.gov/image-detail/amf-48b4901b-44b0-4c89-802b-0c615842aa09/" target="_blank" rel="noreferrer">APL Frontier radio photo</a>, <a href="https://icubesat.org/wp-content/uploads/2019/05/b.2.3.201905241642-paper.pdf" target="_blank" rel="noreferrer">Frontier Radio Virtual Radio, iCubeSat 2019 (APL)</a> and <a href="https://patents.google.com/patent/US8417859B2/en" target="_blank" rel="noreferrer">US patent 8,417,859, modular software-defined radios (Johns Hopkins)</a>. The 100 W amplifier (TWTA) is not pictured, so it is drawn like published flight TWTAs: <a href="https://ntrs.nasa.gov/api/citations/20100012836/downloads/20100012836.pdf" target="_blank" rel="noreferrer">LRO's TWTA photo and sizes (NASA Glenn, L-3)</a>, <a href="https://descanso.jpl.nasa.gov/DPSummary/MRO_092106.pdf" target="_blank" rel="noreferrer">MRO telecommunications (JPL DESCANSO)</a> and <a href="https://stellantsystems.com/wp-content/uploads/2024/03/Stellant_TWTsSPACE_MARCH2024.pdf" target="_blank" rel="noreferrer">Stellant space TWTs</a>; its mounting under the top deck follows <a href="https://ttu-ir.tdl.org/server/api/core/bitstreams/40dace65-c244-4971-9245-67ae466f1e15/content" target="_blank" rel="noreferrer">ICES-2020 (APL)</a> and ICES-2023.</li>
+                <li><strong>Antenna gimbal:</strong> <a href="https://www.jhuapl.edu/news/news-releases/260709-dragonfly-clears-key-tests-as-assembly-comes-together" target="_blank" rel="noreferrer">APL photo of the high-gain antenna's motorized arm, July 2026 (NASA/Johns Hopkins APL/Ed Whitman)</a>, <a href="https://science.nasa.gov/blogs/dragonfly/2026/06/01/nasas-dragonfly-flight-system-faces-heat/" target="_blank" rel="noreferrer">NASA test-chamber photo of the antenna, June 2026</a>; ICES-2023 figs. 1 and 3 (actuators under foam forward of the dish, launch and flight locks) and ICES-2020 (internal portion under the deck, 5 cm foam dome).</li>
+                <li><strong>Rotor heads:</strong> <a href="https://dragonfly.jhuapl.edu/Gallery/" target="_blank" rel="noreferrer">APL/NASA's "Revolutionary Rotors" video, January 2026</a> (full-scale wind-tunnel model with flight-like rotors at NASA Langley), <a href="https://www.nasa.gov/missions/dragonfly/flight-engineers-give-nasas-dragonfly-lift/" target="_blank" rel="noreferrer">NASA's tunnel-test photos</a> and <a href="https://science.nasa.gov/blogs/dragonfly/2026/07/09/nasas-dragonfly-clears-key-tests-as-titan-rotorcraft-takes-shape/" target="_blank" rel="noreferrer">the flight lander frame in vibration testing (NASA/APL, 2026)</a>: the motor stacks and hub plates, and the machined shoulder fittings where the arms meet the body (a ribbed six-sided collar ending in a bolted flange; sizes estimated).</li>
+                <li><strong>Battery:</strong> <a href="https://ttu-ir.tdl.org/items/a6b6bdc1-a09e-43a2-bc62-dbbea2e80660" target="_blank" rel="noreferrer">battery thermal module, ICES-2022 (APL)</a> (24 cells; real photos of the 9-cell test module), <a href="https://gsyuasa-lp.com/SpecSheets/GS_Yuasa_LSE_GEN_III_Power.pdf" target="_blank" rel="noreferrer">GS Yuasa LSE space cell datasheet</a> and <a href="https://aerospaceamerica.aiaa.org/features/designing-dragonfly-nasas-titan-explorer/" target="_blank" rel="noreferrer">Aerospace America, 2022</a> (11.5 kWh, GS Yuasa cells).</li>
+                <li><strong>Layout and thermal design:</strong> <a href="https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content" target="_blank" rel="noreferrer">Lander thermal model, ICES-2023-389 (APL)</a>, <a href="https://tfaws.nasa.gov/wp-content/uploads/TFAWS23-AT-14-Presentation.pdf" target="_blank" rel="noreferrer">thermal controller design, TFAWS 2023 (APL)</a> and <a href="https://tfaws.nasa.gov/wp-content/uploads/TFAWS2024-AT-02.pdf" target="_blank" rel="noreferrer">full-scale test module, TFAWS 2024 (APL)</a>; the fans, warm duct and belly cold duct with its fore and aft diverter flaps follow the two TFAWS talks.</li>
+                <li><strong>Structure:</strong> <a href="https://science.nasa.gov/image-detail/amf-0277f3d1-9d0f-4b9a-887f-ee3678d1b66d/" target="_blank" rel="noreferrer">NASA/APL top-deck fit check, April 2026</a> and <a href="https://www.jhuapl.edu/news/news-releases/260709-dragonfly-clears-key-tests-as-assembly-comes-together" target="_blank" rel="noreferrer">July 2026 structure tests, including the inverted vibration fixture</a>. Real photos inform the aft panel's appearance; APL's 2024 CAD is an orientation/layout cross-reference. Exact tilt and dimensions are estimates.</li>
+              </ul>
+              <p>Saved pages, photos and credits for every part: <a href="https://github.com/Tboy450/dragonfly-titan-gcs-demo/blob/main/research/PART-SOURCES.md" target="_blank" rel="noreferrer">part sources</a> &middot; <a href="https://github.com/Tboy450/dragonfly-titan-gcs-demo/blob/main/INTERIOR-REALISM-TODO.md" target="_blank" rel="noreferrer">interior rebuild checklist</a>.</p>
+            </details>
+            <details id="part-assumptions">
+              <summary>Vehicle part assumptions <span>What is published and what is estimated, part by part</span></summary>
+              <p>24 of the 24 interior parts are redrawn from their own sources (9 by Codex, 15 by Claude). Each part's Component text in the Vehicle Layers panel says the same in more detail, with links. This counts initial asset passes, not verified flight replicas; METHAN, Ocellus, the nose bulkhead, rotor drive electronics and both temperature sensors include labeled design or hardware-family approximations. Connections, construction layers and flight-specific verification remain separate work.</p>
+              <ul>
+                <li data-assumption="drills"><strong>01 DrACO drills</strong> (Claude). Published: two redundant rotary-percussive drills, one beside each side of the body; a head with percussion and rotation actuators riding a Z-stage rail; a hollow bit reaching 6 cm deep (DrACO, LPSC 2022). Estimated: part sizes, proportioned from the paper's CAD figure (about 0.7 m tall), colors, and the fore-aft position (0.43 m forward of center, inside the sources' 0.34-0.45 m).</li>
+                <li data-assumption="sample-lines"><strong>02 Sample-transfer lines</strong> (Claude). Published: the cross-strapped layout: either drill can feed either cup through flow diverters, and a return line runs to two blowers (DrACO fig. 1). Estimated: tube size (about 13 mm), routes and hose lengths.</li>
+                <li data-assumption="nose-bulkhead"><strong>03 Nose bulkhead</strong> (Codex). Published: real 2026 photos of the flight structure show silver panels with perimeter joints and fasteners, machined edge members with rectangular pockets and gold tape tabs; ICES-2023 locates the nose partition (layout only). Estimated: this bulkhead itself, an owner-approved design approximation (October 21), not a photograph of it: Codex's panel (0.70 x 0.40 m envelope, 20 mm depth, 3 mm face, flanges, corners, mounts) and the bay-side edge frame with pockets, bolted stiffener, crosswise rib, edge fasteners and tape tabs that Claude added in the flight structure's style. Apertures, core and layup are not reconstructed; hiding Covers removes a representation, not a verified flight hatch.</li>
+                <li data-assumption="nose-cameras-inside"><strong>04 Nose cameras</strong> (Claude). Published: the camera types (Forward MAC with a 12.6 mm lens, Forward WAC and two Side Cameras with 5.8 mm lenses, two NavCams), one shared camera body, and positions from the 2026 DragonCam paper's CAD figures. Estimated: pointing angles, which low unit is the WAC or a NavCam, and which camera carries the black hood.</li>
+                <li data-assumption="nose-electronics"><strong>05 Navigation electronics</strong> (Codex). Published: NASA's 2023 Ocellus MEB/FEB design envelopes and layout, related Kodiak/SQRLi development, Honeywell MIMU family imagery and supplier upper envelope (233.7 mm diameter x 169.9 mm height). Estimated: Ocellus outer-structure approximation with machined MEB frame, stiffeners and lid; FEB base, returns, receiver barrel and angled collimator housing; all finishes, wall thicknesses, proportions, fasteners, mounts, shelf and installation. Not photo-matched Ocellus flight hardware; exact MIMU variant unconfirmed. Both MIMU models and all installed coordinates are unchanged. Casings, covers, mounts and IMU interfaces hide independently. No hidden boards, detailed optical train, mirrors, connector pins or harness invented; revealed space is unmodeled. Family reuse and evaluation-board photos do not verify a flight board stack. Initial asset pass complete as an owner-approved approximation, not flight verification.</li>
+                <li data-assumption="sample-carousel"><strong>06 Sample carousel</strong> (Codex). Published: the casing, cooling fins and drives below, as photographed in NASA's integration photos; its place in the cold attic (SciTech 2024). Estimated: the 0.36 m drum diameter, fittings and exact placement; the indexing ring is a diagram cue, not flight hardware. Top hardware added October 21 by Claude from NASA's integration photo: a foil-wrapped unit, a valve block with bolted flanges and a white wire loop (what they are is not stated; positions estimated).</li>
+                <li data-assumption="wonderwall"><strong>07 Wonderwall</strong> (Codex). Published: a barrier between the cold carousel and warm DraMS, with the instruments about 5 cm apart (ICES-2023). Estimated: the contour, thickness, layers and openings (the 5 cm is a separation, not the wall thickness). Photo detail added October 20 by Claude from NASA's integration photos: khaki facesheets, a machined pocketed frame around the port on the carousel side, the port's spoked fitting, orange Kapton covers and clip tabs along the edges; positions and sizes estimated. The photos place the port lower on the panel than drawn.</li>
+                <li data-assumption="drams"><strong>08 DraMS</strong> (Codex). Published: laser desorption and gas chromatography / mass spectrometry modes; its place in the warm attic (SciTech 2024). Estimated: enclosure sizes, covers, routes and fan; electrodes, GC columns, laser optics and the oven are not drawn. Visible hardware added October 20 by Claude from NASA's integration photo: an insulation blanket over the analyzer, valve bodies with lines into the gas chromatograph, a brass cylinder and a wire bundle (positions and identities estimated); the photo's test cables and connector table are not drawn.</li>
+                <li data-assumption="rde"><strong>09 Rotor drive electronics</strong> (Codex). Published: two rotor-drive boxes with internal fans, just aft of the attic (ICES-2023); APL builds the drive electronics (APL G-RADNEXT 2026 abstract); APL's CAPS 2024 thermal-test photo is too obscured for casing detail. Estimated: everything drawn, as an owner-approved design approximation (October 21): Codex's two cases, lids, mounts, vents, fans and connector blanks, and, in the style of APL's photographed avionics on this vehicle, the black finned heat-sink tops, slice seams and mated plugs with backshells and short cables that Claude added. No circuit boards or flight pinout.</li>
+                <li data-assumption="hga-actuators"><strong>10 Antenna gimbal</strong> (Claude). Published: a motorized arm that raises the 87.4 cm dish when landed and lowers it into a locking mechanism before flight (APL); azimuth and elevation actuators under tan foam forward of the stowed dish, a launch lock under the dish with a flight lock either side (ICES-2023); the gimbal's internal portion under the deck, a 5 cm foam dome above it and a thermally isolated joint to the dish (ICES-2020); the look of the gold actuator drum, arm and truss pedestal from APL's photo. Estimated: sizes, the 0.6 m arm and hinge position (measured on ICES-2023 fig. 1 against the dish), lock shapes and colors, and the azimuth limit that keeps the dish out of the attic (so with Earth behind the lander the dish cannot point straight at it).</li>
+                <li data-assumption="power-units"><strong>11 Power switching units</strong> (Claude). Published: two units; the face of PSU 1, mapped connector by connector from NASA/APL's testing photo, beside the IEM as photographed. Estimated: size (about 20 x 24 x 19 cm, scaled from standard D-sub connectors); where PSU 2 sits, and its face (drawn like PSU 1).</li>
+                <li data-assumption="iem"><strong>12 Integrated electronics module</strong> (Claude). Published: its look in NASA/APL's integration photos: heat-sink top, bolted connector face, Micro-D connectors, copper ground strap, mounted on a wall panel beside a PSU. Estimated: size (about 28 x 28 x 22 cm, scaled from standard Micro-D connectors), the hidden window layout, depth and which wall.</li>
+                <li data-assumption="frontier-radio"><strong>13 Frontier radio</strong> (Claude). Published: APL's photo of a four-slice stack with labeled connectors; 4 x 6 inch slices; 2.1 kg. Estimated: stack width, slice split and connector details read from the photo; its place on the starboard bay floor; whether a second unit flies.</li>
+                <li data-assumption="twta"><strong>14 Radio amplifier (TWTA)</strong> (Claude). Published: one 100 W X-band amplifier on the underside of the top deck, warm in flight (NASA; ICES-2020 and 2023). Estimated: its look and sizes, since Dragonfly's unit is not pictured: drawn like LRO's, MRO's and Stellant's flight amplifiers (a 33 cm tube and a 21 cm power conditioner); its place above the radio; the waveguide route forward to the antenna gimbal, the coax and the harness.</li>
+                <li data-assumption="battery"><strong>15 Battery</strong> (Claude). Published: an 11.5 kWh pack of 24 GS Yuasa cells, 134 Ah, built by APL; fans, heat pipes in three directions, fins between the cell stacks and 7.5 kg of phase-change wax (Aerospace America 2022; APL; ICES-2020, 2022, 2023); real photos of APL's 9-cell thermal test module (ICES-2022). Estimated: the cell model (GS Yuasa's 134 Ah LSE134, inferred), the 4 x 6 layout, the enclosure (its look taken from the test module, which is not flight hardware), fan and connector positions, the place just forward of the aft arms (TFAWS 2023 plan view); the wax is not drawn because where it sits is not published.</li>
+                <li data-assumption="aft-bulkhead"><strong>16 Aft bulkhead</strong> (Claude). Published: NASA/APL structure photos show the gold-colored aft face, pocketed rim and ribbed circular generator interface; the July article explicitly identifies the vibration fixture as inverted. Estimated: 25-degree aft/up generator tilt, panel dimensions, thickness, coating, pocket/fastener layout, foam profile, antenna and fan placement. APL's 2024 CAD cross-checks orientation only. The photographed cylinder is test hardware; the collar fits the modeled panel but its actual air passage and final flight configuration are not reconstructed. Codex completed verification and release documentation.</li>
+                <li data-assumption="fan"><strong>17 Circulation fans</strong> (Claude). Published: two fans (A and B) at the MMRTG end, 0.052 kg/s by design within a 15 W allocation; a flight-like fan tested at 5,000-6,200 rpm (TFAWS 2023 and 2024, ICES-2023). Estimated: fan size, scaled from the 2023 plan view, housings, revised fore-aft placement and the collar at the canted aft panel.</li>
+                <li data-assumption="underfloor-duct"><strong>18 Warm duct</strong> (Claude). Published: a duct on the centerline under the floor from the fans to the nose, turning up into the body below the nose; about 14 cm wide, measured on the 2023 plan view (TFAWS 2023). Estimated: its height and flanges.</li>
+                <li data-assumption="trim-chimneys"><strong>19 Trim device</strong> (Claude). Published: a cold bypass duct under the belly, outside the foam, between fore and aft diverter flaps that send 0-40% of the warm flow through it; a full-scale test reached 245.7 W at a 23.7-degree flap angle (TFAWS 2023 and 2024). Estimated: the duct section, housings and actuators; ICES-2023's earlier side-chimney concept is archived.</li>
+                <li data-assumption="nose-sensors"><strong>22 EFIELD / METHAN</strong> (Codex). Published: two fixed EFIELD probes with 30 cm carbon-fiber stalks and 5 cm gold-plated aluminum balls, front upper starboard / rear lower port locations, co-mounted atmospheric TEMP/MICRO; METHAN's cold dust-filtered mirrored cell connected by optical fibers to a warm DPU light engine, using 1.67 micrometer and continuum sources (IPM 2025). Estimated: EFIELD preamp size, exact mounting/pointing and interfaces; all METHAN casing dimensions, material/finish, two filter cassettes, supports, cover and fiber-entry geometry. METHAN is an approved design approximation, not photo-matched hardware. Hidden optics and warm DPU internals are not drawn.</li>
+                <li data-assumption="side-cameras"><strong>23 Lower DragonCam cameras</strong> (Claude). Published: the Microscopic Camera (105 x 155 x 90 mm, 1.04 kg) viewing the drill site from 986 mm at 52 degrees; APL's LED array with 365 nm UV; a Down Camera on each side; 3 mm windows in foam cavities (DragonCam paper). Estimated: the Down Cameras' exact positions, brackets and harness; the extra foam the Microscopic Camera needs is not drawn.</li>
+                <li data-assumption="drill-blower"><strong>24 DrACO blowers</strong> (Claude). Published: two redundant centrifugal blowers behind the port forward arm, exposed to Titan, fed through an inlet flow diverter (DrACO; ICES-2023). Estimated: their sizes and shapes.</li>
+                <li data-assumption="battery-sensor"><strong>20 Battery temperature sensor</strong> (Codex). Published: battery temperature is a controller input; TE's unrelated 44909 family has a real hardware photo, a 2.4 mm maximum body diameter and two 32 AWG, 3-inch leads, with black/gray color coding. Estimated: this hardware-family example is not identified Dragonfly flight hardware. Body depth/profile, bond pads, battery-side location and local lead bends are illustrative; the unconnected ends indicate unmodeled routing. One example does not establish flight sensor count. Actual sensing locations, flight package, wiring and controller electronics are unknown. The family rating is -55 to +90 C, not Titan ambient or MMRTG fin-root service; Thermal uses the existing bulk battery temperature, not per-cell readings.</li>
+                <li data-assumption="mmrtg-sensor"><strong>21 MMRTG fin-root sensor</strong> (Codex). Published: NASA/APL identifies fin-root feedback and NASA rates the fin root at 157 C. Omega's F2020 Class B reference element measures 2 x 2 x 0.8 mm, with two 10 mm-long, 0.2 mm-diameter leads and a catalog range of -70 to +500 C. Estimated: this temperature-appropriate hardware-family example is not identified Dragonfly flight hardware. Ceramic/glass proportions, bonding material, location beside the top fin and local lead bends are illustrative; flight count, sensing point, qualification and routing remain unknown. Its lead ends indicate unmodeled continuation. Thermal shows the existing modeled MMRTG gas temperature, not a fin-root measurement or a second controller.</li>
+                <li data-assumption="placeholders"><strong>Initial part passes complete</strong>: flight-specific verification, the generator body, installation connections, supporting structure and construction layers remain open. Completion of the numbered list does not mean a complete flight model.</li>
+              </ul>
+            </details>
+            <details id="model-assumptions">
+              <summary>Model assumptions</summary>
+              <h3>Sourced design, approximate geometry</h3>
+              <p>Published reference values include the 875 kg mass, 1.35 m rotor diameter and four coaxial rotor stations. Storage uses the reported 11.5 kWh design; the 15% reserve is a demo choice. The three-blade configuration follows the 2026 engineer interview. Sources span design revisions, not a certified final flight configuration.</p>
+              <p>The NASA / APL model uses procedural geometry built from public thermal figures, CAD and assembly references. It is not imported flight CAD. The sample carousel, Wonderwall, DraMS, navigation electronics, EFIELD / METHAN assemblies, nose bulkhead, rotor drive electronics and both temperature-sensor examples were redrawn by Codex; the radio, integrated electronics module, power units, cameras, drills, transfer lines and blowers, fans, warm duct, trim device, amplifier, antenna gimbal, battery and aft bulkhead by Claude (24 of 24 redrawn so far). These are initial asset passes; connections, the generator body, supporting structure and construction layers remain open.</p>
+              <p>Component dimensions, placements and routes include estimates. DrACO's proportions use a CAD figure; the Microscopic Camera uses its published 986 mm range and 52-degree drill-site view. The carousel shows an enclosed drum rather than the earlier drawn cups. The amplifier follows related flight-unit photos; the aft panel follows real structure photos with an estimated 25-degree generator tilt. METHAN, Ocellus, nose bulkhead and drive electronics include design approximations. The IMUs and temperature sensors use related hardware families: a TE thermistor for the battery and an Omega platinum RTD for fin-root feedback. Their adoption on Dragonfly is unconfirmed. The sparse floor/wall harness follows NASA/APL's wiring photograph with estimated routes. Part details and Vehicle part assumptions record evidence, limits and credits. The original demo model and interior remain labeled mock-ups.</p>
+              <p>Rotor-drive electronics (Codex's enclosures; owner-approved design approximation October 21, detail by Claude): two boxes with internal fans are documented in ICES-2023, but the housing details, fan count, vents, connectors, heat-sink tops and placement shown here are estimates in the style of APL's photographed avionics. No hidden circuit boards are reconstructed. The real RDE thermal-test photograph in <a href="https://www.nationalacademies.org/cdn/materials/9fba0b12-d11a-482c-a46a-0b8de31e5dbd" target="_blank" rel="noreferrer">APL's CAPS 2024 presentation, slide 27</a> is too obscured to establish flight casing detail. Real hardware photographs take priority over CGI for future appearance updates.</p>
+              <p>Inspection layers expose the geometry currently modeled. Body and attic shells still combine their outer shape and insulation; the foam control removes separately modeled insulation around equipment and interfaces. Compartment panels include the bulkheads and Wonderwall faces. Removing a casing reveals only modeled geometry, not a reconstruction of undisclosed electronics. A complete skin, deck and insulation construction stack remains a research task.</p>
+              <p>DraGMet external instruments (Codex): EFIELD follows real engineering-model photos and published probe dimensions. METHAN's gas-cell casing is an approved design approximation from the published arrangement, with estimated filtered covers, brackets and fiber entry. Its warm sources/detectors belong inside the vehicle and are not reconstructed outside. No undisclosed mirrors, flight optical path, internal electronics or final flight configuration is claimed. Finishing the initial asset pass does not close the hardware-photo and exact-dimension follow-ups.</p>
+              <h3>Illustrative environment</h3>
+              <p>Dunes and interdunes are inspired by the published Ahmakiq Undae landing-area description. Exact terrain, sparse sharp mountain landmarks, rocks, candidate sites and the outcrop are invented training geography, not a surveyed landing map. The small methane puddle is an invented training hazard, not a claim that a lake lies at the landing site; rain-darkened ground is also illustrative.</p>
+              <p>Sky color, haze, lighting, ground texture and rotor-wash particles are visual approximations. Weather events are seeded and compressed for training, not a Titan forecast or a full atmospheric model. The clean room is a parked illustrative display; the Saturn poster is a photographic composite, not to scale or a view from the lander.</p>
+              <h3>Simplified engineering</h3>
+              <p>Throttle commands a climb rate rather than motor torque. Attitude, rotor mixing, drag, loss factors, guidance, collision protection and touchdown flare are simplified, not a flight-qualified six-degree-of-freedom model. Thermal readouts mix documented reference values with estimated heat balances and shared zone temperatures; they are not hardware sensor measurements. The liquid-to-liquid exchanger study is a hypothetical exercise, not confirmed Titan-surface equipment.</p>
+              <h3>Deliberate simulation additions</h3>
+              <ul>
+                <li>Reverse (sim) is fictional and off by default. At zero manual throttle above 1 m, it adds up to 0.2 m/s2 downward acceleration until reaching 0.6 m/s descent, with an estimated 50 W extra load and reversed rotor animation. It is disabled over liquid and in automated flight. These are gameplay settings, not Dragonfly capabilities.</li>
+                <li>The 30-second, 160 W sampling demo and longer LDMS/GCMS training profiles use estimated stage durations, loads, heat coupling and data volumes, not flight procedures. Drill/transfer/carousel motion, flow markers and example chemical results are illustrative. No real drill-force, cup capacity, spectra, retention times or detailed oven temperatures are simulated.</li>
+                <li>Transparent cutaways, thermal colors, isolated parts and the sampling-follow camera are inspection aids, not onboard camera imagery. Pausing freezes the simulation, not just the display.</li>
+                <li>Accelerated rest, time warp, shortened objectives and liquid no-landing protection are training conveniences. Communications and energy costs are modeled estimates, not a prediction of mission performance.</li>
+              </ul>
+              <p><a href="https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/" target="_blank" rel="noreferrer">NASA spacecraft and instruments</a> &middot; <a href="https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php" target="_blank" rel="noreferrer">APL model references</a> &middot; <a href="https://github.com/Tboy450/dragonfly-titan-gcs-demo/blob/main/RESEARCH-COMPENDIUM.md" target="_blank" rel="noreferrer">Project research and assumptions</a></p>
+            </details>
+          </details>
+        </section>
+
+        <aside class="panel stack right-rail" aria-label="Detailed telemetry">
+          <div class="panel-heading">
+            <span>Rotor Deck</span>
+            <strong id="rotor-summary">8 nominal</strong>
+          </div>
+          <div id="rotor-grid" class="rotor-grid"></div>
+
+          <div class="panel-heading" id="science-section" tabindex="-1">
+            <span>Science Payload</span>
+            <strong>Instrument State</strong>
+          </div>
+          <div class="system-list">
+            <div><span>DraMS mass spectrometer</span><strong id="drams-state">Standby</strong></div>
+            <div><span>DraGNS gamma/neutron</span><strong id="dragns-state">Survey</strong></div>
+            <div><span>DragonCam suite</span><strong id="camera-state">Nav imaging</strong></div>
+            <div><span>DrACO drill transfer</span><strong id="draco-state">Stowed</strong></div>
+            <div><span>DraGMet weather/seismic</span><strong id="dragmet-state">Logging</strong></div>
+          </div>
+          <label class="science-program-label" for="science-program">Analysis profile
+            <select id="science-program"><option value="demo">Quick demo / 30 s</option><option value="ldms">LDMS training / 10 min (est.)</option><option value="gcms">GCMS training / 30 min (est.)</option></select>
+          </label>
+          <div class="rest-controls"><button id="sample-here" type="button">Sample here (DrACO + DraMS)</button><button id="inspect-sample" type="button">Inspect sample</button><button id="sample-cancel" type="button" hidden>Cancel sample</button></div>
+          <output id="science-readiness" class="rest-status" role="status">Ready</output>
+          <div class="sampling-sequence" aria-label="Sample acquisition sequence">
+            <div class="sampling-heading"><strong id="sampling-stage" role="status">Sampling idle</strong><span id="sampling-clock">0 / 30 s</span></div>
+            <progress id="sampling-meter" max="30" value="0" aria-label="Sample acquisition progress"></progress>
+            <ol id="sampling-stages">
+              <li data-stage="drill">Drill</li><li data-stage="transfer">Transfer</li><li data-stage="carousel">Position cup</li><li data-stage="analysis">Analyze</li>
+            </ol>
+            <small>Training profile / illustrative motion and results</small>
+            <div id="science-warp" class="warp-switch" role="group" aria-label="Science simulation speed" hidden>
+              <button type="button" data-warp="1" aria-pressed="true">1x</button><button type="button" data-warp="20" aria-pressed="false">20x</button><button type="button" data-warp="100" aria-pressed="false">100x</button>
+            </div>
+          </div>
+          <details class="science-details" id="science-methods">
+            <summary>Methods, budgets &amp; sources</summary>
+            <p id="science-budget"></p>
+            <p>LDMS uses laser pulses to examine material in a sample cup. GCMS uses heated preparation and gas separation before mass analysis; pyrolysis and derivatization are distinct possible treatments. These profiles do not simulate molecular chemistry.</p>
+            <p>The 10/30-minute timelines, stage wattages, 40 Mbit result size and 80% heat coupling to the shared equipment bay are estimates, not published flight schedules. Cooldown is a timed training stage, not a measured oven temperature. Preparation, cooling, battery use and downlink all use the same clock. Low energy, unsafe temperatures or movement interrupt the job; recharge or restore thermal margins before restarting.</p>
+            <p>Each run collects a new sample. There is no modeled cup inventory or automatic LDMS-to-GCMS handoff. Example compositions are not detections or evidence of life.</p>
+            <p><a href="https://ntrs.nasa.gov/api/citations/20210011122/downloads/Trainer_DraMS_Update_LPSC21_1532.pdf" target="_blank" rel="noopener noreferrer">NASA DraMS modes (2021)</a> &middot; <a href="https://ntrs.nasa.gov/api/citations/20240005590/downloads/ICES-2024-103-Final.pdf" target="_blank" rel="noopener noreferrer">DraMS thermal study (2024)</a> &middot; <a href="https://svs.gsfc.nasa.gov/vis/a010000/a013500/a013562/13562_DragonflyScience_Transcript.html" target="_blank" rel="noopener noreferrer">NASA sample workflow</a></p>
+          </details>
+          <details class="science-details" id="science-records">
+            <summary>Sample records <span id="science-record-count">0</span></summary>
+            <label class="science-program-label" for="science-record">Sample<select id="science-record" disabled><option>No records</option></select></label>
+            <output id="science-record-meta" class="rest-status"></output>
+            <output id="science-record-transmission" class="rest-status"></output>
+            <output id="science-result" class="rest-status">No samples analyzed yet.</output>
+            <output id="science-interpretation" class="rest-status"></output>
+            <ol id="science-log" class="science-log" aria-label="Science log"></ol>
+          </details>
+
+          <details class="science-details" id="operations-panel">
+            <summary id="operations-title">Surface operations queue <span id="operations-count">0 / 0</span></summary>
+            <div class="operations-entry">
+              <label class="science-program-label" for="operation-kind">Operation
+                <select id="operation-kind"><option value="demo">Quick sample / 30 s</option><option value="ldms">LDMS sample / 10 min (est.)</option><option value="gcms">GCMS sample / 30 min (est.)</option><option value="downlink">Downlink stored data</option><option value="recharge">Recharge</option></select>
+              </label>
+              <label class="science-program-label" id="operation-target-label" for="operation-target" hidden>Battery target
+                <select id="operation-target"><option value="50">50%</option><option value="80" selected>80%</option><option value="95">95%</option><option value="100">100%</option></select>
+              </label>
+              <button id="operation-add" type="button">Add operation</button>
+            </div>
+            <ol id="operations-list" aria-label="Queued operations"></ol>
+            <div class="operations-controls">
+              <button id="operations-run" type="button"><img src="./vendor/lucide/play.svg?v=dev" alt="">Run queue</button>
+              <button id="operations-pause" type="button"><img src="./vendor/lucide/pause.svg?v=dev" alt="">Stop queue</button>
+              <button id="operations-clear" type="button">Clear queue</button>
+            </div>
+            <div id="operations-warp" class="warp-switch" role="group" aria-label="Operations simulation speed" hidden>
+              <button type="button" data-warp="1" aria-pressed="true">1x</button><button type="button" data-warp="20" aria-pressed="false">20x</button><button type="button" data-warp="100" aria-pressed="false">100x</button>
+            </div>
+            <details class="science-details">
+              <summary>Queue behavior &amp; assumptions</summary>
+              <p>Local training automation, not flight software or an uploaded mission schedule. Up to 12 operations run at this landing site. Each sample entry collects a fresh sample and includes analysis; there is no cup inventory or automatic reuse for a different method.</p>
+              <p>Downlink sends the data present when that step begins. Recharge hibernates using the shared generator, battery and thermal model. Its duration depends on net power, not an instant refill. Time acceleration also advances weather and temperatures.</p>
+              <p>Manual flight, competing commands and unsafe conditions stop the queue for review. Weather warnings return to 1x; during recharge or a strong storm warning they stop the queue. Resume is explicit. Stop queue cancels unfinished sampling; spent energy is not refunded. Global Pause instead freezes the current operation. Reloads keep the plan and completed steps but stop execution. Clear the queue to use a different landing site.</p>
+            </details>
+          </details>
+          <output id="operations-status" class="rest-status" role="status">No operations queued</output>
+
+          <div class="panel-heading">
+            <span>Comms</span>
+            <strong>Direct to Earth</strong>
+          </div>
+          <div class="data-grid compact">
+            <div><span>Band</span><strong>X-band</strong></div>
+            <div><span>Amplifier</span><strong>100 W TWTA</strong></div>
+            <div><span>Link</span><strong id="link-value">Earth in view / ready</strong></div>
+            <div><span>One-way light</span><strong>73-90 min</strong></div>
+            <div><span>Downlink load</span><strong id="downlink-power">0 W</strong></div>
+            <div><span>Data returned</span><strong id="data-returned">0.0 Mbit</strong></div>
+            <div><span>Data stored on board</span><strong id="data-stored">20.0 Mbit</strong></div>
+            <div><span>Time to send / est.</span><strong id="data-eta">--</strong></div>
+          </div>
+          <div class="rest-controls"><button id="downlink-toggle" type="button">Start downlink</button>
+            <div id="downlink-warp" class="warp-switch" role="group" aria-label="Downlink speed" hidden>
+              <button type="button" data-warp="1" aria-pressed="true">1x</button>
+              <button type="button" data-warp="20" aria-pressed="false">20x</button>
+              <button type="button" data-warp="100" aria-pressed="false">100x</button>
+            </div>
+          </div>
+          <small class="rest-status">Direct to Earth only while landed in daylight; the antenna is stowed in flight. Data rate uses the 2018 concept's ~5 mJ/bit/AU at an assumed 9.5 AU.</small>
+
+          <div class="panel-heading">
+            <span>Traverse</span>
+            <strong>Local Flight Track</strong>
+          </div>
+          <div class="route-map" aria-label="Recent local flight track, north up">
+            <svg viewBox="0 0 320 180" role="img" aria-label="Recent flight track and current heading">
+              <path d="M160 18v144M18 90h284" stroke="#273f55" />
+              <ellipse id="track-damp" cx="-99" cy="-99" rx="1" ry="1" fill="rgba(90, 110, 130, 0.22)" stroke="rgba(150, 175, 200, 0.35)" stroke-dasharray="3 3" />
+              <ellipse id="track-puddle" cx="-99" cy="-99" rx="1" ry="1" fill="rgba(40, 60, 70, 0.8)" />
+              <polyline id="flight-track" points="160,90" fill="none" stroke="#7ce7ff" stroke-width="2" />
+              <circle id="track-target" cx="160" cy="90" r="6" fill="none" stroke="#80f2ae" stroke-width="2" />
+              <text id="track-target-label" x="170" y="90" fill="#80f2ae" font-size="11">Outcrop</text>
+              <path id="track-craft" d="M0 -8L5 6L0 3L-5 6Z" transform="translate(160 90)" fill="#ffb457" />
+              <path d="M20 150v5h40v-5" fill="none" stroke="#dfefff" />
+              <g fill="#dfefff" font-size="12" font-family="Consolas, monospace">
+                <text x="155" y="14">N</text>
+                <text id="track-scale" x="20" y="172">29 m</text>
+              </g>
+            </svg>
+          </div>
+          <div class="data-grid compact">
+            <div><span>North</span><strong id="north-value">0 m</strong></div>
+            <div><span>East</span><strong id="east-value">0 m</strong></div>
+            <div><span>Distance flown</span><strong id="distance-value">0 m</strong></div>
+            <div><span>Vertical speed</span><strong id="vertical-speed-value">0.0 m/s</strong></div>
+            <div><span>Disk loading</span><strong id="disk-loading-value">206.6 N/m2</strong></div>
+          </div>
+        </aside>
+      </section>
+
+      <footer class="sourcebar">
+        <span>This is an educational simulation, not an official NASA flight product.</span>
+        <button id="arrival-replay" class="link-button" type="button">Replay the arrival at Titan</button>
+        <button id="new-mission" class="link-button" type="button">Start over from the landing</button>
+        <a href="https://science.nasa.gov/mission/dragonfly/" target="_blank" rel="noreferrer">NASA mission page</a>
+        <a href="https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/" target="_blank" rel="noreferrer">Spacecraft data</a>
+        <a href="https://solarsystem.nasa.gov/moons/saturn-moons/titan/in-depth/" target="_blank" rel="noreferrer">Titan environment</a>
+        <a href="https://dragonfly.jhuapl.edu/" target="_blank" rel="noreferrer">APL Dragonfly</a>
+        <a href="https://github.com/Tboy450/dragonfly-titan-gcs-demo/blob/main/research/PART-SOURCES.md" target="_blank" rel="noreferrer">Part sources &amp; credits</a>
+      </footer>
+    </main>
+    <dialog id="plan-dialog" aria-labelledby="plan-title">
+      <header class="systems-header"><div><span>Autonomous flight / simulated</span><h2 id="plan-title">Flight Plan</h2></div><button id="close-plan" type="button">Close</button></header>
+      <p class="plan-hint">Tap the map to add up to 6 waypoints; tap a site to use it. Dragonfly lands at the last waypoint, which must be a <b class="scouted-text">scouted site</b>. Flying within 60 m of an <b class="candidate-text">unscouted site</b> at 20 m or higher scouts it for a later flight.</p>
+      <div class="plan-columns">
+        <div class="plan-map-wrap">
+          <svg id="plan-map" viewBox="0 0 400 400" role="img" aria-label="Flight plan map, north up. Lighter terrain is higher. Tap to add waypoints."></svg>
+          <p class="expedition-disclaimer">Illustrative relief: lighter = higher dunes or hills. Green = scouted; amber = scout first. Dark blue = liquid, no landing.</p>
+          <div class="rest-controls"><button id="plan-undo" type="button">Undo</button><button id="plan-clear" type="button">Clear</button><button id="plan-zoom" type="button">Zoom: all sites</button></div>
+        </div>
+        <div>
+          <label class="system-control">Cruise altitude<select id="plan-altitude"></select></label>
+          <dl class="diagnostic-values">
+            <div><dt>Route distance</dt><dd id="plan-distance">0 m</dd></div>
+            <div><dt>Flight time / estimate</dt><dd id="plan-time">0:00</dd></div>
+            <div><dt>Energy / incl. preheat</dt><dd id="plan-energy">0 Wh</dd></div>
+            <div><dt>Battery at landing</dt><dd id="plan-battery">--</dd></div>
+            <div><dt>Battery temperature at landing</dt><dd id="plan-battery-temp">--</dd></div>
+            <div><dt>Will scout</dt><dd id="plan-scouts">none</dd></div>
+          </dl>
+          <p id="plan-verdict" class="plan-verdict" role="status">NO-GO</p>
+          <ul id="plan-issues" class="plan-issues"></ul>
+          <button id="plan-uplink" class="primary" type="button" disabled>Uplink plan</button>
+          <div id="plan-report" class="plan-report" hidden></div>
+        </div>
+      </div>
+      <p class="rest-status">Dragonfly is never flown live: signals take 73-90 minutes each way, so flights are planned on Earth, uplinked and flown autonomously. The uplink here takes a few seconds. Estimates use the simulator's power curve and the documented +10 C per 30 min battery heating.</p>
+    </dialog>
+    <dialog id="systems-dialog" aria-labelledby="systems-title">
+      <header class="systems-header"><div><span>Vehicle engineering / simulated</span><h2 id="systems-title">Energy &amp; Thermal Diagnostics</h2></div><button id="close-systems" type="button">Close</button></header>
+      <p id="systems-warning" class="systems-warning" role="status">Systems nominal</p>
+      <div class="systems-columns">
+        <section>
+          <h3>Thermal loop</h3>
+          <dl class="diagnostic-values">
+            <div><dt>Equipment bay</dt><dd id="core-temp">12.0 C</dd></div>
+            <div><dt>Battery</dt><dd id="battery-temp">10.0 C</dd></div>
+            <div><dt>Battery wax buffer (7.5 kg, melts at 22.5 C)</dt><dd id="pcm-melt">0% melted</dd></div>
+            <div><dt>Ambient</dt><dd>-179.2 C</dd></div>
+            <div><dt>Surface gas</dt><dd>Nitrogen-rich</dd></div>
+            <div><dt>Surface reference</dt><dd>146 kPa / 5.44 kg/m3</dd></div>
+            <div><dt>External convection / modeled</dt><dd id="convection-h">-- W/m2/K</dd></div>
+            <div><dt>Open-duct conductance / modeled</dt><dd id="duct-ua">-- W/K</dd></div>
+            <div><dt>Foam + external film</dt><dd id="foam-ua">-- W/K</dd></div>
+            <div><dt>Circulating gas</dt><dd id="gas-flow">0.052 kg/s</dd></div>
+            <div><dt>Warm duct gas / modeled</dt><dd id="warm-gas">-- C</dd></div>
+            <div><dt>MMRTG thermal source</dt><dd id="rtg-heat">1800 W</dd></div>
+            <div><dt>Generator external loss / modeled</dt><dd id="rtg-rejected">-- W</dd></div>
+            <div><dt>Heat into bay</dt><dd id="heat-in">0 W</dd></div>
+            <div><dt>Heat rejected from bay</dt><dd id="heat-out">0 W</dd></div>
+            <div><dt>Circulation integrity</dt><dd id="fan-integrity">100%</dd></div>
+            <div><dt>Insulation integrity</dt><dd id="insulation-integrity">100%</dd></div>
+          </dl>
+          <label class="check-control"><input id="thermal-auto" type="checkbox" checked /> Automatic thermal trim</label>
+          <label class="system-control">Cold-duct airflow command <output id="trim-output">4%</output><input id="trim-control" type="range" min="0" max="40" step="2" value="4" disabled /></label>
+          <output id="trim-state" class="rest-status">Auto / 600 s control interval</output>
+          <label class="system-control">Circulation fan <output id="fan-output">100%</output><input id="fan-control" type="range" min="0" max="100" value="100" /></label>
+          <label class="system-control">Training fault<select id="fault-control"><option value="none">Nominal hardware</option><option value="fan">Restricted circulation</option><option value="insulation">Insulation damage</option></select></label>
+          <h3>Titan-inspired weather / training</h3>
+          <label class="system-control">Weather mode<select id="weather-mode"><option value="natural">Occasional weather events</option><option value="fixed">Fixed wind / events off</option></select></label>
+          <output id="weather-status" class="rest-status">Quiet / occasional gusts and rarer methane-rain scenarios</output>
+          <p class="rest-status">Automatic events stay at or below 1.6 m/s. Their frequency, compressed durations and warning lead times are assumptions, not Titan forecasts. Wind affects cooling; ambient stays at -179.2 C.</p>
+          <button id="weather-training" type="button">Run strong methane-storm training</button>
+          <p class="rest-status">Optional stress scenario: 2 simulated minutes of warning, then winds up to 4.5 m/s, reduced visibility and extra wetting of the existing rain-darkened patch. New flight plans are held until recovery. Select Fixed wind to end an event.</p>
+          <p id="weather-feedback" role="status"></p>
+          <dl class="diagnostic-values">
+            <div><dt>Rain-darkened patch</dt><dd id="weather-wetness">0% additional wetting / illustrative</dd></div>
+            <div><dt>Recent advisories / simulation time</dt><dd id="weather-recent">No events yet</dd></div>
+          </dl>
+        </section>
+        <section>
+          <h3>Energy &amp; Surface Operations</h3>
+          <dl class="diagnostic-values">
+            <div><dt>MMRTG electric / estimated</dt><dd id="rtg-output">90 W</dd></div>
+            <div><dt>Vehicle load</dt><dd id="electric-load">0 W</dd></div>
+            <div><dt>Net battery power</dt><dd id="net-power">0 W</dd></div>
+            <div><dt>Stored energy / 2022 baseline</dt><dd id="stored-energy">11.04 kWh</dd></div>
+            <div><dt>Time to 15% reserve</dt><dd id="reserve-time">--</dd></div>
+            <div><dt>Flight time left / estimate</dt><dd id="flight-endurance">Landed</dd></div>
+            <div><dt>Flight elapsed / 30 min plan</dt><dd id="flight-elapsed">0:00</dd></div>
+            <div><dt>Motor preheat / 8 x 90 W x 5 min</dt><dd id="motor-preheat">Cold / 60 Wh at next takeoff</dd></div>
+            <div><dt>Local solar time / approximate</dt><dd id="solar-time">12:00 / Day</dd></div>
+            <div><dt>Surface elapsed</dt><dd id="surface-elapsed">0.0 h</dd></div>
+          </dl>
+          <label class="system-control">Arrival power estimate<select id="rtg-scenario"><option value="90">90 W baseline</option><option value="70">70 W conservative</option></select></label>
+          <div class="rest-controls"><button id="rest-hour" type="button">Hibernate 1 h</button><button id="rest-night" type="button">Hibernate 8 days</button><button id="rest-stop" type="button" disabled>Wake</button></div>
+          <output id="rest-status" class="rest-status">Hibernation available after dry-ground landing.</output>
+          <h3>Sample return</h3>
+          <dl class="diagnostic-values"><div><dt>Objective</dt><dd id="systems-objective">Not started</dd></div><div><dt>Acquisition</dt><dd id="sample-progress">0 / 30 s</dd></div><div><dt>Samples secured</dt><dd id="sample-count">0</dd></div></dl>
+          <h3>Descent advisory / approximate</h3>
+          <dl class="diagnostic-values"><div><dt>Downspeed ratio</dt><dd id="descent-ratio">0.00 x hover inflow</dd></div><div><dt>Descent path angle</dt><dd id="descent-angle">0 deg</dd></div><div><dt>Vortex-ring-state proxy</dt><dd id="descent-caution">No proxy trigger</dd></div></dl>
+        </section>
+      </div>
+      <section class="thermal-context">
+        <h3>Documented Dragonfly Architecture</h3>
+        <p>Cassini observed methane clouds developing and fading over an 11-hour northern observation, equatorial surface wetting after a methane storm, and features interpreted as organic dust storms over dunes. Those observations do not establish local storm frequencies or warning lead times for Dragonfly. This simulator compresses events into minutes for training; it does not model atmospheric fronts, forecast actual weather, blow rocks into the air or grow the methane puddle. <a href="https://science.nasa.gov/photojournal/pj-watching-summer-clouds-on-titan/" target="_blank" rel="noreferrer">Cloud evolution</a> / <a href="https://science.nasa.gov/resource/titanic-deluge-annotated/" target="_blank" rel="noreferrer">Equatorial rain</a> / <a href="https://science.nasa.gov/solar-system/dust-storms-on-titan-spotted-for-the-first-time/" target="_blank" rel="noreferrer">Dust-storm evidence</a></p>
+        <p>On Titan, fans distribute MMRTG waste heat and a cold-duct bypass controls cooling. In space, the cruise system uses a pumped fluid loop and radiators. Surface convection is not the same as vacuum heat rejection. <a href="https://tfaws.nasa.gov/wp-content/uploads/TFAWS23-AT-14-Presentation.pdf" target="_blank" rel="noreferrer">NASA/APL thermal controller design (2023)</a></p>
+        <p>The surface loop circulates nitrogen-rich atmospheric gas, not liquid nitrogen. Cold gas, flow resistance and external wind affect heat transport. NASA's 2026 workshop abstract continues to describe fan-driven circulation, cold-duct trim and insulation, with coupled thermal and CFD analysis. <a href="https://tfaws.nasa.gov/tfaws-2026/paper-proceedings/" target="_blank" rel="noreferrer">2026 Dragonfly thermal modeling abstract</a></p>
+        <p>The battery supports high flight loads while the MMRTG produces electricity day and night. A roughly 16-Earth-day rotation gives approximately eight days per half-cycle near the equator; actual illumination varies. <a href="https://science.nasa.gov/mission/dragonfly/spacecraft-and-instruments/" target="_blank" rel="noreferrer">NASA power system</a> / <a href="https://science.nasa.gov/saturn/moons/titan/facts/" target="_blank" rel="noreferrer">Titan environment</a></p>
+        <p>The 2024 rotor study found strongest thrust fluctuations in steep descent, beyond 60 degrees and roughly 0.75-1.25 times hover induced speed. The advisory uses ground-relative descent as a proxy, not measured shaft-relative inflow, and does not simulate thrust loss. No trigger does not establish safe flight. <a href="https://rotorcraft.arc.nasa.gov/Publications/files/marshall-et-al-2024.pdf" target="_blank" rel="noreferrer">Marshall et al., 2024</a></p>
+        <details><summary>Exchanger references &amp; evidence</summary>
+          <fieldset id="hx-study"><legend>Hypothetical liquid-to-liquid shell study</legend>
+            <p>Independent of vehicle telemetry. Assumed single-phase fluids, no environmental heat loss, no pump power or freezing model. Effectiveness is an input, not a shell-geometry prediction or flight specification.</p>
+            <div class="hx-inputs">
+              <label>Tube hot inlet (C)<input id="hx-hot" type="number" min="-200" max="200" step="any" value="40" /></label>
+              <label>Shell cold inlet (C)<input id="hx-cold" type="number" min="-200" max="200" step="any" value="5" /></label>
+              <label>Tube flow x heat capacity (W/K)<input id="hx-hot-rate" type="number" min="0.01" max="10000" step="any" value="40" /></label>
+              <label>Shell flow x heat capacity (W/K)<input id="hx-cold-rate" type="number" min="0.01" max="10000" step="any" value="30" /></label>
+              <label>Assumed effectiveness (0-1)<input id="hx-effectiveness" type="number" min="0" max="1" step="0.01" value="0.65" /></label>
+            </div>
+            <output id="hx-result" aria-live="polite"></output>
+            <p>Q = effectiveness x smaller heat-capacity rate x inlet temperature difference. Both outlet temperatures conserve that same heat flow. Coolant choice and phase limits need separate qualification. <a href="https://ht.readthedocs.io/en/latest/ht.hx.html#ht.hx.effectiveness_from_NTU" target="_blank" rel="noreferrer">Heat-exchanger energy balance reference</a></p>
+          </fieldset>
+          <p>Shell-and-tube exchangers separate two flowing fluids with tube walls; baffles guide shell-side flow. Fixed, floating-head and U-tube designs manage construction and expansion differently. These are general industrial principles, not confirmation of Dragonfly hardware or a flight efficiency rating. <a href="https://tubetech.com/5-types-of-shell-and-tube-heat-exchangers-and-how-they-work/" target="_blank" rel="noreferrer">TubeTech source article</a></p>
+          <dl class="diagnostic-values"><div><dt>Fixed tube sheet</dt><dd>Tube sheets welded to shell</dd></div><div><dt>Floating head</dt><dd>Movable rear header; removable bundle</dd></div><div><dt>U-tube</dt><dd>Free bend accommodates expansion</dd></div><div><dt>Multiple passes / baffles</dt><dd>Alter flow and heat transfer</dd></div></dl>
+          <p>A liquid-to-liquid shell is a reasonable conceptual option for separate coolant circuits. Its geometry alone does not specify coolant, pressure, freezing margin or performance. Nitrogen outside does not require nitrogen inside a sealed liquid circuit. Any such variant here would be an assumed design study, separate from the documented surface gas loop.</p>
+          <p>Complex coupled liquid loops do have spacecraft precedent: NASA describes interacting rover and cruise loops for Mars Science Laboratory. That supports the general concept, not a claim that Dragonfly uses the same hardware or fluids. <a href="https://ntrs.nasa.gov/citations/20120006581" target="_blank" rel="noreferrer">NASA MMRTG heat-exchanger study</a></p>
+          <div class="reference-images"><figure><img src="./assets/heat-exchanger-reference.jpg?v=dev" alt="Cutaway of a shell-and-tube heat exchanger showing the tube bundle, baffles and separate fluid paths" loading="lazy" /><figcaption>Shell-and-tube heat exchanger cutaway: tube bundle, baffles and separate shell- and tube-side flow paths. Representative industrial design.</figcaption></figure><figure><img src="./assets/tubetech-reference.jpg?v=dev" alt="TubeTech diagram of a tube bundle and shell-side flow" loading="lazy" /><figcaption>Tube bundle and shell-side flow arrangement. Source: TubeTech.</figcaption></figure></div>
+          <p>Lockheed Martin supplies Dragonfly's cruise stage and aeroshell and supports integration. Public NASA and APL sources do not yet describe a liquid-to-liquid exchanger on Dragonfly, so the figures above illustrate the concept explored in this study rather than flight hardware. <a href="https://www.lockheedmartin.com/en-us/capabilities/space/deep-space-exploration.html" target="_blank" rel="noreferrer">Lockheed Martin</a> / <a href="https://science.nasa.gov/blogs/dragonfly/2026/03/10/nasas-dragonfly-mission-begins-rotorcraft-integration-testing-stage/" target="_blank" rel="noreferrer">NASA integration update</a></p>
+          <p>Calm-weather overheating is a documented design concern and is modeled here. Component melting and landing skids sinking into ice do not appear in the published thermal analyses, so they are left out of the model for now. <a href="https://www.nasa.gov/podcasts/small-steps-giant-leaps/episode-168-dragonfly-mission-to-titan/" target="_blank" rel="noreferrer">NASA interview</a></p>
+        </details>
+        <details><summary>Simulation limits &amp; assumed parameters</summary>
+          <p>The 2020/2023 thermal designs specify a 0-20 C landed battery band and a 35 C upper operating limit. Charging is inhibited below 0 C or at 35 C. Equipment-bay -20 to 55 C and 15% reserve are demo guards. Thermal nodes (60/30 kJ/K), battery losses, 8 W/K coupling and controller gains are assumptions. PCM buffering, detailed motor preheat and individual electronics temperatures are not resolved. <a href="https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content" target="_blank" rel="noreferrer">APL lander thermal model, 2023</a></p>
+          <p>Convection interpolates between 4 W/m2/K calm, 10.5 at 1.6 m/s and 75 at 10 m/s. These are source-informed bounds, not a CFD correlation. Foam thickness 0.0762 m, cold conductivity 0.01 W/m/K and gas flow 0.052 kg/s come from the preliminary design; 20 m2 area and constant 1050 J/kg/K gas heat capacity are assumptions. Source-gas heat is balanced between bay circulation and an assumed external loss path. The cold duct closes in flight; landed commands use 0-40% airflow in 2% steps and a 600 s PI update. This is a simplified single controller, not the flight MIMO system.</p>
+          <p>Storage uses the 11.5 kWh pack reported in 2022; accessible capacity and reserve remain simplified. Estimated arrival generation is 90 W (or 70 W), declining 2.5% per Earth year; this is not a mission guarantee. Thermal output starts at 1,800 W and follows Pu-238 decay. <a href="https://aerospaceamerica.aiaa.org/features/designing-dragonfly-nasas-titan-explorer/" target="_blank" rel="noreferrer">2022 design report</a> / <a href="https://www.nasa.gov/wp-content/uploads/2015/04/mmrtg.pdf" target="_blank" rel="noreferrer">NASA MMRTG fact sheet</a></p>
+          <p>The flight-power estimate combines decreasing induced power with profile, drag and climb terms. Its drag area (0.65 m2), profile speed (55 m/s), efficiencies and wind correction are assumptions, not a measured flight curve. Three blades per rotor follow the lead rotor engineer's account; the ambiguous transcript RPM figure is not used. <a href="https://www.planetary.org/planetary-radio/2026-engineering-of-dragonfly" target="_blank" rel="noreferrer">APL engineer interview, June 2026</a></p>
+          <p>GS Yuasa identifies supplied LSE134 cells as 134 Ah at 3.75 V nominal. Cell specifications alone do not establish the full pack topology or usable flight energy. <a href="https://gsyuasa-lp.com/news/gs-yuasa-lithium-power-successfully-delivers-generation-3-lse134-li-ion-cells-in-support-of-nasas-dragonfly-mission/" target="_blank" rel="noreferrer">Battery manufacturer</a></p>
+          <p>Hibernation compresses time only on dry ground. It pauses on thermal warnings. The mission's 30-second acquisition, methane puddle, landing protection and automatic guidance are gameplay abstractions, not real mission operations.</p>
+        </details>
+      </section>
+    </dialog>
+    <script type="module" src="./app.js?v=dev"></script>
+  </body>
+</html>

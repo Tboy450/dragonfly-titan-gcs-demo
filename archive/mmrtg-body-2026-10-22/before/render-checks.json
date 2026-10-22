@@ -1,0 +1,79 @@
+{
+  "status": "passed",
+  "baseline": true,
+  "port": 4195,
+  "checks": [
+    {
+      "layer": "internal",
+      "width": 1440
+    },
+    {
+      "layer": "internal",
+      "width": 390
+    },
+    {
+      "layer": "internal",
+      "width": 360
+    },
+    {
+      "layer": "thermal",
+      "width": 1440
+    },
+    {
+      "layer": "thermal",
+      "width": 390
+    },
+    {
+      "layer": "thermal",
+      "width": 360
+    }
+  ],
+  "errors": [],
+  "detail": {
+    "title": "21. MMRTG fin-root sensor (RTD family approximation)",
+    "placement": "Placement: NASA/APL: fin-root feedback, 157 C rating; Omega F2020 family example; flight package/count and installation unconfirmed.",
+    "role": "Hardware-family approximation using an Omega F2020 Class B platinum RTD example. NASA/APL publishes fin-root feedback to the fan controller and NASA rates the fin root at 157 C; the actual flight sensor type, supplier, count and mounting are unconfirmed. The reference element is 2 x 2 x 0.8 mm with two 10 mm, 0.2 mm-diameter leads. Its catalog Class B range is -70 to +500 C, covering the fin-root rating; this is not evidence of Dragonfly flight qualification. The ceramic base, blue glass finish and lead exits follow the manufacturer's catalog photos; coating proportions, curved bond pad and location beside the top fin are estimates. No hidden platinum circuit, pinout, connector or flight harness destination is invented. Local lead ends mark unmodeled routing, and one example does not establish sensor count. Casings, Mounts and Harnesses hide separately; element and installation close-ups retain actual dimensions. The temperature shown is the modeled MMRTG gas; this simulator does not model the fin root or the second controller. A future generator-body redraw must recheck this installation.",
+    "live": "Fans at 100%, moving 0.052 kg/s through the MMRTG; generation 90 W (modeled).",
+    "sources": [
+      [
+        "NASA/APL thermal-controller design, slides 7 and 9: MMRTG fin-root temperature input",
+        "https://tfaws.nasa.gov/wp-content/uploads/TFAWS23-AT-14-Presentation.pdf"
+      ],
+      [
+        "NASA MMRTG fact sheet (2020): 157 C fin-root temperature, 64 x 66 cm",
+        "https://science.nasa.gov/wp-content/uploads/2024/02/mmrtg-factsheet-updated-5-18-20-1.pdf"
+      ],
+      [
+        "Omega F2020 RTD family: catalog hardware photos, drawing and Class B temperature range (not identified Dragonfly hardware)",
+        "https://assets.omega.com/pdf/test-and-measurement-equipment/temperature/sensors/rtds/F1500_F2000_F4000.pdf"
+      ],
+      [
+        "APL payload reference",
+        "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php"
+      ]
+    ],
+    "meshes": [
+      [
+        "fin-root-rtd-ceramic",
+        "BoxGeometry"
+      ],
+      [
+        "fin-root-rtd-glass-coating",
+        "BoxGeometry"
+      ],
+      [
+        "fin-root-rtd-estimated-bond",
+        "ExtrudeGeometry"
+      ],
+      [
+        "fin-root-rtd-lead-1",
+        "TubeGeometry"
+      ],
+      [
+        "fin-root-rtd-lead-2",
+        "TubeGeometry"
+      ]
+    ]
+  },
+  "pilotReturn": true
+}

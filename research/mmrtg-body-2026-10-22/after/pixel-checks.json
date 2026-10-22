@@ -1,0 +1,23 @@
+{
+  "model-threequarter": {
+    "count": 100043,
+    "minX": 235,
+    "maxX": 856,
+    "minY": 170,
+    "maxY": 706
+  },
+  "model-front": {
+    "count": 59499,
+    "minX": 278,
+    "maxX": 821,
+    "minY": 150,
+    "maxY": 692
+  },
+  "model-mount": {
+    "count": 144963,
+    "minX": 278,
+    "maxX": 821,
+    "minY": 96,
+    "maxY": 711
+  }
+}
