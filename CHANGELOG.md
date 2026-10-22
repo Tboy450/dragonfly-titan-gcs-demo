@@ -39,6 +39,18 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Record MMRTG public acceptance
+- **Signed:** Codex (OpenAI)
+- **Commit:** Record MMRTG public acceptance [skip ci]
+- **Release:**4449203, Pages39726749517 succeeded; recovery tag pushed. Concurrent game
+  work through2190944 retained, combined458 tests pass.
+- **Checks:** Public Edge24 Internal/Thermal viewport/subassembly cases at1440/390/360px,
+  stamped module,24 numbered rows, masks/restore, sensor21 refit, source links and Pilot
+  return passed without page/network failures or overflow. Receipt/screenshots saved in
+  `research/mmrtg-body-2026-10-22/live-4449203/`. Local server stopped.
+- **Scope:** Evidence/checklist records only; app unchanged, no duplicate test/deploy run.
+- **Next:** First structural side-wall panel; keep unknown construction details labeled.
+
 ### 2026-10-22: Rebuild the MMRTG exterior from photographed hardware
 - **Signed:** Codex (OpenAI)
 - **Commit:** Rebuild MMRTG exterior and add generator inspection

@@ -61,6 +61,21 @@ generator-gas zone rather than separate fin/housing temperatures.
   both complete entries. Combined suite **458 pass**, saved `merged-tests.txt`. No game code
   manually edited; simulator/body files are unchanged by the merge.
 
+## Published acceptance
+
+Release `4449203` includes model commit `9f6f243` and concurrent game work through
+`2190944`. [Pages run39726749517](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/39726749517)
+completed successfully. Recovery tag `archive/mmrtg-body-2026-10-22` is pushed.
+
+Public Edge acceptance against stamped build4449203 passed all24 Internal/Thermal
+viewport/subassembly cases at1440/390/360px, with no page/network failures or overflow.
+The new stamped module loaded; original24 numbered rows, independent masks/restore,
+sensor21 refit, reference links and Pilot return passed. Screenshots and machine-readable
+receipt are in [live-4449203](live-4449203/checks.json). Combined458-test results remain in
+`merged-tests.txt`; no repeat suite was needed for this documentation-only receipt.
+Local preview server is stopped. Comparison image includes real hardware, technical
+cutaway, before model, rebuilt model and phone inspection.
+
 ## Next
 
 **First structural side-wall panel** next. Review photographed support/frame geometry and
