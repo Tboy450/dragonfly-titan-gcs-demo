@@ -38,7 +38,8 @@ explicitly estimated, not flight CAD. Do not repeatedly search the same closed l
    Port wall and estimated nose/canted-aft joint initial passes now complete; deck/attic
    boundary is next. [Current sources, samples and handoff](research/port-wall-joints-2026-10-22/README.md).
    Initial deck/attic-edge pass complete. Body outer surface is now split into five
-   removable inspection regions; attic/local camera/HGA foam is next.
+   removable inspection regions; attic/HGA surface access and local camera-window surrounds
+   now have initial passes too. Full local construction and harness continuity remain open.
    [Current body evidence/sample/handoff](research/body-foam-2026-10-22/README.md).
 
 Other harness work stays queued behind this order. Current count24/24 initial passes
@@ -46,7 +47,24 @@ Other harness work stays queued behind this order. Current count24/24 initial pa
 construction work are still open. Follow the expanded packages below after the ordered
 items; do not confuse finishing the numbered list with finishing construction and connections.
 
-Current October22 body-insulation checkpoint: five independent top/deck, port, starboard,
+Current October23 attic/local checkpoint: initial attic cover and camera/HGA access passes
+implemented. Five attic surface regions and two HGA dome surfaces retain prior geometry;
+three estimated camera-window surrounds, component/global insulation masks and Open interior
+whole-equipment access. All layers/Restore reverses it; no equipment/flight-state movement.
+Lower windows now meet the actual beveled body, with estimated optical corridors/neighbor
+reliefs; camera bodies and aim unchanged. Full camera blisters/inner construction remain
+open, not flight CAD. Initial532 tests and35 local Edge cases pass; masks/source/count24/
+Pilot/geometry/pixels pass. Archive baseline ef3b429; rejected rim draft kept. Core-cache
+key fixes the diagnosed nested-module loading path. Public release receipt follows in research.
+[Current sources/samples/handoff](research/attic-local-insulation-2026-10-22/README.md).
+
+Owner's latest direction: entire harnesses may be missing. Existing floor/riser/component
+runs are not a complete electrical design. [Coverage register](research/attic-local-insulation-2026-10-22/HARNESS-AUDIT.md)
+records the omitted attic trunk and port Down Camera branch, plus navigation, arm/motor,
+sensor and RF continuity follow-ups. Full endpoint register comes before adding bundles.
+Do not duplicate existing runs or infer flight pinouts/cable counts. No new wires this pass.
+
+Historical October22 body-insulation checkpoint: five independent top/deck, port, starboard,
 belly and end surface regions, with aggregate body/foam masks and separate structural
 wall/deck masks. Exact original outer-body triangles/normals/UVs retained; three legacy
 solid cross-bay seam boxes retired and archived. No volumetric foam, inner liner, flight
@@ -988,10 +1006,11 @@ statuses: initial part, installation, construction access, and final UI/integrat
   - [x] **Body surface access:** five independently hidden outer surfaces preserve the
     original outer body; no flight tile cuts or actual foam volume inferred. Source nominal
     7.6cm thickness is recorded, not applied as a blanket inward offset around existing parts.
-  - [ ] **Attic surface access:** split the existing raised cover without moving instruments;
+  - [x] **Attic surface access:** split the existing raised cover without moving instruments;
     distinguish cold carousel region and warm DraMS where supported, not invented tile seams.
-  - [ ] **Local camera/HGA insulation:** inspect saved real/test photos and dimensional
-    sections; preserve optical apertures, gimbal travel and source-specific material identity.
+  - [x] **Local camera/HGA initial access:** saved real/test photos and sections reviewed;
+    HGA surfaces removable; camera-window surrounds/optical reliefs estimated. Mechanism,
+    camera bodies and aim preserved. Full foam blisters/inner thickness remain open.
   - [ ] **Thickness/encapsulation/venting:** verified local section geometry and load-path
     dependent encapsulation; NESC test vent-grid examples are not flight hole maps.
   - [ ] **Thermal material-revision audit:** compare current Solimide16 test conditions
@@ -1002,6 +1021,9 @@ statuses: initial part, installation, construction access, and final UI/integrat
 
 ### Layered View Packages
 
+- [x] **All-layers / Open-interior access presets:** enclosing walls/foam/panels can be
+  removed together with equipment/mounts/connections installed; reverse with All layers or
+  Restore. Initial access complete, not the full discipline-specific preset package below.
 - [ ] **As-installed preset:** reference exterior plus covers, mounts and connections in
   place; no default all-transparent vehicle. Restore installed poses and stable labels.
 - [ ] **Construction preset:** separately hide/ghost outer skin, foam, frame/deck/bulkheads

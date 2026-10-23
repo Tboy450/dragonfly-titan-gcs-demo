@@ -4,6 +4,15 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October23 attic/local access (Codex):** [evidence/samples/limits](research/attic-local-insulation-2026-10-22/README.md).
+Existing attic/HGA outer surfaces are divided for inspection. [PUB] ICES2020 preliminary
+camera covering25mm/HGA dome50mm; DragonCam2026 isolated enclosures/3mm windows. These
+do not establish current local material/thickness. [EST]10mm window-surround examples,
+neighbor reliefs and optical corridors. Camera windows now meet the beveled model surface;
+camera bodies/aim stay fixed. No complete local foam blister, hidden stack or new thermal
+solver reconstructed. Open interior is viewing-only. Full wiring topology remains open:
+[coverage register](research/attic-local-insulation-2026-10-22/HARNESS-AUDIT.md).
+
 **October22 body insulation (Codex):** [evidence, samples and limits](research/body-foam-2026-10-22/README.md).
 [PUB] NASA September2025 identifies nominal7.6cm Solimide-based body foam. NASA NESC's
 May2026 development slides select Solimide16 and describe roughly800tiles, encapsulation,

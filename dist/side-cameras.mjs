@@ -1,5 +1,8 @@
 import * as THREE from "./vendor/three/three.module.min.js";
 import { mountEcam } from "./ecam.mjs?v=dev";
+import { buildCameraWindowSurround } from "./local-insulation.mjs?v=dev";
+import { bodyFoamGeometry } from "./body-foam.mjs?v=dev";
+import { openInsulationOpticalPorts } from "./foam-optical-ports.mjs?v=dev";
 
 // Part 23: the DragonCam cameras on the lower body (Clark et al., "Optomechanical design of the
 // DragonCam Microscopic Camera", 2026, figs. 1-3, 5, 12 and table 1):
@@ -29,13 +32,14 @@ function microscopePose() {
 }
 
 export const sideCamerasAsset = Object.freeze({
-  revision: "side-cameras-2026-10-13",
+  revision: "side-cameras-2026-10-23",
   drillSite: Object.freeze(drillSite),
   microscope: Object.freeze({ position: Object.freeze(microscopePose()), workingDistanceM: workingDistance, tiltDeg: 52, volumeMm: Object.freeze([105, 155, 90]), massKg: 1.04 }),
   ledOffset: Object.freeze([-0.004, -0.046, 0.052]),
   downCameras: Object.freeze([Object.freeze([-0.397, -0.2845, 0.16]), Object.freeze([0.397, -0.2845, 0.16])]),
   wallOuterX: wallOuter,
   windowThicknessM: 0.003,
+  // Legacy nominal planes, retained for reference; windows use actual geometry intersections.
   outerBottomY: -0.36, outerSideX: 0.43,
 });
 
@@ -51,6 +55,8 @@ export function buildSideCameras({ parent, mesh }) {
   const ledBase = new THREE.MeshStandardMaterial({ color: 0x1b1d20, roughness: 0.55, metalness: 0.35 });
   const ledColors = [0x7a3cff, 0x3a6dff, 0x3fd06a, 0xffb02e, 0xe0302a, 0x7a1010];
   const cameras = [];
+  const probeMaterial=new THREE.MeshBasicMaterial({side:THREE.DoubleSide});
+  const probe=new THREE.Mesh(bodyFoamGeometry(),probeMaterial);probe.updateMatrixWorld(true);
   // Each camera's "up" (its connector side) points outboard, so its feet bolt to the inner panel.
   const outboard = side => new THREE.Vector3(side, 0, 0);
 
@@ -61,20 +67,23 @@ export function buildSideCameras({ parent, mesh }) {
   }
   // Window: a 3 mm pane where the view leaves the foam, with a dark cavity back to the lens.
   function windowFor(parts, lensFront, radius, exitDistance) {
+    parts.window.userData.opticalPort={halfWidth:radius+.002,from:lensFront+.002,to:lensFront+exitDistance+1};
     const pane = mesh(new THREE.CylinderGeometry(radius, radius, sideCamerasAsset.windowThicknessM, 24), glass, [0, 0, lensFront + exitDistance], parts.window);
     pane.rotation.x = Math.PI / 2; pane.name = "camera-window";
     const tube = mesh(new THREE.CylinderGeometry(radius + 0.004, radius + 0.004, exitDistance, 20, 1, true), cavity, [0, 0, lensFront + exitDistance / 2], parts.cavity);
     tube.rotation.x = Math.PI / 2; tube.name = "foam-cavity";
     tube.material.side = THREE.DoubleSide;
+    // Local window surround only, not a reconstructed complete camera foam enclosure.
+    if(parts.group.name!=="led-array")buildCameraWindowSurround({parts,mesh,lensFront,radius,exitDistance});
+    parts.cavity.userData.inspectionGlobalLayer="camera-insulation";
   }
   // Distance along the view ray from a point to where it leaves the body's outer foam surface.
   function exitAlong(parts, from) {
     const dir = new THREE.Vector3(0, 0, 1).applyQuaternion(parts.group.quaternion);
     const start = new THREE.Vector3(0, 0, from).applyQuaternion(parts.group.quaternion).add(parts.group.position);
-    const hits = [];
-    if (dir.y < 0) hits.push((sideCamerasAsset.outerBottomY + 0.0015 - start.y) / dir.y);
-    if (Math.abs(dir.x) > 1e-6) hits.push((Math.sign(dir.x) * (sideCamerasAsset.outerSideX - 0.0015) - start.x) / dir.x);
-    return Math.max(0.004, Math.min(...hits.filter(t => t > 0)));
+    const hits=new THREE.Raycaster(start,dir,.000001).intersectObject(probe,false);
+    if(!hits.length)throw new Error("Camera optical axis does not meet the body insulation");
+    return Math.max(.004,hits[0].distance+sideCamerasAsset.windowThicknessM/2);
   }
   function stub(parts, from, toX) {
     // Harness stub from the connector, round the back of the housing, to a feedthrough on the
@@ -121,5 +130,9 @@ export function buildSideCameras({ parent, mesh }) {
     mesh(new THREE.BoxGeometry(0.08, 0.003, 0.04), bracketMat, [0, -0.031 - 0.0015, -0.03], down.mounts).name = "camera-bracket";
     stub(down, [0, 0.031 + 0.01, -0.043], side * wallOuter);
   }
+  // Estimated local reliefs keep adjacent cameras' optical corridors unobstructed.
+  assembly.updateWorldMatrix(true,true);
+  for(const parts of cameras)if(parts.insulation)openInsulationOpticalPorts(parts.insulation,cameras);
+  probe.geometry.dispose();probeMaterial.dispose();
   return { assembly, cameras };
 }

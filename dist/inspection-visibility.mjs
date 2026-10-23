@@ -1,10 +1,14 @@
 import { bodyFoamRegions } from "./body-foam.mjs?v=dev";
+import { atticInsulationRegions } from "./attic-insulation.mjs?v=dev";
 
 // Presentation masks for existing geometry; no construction layers or hidden internals are invented.
 export const globalInspectionLayers = Object.freeze([
   { id: "body-shell", label: "Body insulation (all)" },
   ...bodyFoamRegions,
-  { id: "attic-shell", label: "Attic shell" },
+  { id: "attic-shell", label: "Attic cover / insulation (all)" },
+  ...atticInsulationRegions,
+  { id: "camera-insulation", label: "Lower camera cavity / window surrounds" },
+  { id: "hga-insulation", label: "HGA actuator dome insulation" },
   { id: "insulation", label: "Insulating foam" },
   { id: "partitions", label: "Compartment panels" },
   { id: "structural-panels", label: "Structural wall panels" },
@@ -17,6 +21,7 @@ export const partInspectionLayers = Object.freeze([
   { id: "mounts", label: "Mounts" },
   { id: "interfaces", label: "Interfaces" },
   { id: "harnesses", label: "Harnesses / lines" },
+  { id: "insulation", label: "Insulation" },
 ]);
 export const visibilityDefaults = Object.freeze({
   hiddenLayers: Object.freeze([]), hiddenPartLayers: Object.freeze({}),
@@ -36,6 +41,19 @@ export function setInspectionLayer(i, id, visible, part = null) {
 export const restoreInspectionLayers = i => Object.assign(i, visibilityDefaults);
 export const hiddenInspectionCount = i => (i.hiddenLayers?.length ?? 0)
   + Object.values(i.hiddenPartLayers ?? {}).reduce((sum, layers) => sum + layers.length, 0);
+
+export const openInteriorLayers=Object.freeze(["body-shell","attic-shell","insulation","partitions","structural-panels","deck-panels","flow-markers"]);
+export function applyInspectionAccessPreset(i,preset){
+  if(!["all","open"].includes(preset))return;
+  i.hiddenLayers=preset==="open"?[...openInteriorLayers]:[];
+  i.hiddenPartLayers={};
+}
+export function inspectionAccessPreset(i){
+  if(Object.keys(i.hiddenPartLayers??{}).length)return "custom";
+  const hidden=i.hiddenLayers??[];
+  if(!hidden.length)return "all";
+  return hidden.length===openInteriorLayers.length&&openInteriorLayers.every(id=>hidden.includes(id))?"open":"custom";
+}
 
 export function visibleInspectionHardware(group) {
   let visible = false;
@@ -59,7 +77,9 @@ export function createInspectionVisibility(subsystems) {
     const layers = new Map(partInspectionLayers.map(({ id }) => [id, []]));
     group.traverse(object => {
       const category = object.userData.inspectionLayer;
+      if (global.has(object.userData.inspectionGlobalLayer)) add(object.userData.inspectionGlobalLayer, object);
       if (bodyFoamRegions.some(({ id }) => id === object.userData.bodyFoamRegion)) add(object.userData.bodyFoamRegion, object);
+      if (atticInsulationRegions.some(({ id }) => id === object.userData.insulationRegion)) add(object.userData.insulationRegion, object);
       if (category === "insulation") add("insulation", object);
       if (category === "interface-faces") add("partitions", object);
       if (layers.has(category)) layers.get(category).push(object);

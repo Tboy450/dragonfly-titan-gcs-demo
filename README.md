@@ -15,7 +15,15 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
-October22 Codex: [removable body-insulation surfaces](research/body-foam-2026-10-22/README.md)
+October23 Codex: [attic/local insulation and Open interior](research/attic-local-insulation-2026-10-22/README.md)
+adds removable attic/HGA surfaces, estimated lower-camera window surrounds and an access
+preset without enclosing walls/foam. Camera windows now meet the actual beveled body;
+camera bodies/aim remain fixed. Information/source tabs updated. Nested Three.js core now
+has a release cache key. Full foam construction and flight harness topology remain open.
+Next: [endpoint/harness coverage audit](research/attic-local-insulation-2026-10-22/HARNESS-AUDIT.md),
+then one supported connection/support family at a time, including the missing attic trunk.
+
+Earlier October22 Codex: [removable body-insulation surfaces](research/body-foam-2026-10-22/README.md)
 adds top/deck, port, starboard, belly and end-region inspection masks. The base outer shape,
 24 equipment parts and structural panels remain unchanged; old cross-bay seam blocks are
 archived. Real NASA/APL foam test photos and NASA NESC development slides are saved.

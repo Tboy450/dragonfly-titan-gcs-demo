@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Attic/local access (Codex, October23):** [real/CAD/model comparison and limits](attic-local-insulation-2026-10-22/README.md).
+Reuses NASA/APL foam hardware (Justin Artis), NESC slides, real HGA arm photo
+(NASA/Johns Hopkins APL/Ed Whitman), ICES2020p5/2023pp3/5 and DragonCam2026pp3/5/15.
+CAD is distinguished from hardware. Local rims/reliefs/openings are estimates, not photos
+of complete flight enclosures; source nominal thickness is not a blanket geometry offset.
+
 **Body insulation surface access (Codex, October22):** [real/CAD/model comparison](body-foam-2026-10-22/README.md).
 [Original photo and NASA NESC slides](sources/nasa-foam-2025/README.md): NASA September2025
 real test segment, credit Johns Hopkins APL / Justin Artis; May2026 development slides by

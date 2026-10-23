@@ -47,8 +47,18 @@ October22 construction checkpoint: `dist/body-foam.mjs` partitions the original 
 triangles into five surface-only inspection regions. Global mask IDs live in the shared
 `bodyFoamRegions` definition; `body-shell` remains the aggregate for save/UI compatibility.
 No new foam thickness, inner liner or thermal solver is implied. Three legacy seam boxes
-are archived. Attic/local camera/HGA insulation is next. See the current
+are archived. Attic/HGA surface access and local camera-window surrounds are now implemented;
+full local construction remains open. See the current
 [body research/handoff](research/body-foam-2026-10-22/README.md).
+
+October23 [attic/local handoff](research/attic-local-insulation-2026-10-22/README.md):
+`attic-insulation.mjs` retains the arched cover in five regions; `local-insulation.mjs`
+splits the existing HGA dome and adds estimated hollow window surrounds.
+`foam-optical-ports.mjs` preserves/interpolates triangle attributes while cutting estimated
+sight corridors. Windows use actual beveled-surface intersections; camera hardware poses
+are unchanged. Open interior is a presentation preset, not flight state/disassembly.
+The nested vendor core import now carries the normal release stamp. Full harness coverage
+remains unresolved; [endpoint register](research/attic-local-insulation-2026-10-22/HARNESS-AUDIT.md).
 
 | File | What it does |
 |---|---|

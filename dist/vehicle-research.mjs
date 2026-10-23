@@ -18,6 +18,8 @@ import { buildSideWall } from "./side-wall.mjs?v=dev";
 import { buildWallEndJoints } from "./wall-end-joints.mjs?v=dev";
 import { buildTopDeck } from "./top-deck.mjs?v=dev";
 import { buildBodyFoam } from "./body-foam.mjs?v=dev";
+import { buildAtticInsulation } from "./attic-insulation.mjs?v=dev";
+import { openBodyCameraPorts } from "./foam-optical-ports.mjs?v=dev";
 import { buildNoseSensors } from "./nose-sensors.mjs?v=dev";
 import { buildAftBulkhead, aftBulkheadAsset } from "./aft-bulkhead.mjs?v=dev";
 import { buildRotorHead, buildHubPlate, rotorHeadAsset } from "./rotor-heads.mjs?v=dev";
@@ -159,13 +161,7 @@ export function buildResearchModel(kit) {
   // The rounded forward cover transitions to a low, flat equipment deck. Its silhouette
   // follows APL's CAD movie and NASA Assembly Guide pp1-3; this is procedural geometry [EST].
   subsystem("attic", "insulated-shell");
-  const atticShape = new THREE.Shape();
-  atticShape.moveTo(-1.87, 0.04);
-  atticShape.bezierCurveTo(-1.90, 0.25, -1.63, 0.51, -1.39, 0.55);
-  atticShape.quadraticCurveTo(-1.10, 0.59, -0.80, 0.56);
-  atticShape.quadraticCurveTo(-0.73, 0.55, -0.73, 0.49);
-  atticShape.lineTo(-0.73, 0.04);
-  profileBody(atticShape, 0.87, foam, 0.055).name = "forward-attic-cover";
+  buildAtticInsulation({ parent: buildTarget, mesh, material: foam });
   subsystem("starboard-wall", "equipment-bay");
   buildTarget.userData.layer = "structure";
   buildSideWall({ parent: buildTarget, mesh });
@@ -463,7 +459,8 @@ export function buildResearchModel(kit) {
   interiorPart("nose-sensors", "external-sensors", "DraGMet: EFIELD / METHAN", "IPM 2025 pp184-187: EFIELD engineering-model photo; METHAN published design and CAPS 2024 slide42 diagram. Exact installation estimated; METHAN NOT photo-matched", 0x6b7278, "exterior");
   buildNoseSensors({ parent: buildTarget, mesh });
   interiorPart("side-cameras", "cold-actuators", "DragonCam lower cameras: Microscopic Camera, LED array, two Down Cameras (in foam cavities)", "DragonCam paper (Clark et al. 2026) figs. 1-3, 5, 12, table 1; brackets and down-camera position estimated", 0xbfb8aa, "exterior");
-  buildSideCameras({ parent: buildTarget, mesh });
+  const lowerCameras=buildSideCameras({ parent: buildTarget, mesh });
+  openBodyCameraPorts(subsystems.fuselage,lowerCameras.cameras);
   interiorPart("drill-blower", "drills", "DrACO blowers: forward and aft centrifugal blowers behind the port forward arm", "LPSC 2022 fig. 1 and schematic; ICES-2023 p5, p7; sizes and layout estimated", 0x8c8f93, "exterior");
   buildBlowers({ parent: buildTarget, mesh });
 

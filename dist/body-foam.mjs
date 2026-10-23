@@ -1,5 +1,6 @@
 import * as THREE from "./vendor/three/three.module.min.js";
 import { aftFaceZ } from "./aft-bulkhead.mjs?v=dev";
+import { splitSurfaceGeometry } from "./insulation-surfaces.mjs?v=dev";
 
 export const bodyFoamAsset = Object.freeze({
   revision: "body-foam-2026-10-22", surfaceOnly: true,
@@ -30,29 +31,8 @@ export function bodyFoamGeometry() {
 // Inspection ownership only: retain each original triangle and its shading/UVs.
 // The dominant geometric normal defines broad regions, not flight tile cut lines.
 export function splitBodyFoamSurface(geometry) {
-  const source = geometry.index ? geometry.toNonIndexed() : geometry;
-  const buckets = new Map(bodyFoamRegions.map(({id})=>[id,[]]));
-  const p=source.attributes.position, a=new THREE.Vector3(),b=new THREE.Vector3(),c=new THREE.Vector3();
-  for(let i=0;i<p.count;i+=3){
-    a.fromBufferAttribute(p,i); b.fromBufferAttribute(p,i+1); c.fromBufferAttribute(p,i+2);
-    const x=(a.x+b.x+c.x)/3, n=b.sub(a).cross(c.sub(a));
-    const nx=Math.abs(n.x),ny=Math.abs(n.y),nz=Math.abs(n.z);
-    const id=nx>=ny&&nx>=nz?(x<0?"body-foam-port":"body-foam-starboard")
-      :ny>=nz?(n.y>0?"body-foam-top":"body-foam-belly"):"body-foam-ends";
-    buckets.get(id).push(i,i+1,i+2);
-  }
-  const result=new Map();
-  for(const[id,vertices]of buckets){
-    const part=new THREE.BufferGeometry();
-    for(const[name,attribute]of Object.entries(source.attributes)){
-      const values=new attribute.array.constructor(vertices.length*attribute.itemSize);
-      vertices.forEach((vertex,i)=>values.set(attribute.array.subarray(vertex*attribute.itemSize,(vertex+1)*attribute.itemSize),i*attribute.itemSize));
-      part.setAttribute(name,new THREE.BufferAttribute(values,attribute.itemSize,attribute.normalized));
-    }
-    part.computeBoundingBox();part.computeBoundingSphere();result.set(id,part);
-  }
-  if(source!==geometry)source.dispose();
-  return result;
+  const parts=splitSurfaceGeometry(geometry);
+  return new Map(bodyFoamRegions.map(({id})=>[id,parts.get(id.replace("body-foam-",""))]));
 }
 
 export function buildBodyFoam({parent,mesh,material}) {

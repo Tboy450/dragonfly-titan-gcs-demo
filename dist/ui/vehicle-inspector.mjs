@@ -4,7 +4,7 @@ import { samplingSequence } from "../science.mjs?v=dev";
 import { focusInspector, inspectionAvailable, inspectionTarget, resetInspector, rotateInspector, zoomInspector,
   inspectionSubassemblies, inspectionSubassembly, selectInspectionSubassembly } from "../vehicle-inspector.mjs?v=dev";
 import { globalInspectionLayers, partInspectionLayers, inspectionLayerVisible, setInspectionLayer,
-  restoreInspectionLayers, hiddenInspectionCount } from "../inspection-visibility.mjs?v=dev";
+  restoreInspectionLayers, hiddenInspectionCount,applyInspectionAccessPreset,inspectionAccessPreset } from "../inspection-visibility.mjs?v=dev";
 
 const numberedParts = Object.values(chaseRenderer?.subsystems ?? {}).filter(group => group.userData.label);
 const parts = [...numberedParts, ...Object.values(chaseRenderer?.subsystems ?? {}).filter(group => group.userData.inspectionTitle && !group.userData.label)];
@@ -62,6 +62,7 @@ export function updateInspectorUI() {
   }
   subassemblySelect.value = inspectionSubassembly(group, i)?.name ?? "";
   const hidden = hiddenInspectionCount(i);
+  $("inspection-access-preset").value=inspectionAccessPreset(i);
   for (const option of select.options) {
     if (!option.value) continue;
     const part = parts.find(part => part.name === option.value);
@@ -107,6 +108,10 @@ export function updateInspectorUI() {
 }
 
 select.addEventListener("change", () => { focusInspector(state, select.value || null); updateInspectorUI(); });
+$("inspection-access-preset").addEventListener("change",event=>{
+  if(event.target.value==="open")focusInspector(state,null);
+  applyInspectionAccessPreset(state.inspector,event.target.value);updateInspectorUI();
+});
 subassemblySelect.addEventListener("change", () => {
   selectInspectionSubassembly(state, chaseRenderer.subsystems[inspectionTarget(state)], subassemblySelect.value);
   updateInspectorUI();

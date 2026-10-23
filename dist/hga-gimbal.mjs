@@ -1,4 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js";
+import { buildHgaDomeSurfaces } from "./local-insulation.mjs?v=dev";
 
 // Part 10: the high-gain antenna (HGA) gimbal: azimuth and elevation actuators, the motorized arm
 // and the stow locks. Published: the HGA is an 87.4 cm radial line slot disc on a motorized arm
@@ -16,7 +17,7 @@ import * as THREE from "./vendor/three/three.module.min.js";
 // lock positions, colors and the azimuth limit near the attic are [EST].
 const deckY = 0.07, foamTop = 0.10;
 export const hgaAsset = Object.freeze({
-  revision: "hga-gimbal-2026-10-14",
+  revision: "hga-gimbal-2026-10-23",
   deckY, foamTop,
   dishDiameterM: 0.874,
   dishThicknessM: 0.03,
@@ -182,10 +183,7 @@ export function buildHgaGimbal({ parent, mesh, head }) {
   const wrap = mesh(new THREE.TorusGeometry(0.05, 0.009, 8, 16, Math.PI / 2), gold, [0.115, axisY - 0.05, -0.05], azCasings);
   wrap.rotation.y = Math.PI / 2;
   wrap.name = "hga-cable-wrap";
-  const foam = mesh(new THREE.CapsuleGeometry(hgaAsset.domeRadiusM, 0.13, 6, 20), rohacell, [0, axisY, 0], dome);
-  foam.rotation.z = Math.PI / 2;
-  foam.name = "hga-rohacell-dome";
-  foam.userData.shell = true;
+  buildHgaDomeSurfaces({parent:dome,mesh,material:rohacell,radius:hgaAsset.domeRadiusM,axisY});
 
   // ---- Elevation stage (raises the arm about the drum axis): arm, pedestal, thermal isolator,
   // connector bracket and the flexible feed line up to the dish center.

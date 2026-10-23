@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import * as THREE from "../dist/vendor/three/three.module.min.js";
 import { buildSideCameras, sideCamerasAsset } from "../dist/side-cameras.mjs";
 import { ecamSizes } from "../dist/ecam.mjs";
+import { bodyFoamGeometry } from "../dist/body-foam.mjs";
 import { buildPowerUnits } from "../dist/power-units.mjs";
 import { buildIem } from "../dist/iem.mjs";
 import { buildFrontierRadio } from "../dist/frontier-radio.mjs";
@@ -42,14 +43,17 @@ test("Down Cameras look straight down; every camera has a 3 mm window at the foa
     const cam = named(cameras, name);
     assert.ok(axis(cam.group).angleTo(new THREE.Vector3(0, -1, 0)) < 1e-6, `${name} looks down`);
     const w = new THREE.Vector3(); cam.window.getObjectByName("camera-window").getWorldPosition(w);
-    assert.ok(w.y < -0.355 && w.y > -0.362, `${name} window in the bottom surface (${w.y.toFixed(3)})`);
+    assert.ok(w.y < -0.39 && w.y > -0.42, `${name} window follows the actual beveled body surface (${w.y.toFixed(3)})`);
   }
   for (const cam of cameras) {
     const pane = cam.window.getObjectByName("camera-window");
     assert.ok(Math.abs(pane.geometry.parameters.height - 0.003) < 1e-9, "3 mm window");
     const w = new THREE.Vector3(); pane.getWorldPosition(w);
-    const onBottom = Math.abs(w.y + 0.36) < 0.006, onSide = Math.abs(Math.abs(w.x) - 0.43) < 0.006;
-    assert.ok(onBottom || onSide, `${cam.group.name} window at the outer foam (${w.toArray().map(v => v.toFixed(3))})`);
+    const body=new THREE.Mesh(bodyFoamGeometry(),new THREE.MeshBasicMaterial({side:THREE.DoubleSide}));body.updateMatrixWorld(true);
+    const direction=axis(cam.group),start=cam.group.position.clone();
+    const hit=new THREE.Raycaster(start,direction,.000001).intersectObject(body)[0];
+    assert.ok(hit,`${cam.group.name} body intersection`);
+    assert.ok(Math.abs(w.distanceTo(hit.point)-.0015)<1e-6,"3 mm pane rear meets the actual body boundary, not a nominal bounding plane");
     assert.deepEqual([cam.casing, cam.mounts, cam.connectors, cam.harness, cam.window, cam.cavity].map(g => g.userData.inspectionLayer),
       ["equipment-casings", "mounts", "interfaces", "harnesses", "equipment-covers", "insulation"]);
     const pose = cam.group.matrixWorld.clone();

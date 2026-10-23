@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "live": false,
+  "build": "Build local",
+  "cases": 35,
+  "original24Numbers": true,
+  "globalMasks": 9,
+  "componentInsulationMasks": 3,
+  "openInterior": true,
+  "coreRequests": [
+    "http://127.0.0.1:4199/vendor/three/three.core.min.js?v=dev"
+  ],
+  "errors": [],
+  "failed": []
+}

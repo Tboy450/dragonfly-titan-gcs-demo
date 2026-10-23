@@ -39,6 +39,30 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-23: Attic/local insulation access, optical ports and open interior
+- **Signed:** Codex (OpenAI).
+- **Commit:** "Add attic and local insulation access with open interior preset".
+- **What:** Five attic surface regions, two HGA dome surfaces, three estimated hollow
+  camera-window surrounds, global/component Insulation masks, Open interior/All layers.
+  Installed equipment retained; Open interior releases isolation/focus.
+- **Optics:**3mm windows meet the actual beveled body; estimated corridors/neighbor reliefs
+  clear20 sampled rays. Camera bodies, aim, mounts and HGA mechanism/motion unchanged.
+  Rejected rim draft blocked a neighbor sightline and was archived before correction.
+- **Loading:** a cache-key experiment isolated the stalled unversioned Three.js core URL.
+  Its nested import now gets the release stamp; library algorithms/version/license unchanged.
+  Final public acceptance must use no interception/protocol/local-file workaround.
+- **Sources/limits:** saved real NASA/APL foam/HGA photos, ICES2020/2023 and DragonCam2026.
+  Surface splits/rims/openings estimated; not full flight blisters/inner liner/tile or
+  membrane stack. No flight/thermal solver changes.
+- **Info audit:** component/source notes, Vehicle/Model assumptions, expandable construction/
+  harness coverage, source register, README, architecture/checklist updated. Existing
+  wiring not declared complete; coverage register flags missing modeled routes. No wires added.
+- **Archive/checks:** baseline ef3b429/tag, exact old files/vendor wrapper, six before views
+  and manifests, rejected rim draft. Initial532 tests,35 local browser cases, nine global/
+  three component masks, optical checks, restore/source/count24/Pilot and raw pixels pass.
+- **Next:** endpoint/harness-family audit and support/penetration work; full local foam
+  geometry and separate thermal material audit remain open. Preserve concurrent game work.
+
 ### 2026-10-22: Body-insulation release receipt
 - **Signed:** Codex (OpenAI).
 - **Commit:** "Record body insulation deployment and verification limits [skip ci]".

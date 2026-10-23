@@ -1,0 +1,26 @@
+{
+  "attic": {
+    "count": 230455,
+    "edge": 0
+  },
+  "attic-open": {
+    "count": 150839,
+    "edge": 0
+  },
+  "hga": {
+    "count": 54790,
+    "edge": 0
+  },
+  "hga-open": {
+    "count": 47022,
+    "edge": 0
+  },
+  "microscope": {
+    "count": 67251,
+    "edge": 0
+  },
+  "down-camera": {
+    "count": 84423,
+    "edge": 0
+  }
+}

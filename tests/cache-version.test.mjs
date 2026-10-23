@@ -32,3 +32,9 @@ test("The header shows a build label the publish workflow can stamp", () => {
   assert.ok(workflow.includes("data-build-stamp>Build local<"), "workflow replaces the same marker");
   assert.ok(workflow.indexOf("Stamp build version") > workflow.indexOf("node --test"), "stamping runs after the checks");
 });
+
+test("Three.js core has a release cache key rather than an unversioned nested module URL",()=>{
+  const vendor=readFileSync(new URL("../dist/vendor/three/three.module.min.js",import.meta.url),"utf8");
+  assert.ok(vendor.includes("./three.core.min.js?v=dev"));
+  assert.ok(!vendor.includes('"./three.core.min.js"'));
+});

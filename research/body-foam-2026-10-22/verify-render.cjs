@@ -45,7 +45,8 @@ const fs = require('node:fs'), path = require('node:path'), assert = require('no
         const body=groups.fuselage;
         const addTriangles=o=>{const g=o.geometry.index?o.geometry.toNonIndexed():o.geometry,a=g.attributes.position.array;
           for(let i=0;i<a.length;i+=9)triangles.push(JSON.stringify(Array.from(a.slice(i,i+9))));};
-        if(before)addTriangles(body.children.find(o=>o.isMesh));else body.traverse(o=>{if(o.isMesh)addTriangles(o);});
+        const original=before&&body.children.find(o=>o.isMesh);
+        if(original)addTriangles(original);else body.traverse(o=>{if(o.isMesh)addTriangles(o);});
         triangles.sort();if(before)return{manifest,triangles};
         const scene=new T.Scene();scene.background=new T.Color(0xe2e7e9);
         scene.add(new T.HemisphereLight(0xffffff,0x63727a,2.5));const sun=new T.DirectionalLight(0xffffff,3.5);sun.position.set(3,5,4);scene.add(sun);
