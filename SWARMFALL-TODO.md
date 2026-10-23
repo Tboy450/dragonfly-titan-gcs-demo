@@ -1107,6 +1107,19 @@ These extend FIX-02/FIX-03; new cities cannot rely on decorative geometry for ga
       - A selected drone's attack target gets a faint line when it can fire, and a dashed red
         one with "No clear shot" while blocked.
     - Still open: bridges and multi-level surfaces (none in the game yet).
+  - **Progress (Claude, October 22):** Weapon range now uses world heights:
+    - `shotRange` in battle.mjs measures in 3D between the two firing heights, including the
+      ground under each unit. Firing, attack-move, attack orders and troops chasing drones all
+      use it, so a unit never stops where it thinks it can fire but cannot.
+    - A drone over a 48 m tower (flying at 58 m) is out of a watchtower's 70 m reach from 50 m
+      away and is hit once it comes down. A drone on a 60 m ridge is out of reach of a tower in
+      the valley. A spear (28 m) reaches a Striker (28 m up) only from nearly underneath.
+    - Air, ground and structure targets keep their own weapon lists (units.mjs `hits`).
+    - Balance check on all 7 campaign planets (two scripted waves each): 11 of 14 fights came
+      out the same and the rest differ by one or two drones. Step time is within 0.2 ms of
+      before on the Frontier maps.
+    - `tests/invasion-range-height.test.mjs`: street to roof, ridge to valley, spear to Striker.
+    - Still open: under-bridge shots (no bridges yet, CITY-04).
 - [ ] **COMBAT-04 (P2)** Make squad intent legible: target/retarget cue, movement destination,
   attack range and stop/disengage feedback. Show jammer/shield coverage and why a capture or
   weapon is blocked. Coordinate FIX-05, CTRL-06 and CTRL-07 rather than duplicating controls.

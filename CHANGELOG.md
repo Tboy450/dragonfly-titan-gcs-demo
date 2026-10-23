@@ -39,6 +39,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall weapon range counts height
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Measure weapon range in 3D between firing heights"
+- **What changed:** Checklist COMBAT-03 (progress). Weapon range was measured flat, so troops
+  in a street could hit a drone flying 58 m up over a tower as if it were beside them. Now:
+  - Range is measured in 3D between the two firing heights, including the ground under each
+    unit. Defenses fire from their mount, troops from the shoulder and drones from where they
+    fly.
+  - Firing, attack-move, attack orders and troops chasing drones all use the same measure, so
+    no unit parks where it thinks it can fire but cannot.
+  - A drone high over a roof or on a ridge is out of reach of defenders below, and the reverse.
+    A spear reaches a Striker overhead only from nearly underneath.
+  - Balance check on all 7 campaign planets (two scripted waves each): 11 of 14 fights came out
+    the same and the rest differ by one or two drones. Step time is within 0.2 ms of before.
+- **Files:** `dist/invasion/battle.mjs`, `tests/invasion-range-height.test.mjs` (new),
+  `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (537 pass); flat-versus-3D fight comparison and
+  timing on the Frontier maps, Aurex and Velm.
+
 ### 2026-10-22: Swarmfall keyboard play and safer shortcuts
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add keyboard paths for orders and pods, and keep shortcuts off focused controls"
