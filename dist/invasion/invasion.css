@@ -18,7 +18,7 @@
 html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); font: 15px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
 button { font: inherit; color: var(--text); background: rgba(40, 52, 78, 0.85); border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; cursor: pointer; min-height: 36px; }
 button:hover:not(:disabled) { border-color: rgba(124, 231, 255, 0.6); }
-button:focus-visible { outline: 2px solid var(--swarm); outline-offset: 2px; }
+button:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--swarm); outline-offset: 2px; }
 button:disabled { opacity: 0.45; cursor: not-allowed; }
 button.primary { background: linear-gradient(180deg, #2fb6d8, #1b7fa0); border-color: #6fe0ff; color: #04131a; font-weight: 700; }
 button.ghost { background: transparent; }

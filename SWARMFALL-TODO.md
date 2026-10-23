@@ -1107,6 +1107,19 @@ These extend FIX-02/FIX-03; new cities cannot rely on decorative geometry for ga
       - A selected drone's attack target gets a faint line when it can fire, and a dashed red
         one with "No clear shot" while blocked.
     - Still open: bridges and multi-level surfaces (none in the game yet).
+  - **Progress (Claude, October 22):** Weapon range now uses world heights:
+    - `shotRange` in battle.mjs measures in 3D between the two firing heights, including the
+      ground under each unit. Firing, attack-move, attack orders and troops chasing drones all
+      use it, so a unit never stops where it thinks it can fire but cannot.
+    - A drone over a 48 m tower (flying at 58 m) is out of a watchtower's 70 m reach from 50 m
+      away and is hit once it comes down. A drone on a 60 m ridge is out of reach of a tower in
+      the valley. A spear (28 m) reaches a Striker (28 m up) only from nearly underneath.
+    - Air, ground and structure targets keep their own weapon lists (units.mjs `hits`).
+    - Balance check on all 7 campaign planets (two scripted waves each): 11 of 14 fights came
+      out the same and the rest differ by one or two drones. Step time is within 0.2 ms of
+      before on the Frontier maps.
+    - `tests/invasion-range-height.test.mjs`: street to roof, ridge to valley, spear to Striker.
+    - Still open: under-bridge shots (no bridges yet, CITY-04).
 - [ ] **COMBAT-04 (P2)** Make squad intent legible: target/retarget cue, movement destination,
   attack range and stop/disengage feedback. Show jammer/shield coverage and why a capture or
   weapon is blocked. Coordinate FIX-05, CTRL-06 and CTRL-07 rather than duplicating controls.
@@ -1340,9 +1353,24 @@ an optional dedicated mode as a first step. Keep this future work unchecked unti
 
 ## 25. Accessibility, settings and device usability (ACCESS)
 
-- [ ] **ACCESS-01 (P1)** Ensure essential selection, launch, pause, continue/extract and
-  menu actions have keyboard paths and visible focus. Keep shortcuts from activating while
-  typing/selecting controls, and explain disabled actions rather than silently ignoring them.
+- [x] **ACCESS-01 (P1) — Claude (October 22)** Ensure essential selection, launch, pause,
+  continue/extract and menu actions have keyboard paths and visible focus. Keep shortcuts from
+  activating while typing/selecting controls, and explain disabled actions rather than silently
+  ignoring them.
+  - Keyboard paths: 1-9 and 0 select (a second press brings the camera to the squad), Enter
+    orders the selected squads to the middle of the screen (Shift+Enter queues), B opens the
+    drop panel with focus on its first usable button, and while picking a zone Enter previews
+    pods at the middle of the screen and a second Enter launches. Space pauses; the victory
+    dialog, Extract, Squad ▾ and every panel button are reachable with Tab.
+  - Safety: shortcuts are off in fields and menus (now including the Squad ▾ menu) and with
+    Ctrl, Alt or Cmd held; Space and Enter on a focused button press that button.
+  - Visible focus outlines on menus, fields, links and details as well as buttons.
+  - Explained: Enter with nothing selected, 0 and missing squad numbers say why nothing happened;
+    the drop panel already states why its launch buttons are off.
+  - The Field guide has a new Controls section listing every key.
+  - `tests/invasion-keyboard.test.mjs` (9 tests, real entry point); checked in the browser with
+    real key presses (outline shown, B → Enter launched, 1 → Enter ordered the squad).
+  - Screen reader review and touch targets stay under ACCESS-02 and later items.
 - [ ] **ACCESS-02 (P1)** Review touch target sizes, pointer cancellation, drag/tap thresholds,
   pinch/rotate and portrait/landscape layout. Confirm panels do not cover the selected squad,
   landing preview or extraction decision on small displays.
@@ -1376,9 +1404,23 @@ an optional dedicated mode as a first step. Keep this future work unchecked unti
 - [ ] **PERF-10 (P2)** Bound expensive visual work: damage preparation, weather, smoke,
   projectiles, debris and distant units. Tune quality/fallback behavior from profiles; move
   work to shaders/workers only when measurements justify the extra system complexity.
-- [ ] **PERF-11 (P1)** Define gameplay behavior under low frame rate, slow loading, browser
-  hide/resume and pause. Preserve simulation meaning and input responsiveness; do not let
-  effects, timers or pod releases duplicate when rendering catches up.
+- [x] **PERF-11 (P1) — Claude (October 22)** Define gameplay behavior under low frame rate, slow
+  loading, browser hide/resume and pause. Preserve simulation meaning and input responsiveness;
+  do not let effects, timers or pod releases duplicate when rendering catches up.
+  - New `frame-clock.mjs`: each frame's real time becomes battle steps of at most 0.05 s.
+  - Low frame rate: a slow frame is caught up in several steps, up to 0.25 s of real time.
+    The battle keeps real time down to about 4 frames a second (before, it fell into slow
+    motion below 20). Below that it runs in slow motion, and if that lasts about 3 s the
+    player is told once and pointed to Graphics.
+  - Slow loading, hitches and hide/resume: anything over 0.25 s is dropped, not replayed in a
+    burst. A hidden tab still pauses the battle (unchanged).
+  - Pause: no battle steps; the camera, edge scroll and follow move by real time.
+  - Nothing repeats: steps advance one battle, events are handled once per frame, and pods
+    release on battle time. Twenty seconds at 144, 60, 10 and 4 frames a second each give 20 s
+    of battle with every pod released once.
+  - `tests/invasion-frame-clock.test.mjs` (5 tests, including the real entry point); checked in
+    the browser through the page's own frame function.
+  - Real phone frame times stay under PERF-01.
 - [ ] **TECH-06 (P1)** Separate shared environment/rule queries from Three.js/UI objects.
   Keep wave, victory, damage and possession state plain and testable, and make renderer
   ownership/lifecycle explicit so new features do not expand one global entry module indefinitely.

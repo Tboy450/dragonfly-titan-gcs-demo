@@ -495,6 +495,11 @@ const eyeHeight = (unit) => unit.alt + (unit.structure ? 4 : unit.side === "nati
 const clearShot = (b, unit, other) => !b.lineBlocked || !b.lineBlocked(unit.x, unit.z, eyeHeight(unit), other.x, other.z, eyeHeight(other));
 // For the page: true when something stands between a unit and its target.
 export const shotBlocked = (b, unit, other) => !clearShot(b, unit, other);
+// Weapon range is measured in 3D between the two firing heights, ground included (COMBAT-03): a
+// drone high over a tower is out of reach of troops in the street, and a spear reaches a Striker
+// only from nearly underneath. Sight and the combat grid stay flat (they only find candidates).
+const worldEye = (b, unit) => (b.heightAt ? b.heightAt(unit.x, unit.z) : 0) + eyeHeight(unit);
+export const shotRange = (b, unit, other) => Math.sqrt(dist2(unit, other) + (worldEye(b, other) - worldEye(b, unit)) ** 2);
 
 function nearestEnemy(unit, enemies, reach) {
   let best = null, bestD = reach * reach;
@@ -532,7 +537,7 @@ function moveUnits(b, dt, auras, swarm, natives) {
       const prey = order.hunt && order.kind === "move" && def.weapons.length ? nearestEnemy(unit, natives, def.sight) : null;
       if (prey) {
         const reach = Math.max(6, reachFor(def, prey) * effects.range * 0.8);
-        if (Math.sqrt(dist2(unit, prey)) > reach || !clearShot(b, unit, prey)) { tx = prey.x + unit.slot.dx; tz = prey.z + unit.slot.dz; arrive = 2; }
+        if (shotRange(b, unit, prey) > reach || !clearShot(b, unit, prey)) { tx = prey.x + unit.slot.dx; tz = prey.z + unit.slot.dz; arrive = 2; }
         destination = { x: prey.x, z: prey.z, radius: reach };
       } else if (order.kind === "attack") {
         let target = unitById(b, order.target);
@@ -546,7 +551,7 @@ function moveUnits(b, dt, auras, swarm, natives) {
           const reach = Math.max(6, reachFor(def, target) * effects.range * 0.8);
           destination = { x: target.x, z: target.z, radius: reach };
           // Out of reach, or a building in the way: close in (drones climb over roofs on the way).
-          if (Math.sqrt(dist2(unit, target)) > reach || !clearShot(b, unit, target)) { tx = target.x + unit.slot.dx; tz = target.z + unit.slot.dz; arrive = 2; }
+          if (shotRange(b, unit, target) > reach || !clearShot(b, unit, target)) { tx = target.x + unit.slot.dx; tz = target.z + unit.slot.dz; arrive = 2; }
         } else {
           unit.order = { kind: "hold", x: unit.x, z: unit.z };
           unit.slot = { dx: 0, dz: 0 };
@@ -567,7 +572,7 @@ function moveUnits(b, dt, auras, swarm, natives) {
       const leashOk = !home || unit.raid || !target || Math.sqrt(dist2(home, target)) < 280;
       if (target && leashOk) {
         unit.target = target.id;
-        if (Math.sqrt(dist2(unit, target)) > def.range * 0.85 || !clearShot(b, unit, target)) { tx = target.x; tz = target.z; arrive = 2; }
+        if (shotRange(b, unit, target) > def.range * 0.85 || !clearShot(b, unit, target)) { tx = target.x; tz = target.z; arrive = 2; }
       } else if (unit.raid) {
         const zone = zoneById(b, unit.raid);
         tx = zone.x + unit.slot.dx; tz = zone.z + unit.slot.dz;
@@ -697,13 +702,15 @@ const maxRange = (def) => {
 function fight(b, dt, auras, swarm, natives) {
   const effects = b.hazards.effects;
   const swarmIndex = combatIndex(swarm), nativeIndex = combatIndex(natives);
+  const eyes = new Map(), eyeOf = (u) => { let y = eyes.get(u); if (y === undefined) eyes.set(u, y = worldEye(b, u)); return y; };
+  const range = (u, other) => Math.sqrt(dist2(u, other) + (eyeOf(other) - eyeOf(u)) ** 2);
   for (const unit of b.units) {
     if (!unit.alive) continue;
     const def = defOf(unit);
     if (!def.weapons.length || stunned(b, unit)) continue;
     const enemyIndex = unit.side === "swarm" ? nativeIndex : swarmIndex;
     const rangeScale = unit.side === "swarm" ? effects.range : 1;
-    const armed = (other) => other?.alive && other.side !== unit.side && weaponFor(def, other, Math.sqrt(dist2(unit, other)), rangeScale) && clearShot(b, unit, other);
+    const armed = (other) => other?.alive && other.side !== unit.side && weaponFor(def, other, range(unit, other), rangeScale) && clearShot(b, unit, other);
     let target = null;
     if (unit.side === "swarm" && unit.order?.kind === "attack") {
       const ordered = unitById(b, unit.order.target);
@@ -722,7 +729,7 @@ function fight(b, dt, auras, swarm, natives) {
     }
     unit.target = target ? target.id : null;
     if (!target) continue;
-    const w = weaponFor(def, target, Math.sqrt(dist2(unit, target)), rangeScale);
+    const w = weaponFor(def, target, range(unit, target), rangeScale);
     let damage = w.damage * unit.damageScale * dt;
     if (unit.side === "native") damage *= (1 + auraBoost(auras.boost, unit)) * (1 + b.alarm / 200);
     if (target.structure && inAura(auras.armor, target, target.side)) damage *= 1 - 0.65;

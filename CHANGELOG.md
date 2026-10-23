@@ -63,6 +63,68 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Next:** endpoint/harness-family audit and support/penetration work; full local foam
   geometry and separate thermal material audit remain open. Preserve concurrent game work.
 
+### 2026-10-22: Swarmfall keeps real time on slow devices
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Keep battle time real on slow frames and drop stalls"
+- **What changed:** Checklist PERF-11. Each frame advanced the battle by at most 0.05 s, so
+  below 20 frames a second the whole game, camera included, ran in slow motion. A new frame
+  clock (`frame-clock.mjs`) now:
+  - catches a slow frame up in steps of at most 0.05 s, so the battle keeps real time down to
+    about 4 frames a second;
+  - drops anything over 0.25 s (a loading hitch, a frozen or hidden tab) instead of replaying
+    it in a burst, so pods, shots and timers never pile up;
+  - moves the camera by real time, paused or not;
+  - tells the player once, if the device stays too slow for about 3 s, that the battle is in
+    slow motion and that lowering Graphics helps.
+- **Files:** `dist/invasion/frame-clock.mjs` (new), `dist/invasion/main.mjs`,
+  `tests/invasion-frame-clock.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (542 pass). In the browser, through the page's own
+  frame function: 2 s at 10 fps gave 2 s of battle, a 5 s stall gave 0.25 s, and 2.5 fps gave
+  slow motion with one notice. No console errors.
+
+### 2026-10-22: Swarmfall weapon range counts height
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Measure weapon range in 3D between firing heights"
+- **What changed:** Checklist COMBAT-03 (progress). Weapon range was measured flat, so troops
+  in a street could hit a drone flying 58 m up over a tower as if it were beside them. Now:
+  - Range is measured in 3D between the two firing heights, including the ground under each
+    unit. Defenses fire from their mount, troops from the shoulder and drones from where they
+    fly.
+  - Firing, attack-move, attack orders and troops chasing drones all use the same measure, so
+    no unit parks where it thinks it can fire but cannot.
+  - A drone high over a roof or on a ridge is out of reach of defenders below, and the reverse.
+    A spear reaches a Striker overhead only from nearly underneath.
+  - Balance check on all 7 campaign planets (two scripted waves each): 11 of 14 fights came out
+    the same and the rest differ by one or two drones. Step time is within 0.2 ms of before.
+- **Files:** `dist/invasion/battle.mjs`, `tests/invasion-range-height.test.mjs` (new),
+  `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (537 pass); flat-versus-3D fight comparison and
+  timing on the Frontier maps, Aurex and Velm.
+
+### 2026-10-22: Swarmfall keyboard play and safer shortcuts
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add keyboard paths for orders and pods, and keep shortcuts off focused controls"
+- **What changed:** Checklist ACCESS-01. A whole mission can now be played from the keyboard:
+  - Enter orders the selected squads to the middle of the screen, or attacks the defender
+    there; Shift+Enter adds a waypoint.
+  - B opens the drop panel with focus on its first usable button, so Enter lands the wave.
+    While picking a zone, Enter previews pods at the middle of the screen and Enter again
+    launches. Escape closes the panel and returns focus to Drop wave.
+  - A squad number selects it; pressing it again brings the camera to it instead of
+    deselecting it.
+  - Shortcuts no longer fire in the Squad ▾ menu or with Ctrl, Alt or Cmd held, and Space or
+    Enter on a focused button now presses that button instead of pausing.
+  - Menus, fields and links get the same visible focus outline as buttons.
+  - Enter with nothing selected, 0 with no squads and a missing squad number now say why
+    nothing happened.
+  - The Field guide has a new Controls section with every key.
+- **Files:** `dist/invasion/main.mjs`, `dist/invasion/field-guide.mjs`,
+  `dist/invasion/invasion.css`, `tests/invasion-keyboard.test.mjs` (new), `SWARMFALL-TODO.md`,
+  `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (528 pass); in the browser with real key presses
+  on Kepra: the focus outline shows, B then Enter launched the wave, and 1 then Enter ordered
+  the squad to the screen center.
+
 ### 2026-10-22: Body-insulation release receipt
 - **Signed:** Codex (OpenAI).
 - **Commit:** "Record body insulation deployment and verification limits [skip ci]".

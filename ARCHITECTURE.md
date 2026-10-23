@@ -170,11 +170,12 @@ same split as the simulator: plain modules with tests, plus a page layer.
 | `invasion/sound.mjs` | Plays it with Web Audio (no sound files): beds, shots, explosions, chimes, sirens, thunder, pod entry and parachutes; off by default |
 | `invasion/quality.mjs` | Graphics quality levels (decor, city detail, ground, pixel ratio) and adaptive resolution from frame time |
 | `invasion/tips.mjs` | First-time tips: first defenders in sight, each kind of defense, alarm stages, first artillery and captured defense |
-| `invasion/field-guide.mjs` | The Field guide: every drone, defender, society and hazard with numbers and counters, generated from the rules |
+| `invasion/field-guide.mjs` | The Field guide: every drone, defender, society and hazard with numbers and counters, generated from the rules, plus the controls |
 | `invasion/paths.mjs` | Ground routes: a deterministic grid search round water, buildings and walls, used by troops on foot when blocked |
 | `invasion/tutorial.mjs` | The Titan tutorial: checked steps from the battle (drop to win, plus a weather step) and the button to highlight |
 | `invasion/swarm-dust.mjs` | Rotor-wash dust: a pooled, seeded puff simulation for low drones and pod touchdowns, drawn with sprites |
 | `invasion/camera-assist.mjs` | Follow the selected squads' center, the newest alert to jump to, edge scrolling and the starting view |
+| `invasion/frame-clock.mjs` | Turns each frame's real time into battle steps of at most 0.05 s: slow frames catch up, stalls are dropped, sustained lag is detected |
 | `invasion/free-camera.mjs` | The free camera's movement: start from and return to the orbit camera, fly with limits (ground, roofs, ceiling, map edge, no flying into buildings) |
 | `invasion/main.mjs` | Screens, saving, the mission loop, camera and touch controls, selection, orders, drop panel, HUD, minimap, debrief |
 | `invasion/index.html`, `invasion/invasion.css` | Markup and styles (phone layout in the last section) |
