@@ -1,0 +1,18 @@
+{
+  "upper": {
+    "count": 142252,
+    "edge": 0
+  },
+  "lower": {
+    "count": 245520,
+    "edge": 0
+  },
+  "side": {
+    "count": 246849,
+    "edge": 0
+  },
+  "peeled": {
+    "count": 40208,
+    "edge": 0
+  }
+}

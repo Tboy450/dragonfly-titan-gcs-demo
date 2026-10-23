@@ -4,6 +4,17 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October22 body insulation (Codex):** [evidence, samples and limits](research/body-foam-2026-10-22/README.md).
+[PUB] NASA September2025 identifies nominal7.6cm Solimide-based body foam. NASA NESC's
+May2026 development slides select Solimide16 and describe roughly800tiles, encapsulation,
+venting and contamination tests. Saved real hardware photo and slide pages are credited
+[here](research/sources/nasa-foam-2025/README.md). This supersedes older Rohacell body
+assumptions as current material context, not all local HGA/camera insulation.
+[EST] Five removable model surfaces retain the old outer triangles, not actual flight tile
+cuts or a volumetric layer. Inner shape/thickness, membranes, adhesives, vents and exact
+tiling remain unmodeled. No thermal constants, mass or controller changed. Follow up on the
+legacy conductivity/UA against selected-material test conditions separately.
+
 **October22 top deck (Codex):** [sources, samples and limits](research/top-deck-2026-10-22/README.md).
 [PUB] NASA0.01in aluminum facesheets, top-deck telecom role; ICES2020/2023 TWTA under-deck
 mounting. [EST]0.07m existing underside datum,12mm depth,121mm opening, outline, fittings,
@@ -401,7 +412,14 @@ Source: [PUB] [SciTech 2025 EDL overview](https://ntrs.nasa.gov/api/citations/20
     *Note (2026-10-14): the saved TFAWS 2023/2024 pages describe the diverters as fore and aft of
     the ducting with a cold duct along the belly (drawn that way since part 19's rebuild); the
     source for "one on each side" and "linear actuators" was not found in the saved papers.*
-  - The lander is wrapped in **Rohacell 31 HF foam**: 5 cm in the 2020 design, 7–7.62 cm later. Conductivity is ≤0.035 W/m·K between 0 and −179 °C and ~0.01 W/m·K at Titan temperature. The skin is aluminized Kapton.
+  - **Historical design context, not current body selection (correction October22):**
+    the older studies describe Rohacell31HF,5cm in2020 and7-7.62cm later, with cold
+    conductivity near.01W/m/K and aluminized Kapton. NASA September2025 instead identifies
+    Solimide-based body foam; the May2026 NESC selection table favors Solimide16. Its tested
+    effective conductivity is.019W/m/K at1.5atm and approximately.002 in vacuum, density16kg/m3.
+    These are condition-specific test values, not validated whole-lander conductance.
+    The simulator retains its legacy preliminary constants pending a separate thermal audit.
+    Source-specific local HGA/core references must not be changed by blanket substitution.
   - The battery has aluminum fin extrusions between cell stacks with small fans, plus **7.5 kg of paraffin phase-change material (melting at 22.5 °C)** and constant-conductance heat pipes.
 
 ### 4.2 Controller

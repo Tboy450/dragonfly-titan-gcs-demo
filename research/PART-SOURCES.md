@@ -6,6 +6,13 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Body insulation surface access (Codex, October22):** [real/CAD/model comparison](body-foam-2026-10-22/README.md).
+[Original photo and NASA NESC slides](sources/nasa-foam-2025/README.md): NASA September2025
+real test segment, credit Johns Hopkins APL / Justin Artis; May2026 development slides by
+Rolando Rodarte/APL, hosted by NASA NESC. Real test hardware is separate from slide3 CAD.
+Current Solimide body selection updates historical material context, not every local foam
+or solver constant. Five model inspection regions are not actual flight tiles or foam volume.
+
 **Top deck / attic edge (Codex, October22):** [real/CAD/model/context comparison and evidence](top-deck-2026-10-22/README.md).
 Reuses original April real fit-check (NASA/Johns Hopkins APL/Ed Whitman), NASA April23
 facesheet report, saved ICES2020 p5 and ICES2023 pp3/5/7, plus existing HGA arm reference.

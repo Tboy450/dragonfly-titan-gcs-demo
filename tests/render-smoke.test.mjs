@@ -599,7 +599,8 @@ test("Inspection masks hide existing layers without moving the camera, renumberi
   const draw = (layer = "internal", focusPart = null) => chase.drawMission(context2d, 900, 600, s,
     { layer, inspector, focusPart, reduceMotion: true });
   const baseline = draw();
-  for (const [id, part] of [["attic-shell", null], ["insulation", null], ["partitions", null], ["flow-markers", null],
+  for (const [id, part] of [["body-foam-top", null], ["body-foam-port", null],
+    ["attic-shell", null], ["insulation", null], ["partitions", null], ["flow-markers", null],
     ["equipment-covers", "drams"]]) setInspectionLayer(inspector, id, false, part);
   const masked = draw();
   assert.deepEqual(masked.map(l => l.name), baseline.map(l => l.name), "numbering order retained");
@@ -616,6 +617,7 @@ test("Inspection masks hide existing layers without moving the camera, renumberi
   assert.ok(chase.subsystems.attic.visible);
   chase.draw(context2d, 900, 600, s);
   assert.ok(chase.subsystems.fuselage.visible && chase.subsystems.attic.visible);
+  for (const id of ["body-foam-top", "body-foam-port"]) assert.ok(chase.subsystems.fuselage.getObjectByName(id).visible);
   for (const [o, position] of poses) assert.deepEqual(o.position.toArray(), position, o.name);
   assert.deepEqual(s, before);
 });

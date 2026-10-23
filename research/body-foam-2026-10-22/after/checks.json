@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "before": false,
+  "live": false,
+  "build": "Build local",
+  "cases": 36,
+  "stable24Numbers": true,
+  "errors": [],
+  "failed": []
+}

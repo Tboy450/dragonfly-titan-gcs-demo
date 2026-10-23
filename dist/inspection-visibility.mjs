@@ -1,6 +1,9 @@
+import { bodyFoamRegions } from "./body-foam.mjs?v=dev";
+
 // Presentation masks for existing geometry; no construction layers or hidden internals are invented.
 export const globalInspectionLayers = Object.freeze([
-  { id: "body-shell", label: "Body shell" },
+  { id: "body-shell", label: "Body insulation (all)" },
+  ...bodyFoamRegions,
   { id: "attic-shell", label: "Attic shell" },
   { id: "insulation", label: "Insulating foam" },
   { id: "partitions", label: "Compartment panels" },
@@ -56,6 +59,7 @@ export function createInspectionVisibility(subsystems) {
     const layers = new Map(partInspectionLayers.map(({ id }) => [id, []]));
     group.traverse(object => {
       const category = object.userData.inspectionLayer;
+      if (bodyFoamRegions.some(({ id }) => id === object.userData.bodyFoamRegion)) add(object.userData.bodyFoamRegion, object);
       if (category === "insulation") add("insulation", object);
       if (category === "interface-faces") add("partitions", object);
       if (layers.has(category)) layers.get(category).push(object);

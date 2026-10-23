@@ -37,15 +37,28 @@ explicitly estimated, not flight CAD. Do not repeatedly search the same closed l
    Opposite wall/end joints, deck and independent foam regions keep this overall item open.
    Port wall and estimated nose/canted-aft joint initial passes now complete; deck/attic
    boundary is next. [Current sources, samples and handoff](research/port-wall-joints-2026-10-22/README.md).
-   Initial deck/attic-edge pass now complete; separate body/deck insulation regions next,
-   then attic/local camera/HGA foam. [Current deck source/sample/handoff](research/top-deck-2026-10-22/README.md).
+   Initial deck/attic-edge pass complete. Body outer surface is now split into five
+   removable inspection regions; attic/local camera/HGA foam is next.
+   [Current body evidence/sample/handoff](research/body-foam-2026-10-22/README.md).
 
 Other harness work stays queued behind this order. Current count24/24 initial passes
 (9 Codex / 15 Claude), with labeled hardware-family/design approximations. Installation and
 construction work are still open. Follow the expanded packages below after the ordered
 items; do not confuse finishing the numbered list with finishing construction and connections.
 
-Current October22 deck checkpoint: unnumbered Top deck / attic edge, separate0.254mm
+Current October22 body-insulation checkpoint: five independent top/deck, port, starboard,
+belly and end surface regions, with aggregate body/foam masks and separate structural
+wall/deck masks. Exact original outer-body triangles/normals/UVs retained; three legacy
+solid cross-bay seam boxes retired and archived. No volumetric foam, inner liner, flight
+tile map or membrane stack invented. All24 equipment plus walls/joints/deck/attic unchanged.
+NASA2025 real test photo and NESC May2026 foam development saved/reviewed: current body
+selection is Solimide-based / Solimide16, not a blanket update to all local Rohacell.
+Legacy thermal constants remain unchanged; a separately scoped source/material audit is open.
+519 tests pass. Browser/source/pixel/publication receipts are tracked in the current research
+folder. Next: attic region separation, then local camera/HGA insulation. Keep thickness,
+penetrations, encapsulation/vents and hidden construction open until separately supported.
+
+Historical October22 deck checkpoint: unnumbered Top deck / attic edge, separate0.254mm
 faces and estimated12mm depth, opening, edges/lip and lock foundations. Existing HGA/TWTA
 share unchanged y=.07m mounting plane; foundations meet existing lock bases. Initial89mm
 opening crossed unchanged dome; draft archived,121mm final opening passes15 deploy/pointing
@@ -968,6 +981,17 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [ ] **Insulation regions:** distinguish body/attic/arm foam and warm/cold boundaries from
   structural skin. Use published thickness where applicable; retain local-thickness unknowns,
   lower-camera blister follow-up and any unmodeled mounting isolation.
+  - [x] **Body surface access:** five independently hidden outer surfaces preserve the
+    original outer body; no flight tile cuts or actual foam volume inferred. Source nominal
+    7.6cm thickness is recorded, not applied as a blanket inward offset around existing parts.
+  - [ ] **Attic surface access:** split the existing raised cover without moving instruments;
+    distinguish cold carousel region and warm DraMS where supported, not invented tile seams.
+  - [ ] **Local camera/HGA insulation:** inspect saved real/test photos and dimensional
+    sections; preserve optical apertures, gimbal travel and source-specific material identity.
+  - [ ] **Thickness/encapsulation/venting:** verified local section geometry and load-path
+    dependent encapsulation; NESC test vent-grid examples are not flight hole maps.
+  - [ ] **Thermal material-revision audit:** compare current Solimide16 test conditions
+    with legacy preliminary Rohacell-based conductivity/UA assumptions before changing solver.
 - [ ] **Equipment-specific housing audit:** casing/lid/base/thermal attachment per unit;
   closed housings show only referenced internal hardware when opened. An empty approximation
   must not be described as an actual hollow flight enclosure.

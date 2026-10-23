@@ -42,6 +42,14 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 ## Files
 
 ### Simulation (no DOM; covered by tests)
+
+October22 construction checkpoint: `dist/body-foam.mjs` partitions the original outer body
+triangles into five surface-only inspection regions. Global mask IDs live in the shared
+`bodyFoamRegions` definition; `body-shell` remains the aggregate for save/UI compatibility.
+No new foam thickness, inner liner or thermal solver is implied. Three legacy seam boxes
+are archived. Attic/local camera/HGA insulation is next. See the current
+[body research/handoff](research/body-foam-2026-10-22/README.md).
+
 | File | What it does |
 |---|---|
 | `dist/flight-model.mjs` | Vehicle constants, `createFlightState()`, the flight step (`stepFlight`), power curve, flight commands, autopilot branch, flight-plan estimate helper |

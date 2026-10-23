@@ -15,7 +15,14 @@ behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.m
 part numbers in Internal and Thermal now stay on their parts as the view turns (October 15); a
 crowded number moves to a nearby spot with a short leader line back to its part.
 
-October22 Codex: [top deck / attic edge](research/top-deck-2026-10-22/README.md)
+October22 Codex: [removable body-insulation surfaces](research/body-foam-2026-10-22/README.md)
+adds top/deck, port, starboard, belly and end-region inspection masks. The base outer shape,
+24 equipment parts and structural panels remain unchanged; old cross-bay seam blocks are
+archived. Real NASA/APL foam test photos and NASA NESC development slides are saved.
+Regions are surface-only estimates, not flight tile cuts or actual foam volumes.
+Next: attic regions, then local camera/HGA insulation; legacy thermal assumptions unchanged.
+
+Earlier October22 Codex: [top deck / attic edge](research/top-deck-2026-10-22/README.md)
 adds separate faces, a gimbal/dome clearance opening, short attic-edge lip and estimated
 stow-lock foundations. Three focus targets and independent masks; HGA/TWTA/shared mounting
 plane and original24 parts unchanged. Core/layup and local construction remain estimates.

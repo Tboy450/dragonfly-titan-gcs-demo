@@ -17,8 +17,9 @@ import { buildMmrtg } from "./mmrtg.mjs?v=dev";
 import { buildSideWall } from "./side-wall.mjs?v=dev";
 import { buildWallEndJoints } from "./wall-end-joints.mjs?v=dev";
 import { buildTopDeck } from "./top-deck.mjs?v=dev";
+import { buildBodyFoam } from "./body-foam.mjs?v=dev";
 import { buildNoseSensors } from "./nose-sensors.mjs?v=dev";
-import { buildAftBulkhead, aftBulkheadAsset, aftFaceZ } from "./aft-bulkhead.mjs?v=dev";
+import { buildAftBulkhead, aftBulkheadAsset } from "./aft-bulkhead.mjs?v=dev";
 import { buildRotorHead, buildHubPlate, rotorHeadAsset } from "./rotor-heads.mjs?v=dev";
 import { buildArmShoulder } from "./arm-shoulder.mjs?v=dev";
 import { buildMainHarness } from "./main-harness.mjs?v=dev";
@@ -47,7 +48,6 @@ export function buildResearchModel(kit) {
   const researchRotors = [];
   const drillFeeds = [], transferPaths = [];
   const foam = new THREE.MeshStandardMaterial({ color: 0xdcd3c1, metalness: 0.04, roughness: 0.82 });
-  const foamSeam = new THREE.MeshStandardMaterial({ color: 0xaea593, metalness: 0.05, roughness: 0.9 });
   const finMaterial = new THREE.MeshStandardMaterial({ color: 0xb39a48, metalness: 0.35, roughness: 0.5 });
   const armMaterial = new THREE.MeshStandardMaterial({ color: 0xc9ccc6, metalness: 0.35, roughness: 0.5 });
   const lens = new THREE.MeshStandardMaterial({ color: 0x0b1318, metalness: 0.6, roughness: 0.15 });
@@ -155,7 +155,7 @@ export function buildResearchModel(kit) {
   // The aft end follows the canted aft bulkhead (aft-bulkhead.mjs, part 16): the foam face leans
   // forward toward the top, parallel to the bulkhead the MMRTG bolts to. The first profile ended in
   // a near-vertical face at z 1.24 (archived in archive/aft-bulkhead-2026-10-15).
-  profileBody([[-1.90, -0.05], [-1.78, -0.27], [-1.48, -0.36], [aftFaceZ(-0.36), -0.36], [aftFaceZ(0.10), 0.10], [-1.83, 0.10]], 0.86, foam);
+  buildBodyFoam({ parent: buildTarget, mesh, material: foam });
   // The rounded forward cover transitions to a low, flat equipment deck. Its silhouette
   // follows APL's CAD movie and NASA Assembly Guide pp1-3; this is procedural geometry [EST].
   subsystem("attic", "insulated-shell");
@@ -166,8 +166,6 @@ export function buildResearchModel(kit) {
   atticShape.quadraticCurveTo(-0.73, 0.55, -0.73, 0.49);
   atticShape.lineTo(-0.73, 0.04);
   profileBody(atticShape, 0.87, foam, 0.055).name = "forward-attic-cover";
-  subsystem("fuselage", "insulated-shell");
-  for (const z of [-0.45, 0.2, 0.84]) mesh(new THREE.BoxGeometry(0.875, 0.5, 0.018), foamSeam, [0, -0.13, z]);
   subsystem("starboard-wall", "equipment-bay");
   buildTarget.userData.layer = "structure";
   buildSideWall({ parent: buildTarget, mesh });

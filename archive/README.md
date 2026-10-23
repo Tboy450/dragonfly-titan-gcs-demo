@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [body-foam-2026-10-22](body-foam-2026-10-22/README.md) | Exact combined-body builder/masks/UI/HTML, six before pictures, unchanged-equipment manifest and original outer triangle bag; retired three solid cross-bay seam blocks | 2026-10-22 | `archive/body-foam-2026-10-22` on f14f2f0 |
 | [lab-campaign-planets-2026-10-22](lab-campaign-planets-2026-10-22/README.md) | Lab files before the Campaign planets world and planet picker (additive change); exact lab.mjs, index.html, lab.css and worlds/index.mjs, before and after pictures | 2026-10-22 | `archive/lab-campaign-planets-2026-10-22` on 8dd1467 |
 | [top-deck-2026-10-22](top-deck-2026-10-22/README.md) | Before separate top deck: exact builder/masks/UI/HTML, six views and equipment/structure/foam manifests; rejected89mm opening module/test/renders/report | 2026-10-22 | `archive/top-deck-2026-10-22` on1bee304 |
 | [swarmfall-aurex-skyline-2026-10-22](swarmfall-aurex-skyline-2026-10-22/README.md) | Aurex's scenery-only towers (drones flew through them) before the solid skyline; exact scene/terrain modules, before and after pictures; older saves keep open ground | 2026-10-22 | `archive/swarmfall-aurex-skyline-2026-10-22` on ce9b949 |

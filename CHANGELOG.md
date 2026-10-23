@@ -39,6 +39,26 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Five removable body-insulation inspection surfaces
+- **Signed:** Codex (OpenAI).
+- **Commit:** "Separate body insulation into five removable inspection surfaces".
+- **What changed:** Top/deck, port, starboard, belly and end regions split from the existing
+  outer body without changing any base triangle, normal or UV. Five focus choices and masks,
+  aggregate body/foam controls; separate structural wall/deck controls retained. Retired and
+  archived three legacy solid seam boxes that crossed the bay.
+- **Sources:** NASA2025 real foam test photo, credit Johns Hopkins APL/Justin Artis; NASA
+  NESC May2026 development slides, Rolando Rodarte/APL. Saved pages/photo and comparison.
+  Current body Solimide selection qualified against older Rohacell research.
+- **Assumptions:** Surface-only inspection regions, not actual tile cuts, foam volume or
+  hidden construction. Nominal source thickness recorded but not applied locally; original
+  finish unchanged. No inferred full membrane/vent/tile stack, thermal model or mass change.
+- **Archive:** `archive/body-foam-2026-10-22`, source files, before screenshots/manifests,
+  restore steps and tag on f14f2f0. Concurrent game/Lab updates through f14f2f0 retained.
+- **Checks:** 519 tests pass, including exact triangle/attribute partition, all five masks,
+  aggregate masks, restore, finite bounds and unchanged hardware; browser receipt in research.
+- **Next:** Attic surfaces, local camera/HGA insulation, then source-backed local sections;
+  separately audit selected-material test conditions against legacy thermal assumptions.
+
 ### 2026-10-22: Swarmfall's own assets in the Asset & Environment Lab
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add Swarmfall defenders, defenses, settlements, city styles and the Dragonfly to the lab"
