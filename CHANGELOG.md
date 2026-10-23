@@ -39,6 +39,19 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-23: Record insulation publication, harness gaps and incomplete live acceptance
+- **Signed:** Codex (OpenAI).
+- **Commit:** "Record insulation release and public acceptance limits [skip ci]".
+- **Checks:** all550 local tests pass;35 local UI cases and raw sample checks pass.
+  Release59a03b9 Pages39899505403 succeeded. Normal public browser showed the new
+  badge but a blank model and unresponsive Internal control; warning/error log empty.
+  No public UI-pass claim. Screenshot and receipt saved in current research.
+- **Documentation:** corrected stale architecture descriptions, updated checklist and
+  recorded exact remaining boundary. No model, simulation or wiring changes in this receipt.
+- **Next:** investigate unresolved public initialization without rebuilding assets;
+  then audit harness endpoints before adding missing connection families. Full local
+  foam/blisters/hidden construction remain open and labeled estimated where modeled.
+
 ### 2026-10-23: Align the Lab import contract with renderer release stamping
 - **Signed:** Codex (OpenAI).
 - **Commit:** "Update Lab renderer import contract for release stamps".

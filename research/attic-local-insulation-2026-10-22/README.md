@@ -76,3 +76,9 @@ wrapper itself pending. The core-key experiment was not a complete fix. All rela
 references now also get the same release stamp, including game/Lab import maps; this is a
 mechanical URL-only rewrite. Exact pre-rewrite files are archived under renderer-imports.
 No public pass is claimed until the corrected release is checked without interception.
+
+Final receipt: [59a03b9 publication and acceptance limits](live-59a03b9/README.md).
+All550 local tests and the35 local UI cases pass; Pages39899505403 succeeded.
+The normal public browser still showed a blank model and unresponsive Internal control,
+despite the new build badge. Public initialization remains unresolved, not fixed by
+the import-stamping experiment. No further asset or wire changes were made for it.

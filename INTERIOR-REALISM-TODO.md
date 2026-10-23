@@ -53,9 +53,12 @@ three estimated camera-window surrounds, component/global insulation masks and O
 whole-equipment access. All layers/Restore reverses it; no equipment/flight-state movement.
 Lower windows now meet the actual beveled body, with estimated optical corridors/neighbor
 reliefs; camera bodies and aim unchanged. Full camera blisters/inner construction remain
-open, not flight CAD. Initial532 tests and35 local Edge cases pass; masks/source/count24/
-Pilot/geometry/pixels pass. Archive baseline ef3b429; rejected rim draft kept. Core-cache
-key fixes the diagnosed nested-module loading path. Public release receipt follows in research.
+open, not flight CAD. Combined550 tests and35 local Edge cases pass; masks/source/count24/
+Pilot/geometry/pixels pass. Archive baseline ef3b429; rejected rim draft kept. Release59a03b9
+published successfully through Pages39899505403. Uniform renderer import stamping is
+tested, but the normal public browser still did not initialize: blank model, Internal
+unresponsive. Do not claim a public UI pass or a resolved loading cause.
+[Publication receipt and next diagnostic boundary](research/attic-local-insulation-2026-10-22/live-59a03b9/README.md).
 [Current sources/samples/handoff](research/attic-local-insulation-2026-10-22/README.md).
 
 Owner's latest direction: entire harnesses may be missing. Existing floor/riser/component
