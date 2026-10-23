@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { pools, poolRadius, surveySite, dampGround, candidateSites } from "./mission-systems.mjs?v=dev";
 
 function hash(x, z) {

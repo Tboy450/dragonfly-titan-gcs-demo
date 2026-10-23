@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { mountEcam } from "./ecam.mjs?v=dev";
 import { buildCameraWindowSurround } from "./local-insulation.mjs?v=dev";
 import { bodyFoamGeometry } from "./body-foam.mjs?v=dev";

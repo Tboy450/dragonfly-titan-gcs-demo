@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { batteryAsset } from "./battery.mjs?v=dev";
 
 // [PUB] TE TESS-ANDO-DS0059: 44909 epoxy bead <=2.4 mm, two 32 AWG leads,

@@ -1,7 +1,7 @@
 // NASA/APL design: 2023 thermal layout, refined against the 2024 CAD visualization
 // and NASA's 2026 printable-model assembly guide. Detail dimensions remain [EST].
 // Built into a group supplied by chase-vehicle.mjs, using its shared part helpers.
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { model } from "./flight-model.mjs?v=dev";
 import { samplingSequence } from "./science.mjs?v=dev";
 import { buildSampleCarousel } from "./sample-carousel.mjs?v=dev";

@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { drillAsset } from "./drills.mjs?v=dev";
 
 // Parts 02 and 24: DrACO's Pneumatic Transport System (Zacny et al., LPSC 2022, fig. 1 and the

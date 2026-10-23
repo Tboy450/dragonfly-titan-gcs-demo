@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Part 13: APL Frontier software-defined radio, enclosure level. The look follows the APL photo
 // on NASA's Dragonfly pages (black anodized stack of four slices, labeled connectors J11-J32,

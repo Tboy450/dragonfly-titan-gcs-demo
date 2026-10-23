@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Part 11: the two Power Switching Units (PSUs), which control the flow of power to Dragonfly's
 // instruments and systems. NASA reports "the IEM and both PSUs" passed their first power checks

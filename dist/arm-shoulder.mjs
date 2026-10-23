@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Arm shoulder fitting (owner, October 15: "it looks more like a little hexagon at the shoulder").
 // Drawn from NASA/APL's May 2026 photo of the flight lander frame in its tap test

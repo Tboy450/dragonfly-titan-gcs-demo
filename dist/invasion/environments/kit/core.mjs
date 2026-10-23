@@ -3,7 +3,7 @@
 // matrix helpers. Everything here is drawing code; no game rules.
 // A path rather than the bare "three" name, so the game page (which has no import map) can use
 // this kit too; it resolves to the same module the lab's import map names.
-import * as THREE from "../../../vendor/three/three.module.min.js";
+import * as THREE from "../../../vendor/three/three.module.min.js?v=dev";
 
 export { THREE };
 

@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Part 05: owner-approved Ocellus outer-structure and Honeywell MIMU FAMILY approximations.
 // The exact Dragonfly MIMU variant/installation is not established. Amzajerdian,

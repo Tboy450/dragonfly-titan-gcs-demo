@@ -39,6 +39,19 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-23: Stamp every Three.js wrapper reference, not only its core import
+- **Signed:** Codex (OpenAI).
+- **Commit:** "Version all renderer imports consistently".
+- **Why:** the normal c0161c4 public load still stalled, now at the unversioned wrapper.
+  The earlier cache-key experiment was not proof of a complete loading fix. Diagnostics
+  and failed public acceptance are preserved in current research.
+- **Change:** mechanical URL-only `?v=dev` additions to relative Three.js wrapper references
+  across simulator and game/Lab modules/import maps. Publish replaces them uniformly.
+  No renderer algorithm, library version, flight or game logic changed.
+- **Archive/checks:** every original file saved under the current archive's renderer-imports
+  subfolder; script preserves paths. New regression checks all wrapper references.
+- **Next:** verify the new live deployment without interception before claiming public pass.
+
 ### 2026-10-23: Attic/local insulation access, optical ports and open interior
 - **Signed:** Codex (OpenAI).
 - **Commit:** "Add attic and local insulation access with open interior preset".

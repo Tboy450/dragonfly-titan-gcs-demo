@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { mountEcam } from "./ecam.mjs?v=dev";
 
 // Part 04: the nose cameras (Clark et al., DragonCam paper, 2026). Published [PUB]: the

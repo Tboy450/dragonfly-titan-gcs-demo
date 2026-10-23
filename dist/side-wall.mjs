@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // [PUB] NASA April23,2026: aluminum facesheets0.01in thick, honeycomb primary panels
 // designed by APL/manufactured by Lockheed Martin. [EST] this panel's outline,12mm

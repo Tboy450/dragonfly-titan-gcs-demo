@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Part 15: the lander battery. Published: an 11.5 kWh lithium-ion pack built by APL "using large,
 // high-energy-density cells made by GS Yuasa" (Aerospace America, Sept. 2022); a 134 Ah battery

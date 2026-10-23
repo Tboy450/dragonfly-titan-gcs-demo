@@ -70,3 +70,9 @@ attic trunk, camera/nav, motor and sensor routing plus supports/feedthroughs rem
 No wires added. Full local foam sections and a separate thermal material audit remain open.
 
 Publication/combined-test receipts are appended after deployment.
+
+Loading follow-up: c0161c4's normal public acceptance still stalled, with the unversioned
+wrapper itself pending. The core-key experiment was not a complete fix. All relative wrapper
+references now also get the same release stamp, including game/Lab import maps; this is a
+mechanical URL-only rewrite. Exact pre-rewrite files are archived under renderer-imports.
+No public pass is claimed until the corrected release is checked without interception.

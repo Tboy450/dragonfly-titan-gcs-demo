@@ -3,7 +3,7 @@
 // swarm draws as a few instanced meshes. The Dragonfly is the simulator's research model
 // (vehicle-research.mjs, NASA/APL 2023 layout) with its interior removed and its static parts
 // merged by material.
-import * as THREE from "../vendor/three/three.module.min.js";
+import * as THREE from "../vendor/three/three.module.min.js?v=dev";
 import { buildResearchModel } from "../vehicle-research.mjs?v=dev";
 
 const matrix = new THREE.Matrix4(), quaternion = new THREE.Quaternion(), euler = new THREE.Euler();

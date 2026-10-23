@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { wonderwallAsset } from "./wonderwall.mjs?v=dev";
 
 // [EST] Enclosure-level reconstruction, not flight CAD. NASA SVS 15003 and SciTech

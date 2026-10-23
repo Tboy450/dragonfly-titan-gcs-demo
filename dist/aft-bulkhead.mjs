@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Part 16: the aft bulkhead and the MMRTG's mounting angle. Drawn from real photos of the flight
 // structure: NASA/APL's April 2026 top-deck fit check shows the aft end of the lander body as a

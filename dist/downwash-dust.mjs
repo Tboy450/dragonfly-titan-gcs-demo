@@ -2,7 +2,7 @@
 // outward from under the rotors, rise a little, grow and fade; they stay where they were raised
 // as the vehicle moves on. The arrival sequence keeps its own touchdown dust (arrival-hardware).
 // Look, counts and speeds are artistic [EST].
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { downwashAtGround } from "./downwash.mjs?v=dev";
 import { groundTypeAt } from "./science.mjs?v=dev";
 import { terrainSand } from "./titan-terrain.mjs?v=dev";

@@ -3,7 +3,7 @@
 // drogue; 16.7 m ringslot main; heat shield released on the main; lander lowered on a bridle and
 // released at ~1 km [PUB, SciTech 2025 EDL overview]. Proportions of the heat-shield nose, backshell,
 // canopies and lines, all colors and textures, and the motion effects are artistic [EST].
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 const TAU = Math.PI * 2;
 const clamp01 = (value) => Math.min(1, Math.max(0, value));

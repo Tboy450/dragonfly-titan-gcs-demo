@@ -1,4 +1,4 @@
-import * as THREE from "../../vendor/three/three.module.min.js";
+import * as THREE from "../../vendor/three/three.module.min.js?v=dev";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";

@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Seese et al., IPM 2025 pp. 186-187, figs. 1-2: two fixed EFIELD assemblies [PUB].
 // Photo for appearance; fig. 1/text for location only. Engineering model, not final flight CAD.

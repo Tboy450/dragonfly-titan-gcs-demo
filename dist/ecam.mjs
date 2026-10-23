@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Malin Space Science Systems ECAM camera heads as drawn in the DragonCam paper (Clark et al.,
 // 2026, figs. 1 and 5): a housing of stacked front, middle and back sections, two orange side

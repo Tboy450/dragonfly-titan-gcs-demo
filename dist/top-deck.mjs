@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { hgaAsset } from "./hga-gimbal.mjs?v=dev";
 import { sideWallAsset } from "./side-wall.mjs?v=dev";
 

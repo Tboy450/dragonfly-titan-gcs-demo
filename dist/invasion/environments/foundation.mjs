@@ -1,7 +1,7 @@
 // Experimental high-contact envelope [EST], REJECTED as a gallery default.
 // It can bury architecture; retained for diagnosis. Gallery uses history/contour-v2.
 // This is rendering geometry; it does not establish collision or real structural engineering.
-import * as THREE from "../../vendor/three/three.module.min.js";
+import * as THREE from "../../vendor/three/three.module.min.js?v=dev";
 
 export function convexHull(points) {
   const sorted = [...new Map(points.filter(p => p.every(Number.isFinite)).map(p => [p.join(','), p])).values()]

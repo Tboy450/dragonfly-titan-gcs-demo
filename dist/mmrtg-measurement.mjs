@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { poseMmrtg } from "./aft-bulkhead.mjs?v=dev";
 import { mmrtgAsset } from "./mmrtg.mjs?v=dev";
 

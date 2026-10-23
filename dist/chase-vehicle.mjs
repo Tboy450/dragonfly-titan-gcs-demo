@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { inspectionGroups, inspectionModified, inspectionSubassemblies, inspectionSubassembly, inspectionFocusRadius } from "./vehicle-inspector.mjs?v=dev";
 import { createInspectionVisibility, visibleInspectionHardware } from "./inspection-visibility.mjs?v=dev";
 import { cameraPose } from "./flight-camera.mjs?v=dev";

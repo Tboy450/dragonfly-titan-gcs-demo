@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Rotor heads: the coaxial motor stack at each arm end and the hub plate of each rotor. Drawn from
 // real footage and photos: APL/NASA's "Revolutionary Rotors" video (January 2026) of the full-scale

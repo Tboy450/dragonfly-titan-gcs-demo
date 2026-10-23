@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Part 03. Codex's provisional panel (October 19): NASA/APL's 2026 structure photos establish
 // silver panel faces, perimeter joints/fasteners and local yellow tape; ICES-2023 fig. 3 locates

@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Subtract an estimated rectangular optical corridor from an existing surface mesh.
 // Attribute interpolation retains its finish/shading; this is not a flight bore drawing.

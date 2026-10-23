@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Main wiring harness on the equipment-bay floor (owner, October 20: "a lot of connecting
 // equipment is left"). NASA/APL's September 2, 2026 photo of the flight fuselage being wired

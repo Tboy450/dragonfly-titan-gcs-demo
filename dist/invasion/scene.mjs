@@ -3,7 +3,7 @@
 // Titan reuses the simulator's terrain (titan-terrain.mjs); every pod reuses the arrival
 // hardware (aeroshell, heat shield, parachutes) from arrival-hardware.mjs and edl.mjs, with
 // the descent squeezed into the game's ten-second drop. Reads battle state; never changes it.
-import * as THREE from "../vendor/three/three.module.min.js";
+import * as THREE from "../vendor/three/three.module.min.js?v=dev";
 import { createTitanTerrain } from "../titan-terrain.mjs?v=dev";
 import { createArrivalHardware } from "../arrival-hardware.mjs?v=dev";
 import { edlStateAt } from "../edl.mjs?v=dev";

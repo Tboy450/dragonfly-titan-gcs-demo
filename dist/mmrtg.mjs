@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { poseMmrtg } from "./aft-bulkhead.mjs?v=dev";
 
 // [PUB] NASA fact sheet / Cataldo-Bennett fig12:64 cm fin-tip diameter,66 cm

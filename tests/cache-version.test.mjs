@@ -38,3 +38,13 @@ test("Three.js core has a release cache key rather than an unversioned nested mo
   assert.ok(vendor.includes("./three.core.min.js?v=dev"));
   assert.ok(!vendor.includes('"./three.core.min.js"'));
 });
+
+test("All local Three.js wrapper references carry the same release key",()=>{
+  const dir=new URL("../dist/",import.meta.url);
+  for(const file of readdirSync(dir,{recursive:true}).filter(f=>/\.(?:m?js|html)$/.test(f))){
+    const source=readFileSync(new URL(file.replaceAll("\\","/"),dir),"utf8");
+    for(const[,ref]of source.matchAll(/["'](\.{1,2}\/[^"'\r\n]*three\.module\.min\.js[^"']*)["']/g)){
+      assert.ok(ref.endsWith("?v=dev"),file+" references "+ref);
+    }
+  }
+});

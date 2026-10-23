@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // [EST] Photo/figure-based reconstruction, not flight CAD or a dimensioned drawing.
 // NASA SVS 15003 (March 2026 photos); Barfknecht et al., SciTech 2024, figs. 1, 2, 6, 9.

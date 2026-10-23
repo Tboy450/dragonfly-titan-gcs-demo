@@ -1,0 +1,62 @@
+{
+  "state": {
+    "ready": "interactive",
+    "build": "Build c0161c4 · 2026-10-23",
+    "parts": 0
+  },
+  "events": [],
+  "errors": [
+    "page.goto: Timeout 45000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"https://tboy450.github.io/dragonfly-titan-gcs-demo/?check=1792728625527\", waiting until \"domcontentloaded\"\u001b[22m\n"
+  ],
+  "failed": [],
+  "pending": [
+    {
+      "url": "https://tboy450.github.io/dragonfly-titan-gcs-demo/assets/titan-mountain-reference.jpg",
+      "type": "image"
+    },
+    {
+      "url": "https://tboy450.github.io/dragonfly-titan-gcs-demo/vendor/lucide/zoom-in.svg?v=c0161c4",
+      "type": "image"
+    },
+    {
+      "url": "https://tboy450.github.io/dragonfly-titan-gcs-demo/vendor/lucide/focus.svg?v=c0161c4",
+      "type": "image"
+    },
+    {
+      "url": "https://tboy450.github.io/dragonfly-titan-gcs-demo/vendor/lucide/rotate-ccw.svg?v=c0161c4",
+      "type": "image"
+    },
+    {
+      "url": "https://tboy450.github.io/dragonfly-titan-gcs-demo/vendor/lucide/pause.svg?v=c0161c4",
+      "type": "image"
+    },
+    {
+      "url": "https://tboy450.github.io/dragonfly-titan-gcs-demo/vendor/lucide/play.svg?v=c0161c4",
+      "type": "image"
+    },
+    {
+      "url": "https://tboy450.github.io/dragonfly-titan-gcs-demo/vendor/three/three.module.min.js",
+      "type": "script"
+    },
+    {
+      "url": "https://tboy450.github.io/dragonfly-titan-gcs-demo/inspection-visibility.mjs?v=c0161c4",
+      "type": "script"
+    },
+    {
+      "url": "https://tboy450.github.io/dragonfly-titan-gcs-demo/vehicle-research.mjs?v=c0161c4",
+      "type": "script"
+    },
+    {
+      "url": "https://tboy450.github.io/dragonfly-titan-gcs-demo/arrival-hardware.mjs?v=c0161c4",
+      "type": "script"
+    },
+    {
+      "url": "https://tboy450.github.io/dragonfly-titan-gcs-demo/downwash-dust.mjs?v=c0161c4",
+      "type": "script"
+    },
+    {
+      "url": "https://tboy450.github.io/dragonfly-titan-gcs-demo/downwash.mjs?v=c0161c4",
+      "type": "script"
+    }
+  ]
+}

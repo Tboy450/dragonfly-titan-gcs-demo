@@ -1,5 +1,5 @@
 // Original, deterministic visual studies [EST]. These are not campaign city/navigation data.
-import * as THREE from "../../vendor/three/three.module.min.js";
+import * as THREE from "../../vendor/three/three.module.min.js?v=dev";
 import { createCityFoundation } from "./history/contour-v2.mjs?v=dev";
 
 export const worldInfo = {

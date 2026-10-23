@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { sideWallAsset as W } from "./side-wall.mjs?v=dev";
 import { noseBulkheadAsset as N } from "./nose-bulkhead.mjs?v=dev";
 import { aftBulkheadAsset as A } from "./aft-bulkhead.mjs?v=dev";

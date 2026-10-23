@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 export function surfaceDirection(a,b,c) {
   const x=(a.x+b.x+c.x)/3,n=b.clone().sub(a).cross(c.clone().sub(a));

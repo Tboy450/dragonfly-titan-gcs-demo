@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { aftBulkheadAsset } from "./aft-bulkhead.mjs?v=dev";
 
 // Parts 17, 18 and 19: the Titan-surface air loop. Published layout [PUB]:

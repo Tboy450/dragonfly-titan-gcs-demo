@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // [PUB] ICES-2023-389 pp. 5/7: two RDE boxes with internal fans.
 // [EST] All visual details below. The CAPS 2024 test photo does not resolve flight

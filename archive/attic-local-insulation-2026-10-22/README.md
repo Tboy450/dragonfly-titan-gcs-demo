@@ -13,3 +13,7 @@ For targeted rollback, archive current work first, then copy saved files to orig
 `dist/` locations: layer panel in `ui/`, vendor wrapper in `vendor/three/`.
 Reconcile new imports, UI and tests; preserve unrelated game work. Old nominal windows and
 the unversioned public URL are preserved history, not claimed correct.
+
+Additional `renderer-imports/` originals are from c0161c4, before uniform wrapper URL
+stamping. Recovery tag `archive/renderer-wrapper-stamp-2026-10-23` identifies that boundary.
+Only relative module/import-map URLs changed; implementation algorithms were not replaced.

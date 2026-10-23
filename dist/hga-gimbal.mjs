@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { buildHgaDomeSurfaces } from "./local-insulation.mjs?v=dev";
 
 // Part 10: the high-gain antenna (HGA) gimbal: azimuth and elevation actuators, the motorized arm

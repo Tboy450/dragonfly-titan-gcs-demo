@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // Part 12: Integrated Electronics Module (IEM), Dragonfly's core avionics box (command and data
 // handling, guidance and navigation, communications). Drawn from NASA/APL's March 2026 photos at

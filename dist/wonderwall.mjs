@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 
 // NASA SciTech 2024 figs. 2/11 and SVS 15003 establish the shaped attic interface.
 // All detail geometry is [EST]. ICES-2023's ~5 cm is instrument separation, NOT wall thickness.

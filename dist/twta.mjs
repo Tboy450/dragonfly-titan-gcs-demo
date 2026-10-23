@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { hgaAsset } from "./hga-gimbal.mjs?v=dev";
 
 // Part 14: the 100 W X-band traveling-wave tube amplifier (TWTA). Published for Dragonfly: a

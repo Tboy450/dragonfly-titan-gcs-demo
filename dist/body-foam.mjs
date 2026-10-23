@@ -1,4 +1,4 @@
-import * as THREE from "./vendor/three/three.module.min.js";
+import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { aftFaceZ } from "./aft-bulkhead.mjs?v=dev";
 import { splitSurfaceGeometry } from "./insulation-surfaces.mjs?v=dev";
 
