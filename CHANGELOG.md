@@ -39,6 +39,15 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-23: Align the Lab import contract with renderer release stamping
+- **Signed:** Codex (OpenAI).
+- **Commit:** "Update Lab renderer import contract for release stamps".
+- **Why:** the URL-only rewrite exposed one source-contract assertion that required the old
+  unversioned wrapper path. It now requires the same relative path plus?v=dev; exports,
+  geometry and game behavior assertions are unchanged. Old test archived.
+- **Checks:** focused9 tests pass; complete550-test suite rerun before pushing this fix.
+  The4930d34 CI failure blocks that deployment, leaving the prior site unchanged.
+
 ### 2026-10-23: Stamp every Three.js wrapper reference, not only its core import
 - **Signed:** Codex (OpenAI).
 - **Commit:** "Version all renderer imports consistently".

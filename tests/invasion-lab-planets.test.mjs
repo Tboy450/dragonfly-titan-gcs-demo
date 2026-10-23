@@ -49,5 +49,5 @@ test('Campaign planets are listed in the lab and offer a planet picker', () => {
 test('Kit exports the game draws its Frontier cities with are unchanged', () => {
   for (const name of ['THREE', 'rng', 'Batches', 'Massing', 'paint', 'unitBox', 'unitCylinder', 'unitCone', 'lathe', 'shape']) assert.ok(name in core, name);
   for (const name of ['facadeMaterials', 'roofMaterial', 'groundPatch', 'tree']) assert.equal(typeof scenery[name], 'function', name);
-  assert.match(lab('kit/core.mjs'), /from "\.\.\/\.\.\/\.\.\/vendor\/three\/three\.module\.min\.js"/);
+  assert.match(lab('kit/core.mjs'), /from "\.\.\/\.\.\/\.\.\/vendor\/three\/three\.module\.min\.js\?v=dev"/);
 });
