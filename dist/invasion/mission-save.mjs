@@ -215,7 +215,7 @@ export function validMissionCheckpoint(value) {
     const zones = new Set(b.zones.map(z => z.id));
     if (!b.zones.every(z => point(z) && nameId(z.id) && text(z.name) && ["beachhead", "beacon", "relic", "settlement", "mine", "capital"].includes(z.kind)
       && between(z.radius, .001, 1000) && between(z.control, 0, 100) && between(z.value, 0, 1e6) && integer(z.population, 0, 1e9)
-      && typeof z.captured === "boolean" && typeof z.contested === "boolean"
+      && typeof z.captured === "boolean" && typeof z.contested === "boolean" && (z.crossfire === undefined || typeof z.crossfire === "boolean")
       && (z.special === null || nameId(z.special)) && (z.drones === undefined || integer(z.drones, 0, checkpointLimits.units)))) return null;
     if (!validObjectives(b.objectives, zones) || !unique(b.specials) || !b.specials.every(s => nameId(s) && b.zones.some(z => z.special === s))) return null;
     if (!b.squads.every(s => positiveId(s.id) && text(s.name) && text(s.color, 128)

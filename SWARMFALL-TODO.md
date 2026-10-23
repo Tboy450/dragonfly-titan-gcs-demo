@@ -489,8 +489,17 @@ complete solely because its assets download or its unit tests pass.
 
 ## 6. Defenders, society and the public (ENEMY)
 
-- [ ] **ENEMY-01 (P1)** Make the public visible: people in settlements who flee from drones;
-  panic raises the alarm; harming them carries a penalty.
+- [x] **ENEMY-01 (P1) — Claude (October 22)** Make the public visible: people in settlements who
+  flee from drones; panic raises the alarm; harming them carries a penalty.
+  - Every populated settlement shows 4 to 14 townspeople (by population) who wander near home.
+    They run from drones within 45 m and drift back once the town is quiet or captured.
+  - Panic already raised the alarm (drones seen by the public). New: fighting inside an
+    uncaptured, populated town adds a crossfire penalty to the alarm, and the battle log says
+    so once per town ("Links capture quietly instead").
+  - The townspeople are drawn only [EST]; the rules count the crossfire, so saves and replays stay
+    exact. Saves validate the new `crossfire` flag.
+  - `tests/invasion-public.test.mjs`: a fight in a defended town raises the alarm well above the same
+    fight in an emptied one, and the log line appears once.
 - [ ] **ENEMY-02 (P2)** Behavior by society level: tribal ambushes, agrarian barricades,
   industrial repair crews, networked defenders hacking drones back, spacefaring counter-drops.
 - [ ] **ENEMY-03 (P2)** Enemy aircraft below level 5 (balloons, helicopters, jets) and boats on

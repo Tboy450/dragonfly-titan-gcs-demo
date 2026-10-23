@@ -146,7 +146,7 @@ same split as the simulator: plain modules with tests, plus a page layer.
 | `invasion/city-render.mjs` | Draws a city layout with the Environment Lab kit: streets, sidewalks, squares, parks, merged facade buildings and rooftop gear; forge cities get halls, stacks, towers, slag yards and animated smoke; towns get tile-roofed houses, a keep and crenellated walls |
 | `invasion/random.mjs` | Seeded random numbers stored on the battle (reproducible missions) |
 | `invasion/models.mjs` | Procedural drone, defender, structure and building geometry (vertex colors, merged for instancing) and the compacted Dragonfly research model |
-| `invasion/scene.mjs` | three.js view: planet ground/sky/liquid/decor (Titan via `createTitanTerrain`), zone rings, instanced units, shots, explosions, strike markers, weather particles, pods via `createArrivalHardware` + `edlStateAt` |
+| `invasion/scene.mjs` | three.js view: planet ground/sky/liquid/decor (Titan via `createTitanTerrain`), zone rings, instanced units, townspeople who flee drones (drawn only), shots, explosions, strike markers, weather particles, pods via `createArrivalHardware` + `edlStateAt` |
 | `invasion/galaxy.mjs` | The campaign galaxy drawing |
 | `invasion/battle-sound.mjs` | What the optional sound should be: hum, rain, wind and rumble levels from the battle and view, one-shot cues from events, and the sound levels |
 | `invasion/sound.mjs` | Plays it with Web Audio (no sound files): beds, shots, explosions, chimes, sirens, thunder, pod entry and parachutes; off by default |

@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall townspeople and the crossfire penalty
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Show townspeople who flee drones and penalize fighting in towns"
+- **What changed:** Checklist ENEMY-01. The public is now on screen and fighting among them
+  costs you:
+  - Each populated settlement shows 4 to 14 townspeople in varied clothes. They wander near
+    home, run from drones that come within 45 m, and drift back once it is quiet or the town is
+    captured. They are hidden in unscouted Frontier towns.
+  - Fighting inside an uncaptured, populated town now adds a crossfire penalty to the alarm,
+    and the battle log warns once per town that Links capture quietly instead.
+  - The townspeople are only drawn [EST]; the crossfire rule lives in the battle rules, so saves
+    and replays stay exact. Saves check the new per-town flag.
+- **Files:** `dist/invasion/battle.mjs`, `dist/invasion/scene.mjs`, `dist/invasion/models.mjs`,
+  `dist/invasion/mission-save.mjs`, `tests/invasion-public.test.mjs` (new), `SWARMFALL-TODO.md`,
+  `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (519 pass); in the browser on Kepra, townspeople
+  around Dratan moved from 11 to 35 m away from drones to 26 to 46 m within 3 seconds.
+
 ### 2026-10-22: Swarmfall scene smoke test on every world
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add a scene smoke test across every planet and frontier map"

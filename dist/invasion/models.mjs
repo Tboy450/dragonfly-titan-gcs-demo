@@ -177,6 +177,14 @@ export function figureModel() {
     .build();
 }
 
+// Townspeople (ENEMY-01): an unarmed figure; clothes are tinted per person.
+export function civilianModel() {
+  return new Parts()
+    .add(cyl(0.2, 0.26, 0.85, 8), 0xffffff, { at: [0, 0.43, 0] })
+    .add(ball(0.18, 10, 6), 0xf0d0b0, { at: [0, 1.02, 0] })
+    .build();
+}
+
 export function interceptorModel() {
   const wing = new THREE.Shape();
   wing.moveTo(0, 0.6); wing.lineTo(0.55, -0.35); wing.lineTo(0, -0.2); wing.lineTo(-0.55, -0.35); wing.closePath();
