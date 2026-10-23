@@ -871,8 +871,14 @@ Optional, generated sound since October 22 (`battle-sound.mjs` decides, `sound.m
   rejected; recoverable backup/export and future schemas remain SAVE-02/05/06 work.
 - [ ] **TECH-04 (P2)** Export and import progress to move it between devices.
 - [ ] **TECH-05 (P3)** Installable app with offline play.
-- [ ] **TEST-01 (P1)** A render smoke test for `scene.mjs` and `models.mjs`, using the
-  stand-in renderer from the simulator's `render-smoke.test.mjs`.
+- [x] **TEST-01 (P1) — Claude (October 22)** A render smoke test for `scene.mjs` and `models.mjs`,
+  using the stand-in renderer from the simulator's `render-smoke.test.mjs`.
+  - `tests/invasion-scene-smoke.test.mjs`: every game model builds finite geometry, and every
+    campaign planet and frontier map (10 worlds) runs through the real scene.
+  - Each world loads with real terrain, plays 60 frames of a drop, combat, weather, an
+    explosion and an artillery strike, then reveals any city and draws from the free camera.
+  - On unload nothing is left behind except Titan's landscape, kept hidden on purpose.
+  - Appearance and speed still need the browser (PERF-01).
 - [ ] **TEST-02 (P1)** A browser end-to-end check: title, galaxy, drop, capture, debrief.
 - [ ] **TEST-03 (P1)** Human playtests: at least three players per planet; record time, losses
   and where they got stuck.

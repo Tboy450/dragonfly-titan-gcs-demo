@@ -39,6 +39,21 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall scene smoke test on every world
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a scene smoke test across every planet and frontier map"
+- **What changed:** Checklist TEST-01. A new test runs the real Three.js battle scene, with the
+  stand-in renderer, on all 7 campaign planets and 3 Frontier maps:
+  - Each world builds with real terrain and plays 60 frames: a drop, combat, weather, an
+    explosion and an artillery strike.
+  - It reveals any city and draws from the free camera.
+  - It unloads with nothing left behind (Titan's landscape is kept hidden on purpose).
+  - Every game model is also checked for finite geometry.
+  `scene.mjs` changed a lot this week, and this catches load or draw crashes before
+  publishing.
+- **Files:** `tests/invasion-scene-smoke.test.mjs` (new), `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (518 pass).
+
 ### 2026-10-22: Swarmfall rotor-wash dust
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add rotor-wash dust under low drones and at pod touchdowns"
