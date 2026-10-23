@@ -1404,9 +1404,23 @@ an optional dedicated mode as a first step. Keep this future work unchecked unti
 - [ ] **PERF-10 (P2)** Bound expensive visual work: damage preparation, weather, smoke,
   projectiles, debris and distant units. Tune quality/fallback behavior from profiles; move
   work to shaders/workers only when measurements justify the extra system complexity.
-- [ ] **PERF-11 (P1)** Define gameplay behavior under low frame rate, slow loading, browser
-  hide/resume and pause. Preserve simulation meaning and input responsiveness; do not let
-  effects, timers or pod releases duplicate when rendering catches up.
+- [x] **PERF-11 (P1) — Claude (October 22)** Define gameplay behavior under low frame rate, slow
+  loading, browser hide/resume and pause. Preserve simulation meaning and input responsiveness;
+  do not let effects, timers or pod releases duplicate when rendering catches up.
+  - New `frame-clock.mjs`: each frame's real time becomes battle steps of at most 0.05 s.
+  - Low frame rate: a slow frame is caught up in several steps, up to 0.25 s of real time.
+    The battle keeps real time down to about 4 frames a second (before, it fell into slow
+    motion below 20). Below that it runs in slow motion, and if that lasts about 3 s the
+    player is told once and pointed to Graphics.
+  - Slow loading, hitches and hide/resume: anything over 0.25 s is dropped, not replayed in a
+    burst. A hidden tab still pauses the battle (unchanged).
+  - Pause: no battle steps; the camera, edge scroll and follow move by real time.
+  - Nothing repeats: steps advance one battle, events are handled once per frame, and pods
+    release on battle time. Twenty seconds at 144, 60, 10 and 4 frames a second each give 20 s
+    of battle with every pod released once.
+  - `tests/invasion-frame-clock.test.mjs` (5 tests, including the real entry point); checked in
+    the browser through the page's own frame function.
+  - Real phone frame times stay under PERF-01.
 - [ ] **TECH-06 (P1)** Separate shared environment/rule queries from Three.js/UI objects.
   Keep wave, victory, damage and possession state plain and testable, and make renderer
   ownership/lifecycle explicit so new features do not expand one global entry module indefinitely.

@@ -24,6 +24,7 @@ import { pointerIntent, exceedsTapSlop, holdToBoxMs, boxRect, squadsInBox } from
 import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
 import { enterFree, exitFree, placeFree, moveFree, freeLimits } from "./free-camera.mjs?v=dev";
 import { squadCenter, latestAlert, zoneAlerts, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
+import { frameSteps, trackLag } from "./frame-clock.mjs?v=dev";
 import { cycleSound, soundLabel, updateBattleSound, quietSound } from "./sound.mjs?v=dev";
 import { qualityLevels, nextQuality } from "./quality.mjs?v=dev";
 import { newTips } from "./tips.mjs?v=dev";
@@ -400,6 +401,7 @@ function startMission(planet, checkpoint = null) {
     payload: restored?.command.payload ?? defaultPayload(battle), placing: false, dropPoint: null, dropPreview: null, dropPanelOpen: false,
     cleanView: false, minimapOrders: false, minimapPing: null, phoneHudCollapsed: false, freeCam: null, freeInput: { up: 0, look: 0 },
     seenLog: new WeakSet(), ended: false, lastHud: 0, lastMinimap: 0, lastAchievements: 0, cards: new Map(), dropTypes: "",
+    lag: { seconds: 0, lagging: false }, lagNoted: false,
   };
   $("squad-bar").replaceChildren();
   $("toasts").replaceChildren();
@@ -1601,6 +1603,9 @@ $("debrief-galaxy").addEventListener("click", returnToGalaxy);
 $("debrief").addEventListener("cancel", event => { event.preventDefault(); returnToGalaxy(); });
 
 // ---- Frame loop ----
+// The frame clock (frame-clock.mjs, PERF-11) turns each frame's real time into battle steps of at
+// most 0.05 s: slow frames catch up, stalls are dropped, and a battle kept in slow motion by a
+// device that cannot keep up says so once. The camera moves by real time, paused or not.
 let last = performance.now();
 function frame(now) {
   requestAnimationFrame(frame);
@@ -1608,12 +1613,20 @@ function frame(now) {
 }
 function tick(now) {
   if (current === "mission" && scene && !document.hidden) scene.adapt?.(now - last);
-  const dt = Math.min(0.05, Math.max(0, (now - last) / 1000));
+  const elapsed = (now - last) / 1000, clock = frameSteps(elapsed, mission?.speed || 1);
   last = now;
   if (current === "galaxy") drawGalaxyScreen(now / 1000);
   if (current !== "mission" || !mission || !scene) return;
   const b = mission.battle;
-  if (!mission.paused) for (let i = 0; i < mission.speed; i += 1) stepBattle(b, dt);
+  if (!mission.paused) {
+    for (let i = 0; i < clock.count; i += 1) stepBattle(b, clock.step);
+    mission.lag = trackLag(mission.lag, elapsed);
+    if (mission.lag.lagging && !mission.lagNoted) {
+      mission.lagNoted = true;
+      toast("This device is falling behind, so the battle is running in slow motion. Lower Graphics on the title screen to speed it up.", "warn", 7000);
+    }
+  }
+  const dt = clock.real;
   keyboardCamera(dt);
   assistCamera(dt);
   const events = b.events.splice(0);
@@ -1626,7 +1639,7 @@ function tick(now) {
   handleEvents(events);
   offerVictoryChoice();
   if (mission.freeCam) syncFreeFocus();
-  scene.frame(b, mission.freeCam ? { ...mission.cam, free: mission.freeCam } : mission.cam, events, mission.paused ? 0 : dt * mission.speed, now / 1000);
+  scene.frame(b, mission.freeCam ? { ...mission.cam, free: mission.freeCam } : mission.cam, events, mission.paused ? 0 : clock.step * clock.count, now / 1000);
   drawOverlay();
   // Sound hears what the camera sees: around the view's focus, as far as the view reaches.
   const listener = mission.freeCam ? { x: mission.freeCam.x, z: mission.freeCam.z, radius: 150 + Math.max(0, mission.freeCam.y - groundAt(mission.freeCam.x, mission.freeCam.z)) * 1.2 }

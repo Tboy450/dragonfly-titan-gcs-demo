@@ -39,6 +39,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall keeps real time on slow devices
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Keep battle time real on slow frames and drop stalls"
+- **What changed:** Checklist PERF-11. Each frame advanced the battle by at most 0.05 s, so
+  below 20 frames a second the whole game, camera included, ran in slow motion. A new frame
+  clock (`frame-clock.mjs`) now:
+  - catches a slow frame up in steps of at most 0.05 s, so the battle keeps real time down to
+    about 4 frames a second;
+  - drops anything over 0.25 s (a loading hitch, a frozen or hidden tab) instead of replaying
+    it in a burst, so pods, shots and timers never pile up;
+  - moves the camera by real time, paused or not;
+  - tells the player once, if the device stays too slow for about 3 s, that the battle is in
+    slow motion and that lowering Graphics helps.
+- **Files:** `dist/invasion/frame-clock.mjs` (new), `dist/invasion/main.mjs`,
+  `tests/invasion-frame-clock.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (542 pass). In the browser, through the page's own
+  frame function: 2 s at 10 fps gave 2 s of battle, a 5 s stall gave 0.25 s, and 2.5 fps gave
+  slow motion with one notice. No console errors.
+
 ### 2026-10-22: Swarmfall weapon range counts height
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Measure weapon range in 3D between firing heights"
