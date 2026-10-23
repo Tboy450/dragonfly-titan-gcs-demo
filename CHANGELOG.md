@@ -39,6 +39,30 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Swarmfall keyboard play and safer shortcuts
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add keyboard paths for orders and pods, and keep shortcuts off focused controls"
+- **What changed:** Checklist ACCESS-01. A whole mission can now be played from the keyboard:
+  - Enter orders the selected squads to the middle of the screen, or attacks the defender
+    there; Shift+Enter adds a waypoint.
+  - B opens the drop panel with focus on its first usable button, so Enter lands the wave.
+    While picking a zone, Enter previews pods at the middle of the screen and Enter again
+    launches. Escape closes the panel and returns focus to Drop wave.
+  - A squad number selects it; pressing it again brings the camera to it instead of
+    deselecting it.
+  - Shortcuts no longer fire in the Squad ▾ menu or with Ctrl, Alt or Cmd held, and Space or
+    Enter on a focused button now presses that button instead of pausing.
+  - Menus, fields and links get the same visible focus outline as buttons.
+  - Enter with nothing selected, 0 with no squads and a missing squad number now say why
+    nothing happened.
+  - The Field guide has a new Controls section with every key.
+- **Files:** `dist/invasion/main.mjs`, `dist/invasion/field-guide.mjs`,
+  `dist/invasion/invasion.css`, `tests/invasion-keyboard.test.mjs` (new), `SWARMFALL-TODO.md`,
+  `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (528 pass); in the browser with real key presses
+  on Kepra: the focus outline shows, B then Enter launched the wave, and 1 then Enter ordered
+  the squad to the screen center.
+
 ### 2026-10-22: Body-insulation release receipt
 - **Signed:** Codex (OpenAI).
 - **Commit:** "Record body insulation deployment and verification limits [skip ci]".

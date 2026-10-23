@@ -769,6 +769,21 @@ function tap(clientX, clientY, additive, action = "smart") {
   if (order) giveOrder(order, additive);
 }
 
+// Enter acts at the middle of the screen, so pods and orders work from the keyboard (ACCESS-01).
+// While placing, the first Enter previews the pod courts there and a second Enter on the same spot
+// launches; otherwise the selected squads go there or attack what is there (Shift+Enter queues).
+function actAtCenter(queue) {
+  const { width, height } = screenPoint(0, 0), rect = overlay.getBoundingClientRect();
+  const x = rect.left + width / 2, y = rect.top + height / 2;
+  if (mission.placing) {
+    const ground = scene.pickGround(0, 0), point = mission.dropPoint;
+    if (ground && point && mission.dropPreview?.ok && Math.hypot(ground.x - point.x, ground.z - point.z) < 4) { launch(point.x, point.z); return; }
+    tap(x, y, false, "smart");
+    return;
+  }
+  tap(x, y, queue, "order");
+}
+
 // Orders from the battlefield: now (replacing waypoints), or queued; attack-move if armed.
 function giveOrder(order, queue = false) {
   const b = mission.battle, ids = [...mission.selected];
@@ -899,8 +914,8 @@ function updateDropPreview() {
   const point = mission.placing ? mission.dropPoint : !$("drop-panel").hidden ? b.zones.find(z => z.kind === "beachhead") : null;
   mission.dropPreview = point ? checkDrop(b, { x: point.x, z: point.z, payload: mission.payload }) : null;
   $("placement-launch").disabled = !mission.placing || !mission.dropPreview?.ok;
-  $("placement-text").textContent = !point ? "Click or tap a held zone to preview courts. Right-click or Cancel to stop." : mission.dropPreview?.ok
-    ? `${mission.dropPreview.landings.length} spaced pods ready. Launch here or tap another point.` : mission.dropPreview?.reason;
+  $("placement-text").textContent = !point ? "Click or tap a held zone to preview courts (or press Enter for the middle of the screen). Right-click or Cancel to stop." : mission.dropPreview?.ok
+    ? `${mission.dropPreview.landings.length} spaced pods ready. Launch here (Enter) or tap another point.` : mission.dropPreview?.reason;
 }
 $("drop-button").addEventListener("click", () => ($("drop-panel").hidden ? openDropPanel() : closeDropPanel()));
 $("drop-close").addEventListener("click", closeDropPanel);
@@ -1026,9 +1041,16 @@ $("extract-button").addEventListener("click", leaveForVictory);
 $("victory-dialog").addEventListener("cancel", event => { event.preventDefault(); keepCapturing(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden && mission && !mission.battle.outcome) { mission.paused = true; updateHud(); } });
 
+// Shortcuts stay out of the way of focused controls (ACCESS-01): nothing fires while typing or
+// choosing in a field or menu, or with Ctrl, Alt or Cmd held (those belong to the browser), and
+// Space or Enter on a focused button presses that button instead of pausing or ordering.
+const typingField = "input, textarea, select, [contenteditable]", pressable = "button, a, summary, [role='button']";
 window.addEventListener("keydown", (event) => {
-  if (current !== "mission" || !mission || event.target.closest?.("input, textarea") || document.querySelector("dialog[open]")) return;
+  if (current !== "mission" || !mission || event.target.closest?.(typingField) || document.querySelector("dialog[open]")) return;
+  if (event.ctrlKey || event.altKey || event.metaKey) return;
   const key = event.key.toLowerCase();
+  if ((key === " " || key === "enter") && event.target.closest?.(pressable)) return;
+  if (key === "enter") { if (!event.repeat) actAtCenter(event.shiftKey); event.preventDefault(); return; }
   if (key === "v" && !event.repeat) { setCleanView(!mission.cleanView); event.preventDefault(); return; }
   if (key === "c" && !event.repeat) { setFreeCamera(!mission.freeCam); event.preventDefault(); return; }
   if (key === "g" && !event.repeat) { setFollow(!mission.follow); return; }
@@ -1038,14 +1060,34 @@ window.addEventListener("keydown", (event) => {
   if (key === "p" && !event.repeat) { togglePatrol(); return; }
   if (key === "home") { resetView(); event.preventDefault(); return; }
   if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
-  if (key === "escape") { resetPointers(); setCleanView(false); cancelPlacement(); closeDropPanel(); return; }
-  if (key === "b") { $("drop-panel").hidden ? openDropPanel() : closeDropPanel(); return; }
+  if (key === "escape") {
+    const panelOpen = !$("drop-panel").hidden;
+    resetPointers(); setCleanView(false); cancelPlacement(); closeDropPanel();
+    if (panelOpen) $("drop-button").focus();
+    return;
+  }
+  if (key === "b") {
+    if (!$("drop-panel").hidden) { closeDropPanel(); $("drop-button").focus(); return; }
+    openDropPanel();
+    // Opened from the keyboard: start on the first control that can be used, so Tab and Enter launch.
+    const first = [$("drop-home"), ...$("drop-rows").querySelectorAll("button"), $("drop-close")].find(el => el && !el.disabled);
+    first?.focus();
+    return;
+  }
   if (key === "h") { if (!event.repeat) holdSelected(); return; }
-  if (key === "0") { selectAll(); return; }
+  if (key === "0") {
+    if (!battleSummary(mission.battle).squads.some(s => s.size > 0 || s.inbound)) { toast("No squads yet: press B to drop a wave.", "info"); return; }
+    selectAll(); return;
+  }
   if (/^[1-9]$/.test(key)) {
     const squads = battleSummary(mission.battle).squads.filter(s => s.size > 0 || s.inbound);
     const squad = squads[Number(key) - 1];
-    if (squad) selectSquad(squad.id, event.shiftKey);
+    // A number selects that squad; pressed again, it brings the camera to it. Shift adds or removes.
+    if (squad && !event.shiftKey && mission.selected.size === 1 && mission.selected.has(squad.id)) {
+      const center = squadCenter(mission.battle.units, mission.selected);
+      if (center) { setFollow(false); lookAt(center.x, center.z); }
+    } else if (squad) selectSquad(squad.id, event.shiftKey);
+    else if (!event.repeat) toast(squads.length ? `There ${squads.length === 1 ? "is 1 squad" : `are ${squads.length} squads`}; ${key} selects squad ${key}.` : "No squads yet: press B to drop a wave.", "info");
     return;
   }
   keys.add(key);

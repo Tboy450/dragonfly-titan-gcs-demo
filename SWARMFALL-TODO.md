@@ -1340,9 +1340,24 @@ an optional dedicated mode as a first step. Keep this future work unchecked unti
 
 ## 25. Accessibility, settings and device usability (ACCESS)
 
-- [ ] **ACCESS-01 (P1)** Ensure essential selection, launch, pause, continue/extract and
-  menu actions have keyboard paths and visible focus. Keep shortcuts from activating while
-  typing/selecting controls, and explain disabled actions rather than silently ignoring them.
+- [x] **ACCESS-01 (P1) — Claude (October 22)** Ensure essential selection, launch, pause,
+  continue/extract and menu actions have keyboard paths and visible focus. Keep shortcuts from
+  activating while typing/selecting controls, and explain disabled actions rather than silently
+  ignoring them.
+  - Keyboard paths: 1-9 and 0 select (a second press brings the camera to the squad), Enter
+    orders the selected squads to the middle of the screen (Shift+Enter queues), B opens the
+    drop panel with focus on its first usable button, and while picking a zone Enter previews
+    pods at the middle of the screen and a second Enter launches. Space pauses; the victory
+    dialog, Extract, Squad ▾ and every panel button are reachable with Tab.
+  - Safety: shortcuts are off in fields and menus (now including the Squad ▾ menu) and with
+    Ctrl, Alt or Cmd held; Space and Enter on a focused button press that button.
+  - Visible focus outlines on menus, fields, links and details as well as buttons.
+  - Explained: Enter with nothing selected, 0 and missing squad numbers say why nothing happened;
+    the drop panel already states why its launch buttons are off.
+  - The Field guide has a new Controls section listing every key.
+  - `tests/invasion-keyboard.test.mjs` (9 tests, real entry point); checked in the browser with
+    real key presses (outline shown, B → Enter launched, 1 → Enter ordered the squad).
+  - Screen reader review and touch targets stay under ACCESS-02 and later items.
 - [ ] **ACCESS-02 (P1)** Review touch target sizes, pointer cancellation, drag/tap thresholds,
   pinch/rotate and portrait/landscape layout. Confirm panels do not cover the selected squad,
   landing preview or extraction decision on small displays.
