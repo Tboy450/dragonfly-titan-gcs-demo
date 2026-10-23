@@ -871,14 +871,26 @@ const alarmStages = [
 function stepAlarm(b, dt, swarm) {
   if (b.tier === 0) { b.alarm = 0; return; }
   const gain = alarmGain(b);
-  let seen = 0, calm = 0;
+  let seen = 0, calm = 0, crossfire = 0;
   for (const unit of swarm) {
     if (!unit.alive) continue;
     if (b.zones.some(zone => !zone.captured && zone.kind !== "beachhead" && dist2(unit, zone) < 110 * 110)) seen += 1;
     const def = droneTypes[unit.type];
     if (def?.calm && b.zones.some(zone => zone.kind !== "beachhead" && dist2(unit, zone) <= zone.radius ** 2)) calm += def.calm;
+    // The public (ENEMY-01): a drone fighting inside a town the swarm does not hold puts its
+    // people in the crossfire, which outrages the public far more than being seen [EST].
+    if (unit.target !== null) {
+      const town = b.zones.find(zone => !zone.captured && zone.population > 0 && dist2(unit, zone) <= zone.radius ** 2);
+      if (town) {
+        crossfire += 1;
+        if (!town.crossfire) {
+          town.crossfire = true;
+          b.log.push({ t: b.time, tone: "bad", text: `Civilians caught in the crossfire in ${town.name}: the public is outraged. Links capture quietly instead.` });
+        }
+      }
+    }
   }
-  b.alarm += (Math.min(seen, 40) * 0.012 * gain - calm - 0.35) * dt;
+  b.alarm += (Math.min(seen, 40) * 0.012 * gain + Math.min(crossfire, 20) * 0.12 * gain - calm - 0.35) * dt;
   b.alarm = Math.max(0, Math.min(100, b.alarm));
   b.stats.alarmPeak = Math.max(b.stats.alarmPeak, b.alarm);
   const stage = alarmStages.filter(s => b.alarm >= s.at).length;

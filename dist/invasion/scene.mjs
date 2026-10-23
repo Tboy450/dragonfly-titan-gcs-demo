@@ -8,7 +8,7 @@ import { createTitanTerrain } from "../titan-terrain.mjs?v=dev";
 import { createArrivalHardware } from "../arrival-hardware.mjs?v=dev";
 import { edlStateAt } from "../edl.mjs?v=dev";
 import { dropDurationS, droneTypes } from "./units.mjs?v=dev";
-import { droneModels, figureModel, interceptorModel, structureModels, buildingModels, dragonflyTemplate, societyColors } from "./models.mjs?v=dev";
+import { droneModels, figureModel, interceptorModel, structureModels, buildingModels, dragonflyTemplate, societyColors, civilianModel } from "./models.mjs?v=dev";
 import { projectedDiameter } from './drone-markers.mjs?v=dev';
 import { buildCity } from './city-render.mjs?v=dev';
 import { cityFound, hiddenUnits } from "./battle.mjs?v=dev";
@@ -156,6 +156,11 @@ export function createInvasionScene(canvas, options = {}) {
     unitGroup.add(droneMeshes[type].body, droneMeshes[type].glow, droneMeshes[type].discs);
   }
   const figures = instanced(figureModel(), bodyMaterial, 160);
+  // Townspeople (ENEMY-01): drawn only, never part of the rules (see updatePeople).
+  const civilians = instanced(civilianModel(), bodyMaterial, 160);
+  unitGroup.add(civilians);
+  const clothes = ["#d9c7a3", "#b8c9d9", "#c9a0a0", "#a8c49a", "#e0d6c2", "#9fb0c9"].map(c => new THREE.Color(c));
+  let people = [];
   const interceptors = instanced(interceptorModel(), bodyMaterial, 120);
   unitGroup.add(figures, interceptors);
   const structureMeshes = {};
@@ -368,6 +373,7 @@ export function createInvasionScene(canvas, options = {}) {
     // frontier map it stays hidden until scouted (updateZones).
     cityGroup = planetTerrain.city ? buildCity(world, planetTerrain.city, { high: quality.city }) : null;
     for (const zone of battle.zones) buildZone(zone, battle, planet);
+    buildPeople(battle);
     // Rotor-wash dust (swarm-dust.mjs), tinted like the ground; none over water or lava.
     dust = createSwarmDust(THREE, world, {
       heightAt: (x, z) => terrain.heightAt(x, z), seed: planet.seed || 1,
@@ -708,6 +714,54 @@ export function createInvasionScene(canvas, options = {}) {
     flag(figures); flag(interceptors);
   }
 
+  // Townspeople of each populated settlement (not the Hive beacon): they wander near home, run
+  // from drones that come close, and drift back once it is quiet. Purely visual [EST]; the rules
+  // count their panic through the alarm (battle.mjs stepAlarm).
+  function buildPeople(battle) {
+    people = [];
+    for (const zone of battle.zones) {
+      if (zone.kind === "beachhead" || !(zone.population > 0)) continue;
+      const rand = seeded(zone.x * 13 + zone.z * 17 + 5), count = Math.max(4, Math.min(14, Math.round(4 + zone.population / 1000)));
+      for (let k = 0; k < count && people.length < 160; k += 1) {
+        const a = rand() * Math.PI * 2, r = zone.radius * (0.2 + rand() * 0.6), x = zone.x + Math.cos(a) * r, z = zone.z + Math.sin(a) * r;
+        people.push({ zone, homeX: x, homeZ: z, x, z, heading: rand() * Math.PI * 2, color: clothes[Math.floor(rand() * clothes.length)], phase: rand() * 10, running: false });
+      }
+    }
+  }
+  function updatePeople(b, dt, time) {
+    civilians.count = 0;
+    const drones = b.units.filter(u => u.alive && u.side === "swarm" && !u.structure);
+    for (const person of people) {
+      const zone = person.zone;
+      if (zone.scouted === false) continue;
+      let threat = null, best = 45 * 45;
+      if (!zone.captured) for (const d of drones) { const d2 = (d.x - person.x) ** 2 + (d.z - person.z) ** 2; if (d2 < best) { best = d2; threat = d; } }
+      let tx = person.homeX + Math.sin(time * 0.3 + person.phase) * 3, tz = person.homeZ + Math.cos(time * 0.27 + person.phase) * 3, speed = 1.2;
+      if (threat) {
+        const dx = person.x - threat.x, dz = person.z - threat.z, d = Math.hypot(dx, dz) || 1;
+        tx = person.x + dx / d * 10; tz = person.z + dz / d * 10; speed = 5;
+        if (Math.hypot(tx - zone.x, tz - zone.z) > zone.radius * 1.7) { tx = person.x; tz = person.z; }
+      }
+      const dx = tx - person.x, dz = tz - person.z, d = Math.hypot(dx, dz);
+      person.running = !!threat && d > 0.5;
+      if (d > 0.3 && dt > 0) {
+        const step = Math.min(d, speed * dt), nx = person.x + dx / d * step, nz = person.z + dz / d * step;
+        if (!terrain.walkable || terrain.walkable(nx, nz)) { person.x = nx; person.z = nz; }
+        person.heading = Math.atan2(dx, dz);
+      }
+      const bob = person.running ? Math.abs(Math.sin(time * 12 + person.phase)) * 0.3 : 0;
+      dummy.position.set(person.x, terrain.heightAt(person.x, person.z) + bob, person.z);
+      dummy.rotation.set(0, person.heading, 0);
+      dummy.scale.setScalar(2.6);
+      dummy.updateMatrix();
+      civilians.setMatrixAt(civilians.count, dummy.matrix);
+      civilians.setColorAt(civilians.count, person.color);
+      civilians.count += 1;
+    }
+    civilians.instanceMatrix.needsUpdate = true;
+    if (civilians.instanceColor) civilians.instanceColor.needsUpdate = true;
+  }
+
   function updateZones(b, time) {
     if (cityGroup) {
       cityGroup.visible = cityFound(b);
@@ -963,6 +1017,7 @@ export function createInvasionScene(canvas, options = {}) {
       dust.update(dt, low, events.filter(e => e.kind === "release"), camera.position);
     }
     updateUnits(b, time);
+    updatePeople(b, dt, time);
     updateZones(b, time);
     updateEffects(b, dt, time);
     updateWeather(b, view.focus, time);

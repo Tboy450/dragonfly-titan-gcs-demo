@@ -489,8 +489,17 @@ complete solely because its assets download or its unit tests pass.
 
 ## 6. Defenders, society and the public (ENEMY)
 
-- [ ] **ENEMY-01 (P1)** Make the public visible: people in settlements who flee from drones;
-  panic raises the alarm; harming them carries a penalty.
+- [x] **ENEMY-01 (P1) — Claude (October 22)** Make the public visible: people in settlements who
+  flee from drones; panic raises the alarm; harming them carries a penalty.
+  - Every populated settlement shows 4 to 14 townspeople (by population) who wander near home.
+    They run from drones within 45 m and drift back once the town is quiet or captured.
+  - Panic already raised the alarm (drones seen by the public). New: fighting inside an
+    uncaptured, populated town adds a crossfire penalty to the alarm, and the battle log says
+    so once per town ("Links capture quietly instead").
+  - The townspeople are drawn only [EST]; the rules count the crossfire, so saves and replays stay
+    exact. Saves validate the new `crossfire` flag.
+  - `tests/invasion-public.test.mjs`: a fight in a defended town raises the alarm well above the same
+    fight in an emptied one, and the log line appears once.
 - [ ] **ENEMY-02 (P2)** Behavior by society level: tribal ambushes, agrarian barricades,
   industrial repair crews, networked defenders hacking drones back, spacefaring counter-drops.
 - [ ] **ENEMY-03 (P2)** Enemy aircraft below level 5 (balloons, helicopters, jets) and boats on
@@ -871,8 +880,14 @@ Optional, generated sound since October 22 (`battle-sound.mjs` decides, `sound.m
   rejected; recoverable backup/export and future schemas remain SAVE-02/05/06 work.
 - [ ] **TECH-04 (P2)** Export and import progress to move it between devices.
 - [ ] **TECH-05 (P3)** Installable app with offline play.
-- [ ] **TEST-01 (P1)** A render smoke test for `scene.mjs` and `models.mjs`, using the
-  stand-in renderer from the simulator's `render-smoke.test.mjs`.
+- [x] **TEST-01 (P1) — Claude (October 22)** A render smoke test for `scene.mjs` and `models.mjs`,
+  using the stand-in renderer from the simulator's `render-smoke.test.mjs`.
+  - `tests/invasion-scene-smoke.test.mjs`: every game model builds finite geometry, and every
+    campaign planet and frontier map (10 worlds) runs through the real scene.
+  - Each world loads with real terrain, plays 60 frames of a drop, combat, weather, an
+    explosion and an artillery strike, then reveals any city and draws from the free camera.
+  - On unload nothing is left behind except Titan's landscape, kept hidden on purpose.
+  - Appearance and speed still need the browser (PERF-01).
 - [ ] **TEST-02 (P1)** A browser end-to-end check: title, galaxy, drop, capture, debrief.
 - [ ] **TEST-03 (P1)** Human playtests: at least three players per planet; record time, losses
   and where they got stuck.
