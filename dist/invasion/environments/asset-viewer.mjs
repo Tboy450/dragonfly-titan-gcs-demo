@@ -53,6 +53,16 @@ export const assetCatalog = Object.freeze([
 
 export const assetById = id => assetCatalog.find(asset => asset.id === id) || null;
 
+// Asset search (LAB-05): every typed word must appear in the name, category, description or creator.
+export function searchAssets(query, catalog = assetCatalog) {
+  const words = String(query || '').toLowerCase().split(/\s+/).filter(Boolean);
+  if (!words.length) return [...catalog];
+  return catalog.filter(entry => {
+    const text = `${entry.name} ${entry.category} ${entry.description} ${entry.creator}`.toLowerCase();
+    return words.every(word => text.includes(word));
+  });
+}
+
 // Fit to an inspection stand; this does not claim verified physical dimensions.
 export function createAssetDisplay(root, entry) {
   root.updateMatrixWorld(true);

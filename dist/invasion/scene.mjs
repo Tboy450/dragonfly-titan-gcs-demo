@@ -14,6 +14,7 @@ import { buildCity } from './city-render.mjs?v=dev';
 import { cityFound, hiddenUnits } from "./battle.mjs?v=dev";
 import { freeTarget } from "./free-camera.mjs?v=dev";
 import { qualityLevels, createAdaptive, adaptFrame } from "./quality.mjs?v=dev";
+import { createSwarmDust, dustLimits } from "./swarm-dust.mjs?v=dev";
 
 export const swarmColor = "#7ce7ff";
 export const nativeColor = "#ff8a4a";
@@ -272,7 +273,7 @@ export function createInvasionScene(canvas, options = {}) {
   // ---- Planet ----
   let world = null, titan = null, terrain = null, look = biomeLooks.desert;
   const zoneVisuals = new Map();
-  let cityGroup = null;
+  let cityGroup = null, dust = null;
   const skyCanvas = document.createElement("canvas");
   skyCanvas.width = 2; skyCanvas.height = 256;
   const skyTexture = new THREE.CanvasTexture(skyCanvas);
@@ -315,6 +316,8 @@ export function createInvasionScene(canvas, options = {}) {
     if (titan) titan.group.visible = false;
     zoneVisuals.clear();
     cityGroup = null;
+    dust?.dispose();
+    dust = null;
     for (const d of dragonflies) d.parent?.remove(d);
     dragonflies.length = 0;
     shots = [];
@@ -365,6 +368,13 @@ export function createInvasionScene(canvas, options = {}) {
     // frontier map it stays hidden until scouted (updateZones).
     cityGroup = planetTerrain.city ? buildCity(world, planetTerrain.city, { high: quality.city }) : null;
     for (const zone of battle.zones) buildZone(zone, battle, planet);
+    // Rotor-wash dust (swarm-dust.mjs), tinted like the ground; none over water or lava.
+    dust = createSwarmDust(THREE, world, {
+      heightAt: (x, z) => terrain.heightAt(x, z), seed: planet.seed || 1,
+      dusty: (x, z) => terrain.solidLiquid || terrain.isLand(x, z),
+      // A little lighter than the ground, so puffs read against it.
+      color: new THREE.Color(planet.biome === "titan" ? "#c9a46e" : look.high).lerp(new THREE.Color("#ffffff"), 0.35),
+    });
   }
 
   function groundMesh(planet, battle) {
@@ -947,6 +957,11 @@ export function createInvasionScene(canvas, options = {}) {
   function frame(b, view, events, dt, time) {
     setCamera(view);
     consume(b, events);
+    if (dust) {
+      const low = [];
+      for (const unit of b.units) if (unit.alive && unit.side === "swarm" && !unit.structure && unit.alt < dustLimits.lowAltitude) low.push(unit);
+      dust.update(dt, low, events.filter(e => e.kind === "release"), camera.position);
+    }
     updateUnits(b, time);
     updateZones(b, time);
     updateEffects(b, dt, time);

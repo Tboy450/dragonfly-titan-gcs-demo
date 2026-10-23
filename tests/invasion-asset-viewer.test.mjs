@@ -94,3 +94,13 @@ test('Swarmfall defenders, defenses and settlements inspect from the game\'s own
   const houses=await loadAssetDisplay(assetById('settlements'),null);
   assert.equal(houses.group.getObjectByName('Inspection asset').children[0].children.length,9,'a hut and four houses with roofs');
 });
+
+test('Asset search matches every word across name, category, description and creator',async()=>{
+  const {searchAssets}=await import('../dist/invasion/environments/asset-viewer.mjs');
+  assert.equal(searchAssets('').length,assetCatalog.length);
+  assert.deepEqual(searchAssets('flak').map(a=>a.id),['defense-flak']);
+  assert.deepEqual(searchAssets('  FORGE  city ').map(a=>a.id),['city-forge']);
+  assert.ok(searchAssets('kenney roof').every(a=>a.creator==='Kenney'&&/roof/i.test(a.name+a.description)));
+  assert.equal(searchAssets('swarmfall defenses').filter(a=>a.category==='Swarmfall defenses').length,7);
+  assert.deepEqual(searchAssets('no such thing anywhere'),[]);
+});

@@ -59,6 +59,36 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Next:** Attic surfaces, local camera/HGA insulation, then source-backed local sections;
   separately audit selected-material test conditions against legacy thermal assumptions.
 
+### 2026-10-22: Swarmfall rotor-wash dust
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add rotor-wash dust under low drones and at pod touchdowns"
+- **What changed:** Checklist VIS-01.
+  - Drones flying below 12 m kick up dust, more the lower they are: the Dragonfly landing to
+    drill, and drones just released from their pods.
+  - Each pod touchdown raises a burst.
+  - Puffs roll outward, rise, grow and fade like the simulator's `downwash-dust.mjs`, tinted a
+    little lighter than the planet's ground. None rise over water or lava.
+  - 64 pooled puffs for the whole swarm keep it cheap.
+- **Files:** `dist/invasion/swarm-dust.mjs` (new), `scene.mjs`, `tests/invasion-dust.test.mjs`
+  (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/*.test.mjs` (516 pass). The new tests cover low against high
+  drones, bursts, drift and fade, water, and the pool limit. Browser: two pods on Kepra raised
+  20 puffs, with no errors.
+
+### 2026-10-22: Search in the Asset & Environment Lab
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a search box to the lab's asset inspector"
+- **What changed:** The lab's asset picker gets a search box (LAB-05):
+  - Every typed word must match an asset's name, category, description or creator ("flak",
+    "forge city", "kenney roof").
+  - The picker lists only the matches, with a count. The asset on show always stays listed,
+    and Enter opens the first match.
+  - The list is rebuilt rather than hiding options, so it works on iPhones too.
+- **Files:** `dist/invasion/environments/asset-viewer.mjs` (`searchAssets`), `lab.mjs`,
+  `index.html`, `lab.css`, `tests/invasion-asset-viewer.test.mjs`, `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (514 pass). Browser: on the Flak gun page,
+  "roof" showed "6 of 34 match" with the Flak gun kept. No errors.
+
 ### 2026-10-22: Swarmfall's own assets in the Asset & Environment Lab
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add Swarmfall defenders, defenses, settlements, city styles and the Dragonfly to the lab"

@@ -7,7 +7,7 @@ import { lowFootprint, structuralContacts } from "./foundation.mjs?v=dev";
 import { bakeSourceGeometry } from "./source-geometry.mjs?v=dev";
 import { damagePart, damageAnchors, collectDamageParts, createCityDamageVariant, disposeCityDamageVariant, damageStages } from './city-damage.mjs?v=dev';
 import { createCityAftermath } from './aftermath.mjs?v=dev';
-import { assetCatalog, assetById, loadAssetDisplay } from './asset-viewer.mjs?v=dev';
+import { assetCatalog, assetById, loadAssetDisplay, searchAssets } from './asset-viewer.mjs?v=dev';
 import { moduleWorlds } from './worlds/index.mjs?v=dev';
 
 const $=id=>document.getElementById(id),query=new URLSearchParams(location.search),requested=query.get('scene');
@@ -36,12 +36,23 @@ if(assetEntry){
   $('asset-source').href=assetEntry.source;$('tour').textContent='Turntable';
   document.querySelector('[data-view="district"]').textContent='Detail';document.querySelector('[data-view="street"]').textContent='Close';
   $('world').setAttribute('aria-label','Interactive 3D asset. Drag to orbit and scroll to zoom.');
-  for(const category of new Set(assetCatalog.map(asset=>asset.category))){
-    const group=document.createElement('optgroup');group.label=category;
-    for(const asset of assetCatalog.filter(asset=>asset.category===category)){const option=document.createElement('option');option.value=asset.id;option.textContent=asset.name;group.append(option);}
-    $('asset-choice').append(group);
-  }
-  $('asset-choice').value=assetEntry.id;$('asset-choice').addEventListener('change',()=>{const url=new URL(location.href);url.search='';url.searchParams.set('asset',$('asset-choice').value);location.assign(url);});
+  // The picker lists the search matches by category; the asset on show always stays listed.
+  const fillAssets=list=>{
+    $('asset-choice').replaceChildren();
+    const shown=list.some(asset=>asset.id===assetEntry.id)?list:[assetEntry,...list];
+    for(const category of new Set(shown.map(asset=>asset.category))){
+      const group=document.createElement('optgroup');group.label=category;
+      for(const asset of shown.filter(asset=>asset.category===category)){const option=document.createElement('option');option.value=asset.id;option.textContent=asset.name;group.append(option);}
+      $('asset-choice').append(group);
+    }
+    $('asset-choice').value=assetEntry.id;
+    $('asset-count').textContent=list.length===assetCatalog.length?`${assetCatalog.length} assets`:`${list.length} of ${assetCatalog.length} match`;
+  };
+  const openAsset=id=>{const url=new URL(location.href);url.search='';url.searchParams.set('asset',id);location.assign(url);};
+  fillAssets(assetCatalog);
+  $('asset-search').addEventListener('input',()=>fillAssets(searchAssets($('asset-search').value)));
+  $('asset-search').addEventListener('keydown',event=>{if(event.key!=='Enter')return;const first=searchAssets($('asset-search').value).find(asset=>asset.id!==assetEntry.id);if(first)openAsset(first.id);});
+  $('asset-choice').addEventListener('change',()=>openAsset($('asset-choice').value));
 }
 const canvas=$('world'),scene=new THREE.Scene();let renderer;
 try{renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});}catch(error){$('loading-text').textContent='This preview needs WebGL 2. Try a browser with hardware acceleration enabled.';throw error;}
