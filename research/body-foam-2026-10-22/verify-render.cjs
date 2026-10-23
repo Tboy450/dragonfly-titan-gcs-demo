@@ -10,7 +10,7 @@ const fs = require('node:fs'), path = require('node:path'), assert = require('no
     const errors=[],failed=[],cases=[];
     page.on('pageerror',e=>errors.push(e.message));page.on('requestfailed',r=>failed.push(r.url()));
     await page.addInitScript(()=>localStorage.setItem('dragonfly-arrival-seen','1'));
-    await page.goto(url);await page.locator('#mission-view-button').click();
+    await page.goto(url,{timeout:90000});await page.locator('#mission-view-button').click();
     await page.locator('[data-layer="internal"]').click();
     if(!live){await page.waitForFunction(()=>window.dragonflyState);await page.evaluate(()=>window.dragonflyState.hold=true);}
     const build=await page.locator('#build-label').textContent();

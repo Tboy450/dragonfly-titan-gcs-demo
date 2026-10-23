@@ -39,6 +39,18 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-22: Body-insulation release receipt
+- **Signed:** Codex (OpenAI).
+- **Commit:** "Record body insulation deployment and verification limits [skip ci]".
+- **Release:** dc5dee4 / Pages39893875943 succeeded; recovery tag and feature/main pushed.
+  Concurrent Claude game/Lab work throughf8e88e3 retained; combined525 tests pass.
+- **Public checks:** HTML/module HTTP200, expected build, body notes and revision, stamped
+  import verified. Public Edge load event timed out at30/90seconds, before interactions;
+  public UI verification incomplete, not passed. Local36 cases and all geometry/mask checks
+  passed. Receipt in research/body-foam-2026-10-22/live-dc5dee4. Local preview stopped.
+- **Next:** Diagnose public browser load if it recurs; attic/local insulation is the next
+  model package. No additional app change or duplicate deployment for this documentation.
+
 ### 2026-10-22: Five removable body-insulation inspection surfaces
 - **Signed:** Codex (OpenAI).
 - **Commit:** "Separate body insulation into five removable inspection surfaces".

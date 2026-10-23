@@ -60,7 +60,13 @@ Before files, six screenshots and exact hardware/base-surface manifests were cap
 
 `verify-render.cjs` runs local/public checks; `after/` contains receipts and raw/context/
 phone screenshots. `make-comparison.py` only lays out saved real sources and actual renders.
-No image-generation service used. The public release receipt is added after deployment.
+No image-generation service used.
+
+Published as dc5dee4 after preserving concurrent Claude work throughf8e88e3; combined
+suite525/525. Pages39893875943 succeeded. Public HTML/module/build stamps verified by
+HTTPS, but the public Edge load event timed out twice before interaction checks. Public UI
+verification is therefore **incomplete**, not a pass. [Exact receipt and limits](live-dc5dee4/README.md).
+Local preview stopped. Do not repeat asset work because of that unexplained browser timeout.
 
 ## Continue here, not at the start of the checklist
 

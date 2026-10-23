@@ -54,8 +54,12 @@ tile map or membrane stack invented. All24 equipment plus walls/joints/deck/atti
 NASA2025 real test photo and NESC May2026 foam development saved/reviewed: current body
 selection is Solimide-based / Solimide16, not a blanket update to all local Rohacell.
 Legacy thermal constants remain unchanged; a separately scoped source/material audit is open.
-519 tests pass. Browser/source/pixel/publication receipts are tracked in the current research
-folder. Next: attic region separation, then local camera/HGA insulation. Keep thickness,
+Initial519 tests passed; combined525 pass after merging Claude's newer game/Lab commits
+throughf8e88e3. Release dc5dee4 and recovery tag pushed; Pages39893875943 succeeded.
+Public HTML/module/build stamps verified directly. Public Edge UI checks remain incomplete:
+30/90second load-event timeouts before the interaction loop; do not claim public36 passed.
+Local36 cases, source/pixel/mask/restore/geometry checks passed. [Publication receipt](research/body-foam-2026-10-22/live-dc5dee4/README.md).
+Local preview stopped. Next: attic region separation, then local camera/HGA insulation. Keep thickness,
 penetrations, encapsulation/vents and hidden construction open until separately supported.
 
 Historical October22 deck checkpoint: unnumbered Top deck / attic edge, separate0.254mm
