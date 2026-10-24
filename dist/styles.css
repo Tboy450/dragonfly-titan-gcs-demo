@@ -945,6 +945,14 @@ button:disabled { opacity: 0.5; cursor: default; }
 .component-temperatures summary { padding: 10px 0; cursor: pointer; color: var(--cyan); font-size: 0.85rem; font-weight: 700; }
 .component-temperatures summary span { margin-left: 8px; color: #bcd0e2; font-size: 0.75rem; font-weight: 400; }
 .component-temperatures summary:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.connection-coverage-list { margin: 0; font-size: 0.82rem; line-height: 1.5; }
+.connection-coverage-list > div { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.connection-coverage-list dt { display: flex; justify-content: space-between; gap: 10px; align-items: center; font-weight: 700; overflow-wrap: anywhere; }
+.connection-coverage-list dd { margin: 0; }
+.connection-coverage-list p { margin: 5px 0; }
+.connection-coverage-list a { overflow-wrap: anywhere; }
+.connection-inspect { display: grid; place-items: center; width: 32px; min-width: 32px; height: 32px; min-height: 32px; padding: 5px; }
+.connection-inspect img { width: 18px; height: 18px; filter: invert(1); pointer-events: none; }
 .part-list li { border-radius: 5px; }
 .part-list li button { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; align-items: center; gap: 8px; width: 100%; padding: 5px 6px; border: 0; background: transparent; text-align: left; font-size: inherit; }
 .part-list li:hover, .part-list li.active { background: rgba(124, 231, 255, 0.12); }

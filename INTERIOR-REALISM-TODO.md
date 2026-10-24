@@ -10,6 +10,15 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+Latest October24 source gate: [sampling electronics role/coverage audit](research/sampling-electronics-2026-10-24/README.md).
+Public roles documented for IEM, PSUs, DrACO avionics, DraMS main/laser electronics and
+carousel drives. New expandable panel exposes gaps and four existing inspection targets.
+No new wires, controllers or geometry. Source photos/page saved; actual flight mating still
+unresolved. Next bounded installation pass: IEM connector service-loop/support audit,
+using existing photos and endpoint register, not another speculative attic trunk search.
+576 tests pass; desktop/mobile focus and view-mode retest have zero errors after the
+original-demo metadata guard fix. Physical interfaces and full wiring remain open.
+
 Latest October24 checkpoint: [carousel warm-drive installation](research/carousel-warm-drives-2026-10-24/README.md).
 Three existing drive examples retain centers/nominal can scale, with real-photo-inspired
 metallic housings, dark caps, wrapped necks and independent focuses/layers. Three estimated
@@ -1001,6 +1010,16 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [ ] **Attic instrument harness:** DraMS, Wonderwall and carousel visible wiring/valve lines,
   with equipment entries, local branches, supports and service slack based on saved photos.
   Do not invent hidden spectrometer/sample-processing circuits or plumbing topology.
+- [x] **External sampling-electronics source gate (Codex, October24):** public roles and
+  real DraMS LEU engineering-model photo recorded; bus/connector/placement evidence still
+  insufficient for a physical trunk. Collapsed coverage view added, not a completed network.
+- [ ] **DrACO avionics accommodation:** separately identified enclosure, reliable scale,
+  mounting zone, actual mating interfaces and supported routes; not the IEM or a carousel motor.
+- [ ] **DraMS LEU accommodation:** real NASA EM photo now saved; exact flight external case,
+  scale/location and interfaces still needed. Do not conflate LEU, DraMS MEB and Ocellus MEB.
+- [ ] **IEM local connector installation:** next bounded pass; audit its existing service
+  bends, lacing and support contact without moving the photo-referenced enclosure or claiming
+  circuit identity. Keep main-branch/stub endpoints from the current bay register.
 - [x] **Attic local-line audit / DraMS short wire (Codex, October23):** eight examples
   registered; media masks/focuses corrected; one estimated wire support/slack pass complete.
   Full preceding attic network remains open. [Sources, sample and handoff](research/attic-connection-media-2026-10-23/README.md).

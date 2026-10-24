@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-24",
+  "collapsedDefault": {
+    "hidden": false,
+    "open": false,
+    "rows": 6
+  },
+  "focusActions": [
+    {
+      "part": "iem",
+      "subassembly": ""
+    },
+    {
+      "part": "power-units",
+      "subassembly": ""
+    },
+    {
+      "part": "drams",
+      "subassembly": ""
+    },
+    {
+      "part": "sample-carousel",
+      "subassembly": "carousel-drive-1"
+    }
+  ],
+  "modes": [
+    {
+      "hidden": false,
+      "mode": "thermal"
+    },
+    {
+      "hidden": true,
+      "mode": "exterior"
+    },
+    {
+      "hidden": false,
+      "mode": "internal"
+    }
+  ],
+  "hiddenForOriginalModel": true,
+  "mobile": {
+    "buttons": 4,
+    "client": 375,
+    "links": [
+      "https://www.jhuapl.edu/news/news-releases/260312-dragonfly-integration-begins",
+      "https://www.jhuapl.edu/news/news-releases/260312-dragonfly-integration-begins",
+      "https://www.blueorigin.com/news/dragonfly-selected-nasa-new-frontiers-mission",
+      "https://ntrs.nasa.gov/citations/20240005590",
+      "https://etd.gsfc.nasa.gov/capabilities/capabilities-listing/high-voltage-instrument-electrical-systems/",
+      "https://ntrs.nasa.gov/citations/20230017316"
+    ],
+    "parts": 24,
+    "rows": 6,
+    "scroll": 375
+  },
+  "pilotReturn": "true",
+  "errors": [],
+  "originalDemoAfterFix": {
+    "hidden": true,
+    "selected": "sample-carousel"
+  },
+  "retestStarted": "2026-10-24T16:00:00.356Z"
+}

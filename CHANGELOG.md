@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-24: Surface sampling-electronics coverage without inventing a flight trunk
+- **Signed:** Codex (OpenAI).
+- **Commit:** Add sourced sampling-electronics coverage and inspection links.
+- **What:** collapsed Mission evidence section with six documented roles, model gaps,
+  primary-source links and four existing-model focus actions. DrACO avionics/LEU remain
+  unmodeled. DraMS MEB is distinguished from Ocellus MEB. No new bus/cable/model geometry.
+- **Research:** new real NASA GSFC laser-electronics EM page image, saved ICES2024-103 p2
+  schematic and existing primary IEM/PSU/carousel references. Functional evidence does not
+  establish flight placement, connectors, protocols, voltages or redundancy.
+- **Related fix:** original-demo switch exposed an existing false sentinel in component
+  metadata selection. Null guard fixes it; production-statement regression added. No physics,
+  science/save or game edits. Original24 part numbers preserved.
+- **Archive/checks:** prior UI/styles/HTML and failed mock-switch log kept, recovery tag on
+  08e0a6d. Four source/metadata regressions, desktop/mobile, focus and view-mode checks.
+  Full suite576 pass; clean post-fix browser retest has zero errors. Publication receipt follows.
+  Next: IEM local service-loop/support audit;
+  actual attic mating/trunk remains open, not blocked by repeated searches.
+
 ### 2026-10-24: Confirm carousel-drive publication and live close-up
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record live carousel-drive acceptance [skip ci].

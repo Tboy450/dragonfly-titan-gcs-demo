@@ -78,6 +78,13 @@ and centers retained; cold carousel unchanged. Three estimated local leads end b
 bus/controller mating. The current attic audit now has11 rows; four network gaps stay open.
 Thermal retains equipment-bay coloring; no new electrical or motor/thermal solver.
 
+October24 source-gate UI: `sampling-connections.mjs` stores immutable functional-role/
+model-coverage records; `ui/sampling-connections.mjs` renders the collapsed Mission evidence
+list. Four callbacks reuse existing inspector focus/subassembly APIs via layers-panel;
+unmodeled electronics have no fake focus target. Research-model Internal/Thermal only.
+No3D/simulation/save changes. Original-demo external metadata now uses null rather than
+a false sentinel; its previously unsafe optional lookup has a regression test.
+
 | File | What it does |
 |---|---|
 | `dist/flight-model.mjs` | Vehicle constants, `createFlightState()`, the flight step (`stepFlight`), power curve, flight commands, autopilot branch, flight-plan estimate helper |

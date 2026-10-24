@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [sampling-coverage-2026-10-24](sampling-coverage-2026-10-24/README.md) | Exact prior index/style/layer panel, baseline live screenshot and failed original-demo check before metadata-guard correction; no geometry change | 2026-10-24 | `archive/sampling-coverage-2026-10-24` on08e0a6d |
 | [carousel-warm-drives-2026-10-24](carousel-warm-drives-2026-10-24/README.md) | Simplified underside drives, exact builder/UI/HTML/test/register, before pictures; rejected over-radius support draft | 2026-10-24 | `archive/carousel-warm-drives-2026-10-24` on e4ffe5d |
 | [attic-connection-media-2026-10-23](attic-connection-media-2026-10-23/README.md) | Exact old DraMS/carousel/masks/UI/HTML, installed/wire samples; rejected over-width lacing draft/code | 2026-10-23 | `archive/attic-connection-media-2026-10-23` on4d37763 |
 | [lower-camera-harness-2026-10-23](lower-camera-harness-2026-10-23/README.md) | Old main harness/test/UI/HTML, before endpoint data and views; rejected short bypass code/picture | 2026-10-23 | `archive/lower-camera-harness-2026-10-23` on905bc05 |

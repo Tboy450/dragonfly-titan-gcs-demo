@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Sampling-electronics source gate (Codex, October24):** [reviewed roles, gaps and sources](sampling-electronics-2026-10-24/README.md).
+New saved NASA GSFC LEU engineering-model webpage/photo and ICES2024-103 p2 thermal
+schematic. Reuses real IEM/PSU and carousel photographs; Blue Origin confirms DrACO's
+avionics/software scope. Functional evidence is not a flight wiring diagram. No geometry
+rebuilt; prototype/thermal schematic does not establish scale, location or connectors.
+
 **Carousel warm-drive installation (Codex, October24):** [sources and comparison](carousel-warm-drives-2026-10-24/README.md).
 Real underside crop reuses saved SVS15003 integration photo, credit NASA/Mike Guinto.
 SciTech2024 saved p3 Fig2 is explicitly CAD/layout evidence for warm actuators underneath,

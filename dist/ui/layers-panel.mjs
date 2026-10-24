@@ -5,7 +5,15 @@ import { $, chaseRenderer, flightCanvas, state } from "./context.mjs?v=dev";
 import { partMarkers } from "./flight-view.mjs?v=dev";
 import { samplingSequence } from "../science.mjs?v=dev";
 import { updateInspectorUI } from "./vehicle-inspector.mjs?v=dev";
-import { focusInspector } from "../vehicle-inspector.mjs?v=dev";
+import { focusInspector, selectInspectionSubassembly } from "../vehicle-inspector.mjs?v=dev";
+import { renderSamplingConnections } from "./sampling-connections.mjs?v=dev";
+
+renderSamplingConnections($("sampling-connections-body"), row => {
+  if (!chaseRenderer?.subsystems[row.inspect]) return;
+  focusInspector(state, row.inspect);
+  if (row.subassembly) selectInspectionSubassembly(state, chaseRenderer.subsystems[row.inspect], row.subassembly);
+  updateInspectorUI();
+});
 
 const sources = {
   atticRegister: ["Attic line register: modeled media, endpoints and unresolved networks", "https://github.com/Tboy450/dragonfly-titan-gcs-demo/blob/main/research/attic-connection-media-2026-10-23/ENDPOINTS.md"],
@@ -125,6 +133,7 @@ export function updateLayerPanel() {
   document.querySelectorAll("[data-layer]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.layer === state.missionLayer)));
   $("thermal-legend").hidden = !layered;
   const mock = layered && state.vehicleModel === "original";
+  $("sampling-connections").hidden = !layered || mock || !chaseRenderer;
   $("part-list").hidden = !layered;
   $("mock-banner").hidden = !mock;
   $("layer-note").hidden = !layered || mock;
@@ -173,7 +182,7 @@ export function updateLayerPanel() {
     temp.textContent = zone ? `${zone.c.toFixed(0)} C` : "";
     if (zone) temp.style.color = thermalCss(zone.c);
   }
-  const external = !mock && chaseRenderer?.subsystems[state.selectedPart];
+  const external = mock ? null : chaseRenderer?.subsystems[state.selectedPart];
   const selected = markers.find(marker => marker.name === state.selectedPart) ?? (external?.userData.inspectionTitle ? {
     name: external.name, label: external.userData.inspectionTitle,
     source: external.userData.source, zone: external.userData.thermalZone,

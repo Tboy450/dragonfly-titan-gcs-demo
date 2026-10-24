@@ -10,6 +10,11 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
+October24 continuation: [sampling electronics and unresolved interfaces](research/sampling-electronics-2026-10-24/README.md).
+New collapsed Mission section separates lander electronics, DrACO avionics, DraMS main/
+laser electronics and warm drives, with primary-source links and four existing-model
+focus shortcuts. No new wire/model or assumed bus. Actual flight interfaces remain open.
+
 October24: [carousel warm-drive installation examples](research/carousel-warm-drives-2026-10-24/README.md).
 Three existing drive locations gain photo-inspired casing/cap/mount detail, individual focuses
 and separate layer controls. Estimated local leads/supports stop before any unmodeled bus.

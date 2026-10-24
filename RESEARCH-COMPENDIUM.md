@@ -4,6 +4,12 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October24 sampling-electronics gate (Codex):** [accepted evidence / gaps](research/sampling-electronics-2026-10-24/README.md).
+[PUB] documented separate roles for lander IEM/PSUs, DrACO avionics, DraMS main electronics,
+NASA's laser-electronics EM and warm carousel actuators. Physical flight mating remains
+unresolved. New expandable role/coverage view; no new geometry, circuit/thermal solver,
+voltage, protocol or redundancy assignments. Next: existing IEM local service supports.
+
 **October24 carousel warm drives (Codex):** [real/CAD/model evidence](research/carousel-warm-drives-2026-10-24/README.md).
 [PUB] SciTech2024 warm underside/cold sample separation; real SVS15003 NASA/Mike Guinto
 photo guides exterior appearance, not motor identity. [EST] retained can scale/three centers,
