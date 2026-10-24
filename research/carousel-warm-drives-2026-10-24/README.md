@@ -71,7 +71,15 @@ width, no horizontal overflow. Clean standard-server preview has no browser erro
 An initial custom preview omitted SVG MIME typing; corrected locally using the standard
 server, with no production asset changes. Installed drive context remains visible until
 hidden with existing masks; selecting a focus does not physically disassemble equipment.
-Publication receipt follows deployment.
+## Publication Receipt
+
+Build **d9033df** (`d9033df81bc7efdeef70f888e8f3dc1d1a4e8602`) published successfully
+through GitHub Pages run **40108265512**. The workflow's full test step also passed.
+Normal live navigation confirms the stamped build, all three drive target options, the
+selected drive close-up,24 part rows and the updated source-limit/coverage notes, with
+no browser errors. Saved evidence: `public-d9033df-checks.json` and
+`public-d9033df-drive.png`. No game files changed; local preview servers stopped.
+Recovery tag and research/archive assets are pushed. Full attic electrical network remains open.
 
 ## Next / Handoff
 

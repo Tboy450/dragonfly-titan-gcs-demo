@@ -1,0 +1,13 @@
+{
+  "build": "Build d9033df · 2026-10-24",
+  "coverage": true,
+  "localLeadLimit": true,
+  "parts": 24,
+  "selected": "carousel-drive-1",
+  "targets": [
+    "carousel-drive-1",
+    "carousel-drive-2",
+    "carousel-drive-3"
+  ],
+  "errors": []
+}

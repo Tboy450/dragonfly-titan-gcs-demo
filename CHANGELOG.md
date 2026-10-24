@@ -39,6 +39,15 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-24: Confirm carousel-drive publication and live close-up
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record live carousel-drive acceptance [skip ci].
+- **Release:** d9033df81bc7efdeef70f888e8f3dc1d1a4e8602; Pages40108265512 succeeded.
+- **Checks:**572 local tests pass; deployment test step passed. Normal public navigation
+  confirms the build, three drive options, selected close-up,24 rows and updated accuracy
+  notes, with no browser errors. Screenshot/JSON saved in research/carousel-warm-drives-2026-10-24.
+  Local preview servers stopped. No game files edited; full attic network still open.
+
 ### 2026-10-24: Add photo-inspired carousel warm-drive installation examples
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine carousel warm drives and local lead examples.

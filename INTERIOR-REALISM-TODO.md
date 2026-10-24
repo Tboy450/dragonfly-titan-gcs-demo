@@ -17,6 +17,9 @@ local leads have slack/lacing/supports under the existing baseplate; remote bus/
 connections remain OPEN. Cold carousel and other equipment unchanged;572 tests pass.
 The attic register now measures11 examples; all four unresolved network families stay open.
 Next source gate: actual external instrument/controller mating before a new trunk/penetration.
+Published d9033df; Pages40108265512 succeeded. Normal public navigation verifies all three
+drive targets, close-up,24 rows and current accuracy notes, with no errors. Live screenshot/
+JSON saved with research; local preview stopped. No game edits in this pass.
 
 Latest October23 attic checkpoint: [eight-line register / local installation](research/attic-connection-media-2026-10-23/README.md).
 Two electrical examples, three estimated gas/sample tubes and three unclassified routes
