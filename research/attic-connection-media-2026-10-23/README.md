@@ -90,6 +90,19 @@ macro, installed overview and before/after/reference samples saved and visually 
 Local dev-module caching required fresh preview origins; source ?v=dev stamps preserved,
 no speculative production cache or camera-engine edits. Whole attic network still open.
 
+## Publication Receipt
+
+Published build **cc272b0** (`cc272b0f375fb8b032560213fe05f6b91e462637`).
+GitHub Pages run **40059963401** completed successfully. Release merge includes Claude's
+`92e5a58` game changes without modifying his game files. The combined suite passes
+**567 tests**, zero failures/skips (the scoped pre-merge suite passed562).
+
+Normal public navigation verified the stamped build, all six Internal/Thermal media-mask
+cases,24 numbered parts and the `drams-wire-example` macro. No browser errors were logged.
+Evidence: `public-cc272b0-checks.json` and `public-cc272b0-wire.png`. The macro uses existing
+casing/cover/interface/insulation masks for visibility, not a change in physical scale.
+Local preview servers are stopped. Full attic wiring remains unfinished.
+
 ## Next / Handoff
 
 Attic local-line audit and ONE short-wire installation example complete. Whole attic

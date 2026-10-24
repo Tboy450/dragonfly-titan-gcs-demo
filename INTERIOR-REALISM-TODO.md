@@ -14,6 +14,11 @@ Latest October23 attic checkpoint: [eight-line register / local installation](re
 Two electrical examples, three estimated gas/sample tubes and three unclassified routes
 have independent inspection access. One DraMS short wire gains estimated slack/lacing/
 support; endpoints fixed, all other hardware/tubing/carousel geometry exact.562 tests pass.
+Published **cc272b0**, Pages run40059963401 successful; **567 combined tests pass** after
+preserving Claude's92e5a58 game update. Normal public browser checks confirm six media-mask
+cases,24 parts and the wire macro with no errors. Public screenshot/JSON are saved beside
+the register. Local preview servers stopped. Next: external/mating/drive/feedthrough
+reference work before any new trunk geometry; the full attic network is not complete.
 Full attic trunk, external DraMS power/data, warm-drive leads and an identified electrical
 feedthrough remain OPEN. Do not copy integration ground-test harnesses or treat a nearby
 connector/sample neck as an assigned electrical interface. Other legacy parts not reclassified.

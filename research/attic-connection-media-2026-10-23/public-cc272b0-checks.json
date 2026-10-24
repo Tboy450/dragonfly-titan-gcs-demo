@@ -1,0 +1,38 @@
+{
+  "build": "Build cc272b0 · 2026-10-23",
+  "media": [
+    {
+      "mode": "Internal",
+      "id": "harnesses",
+      "hidden": true
+    },
+    {
+      "mode": "Internal",
+      "id": "plumbing",
+      "hidden": true
+    },
+    {
+      "mode": "Internal",
+      "id": "unclassified-lines",
+      "hidden": true
+    },
+    {
+      "mode": "Thermal",
+      "id": "harnesses",
+      "hidden": true
+    },
+    {
+      "mode": "Thermal",
+      "id": "plumbing",
+      "hidden": true
+    },
+    {
+      "mode": "Thermal",
+      "id": "unclassified-lines",
+      "hidden": true
+    }
+  ],
+  "parts": 24,
+  "macro": "drams-wire-example",
+  "errors": []
+}

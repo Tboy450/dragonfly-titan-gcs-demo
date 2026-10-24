@@ -39,6 +39,18 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-23: Confirm attic-line publication and live inspection
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record live attic-line acceptance [skip ci].
+- **Release:** cc272b0f375fb8b032560213fe05f6b91e462637; Pages40059963401 succeeded.
+- **Checks:**567 combined tests pass after merging Claude's92e5a58 without changing his
+  game files. Normal public navigation confirms six media-mask cases,24 numbered parts,
+  the short-wire macro and zero browser errors. Public screenshot/JSON saved in
+  research/attic-connection-media-2026-10-23. Local preview servers stopped.
+- **Open / next:** Full attic trunk, external instrument interfaces, carousel warm drives
+  and electrical feedthrough remain open. Research actual mating evidence before adding
+  geometry. Existing estimates are not flight wiring or qualified workmanship claims.
+
 ### 2026-10-23: Separate attic line media and refine one DraMS wire example
 - **Signed:** Codex (OpenAI).
 - **Commit:** "Separate attic line media and support the DraMS local wire".
