@@ -29,6 +29,8 @@ export function atticEndpointAudit() {
         start: xyz(start), end: xyz(end), radiusM: object.geometry.parameters.radius,
         modeledLengthM: Math.round(path.getLength() * 1e6) / 1e6,
         unresolved: "Actual flight medium, mating port/circuit, cable or tube construction and installed routing not confirmed.",
+        ...(object.userData.remoteEndUnmodeled ? { remoteEndUnmodeled: true,
+          unresolved: "Local drive socket/lead example only; remote bus/controller connection and actual flight cable construction remain unmodeled." } : {}),
         ...(object.name === "drams-wire-bundle" ? {
           candidateModelConnectorCenters: connectors.map(connector => ({ id: connector.id, center: xyz(connector.center),
             centerGapM: Math.round(end.distanceTo(connector.center) * 1e6) / 1e6 })),
@@ -46,14 +48,14 @@ export function atticEndpointAudit() {
     notReconstructed: [
       { id: "attic-main-trunk", reason: "No attic trunk or documented bay-to-attic electrical mating interface in the current model." },
       { id: "drams-external-power-data", reason: "Local enclosure example is not a complete external bus connection." },
-      { id: "carousel-three-warm-drives", reason: "Three modeled drive housings have no assigned electrical connector/leads." },
+      { id: "carousel-three-warm-drives", reason: "Three local estimated socket/lead examples now exist; remote bus/controller mating and actual flight interfaces remain unmodeled." },
       { id: "warm-cold-electrical-feedthrough", reason: "Wonderwall sample neck and existing slot do not establish an electrical feedthrough location or construction." },
     ],
-    limits: "Eight local line examples only. Gas/sample labels describe modeled intent, not identification of specific flight tubing; unclassified routes intentionally remain unassigned. No electrical, flow, pressure or heat-leak solver.",
+    limits: "Eleven local line examples (October24 update adds three warm-drive leads). Gas/sample labels describe modeled intent, not identification of specific flight tubing; unclassified routes intentionally remain unassigned. Drive leads end at the modeled extent, not a bus connection. No electrical, flow, pressure or heat-leak solver.",
   };
 }
 export function atticMarkdown(report) {
-  return ["# Attic Local-Line Register", "", "Codex (OpenAI), October23,2026.", "", report.coordinateFrame, "", report.limits, "",
+  return ["# Attic Local-Line Register", "", "Codex (OpenAI), October23-24,2026.", "", report.coordinateFrame, "", report.limits, "",
     "| Stable model route | Owner | Modeled medium | Inspection layer | Flight mating |", "|---|---|---|---|---|",
     ...report.rows.map(row => `| ${row.id} | ${row.owner} | ${row.medium} (EST) | ${row.layer} | Unverified |`), "",
     "## Missing Networks / Interfaces", "", ...report.notReconstructed.map(row => `- **${row.id}:** ${row.reason}`), "",

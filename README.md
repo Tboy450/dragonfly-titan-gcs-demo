@@ -10,6 +10,12 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
+October24: [carousel warm-drive installation examples](research/carousel-warm-drives-2026-10-24/README.md).
+Three existing drive locations gain photo-inspired casing/cap/mount detail, individual focuses
+and separate layer controls. Estimated local leads/supports stop before any unmodeled bus.
+Cold carousel and neighbors stay fixed. Real/CAD/before/after samples saved;572 tests pass.
+Full attic wiring and actual drive/connector identification remain open.
+
 October23 attic continuation: [local-line register and DraMS wire installation](research/attic-connection-media-2026-10-23/README.md).
 Electrical examples, gas/sample tubing examples and unclassified routes now hide separately
 for DraMS/carousel. One short wire gains estimated slack/lacing/support with fixed endpoints;

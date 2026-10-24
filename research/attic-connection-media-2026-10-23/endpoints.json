@@ -1,7 +1,7 @@
 {
   "revisions": {
     "drams": "drams-2026-10-23-connection-media",
-    "carousel": "carousel-2026-10-23-line-media"
+    "carousel": "carousel-2026-10-24-warm-drives"
   },
   "coordinateFrame": "construction metres: +x starboard, +y up, +z aft",
   "rows": [
@@ -210,6 +210,75 @@
       "radiusM": 0.0025,
       "modeledLengthM": 0.170333,
       "unresolved": "Actual flight medium, mating port/circuit, cable or tube construction and installed routing not confirmed."
+    },
+    {
+      "id": "attic/carousel-drive-1-local-lead",
+      "owner": "sample-carousel",
+      "medium": "electrical-example",
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "layer": "harnesses",
+      "source": "NASA/Mike Guinto SVS15003 photo for appearance; SciTech2024 fig2 for zones only. Route/function/scale estimated.",
+      "start": [
+        -0.258331,
+        -0.043,
+        -1.40715
+      ],
+      "end": [
+        -0.269845,
+        0.061,
+        -1.416764
+      ],
+      "radiusM": 0.0013,
+      "modeledLengthM": 0.158685,
+      "unresolved": "Local drive socket/lead example only; remote bus/controller connection and actual flight cable construction remain unmodeled.",
+      "remoteEndUnmodeled": true
+    },
+    {
+      "id": "attic/carousel-drive-2-local-lead",
+      "owner": "sample-carousel",
+      "medium": "electrical-example",
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "layer": "harnesses",
+      "source": "NASA/Mike Guinto SVS15003 photo for appearance; SciTech2024 fig2 for zones only. Route/function/scale estimated.",
+      "start": [
+        -0.001669,
+        -0.043,
+        -1.40715
+      ],
+      "end": [
+        0.009845,
+        0.061,
+        -1.416764
+      ],
+      "radiusM": 0.0013,
+      "modeledLengthM": 0.158685,
+      "unresolved": "Local drive socket/lead example only; remote bus/controller connection and actual flight cable construction remain unmodeled.",
+      "remoteEndUnmodeled": true
+    },
+    {
+      "id": "attic/carousel-drive-3-local-lead",
+      "owner": "sample-carousel",
+      "medium": "electrical-example",
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "layer": "harnesses",
+      "source": "NASA/Mike Guinto SVS15003 photo for appearance; SciTech2024 fig2 for zones only. Route/function/scale estimated.",
+      "start": [
+        -0.13,
+        -0.043,
+        -1.163
+      ],
+      "end": [
+        -0.13,
+        0.061,
+        -1.148
+      ],
+      "radiusM": 0.0013,
+      "modeledLengthM": 0.158685,
+      "unresolved": "Local drive socket/lead example only; remote bus/controller connection and actual flight cable construction remain unmodeled.",
+      "remoteEndUnmodeled": true
     }
   ],
   "notReconstructed": [
@@ -223,12 +292,12 @@
     },
     {
       "id": "carousel-three-warm-drives",
-      "reason": "Three modeled drive housings have no assigned electrical connector/leads."
+      "reason": "Three local estimated socket/lead examples now exist; remote bus/controller mating and actual flight interfaces remain unmodeled."
     },
     {
       "id": "warm-cold-electrical-feedthrough",
       "reason": "Wonderwall sample neck and existing slot do not establish an electrical feedthrough location or construction."
     }
   ],
-  "limits": "Eight local line examples only. Gas/sample labels describe modeled intent, not identification of specific flight tubing; unclassified routes intentionally remain unassigned. No electrical, flow, pressure or heat-leak solver."
+  "limits": "Eleven local line examples (October24 update adds three warm-drive leads). Gas/sample labels describe modeled intent, not identification of specific flight tubing; unclassified routes intentionally remain unassigned. Drive leads end at the modeled extent, not a bus connection. No electrical, flow, pressure or heat-leak solver."
 }

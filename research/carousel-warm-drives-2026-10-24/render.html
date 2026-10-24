@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Carousel warm-drive review</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#e3e8eb;color:#17262f;font:14px Arial,sans-serif;letter-spacing:0}header{padding:12px 20px;background:white;display:flex;gap:12px;align-items:center;flex-wrap:wrap}h1{font-size:18px;margin:0}button{padding:8px 12px;border:1px solid #8195a1;background:white;border-radius:4px;cursor:pointer}button[aria-pressed=true]{background:#1d586c;color:white}canvas{display:block;width:100%;height:660px}footer{padding:12px 20px;background:white;line-height:1.5}</style>
+<header><h1>Carousel warm drives: installation estimates</h1><button id="drives" aria-pressed="true">Three drives</button><button id="single" aria-pressed="false">Drive detail</button><button id="installed" aria-pressed="false">Installed carousel</button><output id="revision"></output></header>
+<canvas id="sample" aria-label="Carousel warm-drive model review"></canvas>
+<footer>Real NASA photograph guides appearance; unchanged nominal scale and three-drive layout remain estimates. Local lead ends do not establish a vehicle bus. No hidden motor internals reconstructed.</footer>
+<script type="module">
+import * as T from '../../dist/vendor/three/three.module.min.js?v=dev';
+const before=new URLSearchParams(location.search).has('before');
+let module;
+if(before){let source=await(await fetch('../../archive/carousel-warm-drives-2026-10-24/sample-carousel.mjs')).text();source=source.replace('./vendor/three/three.module.min.js?v=dev',new URL('../../dist/vendor/three/three.module.min.js?v=dev',location.href).href);const url=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));module=await import(url);URL.revokeObjectURL(url);}else module=await import('../../dist/sample-carousel.mjs');
+document.querySelector('#revision').textContent=module.carouselAsset.revision;
+const scene=new T.Scene();scene.background=new T.Color(0xe3e8eb);scene.add(new T.HemisphereLight(0xffffff,0x596a72,2.6));
+const sun=new T.DirectionalLight(0xffffff,3.4);sun.position.set(-3,-4,3);scene.add(sun);
+const root=new T.Group();scene.add(root);
+const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};
+const {assembly}=module.buildSampleCarousel({parent:root,mesh});let drives=assembly.getObjectByName('carousel-warm-drives');
+if(new URLSearchParams(location.search).has('draft')){
+ let source=await(await fetch('../../archive/carousel-warm-drives-2026-10-24/rejected-support-draft.mjs')).text();
+ source=source.replace('./vendor/three/three.module.min.js?v=dev',new URL('../../dist/vendor/three/three.module.min.js?v=dev',location.href).href);
+ const url=URL.createObjectURL(new Blob([source],{type:'text/javascript'})),draft=await import(url);URL.revokeObjectURL(url);
+ assembly.remove(drives);drives=draft.buildCarouselWarmDrives({parent:assembly,mesh}).drives;document.querySelector('#revision').textContent='Rejected support-footprint draft';
+}
+const renderer=new T.WebGLRenderer({canvas:document.querySelector('canvas'),antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(1);
+const camera=new T.OrthographicCamera(-1,1,1,-1,.001,20);let view='drives';
+function draw(){
+ assembly.traverse(o=>o.visible=true);
+ let target=view==='installed'?assembly:view==='single'?(drives.getObjectByName('carousel-drive-1')||drives):drives;
+ if(view!=='installed')for(const child of assembly.children)if(child!==drives)child.visible=false;
+ if(view==='single'&&!before)for(const child of drives.children)child.visible=child===target;
+ root.updateMatrixWorld(true);const box=new T.Box3().setFromObject(target),center=box.getCenter(new T.Vector3());
+ const width=document.querySelector('canvas').clientWidth,height=660,aspect=width/height;
+ renderer.setSize(width,height,false);camera.position.copy(center).add(new T.Vector3(-2,-1.5,2.6));camera.lookAt(center);camera.updateMatrixWorld(true);
+ let half=.01;
+ for(const x of[box.min.x,box.max.x])for(const y of[box.min.y,box.max.y])for(const z of[box.min.z,box.max.z]){const p=new T.Vector3(x,y,z).applyMatrix4(camera.matrixWorldInverse);half=Math.max(half,Math.abs(p.y),Math.abs(p.x)/aspect);}
+ half*=1.12;camera.left=-half*aspect;camera.right=half*aspect;camera.top=half;camera.bottom=-half;camera.updateProjectionMatrix();renderer.render(scene,camera);
+ const gl=renderer.getContext(),pixels=new Uint8Array(width*height*4);gl.readPixels(0,0,width,height,gl.RGBA,gl.UNSIGNED_BYTE,pixels);let count=0;
+ for(let i=0;i<pixels.length;i+=4)if(Math.max(Math.abs(pixels[i]-227),Math.abs(pixels[i+1]-232),Math.abs(pixels[i+2]-235))>25)count++;
+ document.querySelector('canvas').dataset.nonblank=String(count>1000);document.querySelector('canvas').dataset.pixelCount=String(count);document.querySelector('canvas').dataset.view=view;
+}
+for(const b of document.querySelectorAll('button'))b.onclick=()=>{view=b.id;for(const button of document.querySelectorAll('button'))button.setAttribute('aria-pressed',String(button===b));draw();};window.addEventListener('resize',draw);draw();
+</script></html>

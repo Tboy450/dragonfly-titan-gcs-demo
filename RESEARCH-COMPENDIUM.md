@@ -4,6 +4,12 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October24 carousel warm drives (Codex):** [real/CAD/model evidence](research/carousel-warm-drives-2026-10-24/README.md).
+[PUB] SciTech2024 warm underside/cold sample separation; real SVS15003 NASA/Mike Guinto
+photo guides exterior appearance, not motor identity. [EST] retained can scale/three centers,
+finish, side exits, local leads/lacing/support. [CALC] model endpoints and swept-wire clearance.
+No new bus/controller mating, hidden motor internals, electrical penetration or solver.
+
 **October23 attic line/media audit (Codex):** [evidence/register](research/attic-connection-media-2026-10-23/README.md).
 [PUB] NASA/Mike Guinto integration photos and SciTech2024 warm/cold layout; [CALC]
 eight model tube endpoints/lengths; [EST] all media assignments/slack/lacing/support.

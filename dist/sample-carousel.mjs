@@ -1,11 +1,12 @@
 import * as THREE from "./vendor/three/three.module.min.js?v=dev";
+import { buildCarouselWarmDrives } from "./carousel-warm-drives.mjs?v=dev";
 
 // [EST] Photo/figure-based reconstruction, not flight CAD or a dimensioned drawing.
 // NASA SVS 15003 (March 2026 photos); Barfknecht et al., SciTech 2024, figs. 1, 2, 6, 9.
 // A roughly half-width cold zone in fig. 2, against the existing 0.72 m inner attic,
 // gives a nominal 0.36 m drum. Positions and small details remain provisional.
 export const carouselAsset = Object.freeze({
-  revision: "carousel-2026-10-23-line-media",
+  revision: "carousel-2026-10-24-warm-drives",
   diameterM: 0.36,
   position: Object.freeze([-0.13, 0.08, -1.30]),
   inlet: Object.freeze([-0.07, 0.305, -0.092]),
@@ -142,23 +143,12 @@ export function buildSampleCarousel({ parent, mesh }) {
   Object.assign(whiteLine.userData, { connectionId: "carousel-white-wire", connectionMedium: "unclassified",
     mediumConfidence: "EST", flightMatingConfirmed: false });
 
-  const drives = new THREE.Group();
-  drives.name = "carousel-warm-drives";
-  // Keep the same selectable assembly, but use bay temperature for warm-side actuators.
-  drives.userData = { subsystem: "sample-carousel", thermalZone: "equipment-bay" };
-  assembly.add(drives);
-  for (const [x, z] of [[-0.103, -0.086], [0.103, -0.086], [0, 0.104]]) {
-    cylinder(0.025, 0.042, -0.03, dark, drives, x, z);
-    cylinder(0.022, 0.096, -0.092, titanium, drives, x, z);
-    cylinder(0.023, 0.01, -0.14, dark, drives, x, z);
-    mesh(new THREE.BoxGeometry(0.016, 0.019, 0.014), dark, [x + 0.024, -0.059, z], drives);
-  }
-  cylinder(0.037, 0.055, -0.038, dark, drives);
+  const { drives, units: driveUnits } = buildCarouselWarmDrives({ parent: assembly, mesh });
 
   // Symbolic indexing pivot beneath the cover, not a claim about cup inventory or gearing.
   const carrier = new THREE.Group();
   carrier.name = "sample-carousel-carrier";
   assembly.add(carrier);
   cylinder(0.13, 0.006, 0.10, dark, carrier);
-  return { assembly, carrier, inletWorld: new THREE.Vector3(...carouselAsset.inlet).add(assembly.position) };
+  return { assembly, carrier, drives, driveUnits, inletWorld: new THREE.Vector3(...carouselAsset.inlet).add(assembly.position) };
 }

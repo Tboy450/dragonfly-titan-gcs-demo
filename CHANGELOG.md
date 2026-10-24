@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-24: Add photo-inspired carousel warm-drive installation examples
+- **Signed:** Codex (OpenAI).
+- **Commit:** Refine carousel warm drives and local lead examples.
+- **What:** three retained nominal drive centers/cans gain metallic housings, wrapped necks,
+  dark caps, mounting detail and three non-nested inspection focuses. Casings, Covers,
+  Mounts, Interfaces and Harnesses hide independently. Three local estimated side-exit leads
+  have slack/lacing/baseplate supports; remote ends remain explicitly unmodeled.
+- **Evidence:** saved real NASA/Mike Guinto SVS15003 underside photo; SciTech2024 p3 Fig2
+  is arrangement CAD only. All exact motor identities, scale and wiring remain estimates.
+  No fixture/test harness, hidden motor internals, bus or undocumented feedthrough copied.
+- **Preservation:** every cold carousel mesh/material/instance/transform unchanged; three
+  nominal can sizes/centers retained; no flight/science/thermal or game edits.24 numbers kept.
+- **Archive/checks:** recovery tag on e4ffe5d; old source/UI/test/HTML/register and before
+  pictures retained, plus rejected support draft.572 tests pass, including exact preservation,
+  independent masks/focus, socket/support contact and swept-wire neighbor clearance.
+- **Open / next:** full attic trunk, external instrument/controller mating, real motor
+  identification and electrical feedthrough still open. UI/publication receipt follows.
+
 ### 2026-10-23: Confirm attic-line publication and live inspection
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record live attic-line acceptance [skip ci].

@@ -10,6 +10,14 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+Latest October24 checkpoint: [carousel warm-drive installation](research/carousel-warm-drives-2026-10-24/README.md).
+Three existing drive examples retain centers/nominal can scale, with real-photo-inspired
+metallic housings, dark caps, wrapped necks and independent focuses/layers. Three estimated
+local leads have slack/lacing/supports under the existing baseplate; remote bus/controller
+connections remain OPEN. Cold carousel and other equipment unchanged;572 tests pass.
+The attic register now measures11 examples; all four unresolved network families stay open.
+Next source gate: actual external instrument/controller mating before a new trunk/penetration.
+
 Latest October23 attic checkpoint: [eight-line register / local installation](research/attic-connection-media-2026-10-23/README.md).
 Two electrical examples, three estimated gas/sample tubes and three unclassified routes
 have independent inspection access. One DraMS short wire gains estimated slack/lacing/
@@ -993,6 +1001,11 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [x] **Attic local-line audit / DraMS short wire (Codex, October23):** eight examples
   registered; media masks/focuses corrected; one estimated wire support/slack pass complete.
   Full preceding attic network remains open. [Sources, sample and handoff](research/attic-connection-media-2026-10-23/README.md).
+- [x] **Carousel warm-drive local installation examples (Codex, October24):** three retained
+  nominal drive centers/cans gain exterior detail, independent inspection and local estimated
+  lead/socket/support examples. Full register now11 rows. Remote electrical destinations,
+  real drive identities and complete attic harness still open, not inferred from ground cabling.
+  [Real/CAD/model samples, source limits and next gate](research/carousel-warm-drives-2026-10-24/README.md).
 - [ ] **Camera/navigation harness:** front-camera panel, Ocellus FEB/MEB and both MIMUs;
   port Down Camera pass-through behind PSU1 and lower camera/window clearances. Mark unknown
   destinations; preserve current photo/dimension-based camera poses and optical openings.

@@ -71,6 +71,13 @@ Only one DraMS short-wire curve/lacing/support changes physically; endpoints fix
 Research-only attic audit emits eight local tube rows and four unresolved network/interface
 families. Other legacy parts keep their existing line classifications and geometry.
 
+October24: `carousel-warm-drives.mjs` owns the carousel's three warm-drive installation
+examples, called by `sample-carousel.mjs`. Three non-nested focus groups and independent
+casings/covers/mounts/interfaces/harnesses use the existing inspector. Nominal can dimensions
+and centers retained; cold carousel unchanged. Three estimated local leads end before any
+bus/controller mating. The current attic audit now has11 rows; four network gaps stay open.
+Thermal retains equipment-bay coloring; no new electrical or motor/thermal solver.
+
 | File | What it does |
 |---|---|
 | `dist/flight-model.mjs` | Vehicle constants, `createFlightState()`, the flight step (`stepFlight`), power curve, flight commands, autopilot branch, flight-plan estimate helper |

@@ -1,10 +1,10 @@
 # Attic Local-Line Register
 
-Codex (OpenAI), October23,2026.
+Codex (OpenAI), October23-24,2026.
 
 construction metres: +x starboard, +y up, +z aft
 
-Eight local line examples only. Gas/sample labels describe modeled intent, not identification of specific flight tubing; unclassified routes intentionally remain unassigned. No electrical, flow, pressure or heat-leak solver.
+Eleven local line examples (October24 update adds three warm-drive leads). Gas/sample labels describe modeled intent, not identification of specific flight tubing; unclassified routes intentionally remain unassigned. Drive leads end at the modeled extent, not a bus connection. No electrical, flow, pressure or heat-leak solver.
 
 | Stable model route | Owner | Modeled medium | Inspection layer | Flight mating |
 |---|---|---|---|---|
@@ -16,12 +16,15 @@ Eight local line examples only. Gas/sample labels describe modeled intent, not i
 | attic/drams-valve-line-2 | drams | gas-sample-example (EST) | plumbing | Unverified |
 | attic/drams-valve-line-3 | drams | gas-sample-example (EST) | plumbing | Unverified |
 | attic/carousel-white-wire | sample-carousel | unclassified (EST) | unclassified-lines | Unverified |
+| attic/carousel-drive-1-local-lead | sample-carousel | electrical-example (EST) | harnesses | Unverified |
+| attic/carousel-drive-2-local-lead | sample-carousel | electrical-example (EST) | harnesses | Unverified |
+| attic/carousel-drive-3-local-lead | sample-carousel | electrical-example (EST) | harnesses | Unverified |
 
 ## Missing Networks / Interfaces
 
 - **attic-main-trunk:** No attic trunk or documented bay-to-attic electrical mating interface in the current model.
 - **drams-external-power-data:** Local enclosure example is not a complete external bus connection.
-- **carousel-three-warm-drives:** Three modeled drive housings have no assigned electrical connector/leads.
+- **carousel-three-warm-drives:** Three local estimated socket/lead examples now exist; remote bus/controller mating and actual flight interfaces remain unmodeled.
 - **warm-cold-electrical-feedthrough:** Wonderwall sample neck and existing slot do not establish an electrical feedthrough location or construction.
 
 Full world-space endpoints, radii, lengths and all candidate model connector centers: `endpoints.json`.

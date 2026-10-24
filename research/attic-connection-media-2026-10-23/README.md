@@ -103,6 +103,14 @@ Evidence: `public-cc272b0-checks.json` and `public-cc272b0-wire.png`. The macro 
 casing/cover/interface/insulation masks for visibility, not a change in physical scale.
 Local preview servers are stopped. Full attic wiring remains unfinished.
 
+## October24 Continuation
+
+[Carousel warm-drive package](../carousel-warm-drives-2026-10-24/README.md) adds three
+estimated local electrical leads, so the generated current register now has11 rows.
+Earlier eight-row counts above document the October23 release. Drive lead remote ends,
+bus/controller mating and actual hardware identities remain unresolved. The full attic
+network is not complete; cold carousel geometry and the prior eight routes stay unchanged.
+
 ## Next / Handoff
 
 Attic local-line audit and ONE short-wire installation example complete. Whole attic

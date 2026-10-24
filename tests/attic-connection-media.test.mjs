@@ -29,10 +29,10 @@ function manifest(root, exclude = () => false) {
   return rows.sort();
 }
 
-test("Attic register tracks all eight examples without claiming a circuit, flight medium or main trunk", () => {
+test("Attic register tracks eleven examples without claiming a circuit, flight medium or main trunk", () => {
   const report = atticEndpointAudit();
-  assert.equal(report.rows.length, 8); assert.equal(new Set(report.rows.map(row => row.id)).size, 8);
-  assert.equal(report.rows.filter(row => row.medium === "electrical-example").length, 2);
+  assert.equal(report.rows.length, 11); assert.equal(new Set(report.rows.map(row => row.id)).size, 11);
+  assert.equal(report.rows.filter(row => row.medium === "electrical-example").length, 5);
   assert.equal(report.rows.filter(row => row.medium === "gas-sample-example").length, 3);
   assert.equal(report.rows.filter(row => row.medium === "unclassified").length, 3);
   for (const row of report.rows) {
@@ -42,13 +42,15 @@ test("Attic register tracks all eight examples without claiming a circuit, fligh
   assert.deepEqual(report.notReconstructed.map(row => row.id), ["attic-main-trunk", "drams-external-power-data", "carousel-three-warm-drives", "warm-cold-electrical-feedthrough"]);
 });
 
-test("Only DraMS short-wire geometry changes; all hardware, existing tubing and carousel geometry/poses remain exact", async () => {
+test("DraMS wire pass retains unrelated hardware/tubing and the carousel outside its later warm-drive package", async () => {
   const oldDrams = fixture((await archived("drams-assembly.mjs")).buildDramsAssembly);
   const oldCarousel = fixture((await archived("sample-carousel.mjs")).buildSampleCarousel);
   const current = fixture(buildDramsAssembly);
   const changed = object => /drams-wire-(bundle|lacing|support-)/.test(object.name);
   assert.deepEqual(manifest(current.parent, changed), manifest(oldDrams.parent, changed));
-  assert.deepEqual(manifest(fixture(buildSampleCarousel).parent), manifest(oldCarousel.parent));
+  const drivePackage = object => { for (let p = object; p; p = p.parent) if (p.name === "carousel-warm-drives") return true; return false; };
+  // October24 drive replacement is checked separately against its immediately prior archive.
+  assert.deepEqual(manifest(fixture(buildSampleCarousel).parent, drivePackage), manifest(oldCarousel.parent, drivePackage));
   const before = oldDrams.assembly.getObjectByName("drams-wire-bundle").geometry.parameters.path;
   const after = current.assembly.getObjectByName("drams-wire-bundle").geometry.parameters.path;
   assert.ok(before.getPoint(0).distanceTo(after.getPoint(0)) < 1e-12);

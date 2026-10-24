@@ -6,6 +6,13 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Carousel warm-drive installation (Codex, October24):** [sources and comparison](carousel-warm-drives-2026-10-24/README.md).
+Real underside crop reuses saved SVS15003 integration photo, credit NASA/Mike Guinto.
+SciTech2024 saved p3 Fig2 is explicitly CAD/layout evidence for warm actuators underneath,
+not a motor dimension drawing. Saved NASA workmanship pages supply general support context.
+Actual drive identity, all local electrical details and retained scale remain estimated;
+remote leads end before unmodeled bus/controller mating. No ground handling fixture copied.
+
 **Attic connection media / DraMS local wire (Codex, October23):** [eight-line audit and comparison](attic-connection-media-2026-10-23/README.md).
 Real NASA/Mike Guinto SVS15003 DraMS/carousel integration photos and existing crops;
 SciTech2024 p3 fig2 is zone/layout CAD only. Saved NASA workmanship pp29-31 inform
