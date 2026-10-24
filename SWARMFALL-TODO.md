@@ -280,8 +280,13 @@ complete solely because its assets download or its unit tests pass.
   and health bars, omit off-screen/behind-camera/dead/enemy markers, and hide them in Clean
   view. **390 tests pass**; [evidence](research/swarmfall-drone-markers-2026-10-19/README.md).
   Real browser/phone visual acceptance remains open under TEST/accessibility tasks.
-- [ ] **FIX-05 (P2)** After its target dies, an attack order moves on to the nearest defender
-  within 110 m, sometimes off screen with no feedback. Show the new target and allow "stop".
+- [x] **FIX-05 (P2) — Claude (October 23)** After its target dies, an attack order moves on to
+  the nearest defender within 110 m, sometimes off screen with no feedback. Show the new target
+  and allow "stop".
+  - The rules report it once per squad (`retarget`, or `attack-done` when nothing is left).
+  - A selected squad gets a notice naming the new target ("Tap to look, H to hold"). Tapping it
+    brings the camera there; the attack line already points at the new target.
+  - H or Hold stops the squad and now says so. Tested in `tests/invasion-squad-intent.test.mjs`.
 - [ ] **FIX-06 (P2)** Zone rings follow the ground but steep Titan dunes and trees can still
   hide parts of them. Consider drawing them on top at low opacity.
 - [x] **FIX-07 (P2) — Codex, October 20; implementation and automated checks** On phones,
@@ -1120,9 +1125,22 @@ These extend FIX-02/FIX-03; new cities cannot rely on decorative geometry for ga
       before on the Frontier maps.
     - `tests/invasion-range-height.test.mjs`: street to roof, ridge to valley, spear to Striker.
     - Still open: under-bridge shots (no bridges yet, CITY-04).
-- [ ] **COMBAT-04 (P2)** Make squad intent legible: target/retarget cue, movement destination,
-  attack range and stop/disengage feedback. Show jammer/shield coverage and why a capture or
-  weapon is blocked. Coordinate FIX-05, CTRL-06 and CTRL-07 rather than duplicating controls.
+- [x] **COMBAT-04 (P2) — Claude (October 23)** Make squad intent legible: target/retarget cue,
+  movement destination, attack range and stop/disengage feedback. Show jammer/shield coverage
+  and why a capture or weapon is blocked. Coordinate FIX-05, CTRL-06 and CTRL-07 rather than
+  duplicating controls.
+  - Retarget cue and stop: FIX-05 above. Attack lines and "No clear shot" were already there.
+  - Destination: a dotted line from each selected squad to its move or capture point, ending
+    in a small ring.
+  - Attack range: a dotted ring around each selected squad showing how far its weapons reach
+    troops on the ground from the height it flies (3D range, COMBAT-03), in the current weather.
+  - Coverage: jammers, shield pylons and radar masts show a dashed ring on the ground in the
+    color of the side they work for, labeled with what they do.
+  - Blocked captures: the zone label adds "needs Links" (defenses stand and no Link is there),
+    "jammed" or "drones stunned", from `captureBlocker` in battle.mjs, which follows the
+    capture rules.
+  - `tests/invasion-squad-intent.test.mjs` (5 tests); checked in the browser on Corvan (radar ring
+    and label, reach ring, destination line, "needs Links").
 - [ ] **COMBAT-05 (P2)** Give defenders obstacle-aware patrol, investigate, defend and retreat
   behavior, with readable reinforcement origins. Cap numbers and ensure spawn sites/routes are
   valid; avoid reinforcements appearing inside occupied solids or inaccessible city levels.

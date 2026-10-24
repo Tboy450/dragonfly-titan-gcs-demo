@@ -521,6 +521,7 @@ function moveUnits(b, dt, auras, swarm, natives) {
   const effects = b.hazards.effects;
   const grid = buildGrid(swarm, 8);
   let routes = routeBudget;
+  const told = new Set(); // squads already reported moving on this step (one event per squad)
   const huntable = swarm.filter(drone => !inBeachhead(b, drone));
   const { centerX, centerZ, half } = b.map;
   for (const unit of b.units) {
@@ -545,6 +546,12 @@ function moveUnits(b, dt, auras, swarm, natives) {
         if (!target?.alive) {
           target = nearestEnemy(order, natives, 110);
           if (target) order.target = target.id;
+          // Tell the page once per squad (FIX-05): moving on to a new target, or nothing left.
+          if (!told.has(unit.squad)) {
+            told.add(unit.squad);
+            b.events.push(target ? { kind: "retarget", squad: unit.squad, target: target.id, type: target.type, x: target.x, z: target.z }
+              : { kind: "attack-done", squad: unit.squad, x: unit.x, z: unit.z });
+          }
         }
         if (target?.alive) {
           order.x = target.x; order.z = target.z;
@@ -848,6 +855,28 @@ function captureZones(b, dt, auras) {
       zone.control = Math.min(100, zone.control + Math.max(1, power) * dt);
     }
   }
+}
+
+// For the page (COMBAT-04): why the drones in a zone are not capturing it, or null when they
+// are (or none are there). Follows captureZones: jammed or stunned drones add nothing, and while
+// defenses stand only hacking drones (Links) capture.
+export function captureBlocker(b, zone) {
+  if (zone.kind === "beachhead" || zone.captured) return null;
+  const auras = collectAuras(b), r2 = zone.radius ** 2;
+  let drones = 0, stunnedN = 0, active = 0, hackers = 0, activeHackers = 0, defenses = 0;
+  for (const unit of b.units) {
+    if (!unit.alive || dist2(unit, zone) > r2) continue;
+    if (unit.side === "native" && unit.structure) defenses += 1;
+    if (unit.side !== "swarm" || unit.structure) continue;
+    const hack = !!droneTypes[unit.type]?.hack, out = stunned(b, unit) || inAura(auras.jam, unit, "native");
+    drones += 1; hackers += hack ? 1 : 0;
+    if (stunned(b, unit)) stunnedN += 1;
+    if (!out) { active += 1; activeHackers += hack ? 1 : 0; }
+  }
+  if (!drones) return null;
+  if (!active) return stunnedN === drones ? "stunned" : "jammed";
+  if (defenses > 0 && !activeHackers) return hackers ? "jammed" : "links";
+  return null;
 }
 
 function economy(b, dt, swarm) {

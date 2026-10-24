@@ -61,6 +61,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   desktop/mobile fit and Pilot return pass. Development cache required clean preview
   origins; no production caching or simulation changes made for that local condition.
 
+### 2026-10-23: Swarmfall shows what squads are doing
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Show squad destinations, reach, defense coverage and why captures stall"
+- **What changed:** Checklist COMBAT-04 and FIX-05. Squads now say what they are doing:
+  - When an attack target falls and the squad moves on to another defender, a selected squad
+    gets a notice naming it; tapping it brings the camera there. When nothing is left, it says
+    the squad is holding. H or Hold also says the squad is holding.
+  - Selected squads show a dotted line to where they are going and a dotted ring for how far
+    their weapons reach troops on the ground.
+  - Jammers, shield pylons and radar masts show their coverage as a labeled dashed ring.
+  - Zone labels say why drones are not capturing: "needs Links" while defenses stand,
+    "jammed" or "drones stunned".
+- **Files:** `dist/invasion/battle.mjs`, `dist/invasion/main.mjs`,
+  `tests/invasion-squad-intent.test.mjs` (new), `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (547 pass); in the browser on Corvan: radar
+  coverage ring with its label, the squad's reach ring and destination line, and "needs Links"
+  on the zone label. No console errors.
+
 ### 2026-10-23: Confirm lower-camera harness publication
 - **Signed:** Codex (OpenAI).
 - **Commit:** "Record live camera-harness acceptance [skip ci]".
