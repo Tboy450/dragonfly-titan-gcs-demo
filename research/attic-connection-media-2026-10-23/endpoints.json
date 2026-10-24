@@ -1,0 +1,234 @@
+{
+  "revisions": {
+    "drams": "drams-2026-10-23-connection-media",
+    "carousel": "carousel-2026-10-23-line-media"
+  },
+  "coordinateFrame": "construction metres: +x starboard, +y up, +z aft",
+  "rows": [
+    {
+      "id": "attic/drams-laser-interface-route",
+      "owner": "drams",
+      "medium": "unclassified",
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "layer": "unclassified-lines",
+      "source": "NASA/Mike Guinto SVS15003 photo for appearance; SciTech2024 fig2 for zones only. Route/function/scale estimated.",
+      "start": [
+        0.23,
+        0.263,
+        -1.453
+      ],
+      "end": [
+        0.163,
+        0.325,
+        -1.28
+      ],
+      "radiusM": 0.003,
+      "modeledLengthM": 0.239847,
+      "unresolved": "Actual flight medium, mating port/circuit, cable or tube construction and installed routing not confirmed."
+    },
+    {
+      "id": "attic/drams-gc-transfer-route",
+      "owner": "drams",
+      "medium": "unclassified",
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "layer": "unclassified-lines",
+      "source": "NASA/Mike Guinto SVS15003 photo for appearance; SciTech2024 fig2 for zones only. Route/function/scale estimated.",
+      "start": [
+        0.278,
+        0.349,
+        -1.038
+      ],
+      "end": [
+        0.297,
+        0.393,
+        -1.28
+      ],
+      "radiusM": 0.0025,
+      "modeledLengthM": 0.252245,
+      "unresolved": "Actual flight medium, mating port/circuit, cable or tube construction and installed routing not confirmed."
+    },
+    {
+      "id": "attic/drams-local-harness",
+      "owner": "drams",
+      "medium": "electrical-example",
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "layer": "harnesses",
+      "source": "NASA/Mike Guinto SVS15003 photo for appearance; SciTech2024 fig2 for zones only. Route/function/scale estimated.",
+      "start": [
+        0.32,
+        0.189,
+        -1.3
+      ],
+      "end": [
+        0.32,
+        0.228,
+        -1.457
+      ],
+      "radiusM": 0.0028,
+      "modeledLengthM": 0.163964,
+      "unresolved": "Actual flight medium, mating port/circuit, cable or tube construction and installed routing not confirmed."
+    },
+    {
+      "id": "attic/drams-wire-bundle",
+      "owner": "drams",
+      "medium": "electrical-example",
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "layer": "harnesses",
+      "source": "NASA/Mike Guinto SVS15003 photo for appearance; SciTech2024 fig2 for zones only. Route/function/scale estimated.",
+      "start": [
+        0.336,
+        0.244,
+        -1.17
+      ],
+      "end": [
+        0.338,
+        0.172,
+        -1.23
+      ],
+      "radiusM": 0.004,
+      "modeledLengthM": 0.09699,
+      "unresolved": "Actual flight medium, mating port/circuit, cable or tube construction and installed routing not confirmed.",
+      "candidateModelConnectorCenters": [
+        {
+          "id": "drams-connector-1",
+          "center": [
+            0.336,
+            0.166,
+            -1.31
+          ],
+          "centerGapM": 0.08025
+        },
+        {
+          "id": "drams-connector-2",
+          "center": [
+            0.336,
+            0.166,
+            -1.27
+          ],
+          "centerGapM": 0.040497
+        },
+        {
+          "id": "drams-connector-3",
+          "center": [
+            0.336,
+            0.166,
+            -1.23
+          ],
+          "centerGapM": 0.006325
+        }
+      ],
+      "note": "Nearest modeled connector is a proximity observation, not flight identification. Both endpoints retained from prior illustration."
+    },
+    {
+      "id": "attic/drams-valve-line-1",
+      "owner": "drams",
+      "medium": "gas-sample-example",
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "layer": "plumbing",
+      "source": "NASA/Mike Guinto SVS15003 photo for appearance; SciTech2024 fig2 for zones only. Route/function/scale estimated.",
+      "start": [
+        0.205,
+        0.2755,
+        -1.17
+      ],
+      "end": [
+        0.205,
+        0.3,
+        -1.096
+      ],
+      "radiusM": 0.0028,
+      "modeledLengthM": 0.087354,
+      "unresolved": "Actual flight medium, mating port/circuit, cable or tube construction and installed routing not confirmed."
+    },
+    {
+      "id": "attic/drams-valve-line-2",
+      "owner": "drams",
+      "medium": "gas-sample-example",
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "layer": "plumbing",
+      "source": "NASA/Mike Guinto SVS15003 photo for appearance; SciTech2024 fig2 for zones only. Route/function/scale estimated.",
+      "start": [
+        0.235,
+        0.2755,
+        -1.17
+      ],
+      "end": [
+        0.235,
+        0.3,
+        -1.096
+      ],
+      "radiusM": 0.0028,
+      "modeledLengthM": 0.087354,
+      "unresolved": "Actual flight medium, mating port/circuit, cable or tube construction and installed routing not confirmed."
+    },
+    {
+      "id": "attic/drams-valve-line-3",
+      "owner": "drams",
+      "medium": "gas-sample-example",
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "layer": "plumbing",
+      "source": "NASA/Mike Guinto SVS15003 photo for appearance; SciTech2024 fig2 for zones only. Route/function/scale estimated.",
+      "start": [
+        0.265,
+        0.2755,
+        -1.17
+      ],
+      "end": [
+        0.265,
+        0.3,
+        -1.096
+      ],
+      "radiusM": 0.0028,
+      "modeledLengthM": 0.087354,
+      "unresolved": "Actual flight medium, mating port/circuit, cable or tube construction and installed routing not confirmed."
+    },
+    {
+      "id": "attic/carousel-white-wire",
+      "owner": "sample-carousel",
+      "medium": "unclassified",
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "layer": "unclassified-lines",
+      "source": "NASA/Mike Guinto SVS15003 photo for appearance; SciTech2024 fig2 for zones only. Route/function/scale estimated.",
+      "start": [
+        0,
+        0.382,
+        -1.295
+      ],
+      "end": [
+        0.012,
+        0.356,
+        -1.422
+      ],
+      "radiusM": 0.0025,
+      "modeledLengthM": 0.170333,
+      "unresolved": "Actual flight medium, mating port/circuit, cable or tube construction and installed routing not confirmed."
+    }
+  ],
+  "notReconstructed": [
+    {
+      "id": "attic-main-trunk",
+      "reason": "No attic trunk or documented bay-to-attic electrical mating interface in the current model."
+    },
+    {
+      "id": "drams-external-power-data",
+      "reason": "Local enclosure example is not a complete external bus connection."
+    },
+    {
+      "id": "carousel-three-warm-drives",
+      "reason": "Three modeled drive housings have no assigned electrical connector/leads."
+    },
+    {
+      "id": "warm-cold-electrical-feedthrough",
+      "reason": "Wonderwall sample neck and existing slot do not establish an electrical feedthrough location or construction."
+    }
+  ],
+  "limits": "Eight local line examples only. Gas/sample labels describe modeled intent, not identification of specific flight tubing; unclassified routes intentionally remain unassigned. No electrical, flow, pressure or heat-leak solver."
+}

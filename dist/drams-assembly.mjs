@@ -6,11 +6,19 @@ import { wonderwallAsset } from "./wonderwall.mjs?v=dev";
 const [wallX, wallY, wallZ] = wonderwallAsset.position;
 const [portZ, portY] = wonderwallAsset.aperture;
 export const dramsAsset = Object.freeze({
-  revision: "drams-2026-10-20",
+  revision: "drams-2026-10-23-connection-media",
   interfaceCenter: Object.freeze([wallX, wallY + portY, wallZ + portZ]),
   interfaceRadiusM: 0.024,
   bodyBounds: Object.freeze({ min: [0.15, 0.08, -1.54], max: [0.35, 0.45, -0.96] }),
   analysisAnchor: Object.freeze([0.348, wallY + portY, wallZ + portZ]),
+});
+
+// [EST] local electrical example, not an identified flight circuit or qualified bend.
+export const dramsConnectionAsset = Object.freeze({
+  wireRadiusM: 0.004,
+  wirePoints: Object.freeze([[0.336,0.244,-1.17],[0.342,0.232,-1.182],
+    [0.342,0.199,-1.218],[0.338,0.172,-1.23]].map(Object.freeze)),
+  supportFraction: 0.70,
 });
 
 export function buildDramsAssembly({ parent, mesh }) {
@@ -26,7 +34,11 @@ export function buildDramsAssembly({ parent, mesh }) {
   const cases = group("drams-instrument-casings", "equipment-casings");
   const covers = group("drams-service-covers", "equipment-covers");
   const interfaces = group("drams-warm-interface", "interfaces");
-  const plumbing = group("drams-local-lines", "harnesses");
+  const schematic = group("drams-unclassified-lines", "unclassified-lines");
+  const harness = group("drams-electrical-harnesses", "harnesses");
+  const plumbing = group("drams-gas-sample-lines", "plumbing");
+  schematic.userData.inspectionLabel = "Unclassified schematic routes";
+  plumbing.userData.inspectionLabel = "Gas / sample tubing examples (estimated)";
   const silver = new THREE.MeshStandardMaterial({ color: 0xbac1c4, roughness: 0.4, metalness: 0.6 });
   const pale = new THREE.MeshStandardMaterial({ color: 0xd7d8c8, roughness: 0.6, metalness: 0.18 });
   const dark = new THREE.MeshStandardMaterial({ color: 0x343b40, roughness: 0.45, metalness: 0.5 });
@@ -39,10 +51,13 @@ export function buildDramsAssembly({ parent, mesh }) {
     const part = mesh(new THREE.CylinderGeometry(r, r, length, 40), material, position, target);
     part.rotation.z = Math.PI / 2; part.name = name; return part;
   };
-  const tube = (points, radius, material, name) => {
+  const tube = (points, radius, material, name, target = schematic) => {
     const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)), false, "centripetal");
-    const part = mesh(new THREE.TubeGeometry(curve, 20, radius, 6, false), material, [0,0,0], plumbing);
+    const part = mesh(new THREE.TubeGeometry(curve, 20, radius, 6, false), material, [0,0,0], target);
     part.name = name;
+    Object.assign(part.userData, { connectionId: name, connectionMedium: target === harness ? "electrical-example" : "unclassified",
+      mediumConfidence: "EST", flightMatingConfirmed: false });
+    return part;
   };
 
   box([0.19, 0.008, 0.55], [0.249, 0.086, -1.255], silver, frame, "drams-baseplate");
@@ -90,7 +105,8 @@ export function buildDramsAssembly({ parent, mesh }) {
   // and large ground-support plumbing from the photographs are not copied into the lander.
   tube([[0.23,0.263,-1.453],[0.22,0.302,-1.447],[0.17,0.346,-1.375],[0.163,cy,cz]],0.003,silver,"drams-laser-interface-route");
   tube([[0.278,0.349,-1.038],[0.279,0.385,-1.12],[0.296,0.385,-1.21],[0.297,0.393,cz]],0.0025,silver,"drams-gc-transfer-route");
-  tube([[0.32,0.189,-1.30],[0.332,0.21,-1.37],[0.32,0.228,-1.457]],0.0028,dark,"drams-local-harness");
+  const localHarness = tube([[0.32,0.189,-1.30],[0.332,0.21,-1.37],[0.32,0.228,-1.457]],0.0028,dark,"drams-local-harness",harness);
+  Object.assign(localHarness.userData, { inspectionLabel: "Electrical stub (circuit unverified)", inspectionMinimumRadiusM: 0.08 });
   for(const z of [-1.31,-1.27,-1.23]) cylinderX(0.005,0.007,[0.336,0.166,z],amber,cases,"drams-connector");
 
   // Fan casing is diagrammatic: ICES-2023 establishes a DraMS cooling fan, not its CAD.
@@ -119,19 +135,39 @@ export function buildDramsAssembly({ parent, mesh }) {
   wrap.rotation.z = Math.PI / 2; wrap.name = "drams-analyzer-mli";
   // Valve and fitting bodies on the electronics lid, just aft of the analyzer.
   const lidTop = 0.2205, fz = -1.17;
-  for (const x of [0.205, 0.235, 0.265]) {
+  for (const [index, x] of [0.205, 0.235, 0.265].entries()) {
     const body = mesh(new THREE.CylinderGeometry(0.011, 0.011, 0.045, 16), silver, [x, lidTop + 0.0245, fz], fittings);
     body.name = "drams-valve-body";
     const nut = mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.008, 6), silver, [x, lidTop + 0.051, fz], fittings);
     nut.name = "drams-valve-fitting";
     // Short stainless line up and aft into the GC enclosure's forward face.
     const line = new THREE.CatmullRomCurve3([[x, lidTop + 0.055, fz], [x, 0.30, -1.152], [x, 0.30, -1.096]].map(q => new THREE.Vector3(...q)));
-    mesh(new THREE.TubeGeometry(line, 12, 0.0028, 6, false), silver, [0, 0, 0], fittings).name = "drams-valve-line";
+    const pipe = mesh(new THREE.TubeGeometry(line, 12, 0.0028, 6, false), silver, [0, 0, 0], plumbing);
+    pipe.name = "drams-valve-line";
+    Object.assign(pipe.userData, { connectionId: `drams-valve-line-${index + 1}`,
+      connectionMedium: "gas-sample-example", mediumConfidence: "EST", flightMatingConfirmed: false });
   }
   const can = mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.06, 20), brass, [0.305, lidTop + 0.0215, fz], fittings);
   can.rotation.z = Math.PI / 2; can.name = "drams-brass-cylinder";
   // A short wire bundle from the brass cylinder down to the electronics box's connectors.
-  const bundle = new THREE.CatmullRomCurve3([[0.336, 0.244, fz], [0.34, 0.205, -1.2], [0.338, 0.172, -1.23]].map(q => new THREE.Vector3(...q)));
-  mesh(new THREE.TubeGeometry(bundle, 12, 0.004, 6, false), wire, [0, 0, 0], plumbing).name = "drams-wire-bundle";
-  return { assembly, frame, cases, covers, interfaces, plumbing, blanket, fittings };
+  const bundle = new THREE.CatmullRomCurve3(dramsConnectionAsset.wirePoints.map(q => new THREE.Vector3(...q)), false, "centripetal");
+  const wireFocus = new THREE.Group(); wireFocus.name = "drams-wire-example";
+  Object.assign(wireFocus.userData, { inspectionLabel: "Short wire / support example", inspectionMinimumRadiusM: 0.03,
+    labelAnchor: new THREE.Vector3(0.34,0.21,-1.2) }); harness.add(wireFocus);
+  const lead = mesh(new THREE.TubeGeometry(bundle, 32, dramsConnectionAsset.wireRadiusM, 8, false), wire, [0, 0, 0], wireFocus);
+  lead.name = "drams-wire-bundle";
+  Object.assign(lead.userData, { connectionId: "drams-wire-bundle", connectionMedium: "electrical-example",
+    mediumConfidence: "EST", flightMatingConfirmed: false });
+  const lacing = new THREE.MeshStandardMaterial({ color: 0xd8cab2, roughness: 0.65, metalness: 0.05 });
+  for (const t of [0.30, 0.70]) {
+    const point = bundle.getPointAt(t), direction = bundle.getTangentAt(t);
+    const tie = mesh(new THREE.TorusGeometry(0.0047, 0.0006, 5, 12), lacing, point.toArray(), wireFocus);
+    tie.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1), direction); tie.name = "drams-wire-lacing";
+  }
+  // [EST] stand-off against the unchanged electronics enclosure's x=.332 side face.
+  const support = bundle.getPointAt(dramsConnectionAsset.supportFraction);
+  box([0.002,0.014,0.014],[0.333,support.y,support.z],silver,frame,"drams-wire-support-foot");
+  const outer = support.x + dramsConnectionAsset.wireRadiusM;
+  box([outer-0.334,0.004,0.012],[(outer+0.334)/2,support.y-0.006,support.z],silver,frame,"drams-wire-support-stand");
+  return { assembly, frame, cases, covers, interfaces, plumbing, harness, schematic, blanket, fittings };
 }

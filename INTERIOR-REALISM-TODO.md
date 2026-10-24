@@ -10,6 +10,17 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+Latest October23 attic checkpoint: [eight-line register / local installation](research/attic-connection-media-2026-10-23/README.md).
+Two electrical examples, three estimated gas/sample tubes and three unclassified routes
+have independent inspection access. One DraMS short wire gains estimated slack/lacing/
+support; endpoints fixed, all other hardware/tubing/carousel geometry exact.562 tests pass.
+Full attic trunk, external DraMS power/data, warm-drive leads and an identified electrical
+feedthrough remain OPEN. Do not copy integration ground-test harnesses or treat a nearby
+connector/sample neck as an assigned electrical interface. Other legacy parts not reclassified.
+Local browser: six media-mask cases in Internal/Thermal, carousel line-only hide/restore,
+six source links,24 rows, Open interior, corrected non-nested wire macro with casing masks,
+desktop/mobile samples and Pilot return pass. No horizontal overflow or browser errors.
+
 Owner: "ok do those then begin on this and add this to the checklist first then continue".
 Recorded BEFORE further model edits. Finish one scoped part with source/archive/tests and
 samples before starting the next. Real hardware first; unverified Dragonfly details remain
@@ -974,6 +985,9 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [ ] **Attic instrument harness:** DraMS, Wonderwall and carousel visible wiring/valve lines,
   with equipment entries, local branches, supports and service slack based on saved photos.
   Do not invent hidden spectrometer/sample-processing circuits or plumbing topology.
+- [x] **Attic local-line audit / DraMS short wire (Codex, October23):** eight examples
+  registered; media masks/focuses corrected; one estimated wire support/slack pass complete.
+  Full preceding attic network remains open. [Sources, sample and handoff](research/attic-connection-media-2026-10-23/README.md).
 - [ ] **Camera/navigation harness:** front-camera panel, Ocellus FEB/MEB and both MIMUs;
   port Down Camera pass-through behind PSU1 and lower camera/window clearances. Mark unknown
   destinations; preserve current photo/dimension-based camera poses and optical openings.

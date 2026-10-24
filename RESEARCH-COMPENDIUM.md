@@ -4,6 +4,12 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October23 attic line/media audit (Codex):** [evidence/register](research/attic-connection-media-2026-10-23/README.md).
+[PUB] NASA/Mike Guinto integration photos and SciTech2024 warm/cold layout; [CALC]
+eight model tube endpoints/lengths; [EST] all media assignments/slack/lacing/support.
+Three ambiguous lines stay unclassified. No main attic trunk, actual circuit assignment,
+flight-qualified bend radius or new electrical/flow/thermal solver asserted.
+
 **October23 lower-camera installation (Codex):** [inventory/evidence](research/harness-endpoints-2026-10-23/README.md).
 [PUB] NASA/APL wiring appearance and DragonCam design; [CALC] gaps in this model;
 [EST] route topology,6mm port-camera bundle and wall stand-off. Three gaps closed,

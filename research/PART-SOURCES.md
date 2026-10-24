@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Attic connection media / DraMS local wire (Codex, October23):** [eight-line audit and comparison](attic-connection-media-2026-10-23/README.md).
+Real NASA/Mike Guinto SVS15003 DraMS/carousel integration photos and existing crops;
+SciTech2024 p3 fig2 is zone/layout CAD only. Saved NASA workmanship pp29-31 inform
+general support reasoning, not qualified flight cabling. Electrical/tubing interpretations,
+slack/lacing/support remain estimated; three ambiguous routes explicitly unclassified.
+
 **Bay endpoints / lower-camera harness (Codex, October23):** [audit and evidence](harness-endpoints-2026-10-23/README.md).
 Real September2026 wiring photo: NASA/Johns Hopkins APL/Ed Whitman; saved NASA-STD-8739.4A
 Change4 pp29-31. DragonCam2026 pp2/3/5 are camera/layout CAD, not wiring-photo evidence.

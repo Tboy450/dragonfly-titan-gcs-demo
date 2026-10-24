@@ -65,6 +65,12 @@ title/four route focuses, three corrected stub joins and one port-camera bypass/
 Research-only `harness-endpoints-2026-10-23/audit.mjs` measures actual builder endpoints;
 no circuit solver or flight wiring claims. Global harness coverage remains incomplete.
 
+October23 attic pass: DraMS now separates `harnesses`, `plumbing`, `unclassified-lines`;
+carousel white-line example uses `unclassified-lines`, not mechanical Interfaces.
+Only one DraMS short-wire curve/lacing/support changes physically; endpoints fixed.
+Research-only attic audit emits eight local tube rows and four unresolved network/interface
+families. Other legacy parts keep their existing line classifications and geometry.
+
 | File | What it does |
 |---|---|
 | `dist/flight-model.mjs` | Vehicle constants, `createFlightState()`, the flight step (`stepFlight`), power curve, flight commands, autopilot branch, flight-plan estimate helper |

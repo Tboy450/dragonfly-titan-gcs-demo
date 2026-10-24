@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [attic-connection-media-2026-10-23](attic-connection-media-2026-10-23/README.md) | Exact old DraMS/carousel/masks/UI/HTML, installed/wire samples; rejected over-width lacing draft/code | 2026-10-23 | `archive/attic-connection-media-2026-10-23` on4d37763 |
 | [lower-camera-harness-2026-10-23](lower-camera-harness-2026-10-23/README.md) | Old main harness/test/UI/HTML, before endpoint data and views; rejected short bypass code/picture | 2026-10-23 | `archive/lower-camera-harness-2026-10-23` on905bc05 |
 | [attic-local-insulation-2026-10-22](attic-local-insulation-2026-10-22/README.md) | Old attic/body/HGA/camera/masks/UI/vendor wrapper; six before views/manifests; rejected rim draft source/test/picture | 2026-10-23 | `archive/attic-local-insulation-2026-10-22` on ef3b429 |
 | [body-foam-2026-10-22](body-foam-2026-10-22/README.md) | Exact combined-body builder/masks/UI/HTML, six before pictures, unchanged-equipment manifest and original outer triangle bag; retired three solid cross-bay seam blocks | 2026-10-22 | `archive/body-foam-2026-10-22` on f14f2f0 |

@@ -1,0 +1,52 @@
+{
+  "cases": [
+    {
+      "mode": "Internal",
+      "media": "harnesses",
+      "hidden": true
+    },
+    {
+      "mode": "Internal",
+      "media": "plumbing",
+      "hidden": true
+    },
+    {
+      "mode": "Internal",
+      "media": "unclassified-lines",
+      "hidden": true
+    },
+    {
+      "mode": "Thermal",
+      "media": "harnesses",
+      "hidden": true
+    },
+    {
+      "mode": "Thermal",
+      "media": "plumbing",
+      "hidden": true
+    },
+    {
+      "mode": "Thermal",
+      "media": "unclassified-lines",
+      "hidden": true
+    }
+  ],
+  "parts": 24,
+  "dramsSources": 6,
+  "mobileWidth": {
+    "client": 375,
+    "scroll": 375
+  },
+  "carouselHidden": true,
+  "pilotReturn": "true",
+  "errors": [],
+  "macroTarget": "drams-wire-example",
+  "macroVisible": true,
+  "macroMasks": [
+    "equipment-casings",
+    "equipment-covers",
+    "interfaces",
+    "insulation"
+  ],
+  "focusRegressionCorrected": true
+}

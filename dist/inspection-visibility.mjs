@@ -21,6 +21,8 @@ export const partInspectionLayers = Object.freeze([
   { id: "mounts", label: "Mounts" },
   { id: "interfaces", label: "Interfaces" },
   { id: "harnesses", label: "Harnesses / lines" },
+  { id: "plumbing", label: "Gas / sample tubing examples" },
+  { id: "unclassified-lines", label: "Unclassified / schematic lines" },
   { id: "insulation", label: "Insulation" },
 ]);
 export const visibilityDefaults = Object.freeze({

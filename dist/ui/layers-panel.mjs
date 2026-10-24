@@ -8,6 +8,7 @@ import { updateInspectorUI } from "./vehicle-inspector.mjs?v=dev";
 import { focusInspector } from "../vehicle-inspector.mjs?v=dev";
 
 const sources = {
+  atticRegister: ["Attic line register: modeled media, endpoints and unresolved networks", "https://github.com/Tboy450/dragonfly-titan-gcs-demo/blob/main/research/attic-connection-media-2026-10-23/ENDPOINTS.md"],
   harnessRegister: ["Modeled harness endpoint register: measured geometry, not a flight wiring diagram", "https://github.com/Tboy450/dragonfly-titan-gcs-demo/blob/main/research/harness-endpoints-2026-10-23/ENDPOINTS.md"],
   bodyFoamTest: ["NASA/APL real insulation test segment, September 2025", "https://science.nasa.gov/blogs/dragonfly/2025/09/08/nasas-dragonfly-soaring-through-key-development-test-activities/"],
   bodyFoamDevelopment: ["NASA NESC / APL foam development, May 2026 (photos and design slides)", "https://nescacademy.nasa.gov/downloadFile/1529"],
@@ -95,6 +96,11 @@ const componentInfo = {
   "trim-chimneys": ["The trim device, as in NASA/APL's 2023 and 2024 thermal talks: a cold bypass duct under the belly, outside the foam and exposed to Titan, between fore and aft diverter flaps. Opening the flaps sends 0-40% of the warm flow forward through the cold duct (in 2% steps, about every 10 minutes) to dump heat to Titan; a full-scale test reached 245.7 W at a 23.7-degree flap angle with a non-flight test duct. Duct section, housings and actuators are estimates. An earlier concept with a chimney in each side wall (ICES-2023) is archived.", "thermal"],
 };
 
+const connectionNotes = {
+  drams: "Connection access: Harnesses / lines hides only the two local electrical examples here. Gas / sample tubing examples hides the three estimated valve tubes, leaving valve hardware visible. Unclassified / schematic lines hides the laser/interface and GC-route sketches whose flight media and mating ports are unresolved. The short photo-inspired wire example retains both endpoints and gains estimated slack, lacing and one support against its existing enclosure. All circuit assignments, connector types and cable construction remain unverified. No new attic trunk, controller, gas-flow or cable heat-leak solver is added.",
+  "sample-carousel": "The white-line example keeps its geometry and position but is now independently hidden by Unclassified / schematic lines, not Interfaces. Its function and endpoints are not identified by the integration photo; it is not promoted to a confirmed electrical circuit. Warm-drive electrical leads and a documented bay-to-attic trunk remain unmodeled. Open interior and other construction masks remain available.",
+};
+
 function liveComponentReading(name) {
   if (name === "iem") return `Vehicle mode: ${state.mode}. Flight plan: ${state.plan?.status ?? "none"}.`;
   if (name === "power-units") return `Vehicle load ${(state.power / 1000).toFixed(2)} kW; MMRTG generation ${state.generatedW.toFixed(0)} W. Modeled totals.`;
@@ -179,7 +185,7 @@ export function updateLayerPanel() {
     $("part-temperature").textContent = zone ? `${zone.c.toFixed(1)} C - ${zone.source}.` : "No temperature available.";
     $("part-placement").textContent = `Placement: ${selected.source}.`;
     const info = selected.mock ? null : componentInfo[selected.name];
-    $("part-role").textContent = info?.[0] ?? "";
+    $("part-role").textContent = [info?.[0], connectionNotes[selected.name]].filter(Boolean).join(" ");
     $("part-role").hidden = !info;
     const reading = selected.mock ? "" : liveComponentReading(selected.name);
     $("part-live").textContent = reading;
@@ -196,6 +202,7 @@ export function updateLayerPanel() {
       if (selected.name === "attic") entries.splice(1, 0, "bodyFoamDevelopment", "thermal2020", "thermal", "structureFit");
       if (selected.name === "side-cameras") entries.splice(1, 0, "thermal2020", "bodyFoamTest");
       if (selected.name === "main-harness") entries.splice(1, 0, "harnessRegister", "rdeWorkmanship", "dragonCam");
+      if (["drams", "sample-carousel"].includes(selected.name)) entries.splice(1, 0, "atticRegister", "rdeWorkmanship");
       if (selected.name === "nose-bulkhead") entries.splice(1, 0, "structureFit", "thermal");
       if (selected.name === "nose-electronics") entries.splice(1, 0, "mimu", "mimuStudy", "ocellus", "ocellusPackaging", "sqrliReview", "ocellusReuse", "navigation", "thermal");
       if (selected.name === "nose-sensors") entries.splice(1, 0, "dragmet", "dragmetCad");

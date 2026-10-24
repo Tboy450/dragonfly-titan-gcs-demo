@@ -5,7 +5,7 @@ import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 // A roughly half-width cold zone in fig. 2, against the existing 0.72 m inner attic,
 // gives a nominal 0.36 m drum. Positions and small details remain provisional.
 export const carouselAsset = Object.freeze({
-  revision: "carousel-2026-10-21",
+  revision: "carousel-2026-10-23-line-media",
   diameterM: 0.36,
   position: Object.freeze([-0.13, 0.08, -1.30]),
   inlet: Object.freeze([-0.07, 0.305, -0.092]),
@@ -134,7 +134,13 @@ export function buildSampleCarousel({ parent, mesh }) {
     }
   }
   const loop = new THREE.CatmullRomCurve3([[foilUnit.x, 0.302, foilUnit.z], [0.155, 0.335, -0.04], [0.15, 0.31, -0.1], [0.142, 0.276, -0.122]].map(p => new THREE.Vector3(...p)));
-  mesh(new THREE.TubeGeometry(loop, 24, 0.0025, 6, false), whiteWire, [0, 0, 0], top).name = "carousel-white-wire";
+  const unclassified = new THREE.Group(); unclassified.name = "carousel-unclassified-lines";
+  Object.assign(unclassified.userData, { inspectionLayer: "unclassified-lines", inspectionLabel: "White-line example (function unverified)" });
+  assembly.add(unclassified);
+  const whiteLine = mesh(new THREE.TubeGeometry(loop, 24, 0.0025, 6, false), whiteWire, [0, 0, 0], unclassified);
+  whiteLine.name = "carousel-white-wire";
+  Object.assign(whiteLine.userData, { connectionId: "carousel-white-wire", connectionMedium: "unclassified",
+    mediumConfidence: "EST", flightMatingConfirmed: false });
 
   const drives = new THREE.Group();
   drives.name = "carousel-warm-drives";

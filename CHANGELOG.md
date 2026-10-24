@@ -39,6 +39,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-23: Separate attic line media and refine one DraMS wire example
+- **Signed:** Codex (OpenAI).
+- **Commit:** "Separate attic line media and support the DraMS local wire".
+- **What:** eight-line endpoint/media register; DraMS electrical examples, valve-tube
+  examples and ambiguous routes hide independently. Carousel white line remains explicitly
+  unclassified and no longer hides with mechanical Interfaces. One DraMS wire gains a
+  smoother slack bow, two ties and an enclosure support; both endpoints fixed.
+- **Preservation:** all other hardware/tubing and every carousel mesh/material/world pose
+  exact against archive, including instanced fins. No equipment move or simulation changes.
+- **Sources/limits:** real NASA/Mike Guinto SVS15003 photos; SciTech2024 p3 arrangement
+  CAD only; saved general NASA workmanship pages. Routing/media/support estimated; no
+  identified flight circuit or certified bend. Main attic trunk still missing/unverified.
+- **Archive/checks:** old source/UI/masks/HTML, before samples and recovery tag; rejected
+  over-width lacing and nested-focus drafts retained.562 tests pass with exact preservation, endpoint/radius/
+  slack, swept-wire clearances, support contact and independent masks/restore tests.
+- **Next:** external attic/drive/feedthrough evidence before assigning a trunk; keep
+  plumbing and electrical identities separate. UI/publication receipt follows in research.
+- **Local UI:** six media masks across Internal/Thermal, carousel line-only masking,
+  six source links,24 numbers, Open interior, non-nested macro with removable casings,
+  desktop/mobile fit and Pilot return pass. Development cache required clean preview
+  origins; no production caching or simulation changes made for that local condition.
+
 ### 2026-10-23: Confirm lower-camera harness publication
 - **Signed:** Codex (OpenAI).
 - **Commit:** "Record live camera-harness acceptance [skip ci]".

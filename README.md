@@ -9,6 +9,12 @@ NASA flight product or a validated flight dynamics model.
 
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
+
+October23 attic continuation: [local-line register and DraMS wire installation](research/attic-connection-media-2026-10-23/README.md).
+Electrical examples, gas/sample tubing examples and unclassified routes now hide separately
+for DraMS/carousel. One short wire gains estimated slack/lacing/support with fixed endpoints;
+other hardware/tubing/carousel geometry unchanged. Full attic trunk and drive/feedthrough
+interfaces remain open, not inferred from integration-test cabling.562 tests pass.
 The interior is being redrawn part by part from sources, tracked in the
 [Interior realism checklist](INTERIOR-REALISM-TODO.md); every photo, paper page and patent
 behind each part is listed in [research/PART-SOURCES.md](research/PART-SOURCES.md). The
