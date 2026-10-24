@@ -58,7 +58,16 @@ The dedicated regression evaluates the actual production lookup statement.
 
 Archive baseline: [sampling-coverage-2026-10-24](../../archive/sampling-coverage-2026-10-24/README.md),
 tag on08e0a6d. Final full suite: **576 tests pass, zero failures/skips**. No game files
-changed. Publication receipt follows deployment.
+changed.
+
+## Publication Receipt
+
+Build **c3b2199** (`c3b219910d7df9b98363026b815d6b5d679f569c`) published successfully
+through Pages run **40109821169**, including its full test step. Normal public navigation
+verified the stamped build, collapsed default, six rows/source links, all four correct
+focus actions, original-demo hiding/switch-back,24 numbered parts and zero browser errors.
+Evidence: `public-c3b2199-checks.json` and `public-c3b2199-coverage.png`. Recovery tag and
+sources are pushed; local preview stopped. No new physical connection is implied.
 
 ## Leads Not Promoted To Flight Evidence
 

@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-24: Confirm sampling-coverage publication and model-switch regression
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record live sampling-coverage acceptance [skip ci].
+- **Release:** c3b219910d7df9b98363026b815d6b5d679f569c; Pages40109821169 succeeded.
+- **Checks:**576 local tests pass; workflow test step passed. Normal public navigation
+  confirms collapsed default, six rows/links, four correct inspection actions, original-demo
+  hide/switch-back and24 numbered parts, with zero errors. Screenshot/JSON saved in
+  research/sampling-electronics-2026-10-24. Local preview stopped; no geometry or game edits.
+- **Next:** IEM local service-loop/support audit. Actual attic bus/flight interfaces remain open.
+
 ### 2026-10-24: Surface sampling-electronics coverage without inventing a flight trunk
 - **Signed:** Codex (OpenAI).
 - **Commit:** Add sourced sampling-electronics coverage and inspection links.

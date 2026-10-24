@@ -18,6 +18,9 @@ unresolved. Next bounded installation pass: IEM connector service-loop/support a
 using existing photos and endpoint register, not another speculative attic trunk search.
 576 tests pass; desktop/mobile focus and view-mode retest have zero errors after the
 original-demo metadata guard fix. Physical interfaces and full wiring remain open.
+Published c3b2199, Pages40109821169 succeeded. Live six-row/source panel, all four focus
+actions and original-model switch pass with zero errors; screenshot/JSON saved in research.
+Local preview stopped; next remains IEM local connector installation, not a new attic bus.
 
 Latest October24 checkpoint: [carousel warm-drive installation](research/carousel-warm-drives-2026-10-24/README.md).
 Three existing drive examples retain centers/nominal can scale, with real-photo-inspired

@@ -1,0 +1,26 @@
+{
+  "build": "Build c3b2199 · 2026-10-24",
+  "links": 6,
+  "parts": 24,
+  "rows": 6,
+  "focusActions": [
+    {
+      "part": "iem",
+      "subassembly": ""
+    },
+    {
+      "part": "power-units",
+      "subassembly": ""
+    },
+    {
+      "part": "drams",
+      "subassembly": ""
+    },
+    {
+      "part": "sample-carousel",
+      "subassembly": "carousel-drive-1"
+    }
+  ],
+  "originalDemoHidesCoverage": true,
+  "errors": []
+}
