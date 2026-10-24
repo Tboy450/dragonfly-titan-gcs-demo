@@ -9,7 +9,7 @@ import {
 import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, orderHold, battleSummary,
   objectiveStatus, starsEarned, missionResult, retreat, publicMood, dropZoneAt, extractVictory, continueCapturing,
-  cityFound, hiddenUnits, shotBlocked, mergeSquads, splitSquad, renameSquad,
+  cityFound, hiddenUnits, shotBlocked, mergeSquads, splitSquad, renameSquad, captureBlocker,
   orderFor, queueOrder, setPatrol, replaceOrders,
 } from "./battle.mjs?v=dev";
 import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
@@ -842,6 +842,8 @@ function holdSelected() {
     return;
   }
   orderHold(mission.battle, [...mission.selected]);
+  const squads = mission.battle.squads.filter(s => mission.selected.has(s.id));
+  toast(`${squads.length === 1 ? squads[0].name : `${squads.length} squads`} holding here.`, "info", 1600);
 }
 $("hold-button").addEventListener("click", holdSelected);
 $("squad-bar").addEventListener("click", (event) => {
@@ -1221,6 +1223,35 @@ function updateHud() {
 }
 
 // ---- Overlay and minimap ----
+// A circle on the ground, projected to the screen; only the parts in view are drawn.
+function groundRing(ctx, x, z, radius, color, width, height, { dash = [], alpha = 1, label = "" } = {}) {
+  const points = [];
+  for (let i = 0; i <= 40; i++) {
+    const angle = i / 40 * Math.PI * 2, px = x + Math.cos(angle) * radius, pz = z + Math.sin(angle) * radius;
+    points.push(scene.project(px, scene.heightAt(px, pz) + 1, pz, width, height));
+  }
+  if (!points.some(p => p.visible && p.x > 0 && p.x < width && p.y > 0 && p.y < height)) return;
+  ctx.save();
+  ctx.strokeStyle = color; ctx.fillStyle = color; ctx.globalAlpha = alpha; ctx.lineWidth = 1.5; ctx.setLineDash(dash);
+  ctx.beginPath();
+  points.forEach((p, i) => (p.visible && i && points[i - 1].visible ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
+  ctx.stroke();
+  const near = points.filter(p => p.visible && p.x > 60 && p.x < width - 60 && p.y > 20 && p.y < height - 70).sort((a, c) => c.y - a.y)[0];
+  if (label && near) { ctx.globalAlpha = Math.min(1, alpha + 0.3); ctx.fillText(label, near.x, near.y + 14); }
+  ctx.restore();
+}
+// How far a squad's weapons reach troops on the ground (m, measured along the ground): the 3D
+// weapon range (battle.mjs shotRange) less the height it flies at, in today's weather.
+function squadReach(b, squadId) {
+  let reach = 0;
+  for (const unit of b.units) {
+    if (!unit.alive || unit.squad !== squadId || !isDrone(unit)) continue;
+    const def = droneTypes[unit.type], rise = (def.cruise || 0) + 0.6 - 1.6;
+    for (const w of def.weapons) if (w.hits.includes("ground")) reach = Math.max(reach, Math.sqrt(Math.max(0, (w.range * b.hazards.effects.range) ** 2 - rise * rise)));
+  }
+  return reach;
+}
+
 function drawOverlay() {
   const { ctx, width, height } = fitCanvas(overlay);
   ctx.clearRect(0, 0, width, height);
@@ -1232,7 +1263,9 @@ function drawOverlay() {
     if (zone.scouted === false) continue;
     const p = scene.project(zone.x, scene.heightAt(zone.x, zone.z) + (zone.kind === "beachhead" ? 28 : 18), zone.z, width, height);
     if (!p.visible || p.x < -80 || p.x > width + 80 || p.y < -20 || p.y > height + 20) continue;
-    const status = zone.kind === "beachhead" ? "Hive beacon" : zone.captured ? "held" : `${Math.round(zone.control)}%${zone.contested ? " · contested" : ""}`;
+    // Why drones in the zone are not capturing it (COMBAT-04), from the rules.
+    const blocked = zone.drones > 0 ? { links: "needs Links", jammed: "jammed", stunned: "drones stunned" }[captureBlocker(b, zone)] : null;
+    const status = zone.kind === "beachhead" ? "Hive beacon" : zone.captured ? "held" : `${Math.round(zone.control)}%${zone.contested ? " · contested" : ""}${blocked ? ` · ${blocked}` : ""}`;
     const text = zone.kind === "beachhead" ? status : `${zone.name} · ${status}`;
     const w = ctx.measureText(text).width + 14;
     ctx.fillStyle = "rgba(6, 8, 16, 0.72)";
@@ -1271,6 +1304,21 @@ function drawOverlay() {
     ctx.fillRect(left, top, right - left, bottom - top); ctx.strokeRect(left, top, right - left, bottom - top);
     ctx.restore();
   }
+  // Where each selected squad is heading (COMBAT-04): a dotted line from the squad to its move or
+  // capture point, ending in a small ring. Attack orders have their own line to the target.
+  for (const squad of b.squads) {
+    const order = squad.order;
+    if (!mission.selected.has(squad.id) || !(order?.kind === "move" || order?.kind === "capture") || !Number.isFinite(order.x)) continue;
+    const center = squadCenter(b.units, new Set([squad.id]));
+    if (!center || Math.hypot(center.x - order.x, center.z - order.z) < 12) continue;
+    const from = scene.project(center.x, scene.heightAt(center.x, center.z) + 2, center.z, width, height), to = scene.project(order.x, scene.heightAt(order.x, order.z) + 2, order.z, width, height);
+    if (!from.visible || !to.visible) continue;
+    ctx.save();
+    ctx.strokeStyle = squad.color; ctx.globalAlpha = 0.75; ctx.lineWidth = 1.5; ctx.setLineDash([2, 6]);
+    ctx.beginPath(); ctx.moveTo(from.x, from.y); ctx.lineTo(to.x, to.y); ctx.stroke();
+    ctx.setLineDash([]); ctx.beginPath(); ctx.arc(to.x, to.y, 6, 0, Math.PI * 2); ctx.stroke();
+    ctx.restore();
+  }
   // Waypoints of selected squads: a dashed line in the squad's color through each queued order,
   // closing the loop when the squad patrols.
   for (const squad of b.squads) {
@@ -1289,6 +1337,21 @@ function drawOverlay() {
     ctx.restore();
   }
   const hidden = hiddenUnits(b), byId = new Map(b.units.map(u => [u.id, u])), noShot = new Set();
+  // Coverage of jammers, shield pylons and radar masts (COMBAT-04): a dashed ring on the ground in
+  // the color of the side they work for, labeled on the side nearest the camera.
+  for (const unit of b.units) {
+    const aura = unit.alive && unit.structure && !hidden.has(unit.id) ? defenderTypes[unit.type]?.aura : null;
+    if (!aura) continue;
+    const label = aura.jam ? "Jammer: no captures, drones slowed" : aura.armor ? "Shield: defenses take a third of the damage" : "Radar: defenders hit harder";
+    groundRing(ctx, unit.x, unit.z, aura.radius, unit.side === "swarm" ? swarmColor : nativeColor, width, height, { dash: [8, 6], alpha: 0.6, label });
+  }
+  // Reach of each selected squad's weapons against troops on the ground, from where it flies.
+  for (const squad of b.squads) {
+    if (!mission.selected.has(squad.id)) continue;
+    const reach = squadReach(b, squad.id);
+    const center = reach > 0 ? squadCenter(b.units, new Set([squad.id])) : null;
+    if (center) groundRing(ctx, center.x, center.z, reach, squad.color, width, height, { dash: [2, 5], alpha: 0.7 });
+  }
   for (const unit of b.units) {
     if (!unit.alive || hidden.has(unit.id)) continue;
     const selected = isDrone(unit) && mission.selected.has(unit.squad);
@@ -1518,6 +1581,14 @@ minimap.addEventListener("contextmenu", event => event.preventDefault());
 function handleEvents(events) {
   const b = mission.battle;
   for (const event of events) {
+    // An attack order moving on to a new target, or finished, for a selected squad (FIX-05).
+    // Tapping the notice brings the camera there; H stops the squad.
+    if ((event.kind === "retarget" || event.kind === "attack-done") && mission.selected.has(event.squad)) {
+      const squad = b.squads.find(s => s.id === event.squad);
+      if (squad) toast(event.kind === "retarget"
+        ? `${squad.name}: target down, moving on to a ${defenderTypes[event.type]?.name || "defender"}. Tap to look, H to hold.`
+        : `${squad.name}: target down, no defenders within 110 m. Holding.`, "info", 4500, () => { setFollow(false); lookAt(event.x, event.z); });
+    }
     if (event.kind === "release" && !mission.selected.size) {
       const pod = b.pods.find(p => p.id === event.pod);
       if (pod) { mission.selected.add(pod.squad); updateSquadBar(); }
