@@ -39,6 +39,15 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-23: Confirm lower-camera harness publication
+- **Signed:** Codex (OpenAI).
+- **Commit:** "Record live camera-harness acceptance [skip ci]".
+- **Receipt:** releasea4ed215 pushed, Pages40057622872 succeeded;556 tests pass. Normal
+  public CUA loads, new Bay harness/port route focus and Open interior render,24 rows,
+  no browser errors. Genuine screenshot saved in current research; local preview stopped.
+- **Boundary:** earlier loading cause not established; no public-stall claim for this
+  successful release. Attic and other wiring families remain open. No app code in receipt.
+
 ### 2026-10-23: Audit bay endpoints and connect the lower-camera routing estimates
 - **Signed:** Codex (OpenAI).
 - **Commit:** "Audit bay endpoints and finish lower-camera harness installation".

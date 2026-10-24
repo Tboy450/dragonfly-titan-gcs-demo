@@ -80,6 +80,18 @@ The general render smoke test now exempts ONLY tagged port-bypass/support meshes
 the old37cm bay half-width, using39cm; all other widths stay unchanged. Exact wall/equipment
 tests still apply. Original smoke test archived. This is not a blanket cavity expansion.
 
+## Publication Receipt
+
+Release `a4ed215fbe464da7226ae3879c4d2ec27b0ef4a4` pushed to main and the Codex feature
+branch with recovery tag. [Pages40057622872](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/40057622872)
+succeeded, including the full suite and stamping. [Open live build](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=a4ed215).
+
+Normal public CUA navigation returned successfully, without interception/local resource
+substitution or transport changes. Build badge a4ed215, Bay harness option and port-route
+focus verified; Open interior rendered installed camera/harness context,24 rows retained,
+browser error log empty. Genuine `public-a4ed215-harness.png` saved. Local server stopped.
+No claim of a diagnosed earlier loading cause. Receipt-only follow-up skips redundant CI.
+
 ## Next / Handoff
 
 Keep the GLOBAL endpoint-register item open: this is the initial bay audit only.

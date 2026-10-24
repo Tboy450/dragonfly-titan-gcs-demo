@@ -76,6 +76,10 @@ of attic, navigation, sensor, motor and RF families remains open. Earlier public
 initialized normally and rendered Open interior with24 rows; genuine screenshot saved.
 Full556-test suite and actual desktop/mobile app controls/masks/sources/Pilot checks pass.
 Real/CAD/before/after comparison saved. No unchecked global family is silently completed.
+Releasea4ed215 and recovery tag pushed; Pages40057622872 succeeded. Normal public CUA
+build badge/new selector/port focus/Open interior rendering/24 rows pass; error log empty.
+Publication screenshot saved in current research; local server stopped. Next: attic leads,
+with sample/air lines tracked separately before assigning a main attic trunk.
 
 Historical October22 body-insulation checkpoint: five independent top/deck, port, starboard,
 belly and end surface regions, with aggregate body/foam masks and separate structural
