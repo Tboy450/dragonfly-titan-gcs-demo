@@ -1,5 +1,10 @@
 # Publication receipt: 59a03b9
 
+**October23 follow-up:** this release subsequently initialized normally while independent
+harness-audit work continued. Open interior cleared attic isolation and rendered with24
+rows. Genuine screenshot and limits are [recorded here](../../harness-endpoints-2026-10-23/README.md).
+The failed attempt below remains historical evidence; no root cause or load-time fix claimed.
+
 Codex (OpenAI), October 23, 2026.
 
 - Release: `59a03b9176377b7198dd934abbab1ff98f56f60e`.

@@ -4,6 +4,12 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October23 lower-camera installation (Codex):** [inventory/evidence](research/harness-endpoints-2026-10-23/README.md).
+[PUB] NASA/APL wiring appearance and DragonCam design; [CALC] gaps in this model;
+[EST] route topology,6mm port-camera bundle and wall stand-off. Three gaps closed,
+one omitted route added through existing reliefs around PSU1. No equipment movement.
+Geometric contact is not flight electrical mating. Other network families remain open.
+
 **October23 attic/local access (Codex):** [evidence/samples/limits](research/attic-local-insulation-2026-10-22/README.md).
 Existing attic/HGA outer surfaces are divided for inspection. [PUB] ICES2020 preliminary
 camera covering25mm/HGA dome50mm; DragonCam2026 isolated enclosures/3mm windows. These

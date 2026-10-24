@@ -1,0 +1,1358 @@
+{
+  "revision": "main-harness-2026-10-21c",
+  "coordinateFrame": "construction metres: +x starboard, +y up, +z aft",
+  "measurement": "World-space tube endpoints and sampled peer centerlines. <=1 mm surface gap means geometric contact only, never verified electrical mating.",
+  "references": [
+    "research/main-harness-2026-10-21/README.md",
+    "research/sources/dragoncam-2026/README.md"
+  ],
+  "routes": [
+    {
+      "id": "bay/iem",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "iem",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.009,
+      "lengthM": 0.090608,
+      "start": [
+        0,
+        -0.268,
+        -0.36
+      ],
+      "end": [
+        -0.088,
+        -0.27,
+        -0.341
+      ],
+      "startAttachment": {
+        "run": "trunk",
+        "fraction": 0.503333,
+        "centerlineGapM": 0.000045,
+        "radiusM": 0.012
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "targetStubs": [
+        {
+          "id": "iem-assembly/iem-harness-cable/8",
+          "end": [
+            -0.09,
+            -0.273,
+            -0.341
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.003606,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/13",
+          "end": [
+            -0.086,
+            -0.273,
+            -0.341
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.003606,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/23",
+          "end": [
+            -0.09,
+            -0.273,
+            -0.341
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.003606,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/2",
+          "end": [
+            -0.09,
+            -0.273,
+            -0.336
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.006164,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/4",
+          "end": [
+            -0.086,
+            -0.273,
+            -0.346
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.006164,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/7",
+          "end": [
+            -0.086,
+            -0.273,
+            -0.336
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.006164,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/14",
+          "end": [
+            -0.09,
+            -0.273,
+            -0.346
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.006164,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/17",
+          "end": [
+            -0.09,
+            -0.273,
+            -0.336
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.006164,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/19",
+          "end": [
+            -0.086,
+            -0.273,
+            -0.346
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.006164,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/22",
+          "end": [
+            -0.086,
+            -0.273,
+            -0.336
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.006164,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/3",
+          "end": [
+            -0.094,
+            -0.273,
+            -0.341
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.006708,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/18",
+          "end": [
+            -0.094,
+            -0.273,
+            -0.341
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.006708,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/9",
+          "end": [
+            -0.094,
+            -0.273,
+            -0.346
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.008367,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/12",
+          "end": [
+            -0.094,
+            -0.273,
+            -0.336
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.008367,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/24",
+          "end": [
+            -0.094,
+            -0.273,
+            -0.346
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.008367,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/1",
+          "end": [
+            -0.086,
+            -0.273,
+            -0.331
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.01063,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/5",
+          "end": [
+            -0.09,
+            -0.273,
+            -0.351
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.01063,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/10",
+          "end": [
+            -0.086,
+            -0.273,
+            -0.351
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.01063,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/11",
+          "end": [
+            -0.09,
+            -0.273,
+            -0.331
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.01063,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/16",
+          "end": [
+            -0.086,
+            -0.273,
+            -0.331
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.01063,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/20",
+          "end": [
+            -0.09,
+            -0.273,
+            -0.351
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.01063,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/25",
+          "end": [
+            -0.086,
+            -0.273,
+            -0.351
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.01063,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/26",
+          "end": [
+            -0.09,
+            -0.273,
+            -0.331
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.01063,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/6",
+          "end": [
+            -0.094,
+            -0.273,
+            -0.331
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.012042,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/15",
+          "end": [
+            -0.094,
+            -0.273,
+            -0.351
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.012042,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "iem-assembly/iem-harness-cable/21",
+          "end": [
+            -0.094,
+            -0.273,
+            -0.331
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.012042,
+          "surfaceGapM": 0
+        }
+      ],
+      "status": "geometric-contact-only",
+      "missingSegment": "Electrical identity, circuit continuity and actual mating hardware remain unverified."
+    },
+    {
+      "id": "bay/power-unit-2",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "power-unit-2",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.009,
+      "lengthM": 0.124015,
+      "start": [
+        0,
+        -0.268,
+        -0.3
+      ],
+      "end": [
+        0.122,
+        -0.27,
+        -0.278
+      ],
+      "startAttachment": {
+        "run": "trunk",
+        "fraction": 0.550833,
+        "centerlineGapM": 0.000348,
+        "radiusM": 0.012
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "targetStubs": [
+        {
+          "id": "psu-2/psu-harness-cable/7",
+          "end": [
+            0.121,
+            -0.273,
+            -0.28
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.003742,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-2/psu-harness-cable/10",
+          "end": [
+            0.121,
+            -0.273,
+            -0.275
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.004359,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-2/psu-harness-cable/11",
+          "end": [
+            0.125,
+            -0.273,
+            -0.28
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.00469,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-2/psu-harness-cable/2",
+          "end": [
+            0.125,
+            -0.273,
+            -0.275
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.005196,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-2/psu-harness-cable/4",
+          "end": [
+            0.121,
+            -0.273,
+            -0.285
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.007681,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-2/psu-harness-cable/3",
+          "end": [
+            0.129,
+            -0.273,
+            -0.28
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.007874,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-2/psu-harness-cable/6",
+          "end": [
+            0.129,
+            -0.273,
+            -0.275
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.008185,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-2/psu-harness-cable/8",
+          "end": [
+            0.125,
+            -0.273,
+            -0.285
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.008185,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-2/psu-harness-cable/1",
+          "end": [
+            0.121,
+            -0.273,
+            -0.27
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.008602,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-2/psu-harness-cable/13",
+          "end": [
+            0.121,
+            -0.273,
+            -0.27
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.008602,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-2/psu-harness-cable/5",
+          "end": [
+            0.125,
+            -0.273,
+            -0.27
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.009055,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-2/psu-harness-cable/12",
+          "end": [
+            0.129,
+            -0.273,
+            -0.285
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.010344,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-2/psu-harness-cable/9",
+          "end": [
+            0.129,
+            -0.273,
+            -0.27
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.011045,
+          "surfaceGapM": 0
+        }
+      ],
+      "status": "geometric-contact-only",
+      "missingSegment": "Electrical identity, circuit continuity and actual mating hardware remain unverified."
+    },
+    {
+      "id": "bay/power-unit-1",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "power-unit-1",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.009,
+      "lengthM": 0.122052,
+      "start": [
+        0,
+        -0.268,
+        0.03
+      ],
+      "end": [
+        -0.122,
+        -0.27,
+        0.032
+      ],
+      "startAttachment": {
+        "run": "trunk",
+        "fraction": 0.81,
+        "centerlineGapM": 0.001844,
+        "radiusM": 0.012
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "targetStubs": [
+        {
+          "id": "psu-1/psu-harness-cable/7",
+          "end": [
+            -0.121,
+            -0.273,
+            0.03
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.003742,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-1/psu-harness-cable/10",
+          "end": [
+            -0.121,
+            -0.273,
+            0.035
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.004359,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-1/psu-harness-cable/11",
+          "end": [
+            -0.125,
+            -0.273,
+            0.03
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.00469,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-1/psu-harness-cable/2",
+          "end": [
+            -0.125,
+            -0.273,
+            0.035
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.005196,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-1/psu-harness-cable/4",
+          "end": [
+            -0.121,
+            -0.273,
+            0.025
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.007681,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-1/psu-harness-cable/3",
+          "end": [
+            -0.129,
+            -0.273,
+            0.03
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.007874,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-1/psu-harness-cable/6",
+          "end": [
+            -0.129,
+            -0.273,
+            0.035
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.008185,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-1/psu-harness-cable/8",
+          "end": [
+            -0.125,
+            -0.273,
+            0.025
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.008185,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-1/psu-harness-cable/1",
+          "end": [
+            -0.121,
+            -0.273,
+            0.04
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.008602,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-1/psu-harness-cable/13",
+          "end": [
+            -0.121,
+            -0.273,
+            0.04
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.008602,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-1/psu-harness-cable/5",
+          "end": [
+            -0.125,
+            -0.273,
+            0.04
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.009055,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-1/psu-harness-cable/12",
+          "end": [
+            -0.129,
+            -0.273,
+            0.025
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.010344,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "psu-1/psu-harness-cable/9",
+          "end": [
+            -0.129,
+            -0.273,
+            0.04
+          ],
+          "radiusM": 0.0045,
+          "centerlineGapM": 0.011045,
+          "surfaceGapM": 0
+        }
+      ],
+      "status": "geometric-contact-only",
+      "missingSegment": "Electrical identity, circuit continuity and actual mating hardware remain unverified."
+    },
+    {
+      "id": "bay/battery",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "battery",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.007,
+      "lengthM": 0.195262,
+      "start": [
+        -0.02,
+        -0.268,
+        0.27
+      ],
+      "end": [
+        -0.213,
+        -0.264,
+        0.29
+      ],
+      "startAttachment": {
+        "run": "circulation-fans",
+        "fraction": 0,
+        "centerlineGapM": 0,
+        "radiusM": 0.006
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "targetStubs": [
+        {
+          "id": "battery-assembly/battery-cable/1",
+          "end": [
+            -0.216,
+            -0.262,
+            0.295
+          ],
+          "radiusM": 0.011,
+          "centerlineGapM": 0.006164,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "battery-assembly/battery-cable/2",
+          "end": [
+            -0.1296,
+            -0.262,
+            0.295
+          ],
+          "radiusM": 0.006,
+          "centerlineGapM": 0.083574,
+          "surfaceGapM": 0.070574
+        },
+        {
+          "id": "battery-assembly/battery-cable/3",
+          "end": [
+            -0.0756,
+            -0.262,
+            0.295
+          ],
+          "radiusM": 0.006,
+          "centerlineGapM": 0.137505,
+          "surfaceGapM": 0.124505
+        }
+      ],
+      "status": "geometric-contact-only",
+      "missingSegment": "Electrical identity, circuit continuity and actual mating hardware remain unverified."
+    },
+    {
+      "id": "bay/radio",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "radio",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.007,
+      "lengthM": 0.119887,
+      "start": [
+        0,
+        -0.268,
+        0.17
+      ],
+      "end": [
+        0.112,
+        -0.245,
+        0.178
+      ],
+      "startAttachment": {
+        "run": "trunk",
+        "fraction": 0.92,
+        "centerlineGapM": 0.004993,
+        "radiusM": 0.012
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "status": "mating-interface-unresolved",
+      "missingSegment": "Branch approaches radio; no assigned power/data mating port or cable lead established."
+    },
+    {
+      "id": "bay/rde-1",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "rde-1",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.007,
+      "lengthM": 0.171314,
+      "start": [
+        0,
+        -0.268,
+        -0.75
+      ],
+      "end": [
+        -0.16,
+        -0.25,
+        -0.7
+      ],
+      "startAttachment": {
+        "run": "rde-2",
+        "fraction": 0,
+        "centerlineGapM": 0,
+        "radiusM": 0.007
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "targetStubs": [
+        {
+          "id": "rde-1/rde-1-approx-lead/1",
+          "end": [
+            -0.16,
+            -0.252,
+            -0.697
+          ],
+          "radiusM": 0.0025,
+          "centerlineGapM": 0.003606,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "rde-1/rde-1-approx-lead/2",
+          "end": [
+            -0.16,
+            -0.252,
+            -0.697
+          ],
+          "radiusM": 0.0025,
+          "centerlineGapM": 0.003606,
+          "surfaceGapM": 0
+        }
+      ],
+      "status": "geometric-contact-only",
+      "missingSegment": "Electrical identity, circuit continuity and actual mating hardware remain unverified."
+    },
+    {
+      "id": "bay/rde-2",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "rde-2",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.007,
+      "lengthM": 0.171314,
+      "start": [
+        0,
+        -0.268,
+        -0.75
+      ],
+      "end": [
+        0.16,
+        -0.25,
+        -0.7
+      ],
+      "startAttachment": {
+        "run": "rde-1",
+        "fraction": 0,
+        "centerlineGapM": 0,
+        "radiusM": 0.007
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "targetStubs": [
+        {
+          "id": "rde-2/rde-2-approx-lead/1",
+          "end": [
+            0.16,
+            -0.252,
+            -0.697
+          ],
+          "radiusM": 0.0025,
+          "centerlineGapM": 0.003606,
+          "surfaceGapM": 0
+        },
+        {
+          "id": "rde-2/rde-2-approx-lead/2",
+          "end": [
+            0.16,
+            -0.252,
+            -0.697
+          ],
+          "radiusM": 0.0025,
+          "centerlineGapM": 0.003606,
+          "surfaceGapM": 0
+        }
+      ],
+      "status": "geometric-contact-only",
+      "missingSegment": "Electrical identity, circuit continuity and actual mating hardware remain unverified."
+    },
+    {
+      "id": "bay/navigation-feb-imu",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "navigation-feb-imu",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.008,
+      "lengthM": 0.205261,
+      "start": [
+        0,
+        -0.268,
+        -1
+      ],
+      "end": [
+        0.2,
+        -0.24,
+        -1.014
+      ],
+      "startAttachment": {
+        "run": "trunk",
+        "fraction": 0,
+        "centerlineGapM": 0,
+        "radiusM": 0.012
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "status": "mating-interface-unresolved",
+      "missingSegment": "Branch approaches support area; separate FEB/MIMU mating interfaces and routes remain unmodeled."
+    },
+    {
+      "id": "bay/navigation-meb",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "navigation-meb",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.008,
+      "lengthM": 0.397423,
+      "start": [
+        0,
+        -0.268,
+        -1
+      ],
+      "end": [
+        -0.2,
+        -0.235,
+        -1.262
+      ],
+      "startAttachment": {
+        "run": "trunk",
+        "fraction": 0,
+        "centerlineGapM": 0,
+        "radiusM": 0.012
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "status": "mating-interface-unresolved",
+      "missingSegment": "Branch approaches MEB; no modeled mating electrical interface identified."
+    },
+    {
+      "id": "bay/starboard-down-camera",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "starboard-down-camera",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.005,
+      "lengthM": 0.350857,
+      "start": [
+        0.058,
+        -0.27,
+        0.12
+      ],
+      "end": [
+        0.352,
+        -0.208,
+        0.16
+      ],
+      "startAttachment": {
+        "run": "power-unit-2-to-radio",
+        "fraction": 0.885,
+        "centerlineGapM": 0.000103,
+        "radiusM": 0.008
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "targetStubs": [
+        {
+          "id": "starboard-down-camera/camera-harness/1",
+          "end": [
+            0.362,
+            -0.2065,
+            0.16
+          ],
+          "radiusM": 0.003,
+          "centerlineGapM": 0.010112,
+          "surfaceGapM": 0.002112
+        }
+      ],
+      "status": "visible-gap",
+      "missingSegment": "Between branch end and component cable end; no automatic connector inferred."
+    },
+    {
+      "id": "bay/microscopic-camera",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "microscopic-camera",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.005,
+      "lengthM": 0.408392,
+      "start": [
+        -0.1,
+        -0.27,
+        0.281
+      ],
+      "end": [
+        -0.352,
+        -0.185,
+        0.418
+      ],
+      "startAttachment": {
+        "run": "battery",
+        "fraction": 0.413333,
+        "centerlineGapM": 0.000077,
+        "radiusM": 0.007
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "targetStubs": [
+        {
+          "id": "microscopic-camera/camera-harness/1",
+          "end": [
+            -0.362,
+            -0.180706,
+            0.414581
+          ],
+          "radiusM": 0.003,
+          "centerlineGapM": 0.011407,
+          "surfaceGapM": 0.003407
+        }
+      ],
+      "status": "visible-gap",
+      "missingSegment": "Between branch end and component cable end; no automatic connector inferred."
+    },
+    {
+      "id": "bay/led-array",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "led-array",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.004,
+      "lengthM": 0.06606,
+      "start": [
+        -0.341,
+        -0.255,
+        0.37
+      ],
+      "end": [
+        -0.352,
+        -0.259,
+        0.434
+      ],
+      "startAttachment": {
+        "run": "microscopic-camera",
+        "fraction": 0.784167,
+        "centerlineGapM": 0.000054,
+        "radiusM": 0.005
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "targetStubs": [
+        {
+          "id": "led-array/camera-harness/1",
+          "end": [
+            -0.362,
+            -0.258631,
+            0.432243
+          ],
+          "radiusM": 0.003,
+          "centerlineGapM": 0.01016,
+          "surfaceGapM": 0.00316
+        }
+      ],
+      "status": "visible-gap",
+      "missingSegment": "Between branch end and component cable end; no automatic connector inferred."
+    },
+    {
+      "id": "bay/iem-to-power-unit-1",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "iem-to-power-unit-1",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.008,
+      "lengthM": 0.386799,
+      "start": [
+        -0.045,
+        -0.27,
+        -0.355
+      ],
+      "end": [
+        -0.06,
+        -0.27,
+        0.031
+      ],
+      "startAttachment": {
+        "run": "iem",
+        "fraction": 0.500833,
+        "centerlineGapM": 0.000026,
+        "radiusM": 0.009
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "status": "network-link-only",
+      "endAttachment": {
+        "run": "power-unit-1",
+        "fraction": 0.491667,
+        "centerlineGapM": 0.000034,
+        "radiusM": 0.009
+      },
+      "missingSegment": "Appearance-only network link; not an identified device-to-device circuit."
+    },
+    {
+      "id": "bay/power-unit-2-to-radio",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "power-unit-2-to-radio",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.008,
+      "lengthM": 0.463616,
+      "start": [
+        0.06,
+        -0.27,
+        -0.29
+      ],
+      "end": [
+        0.07,
+        -0.27,
+        0.172
+      ],
+      "startAttachment": {
+        "run": "power-unit-2",
+        "fraction": 0.490833,
+        "centerlineGapM": 0.000008,
+        "radiusM": 0.009
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "status": "network-link-only",
+      "endAttachment": {
+        "run": "radio",
+        "fraction": 0.586667,
+        "centerlineGapM": 0.000028,
+        "radiusM": 0.007
+      },
+      "missingSegment": "Appearance-only network link; not an identified device-to-device circuit."
+    },
+    {
+      "id": "bay/twta-power-supply",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "twta-power-supply",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.0065,
+      "lengthM": 0.493335,
+      "start": [
+        0.055,
+        -0.27,
+        -0.015
+      ],
+      "end": [
+        0.347,
+        -0.058,
+        -0.01
+      ],
+      "startAttachment": {
+        "run": "power-unit-2-to-radio",
+        "fraction": 0.593333,
+        "centerlineGapM": 0.000018,
+        "radiusM": 0.008
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "targetStubs": [
+        {
+          "id": "twta-assembly/twta-epc-bus-harness/1",
+          "end": [
+            0.348,
+            -0.052,
+            -0.01
+          ],
+          "radiusM": 0.0065,
+          "centerlineGapM": 0.006083,
+          "surfaceGapM": 0
+        }
+      ],
+      "status": "geometric-contact-only",
+      "missingSegment": "Electrical identity, circuit continuity and actual mating hardware remain unverified."
+    },
+    {
+      "id": "bay/antenna-gimbal-drive",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "antenna-gimbal-drive",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.006,
+      "lengthM": 0.597651,
+      "start": [
+        -0.08,
+        -0.27,
+        -0.735
+      ],
+      "end": [
+        -0.304,
+        0.055,
+        -0.632
+      ],
+      "startAttachment": {
+        "run": "power-unit-1-to-rde-1",
+        "fraction": 1,
+        "centerlineGapM": 0,
+        "radiusM": 0.005
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "targetStubs": [
+        {
+          "id": "hga-gimbal-assembly/hga-drive-harness/1",
+          "end": [
+            -0.3,
+            0.06,
+            -0.63
+          ],
+          "radiusM": 0.006,
+          "centerlineGapM": 0.006708,
+          "surfaceGapM": 0
+        }
+      ],
+      "status": "geometric-contact-only",
+      "missingSegment": "Electrical identity, circuit continuity and actual mating hardware remain unverified."
+    },
+    {
+      "id": "bay/circulation-fans",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "circulation-fans",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.006,
+      "lengthM": 1.155628,
+      "start": [
+        -0.02,
+        -0.268,
+        0.27
+      ],
+      "end": [
+        0.15,
+        -0.2,
+        0.99
+      ],
+      "startAttachment": {
+        "run": "battery",
+        "fraction": 0,
+        "centerlineGapM": 0,
+        "radiusM": 0.007
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "status": "mating-interface-unresolved",
+      "missingSegment": "Branch approaches fan flange, not a modeled electrical connector; fan split/controller leads absent."
+    },
+    {
+      "id": "bay/iem-to-radio",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "iem-to-radio",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.0055,
+      "lengthM": 0.154934,
+      "start": [
+        -0.05,
+        -0.27,
+        -0.25
+      ],
+      "end": [
+        0.055,
+        -0.27,
+        -0.15
+      ],
+      "startAttachment": {
+        "run": "iem-to-power-unit-1",
+        "fraction": 0.2725,
+        "centerlineGapM": 0.000149,
+        "radiusM": 0.008
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "status": "network-link-only",
+      "endAttachment": {
+        "run": "power-unit-2-to-radio",
+        "fraction": 0.3025,
+        "centerlineGapM": 0.000152,
+        "radiusM": 0.008
+      },
+      "missingSegment": "Appearance-only network link; not an identified device-to-device circuit."
+    },
+    {
+      "id": "bay/power-unit-1-to-rde-1",
+      "sourceModule": "dist/main-harness.mjs",
+      "owner": "power-unit-1-to-rde-1",
+      "medium": "unassigned illustrative electrical bundle",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "radiusM": 0.005,
+      "lengthM": 0.714807,
+      "start": [
+        -0.05,
+        -0.27,
+        -0.05
+      ],
+      "end": [
+        -0.08,
+        -0.27,
+        -0.735
+      ],
+      "startAttachment": {
+        "run": "iem-to-power-unit-1",
+        "fraction": 0.788333,
+        "centerlineGapM": 0.000051,
+        "radiusM": 0.008
+      },
+      "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
+      "status": "network-link-only",
+      "endAttachment": {
+        "run": "antenna-gimbal-drive",
+        "fraction": 0,
+        "centerlineGapM": 0,
+        "radiusM": 0.006
+      },
+      "missingSegment": "Appearance-only network link; not an identified device-to-device circuit."
+    }
+  ],
+  "missing": [
+    {
+      "id": "bay/port-down-camera",
+      "owner": "port-down-camera",
+      "status": "missing-branch",
+      "confidence": "EST",
+      "flightTopologyConfirmed": false,
+      "targetStubs": [
+        {
+          "id": "port-down-camera/camera-harness/1",
+          "end": [
+            -0.362,
+            -0.2065,
+            0.16
+          ],
+          "radiusM": 0.003
+        }
+      ],
+      "missingSegment": "Component cable exists, but no main-harness branch reaches it."
+    }
+  ],
+  "decorativeStrands": [
+    {
+      "id": "trunk-strand-port",
+      "status": "unassigned-parallel-strand",
+      "radiusM": 0.005
+    },
+    {
+      "id": "trunk-strand-starboard",
+      "status": "unassigned-parallel-strand",
+      "radiusM": 0.005
+    },
+    {
+      "id": "trunk-strand-top",
+      "status": "unassigned-parallel-strand",
+      "radiusM": 0.0045
+    }
+  ],
+  "outsideThisRegister": [
+    "Attic instrument/DPU network",
+    "Front navigation cameras and separate IMU leads",
+    "RDE-to-arm/motor routes",
+    "RF/HGA moving continuity",
+    "Sensor controller destinations",
+    "Actuator leads, bonds and feedthrough supports"
+  ]
+}

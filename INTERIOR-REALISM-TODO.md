@@ -67,6 +67,16 @@ records the omitted attic trunk and port Down Camera branch, plus navigation, ar
 sensor and RF continuity follow-ups. Full endpoint register comes before adding bundles.
 Do not duplicate existing runs or infer flight pinouts/cable counts. No new wires this pass.
 
+October23 continuation: [initial bay register / lower-camera installation](research/harness-endpoints-2026-10-23/README.md).
+20 rows:12 geometric contacts,4 unresolved device mating interfaces,4 network-only links.
+Three camera/LED tips corrected; port Down Camera bypass/support added through existing
+reliefs around PSU1 without moving equipment. Trunk/other routes retained. Unnumbered
+Bay harness offers four focuses and wire/mount masks.10 focused tests pass; full coverage
+of attic, navigation, sensor, motor and RF families remains open. Earlier public59a03b9
+initialized normally and rendered Open interior with24 rows; genuine screenshot saved.
+Full556-test suite and actual desktop/mobile app controls/masks/sources/Pilot checks pass.
+Real/CAD/before/after comparison saved. No unchecked global family is silently completed.
+
 Historical October22 body-insulation checkpoint: five independent top/deck, port, starboard,
 belly and end surface regions, with aggregate body/foam masks and separate structural
 wall/deck masks. Exact original outer-body triangles/normals/UVs retained; three legacy
@@ -946,6 +956,9 @@ statuses: initial part, installation, construction access, and final UI/integrat
   confidence, existing start/end transforms, medium (power/data/RF/fiber/air/sample), modeled
   extent and missing destination. Distinguish real interfaces from illustrative stubs; never
   infer pinout or cable count from connector silhouette. Use this before adding more wires.
+- [x] **Initial bay register / lower-camera family (Codex, October23):** scoped measured
+  routes, three corrected tips, port-camera bypass/support; all estimated, no pinouts.
+  [Data/samples/limits](research/harness-endpoints-2026-10-23/README.md). Global register above stays open.
 - [ ] **Avionics service loops:** IEM, both PSUs, radio, navigation boxes and battery, one unit
   per pass; retain actual modeled connector positions, add justified slack/backshell relief,
   lacing and attachment points. RDE's October21 pass is already done, not a new open item.
@@ -960,6 +973,8 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [ ] **Camera/navigation harness:** front-camera panel, Ocellus FEB/MEB and both MIMUs;
   port Down Camera pass-through behind PSU1 and lower camera/window clearances. Mark unknown
   destinations; preserve current photo/dimension-based camera poses and optical openings.
+  Lower-camera installation initial pass complete October23; front/navigation and flight
+  interfaces remain open, not completed by geometric joins.
 - [ ] **Sensor connections:** finish20/21 local-installation checks, then EFIELD preamps,
   METHAN fiber entry and their warm/cold penetrations where documented. Distinguish atmospheric
   sensors from battery and generator feedback; no invented DPU internals or fiber count.

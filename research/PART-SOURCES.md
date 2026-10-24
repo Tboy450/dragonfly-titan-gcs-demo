@@ -6,6 +6,11 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Bay endpoints / lower-camera harness (Codex, October23):** [audit and evidence](harness-endpoints-2026-10-23/README.md).
+Real September2026 wiring photo: NASA/Johns Hopkins APL/Ed Whitman; saved NASA-STD-8739.4A
+Change4 pp29-31. DragonCam2026 pp2/3/5 are camera/layout CAD, not wiring-photo evidence.
+Route/support and joins estimated, not flight circuits/pinouts/bend qualification.
+
 **Attic/local access (Codex, October23):** [real/CAD/model comparison and limits](attic-local-insulation-2026-10-22/README.md).
 Reuses NASA/APL foam hardware (Justin Artis), NESC slides, real HGA arm photo
 (NASA/Johns Hopkins APL/Ed Whitman), ICES2020p5/2023pp3/5 and DragonCam2026pp3/5/15.

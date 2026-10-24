@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Lower-camera harness review</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#e3e8eb;color:#17262f;font:14px Arial,sans-serif;letter-spacing:0}
+header{padding:14px 20px;background:#fff;display:flex;gap:16px;align-items:center;flex-wrap:wrap}h1{font-size:18px;margin:0}
+button{padding:8px 12px;border:1px solid #8195a1;background:#fff;border-radius:4px;cursor:pointer}button[aria-pressed=true]{background:#1d586c;color:white}
+canvas{display:block;width:100%;height:680px}footer{padding:12px 20px;background:#fff;line-height:1.6}output{font-weight:bold}
+</style>
+<header><h1>Lower-camera harness: installation estimate</h1><button id="overview" aria-pressed="true">Overview</button><button id="port" aria-pressed="false">Port detail</button><button id="ends" aria-pressed="false">Camera ends</button><output id="revision"></output></header>
+<canvas id="sample" aria-label="Actual model harness review"></canvas>
+<footer id="caption">Amber: scoped lower-camera routes. Translucent equipment and wall are inspection context, not transparent flight hardware.</footer>
+<script type="module">
+import * as THREE from '../../dist/vendor/three/three.module.min.js?v=dev';
+import {buildSideCameras} from '../../dist/side-cameras.mjs';
+import {buildPowerUnits} from '../../dist/power-units.mjs';
+import {buildBattery} from '../../dist/battery.mjs';
+import {buildSideWall} from '../../dist/side-wall.mjs';
+let harnessModule;
+if(new URLSearchParams(location.search).has('before')){
+ const source=await(await fetch('../../archive/lower-camera-harness-2026-10-23/main-harness.mjs')).text();
+ const resolved=source.replace('./vendor/three/three.module.min.js?v=dev',new URL('../../dist/vendor/three/three.module.min.js?v=dev',location.href).href);
+ const url=URL.createObjectURL(new Blob([resolved],{type:'text/javascript'}));harnessModule=await import(url);URL.revokeObjectURL(url);
+}else harnessModule=await import('../../dist/main-harness.mjs');
+document.querySelector('#revision').textContent=harnessModule.mainHarnessAsset.revision;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xe3e8eb);
+scene.add(new THREE.HemisphereLight(0xffffff,0x596a72,2.4));
+const sun=new THREE.DirectionalLight(0xffffff,3.2);sun.position.set(-3,5,3);scene.add(sun);
+const root=new THREE.Group();scene.add(root);
+const mesh=(geometry,material,position,parent)=>{const o=new THREE.Mesh(geometry,material);o.position.fromArray(position);parent.add(o);return o;};
+const harness=new THREE.Group();root.add(harness);harnessModule.buildMainHarness({parent:harness,mesh});
+const cameras=new THREE.Group();root.add(cameras);buildSideCameras({parent:cameras,mesh});
+const context=new THREE.Group();root.add(context);buildPowerUnits({parent:context,mesh});buildBattery({parent:context,mesh});
+const wall=new THREE.Group();context.add(wall);buildSideWall({parent:wall,mesh,side:-1});
+context.traverse(o=>{if(o.isMesh){o.material=o.material.clone();o.material.transparent=true;o.material.opacity=.14;o.material.depthWrite=false;}});
+cameras.traverse(o=>{if(o.isMesh&&/foam-cavity|surround/.test(o.name))o.visible=false;});
+const highlight=new THREE.MeshStandardMaterial({color:0xbd6920,roughness:.44,metalness:.45});
+harness.traverse(o=>{if(o.isMesh&&/main-harness-(port-down-camera|starboard-down-camera|microscopic-camera|led-array)/.test(o.name))o.material=highlight;});
+const renderer=new THREE.WebGLRenderer({canvas:document.querySelector('canvas'),antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(1);
+const camera=new THREE.OrthographicCamera(-1,1,1,-1,.001,20);
+let view='overview';
+function draw(){
+ const width=document.querySelector('canvas').clientWidth,height=680;renderer.setSize(width,height,false);
+ const center=view==='overview'?new THREE.Vector3(0,-.15,-.25):view==='port'?new THREE.Vector3(-.27,-.22,.24):new THREE.Vector3(-.36,-.20,.31);
+ const half=view==='overview'?.78:view==='port'?.24:.18;
+ camera.left=-half*width/height;camera.right=half*width/height;camera.top=half;camera.bottom=-half;
+ camera.position.copy(center).add(view==='overview'?new THREE.Vector3(-1.6,2.5,1.7):new THREE.Vector3(-1.4,1.4,1.5));camera.lookAt(center);camera.updateProjectionMatrix();
+ renderer.render(scene,camera);
+ const gl=renderer.getContext(),pixels=new Uint8Array(width*height*4);gl.readPixels(0,0,width,height,gl.RGBA,gl.UNSIGNED_BYTE,pixels);
+ const bg=[...pixels.slice(0,3)];let changed=0;for(let i=0;i<pixels.length;i+=4)if(bg.some((v,j)=>Math.abs(pixels[i+j]-v)>25))changed++;
+ document.querySelector('canvas').dataset.nonblank=String(changed>3000);
+ document.querySelector('canvas').dataset.pixelCount=String(changed);
+ document.querySelector('canvas').dataset.view=view;
+}
+for(const button of document.querySelectorAll('button'))button.onclick=()=>{view=button.id;for(const b of document.querySelectorAll('button'))b.setAttribute('aria-pressed',String(b===button));draw();};
+window.addEventListener('resize',draw);draw();
+</script></html>

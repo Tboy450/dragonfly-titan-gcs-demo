@@ -39,6 +39,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-23: Audit bay endpoints and connect the lower-camera routing estimates
+- **Signed:** Codex (OpenAI).
+- **Commit:** "Audit bay endpoints and finish lower-camera harness installation".
+- **What:** measured endpoint register; fixed three small camera/LED branch gaps, added
+  port Down Camera bypass through existing reliefs around PSU1, one wall stand-off.
+  No camera/equipment move, new wall hole or flight/game/thermal changes. Trunk and all
+  unrelated routes exact. Bay harness inspection/four focuses and expandable source notes.
+- **Sources/limits:** saved real NASA/APL wiring photo and general workmanship pages;
+  camera CAD is labeled. All routes/supports estimated, no flight circuits/pinouts.
+- **Archive/checks:** exact old source/test/UI/HTML, before pictures/endpoint data, tag;
+  rejected collision draft retained.10 focused tests pass including exact endpoints,
+  wall triangles,20 optical rays, equipment clearance, masks and route preservation.
+  Full suite/visual/publication receipt follows in research.
+- **Final local checks:**556 tests pass; actual desktop/mobile app selector/four focuses,
+  independent masks/restore,24 rows, source notes and Pilot return pass; no horizontal
+  overflow or browser error log. General cavity test's39cm exception is only tagged
+  port-camera bypass/support meshes; exact wall/equipment tests still required. Old test archived.
+- **Public recheck:** earlier59a03b9 eventually initialized normally without interception;
+  Open interior rendered24 rows. Historical failures retained; initial-load cause unknown.
+- **Next:** attic local endpoint audit; unresolved radio/navigation/fan mating interfaces,
+  then other connection/support families. Global checklist intentionally stays open.
+
 ### 2026-10-23: Record insulation publication, harness gaps and incomplete live acceptance
 - **Signed:** Codex (OpenAI).
 - **Commit:** "Record insulation release and public acceptance limits [skip ci]".

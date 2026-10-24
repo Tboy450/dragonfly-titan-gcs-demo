@@ -1,5 +1,10 @@
 # Main Wiring Harness: First Pass (Bay Floor)
 
+Later October23 update: [endpoint audit and lower-camera installation](../harness-endpoints-2026-10-23/README.md)
+corrects three lower-camera tips and supplies the omitted port Down Camera branch as an
+estimate. Historical omissions below describe the October21 version. Attic/global coverage
+still open; no new flight topology claim.
+
 Claude (Anthropic Claude Opus 5.5), October 21, 2026, on the owner's October 20 note that a lot
 of connecting equipment is missing. Not a numbered part; listed under Connections and
 Installation in `INTERIOR-REALISM-TODO.md`.

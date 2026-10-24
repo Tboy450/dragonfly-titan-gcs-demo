@@ -3,6 +3,11 @@
 Codex, October22-23,2026. Initial inventory, not a complete flight wiring diagram.
 The owner specifically asked whether whole harnesses may be missing.
 
+October23 continuation: [measured initial bay register](../harness-endpoints-2026-10-23/README.md)
+now closes the modeled lower-camera gaps and supplies the omitted port-camera route as
+an estimate. Historical missing-port notes below describe the pre-pass state. Attic and
+other global coverage remain open; contact is not verified electrical continuity.
+
 Existing `main-harness.mjs` has a floor trunk, branches, wall risers, parallel strands,
 cross-bay bundles, ties and clamps. RDE service loops are already done. NASA/APL's saved
 wiring photo supports appearance, not circuit topology. Do not duplicate those runs.

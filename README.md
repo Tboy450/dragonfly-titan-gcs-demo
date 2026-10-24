@@ -23,6 +23,13 @@ has a release cache key. Full foam construction and flight harness topology rema
 Next: [endpoint/harness coverage audit](research/attic-local-insulation-2026-10-22/HARNESS-AUDIT.md),
 then one supported connection/support family at a time, including the missing attic trunk.
 
+October23 continuation: [bay endpoint audit and lower-camera installation](research/harness-endpoints-2026-10-23/README.md).
+Measured20 branch/network-link rows; closed three lower-camera gaps and added the port
+Down Camera bypass around PSU1 through existing reliefs, without moving equipment.
+Routing/support estimated; unnumbered Bay harness has four focuses and wire/mount masks.
+24 numbers retained; full attic and other networks remain open. Earlier public59a03b9
+eventually initialized normally; genuine Open interior evidence is saved in new research.
+
 Earlier October22 Codex: [removable body-insulation surfaces](research/body-foam-2026-10-22/README.md)
 adds top/deck, port, starboard, belly and end-region inspection masks. The base outer shape,
 24 equipment parts and structural panels remain unchanged; old cross-bay seam blocks are

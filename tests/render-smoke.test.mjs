@@ -279,7 +279,10 @@ test("Interior parts fit inside the insulated cavity of the exterior model", asy
       const where = `${group.name} [${box.min.toArray().map(v => v.toFixed(2))} .. ${box.max.toArray().map(v => v.toFixed(2))}]`;
       // Foam is 7.62 cm thick (ICES-2023): cavity x -/+0.36, floor -0.34, top deck +0.085,
       // up to +0.5 under the attic (z -1.82 to -0.72). Trim chimneys sit in the side walls.
-      const halfWidth = group.name === "trim-chimneys" ? 0.46 : 0.37;
+      // Only the tagged port-camera bypass/support is intentionally outside the bay
+      // panel, through its existing reliefs. Exact wall/equipment checks cover that route.
+      const cameraBypass = group.name === "main-harness" && part.userData.routeName === "port-down-camera";
+      const halfWidth = group.name === "trim-chimneys" ? 0.46 : cameraBypass ? 0.39 : 0.37;
       const underAttic = box.min.z >= -1.82 && box.max.z <= -0.72;
       assert.ok(box.min.x >= -halfWidth && box.max.x <= halfWidth, `width: ${where}`);
       // The 43 cm chimneys are built into the side walls, which span the body's outer height.

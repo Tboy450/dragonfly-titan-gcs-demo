@@ -60,6 +60,11 @@ are unchanged. Open interior is a presentation preset, not flight state/disassem
 The nested vendor core import now carries the normal release stamp. Full harness coverage
 remains unresolved; [endpoint register](research/attic-local-insulation-2026-10-22/HARNESS-AUDIT.md).
 
+October23 lower-camera installation: `main-harness.mjs` now has an unnumbered inspection
+title/four route focuses, three corrected stub joins and one port-camera bypass/support.
+Research-only `harness-endpoints-2026-10-23/audit.mjs` measures actual builder endpoints;
+no circuit solver or flight wiring claims. Global harness coverage remains incomplete.
+
 | File | What it does |
 |---|---|
 | `dist/flight-model.mjs` | Vehicle constants, `createFlightState()`, the flight step (`stepFlight`), power curve, flight commands, autopilot branch, flight-plan estimate helper |
