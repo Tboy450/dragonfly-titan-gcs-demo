@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Verify third-column lower publication
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record third-column lower publication receipt [skip ci].
+- **Published:** `24915589938146ede4fd858fd9477e2e172b3981`, Pages `40211931773` succeeded.
+- **Checks:** 614 local tests and workflow checks pass; live build, six IEM focuses,
+  eleven-reviewed/15-open notes, five source links and all 24 numbered parts verified,
+  zero browser errors. Public full-component sample and JSON saved with research.
+- **Handoff:** recovery tag pushed, preview/watcher stopped. Fourth-column IDs 12/13/14
+  remain next; terminal bundle overlap and actual flight mating remain unresolved.
+
 ### 2026-10-25: Refine third-column lower IEM leads 10/11
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine third-column lower IEM routes and preserve reviewed hardware.

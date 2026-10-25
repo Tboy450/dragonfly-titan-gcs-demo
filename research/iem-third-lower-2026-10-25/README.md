@@ -67,6 +67,12 @@ a presentation choice, not deleted geometry or physical disassembly.
 
 ## Next Handoff
 
+Published commit `24915589938146ede4fd858fd9477e2e172b3981`; Pages run `40211931773`
+succeeded including its simulation/terrain checks. Public build `2491558` verified with all
+six focuses, eleven-reviewed/15-open notes, five source links, all 24 parts and zero errors.
+`public-checks.json` and `public-full-iem.png` preserve the live acceptance and complete
+component view. Recovery tag pushed; temporary preview/deployment watcher stopped.
+
 Next card column has **IDs 12, 13 and 14**; take upper/lower pairs or individual leads
 as appropriate, rather than silently expanding scope. Preserve all eleven reviewed
 routes/fittings, all endpoints and the unchanged gathering/contact boundaries. Keep the

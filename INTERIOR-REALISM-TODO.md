@@ -20,6 +20,9 @@ Real/CAD/model and full-component samples, recovery tag and rejected draft saved
 - [x] Refine third-column lower pair IDs 10/11 as explicitly estimated installation examples.
 - [ ] Next: fourth card column IDs 12/13/14; preserve all eleven completed routes/fittings.
 Eleven reviewed, 15 remain. Earlier next-step notes below are historical, not current tasks.
+Published **2491558**, Pages 40211931773 succeeded. Live build/six focuses, eleven-reviewed/
+15-open notes, five links and all 24 parts verified without errors. Public full-IEM sample
+and JSON saved. Recovery tag pushed; temporary preview and deployment watcher stopped.
 
 Latest October25: [third-column upper pair IDs 8/9](research/iem-third-upper-2026-10-25/README.md)
 has separated service routes, attached labels, two supports and four ties [EST]. All seven
