@@ -43,6 +43,13 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October25 IEM routing continuation: only lead 6 and its label change in `iem.mjs`, plus a
+shared estimated support/two ties. `iemMiddleLeadAsset` holds fitting fractions; the four
+completed first-column routes stay in `iemServiceAsset` unchanged. Focus/status text now
+reports five reviewed routes, 21 open. New tests fingerprint every unrelated mesh and
+screen the revised curve against actual triangles, all neighbor curves and the unchanged
+floor-harness tests. Existing terminal convergence limits are unchanged and disclosed.
+
 October25 five-family installation: `cable-installation.mjs` creates tagged EST fittings
 at explicit local surface points on unchanged wire curves. Navigation retention is separate
 from its unchanged MIMU source block. New tests fingerprint every original mesh/material/pose

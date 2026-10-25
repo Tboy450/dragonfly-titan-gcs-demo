@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**IEM middle lead (Codex, October25):** [real/CAD/model comparison and credits](iem-middle-lead-2026-10-25/README.md).
+Reuses real NASA/APL/Ed Whitman testing photo with a saved crop; TFAWS2023 CAD slide is
+arrangement context only. NASA workmanship record rechecked, not flight qualification.
+One curve/label revised with estimated support/lacing; all endpoints and other meshes fixed.
+Sampled clearance does not resolve the inherited terminal bundle or flight circuit identity.
+
 **Five-family installation (Codex, October25):** [evidence and five comparison sheets](avionics-installation-2026-10-25/README.md).
 Reuses saved real NASA/APL/Ed Whitman IEM/PSU testing, APL Frontier, Honeywell family hardware
 and APL ICES2022 test-module photos. CAD/patent references explicitly separate. NASA

@@ -4,6 +4,13 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October25 IEM middle-lead route (Codex):** [evidence and measurements](research/iem-middle-lead-2026-10-25/README.md).
+Real NASA/APL/Ed Whitman IEM testing image and active NASA workmanship record rechecked.
+[EST] separated local lead, attached label, support and lacing, not flight hardware.
+[CALC] all 26 endpoints/radii and every unrelated mesh preserved; sampled free-span surface
+gap about 2.4 mm; original floor-harness tests unchanged. Terminal gathering overlaps are
+explicitly unresolved. Five routes reviewed, 21 still open. 599 tests pass.
+
 **October25 five-family installation (Codex):** [sources/register/samples](research/avionics-installation-2026-10-25/README.md).
 Real NASA/APL IEM/PSU/Frontier, Honeywell family and APL battery thermal-test photographs
 inform appearance; CAD/patent pages remain dimensional/architecture context only.

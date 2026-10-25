@@ -21,7 +21,7 @@ export function installationAudit(){
     lengthM:path.getLength(),confidence:'EST',flightMatingConfirmed:false});
    supports.push(...(o.userData.installationSupports??[]).map(s=>({...s,wire:o.userData.connectionId??o.name})));
   });
-  families.push({id,rows,supports,additions,limits:id==='nose-electronics'?'Retention heads only; caps retained, no fabricated flight harness.':'Existing paths/endpoints retained. Support installation estimated; full routing and flight identities remain open.'});
+   families.push({id,rows,supports,additions,limits:id==='nose-electronics'?'Retention heads only; caps retained, no fabricated flight harness.':id==='iem'?'All endpoints retained; middle lead has a revised estimated service route. Terminal bundle overlaps; full routing and flight identities remain open.':'Existing paths/endpoints retained. Support installation estimated; full routing and flight identities remain open.'});
  }
  return{frame:'construction metres: +x starboard, +y up, +z aft',families,scope:'Five-family installation examples, not a complete flight harness or electrical solver.'};
 }

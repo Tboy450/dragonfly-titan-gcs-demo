@@ -10,6 +10,15 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+Latest October25: [IEM middle lead](research/iem-middle-lead-2026-10-25/README.md) has a
+separated service bend, attached label, support and two ties [EST]. All 26 endpoints and
+every other mesh, including completed fittings and the floor harness, stay fixed.
+599 tests pass; sampled free-span gap about 2.4 mm. Inherited gathering endpoints still
+overlap and are explicitly unresolved. Five local routes reviewed, 21 remain.
+Next: second-column upper/lower leads (IDs 5 and 7), preserving the now-completed middle
+route and all first-column work. Desktop/phone, eight focuses and reversible layer checks
+pass; all 24 numbered parts retained and zero browser errors. Archive/samples saved.
+
 Current October25 checkpoint: owner requested all five avionics installation families.
 [Five-family support/inspection pass](research/avionics-installation-2026-10-25/README.md)
 adds10 estimated supports,6 lacing examples and24 navigation retention pieces, with a
@@ -1040,7 +1049,10 @@ statuses: initial part, installation, construction access, and final UI/integrat
   supports, one per PSU, three radio local-RF supports, three battery supports and navigation
   retention heads/washers. Existing curves and capped navigation ports retained.
   [Evidence, samples and precise open limits](research/avionics-installation-2026-10-25/README.md).
-- [ ] **Five-family routing continuation:** IEM middle second-column conflict, remaining22 IEM
+- [x] **IEM second-column middle route:** lead 6 separated, label attached, one support and
+  two ties added. All endpoints/other geometry retained; terminal gathering overlaps remain
+  open. [Real/CAD/model comparison, checks and handoff](research/iem-middle-lead-2026-10-25/README.md).
+- [ ] **Five-family routing continuation:** remaining 21 IEM
   routes and other PSU leads; identified external radio/navigation mating before new wires.
   Battery full flight-pack routing remains unverified. Support additions do not close these.
 - [ ] **Floor/perimeter routing audit:** review existing three harness passes together; remove
@@ -1064,8 +1076,8 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [x] **IEM first lower pair (Codex, October24):** indices2/3 gain height-separated bends,
   four ties/two supports, attached labels and a third focus. Upper pair and all26 endpoints
   exact;583 tests pass. [Sources, sample and handoff](research/iem-lower-pair-2026-10-24/README.md).
-- [ ] **IEM remaining22 local leads:** next second-column indices4/5/6, then other groups.
-  Preserve all four completed leads and all endpoints; no new flight circuit assignments.
+- [ ] **IEM remaining 21 local leads:** next second-column IDs 5/7 (indices 4/6), then other groups.
+  Preserve all five reviewed routes and every endpoint; no new flight circuit assignments.
 - [ ] **Complete IEM local connector installation:** audit remaining service
   bends, lacing and support contact without moving the photo-referenced enclosure or claiming
   circuit identity. Keep main-branch/stub endpoints from the current bay register.

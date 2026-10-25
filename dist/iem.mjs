@@ -16,7 +16,7 @@ import {addCableSupport,addCableLacing} from "./cable-installation.mjs?v=dev";
 // connector counts, depth and the wall it is on (port, with the PSU on its left as seen from
 // inside, as photographed) are [EST]. Red handling handles are not drawn.
 export const iemAsset = Object.freeze({
-  revision: "iem-2026-10-25-installation-supports",
+  revision: "iem-2026-10-25-middle-lead",
   widthM: 0.28, heightM: 0.28, depthM: 0.22,
   // Back against the port wall (cavity edge about x -0.36), on the bay floor [EST].
   position: Object.freeze([-0.244, -0.284, -0.17]),
@@ -32,6 +32,12 @@ export const iemServiceAsset = Object.freeze({
   leadIndices: Object.freeze([0, 1, 2, 3]), radiusM: .0045,
   bowDepthsM: Object.freeze([.035, .048, .012, .024]), supportFractions: Object.freeze([.70, .78, .675, .70]),
   confidence: "EST: local service installation, not an identified flight circuit or qualified bend",
+});
+
+export const iemMiddleLeadAsset = Object.freeze({
+  connectionId: "iem-local-lead-6", supportFraction: .32, labelFraction: .21,
+  lacingFractions: Object.freeze([.42, .64]),
+  confidence: "EST: separated local service route; flight circuit and qualified bend unknown",
 });
 
 export function buildIem({ parent, mesh }) {
@@ -60,7 +66,7 @@ export function buildIem({ parent, mesh }) {
     inspectionMinimumRadiusM: .10, flightMatingConfirmed: false });
   harness.add(lowerServicePair);
   const secondColumn=new THREE.Group();secondColumn.name="iem-second-column";
-  secondColumn.userData.inspectionLabel="Second-column supports (routing estimate)";
+  secondColumn.userData.inspectionLabel="Second-column service routing (estimate)";
   harness.add(secondColumn);
   const black = new THREE.MeshStandardMaterial({ color: 0x16181a, roughness: 0.6, metalness: 0.3 });
   const plate = new THREE.MeshStandardMaterial({ color: 0xc4c9cc, roughness: 0.32, metalness: 0.72 });
@@ -157,7 +163,7 @@ export function buildIem({ parent, mesh }) {
   // gather at one end into a trunk (silver-wrapped, as photographed) [EST routes].
   const z0 = face - 0.024;
   plugs.forEach(([x, y, len], i) => {
-    const service = iemServiceAsset.leadIndices.includes(i), lower = i === 2 || i === 3;
+    const service = iemServiceAsset.leadIndices.includes(i), lower = i === 2 || i === 3, middle = i === 5;
     const target = lower ? lowerServicePair : service ? servicePair : i>=4&&i<=6 ? secondColumn : harness;
     const backshell = box([0.011, len + 0.004, 0.014], [x, y, face - 0.017], wrap, target, "iem-harness-backshell");
     const label = box([0.012, 0.016, 0.003], [x, y - len / 2 - 0.012, z0 + 0.004], tag, target, "iem-harness-label");
@@ -168,7 +174,13 @@ export function buildIem({ parent, mesh }) {
     const depth = iemServiceAsset.bowDepthsM[i];
     const side = i === 1 ? -.02 : .006;
     const lowerSide = i === 2 ? .022 : -.020;
-    const points = lower ? [start, [x + (i === 2 ? .016 : -.012), start[1] - .012, z0 - .006],
+    // [EST] Separate the middle lead from the upper lead's old shared descent.
+    // The inherited, tightly gathered terminal endpoints remain deliberately fixed.
+    const points = middle ? [start, [.064, .174, -.130], [.064, .162, -.158], [.066, .145, -.198],
+      [.066, .100, -.204], [.066, .074, -.204], [.030, .063, -.204],
+      [-.090, .060, -.204], [-.145, .055, -.204], [-.176, .043, -.170], [-.181, .031, -.145],
+      [-.176, .026, -.150], [-.172, .022, -.150], [-.172, .016, -.150], end] :
+      lower ? [start, [x + (i === 2 ? .016 : -.012), start[1] - .012, z0 - .006],
       [x + lowerSide, i === 2 ? .060 : .020, z0 - depth],
       [x + lowerSide, i === 2 ? .052 : .014, z0 - depth],
       [(x + run) / 2, i === 2 ? .050 : .014, z0 - depth],
@@ -178,9 +190,19 @@ export function buildIem({ parent, mesh }) {
       [x + side, .035, z0 - depth], [(x + run) / 2, .035, z0 - depth],
       [run + .025, .028, z0 - depth], end] :
       [start, [x, y - len / 2 - .03, z0 - .004], [x, .018, z0 - .016], [(x + run) / 2, .011, z0 - .022], end];
-    const cable = tube(points, iemServiceAsset.radiusM, wrap, target, "iem-harness-cable", service ? 80 : 20);
+    const cable = tube(points, iemServiceAsset.radiusM, wrap, target, "iem-harness-cable", service ? 80 : middle ? 100 : 20);
     Object.assign(cable.userData, { connectionId: `iem-local-lead-${i + 1}`, servicePair: service,
       routeConfidence: "EST", flightMatingConfirmed: false });
+    if(middle){
+      cable.userData.routingReviewed=true;
+      const fraction=iemMiddleLeadAsset.supportFraction,p=cable.geometry.parameters.path.getPointAt(fraction);
+      addCableSupport({wire:cable,fraction,foot:[p.x,p.y,face-.004],normal:[0,0,-1],mounts,id:"iem-6"});
+      for(const fraction of iemMiddleLeadAsset.lacingFractions)addCableLacing({wire:cable,fraction,parent:target,id:`iem-6-${fraction}`});
+      cable.userData.labelFraction=iemMiddleLeadAsset.labelFraction;
+      const pLabel=cable.geometry.parameters.path.getPointAt(iemMiddleLeadAsset.labelFraction);
+      label.position.copy(pLabel);label.position.z-=.005;
+      label.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),cable.geometry.parameters.path.getTangentAt(iemMiddleLeadAsset.labelFraction));
+    }
     if(i===4||i===6){
       const fraction=i===4?.10:.03,p=cable.geometry.parameters.path.getPointAt(fraction);
       addCableSupport({wire:cable,fraction,foot:[p.x+(i===4?.020:.015),p.y,face-.004],normal:[0,0,-1],mounts,id:`iem-${i+1}`});

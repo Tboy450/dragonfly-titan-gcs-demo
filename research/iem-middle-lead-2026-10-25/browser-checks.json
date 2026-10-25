@@ -1,0 +1,71 @@
+[
+  {
+    "layer": "internal",
+    "part": "iem",
+    "target": "iem-connectors"
+  },
+  {
+    "layer": "internal",
+    "part": "iem",
+    "target": "iem-upper-service-pair"
+  },
+  {
+    "layer": "internal",
+    "part": "iem",
+    "target": "iem-lower-service-pair"
+  },
+  {
+    "layer": "internal",
+    "part": "iem",
+    "target": "iem-second-column"
+  },
+  {
+    "layer": "thermal",
+    "part": "iem",
+    "target": "iem-connectors"
+  },
+  {
+    "layer": "thermal",
+    "part": "iem",
+    "target": "iem-upper-service-pair"
+  },
+  {
+    "layer": "thermal",
+    "part": "iem",
+    "target": "iem-lower-service-pair"
+  },
+  {
+    "layer": "thermal",
+    "part": "iem",
+    "target": "iem-second-column"
+  },
+  {
+    "mobile": {
+      "scroll": 375,
+      "width": 375
+    },
+    "note": "Illustrative installation work on five equipment families, not a complete flight wiring diagram. Equipment poses and all cable endpoints are retained; IEM lead 6 now has a separated local service route.\n\nIEM installation\n\nThe second-column middle lead has a separated estimated service bend, attached label, support and two lacing ties. Its neighboring supports and the completed first column remain fixed.\n\nFive of 26 local routes reviewed; 21 remain. All endpoints stay fixed. Free-span clearance is sampled, but the inherited terminal bundle still overlaps. Actual flight mating and bend qualification remain unknown.\n\nNASA/APL real IEM / PSU testing\nPSU installations\n\nOne existing lead per PSU gains an estimated support and lacing. PSU 1 and PSU 2 now have separate inspection targets.\n\nAll 26 cable curves and both enclosures are unchanged. Most local leads, actual circuits and PSU 2's flight accommodation remain unresolved.\n\nNASA/APL real IEM / PSU testing\nFrontier radio installation\n\nThree unchanged local RF jumpers gain estimated cushioned supports. Connector face and jumpers have separate focuses.\n\nNo external power/data or antenna link is invented. Flight configuration, exact cable construction and destinations remain unverified.\n\nNASA/APL Frontier hardware photograph\nNavigation installations\n\nEstimated retention heads are added at the existing Ocellus mounting feet and MIMU pads; all source envelopes and capped ports remain unchanged.\n\nNo navigation harness is fabricated. Exact flight ports, mating circuits, bracket fasteners and harness routing remain open.\n\nHoneywell space MIMU family reference\nBattery installation\n\nThree unchanged exterior lead examples gain estimated cushioned supports and lacing. External connectors and leads have separate focuses.\n\nEnclosure, cells, internal bus bars and all lead endpoints are unchanged. The appearance reference is a sub-scale test module, not the flight pack.\n\nAPL ICES2022 battery test module\n\nSupports, lacing and retention hardware are installation estimates. The reference photographs do not establish their exact flight construction.\n\nGeometric contact does not assign a circuit, pinout or qualified bend radius. No electrical, cable heat-leak or structural solver is added.",
+    "parts": 24,
+    "target": "iem-second-column"
+  },
+  {
+    "originalStatusHidden": true
+  },
+  {
+    "exteriorStatusHidden": true
+  },
+  {
+    "pilotPressed": "true",
+    "errors": []
+  },
+  {
+    "mask": "mounts",
+    "checkedAfterHide": false,
+    "checkedAfterRestore": true
+  },
+  {
+    "mask": "harnesses",
+    "checkedAfterHide": false,
+    "checkedAfterRestore": true
+  }
+]

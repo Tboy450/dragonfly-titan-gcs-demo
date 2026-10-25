@@ -10,6 +10,7 @@ const fixture=builder=>{const parent=new T.Group();const result=builder({parent,
 const newIds=new Set(['iem-local-lead-3','iem-local-lead-4']);
 const manifest=root=>{const rows=[];root.updateMatrixWorld(true);root.traverse(o=>{
  if(!o.isMesh||newIds.has(o.userData.connectionId)||o.userData.installationExample)return;
+ if(o.userData.connectionId==='iem-local-lead-6'&&['iem-harness-cable','iem-harness-label'].includes(o.name))return;
  rows.push(JSON.stringify({name:o.name,id:o.userData.connectionId,matrix:o.matrixWorld.toArray(),
  vertices:[...o.geometry.attributes.position.array],indices:o.geometry.index?[...o.geometry.index.array]:null,
  color:o.material.color?.getHex(),metalness:o.material.metalness,roughness:o.material.roughness}));

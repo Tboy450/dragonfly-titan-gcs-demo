@@ -15,8 +15,8 @@ const manifest=(root,exclude)=>{const rows=[];root.updateMatrixWorld(true);root.
 test('IEM service passes preserve unrelated mesh/material/pose and all26 original lead endpoints',async()=>{
  const before=fixture(await oldBuilder()),after=fixture(),old=leads(before.parent),current=leads(after.parent);
  assert.equal(current.length,26);assert.equal(old.length,26);
- const labels=root=>{const found=[];root.traverse(o=>{if(o.name==='iem-harness-label')found.push(o);});return found.slice(0,4);};
- assert.deepEqual(manifest(after.parent,new Set([...current.slice(0,4),...labels(after.parent)])),manifest(before.parent,new Set([...old.slice(0,4),...labels(before.parent)])));
+ const labels=root=>{const found=[];root.traverse(o=>{if(o.name==='iem-harness-label')found.push(o);});return found.filter((_,i)=>i<4||i===5);};
+ assert.deepEqual(manifest(after.parent,new Set([...current.slice(0,4),current[5],...labels(after.parent)])),manifest(before.parent,new Set([...old.slice(0,4),old[5],...labels(before.parent)])));
  for(let i=0;i<26;i++){const a=old[i].geometry.parameters.path,b=current[i].geometry.parameters.path;
   assert.ok(a.getPoint(0).distanceTo(b.getPoint(0))<1e-12);assert.ok(a.getPoint(1).distanceTo(b.getPoint(1))<1e-12);
   assert.equal(current[i].geometry.parameters.radius,old[i].geometry.parameters.radius);

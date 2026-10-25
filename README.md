@@ -10,7 +10,12 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-Published build **31afae8**: [five-family installation pass](research/avionics-installation-2026-10-25/README.md).
+Latest model work: [IEM middle-lead route](research/iem-middle-lead-2026-10-25/README.md).
+One overlapping lead now has a separated estimated service bend, attached label, support
+and two ties. All 26 endpoints and other geometry stay fixed; 599 tests pass. Five local
+routes reviewed, 21 remain; the inherited terminal bundle overlaps are explicitly open.
+
+Previous published build **31afae8**: [five-family installation pass](research/avionics-installation-2026-10-25/README.md).
 IEM/PSUs/radio/battery gain 10 estimated supports and 6 lacing examples; navigation gains
 retention details without invented wiring. Collapsed status panel links all five families.
 All prior geometry and 62 curves unchanged; 595 tests pass. IEM middle support and complete

@@ -39,6 +39,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Separate the IEM middle lead without moving completed installation
+- **Signed:** Codex (OpenAI).
+- **Commit:** Refine IEM middle-lead service route and preserve completed fittings.
+- **What:** only lead 6, its attached label and new support/two ties change. Sideways
+  departure clears the upper lead; deeper service slack and raised return clear the
+  unchanged main floor harness. First-column and adjacent fittings remain exact.
+- **Evidence:** real NASA/APL testing photo and NASA workmanship record rechecked.
+  Source crop, credited CAD context, before/after/detail samples and rejected drafts saved.
+  Recovery tag on abad1f6. Route, support, fasteners and circuit identity remain estimates.
+- **Checks:** 599 tests pass. All 26 endpoints/radii and unrelated meshes preserved;
+  sampled gap about 2.4 mm outside the exact inherited gathering zone. Terminal overlaps
+  remain unresolved, including coincident centers. No legacy clearance tolerance enlarged.
+  Eight Internal/Thermal focuses, masks/Restore, original/Exterior hide, Pilot and phone
+  checks pass; 24 parts, 375 px client/scroll widths, zero browser errors.
+- **Next:** second-column IDs 5/7; preserve five reviewed routes and all endpoints.
+  Remaining 21 routes, full junction construction and actual flight circuits stay open.
+
 ### 2026-10-25: Confirm five-family installation publication
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record live five-family installation acceptance [skip ci].

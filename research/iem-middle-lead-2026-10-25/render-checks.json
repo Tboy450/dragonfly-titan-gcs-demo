@@ -1,0 +1,44 @@
+[
+  {
+    "name": "before",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "255972",
+    "version": "before"
+  },
+  {
+    "name": "current",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "249300",
+    "version": "current"
+  },
+  {
+    "name": "side",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "313842",
+    "version": "current"
+  },
+  {
+    "name": "support",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "819948",
+    "version": "current"
+  },
+  {
+    "name": "draft-direct",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "249258",
+    "version": "draft"
+  },
+  {
+    "name": "draft-return",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "249312",
+    "version": "draft"
+  }
+]

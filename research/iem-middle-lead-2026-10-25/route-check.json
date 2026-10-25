@@ -1,0 +1,32 @@
+{
+  "lead": "iem-local-lead-6",
+  "start": [
+    0.081875,
+    0.1759,
+    -0.128
+  ],
+  "end": [
+    -0.16099999999999998,
+    0.011000000000000003,
+    -0.15
+  ],
+  "radiusM": 0.0045,
+  "lengthM": 0.49054904580841496,
+  "freeSpanMinSurfaceGapM": 0.00239947260233519,
+  "closest": {
+    "other": "iem-local-lead-3",
+    "point": [
+      -0.17193379765278066,
+      0.021813699889538258,
+      -0.15
+    ],
+    "neighbor": [
+      -0.1612638764298227,
+      0.025290190370009895,
+      -0.14799631074104488
+    ]
+  },
+  "terminalMinSurfaceGapM": -0.008999999999999937,
+  "gatheringBoundary": "local x < -0.135 m AND y < 0.025 m for both samples",
+  "limits": "Dense sampled curve screen, not a qualified cable or continuous collision solver. Fixed gathering endpoints overlap; no remote circuit assigned."
+}

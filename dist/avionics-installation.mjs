@@ -5,9 +5,9 @@ export const installationSources=Object.freeze({
  battery:Object.freeze({label:"APL ICES2022 battery test module",url:"https://ttu-ir.tdl.org/items/a6b6bdc1-a09e-43a2-bc62-dbbea2e80660"}),
 });
 export const installationFamilies=Object.freeze([
- {id:"iem",name:"IEM installation",source:"lander",inspect:"iem",subassembly:"iem-second-column",azimuth:-1.8,elevation:.35,
-  role:"Two second-column leads gain estimated cushioned supports, with one lacing tie. All 26 lead paths and the completed first-column installation are unchanged.",
-  modeled:"Four first-column routes reviewed previously. The other 22 still need routing review; the middle second-column support is deferred because its old route overlaps neighbors."},
+ {id:"iem",name:"IEM installation",source:"lander",inspect:"iem",subassembly:"iem-second-column",azimuth:-2.9,elevation:.35,
+  role:"The second-column middle lead has a separated estimated service bend, attached label, support and two lacing ties. Its neighboring supports and the completed first column remain fixed.",
+  modeled:"Five of 26 local routes reviewed; 21 remain. All endpoints stay fixed. Free-span clearance is sampled, but the inherited terminal bundle still overlaps. Actual flight mating and bend qualification remain unknown."},
  {id:"power-units",name:"PSU installations",source:"lander",inspect:"power-units",subassembly:"psu-1",azimuth:-1.8,elevation:.35,
   role:"One existing lead per PSU gains an estimated support and lacing. PSU 1 and PSU 2 now have separate inspection targets.",
   modeled:"All 26 cable curves and both enclosures are unchanged. Most local leads, actual circuits and PSU 2's flight accommodation remain unresolved."},
@@ -22,7 +22,7 @@ export const installationFamilies=Object.freeze([
   modeled:"Enclosure, cells, internal bus bars and all lead endpoints are unchanged. The appearance reference is a sub-scale test module, not the flight pack."},
 ].map(row=>Object.freeze({...row,confidence:"EST",flightMatingConfirmed:false})));
 export const installationLimits=Object.freeze({
- scope:"Illustrative installation work on five equipment families, not a complete flight wiring diagram. All prior cable curves and equipment poses are retained.",
+ scope:"Illustrative installation work on five equipment families, not a complete flight wiring diagram. Equipment poses and all cable endpoints are retained; IEM lead 6 now has a separated local service route.",
  naming:"Supports, lacing and retention hardware are installation estimates. The reference photographs do not establish their exact flight construction.",
  boundary:"Geometric contact does not assign a circuit, pinout or qualified bend radius. No electrical, cable heat-leak or structural solver is added.",
 });
