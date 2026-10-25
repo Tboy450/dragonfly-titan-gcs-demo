@@ -39,6 +39,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Right-drag inspection pan
+- **Signed:** Codex (OpenAI).
+- **Commit:** Add right-drag inspection panning.
+- **What changed:** Rotate-selected right-button pan and Shift+arrow equivalent
+  in research Internal/Thermal. Left orbit/wheel zoom retained. Projected hardware
+  and labels translate together; no model/flight changes. Focus/reset/follow recenter.
+- **Checks:**628 tests pass; real UI-event harness covers right-drag gating,
+  capture/cancellation/chords/menu. Renderer tests exact screen displacement at
+  desktop/phone sizes and60/100/300% zoom. Browser keyboard pan/left drag/wheel/
+  focus/phone/Pilot checks pass,24 parts, zero errors. Native right-hold browser
+  automation is unavailable; this distinction is recorded in research.
+- **Recovery:**`archive/inspection-pan-2026-10-25`, exact code/tag and shared prior sample.
+- **Open / next:** IEM15/16/17 remain next. OneDrive owner chose Keep after earlier
+  Git packing; complete pending list not approved. All Git writes use command-local
+  gc.auto=0/maintenance.auto=false; no cleanup or global settings changes.
+
 ### 2026-10-25: Verify inspection-controls publication
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record inspection controls publication receipt [skip ci].

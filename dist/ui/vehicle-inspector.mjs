@@ -1,7 +1,7 @@
 import { $, chaseRenderer, flightCanvas, state } from "./context.mjs?v=dev";
 import { commandFlight } from "../flight-model.mjs?v=dev";
 import { samplingSequence } from "../science.mjs?v=dev";
-import { focusInspector, inspectionAvailable, inspectionTarget, resetInspector, rotateInspector, zoomInspector, wheelZoomInspector,
+import { focusInspector, inspectionAvailable, inspectionTarget, resetInspector, rotateInspector, panInspector, zoomInspector, wheelZoomInspector,
   inspectionSubassemblies, inspectionSubassembly, selectInspectionSubassembly } from "../vehicle-inspector.mjs?v=dev";
 import { globalInspectionLayers, partInspectionLayers, inspectionLayerVisible, setInspectionLayer,
   restoreInspectionLayers, hiddenInspectionCount,applyInspectionAccessPreset,inspectionAccessPreset } from "../inspection-visibility.mjs?v=dev";
@@ -35,7 +35,7 @@ for (const [scope, definitions] of [["global", globalInspectionLayers], ["part",
     layerControls.push({ input, id, scope });
   }
 }
-let pointer = null, moved = false, suppressClick = false, lastX = 0, lastY = 0, startX = 0, startY = 0;
+let pointer = null, dragMode = "rotate", moved = false, suppressClick = false, lastX = 0, lastY = 0, startX = 0, startY = 0;
 const available = () => !!chaseRenderer && inspectionAvailable(state);
 const rotating = () => available() && state.inspector.rotate;
 function releasePointer() {
@@ -132,12 +132,15 @@ $("inspection-follow").addEventListener("change", event => {
   state.inspector.focusPart = null;
   state.inspector.subassembly = null;
   state.inspector.zoom = 1;
+  state.inspector.panX = state.inspector.panY = 0;
   updateInspectorUI();
 });
 $("inspection-pause").addEventListener("click", () => { commandFlight(state, "hold"); updateInspectorUI(); });
 
 flightCanvas.addEventListener("pointerdown", event => {
-  if (!rotating() || pointer !== null || (event.pointerType === "mouse" && event.button !== 0)) return;
+  if (!rotating() || pointer !== null || (event.button !== 0 && !(event.pointerType === "mouse" && event.button === 2))) return;
+  dragMode = event.button === 2 ? "pan" : "rotate";
+  if (dragMode === "pan") event.preventDefault();
   pointer = event.pointerId; moved = false; suppressClick = false;
   lastX = startX = event.clientX; lastY = startY = event.clientY;
   flightCanvas.setPointerCapture(pointer);
@@ -145,10 +148,12 @@ flightCanvas.addEventListener("pointerdown", event => {
 flightCanvas.addEventListener("pointermove", event => {
   if (event.pointerId !== pointer) return;
   if (!rotating()) { releasePointer(); return; }
+  if (event.pointerType === "mouse" && event.buttons !== (dragMode === "pan" ? 2 : 1)) { releasePointer(); return; }
   if (!moved && Math.hypot(event.clientX - startX, event.clientY - startY) < 4) return;
   moved = true;
   const rect = flightCanvas.getBoundingClientRect();
-  rotateInspector(state.inspector, event.clientX - lastX, event.clientY - lastY, rect.width, rect.height);
+  const move = dragMode === "pan" ? panInspector : rotateInspector;
+  move(state.inspector, event.clientX - lastX, event.clientY - lastY, rect.width, rect.height);
   lastX = event.clientX; lastY = event.clientY;
 });
 flightCanvas.addEventListener("pointerup", event => {
@@ -158,6 +163,9 @@ flightCanvas.addEventListener("pointerup", event => {
 });
 flightCanvas.addEventListener("pointercancel", releasePointer);
 flightCanvas.addEventListener("lostpointercapture", () => { pointer = null; });
+flightCanvas.addEventListener("contextmenu", event => {
+  if (rotating()) event.preventDefault();
+});
 flightCanvas.addEventListener("wheel", event => {
   if (!available() || !wheelZoomInspector(state, event, flightCanvas.clientHeight)) return;
   event.preventDefault();
@@ -168,10 +176,19 @@ flightCanvas.addEventListener("click", event => {
   suppressClick = false;
   event.preventDefault(); event.stopImmediatePropagation();
 }, true);
+flightCanvas.addEventListener("auxclick", event => {
+  if (!suppressClick || event.button !== 2) return;
+  suppressClick = false;
+  event.preventDefault(); event.stopImmediatePropagation();
+}, true);
 flightCanvas.addEventListener("keydown", event => {
   if (!available() || event.ctrlKey || event.metaKey || event.altKey) return;
   const directions = { ArrowLeft: [-30,0], ArrowRight: [30,0], ArrowUp: [0,-30], ArrowDown: [0,30] };
-  if (directions[event.key]) rotateInspector(state.inspector, ...directions[event.key], 600, 600);
+  if (directions[event.key]) {
+    if (event.shiftKey && !rotating()) return;
+    const move = event.shiftKey ? panInspector : rotateInspector;
+    move(state.inspector, ...directions[event.key], 600, 600);
+  }
   else if (event.key === "+" || event.key === "=") zoomInspector(state.inspector, 1.2);
   else if (event.key === "-") zoomInspector(state.inspector, 1 / 1.2);
   else if (event.key === "Home") { resetInspector(state.inspector); state.selectedPart = null; releasePointer(); }

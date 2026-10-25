@@ -433,6 +433,13 @@ export function createChaseRenderer(options = {}) {
         }
       } else { inspectionHeight = null; inspectionTime = null; }
       Object.assign(missionCamera, { left: -halfHeight * w / h, right: halfHeight * w / h, top: halfHeight, bottom: -halfHeight });
+      if (inspector) {
+        // Shift the orthographic window in screen space; hardware and camera angle stay fixed.
+        const dx = (inspector.panX ?? 0) * halfHeight * 2 * w / h;
+        const dy = (inspector.panY ?? 0) * halfHeight * 2;
+        missionCamera.left -= dx; missionCamera.right -= dx;
+        missionCamera.top += dy; missionCamera.bottom += dy;
+      }
       if (layered) missionCamera.position.set(1.6, 5.2, 7.2);
       else missionCamera.position.set(0, 8, 3.5);
       missionCamera.lookAt(0, layered ? (which === "original" ? 0.1 : -0.15) : 0, 0);

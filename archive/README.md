@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [inspection-pan-2026-10-25](inspection-pan-2026-10-25/README.md) | Exact prior inspector/renderer/HTML without pan; previous public sample reused | 2026-10-25 | `archive/inspection-pan-2026-10-25` onde2500a |
 | [inspection-controls-2026-10-25](inspection-controls-2026-10-25/README.md) | Exact prior selector/layout, inspector wheel behavior and two Interior grids; before view and rejected phone-order draft | 2026-10-25 | `archive/inspection-controls-2026-10-25` on7cb0d32 |
 | [iem-fourth-column-2026-10-25](iem-fourth-column-2026-10-25/README.md) | Exact eleven-route IEM/status baseline and model view; two rejected support-foot parameter records | 2026-10-25 | `archive/iem-fourth-column-2026-10-25` on c5e4b58 |
 | [iem-third-lower-2026-10-25](iem-third-lower-2026-10-25/README.md) | Exact nine-route IEM/status baseline, full before view and rejected crossed-return code/render | 2026-10-25 | `archive/iem-third-lower-2026-10-25` on 0a7b590 |

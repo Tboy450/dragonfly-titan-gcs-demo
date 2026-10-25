@@ -4,7 +4,7 @@ import { visibilityDefaults } from "./inspection-visibility.mjs?v=dev";
 
 export const inspectionDefaults = Object.freeze({
   azimuth: Math.atan2(1.6, 7.2), elevation: Math.atan2(5.35, Math.hypot(1.6, 7.2)),
-  zoom: 1, rotate: false, focusPart: null, subassembly: null, isolate: false, followSampling: false,
+  zoom: 1, panX: 0, panY: 0, rotate: false, focusPart: null, subassembly: null, isolate: false, followSampling: false,
   ...visibilityDefaults,
 });
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
@@ -28,6 +28,11 @@ export function rotateInspector(i, dx, dy, width, height) {
 export function zoomInspector(i, factor) {
   if (Number.isFinite(factor) && factor > 0) i.zoom = clamp(i.zoom * factor, 0.6, 3);
 }
+export function panInspector(i, dx, dy, width, height) {
+  if (![dx, dy, width, height].every(Number.isFinite) || width <= 0 || height <= 0) return;
+  i.panX = clamp((i.panX ?? 0) + dx / width, -1, 1);
+  i.panY = clamp((i.panY ?? 0) + dy / height, -1, 1);
+}
 export function wheelZoomInspector(state, event, pageHeight = 600) {
   if (!inspectionAvailable(state) || !state.inspector?.rotate || event.ctrlKey || event.metaKey) return false;
   if (!Number.isFinite(event.deltaY) || event.deltaY === 0) return false;
@@ -42,6 +47,7 @@ export function focusInspector(state, name) {
   state.inspector.focusPart = name;
   state.inspector.followSampling = false;
   state.inspector.zoom = 1;
+  state.inspector.panX = state.inspector.panY = 0;
   state.inspector.subassembly = null;
   if (!name) state.inspector.isolate = false;
 }
@@ -66,6 +72,7 @@ export function selectInspectionSubassembly(state, group, name) {
   if (name && !child) return;
   state.inspector.subassembly = child?.name ?? null;
   state.inspector.zoom = 1;
+  state.inspector.panX = state.inspector.panY = 0;
   state.inspector.resetSerial += 1;
 }
 export function inspectionGroups(name) {
@@ -85,6 +92,7 @@ export function inspectionGroups(name) {
 
 export function inspectionModified(i, target) {
   return !!target || Math.abs(i.zoom - 1) > 1e-6
+    || Math.abs(i.panX ?? 0) > 1e-6 || Math.abs(i.panY ?? 0) > 1e-6
     || Math.abs(i.azimuth - inspectionDefaults.azimuth) > 1e-6
     || Math.abs(i.elevation - inspectionDefaults.elevation) > 1e-6;
 }

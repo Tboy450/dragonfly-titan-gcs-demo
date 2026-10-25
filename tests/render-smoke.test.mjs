@@ -528,6 +528,36 @@ test("Inspector frames isolated assemblies at every angle and restores the ordin
   assert.equal(chase.subsystems.battery.visible, false);
 });
 
+test("Inspector pan moves projected hardware and its labels by the drag distance without rotating or moving the craft", async()=>{
+  const {createChaseRenderer}=await import("../dist/chase-vehicle.mjs");
+  const {createFlightState}=await import("../dist/flight-model.mjs");
+  const {createInspector,panInspector,resetInspector}=await import("../dist/vehicle-inspector.mjs");
+  const chase=createChaseRenderer({renderer:fakeRenderer()});
+  const state={...createFlightState(),vehicleModel:"research",hold:true},before=structuredClone(state);
+  const i=createInspector();
+  for(const [w,h] of [[900,600],[360,460]]) for(const layer of ["internal","thermal"]) for(const zoom of [.6,1,3]){
+    resetInspector(i);i.zoom=zoom;
+    const view={layer,inspector:i,reduceMotion:true};
+    const start=chase.drawMission(context2d,w,h,state,view);
+    const root=chase.models.research.parent,pose=root.matrixWorld.clone();
+    panInspector(i,w*.12,h*-.08,w,h);
+    const moved=chase.drawMission(context2d,w,h,state,view);
+    assert.equal(moved.inspection,true);
+    assert.equal(moved.dimensions,undefined);
+    assert.deepEqual(root.matrixWorld.elements,pose.elements);
+    for(let n=0;n<start.length;n++){
+      assert.ok(Math.abs(moved[n].x-start[n].x-w*.12)<1e-8);
+      assert.ok(Math.abs(moved[n].y-start[n].y+h*.08)<1e-8);
+      assert.equal(moved[n].depth,start[n].depth);
+    }
+  }
+  assert.deepEqual(state,before);
+  resetInspector(i);
+  const reset=chase.drawMission(context2d,900,600,state,{layer:"internal",inspector:i,reduceMotion:true});
+  assert.equal(reset.inspection,undefined);
+  assert.equal(reset.dimensions.length,3);
+});
+
 test("Part 22 frames either EFIELD probe, preserves numbering and restores subassembly visibility", async () => {
   const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
   const { createFlightState } = await import("../dist/flight-model.mjs");

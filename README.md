@@ -10,7 +10,12 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-Published build **051c9d9**: [inspection controls](research/inspection-controls-2026-10-25/README.md).
+October25: [right-drag inspection pan](research/inspection-pan-2026-10-25/README.md).
+With Rotate selected: left drag rotates, right drag pans, wheel zooms. Shift+arrows
+also pan; focus/reset recenter.628 tests pass. Hardware and flight are unchanged.
+OneDrive warning handoff and command-local no-cleanup Git flags are recorded there.
+
+Previous published build **051c9d9**: [inspection controls](research/inspection-controls-2026-10-25/README.md).
 Rotate-selected mouse-wheel zoom; layer selector above the viewport; Interior c adds
 Thermal's grey grid. All controls/details retained, with corrected phone section order.
 623 tests pass. Flight physics and all hardware are unchanged; IEM15/16/17 remain next.

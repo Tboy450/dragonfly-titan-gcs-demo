@@ -10,6 +10,14 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October25: [inspection pan](research/inspection-pan-2026-10-25/README.md).
+- [x] Right hold/drag slides the view only while Rotate is selected; left drag still orbits.
+- [x] Shared camera keeps part labels attached; focus/reset/follow recenter.
+- [x]628 tests, desktop/phone keyboard-equivalent pan, wheel/focus/Pilot checks.
+Hardware unchanged; next IEM15/16/17. IMPORTANT: after OneDrive's mass-deletion
+warning owner chose Keep. Use `git -c gc.auto=0 -c maintenance.auto=false` for writes;
+do not clean/prune or approve/suppress OneDrive deletion prompts.
+
 October25 UI request: [inspection controls](research/inspection-controls-2026-10-25/README.md).
 - [x] Rotate-selected mouse-wheel zoom, without hijacking normal scroll/browser zoom.
 - [x] Layer selector above viewport; keep all details below, including phone order.
