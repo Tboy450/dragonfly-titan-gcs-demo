@@ -1,5 +1,14 @@
 # IEM Second-Column Upper/Lower Routes
 
+## Publication Receipt
+
+Build **693390808d5c42d4d5aed80fa2e875022ad91078**, Pages run **40169713662** succeeded,
+including workflow tests. Public normal navigation verified the build stamp, four IEM
+focuses, updated seven-reviewed/19-open notes, five source links, all 24 numbered parts
+and zero browser errors. Evidence: `public-iem.png`, `public-checks.json`.
+Recovery tag pushed; local preview and watcher stopped. The receipt-only follow-up commit
+does not change the deployed application. Local complete suite: 604 passing tests.
+
 Codex (OpenAI), October 25, 2026. Owner requested continuation from the completed middle
 lead. This pass changes only **lead IDs 5 and 7**, their labels and their own estimated
 installation fittings. First-column and middle-lead meshes/materials/poses remain exact.

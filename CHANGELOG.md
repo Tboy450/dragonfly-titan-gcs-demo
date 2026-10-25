@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Confirm second-column publication and handoff
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record live IEM second-column acceptance [skip ci].
+- **Release:** 693390808d5c42d4d5aed80fa2e875022ad91078, Pages 40169713662 succeeded.
+- **Checks:** 604 local tests and workflow tests pass. Public stamp, four IEM focuses,
+  seven-reviewed/19-open notes, five source links, 24 parts and zero errors verified.
+  Public sample/JSON saved; recovery tag pushed. Preview and watcher stopped.
+- **Next:** third-column upper pair IDs 8/9, then lower 10/11. Keep all seven reviewed
+  routes and endpoints fixed; terminal junction overlaps and actual flight topology remain open.
+
 ### 2026-10-25: Refine IEM second-column upper/lower service routes
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine IEM second-column routes around the completed middle lead.

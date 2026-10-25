@@ -10,7 +10,7 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-Latest model work: [IEM second-column upper/lower routes](research/iem-second-column-2026-10-25/README.md).
+Published build **6933908**: [IEM second-column upper/lower routes](research/iem-second-column-2026-10-25/README.md).
 Both routes, labels and their own fittings are refined around the unchanged middle lead.
 All 26 endpoints and unrelated geometry stay fixed; 604 tests pass. Seven local routes
 reviewed, 19 still open. Terminal bundle overlaps and actual flight circuits remain unresolved.

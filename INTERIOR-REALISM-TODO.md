@@ -17,6 +17,8 @@ lead, first column, enclosure, floor harness and all 26 endpoints stay fixed. 60
 sampled free-span gaps about 3.1/4.9 mm. Terminal gathering overlaps are still unresolved.
 Seven reviewed routes, 19 open. Next: third-column upper pair IDs 8/9, then lower 10/11.
 Preserve all seven reviewed routes and exact fitting contacts; no new circuit assignment.
+Published **6933908**, Pages 40169713662 succeeded. Live four-focus/count/source checks
+pass with zero errors; public sample/JSON saved. Recovery tag pushed; preview/watcher stopped.
 
 Latest October25: [IEM middle lead](research/iem-middle-lead-2026-10-25/README.md) has a
 separated service bend, attached label, support and two ties [EST]. All 26 endpoints and
