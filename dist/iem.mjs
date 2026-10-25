@@ -16,7 +16,7 @@ import {addCableSupport,addCableLacing} from "./cable-installation.mjs?v=dev";
 // connector counts, depth and the wall it is on (port, with the PSU on its left as seen from
 // inside, as photographed) are [EST]. Red handling handles are not drawn.
 export const iemAsset = Object.freeze({
-  revision: "iem-2026-10-25-third-upper",
+  revision: "iem-2026-10-25-third-lower",
   widthM: 0.28, heightM: 0.28, depthM: 0.22,
   // Back against the port wall (cavity edge about x -0.36), on the bay floor [EST].
   position: Object.freeze([-0.244, -0.284, -0.17]),
@@ -53,6 +53,12 @@ export const iemThirdUpperAsset = Object.freeze({
   confidence: "EST: local upper service routes, not flight circuitry or qualified bends",
 });
 
+export const iemThirdLowerAsset = Object.freeze({
+  leadIndices: Object.freeze([9,10]), supportFractions: Object.freeze([.05,.06]),
+  labelFractions: Object.freeze([.22,.48]), lacingFractions: Object.freeze([.32,.58]),
+  confidence: "EST: local lower service routes, not flight circuitry or qualified bends",
+});
+
 export function buildIem({ parent, mesh }) {
   const { widthM: W, heightM: H, depthM: D, position, yaw } = iemAsset;
   const assembly = new THREE.Group();
@@ -84,6 +90,9 @@ export function buildIem({ parent, mesh }) {
   const thirdUpper=new THREE.Group();thirdUpper.name="iem-third-upper-pair";
   Object.assign(thirdUpper.userData,{inspectionLabel:"Third-column upper pair (estimate)",inspectionMinimumRadiusM:.16,flightMatingConfirmed:false});
   harness.add(thirdUpper);
+  const thirdLower=new THREE.Group();thirdLower.name="iem-third-lower-pair";
+  Object.assign(thirdLower.userData,{inspectionLabel:"Third-column lower pair (estimate)",inspectionMinimumRadiusM:.16,flightMatingConfirmed:false});
+  harness.add(thirdLower);
   const black = new THREE.MeshStandardMaterial({ color: 0x16181a, roughness: 0.6, metalness: 0.3 });
   const plate = new THREE.MeshStandardMaterial({ color: 0xc4c9cc, roughness: 0.32, metalness: 0.72 });
   const windowMat = new THREE.MeshStandardMaterial({ color: 0x0d0e10, roughness: 0.75, metalness: 0.2 });
@@ -182,7 +191,8 @@ export function buildIem({ parent, mesh }) {
     const service = iemServiceAsset.leadIndices.includes(i), lower = i === 2 || i === 3, middle = i === 5;
     const upperSecond=i===4,lowerSecond=i===6;
     const third=iemThirdUpperAsset.leadIndices.includes(i);
-    const target = lower ? lowerServicePair : service ? servicePair : i>=4&&i<=6 ? secondColumn : third ? thirdUpper : harness;
+    const thirdLow=iemThirdLowerAsset.leadIndices.includes(i);
+    const target = lower ? lowerServicePair : service ? servicePair : i>=4&&i<=6 ? secondColumn : third ? thirdUpper : thirdLow ? thirdLower : harness;
     const backshell = box([0.011, len + 0.004, 0.014], [x, y, face - 0.017], wrap, target, "iem-harness-backshell");
     const label = box([0.012, 0.016, 0.003], [x, y - len / 2 - 0.012, z0 + 0.004], tag, target, "iem-harness-label");
     backshell.userData.connectionId = label.userData.connectionId = `iem-local-lead-${i + 1}`;
@@ -194,7 +204,18 @@ export function buildIem({ parent, mesh }) {
     const lowerSide = i === 2 ? .022 : -.020;
     // [EST] Separate the middle lead from the upper lead's old shared descent.
     // The inherited, tightly gathered terminal endpoints remain deliberately fixed.
-    const points = i===7 ? [start,[.037,.204,-.130],[.034,.185,-.155],[.034,.155,-.200],
+    const points = i===9 ? [start,[.059,.073,-.145],[.056,.055,-.159],
+      [.055,.050,-.188],[.040,.070,-.188],[.030,.080,-.184],
+      [.020,.080,-.184],[-.030,.080,-.184],[-.080,.080,-.184],[-.110,.080,-.184],
+      [-.126,.079,-.194],[-.146,.073,-.205],[-.180,.075,-.205],
+      [-.184,.040,-.205],[-.184,.032,-.205],[-.175,.030,-.190],
+      [-.167,.024,-.180],[-.167,.019,-.174],[-.177,.012,-.165],end] :
+      i===10 ? [start,[.065,.026,-.125],[.110,.026,-.125],[.152,.026,-.125],
+      [.155,.026,-.145],[.155,.060,-.159],[.155,.100,-.159],[.145,.118,-.159],
+      [.120,.118,-.159],[.060,.118,-.159],[.010,.118,-.159],[-.060,.118,-.159],[-.120,.118,-.159],
+      [-.150,.118,-.159],[-.183,.105,-.127],[-.183,.065,-.127],[-.183,.035,-.127],[-.183,.020,-.129],
+      [-.183,.008,-.1305],[-.175,.008,-.1305],[-.150,.008,-.1305],[-.150,.011,-.140],[-.154,.011,-.148],end] :
+      i===7 ? [start,[.037,.204,-.130],[.034,.185,-.155],[.034,.155,-.200],
       [.034,.103,-.202],[.025,.088,-.202],[-.100,.085,-.202],[-.124,.095,-.204],
       [-.128,.125,-.204],[-.153,.140,-.174],[-.157,.130,-.118],[-.157,.065,-.118],[-.157,.032,-.118],
       [-.157,.023,-.118],[-.157,.012,-.118],[-.153,.012,-.144],end] :
@@ -223,9 +244,17 @@ export function buildIem({ parent, mesh }) {
       [x + side, .035, z0 - depth], [(x + run) / 2, .035, z0 - depth],
       [run + .025, .028, z0 - depth], end] :
       [start, [x, y - len / 2 - .03, z0 - .004], [x, .018, z0 - .016], [(x + run) / 2, .011, z0 - .022], end];
-    const cable = tube(points, iemServiceAsset.radiusM, wrap, target, "iem-harness-cable", service ? 80 : middle||upperSecond||lowerSecond||third ? 100 : 20);
+    const cable = tube(points, iemServiceAsset.radiusM, wrap, target, "iem-harness-cable", service ? 80 : middle||upperSecond||lowerSecond||third||thirdLow ? 100 : 20);
     Object.assign(cable.userData, { connectionId: `iem-local-lead-${i + 1}`, servicePair: service,
       routeConfidence: "EST", flightMatingConfirmed: false });
+    if(thirdLow){
+      const n=i-9,path=cable.geometry.parameters.path,fraction=iemThirdLowerAsset.supportFractions[n],p=path.getPointAt(fraction);
+      addCableSupport({wire:cable,fraction,foot:[p.x,p.y,face-.004],normal:[0,0,-1],mounts,id:`iem-${i+1}`});
+      for(const f of iemThirdLowerAsset.lacingFractions)addCableLacing({wire:cable,fraction:f,parent:target,id:`iem-${i+1}-${f}`});
+      cable.userData.routingReviewed=true;cable.userData.labelFraction=iemThirdLowerAsset.labelFractions[n];
+      label.position.copy(path.getPointAt(cable.userData.labelFraction));label.position.z-=.005;
+      label.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),path.getTangentAt(cable.userData.labelFraction));
+    }
     if(third){
       const n=i-7,path=cable.geometry.parameters.path,fraction=iemThirdUpperAsset.supportFractions[n],p=path.getPointAt(fraction);
       const foot=i===7?[p.x,p.y,face-.004]:[.033,.095,face-.004];

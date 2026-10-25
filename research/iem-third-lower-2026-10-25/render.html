@@ -1,0 +1,33 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>IEM third-column lower pair</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#e3e8eb;color:#17262f;font:14px Arial,sans-serif;letter-spacing:0}header,footer{padding:14px 20px;background:white;line-height:1.5}h1{font-size:18px;margin:0}canvas{display:block;width:100%;height:660px}</style>
+<header><h1>IEM third-column lower pair | installation estimate</h1><output></output></header>
+<canvas aria-label="IEM third-column lower installation review"></canvas>
+<footer>Full IEM, all columns visible. Only leads 10/11, their labels and fittings change. Nine reviewed routes and all 26 endpoints stay fixed. Terminal bundle overlaps remain unresolved; not flight-qualified wiring.</footer>
+<script type="module">
+import * as T from '../../dist/vendor/three/three.module.min.js?v=dev';
+const query=new URLSearchParams(location.search),before=query.has('before'),draft=query.get('draft'),detail=query.get('detail');
+let module;
+if(before||draft){
+ const file=draft?'draft-crossed-return.mjs':'iem.mjs';
+ let code=await(await fetch('../../archive/iem-third-lower-2026-10-25/'+file)).text();
+ for(const file of ['vendor/three/three.module.min.js','cable-installation.mjs'])code=code.replace('./'+file+'?v=dev',new URL('../../dist/'+file+'?v=dev',location.href).href);
+ const url=URL.createObjectURL(new Blob([code],{type:'text/javascript'}));module=await import(url);URL.revokeObjectURL(url);
+}else module=await import('../../dist/iem.mjs?v=dev');
+const scene=new T.Scene();scene.background=new T.Color(0xe3e8eb);scene.add(new T.HemisphereLight(0xffffff,0x596a72,2.6));
+const light=new T.DirectionalLight(0xffffff,3.4);light.position.set(3,4,-3);scene.add(light);
+const root=new T.Group();scene.add(root);const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};module.buildIem({parent:root,mesh});root.updateMatrixWorld(true);
+document.querySelector('output').textContent=(before?'Before':draft?'Rejected draft':'Current')+' | '+root.userData.assetRevision;
+const renderer=new T.WebGLRenderer({canvas:document.querySelector('canvas'),antialias:true,preserveDrawingBuffer:true});renderer.setPixelRatio(1);
+const camera=new T.OrthographicCamera(-1,1,1,-1,.001,20);
+function draw(){
+ let box=new T.Box3().setFromObject(root);
+ if(detail){const close=new T.Box3();root.traverse(o=>{if(o.isMesh&&o.userData.wireId==='iem-local-lead-'+detail&&!o.name.endsWith('-lacing'))close.union(new T.Box3().setFromObject(o));});if(!close.isEmpty())box=close;}
+ const center=box.getCenter(new T.Vector3()),canvas=document.querySelector('canvas'),w=canvas.clientWidth,h=660,aspect=w/h;
+ renderer.setSize(w,h,false);camera.position.copy(center).add(new T.Vector3(...(query.has('side')?[.9,.2,1.1]:[1.6,.5,-.35])));camera.lookAt(center);camera.updateMatrixWorld(true);
+ let half=.01;for(const x of[box.min.x,box.max.x])for(const y of[box.min.y,box.max.y])for(const z of[box.min.z,box.max.z]){const p=new T.Vector3(x,y,z).applyMatrix4(camera.matrixWorldInverse);half=Math.max(half,Math.abs(p.y),Math.abs(p.x)/aspect);}
+ half*=1.1;Object.assign(camera,{left:-half*aspect,right:half*aspect,top:half,bottom:-half});camera.updateProjectionMatrix();renderer.render(scene,camera);
+ const gl=renderer.getContext(),pixels=new Uint8Array(w*h*4);gl.readPixels(0,0,w,h,gl.RGBA,gl.UNSIGNED_BYTE,pixels);let count=0;
+ for(let i=0;i<pixels.length;i+=4)if(Math.max(Math.abs(pixels[i]-227),Math.abs(pixels[i+1]-232),Math.abs(pixels[i+2]-235))>25)count++;
+ Object.assign(canvas.dataset,{version:before?'before':draft?'draft':'current',nonblank:String(count>1000),pixelCount:String(count)});
+}window.addEventListener('resize',draw);draw();
+</script></html>

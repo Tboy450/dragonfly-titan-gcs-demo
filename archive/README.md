@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [iem-third-lower-2026-10-25](iem-third-lower-2026-10-25/README.md) | Exact nine-route IEM/status baseline, full before view and rejected crossed-return code/render | 2026-10-25 | `archive/iem-third-lower-2026-10-25` on 0a7b590 |
 | [iem-third-upper-2026-10-25](iem-third-upper-2026-10-25/README.md) | Exact seven-route IEM/status baseline, full before view and rejected crossed-return code/render | 2026-10-25 | `archive/iem-third-upper-2026-10-25` on a9da566 |
 | [iem-second-column-2026-10-25](iem-second-column-2026-10-25/README.md) | Exact completed-middle IEM/status/test baseline, before view and rejected shared/low-return code/renders | 2026-10-25 | `archive/iem-second-column-2026-10-25` on f62b5ff |
 | [iem-middle-lead-2026-10-25](iem-middle-lead-2026-10-25/README.md) | Exact IEM/status/preservation-test baseline, before image; rejected departure/return code and renders | 2026-10-25 | `archive/iem-middle-lead-2026-10-25` on abad1f6 |

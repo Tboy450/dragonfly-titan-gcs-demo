@@ -1,0 +1,44 @@
+[
+  {
+    "file": "current.png",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "250879",
+    "version": "current"
+  },
+  {
+    "file": "before.png",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "249043",
+    "version": "before"
+  },
+  {
+    "file": "side.png",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "324350",
+    "version": "current"
+  },
+  {
+    "file": "lead-10-support.png",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "832062",
+    "version": "current"
+  },
+  {
+    "file": "lead-11-support.png",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "825131",
+    "version": "current"
+  },
+  {
+    "file": "draft-crossed.png",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "253341",
+    "version": "draft"
+  }
+]

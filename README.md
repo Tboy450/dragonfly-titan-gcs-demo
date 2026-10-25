@@ -10,7 +10,12 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-Published build **09e58eb**: [IEM third-column upper pair, IDs 8/9](research/iem-third-upper-2026-10-25/README.md).
+Latest model work: [IEM third-column lower pair, IDs 10/11](research/iem-third-lower-2026-10-25/README.md).
+Two source-labeled estimated routes with attached labels, supports and lacing. All nine
+completed routes and 26 endpoints stay fixed. Eleven reviewed, 15 remain; 614 tests pass.
+Real/CAD/model comparison and full-IEM desktop/phone samples saved; terminal overlaps stay open.
+
+Previous published build **09e58eb**: [IEM third-column upper pair, IDs 8/9](research/iem-third-upper-2026-10-25/README.md).
 Two estimated service routes, attached labels, supports and lacing; seven completed routes
 and all endpoints stay fixed. Nine local routes reviewed, 17 remain; 609 tests pass.
 Full-IEM samples retain all columns; subassembly isolation never deletes model geometry.

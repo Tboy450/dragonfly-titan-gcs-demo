@@ -13,7 +13,7 @@ async function oldBuilder(){
  for(const name of ['vendor/three/three.module.min.js','cable-installation.mjs'])code=code.replace('./'+name+'?v=dev',new URL('../dist/'+name+'?v=dev',import.meta.url).href);
  return(await import('data:text/javascript;base64,'+Buffer.from(code).toString('base64'))).buildIem;
 }
-const revisedIds=new Set([id,'iem-local-lead-5','iem-local-lead-7','iem-local-lead-8','iem-local-lead-9']);
+const revisedIds=new Set([id,'iem-local-lead-5','iem-local-lead-7','iem-local-lead-8','iem-local-lead-9','iem-local-lead-10','iem-local-lead-11']);
 const changed=o=>(revisedIds.has(o.userData.connectionId)&&['iem-harness-cable','iem-harness-label'].includes(o.name))||revisedIds.has(o.userData.wireId);
 const fingerprint=root=>{
  const rows=[];root.updateMatrixWorld(true);
@@ -74,7 +74,7 @@ test('Middle label meets its own cable, two lacing examples follow tangents and 
  const support=wire.userData.installationSupports[0],pad=parent.getObjectByName('install-iem-6-pad');
  assert.ok(Math.abs(pad.position.z+.0006+.114)<1e-12);
  assert.equal(support.fraction,A.supportFraction);
- const report=iemLeadAudit();assert.equal(report.rows.filter(r=>r.routingReviewed).length,9);
- assert.match(report.missing,/Remaining 17/);
- assert.match(installationFamilies.find(row=>row.id==='iem').modeled,/17 remain/);
+ const report=iemLeadAudit();assert.equal(report.rows.filter(r=>r.routingReviewed).length,11);
+ assert.match(report.missing,/Remaining 15/);
+ assert.match(installationFamilies.find(row=>row.id==='iem').modeled,/15 remain/);
 });

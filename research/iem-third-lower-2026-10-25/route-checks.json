@@ -1,0 +1,42 @@
+[
+  {
+    "id": "iem-local-lead-10",
+    "lengthM": 0.4411073300286503,
+    "freeSpanMinSurfaceGapM": 0.004365713579544275,
+    "terminalMinSurfaceGapM": -0.008999999999999972,
+    "closest": {
+      "other": "iem-local-lead-3",
+      "p": [
+        0.056636630622845525,
+        0.05773889968393244,
+        -0.15573813211113732
+      ],
+      "q": [
+        0.05642316090326259,
+        0.04858654954010207,
+        -0.14600000000000002
+      ]
+    },
+    "limits": "EST; sampled free span outside unchanged terminal gathering zone, not flight installation."
+  },
+  {
+    "id": "iem-local-lead-11",
+    "lengthM": 0.7303937393628541,
+    "freeSpanMinSurfaceGapM": 0.002461431731592781,
+    "terminalMinSurfaceGapM": -0.008999999999999937,
+    "closest": {
+      "other": "iem-local-lead-9",
+      "p": [
+        -0.183,
+        0.025188609804998863,
+        -0.12821547299617087
+      ],
+      "q": [
+        -0.17216797458370142,
+        0.022534239981320755,
+        -0.13085857033788392
+      ]
+    },
+    "limits": "EST; sampled free span outside unchanged terminal gathering zone, not flight installation."
+  }
+]

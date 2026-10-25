@@ -10,6 +10,17 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+Latest October25: [third-column lower IDs 10/11](research/iem-third-lower-2026-10-25/README.md)
+complete the third card column as an installation estimate. Two routes/labels, two supports,
+four ties and a sixth focus; all nine completed routes and 26 endpoints remain exact.
+614 tests pass, including unchanged floor-harness/envelope checks. Sampled free-span gaps
+about 4.4/2.5 mm; inherited terminal overlaps and flight mating remain unresolved.
+Desktop/phone, 12 focus cases and hide/Restore pass; all 24 parts retained, zero browser errors.
+Real/CAD/model and full-component samples, recovery tag and rejected draft saved.
+- [x] Refine third-column lower pair IDs 10/11 as explicitly estimated installation examples.
+- [ ] Next: fourth card column IDs 12/13/14; preserve all eleven completed routes/fittings.
+Eleven reviewed, 15 remain. Earlier next-step notes below are historical, not current tasks.
+
 Latest October25: [third-column upper pair IDs 8/9](research/iem-third-upper-2026-10-25/README.md)
 has separated service routes, attached labels, two supports and four ties [EST]. All seven
 previously reviewed routes, fittings, enclosure, floor harness and 26 endpoints stay fixed.

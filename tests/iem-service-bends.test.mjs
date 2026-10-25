@@ -15,8 +15,8 @@ const manifest=(root,exclude)=>{const rows=[];root.updateMatrixWorld(true);root.
 test('IEM service passes preserve unrelated mesh/material/pose and all26 original lead endpoints',async()=>{
  const before=fixture(await oldBuilder()),after=fixture(),old=leads(before.parent),current=leads(after.parent);
  assert.equal(current.length,26);assert.equal(old.length,26);
- const labels=root=>{const found=[];root.traverse(o=>{if(o.name==='iem-harness-label')found.push(o);});return found.slice(0,9);};
- assert.deepEqual(manifest(after.parent,new Set([...current.slice(0,9),...labels(after.parent)])),manifest(before.parent,new Set([...old.slice(0,9),...labels(before.parent)])));
+ const labels=root=>{const found=[];root.traverse(o=>{if(o.name==='iem-harness-label')found.push(o);});return found.slice(0,11);};
+ assert.deepEqual(manifest(after.parent,new Set([...current.slice(0,11),...labels(after.parent)])),manifest(before.parent,new Set([...old.slice(0,11),...labels(before.parent)])));
  for(let i=0;i<26;i++){const a=old[i].geometry.parameters.path,b=current[i].geometry.parameters.path;
   assert.ok(a.getPoint(0).distanceTo(b.getPoint(0))<1e-12);assert.ok(a.getPoint(1).distanceTo(b.getPoint(1))<1e-12);
   assert.equal(current[i].geometry.parameters.radius,old[i].geometry.parameters.radius);
@@ -28,7 +28,7 @@ test('IEM service passes preserve unrelated mesh/material/pose and all26 origina
 
 test('IEM connector face and upper pair are non-nested focus targets with reversible masks',()=>{
  const{parent,assembly,connectors,harness,mounts,servicePair}=fixture();
- assert.deepEqual(inspectionSubassemblies(parent).map(o=>o.name),['iem-connectors','iem-upper-service-pair','iem-lower-service-pair','iem-second-column','iem-third-upper-pair']);
+ assert.deepEqual(inspectionSubassemblies(parent).map(o=>o.name),['iem-connectors','iem-upper-service-pair','iem-lower-service-pair','iem-second-column','iem-third-upper-pair','iem-third-lower-pair']);
  const mask=createInspectionVisibility({iem:parent}),matrix=assembly.matrixWorld.clone();
  for(const layer of ['interfaces','harnesses','mounts']){const previous=new Map();mask.apply({hiddenPartLayers:{iem:[layer]}},previous);
   assert.equal(connectors.visible,layer!=='interfaces');assert.equal(harness.visible,layer!=='harnesses');assert.equal(mounts.visible,layer!=='mounts');

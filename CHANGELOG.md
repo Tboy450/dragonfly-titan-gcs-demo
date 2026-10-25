@@ -39,6 +39,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Refine third-column lower IEM leads 10/11
+- **Signed:** Codex (OpenAI).
+- **Commit:** Refine third-column lower IEM routes and preserve reviewed hardware.
+- **What:** only the next two curves and labels change, with two EST supports/four ties
+  and a sixth non-nested focus. All nine completed routes/fittings and 26 endpoints/radii
+  remain exact. Existing collapsed notes report eleven reviewed, 15 still open.
+- **Sources:** real NASA/APL IEM/PSU testing and NASA workmanship records rechecked;
+  credited saved photo and CAD-context/model comparison included. All routing is estimated,
+  not flight circuits or qualified bends. Recovery tag/baseline/rejected draft retained.
+- **Checks:** 614 tests pass; original envelope, main-harness and contact bounds unchanged.
+  Sampled free-span gaps about 4.4/2.5 mm. Desktop/phone, 12 Internal/Thermal focus cases,
+  independent masks/Restore, full IEM, mock/Exterior hiding and Pilot return pass. Zero
+  browser errors, all 24 parts retained; 375/375 px phone client/scroll widths.
+- **Open / next:** fourth column IDs 12/13/14, inherited terminal overlaps and actual flight
+  mating. No flight/save/game changes or new solver; do not redo completed columns.
+
 ### 2026-10-25: Verify third-column upper publication and full-IEM visibility
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record third-column upper publication receipt [skip ci].

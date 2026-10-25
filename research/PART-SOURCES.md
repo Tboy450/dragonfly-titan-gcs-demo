@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**IEM third-column lower IDs 10/11 (Codex, October25):** [real/CAD/model evidence](iem-third-lower-2026-10-25/README.md).
+Rechecked NASA/APL March2026 testing and active NASA-STD-8739.4A Change4 records. Reuses
+credited saved real photo/crop and workmanship pages; TFAWS2023 CAD is arrangement only.
+Exact routes/supports/circuits are not photo-confirmed. All eleven reviewed routes remain
+EST; recovery archive and full-component samples saved, no generated replacement imagery.
+
 **IEM third-column upper IDs 8/9 (Codex, October25):** [real/CAD/model comparison](iem-third-upper-2026-10-25/README.md).
 Reuses saved real NASA/APL/Ed Whitman testing photo/crop and general NASA workmanship
 pages; TFAWS2023 CAD is arrangement context only. All new installation remains EST.

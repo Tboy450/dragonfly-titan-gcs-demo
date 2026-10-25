@@ -43,6 +43,13 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October25 third-lower continuation: only IDs 10/11 and attached labels change, plus twelve
+EST fitting meshes and a sixth non-nested focus. `iemThirdLowerAsset` holds the fractions.
+New baseline fingerprint covers all nine completed routes/fittings and unrelated geometry;
+all 26 endpoints/radii exact. Eleven-reviewed/15-open notes updated in existing disclosures.
+Original IEM envelope, gathering/contact limits and global floor-harness checks unchanged.
+No flight/save/game/solver changes. Real/CAD/full-model evidence and recovery archive saved.
+
 October25 third-upper continuation: only IDs 8/9, labels and twelve fitting meshes change;
 `iemThirdUpperAsset` holds fractions and a fifth non-nested inspection focus is added.
 Nine-reviewed/17-open notes replace old current counts. New baseline tests preserve every

@@ -1,0 +1,107 @@
+{
+  "collapsedDefault": true,
+  "focuses": [
+    {
+      "layer": "internal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-connectors"
+    },
+    {
+      "layer": "internal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-upper-service-pair"
+    },
+    {
+      "layer": "internal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-lower-service-pair"
+    },
+    {
+      "layer": "internal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-second-column"
+    },
+    {
+      "layer": "internal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-third-upper-pair"
+    },
+    {
+      "layer": "internal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-third-lower-pair"
+    },
+    {
+      "layer": "thermal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-connectors"
+    },
+    {
+      "layer": "thermal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-upper-service-pair"
+    },
+    {
+      "layer": "thermal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-lower-service-pair"
+    },
+    {
+      "layer": "thermal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-second-column"
+    },
+    {
+      "layer": "thermal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-third-upper-pair"
+    },
+    {
+      "layer": "thermal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-third-lower-pair"
+    }
+  ],
+  "hidden": {
+    "harnesses": false,
+    "mounts": false
+  },
+  "restored": {
+    "harnesses": true,
+    "mounts": true
+  },
+  "phone": {
+    "clientWidth": 375,
+    "parts": 24,
+    "scrollWidth": 375,
+    "wholeComponent": true
+  },
+  "exteriorHidden": true,
+  "mockHidden": true,
+  "pilot": true,
+  "errors": []
+}
