@@ -16,6 +16,8 @@ All26 endpoints, enclosure, main harness and other24 curves preserved exactly.58
 pass; browser focus/masks/phone/Pilot/model-switch checks pass with zero errors.
 Archive/source comparison saved. This does NOT finish the full IEM or avionics harness.
 Next: existing lower pair indices2/3, same photo/scale and endpoint preservation process.
+Published **19b379f**, Pages40158732621 succeeded. Live focuses/source links/accuracy notes,
+24 parts and zero errors verified; public screenshot/JSON saved. Local preview stopped.
 
 Latest October24 source gate: [sampling electronics role/coverage audit](research/sampling-electronics-2026-10-24/README.md).
 Public roles documented for IEM, PSUs, DrACO avionics, DraMS main/laser electronics and

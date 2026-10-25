@@ -1,0 +1,42 @@
+[
+  {
+    "part": "iem",
+    "target": "iem-connectors"
+  },
+  {
+    "part": "iem",
+    "target": "iem-upper-service-pair"
+  },
+  {
+    "build": "Build 19b379f · 2026-10-24",
+    "client": 1265,
+    "links": [
+      {
+        "href": "https://www.jhuapl.edu/news/news-releases/260312-dragonfly-integration-begins",
+        "text": "IEM integration photos: NASA/Johns Hopkins APL"
+      },
+      {
+        "href": "https://github.com/Tboy450/dragonfly-titan-gcs-demo/blob/main/research/harness-endpoints-2026-10-23/ENDPOINTS.md",
+        "text": "Modeled harness endpoint register: measured geometry, not a flight wiring diagram"
+      },
+      {
+        "href": "https://standards.nasa.gov/standard/NASA/NASA-STD-87394",
+        "text": "NASA harness workmanship: general routing and support principles, not verified IEM installation"
+      },
+      {
+        "href": "https://science.nasa.gov/blogs/dragonfly/2026/03/10/nasas-dragonfly-mission-begins-rotorcraft-integration-testing-stage/",
+        "text": "NASA integration update"
+      },
+      {
+        "href": "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php",
+        "text": "APL payload reference"
+      }
+    ],
+    "notes": "Dragonfly's \"brain\": core avionics for commands and data, guidance and navigation, and communications in one box. Drawn from NASA/APL's full-resolution March 2026 photos: a black heat-sink top with fins parallel to the face and rows of fasteners, a copper ground strap, a silver face plate bolted round its edge with two rows of black connector windows, Micro-D connectors each mated to a labeled, silver-wrapped cable, and yellow tape strips. Mounted with its back to a wall panel beside a power switching unit, as photographed. No size is published: about 28 x 28 x 22 cm, scaled from the standard Micro-D connectors in the photos. The exact window layout (mostly hidden by cables in the photos), depth and which wall it is on are estimates. Temperature is the shared bay-air model. The first upper connector pair now has estimated service slack, four lacing ties and two face-mounted supports, guided by real NASA/APL hardware photographs and general NASA harness workmanship principles. All 26 lead endpoints, the enclosure and plug poses are unchanged; the other 24 cable paths retain their previous geometry and still need installation review. Connector face and Upper cable pair are separate focus targets. Interfaces, Harnesses / lines and Mounts remain independently removable. Routing, support attachment, cable construction and actual circuit destinations are unverified; these bends are not flight-qualified, and geometric contact does not identify a flight splice or pinout. No new attic bus, hidden electronics or thermal/electrical solver is added.",
+    "parts": 24,
+    "scroll": 1265
+  },
+  {
+    "errors": []
+  }
+]

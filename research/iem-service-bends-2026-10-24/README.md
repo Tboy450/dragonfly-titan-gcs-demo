@@ -69,6 +69,17 @@ composition in `comparison.py`, not generated imagery.
 Archive: [baseline files, pictures and restore instructions](../../archive/iem-service-bends-2026-10-24/README.md),
 recovery tag `archive/iem-service-bends-2026-10-24` on `d3fe35d`.
 
+## Publication Receipt
+
+Build **19b379f** (`19b379f2272983090dafe2d272fda7f5ecbc2487`) is live.
+Pages run **40158732621** succeeded, including its test step. Normal public navigation
+verified the build stamp, both new focus values, all five IEM source links, accuracy notes,
+24 original numbered parts and zero browser errors. Evidence: `public-19b379f-checks.json`
+and `public-19b379f-iem.png`. Recovery tag is pushed. Local preview and workflow watcher
+are stopped; the public application remains open at the pair inspection.
+Desktop renderer pixel checks and the mobile canvas screenshot-crop check are saved;
+the latter is explicitly not a WebGL framebuffer readback.
+
 ## Next / Handoff
 
 Do not redraw the IEM enclosure or repeat the attic-controller search. Next bounded package:

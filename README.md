@@ -10,7 +10,7 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-Latest local installation: [IEM upper service pair](research/iem-service-bends-2026-10-24/README.md).
+Latest published installation: [IEM upper service pair](research/iem-service-bends-2026-10-24/README.md), build19b379f.
 Two existing leads gain estimated slack, lacing/supports and separate focus access; all26
 endpoints, enclosure, main harness and other24 paths remain unchanged. Real/CAD/before/after
 samples and recovery archive saved.580 tests pass; full IEM/attic wiring remains open.

@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-24: Confirm IEM upper-pair publication
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record live IEM upper-pair acceptance [skip ci].
+- **Release:**19b379f2272983090dafe2d272fda7f5ecbc2487, Pages40158732621 succeeded.
+- **Checks:**580 local tests pass; workflow checks passed. Normal public navigation confirms
+  build stamp, connector/pair focus values, five source links, current estimated-installation
+  notes,24 original numbered parts and zero errors. Screenshot/JSON saved with research.
+  Preview and watcher stopped; recovery tag pushed. No extra geometry or game edits.
+- **Next:** first-column lower pair indices2/3; full IEM/network installation remains open.
+
 ### 2026-10-24: Refine only the IEM upper service pair
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine IEM upper service pair with preserved endpoints.
