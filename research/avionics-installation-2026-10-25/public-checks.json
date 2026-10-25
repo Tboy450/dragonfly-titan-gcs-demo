@@ -1,0 +1,39 @@
+{
+  "build": "Build 31afae8 · 2026-10-25",
+  "collapsed": null,
+  "actions": [
+    {
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-second-column"
+    },
+    {
+      "access": "open",
+      "isolate": true,
+      "part": "power-units",
+      "target": "psu-1"
+    },
+    {
+      "access": "open",
+      "isolate": true,
+      "part": "frontier-radio",
+      "target": "frontier-radio-rf-lines"
+    },
+    {
+      "access": "open",
+      "isolate": true,
+      "part": "nose-electronics",
+      "target": "imu-a"
+    },
+    {
+      "access": "open",
+      "isolate": true,
+      "part": "battery",
+      "target": "battery-external-leads"
+    }
+  ],
+  "sourceLinks": 5,
+  "parts": 24,
+  "errors": []
+}

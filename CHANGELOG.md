@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Confirm five-family installation publication
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record live five-family installation acceptance [skip ci].
+- **Release:** 31afae885b9b20f0866378c459dfe25175c3b308; Pages 40162267225 succeeded.
+- **Checks:** 595 local tests and workflow checks pass. Public build stamp, five focus
+  actions, Open interior/isolation, five source links, 24 parts and zero errors verified.
+  Screenshot/JSON saved; recovery tag pushed. Source/model comparisons retained.
+- **Next:** resolve the IEM middle lead's existing overlap, then remaining IEM/PSU
+  routing groups. Unknown radio/navigation mating remains source-gated, not invented.
+
 ### 2026-10-25: Add source-limited installation examples across all five avionics families
 - **Signed:** Codex (OpenAI).
 - **Commit:** Add five-family avionics installation supports and coverage.

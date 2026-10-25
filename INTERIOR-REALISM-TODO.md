@@ -18,6 +18,10 @@ IEM second-column middle support is explicitly deferred because legacy routes ov
 two surrounding supports fit. No navigation harness or radio external link is fabricated.
 Desktop/phone checks retain24 parts and375px client/scroll widths, zero browser errors.
 This supersedes the earlier single-column next-step notes, not the open full-harness scope.
+Published **31afae8**, Pages 40162267225 succeeded. Five live focus actions apply Open
+interior/isolation; five source links, all 24 parts and zero browser errors verified.
+Public screenshot/JSON saved with research; recovery tag pushed. Complete flight routing
+remains open, particularly the overlapping IEM middle lead and unknown mating circuits.
 
 Current October24 checkpoint: [IEM lower pair complete as an installation estimate](research/iem-lower-pair-2026-10-24/README.md).
 Four leads reviewed,22 still open. The completed upper pair, all26 endpoints, enclosure

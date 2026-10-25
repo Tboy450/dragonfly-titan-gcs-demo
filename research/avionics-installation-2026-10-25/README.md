@@ -1,5 +1,14 @@
 # Five-Family Installation Pass
 
+## Publication Receipt
+
+Build **31afae885b9b20f0866378c459dfe25175c3b308**, Pages run **40162267225** succeeded.
+Local suite: 595 passing tests; GitHub workflow tests also passed. Normal public navigation
+verified the build stamp, collapsed section, five source links, all five focus actions with
+Open interior/isolation, 24 numbered parts and zero browser errors. Evidence:
+`public-installation.png`, `public-checks.json`. Recovery tag is pushed to GitHub.
+The follow-up receipt commit does not change the deployed app.
+
 Codex (OpenAI), October 25, 2026. Owner requested a best-effort run across IEM, PSUs,
 Frontier radio, navigation electronics and battery. This closes a bounded installation
 example pass for each family, **not** complete flight wiring or all outstanding service loops.
