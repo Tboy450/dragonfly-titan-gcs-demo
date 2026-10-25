@@ -10,6 +10,14 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+Latest October25: [third-column upper pair IDs 8/9](research/iem-third-upper-2026-10-25/README.md)
+has separated service routes, attached labels, two supports and four ties [EST]. All seven
+previously reviewed routes, fittings, enclosure, floor harness and 26 endpoints stay fixed.
+609 tests pass; sampled free-span gaps about 4.5/2.4 mm. Nine reviewed, 17 open. Next two:
+third-column lower IDs 10/11. Terminal gathering overlaps and flight circuits remain open.
+Owner's visibility concern: first column was hidden by isolated subassembly view, not
+removed. New samples include Whole component / full-IEM views with every column present.
+
 Latest October25: [second-column upper/lower routes](research/iem-second-column-2026-10-25/README.md)
 complete the local installation estimate for the first two card columns. IDs 5/7 gain
 separate bends, attached labels, refitted supports and two ties each. The completed middle
@@ -1065,7 +1073,7 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [x] **IEM second-column middle route:** lead 6 separated, label attached, one support and
   two ties added. All endpoints/other geometry retained; terminal gathering overlaps remain
   open. [Real/CAD/model comparison, checks and handoff](research/iem-middle-lead-2026-10-25/README.md).
-- [ ] **Five-family routing continuation:** remaining 19 IEM
+- [ ] **Five-family routing continuation:** remaining 17 IEM
   routes and other PSU leads; identified external radio/navigation mating before new wires.
   Battery full flight-pack routing remains unverified. Support additions do not close these.
 - [ ] **Floor/perimeter routing audit:** review existing three harness passes together; remove
@@ -1092,8 +1100,11 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [x] **IEM second-column upper/lower IDs 5/7:** separated local routes, attached labels,
   refitted supports and four lacing examples; middle and first column exact. 604 tests pass.
   [Sources, samples and limits](research/iem-second-column-2026-10-25/README.md).
-- [ ] **IEM remaining 19 local leads:** next third-column upper IDs 8/9, then lower 10/11.
-  Preserve all seven reviewed routes and every endpoint; no new flight circuit assignments.
+- [x] **IEM third-column upper IDs 8/9:** two service routes, attached tags/supports/lacing,
+  separate focus and full-IEM sample; seven previous routes exact. 609 tests pass.
+  [Sources, archive and handoff](research/iem-third-upper-2026-10-25/README.md).
+- [ ] **IEM remaining 17 local leads:** next third-column lower IDs 10/11.
+  Preserve all nine reviewed routes and every endpoint; no new flight circuit assignments.
 - [ ] **Complete IEM local connector installation:** audit remaining service
   bends, lacing and support contact without moving the photo-referenced enclosure or claiming
   circuit identity. Keep main-branch/stub endpoints from the current bay register.

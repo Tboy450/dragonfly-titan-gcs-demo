@@ -6,6 +6,11 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**IEM third-column upper IDs 8/9 (Codex, October25):** [real/CAD/model comparison](iem-third-upper-2026-10-25/README.md).
+Reuses saved real NASA/APL/Ed Whitman testing photo/crop and general NASA workmanship
+pages; TFAWS2023 CAD is arrangement context only. All new installation remains EST.
+Seven reviewed routes/endpoints retained; sources/credits, rejected draft and recovery tag saved.
+
 **IEM second-column upper/lower (Codex, October25):** [real/CAD/model comparison](iem-second-column-2026-10-25/README.md).
 Same real NASA/APL/Ed Whitman testing photo/crop; saved TFAWS2023 CAD is context only.
 NASA workmanship guides relief/support principles, not flight routes or qualification.

@@ -4,6 +4,12 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October25 IEM third upper pair (Codex):** [evidence/samples](research/iem-third-upper-2026-10-25/README.md).
+Reuses real NASA/APL testing and saved NASA workmanship context; CAD is arrangement only.
+[EST] two routes, tags, supports/lacing. [CALC] preserved 26 endpoints/radii and every
+unrelated mesh, sampled gaps about 4.5/2.4 mm. Terminal overlaps remain unresolved; no
+flight topology/qualified bend claim. Nine reviewed, 17 open; 609 tests pass.
+
 **October25 second IEM column (Codex):** [sources/measurements/samples](research/iem-second-column-2026-10-25/README.md).
 Reuses real NASA/APL testing photos and saved NASA workmanship context; CAD is arrangement
 only. [EST] upper/lower bends, refitted supports, attached labels and lacing. [CALC] all

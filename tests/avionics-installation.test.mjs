@@ -11,12 +11,12 @@ const files={iem:'iem.mjs','power-units':'power-units.mjs','frontier-radio':'fro
 const fingerprint=root=>{
  const rows=[];root.updateMatrixWorld(true);
  root.traverse(o=>{if(!o.isMesh||o.userData.installationExample)return;
- if(['iem-local-lead-5','iem-local-lead-6','iem-local-lead-7'].includes(o.userData.connectionId)&&['iem-harness-cable','iem-harness-label'].includes(o.name))return;
+ if(['iem-local-lead-5','iem-local-lead-6','iem-local-lead-7','iem-local-lead-8','iem-local-lead-9'].includes(o.userData.connectionId)&&['iem-harness-cable','iem-harness-label'].includes(o.name))return;
  rows.push(JSON.stringify({name:o.name,matrix:o.matrixWorld.toArray(),positions:[...o.geometry.attributes.position.array],
  indices:o.geometry.index?[...o.geometry.index.array]:null,color:o.material.color?.getHex(),metalness:o.material.metalness,roughness:o.material.roughness}));
  });return createHash('sha256').update(rows.sort().join('\n')).digest('hex');
 };
-for(const[id,builder]of Object.entries(builders))test(id+': pre-existing meshes stay exact except separately tested first/second IEM column revisions',async()=>{
+for(const[id,builder]of Object.entries(builders))test(id+': pre-existing meshes stay exact except separately tested IEM route revisions',async()=>{
  let code=await readFile(new URL('../archive/avionics-installation-2026-10-25/'+files[id],import.meta.url),'utf8');
  code=code.replace('./vendor/three/three.module.min.js?v=dev',new URL('../dist/vendor/three/three.module.min.js?v=dev',import.meta.url).href);
  const module=await import('data:text/javascript;base64,'+Buffer.from(code).toString('base64'));
@@ -24,9 +24,9 @@ for(const[id,builder]of Object.entries(builders))test(id+': pre-existing meshes 
  assert.equal(fingerprint(after.parent),fingerprint(before.parent));
 });
 
-test('Five-family register distinguishes eleven support examples, unassigned electrical routes and mechanical tether',()=>{
+test('Five-family register distinguishes thirteen support examples, unassigned electrical routes and mechanical tether',()=>{
  const report=installationAudit();assert.equal(report.families.length,5);
- assert.deepEqual(report.families.map(f=>f.supports.length),[3,2,3,0,3]);
+ assert.deepEqual(report.families.map(f=>f.supports.length),[5,2,3,0,3]);
  assert.equal(report.families.find(f=>f.id==='nose-electronics').rows.length,0);
  assert.equal(report.families.find(f=>f.id==='nose-electronics').additions.length,24);
  assert.ok(report.families.flatMap(f=>f.rows).every(r=>r.confidence==='EST'&&!r.flightMatingConfirmed));

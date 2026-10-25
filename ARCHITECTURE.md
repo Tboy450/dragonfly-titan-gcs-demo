@@ -43,6 +43,12 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October25 third-upper continuation: only IDs 8/9, labels and twelve fitting meshes change;
+`iemThirdUpperAsset` holds fractions and a fifth non-nested inspection focus is added.
+Nine-reviewed/17-open notes replace old current counts. New baseline tests preserve every
+other mesh, including all seven completed routes. Full-component samples retain all cable
+groups; existing isolation is unchanged, not deletion. No flight/save/game/solver changes.
+
 October25 second-column continuation: `iemSecondColumnAsset` specifies upper/lower fitting
 fractions; only IDs 5/7, labels and their own fittings change. The middle route is exact.
 Five new tests preserve every unrelated mesh/endpoints, screen cable radii against curves

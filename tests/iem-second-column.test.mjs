@@ -8,7 +8,8 @@ import {pairAudit,pairIds} from '../research/iem-second-column-2026-10-25/audit.
 import {iemSecondColumnAsset as A} from '../dist/iem.mjs';
 import {iemLeadAudit} from '../research/iem-service-bends-2026-10-24/audit.mjs';
 const ids=new Set(pairIds);
-const ownChange=o=>(ids.has(o.userData.connectionId)&&['iem-harness-cable','iem-harness-label'].includes(o.name))||ids.has(o.userData.wireId);
+const changedIds=new Set([...ids,'iem-local-lead-8','iem-local-lead-9']);
+const ownChange=o=>(changedIds.has(o.userData.connectionId)&&['iem-harness-cable','iem-harness-label'].includes(o.name))||changedIds.has(o.userData.wireId);
 const fingerprint=root=>{
  const rows=[];root.updateMatrixWorld(true);root.traverse(o=>{if(!o.isMesh||ownChange(o))return;
  rows.push(JSON.stringify({name:o.name,matrix:o.matrixWorld.toArray(),positions:[...o.geometry.attributes.position.array],indices:o.geometry.index?[...o.geometry.index.array]:null,color:o.material.color?.getHex(),metalness:o.material.metalness,roughness:o.material.roughness}));});
@@ -68,8 +69,8 @@ test('Revised labels meet their own cables and both refitted supports and lacing
  }
 });
 
-test('IEM review register now records seven local routes and nineteen still open without assigning flight circuits',()=>{
- const report=iemLeadAudit();assert.equal(report.rows.length,26);assert.equal(report.rows.filter(row=>row.routingReviewed).length,7);
- assert.match(report.missing,/Remaining 19/);assert.ok(report.rows.every(row=>!row.flightMatingConfirmed));
+test('IEM review register records nine local routes and seventeen still open without assigning flight circuits',()=>{
+ const report=iemLeadAudit();assert.equal(report.rows.length,26);assert.equal(report.rows.filter(row=>row.routingReviewed).length,9);
+ assert.match(report.missing,/Remaining 17/);assert.ok(report.rows.every(row=>!row.flightMatingConfirmed));
  assert.ok(Object.isFrozen(A)&&Object.isFrozen(A.leadIndices));
 });
