@@ -15,7 +15,7 @@ import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 // connector counts, depth and the wall it is on (port, with the PSU on its left as seen from
 // inside, as photographed) are [EST]. Red handling handles are not drawn.
 export const iemAsset = Object.freeze({
-  revision: "iem-2026-10-24-upper-service-pair",
+  revision: "iem-2026-10-24-lower-service-pair",
   widthM: 0.28, heightM: 0.28, depthM: 0.22,
   // Back against the port wall (cavity edge about x -0.36), on the bay floor [EST].
   position: Object.freeze([-0.244, -0.284, -0.17]),
@@ -28,8 +28,8 @@ export const iemAsset = Object.freeze({
 const microD = { 15: 0.0238, 25: 0.0302, 37: 0.0378, 51: 0.0365 };
 
 export const iemServiceAsset = Object.freeze({
-  leadIndices: Object.freeze([0, 1]), radiusM: .0045,
-  bowDepthsM: Object.freeze([.035, .048]), supportFractions: Object.freeze([.70, .78]),
+  leadIndices: Object.freeze([0, 1, 2, 3]), radiusM: .0045,
+  bowDepthsM: Object.freeze([.035, .048, .012, .024]), supportFractions: Object.freeze([.70, .78, .675, .70]),
   confidence: "EST: local service installation, not an identified flight circuit or qualified bend",
 });
 
@@ -54,6 +54,10 @@ export function buildIem({ parent, mesh }) {
   Object.assign(servicePair.userData, { inspectionLabel: "Upper cable pair (installation estimate)",
     inspectionMinimumRadiusM: .12, flightMatingConfirmed: false });
   harness.add(servicePair);
+  const lowerServicePair = new THREE.Group(); lowerServicePair.name = "iem-lower-service-pair";
+  Object.assign(lowerServicePair.userData, { inspectionLabel: "Lower cable pair (installation estimate)",
+    inspectionMinimumRadiusM: .10, flightMatingConfirmed: false });
+  harness.add(lowerServicePair);
   const black = new THREE.MeshStandardMaterial({ color: 0x16181a, roughness: 0.6, metalness: 0.3 });
   const plate = new THREE.MeshStandardMaterial({ color: 0xc4c9cc, roughness: 0.32, metalness: 0.72 });
   const windowMat = new THREE.MeshStandardMaterial({ color: 0x0d0e10, roughness: 0.75, metalness: 0.2 });
@@ -149,7 +153,8 @@ export function buildIem({ parent, mesh }) {
   // gather at one end into a trunk (silver-wrapped, as photographed) [EST routes].
   const z0 = face - 0.024;
   plugs.forEach(([x, y, len], i) => {
-    const service = iemServiceAsset.leadIndices.includes(i), target = service ? servicePair : harness;
+    const service = iemServiceAsset.leadIndices.includes(i), lower = i === 2 || i === 3;
+    const target = lower ? lowerServicePair : service ? servicePair : harness;
     const backshell = box([0.011, len + 0.004, 0.014], [x, y, face - 0.017], wrap, target, "iem-harness-backshell");
     const label = box([0.012, 0.016, 0.003], [x, y - len / 2 - 0.012, z0 + 0.004], tag, target, "iem-harness-label");
     backshell.userData.connectionId = label.userData.connectionId = `iem-local-lead-${i + 1}`;
@@ -158,7 +163,13 @@ export function buildIem({ parent, mesh }) {
     const start = [x, y - len / 2, z0 + 0.006];
     const depth = iemServiceAsset.bowDepthsM[i];
     const side = i === 1 ? -.02 : .006;
-    const points = service ? [start, [x + (i === 1 ? -.014 : 0), start[1] - .014, z0 - .012],
+    const lowerSide = i === 2 ? .022 : -.020;
+    const points = lower ? [start, [x + (i === 2 ? .016 : -.012), start[1] - .012, z0 - .006],
+      [x + lowerSide, i === 2 ? .060 : .020, z0 - depth],
+      [x + lowerSide, i === 2 ? .052 : .014, z0 - depth],
+      [(x + run) / 2, i === 2 ? .050 : .014, z0 - depth],
+      [run + .025, i === 2 ? .040 : .012, z0 - depth - (i === 3 ? .022 : 0)], end] :
+      service ? [start, [x + (i === 1 ? -.014 : 0), start[1] - .014, z0 - .012],
       [x + side, start[1] - .05, z0 - depth], [x + side, .04, z0 - depth],
       [x + side, .035, z0 - depth], [(x + run) / 2, .035, z0 - depth],
       [run + .025, .028, z0 - depth], end] :
@@ -168,9 +179,12 @@ export function buildIem({ parent, mesh }) {
       routeConfidence: "EST", flightMatingConfirmed: false });
     if (!service) return;
     const path = cable.geometry.parameters.path;
-    label.position.copy(path.getPointAt(.12));
-    label.position.x -= .009;
-    label.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), path.getTangentAt(.12));
+    const labelFraction = lower ? .24 : .12;
+    cable.userData.labelFraction = labelFraction;
+    label.position.copy(path.getPointAt(labelFraction));
+    if (lower) label.position.z -= .005;
+    else label.position.x -= .009;
+    label.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), path.getTangentAt(labelFraction));
     for (const fraction of [.25, .52]) {
       const tie = mesh(new THREE.TorusGeometry(.0056, .00065, 6, 20), tag, path.getPointAt(fraction).toArray(), target);
       tie.name = "iem-service-lacing";
@@ -187,5 +201,5 @@ export function buildIem({ parent, mesh }) {
     clip.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), path.getTangentAt(iemServiceAsset.supportFractions[i]));
   });
   for (const k of [0, 1, 2]) box([0.016, 0.014, 0.012], [-PW / 2 - 0.026, 0.01, z0 - 0.024 + k * 0.007], kapton, harness, "iem-harness-tie");
-  return { assembly, chassis, mounts, connectors, harness, servicePair };
+  return { assembly, chassis, mounts, connectors, harness, servicePair, lowerServicePair };
 }

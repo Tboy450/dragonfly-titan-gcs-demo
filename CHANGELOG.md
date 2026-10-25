@@ -39,6 +39,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-24: Refine IEM lower pair without moving the completed upper installation
+- **Signed:** Codex (OpenAI).
+- **Commit:** Refine IEM lower service pair and preserve upper installation.
+- **What:** two existing lower leads gain height-separated estimated bends, four ties and
+  two supports, attached labels and a third independent focus. Accuracy text now states
+  four reviewed leads/22 legacy routes. No new bus or flight pinout inferred.
+- **Preservation:** all26 endpoints/radii, complete upper-pair geometry/materials/poses,
+  enclosure, other22 curves and main harness unchanged; no game or solver changes.
+  Exact baseline/archive pictures and rejected draft saved, tag on7a50d2e.
+- **Checks:**583 tests pass. Actual geometry caught draft label/support crowding and
+  connector overlap; only new geometry refitted, existing contact allowances not widened.
+  Six Internal/Thermal focus cases, independent masks, Open interior/Restore,24 parts,
+  original switch/Pilot and375px mobile client/scroll widths pass with zero browser errors.
+  Real/CAD/model comparison and26-row audit saved. Shared audit writes only on direct
+  invocation and derives remaining count; previous upper snapshot remains exact.
+- **Next:** second card column indices4/5/6. Remaining22 leads and full installation open.
+
 ### 2026-10-24: Confirm IEM upper-pair publication
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record live IEM upper-pair acceptance [skip ci].

@@ -10,6 +10,11 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
+Latest installation: [IEM lower connector pair](research/iem-lower-pair-2026-10-24/README.md).
+Four leads now have reviewed installation estimates;22 remain open. Lower bends, attached
+labels, lacing/supports and a third focus are added without changing the upper pair,
+enclosure, floor wiring or any of26 endpoints.583 tests pass; source/CGI/model samples saved.
+
 Latest published installation: [IEM upper service pair](research/iem-service-bends-2026-10-24/README.md), build19b379f.
 Two existing leads gain estimated slack, lacing/supports and separate focus access; all26
 endpoints, enclosure, main harness and other24 paths remain unchanged. Real/CAD/before/after

@@ -43,6 +43,13 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October24 lower-IEM continuation: existing indices2/3 now have a separate focus and
+height-separated service returns. Three new tests preserve the complete upper pair and
+every unrelated mesh, check actual label contact and support/connector clearance.
+Shared IEM tests check four reviewed wires;22 legacy curves remain unreviewed.
+The shared research audit is now import-safe and derives remaining counts dynamically;
+the lower package saves its own snapshot without overwriting the upper pass's history.
+
 October24 IEM installation: `iem.mjs` refines only existing upper-pair indices0/1;
 all26 endpoints and unrelated geometry are manifest-tested against the exact archive.
 Independent connector/pair targets reuse existing visibility controls. Research-only

@@ -10,6 +10,13 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+Current October24 checkpoint: [IEM lower pair complete as an installation estimate](research/iem-lower-pair-2026-10-24/README.md).
+Four leads reviewed,22 still open. The completed upper pair, all26 endpoints, enclosure
+and main harness are unchanged. Third focus, attached labels and connector-clear supports;
+583 tests pass, desktop/mobile and six focus cases verified, zero browser errors.
+Next: second card column indices4/5/6 (three existing leads). Earlier next-step notes below
+are historical; do not repeat the now-finished first-column lower pair.
+
 Latest October24 installation: [IEM upper pair](research/iem-service-bends-2026-10-24/README.md).
 First two existing leads gain estimated slack, lacing/supports and two focus targets.
 All26 endpoints, enclosure, main harness and other24 curves preserved exactly.580 tests
@@ -1032,8 +1039,11 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [x] **IEM first upper pair (Codex, October24):** estimated service bows/lacing/supports,
   all26 endpoints retained; two focuses, independent masks, archive and real/CAD/model
   comparison. [Scoped results and limits](research/iem-service-bends-2026-10-24/README.md).
-- [ ] **IEM remaining24 local leads:** next first-column lower pair indices2/3, then other
-  groups. Preserve completed upper pair and all endpoints; no new flight circuit assignments.
+- [x] **IEM first lower pair (Codex, October24):** indices2/3 gain height-separated bends,
+  four ties/two supports, attached labels and a third focus. Upper pair and all26 endpoints
+  exact;583 tests pass. [Sources, sample and handoff](research/iem-lower-pair-2026-10-24/README.md).
+- [ ] **IEM remaining22 local leads:** next second-column indices4/5/6, then other groups.
+  Preserve all four completed leads and all endpoints; no new flight circuit assignments.
 - [ ] **Complete IEM local connector installation:** audit remaining service
   bends, lacing and support contact without moving the photo-referenced enclosure or claiming
   circuit identity. Keep main-branch/stub endpoints from the current bay register.

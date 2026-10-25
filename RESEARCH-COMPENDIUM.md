@@ -4,6 +4,12 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October24 lower IEM pair (Codex):** [record and comparison](research/iem-lower-pair-2026-10-24/README.md).
+Same real NASA/APL hardware photos; no new flight topology inferred. [EST] two lower bows,
+labels/lacing/supports; [CALC] unchanged26 endpoints, exact preserved upper assembly and22
+legacy curves, all reviewed pair clearances and actual support/connector fit.583 tests pass.
+Four leads reviewed; next second card column indices4/5/6. Full IEM/network remains open.
+
 **October24 IEM upper service pair (Codex):** [sources, audit and comparison](research/iem-service-bends-2026-10-24/README.md).
 [PUB] NASA/APL real IEM/PSU testing and general NASA harness workmanship principles;
 [EST] two cable bows, lacing and support installation, not verified flight routes/radii.

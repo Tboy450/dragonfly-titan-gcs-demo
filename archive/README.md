@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [iem-lower-pair-2026-10-24](iem-lower-pair-2026-10-24/README.md) | Exact upper-pair baseline builder/UI/test/audit, whole/lower before pictures; rejected low-support draft and sample | 2026-10-24 | `archive/iem-lower-pair-2026-10-24` on7a50d2e |
 | [iem-service-bends-2026-10-24](iem-service-bends-2026-10-24/README.md) | Exact prior IEM/UI/test, whole/pair before pictures; rejected label/crossing draft code and picture | 2026-10-24 | `archive/iem-service-bends-2026-10-24` on d3fe35d |
 | [sampling-coverage-2026-10-24](sampling-coverage-2026-10-24/README.md) | Exact prior index/style/layer panel, baseline live screenshot and failed original-demo check before metadata-guard correction; no geometry change | 2026-10-24 | `archive/sampling-coverage-2026-10-24` on08e0a6d |
 | [carousel-warm-drives-2026-10-24](carousel-warm-drives-2026-10-24/README.md) | Simplified underside drives, exact builder/UI/HTML/test/register, before pictures; rejected over-radius support draft | 2026-10-24 | `archive/carousel-warm-drives-2026-10-24` on e4ffe5d |

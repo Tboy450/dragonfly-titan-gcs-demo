@@ -1,0 +1,23 @@
+[
+  {
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "490551",
+    "version": "current",
+    "view": "pair"
+  },
+  {
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "273503",
+    "version": "before",
+    "view": "whole"
+  },
+  {
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "273685",
+    "version": "draft",
+    "view": "whole"
+  }
+]

@@ -6,6 +6,11 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**IEM lower pair (Codex, October24):** [real/CAD/before/after and limits](iem-lower-pair-2026-10-24/README.md).
+Same saved NASA/APL actual testing/engineering-model photographs and NASA workmanship
+pages; TFAWS2023 CAD is arrangement context only. Two lower routes/supports remain estimated;
+upper geometry and all26 endpoints retained. No new flight circuit or hidden hardware.
+
 **IEM upper service pair (Codex, October24):** [comparison, register and limits](iem-service-bends-2026-10-24/README.md).
 Reuses saved real NASA/APL IEM integration and NASA/APL/Ed Whitman testing photographs.
 TFAWS2023 slide3 is CAD arrangement only; NASA workmanship pp29-31 are general principles,
