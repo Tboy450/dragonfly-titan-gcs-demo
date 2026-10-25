@@ -76,6 +76,14 @@ the conversion/selection scripts are preserved without duplicating source images
 
 ## Handoff
 
+Published `00d32beda3df9f203359bbdfb5a029b75976d1fc`; Pages run `40241403099`
+succeeded. Live build, both added focuses, all nine focus choices, current
+21-reviewed/5-open and legacy-placeholder notes, touch tooltip and24 parts verified.
+Public phone client/scroll width375/375px; zero browser errors. `public-checks.json`,
+`public-full-iem.png` and `public-phone.png` preserve acceptance. Both recovery tags
+pushed; temporary preview/deployment watcher stopped. Only a documentation receipt
+follows this deployed application commit.
+
 Next: column seven **IDs 22/23**, then column eight **IDs 24/25/26**. Preserve all
 21 reviewed routes/fittings, 26 endpoints/radii and unchanged global checks.
 Use the recorded legacy contacts to guide their clearance work; do not move

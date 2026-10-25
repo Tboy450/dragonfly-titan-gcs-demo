@@ -10,12 +10,13 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-Current local update: [IEM columns five/six](research/iem-fifth-sixth-columns-2026-10-25/README.md)
+Published build **00d32be**: [IEM columns five/six](research/iem-fifth-sixth-columns-2026-10-25/README.md)
 and [two-finger inspection pan](research/inspection-touch-pan-2026-10-25/README.md).
 Seven estimated routes/tags/supports and fourteen ties; all prior routes and endpoints
 retained.21 reviewed,5 open.635 tests pass; desktop/phone checks retain24 parts.
 Git cleanup remains paused at the unverified backup; no deletion or game-data changes.
-Publication receipt follows after the live build is verified.
+Pages40241403099 succeeded; live build/new focuses/disclosures and phone375/375px
+verified with24 parts and zero browser errors. Public samples/JSON and recovery tags saved.
 
 Previous published build **a68e08a**: [right-drag inspection pan](research/inspection-pan-2026-10-25/README.md).
 With Rotate selected: left drag rotates, right drag pans, wheel zooms. Shift+arrows

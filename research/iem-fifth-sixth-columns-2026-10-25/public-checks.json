@@ -1,0 +1,57 @@
+{
+  "build": "Build 00d32be · 2026-10-25",
+  "focuses": [
+    {
+      "id": "",
+      "text": "All subassemblies"
+    },
+    {
+      "id": "iem-connectors",
+      "text": "Connector face (layout estimate)"
+    },
+    {
+      "id": "iem-upper-service-pair",
+      "text": "Upper cable pair (installation estimate)"
+    },
+    {
+      "id": "iem-lower-service-pair",
+      "text": "Lower cable pair (installation estimate)"
+    },
+    {
+      "id": "iem-second-column",
+      "text": "Second-column service routing (estimate)"
+    },
+    {
+      "id": "iem-third-upper-pair",
+      "text": "Third-column upper pair (estimate)"
+    },
+    {
+      "id": "iem-third-lower-pair",
+      "text": "Third-column lower pair (estimate)"
+    },
+    {
+      "id": "iem-fourth-column",
+      "text": "Fourth-column service routing (estimate)"
+    },
+    {
+      "id": "iem-fifth-column",
+      "text": "Fifth-column service routing (estimate)"
+    },
+    {
+      "id": "iem-sixth-column",
+      "text": "Sixth-column service routing (estimate)"
+    }
+  ],
+  "parts": 24,
+  "placeholderDisclosure": true,
+  "scrollWidth": 1265,
+  "tooltip": "Left-drag or one finger to rotate; right-drag, two-finger slide or Shift+arrows to pan; mouse wheel to zoom; Ctrl+wheel zooms the page",
+  "updatedNotes": true,
+  "width": 1265,
+  "phone": {
+    "parts": 24,
+    "scrollWidth": 375,
+    "width": 375
+  },
+  "errors": []
+}

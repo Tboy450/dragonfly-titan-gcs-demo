@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Verify IEM five/six and touch-pan publication
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record IEM five-six publication receipt [skip ci].
+- **Published:**00d32beda3df9f203359bbdfb5a029b75976d1fc;
+  Pages40241403099 succeeded, including GitHub's checks.
+- **Checks:**635 local tests; live build/touch tooltip, nine focus options and
+  both new targets, current disclosures,24 parts, phone375/375px and zero errors.
+  Public desktop/phone samples and JSON saved. Both recovery tags pushed;
+  preview/deployment watcher stopped. No automatic Git cleanup or game-data edits.
+
 ### 2026-10-25: IEM fifth/sixth columns and two-finger inspection pan
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine IEM columns five and six and add touch inspection pan.

@@ -18,4 +18,6 @@ The previous handler/HTML and shared prior screenshot are preserved in the
 matching archive folder. Combined regression:635 tests pass. Phone viewport390x844
 renders375px client/scroll width with24 part entries and the updated tooltip;
 `phone.png` and `browser-checks.json` save the layout acceptance. The IEM batch
-adds its own desktop/phone checks. Publication receipt follows live verification.
+adds its own desktop/phone checks. Published00d32be, Pages40241403099 succeeded;
+live touch tooltip/new hardware checks pass without browser errors. Physical
+multitouch remains a device check, not claimed from the browser automation.

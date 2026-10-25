@@ -21,7 +21,9 @@ October25 current checkpoint: [IEM columns five/six](research/iem-fifth-sixth-co
 - [x] Two-finger centroid pan when Rotate is selected; one-finger orbit/native
   page scroll off retained. Actual UI-event tests, not a claimed physical-device test.
 - [ ] Next: seventh column IDs22/23, then eighth IDs24/25/26.21 reviewed,5 remain.
-Publication pending final receipt. Git cleanup remains paused: backup is partial,
+Published **00d32be**, Pages40241403099 succeeded. Live build/new targets/disclosures,
+24 parts and phone375/375px verified without errors; public samples/JSON and recovery
+tags saved. Preview stopped. Git cleanup remains paused: backup is partial,
 OneDrive could not supply some files; no deletion performed. Command-local automatic
 cleanup suppression only, not a permanent repository/global setting. Do not touch
 Assets Lab/Swarmfall data. Earlier dated next-step entries below are historical.
