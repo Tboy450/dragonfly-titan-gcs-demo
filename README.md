@@ -10,6 +10,12 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
+October25: [five-family installation pass](research/avionics-installation-2026-10-25/README.md).
+IEM/PSUs/radio/battery gain10 estimated supports and6 lacing examples; navigation gains
+retention details without invented wiring. Collapsed status panel links all five families.
+All prior geometry and62 curves unchanged;595 tests pass. IEM middle support and complete
+flight routing remain open. Real/CAD/model samples, register and recovery archive saved.
+
 Latest published installation: [IEM lower connector pair](research/iem-lower-pair-2026-10-24/README.md), build38f297e.
 Four leads now have reviewed installation estimates;22 remain open. Lower bends, attached
 labels, lacing/supports and a third focus are added without changing the upper pair,

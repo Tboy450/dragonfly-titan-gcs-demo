@@ -1,4 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js?v=dev";
+import {addCableSupport} from "./cable-installation.mjs?v=dev";
 
 // Part 13: APL Frontier software-defined radio, enclosure level. The look follows the APL photo
 // on NASA's Dragonfly pages (black anodized stack of four slices, labeled connectors J11-J32,
@@ -17,7 +18,7 @@ const heightM = 4 * inch, lengthM = 6 * inch;
 const slicesM = Object.freeze([0.025, 0.029, 0.022, 0.0256]);
 const widthM = Math.round(slicesM.reduce((sum, t) => sum + t, 0) * 1e4) / 1e4;
 export const frontierRadioAsset = Object.freeze({
-  revision: "frontier-radio-2026-10-13",
+  revision: "frontier-radio-2026-10-25-installation",
   heightM, lengthM, widthM, slicesM,
   publishedMassKg: 2.1,
   publishedVolumeCm3: 2050,
@@ -44,6 +45,8 @@ export function buildFrontierRadio({ parent, mesh }) {
   const mounts = group("frontier-radio-mounts", "mounts");
   const connectors = group("frontier-radio-connectors", "interfaces");
   const lines = group("frontier-radio-rf-lines", "harnesses");
+  connectors.userData.inspectionLabel="Connector face (photo-referenced estimate)";
+  lines.userData.inspectionLabel="Local RF jumpers (installation estimate)";
   const anodized = new THREE.MeshStandardMaterial({ color: 0x2b3033, roughness: 0.52, metalness: 0.35 });
   const seam = new THREE.MeshStandardMaterial({ color: 0x0e1012, roughness: 0.8, metalness: 0.2 });
   const steel = new THREE.MeshStandardMaterial({ color: 0xb9bfc3, roughness: 0.32, metalness: 0.75 });
@@ -136,8 +139,14 @@ export function buildFrontierRadio({ parent, mesh }) {
   }
   const lift = (p, h) => [p[0], topY + h, p[1]];
   const route = (a, b, h) => [lift(a, 0.005), lift(a, h), lift([(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], h + 0.004), lift(b, h), lift(b, 0.005)];
-  tube(route(bulkheads[0], bulkheads[1], 0.014), 0.0016, steel, lines, "frontier-radio-semirigid-coax");
-  tube(route(bulkheads[2], bulkheads[3], 0.011), 0.0016, steel, lines, "frontier-radio-semirigid-coax");
-  tube(route(bulkheads[4], bulkheads[5], 0.016), 0.0042, foil, lines, "frontier-radio-wrapped-coax");
+  const jumpers=[
+    tube(route(bulkheads[0], bulkheads[1], 0.014), 0.0016, steel, lines, "frontier-radio-semirigid-coax"),
+    tube(route(bulkheads[2], bulkheads[3], 0.011), 0.0016, steel, lines, "frontier-radio-semirigid-coax"),
+    tube(route(bulkheads[4], bulkheads[5], 0.016), 0.0042, foil, lines, "frontier-radio-wrapped-coax")];
+  jumpers.forEach((wire,i)=>{
+    wire.userData.connectionId=`radio-local-rf-${i+1}`;
+    const fraction=.5,p=wire.geometry.parameters.path.getPointAt(fraction);
+    addCableSupport({wire,fraction,foot:[p.x,H,p.z],normal:[0,1,0],mounts,id:`radio-rf-${i+1}`});
+  });
   return { assembly, slices, mounts, connectors, lines };
 }

@@ -6,7 +6,9 @@ import { partMarkers } from "./flight-view.mjs?v=dev";
 import { samplingSequence } from "../science.mjs?v=dev";
 import { updateInspectorUI } from "./vehicle-inspector.mjs?v=dev";
 import { focusInspector, selectInspectionSubassembly } from "../vehicle-inspector.mjs?v=dev";
-import { renderSamplingConnections } from "./sampling-connections.mjs?v=dev";
+import { renderSamplingConnections, renderConnectionCoverage } from "./sampling-connections.mjs?v=dev";
+import {installationFamilies,installationSources,installationLimits} from "../avionics-installation.mjs?v=dev";
+import {applyInspectionAccessPreset} from "../inspection-visibility.mjs?v=dev";
 
 renderSamplingConnections($("sampling-connections-body"), row => {
   if (!chaseRenderer?.subsystems[row.inspect]) return;
@@ -14,6 +16,16 @@ renderSamplingConnections($("sampling-connections-body"), row => {
   if (row.subassembly) selectInspectionSubassembly(state, chaseRenderer.subsystems[row.inspect], row.subassembly);
   updateInspectorUI();
 });
+renderConnectionCoverage($("avionics-installation-body"),row=>{
+  if(!chaseRenderer?.subsystems[row.inspect])return;
+  applyInspectionAccessPreset(state.inspector,"open");
+  focusInspector(state,row.inspect);
+  state.inspector.isolate=true;
+  if(row.subassembly)selectInspectionSubassembly(state,chaseRenderer.subsystems[row.inspect],row.subassembly);
+  if(Number.isFinite(row.azimuth))state.inspector.azimuth=row.azimuth;
+  if(Number.isFinite(row.elevation))state.inspector.elevation=row.elevation;
+  updateInspectorUI();
+},{rows:installationFamilies,sources:installationSources,limits:installationLimits});
 
 const sources = {
   atticRegister: ["Attic line register: modeled media, endpoints and unresolved networks", "https://github.com/Tboy450/dragonfly-titan-gcs-demo/blob/main/research/attic-connection-media-2026-10-23/ENDPOINTS.md"],
@@ -136,6 +148,7 @@ export function updateLayerPanel() {
   $("thermal-legend").hidden = !layered;
   const mock = layered && state.vehicleModel === "original";
   $("sampling-connections").hidden = !layered || mock || !chaseRenderer;
+  $("avionics-installation").hidden = !layered || mock || !chaseRenderer;
   $("part-list").hidden = !layered;
   $("mock-banner").hidden = !mock;
   $("layer-note").hidden = !layered || mock;
@@ -196,7 +209,8 @@ export function updateLayerPanel() {
     $("part-temperature").textContent = zone ? `${zone.c.toFixed(1)} C - ${zone.source}.` : "No temperature available.";
     $("part-placement").textContent = `Placement: ${selected.source}.`;
     const info = selected.mock ? null : componentInfo[selected.name];
-    $("part-role").textContent = [info?.[0], connectionNotes[selected.name]].filter(Boolean).join(" ");
+    const installation=installationFamilies.find(row=>row.id===selected.name);
+    $("part-role").textContent = [info?.[0], connectionNotes[selected.name],installation?.role,installation?.modeled].filter(Boolean).join(" ");
     $("part-role").hidden = !info;
     const reading = selected.mock ? "" : liveComponentReading(selected.name);
     $("part-live").textContent = reading;

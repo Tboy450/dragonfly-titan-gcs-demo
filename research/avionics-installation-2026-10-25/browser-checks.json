@@ -1,0 +1,200 @@
+[
+  {
+    "collapsed": true,
+    "parts": 24,
+    "rows": 5
+  },
+  {
+    "isolated": true,
+    "part": "iem",
+    "parts": 24,
+    "preset": "open",
+    "target": "iem-second-column"
+  },
+  {
+    "isolated": true,
+    "part": "power-units",
+    "parts": 24,
+    "preset": "open",
+    "target": "psu-1"
+  },
+  {
+    "isolated": true,
+    "part": "frontier-radio",
+    "parts": 24,
+    "preset": "open",
+    "target": "frontier-radio-rf-lines"
+  },
+  {
+    "isolated": true,
+    "part": "nose-electronics",
+    "parts": 24,
+    "preset": "open",
+    "target": "imu-a"
+  },
+  {
+    "isolated": true,
+    "part": "battery",
+    "parts": 24,
+    "preset": "open",
+    "target": "battery-external-leads"
+  },
+  {
+    "isolated": true,
+    "part": "iem",
+    "parts": 24,
+    "preset": "open",
+    "target": "iem-second-column"
+  },
+  {
+    "isolated": true,
+    "part": "power-units",
+    "parts": 24,
+    "preset": "open",
+    "target": "psu-1"
+  },
+  {
+    "isolated": true,
+    "part": "frontier-radio",
+    "parts": 24,
+    "preset": "open",
+    "target": "frontier-radio-rf-lines"
+  },
+  {
+    "isolated": true,
+    "part": "nose-electronics",
+    "parts": 24,
+    "preset": "open",
+    "target": "imu-a"
+  },
+  {
+    "isolated": true,
+    "part": "battery",
+    "parts": 24,
+    "preset": "open",
+    "target": "battery-external-leads"
+  },
+  {
+    "client": 375,
+    "isolated": true,
+    "mobile": true,
+    "part": "iem",
+    "preset": "open",
+    "scroll": 375,
+    "target": "iem-second-column"
+  },
+  {
+    "client": 375,
+    "isolated": true,
+    "mobile": true,
+    "part": "power-units",
+    "preset": "open",
+    "scroll": 375,
+    "target": "psu-1"
+  },
+  {
+    "client": 375,
+    "isolated": true,
+    "mobile": true,
+    "part": "frontier-radio",
+    "preset": "open",
+    "scroll": 375,
+    "target": "frontier-radio-rf-lines"
+  },
+  {
+    "client": 375,
+    "isolated": true,
+    "mobile": true,
+    "part": "nose-electronics",
+    "preset": "open",
+    "scroll": 375,
+    "target": "imu-a"
+  },
+  {
+    "client": 375,
+    "isolated": true,
+    "mobile": true,
+    "part": "battery",
+    "preset": "open",
+    "scroll": 375,
+    "target": "battery-external-leads"
+  },
+  [
+    {
+      "checked": true,
+      "id": "inspection-part-equipment-casings"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-equipment-covers"
+    },
+    {
+      "checked": false,
+      "id": "inspection-part-mounts"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-interfaces"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-harnesses"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-plumbing"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-unclassified-lines"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-insulation"
+    }
+  ],
+  [
+    {
+      "checked": true,
+      "id": "inspection-part-equipment-casings"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-equipment-covers"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-mounts"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-interfaces"
+    },
+    {
+      "checked": false,
+      "id": "inspection-part-harnesses"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-plumbing"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-unclassified-lines"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-insulation"
+    }
+  ],
+  {
+    "originalStatusHidden": true
+  },
+  {
+    "exteriorStatusHidden": true
+  },
+  {
+    "pilot": "true",
+    "errors": []
+  }
+]

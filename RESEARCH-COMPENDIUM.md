@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October25 five-family installation (Codex):** [sources/register/samples](research/avionics-installation-2026-10-25/README.md).
+Real NASA/APL IEM/PSU/Frontier, Honeywell family and APL battery thermal-test photographs
+inform appearance; CAD/patent pages remain dimensional/architecture context only.
+[EST]10 supports,6 lacing examples,24 navigation retention pieces. [CALC] unchanged
+original meshes and62 curves, fitting contact/clearance. No flight circuit/qualification
+claim. Middle IEM clamp omitted after failed fit screening; navigation stays capped.
+All five initial packages implemented, full flight installation still open.595 tests pass.
+
 **October24 lower IEM pair (Codex):** [record and comparison](research/iem-lower-pair-2026-10-24/README.md).
 Same real NASA/APL hardware photos; no new flight topology inferred. [EST] two lower bows,
 labels/lacing/supports; [CALC] unchanged26 endpoints, exact preserved upper assembly and22

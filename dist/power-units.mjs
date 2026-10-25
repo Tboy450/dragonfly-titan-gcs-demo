@@ -1,4 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js?v=dev";
+import {addCableSupport,addCableLacing} from "./cable-installation.mjs?v=dev";
 
 // Part 11: the two Power Switching Units (PSUs), which control the flow of power to Dragonfly's
 // instruments and systems. NASA reports "the IEM and both PSUs" passed their first power checks
@@ -17,7 +18,7 @@ import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 // the IEM's left as seen from inside; PSU 1 is drawn there on the port wall [EST]. Where PSU 2
 // sits is not shown; it is drawn on the starboard wall [EST]. Red handling handles not drawn.
 export const powerUnitsAsset = Object.freeze({
-  revision: "power-units-2026-10-13b",
+  revision: "power-units-2026-10-25-installation",
   unitCount: 2,
   widthM: 0.20, heightM: 0.24, depthM: 0.19,
   positions: Object.freeze([Object.freeze([-0.264, -0.284, 0.16]), Object.freeze([0.264, -0.284, -0.15])]),
@@ -77,6 +78,7 @@ export function buildPowerUnits({ parent, mesh }) {
   const units = positions.map((position, n) => {
     const unit = new THREE.Group();
     unit.name = `psu-${n + 1}`;
+    unit.userData.inspectionLabel=`PSU ${n+1} (installation estimate)`;
     unit.position.fromArray(position);
     unit.rotation.y = yaws[n];
     assembly.add(unit);
@@ -134,8 +136,14 @@ export function buildPowerUnits({ parent, mesh }) {
     plugs.forEach(([x, y, len, thick], i) => {
       box([thick, len + 0.006, 0.014], [x, y, face - 0.018], wrap, harness, "psu-harness-backshell");
       const run = toward * (W / 2 + 0.02 + (i % 4) * 0.005);
-      tube([[x, y - len / 2, z0 + 0.004], [x, y - len / 2 - 0.02, z0 - 0.006], [x, 0.018, z0 - 0.016], [(x + run) / 2, 0.011, z0 - 0.022], [run, 0.011, z0 - 0.024 + (i % 3) * 0.004]],
+      const cable=tube([[x, y - len / 2, z0 + 0.004], [x, y - len / 2 - 0.02, z0 - 0.006], [x, 0.018, z0 - 0.016], [(x + run) / 2, 0.011, z0 - 0.022], [run, 0.011, z0 - 0.024 + (i % 3) * 0.004]],
         0.0045, wrap, harness, "psu-harness-cable");
+      cable.userData.connectionId=`psu-${n+1}-lead-${i+1}`;
+      if(i===0){
+        const fraction=.07,p=cable.geometry.parameters.path.getPointAt(fraction);
+        addCableSupport({wire:cable,fraction,foot:[p.x-.014,p.y,face-.003],normal:[0,0,-1],mounts,id:`psu-${n+1}`});
+        addCableLacing({wire:cable,fraction:.30,parent:harness,id:`psu-${n+1}`});
+      }
     });
     for (const k of [0, 1]) box([0.012, 0.014, 0.012], [toward * (W / 2 + 0.028), 0.01, z0 - 0.022 + k * 0.008], kapton, harness, "psu-harness-tie");
     return { unit, casing, mounts, connectors, harness };

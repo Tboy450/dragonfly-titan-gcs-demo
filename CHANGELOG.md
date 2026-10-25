@@ -39,6 +39,26 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Add source-limited installation examples across all five avionics families
+- **Signed:** Codex (OpenAI).
+- **Commit:** Add five-family avionics installation supports and coverage.
+- **What:**10 cushioned supports,6 lacing examples and24 navigation retention pieces.
+  IEM second-column focus, PSU1/2 focuses, radio RF/connector and battery lead/connector
+  focuses; new collapsed status section with five source/inspection links.
+- **Limits:** all fittings estimated. Navigation ports stay capped; no invented external
+  radio circuit or hidden hardware. Middle IEM support omitted after clearance screening.
+  All original meshes/materials/poses and62 curves exact; no game, main harness or solver edits.
+- **Checks:**595 tests pass. New contact/clearance tests caught crowded IEM and PSU drafts
+  and navigation head/rib contact. Only fittings changed; no old clearance tolerances widened.
+  Battery's historical preservation test now compares original mesh sets independent of
+  regrouping, with additions covered by new tests. Five desktop/mobile focus actions and
+  ten Internal/Thermal cases, reversible masks,24 parts, original/Exterior hide and Pilot
+  return pass;375px mobile client/scroll, zero browser errors.
+- **Recovery/evidence:** tag on b83d9eb, exact code/before views/drafts saved. Five real/
+  CAD/model sheets, macros,62-row register and browser evidence in research.
+- **Next:** resolve the IEM middle lead's legacy route, remaining IEM/PSU routing groups,
+  and actual radio/navigation flight interfaces. Initial five-family pass is not full wiring.
+
 ### 2026-10-24: Confirm lower-IEM publication and handoff
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record live lower-IEM acceptance [skip ci].

@@ -126,8 +126,10 @@ test("Battery and the part21 snapshot preserved during part20 match its pre-pass
   for (const [name, builder] of [["battery", buildBattery]]) {
     const parent = new T.Group(); builder({ parent, mesh }); parent.updateMatrixWorld(true);
     const actual = [];
-    parent.traverse(o => { if (o.isMesh) actual.push({ name: o.name, matrix: o.matrixWorld.toArray(), positions: Array.from(o.geometry.attributes.position.array) }); });
-    assert.equal(JSON.stringify(actual), JSON.stringify(prior[name]), name);
+    // Later installation fittings are tested separately; regrouping must not alter old meshes.
+    parent.traverse(o => { if (o.isMesh&&!o.userData.installationExample) actual.push({ name: o.name, matrix: o.matrixWorld.toArray(), positions: Array.from(o.geometry.attributes.position.array) }); });
+    const sorted=rows=>rows.map(row=>JSON.stringify(row)).sort();
+    assert.deepEqual(sorted(actual),sorted(prior[name]),name);
   }
   // Part21 now has its own rebuild. Its pre-rebuild archive proves that part20
   // preserved Claude's annotation; comparing today's new model would be invalid.

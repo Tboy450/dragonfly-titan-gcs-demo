@@ -43,6 +43,14 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October25 five-family installation: `cable-installation.mjs` creates tagged EST fittings
+at explicit local surface points on unchanged wire curves. Navigation retention is separate
+from its unchanged MIMU source block. New tests fingerprint every original mesh/material/pose
+and check fitting contacts/clearances. `avionics-installation.mjs` holds immutable status/
+limits/links; the existing coverage renderer now accepts supplied records without changing
+the sampling section's API. New status section stays collapsed and hides for Exterior/mock.
+Full networks remain unresolved; see the current research/handoff. No simulation/game edits.
+
 October24 lower-IEM continuation: existing indices2/3 now have a separate focus and
 height-separated service returns. Three new tests preserve the complete upper pair and
 every unrelated mesh, check actual label contact and support/connector clearance.

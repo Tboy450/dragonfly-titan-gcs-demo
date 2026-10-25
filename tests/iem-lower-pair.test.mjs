@@ -9,7 +9,7 @@ const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);pare
 const fixture=builder=>{const parent=new T.Group();const result=builder({parent,mesh});parent.updateMatrixWorld(true);return{parent,...result};};
 const newIds=new Set(['iem-local-lead-3','iem-local-lead-4']);
 const manifest=root=>{const rows=[];root.updateMatrixWorld(true);root.traverse(o=>{
- if(!o.isMesh||newIds.has(o.userData.connectionId))return;
+ if(!o.isMesh||newIds.has(o.userData.connectionId)||o.userData.installationExample)return;
  rows.push(JSON.stringify({name:o.name,id:o.userData.connectionId,matrix:o.matrixWorld.toArray(),
  vertices:[...o.geometry.attributes.position.array],indices:o.geometry.index?[...o.geometry.index.array]:null,
  color:o.material.color?.getHex(),metalness:o.material.metalness,roughness:o.material.roughness}));
@@ -31,7 +31,7 @@ test('Lower IEM pass preserves the complete upper pair and every unrelated mesh/
 
 test('Lower pair is a third independent focus with four ties and reversible wire/mount masks',()=>{
  const{parent,harness,mounts,lowerServicePair}=fixture(buildIem);parent.name='iem';
- assert.deepEqual(inspectionSubassemblies(parent).map(o=>o.name),['iem-connectors','iem-upper-service-pair','iem-lower-service-pair']);
+ assert.deepEqual(inspectionSubassemblies(parent).map(o=>o.name),['iem-connectors','iem-upper-service-pair','iem-lower-service-pair','iem-second-column']);
  assert.equal(lowerServicePair.getObjectsByProperty('name','iem-service-lacing').length,4);
  const state={inspector:{focusPart:'iem',followSampling:false}};
  selectInspectionSubassembly(state,parent,'iem-lower-service-pair');

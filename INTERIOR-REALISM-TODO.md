@@ -10,6 +10,15 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+Current October25 checkpoint: owner requested all five avionics installation families.
+[Five-family support/inspection pass](research/avionics-installation-2026-10-25/README.md)
+adds10 estimated supports,6 lacing examples and24 navigation retention pieces, with a
+collapsed status panel/five focuses. All prior meshes/62 curves exact;595 tests pass.
+IEM second-column middle support is explicitly deferred because legacy routes overlap;
+two surrounding supports fit. No navigation harness or radio external link is fabricated.
+Desktop/phone checks retain24 parts and375px client/scroll widths, zero browser errors.
+This supersedes the earlier single-column next-step notes, not the open full-harness scope.
+
 Current October24 checkpoint: [IEM lower pair complete as an installation estimate](research/iem-lower-pair-2026-10-24/README.md).
 Four leads reviewed,22 still open. The completed upper pair, all26 endpoints, enclosure
 and main harness are unchanged. Third focus, attached labels and connector-clear supports;
@@ -1023,6 +1032,13 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [ ] **Avionics service loops:** IEM, both PSUs, radio, navigation boxes and battery, one unit
   per pass; retain actual modeled connector positions, add justified slack/backshell relief,
   lacing and attachment points. RDE's October21 pass is already done, not a new open item.
+- [x] **Five-family initial support/access package (Codex, October25):** IEM two second-column
+  supports, one per PSU, three radio local-RF supports, three battery supports and navigation
+  retention heads/washers. Existing curves and capped navigation ports retained.
+  [Evidence, samples and precise open limits](research/avionics-installation-2026-10-25/README.md).
+- [ ] **Five-family routing continuation:** IEM middle second-column conflict, remaining22 IEM
+  routes and other PSU leads; identified external radio/navigation mating before new wires.
+  Battery full flight-pack routing remains unverified. Support additions do not close these.
 - [ ] **Floor/perimeter routing audit:** review existing three harness passes together; remove
   no geometry without archiving. Separate actual bundled routes from accidental doubled runs;
   locate crossings/branches in 3D and tie supports to real modeled structure.

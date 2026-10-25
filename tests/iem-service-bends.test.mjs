@@ -10,7 +10,7 @@ const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);pare
 const fixture=(builder=buildIem)=>{const parent=new T.Group();const r=builder({parent,mesh});parent.updateMatrixWorld(true);return{parent,...r};};
 async function oldBuilder(){let source=await readFile(new URL('../archive/iem-service-bends-2026-10-24/iem.mjs',import.meta.url),'utf8');source=source.replace('./vendor/three/three.module.min.js?v=dev',new URL('../dist/vendor/three/three.module.min.js?v=dev',import.meta.url).href);return(await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'))).buildIem;}
 const leads=root=>{const rows=[];root.traverse(o=>{if(o.name==='iem-harness-cable')rows.push(o);});return rows;};
-const manifest=(root,exclude)=>{const rows=[];root.updateMatrixWorld(true);root.traverse(o=>{if(!o.isMesh||exclude.has(o)||o.name.startsWith('iem-service-'))return;rows.push(JSON.stringify({name:o.name,matrix:o.matrixWorld.toArray(),vertices:[...o.geometry.attributes.position.array],indices:o.geometry.index?[...o.geometry.index.array]:null,color:o.material.color?.getHex(),metalness:o.material.metalness,roughness:o.material.roughness}));});return rows.sort();};
+const manifest=(root,exclude)=>{const rows=[];root.updateMatrixWorld(true);root.traverse(o=>{if(!o.isMesh||exclude.has(o)||o.name.startsWith('iem-service-')||o.userData.installationExample)return;rows.push(JSON.stringify({name:o.name,matrix:o.matrixWorld.toArray(),vertices:[...o.geometry.attributes.position.array],indices:o.geometry.index?[...o.geometry.index.array]:null,color:o.material.color?.getHex(),metalness:o.material.metalness,roughness:o.material.roughness}));});return rows.sort();};
 
 test('IEM service passes preserve unrelated mesh/material/pose and all26 original lead endpoints',async()=>{
  const before=fixture(await oldBuilder()),after=fixture(),old=leads(before.parent),current=leads(after.parent);
@@ -28,7 +28,7 @@ test('IEM service passes preserve unrelated mesh/material/pose and all26 origina
 
 test('IEM connector face and upper pair are non-nested focus targets with reversible masks',()=>{
  const{parent,assembly,connectors,harness,mounts,servicePair}=fixture();
- assert.deepEqual(inspectionSubassemblies(parent).map(o=>o.name),['iem-connectors','iem-upper-service-pair','iem-lower-service-pair']);
+ assert.deepEqual(inspectionSubassemblies(parent).map(o=>o.name),['iem-connectors','iem-upper-service-pair','iem-lower-service-pair','iem-second-column']);
  const mask=createInspectionVisibility({iem:parent}),matrix=assembly.matrixWorld.clone();
  for(const layer of ['interfaces','harnesses','mounts']){const previous=new Map();mask.apply({hiddenPartLayers:{iem:[layer]}},previous);
   assert.equal(connectors.visible,layer!=='interfaces');assert.equal(harness.visible,layer!=='harnesses');assert.equal(mounts.visible,layer!=='mounts');

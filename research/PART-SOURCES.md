@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Five-family installation (Codex, October25):** [evidence and five comparison sheets](avionics-installation-2026-10-25/README.md).
+Reuses saved real NASA/APL/Ed Whitman IEM/PSU testing, APL Frontier, Honeywell family hardware
+and APL ICES2022 test-module photos. CAD/patent references explicitly separate. NASA
+workmanship is general context, not proof of flight fittings. All new installation remains
+EST; all old geometry/62 curves fixed. One IEM support and actual networks remain open.
+
 **IEM lower pair (Codex, October24):** [real/CAD/before/after and limits](iem-lower-pair-2026-10-24/README.md).
 Same saved NASA/APL actual testing/engineering-model photographs and NASA workmanship
 pages; TFAWS2023 CAD is arrangement context only. Two lower routes/supports remain estimated;

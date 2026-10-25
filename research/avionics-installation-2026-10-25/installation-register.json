@@ -1,0 +1,1472 @@
+{
+  "frame": "construction metres: +x starboard, +y up, +z aft",
+  "families": [
+    {
+      "id": "iem",
+      "rows": [
+        {
+          "id": "iem-ground-strap-braid",
+          "name": "iem-ground-strap-braid",
+          "medium": "bonding strap estimate",
+          "radiusM": 0.0035,
+          "start": [
+            -0.20400000000000001,
+            -0.0009999999999999454,
+            -0.275
+          ],
+          "end": [
+            -0.36,
+            -0.013999999999999957,
+            -0.275
+          ],
+          "lengthM": 0.1654350535493717,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-1",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999996,
+            -0.07409999999999997,
+            -0.055375000000000035
+          ],
+          "end": [
+            -0.086,
+            -0.27299999999999996,
+            -0.33100000000000007
+          ],
+          "lengthM": 0.48221771910696837,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-2",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999996,
+            -0.12449999999999997,
+            -0.055375000000000035
+          ],
+          "end": [
+            -0.09000000000000008,
+            -0.27299999999999996,
+            -0.3360000000000001
+          ],
+          "lengthM": 0.4330439125259762,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-3",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999996,
+            -0.20064999999999997,
+            -0.055375000000000035
+          ],
+          "end": [
+            -0.09400000000000006,
+            -0.27299999999999996,
+            -0.341
+          ],
+          "lengthM": 0.3696005344241458,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-4",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999996,
+            -0.24229999999999996,
+            -0.055375000000000035
+          ],
+          "end": [
+            -0.0860000000000001,
+            -0.27299999999999996,
+            -0.34600000000000003
+          ],
+          "lengthM": 0.33220673461683564,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-5",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999996,
+            -0.06609999999999999,
+            -0.08812500000000004
+          ],
+          "end": [
+            -0.09000000000000005,
+            -0.27299999999999996,
+            -0.35100000000000003
+          ],
+          "lengthM": 0.471512458373528,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-6",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999996,
+            -0.10809999999999997,
+            -0.08812500000000004
+          ],
+          "end": [
+            -0.09400000000000003,
+            -0.27299999999999996,
+            -0.33100000000000007
+          ],
+          "lengthM": 0.408810722966393,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-7",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999996,
+            -0.21809999999999996,
+            -0.08812500000000004
+          ],
+          "end": [
+            -0.08600000000000005,
+            -0.27299999999999996,
+            -0.3360000000000001
+          ],
+          "lengthM": 0.3034626393023136,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-8",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.07344999999999996,
+            -0.12087500000000004
+          ],
+          "end": [
+            -0.09000000000000002,
+            -0.27299999999999996,
+            -0.3410000000000001
+          ],
+          "lengthM": 0.42080911199992255,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-9",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.12449999999999997,
+            -0.12087500000000004
+          ],
+          "end": [
+            -0.094,
+            -0.27299999999999996,
+            -0.3460000000000001
+          ],
+          "lengthM": 0.37425228507763403,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-10",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.20269999999999996,
+            -0.12087500000000004
+          ],
+          "end": [
+            -0.08600000000000005,
+            -0.27299999999999996,
+            -0.351
+          ],
+          "lengthM": 0.3001243243476749,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-11",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.25029999999999997,
+            -0.12087500000000004
+          ],
+          "end": [
+            -0.09000000000000002,
+            -0.27299999999999996,
+            -0.33100000000000007
+          ],
+          "lengthM": 0.26350463825188386,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-12",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.08249999999999999,
+            -0.15362500000000004
+          ],
+          "end": [
+            -0.09400000000000003,
+            -0.27299999999999996,
+            -0.3360000000000001
+          ],
+          "lengthM": 0.37364510813053525,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-13",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.19749999999999995,
+            -0.15362500000000004
+          ],
+          "end": [
+            -0.08600000000000005,
+            -0.27299999999999996,
+            -0.3410000000000001
+          ],
+          "lengthM": 0.2623467997578163,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-14",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.24229999999999996,
+            -0.15362500000000004
+          ],
+          "end": [
+            -0.09,
+            -0.27299999999999996,
+            -0.3460000000000001
+          ],
+          "lengthM": 0.2402629774645522,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-15",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.07409999999999997,
+            -0.18637500000000004
+          ],
+          "end": [
+            -0.09400000000000003,
+            -0.27299999999999996,
+            -0.3510000000000001
+          ],
+          "lengthM": 0.3641823304097562,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-16",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.12384999999999996,
+            -0.18637500000000004
+          ],
+          "end": [
+            -0.08600000000000002,
+            -0.27299999999999996,
+            -0.33100000000000007
+          ],
+          "lengthM": 0.2934405406705117,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-17",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.19989999999999997,
+            -0.18637500000000004
+          ],
+          "end": [
+            -0.09000000000000002,
+            -0.27299999999999996,
+            -0.3360000000000001
+          ],
+          "lengthM": 0.2221398037082926,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-18",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.06469999999999998,
+            -0.21912500000000004
+          ],
+          "end": [
+            -0.09400000000000003,
+            -0.27299999999999996,
+            -0.3410000000000001
+          ],
+          "lengthM": 0.33040799073471105,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-19",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.10069999999999998,
+            -0.21912500000000004
+          ],
+          "end": [
+            -0.08600000000000005,
+            -0.27299999999999996,
+            -0.3460000000000001
+          ],
+          "lengthM": 0.29885414523061754,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-20",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.20204999999999995,
+            -0.21912500000000004
+          ],
+          "end": [
+            -0.09000000000000002,
+            -0.27299999999999996,
+            -0.35100000000000003
+          ],
+          "lengthM": 0.20224997439753495,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-21",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11599999999999999,
+            -0.25029999999999997,
+            -0.21912500000000004
+          ],
+          "end": [
+            -0.094,
+            -0.27299999999999996,
+            -0.33100000000000007
+          ],
+          "lengthM": 0.16561425852660527,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-22",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11600000000000002,
+            -0.07409999999999997,
+            -0.25187500000000007
+          ],
+          "end": [
+            -0.086,
+            -0.27299999999999996,
+            -0.3360000000000001
+          ],
+          "lengthM": 0.28235704826904195,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-23",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11600000000000002,
+            -0.12449999999999997,
+            -0.25187500000000007
+          ],
+          "end": [
+            -0.09000000000000002,
+            -0.27299999999999996,
+            -0.3410000000000001
+          ],
+          "lengthM": 0.2367798441886629,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-24",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11600000000000002,
+            -0.07904999999999995,
+            -0.284625
+          ],
+          "end": [
+            -0.094,
+            -0.27299999999999996,
+            -0.3460000000000001
+          ],
+          "lengthM": 0.2550693956765214,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-25",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11600000000000002,
+            -0.19609999999999997,
+            -0.284625
+          ],
+          "end": [
+            -0.086,
+            -0.27299999999999996,
+            -0.3510000000000001
+          ],
+          "lengthM": 0.14250893130248557,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "iem-local-lead-26",
+          "name": "iem-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.11600000000000002,
+            -0.23809999999999998,
+            -0.284625
+          ],
+          "end": [
+            -0.09000000000000002,
+            -0.27299999999999996,
+            -0.33100000000000007
+          ],
+          "lengthM": 0.09357513316165708,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        }
+      ],
+      "supports": [
+        {
+          "id": "iem-5",
+          "fraction": 0.1,
+          "foot": [
+            0.10291349065301308,
+            0.17264209273808237,
+            -0.114
+          ],
+          "normal": [
+            0,
+            0,
+            -1
+          ],
+          "radiusM": 0.0045,
+          "flightMatingConfirmed": false,
+          "wire": "iem-local-lead-5"
+        },
+        {
+          "id": "iem-7",
+          "fraction": 0.03,
+          "foot": [
+            0.096875,
+            0.05719791385316916,
+            -0.114
+          ],
+          "normal": [
+            0,
+            0,
+            -1
+          ],
+          "radiusM": 0.0045,
+          "flightMatingConfirmed": false,
+          "wire": "iem-local-lead-7"
+        }
+      ],
+      "additions": [
+        "install-iem-5-pad",
+        "install-iem-5-post",
+        "install-iem-5-cushion",
+        "install-iem-5-strap",
+        "install-iem-7-pad",
+        "install-iem-7-post",
+        "install-iem-7-cushion",
+        "install-iem-7-strap",
+        "install-iem-7-lacing"
+      ],
+      "limits": "Existing paths/endpoints retained. Support installation estimated; full routing and flight identities remain open."
+    },
+    {
+      "id": "power-units",
+      "rows": [
+        {
+          "id": "psu-1-lead-1",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.11196999999999996,
+            0.24919999999999998
+          ],
+          "end": [
+            -0.12100000000000008,
+            -0.27299999999999996,
+            0.03999999999999995
+          ],
+          "lengthM": 0.3715143610917483,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-1-lead-2",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.19649999999999998,
+            0.24919999999999998
+          ],
+          "end": [
+            -0.12500000000000003,
+            -0.27299999999999996,
+            0.034999999999999976
+          ],
+          "lengthM": 0.2906140225768881,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-1-lead-3",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.11303999999999997,
+            0.22899999999999998
+          ],
+          "end": [
+            -0.1290000000000001,
+            -0.27299999999999996,
+            0.03
+          ],
+          "lengthM": 0.36032590769790573,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-1-lead-4",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.19649999999999998,
+            0.22899999999999998
+          ],
+          "end": [
+            -0.12100000000000005,
+            -0.27299999999999996,
+            0.02499999999999991
+          ],
+          "lengthM": 0.2803460208959857,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-1-lead-5",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.09648799999999996,
+            0.20599999999999996
+          ],
+          "end": [
+            -0.12500000000000006,
+            -0.27299999999999996,
+            0.03999999999999995
+          ],
+          "lengthM": 0.3435264350008738,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-1-lead-6",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.13726999999999998,
+            0.20599999999999996
+          ],
+          "end": [
+            -0.12900000000000003,
+            -0.27299999999999996,
+            0.034999999999999976
+          ],
+          "lengthM": 0.30749271769195813,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-1-lead-7",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.09660999999999997,
+            0.186
+          ],
+          "end": [
+            -0.12100000000000002,
+            -0.27299999999999996,
+            0.03
+          ],
+          "lengthM": 0.333256530073761,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-1-lead-8",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.12549999999999997,
+            0.186
+          ],
+          "end": [
+            -0.12500000000000006,
+            -0.27299999999999996,
+            0.024999999999999994
+          ],
+          "lengthM": 0.30909916996193915,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-1-lead-9",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.17471999999999996,
+            0.186
+          ],
+          "end": [
+            -0.1290000000000001,
+            -0.27299999999999996,
+            0.039999999999999966
+          ],
+          "lengthM": 0.2443718832617582,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-1-lead-10",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.19932999999999998,
+            0.186
+          ],
+          "end": [
+            -0.12100000000000005,
+            -0.27299999999999996,
+            0.035
+          ],
+          "lengthM": 0.22424720859314462,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-1-lead-11",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.20826999999999996,
+            0.15899999999999997
+          ],
+          "end": [
+            -0.12500000000000008,
+            -0.27299999999999996,
+            0.02999999999999997
+          ],
+          "lengthM": 0.19324457128736403,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-1-lead-12",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.21469,
+            0.1352
+          ],
+          "end": [
+            -0.1290000000000001,
+            -0.27299999999999996,
+            0.024999999999999967
+          ],
+          "lengthM": 0.16840953442443107,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-1-lead-13",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            -0.14900000000000002,
+            -0.22752999999999995,
+            0.07719999999999996
+          ],
+          "end": [
+            -0.12100000000000002,
+            -0.27299999999999996,
+            0.039999999999999925
+          ],
+          "lengthM": 0.08362668566661884,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-1",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.11196999999999996,
+            -0.23920000000000002
+          ],
+          "end": [
+            0.12100000000000002,
+            -0.27299999999999996,
+            -0.2700000000000001
+          ],
+          "lengthM": 0.19188156988702587,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-2",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.19649999999999998,
+            -0.23920000000000002
+          ],
+          "end": [
+            0.12500000000000008,
+            -0.27299999999999996,
+            -0.275
+          ],
+          "lengthM": 0.11227962948007308,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-3",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.11303999999999997,
+            -0.21900000000000003
+          ],
+          "end": [
+            0.12900000000000003,
+            -0.27299999999999996,
+            -0.28
+          ],
+          "lengthM": 0.22130478936291065,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-4",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.19649999999999998,
+            -0.21900000000000003
+          ],
+          "end": [
+            0.12100000000000008,
+            -0.27299999999999996,
+            -0.285
+          ],
+          "lengthM": 0.14190690092004163,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-5",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.09648799999999996,
+            -0.196
+          ],
+          "end": [
+            0.12500000000000006,
+            -0.27299999999999996,
+            -0.2700000000000001
+          ],
+          "lengthM": 0.25041974191252553,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-6",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.13726999999999998,
+            -0.196
+          ],
+          "end": [
+            0.1290000000000001,
+            -0.27299999999999996,
+            -0.275
+          ],
+          "lengthM": 0.2148970717407546,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-7",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.09660999999999997,
+            -0.17600000000000002
+          ],
+          "end": [
+            0.12100000000000002,
+            -0.27299999999999996,
+            -0.28
+          ],
+          "lengthM": 0.28059172580628766,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-8",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.12549999999999997,
+            -0.17600000000000002
+          ],
+          "end": [
+            0.12500000000000006,
+            -0.27299999999999996,
+            -0.28500000000000003
+          ],
+          "lengthM": 0.2565477648123963,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-9",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.17471999999999996,
+            -0.17600000000000002
+          ],
+          "end": [
+            0.12900000000000003,
+            -0.27299999999999996,
+            -0.27
+          ],
+          "lengthM": 0.1922021943526132,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-10",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.19932999999999998,
+            -0.17600000000000002
+          ],
+          "end": [
+            0.12100000000000005,
+            -0.27299999999999996,
+            -0.275
+          ],
+          "lengthM": 0.17206535478098348,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-11",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.20826999999999996,
+            -0.14900000000000002
+          ],
+          "end": [
+            0.12500000000000006,
+            -0.27299999999999996,
+            -0.28
+          ],
+          "lengthM": 0.19524956747403854,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-12",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.21469,
+            -0.1252
+          ],
+          "end": [
+            0.12900000000000006,
+            -0.27299999999999996,
+            -0.28500000000000003
+          ],
+          "lengthM": 0.21798933007358795,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "psu-2-lead-13",
+          "name": "psu-harness-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.0045,
+          "start": [
+            0.14900000000000002,
+            -0.22752999999999995,
+            -0.06720000000000001
+          ],
+          "end": [
+            0.12100000000000002,
+            -0.27299999999999996,
+            -0.27
+          ],
+          "lengthM": 0.24841779789907856,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        }
+      ],
+      "supports": [
+        {
+          "id": "psu-1",
+          "fraction": 0.07,
+          "foot": [
+            0.07530768947090949,
+            0.14858722763231696,
+            -0.098
+          ],
+          "normal": [
+            0,
+            0,
+            -1
+          ],
+          "radiusM": 0.0045,
+          "flightMatingConfirmed": false,
+          "wire": "psu-1-lead-1"
+        },
+        {
+          "id": "psu-2",
+          "fraction": 0.07,
+          "foot": [
+            0.0752,
+            0.16044770801276914,
+            -0.098
+          ],
+          "normal": [
+            0,
+            0,
+            -1
+          ],
+          "radiusM": 0.0045,
+          "flightMatingConfirmed": false,
+          "wire": "psu-2-lead-1"
+        }
+      ],
+      "additions": [
+        "install-psu-1-pad",
+        "install-psu-1-post",
+        "install-psu-1-cushion",
+        "install-psu-1-strap",
+        "install-psu-1-lacing",
+        "install-psu-2-pad",
+        "install-psu-2-post",
+        "install-psu-2-cushion",
+        "install-psu-2-strap",
+        "install-psu-2-lacing"
+      ],
+      "limits": "Existing paths/endpoints retained. Support installation estimated; full routing and flight identities remain open."
+    },
+    {
+      "id": "frontier-radio",
+      "rows": [
+        {
+          "id": "frontier-radio-J32-cap-chain",
+          "name": "frontier-radio-J32-cap-chain",
+          "medium": "mechanical tether",
+          "radiusM": 0.0007,
+          "start": [
+            0.1318,
+            -0.24499999999999997,
+            0.242
+          ],
+          "end": [
+            0.13979999999999998,
+            -0.27599999999999997,
+            0.24399999999999997
+          ],
+          "lengthM": 0.03890305077586073,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "radio-local-rf-1",
+          "name": "frontier-radio-semirigid-coax",
+          "medium": "local RF example",
+          "radiusM": 0.0016,
+          "start": [
+            0.185,
+            -0.17739999999999997,
+            0.1617
+          ],
+          "end": [
+            0.17,
+            -0.17740000000000003,
+            0.2142
+          ],
+          "lengthM": 0.07457177393893219,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "radio-local-rf-2",
+          "name": "frontier-radio-semirigid-coax",
+          "medium": "local RF example",
+          "radiusM": 0.0016,
+          "start": [
+            0.232,
+            -0.17739999999999997,
+            0.1887
+          ],
+          "end": [
+            0.216,
+            -0.1774,
+            0.23800000000000002
+          ],
+          "lengthM": 0.06554681058850394,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "radio-local-rf-3",
+          "name": "frontier-radio-wrapped-coax",
+          "medium": "local RF example",
+          "radiusM": 0.0042,
+          "start": [
+            0.265,
+            -0.17739999999999997,
+            0.1617
+          ],
+          "end": [
+            0.278,
+            -0.1774,
+            0.18870000000000003
+          ],
+          "lengthM": 0.05422176072744053,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        }
+      ],
+      "supports": [
+        {
+          "id": "radio-rf-1",
+          "fraction": 0.5,
+          "foot": [
+            0.012049999999999976,
+            0.1016,
+            -0.04250000000000001
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "radiusM": 0.0016,
+          "flightMatingConfirmed": false,
+          "wire": "radio-local-rf-1"
+        },
+        {
+          "id": "radio-rf-2",
+          "fraction": 0.5,
+          "foot": [
+            -0.013350000000000015,
+            0.1016,
+            0.003999999999999997
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "radiusM": 0.0016,
+          "flightMatingConfirmed": false,
+          "wire": "radio-local-rf-2"
+        },
+        {
+          "id": "radio-rf-3",
+          "fraction": 0.5,
+          "foot": [
+            0.024799999999999975,
+            0.1016,
+            0.05150000000000002
+          ],
+          "normal": [
+            0,
+            1,
+            0
+          ],
+          "radiusM": 0.0042,
+          "flightMatingConfirmed": false,
+          "wire": "radio-local-rf-3"
+        }
+      ],
+      "additions": [
+        "install-radio-rf-1-pad",
+        "install-radio-rf-1-post",
+        "install-radio-rf-1-cushion",
+        "install-radio-rf-1-strap",
+        "install-radio-rf-2-pad",
+        "install-radio-rf-2-post",
+        "install-radio-rf-2-cushion",
+        "install-radio-rf-2-strap",
+        "install-radio-rf-3-pad",
+        "install-radio-rf-3-post",
+        "install-radio-rf-3-cushion",
+        "install-radio-rf-3-strap"
+      ],
+      "limits": "Existing paths/endpoints retained. Support installation estimated; full routing and flight identities remain open."
+    },
+    {
+      "id": "nose-electronics",
+      "rows": [],
+      "supports": [],
+      "additions": [
+        "install-ocellus-meb-retention-head",
+        "install-ocellus-meb-retention-head",
+        "install-ocellus-meb-retention-head",
+        "install-ocellus-meb-retention-head",
+        "install-ocellus-feb-retention-head",
+        "install-ocellus-feb-retention-head",
+        "install-ocellus-feb-retention-head",
+        "install-ocellus-feb-retention-head",
+        "install-imu-a-washer",
+        "install-imu-a-retention-head",
+        "install-imu-a-washer",
+        "install-imu-a-retention-head",
+        "install-imu-a-washer",
+        "install-imu-a-retention-head",
+        "install-imu-a-washer",
+        "install-imu-a-retention-head",
+        "install-imu-b-washer",
+        "install-imu-b-retention-head",
+        "install-imu-b-washer",
+        "install-imu-b-retention-head",
+        "install-imu-b-washer",
+        "install-imu-b-retention-head",
+        "install-imu-b-washer",
+        "install-imu-b-retention-head"
+      ],
+      "limits": "Retention heads only; caps retained, no fabricated flight harness."
+    },
+    {
+      "id": "battery",
+      "rows": [
+        {
+          "id": "battery-external-1",
+          "name": "battery-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.011,
+          "start": [
+            -0.2,
+            0.036500000000000005,
+            0.34099999999999997
+          ],
+          "end": [
+            -0.216,
+            -0.26199999999999996,
+            0.29499999999999993
+          ],
+          "lengthM": 0.32961789530992025,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "battery-external-2",
+          "name": "battery-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.006,
+          "start": [
+            -0.12,
+            0.036500000000000005,
+            0.34099999999999997
+          ],
+          "end": [
+            -0.12960000000000002,
+            -0.26199999999999996,
+            0.29499999999999993
+          ],
+          "lengthM": 0.3290486241113007,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "battery-external-3",
+          "name": "battery-cable",
+          "medium": "electrical bundle example, function unverified",
+          "radiusM": 0.006,
+          "start": [
+            -0.07,
+            0.036500000000000005,
+            0.34099999999999997
+          ],
+          "end": [
+            -0.07560000000000003,
+            -0.262,
+            0.29499999999999993
+          ],
+          "lengthM": 0.3288365717633769,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "battery-main-lead-negative",
+          "name": "battery-main-lead-negative",
+          "medium": "internal cell interconnect estimate",
+          "radiusM": 0.004,
+          "start": [
+            -0.18299999999999997,
+            0.025000000000000005,
+            0.42499999999999993
+          ],
+          "end": [
+            -0.208,
+            0.03649999999999999,
+            0.3769999999999999
+          ],
+          "lengthM": 0.05995080057807389,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        },
+        {
+          "id": "battery-main-lead-positive",
+          "name": "battery-main-lead-positive",
+          "medium": "internal cell interconnect estimate",
+          "radiusM": 0.004,
+          "start": [
+            -0.16699999999999995,
+            0.025000000000000005,
+            0.42499999999999993
+          ],
+          "end": [
+            -0.19199999999999998,
+            0.03649999999999999,
+            0.3769999999999999
+          ],
+          "lengthM": 0.05995080057807389,
+          "confidence": "EST",
+          "flightMatingConfirmed": false
+        }
+      ],
+      "supports": [
+        {
+          "id": "battery-1",
+          "fraction": 0.35,
+          "foot": [
+            -0.19927750405397268,
+            -0.0769912378664031,
+            -0.2
+          ],
+          "normal": [
+            0,
+            0,
+            -1
+          ],
+          "radiusM": 0.011,
+          "flightMatingConfirmed": false,
+          "wire": "battery-external-1"
+        },
+        {
+          "id": "battery-2",
+          "fraction": 0.35,
+          "foot": [
+            -0.11956574849198345,
+            -0.07679476481987528,
+            -0.2
+          ],
+          "normal": [
+            0,
+            0,
+            -1
+          ],
+          "radiusM": 0.006,
+          "flightMatingConfirmed": false,
+          "wire": "battery-external-2"
+        },
+        {
+          "id": "battery-3",
+          "fraction": 0.35,
+          "foot": [
+            -0.0697465244058951,
+            -0.07672157849495811,
+            -0.2
+          ],
+          "normal": [
+            0,
+            0,
+            -1
+          ],
+          "radiusM": 0.006,
+          "flightMatingConfirmed": false,
+          "wire": "battery-external-3"
+        }
+      ],
+      "additions": [
+        "install-battery-1-lacing",
+        "install-battery-2-lacing",
+        "install-battery-3-lacing",
+        "install-battery-1-pad",
+        "install-battery-1-post",
+        "install-battery-1-cushion",
+        "install-battery-1-strap",
+        "install-battery-2-pad",
+        "install-battery-2-post",
+        "install-battery-2-cushion",
+        "install-battery-2-strap",
+        "install-battery-3-pad",
+        "install-battery-3-post",
+        "install-battery-3-cushion",
+        "install-battery-3-strap"
+      ],
+      "limits": "Existing paths/endpoints retained. Support installation estimated; full routing and flight identities remain open."
+    }
+  ],
+  "scope": "Five-family installation examples, not a complete flight harness or electrical solver."
+}

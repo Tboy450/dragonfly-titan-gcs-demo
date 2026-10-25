@@ -1,0 +1,112 @@
+[
+  {
+    "engine": "three.js r180",
+    "family": "iem",
+    "nonblank": "true",
+    "pixelCount": "236280",
+    "version": "current"
+  },
+  {
+    "engine": "three.js r180",
+    "family": "iem",
+    "nonblank": "true",
+    "pixelCount": "236272",
+    "version": "before"
+  },
+  {
+    "engine": "three.js r180",
+    "family": "power-units",
+    "nonblank": "true",
+    "pixelCount": "124042",
+    "version": "current"
+  },
+  {
+    "engine": "three.js r180",
+    "family": "power-units",
+    "nonblank": "true",
+    "pixelCount": "124044",
+    "version": "before"
+  },
+  {
+    "engine": "three.js r180",
+    "family": "frontier-radio",
+    "nonblank": "true",
+    "pixelCount": "138536",
+    "version": "current"
+  },
+  {
+    "engine": "three.js r180",
+    "family": "frontier-radio",
+    "nonblank": "true",
+    "pixelCount": "139540",
+    "version": "before"
+  },
+  {
+    "engine": "three.js r180",
+    "family": "nose-electronics",
+    "nonblank": "true",
+    "pixelCount": "105563",
+    "version": "current"
+  },
+  {
+    "engine": "three.js r180",
+    "family": "nose-electronics",
+    "nonblank": "true",
+    "pixelCount": "105567",
+    "version": "before"
+  },
+  {
+    "engine": "three.js r180",
+    "family": "battery",
+    "nonblank": "true",
+    "pixelCount": "330495",
+    "version": "current"
+  },
+  {
+    "engine": "three.js r180",
+    "family": "battery",
+    "nonblank": "true",
+    "pixelCount": "330509",
+    "version": "before"
+  },
+  {
+    "detail": "true",
+    "engine": "three.js r180",
+    "family": "iem",
+    "nonblank": "true",
+    "pixelCount": "796445",
+    "version": "current"
+  },
+  {
+    "detail": "true",
+    "engine": "three.js r180",
+    "family": "power-units",
+    "nonblank": "true",
+    "pixelCount": "817574",
+    "version": "current"
+  },
+  {
+    "detail": "true",
+    "engine": "three.js r180",
+    "family": "frontier-radio",
+    "nonblank": "true",
+    "pixelCount": "831163",
+    "version": "current"
+  },
+  {
+    "detail": "true",
+    "engine": "three.js r180",
+    "family": "nose-electronics",
+    "nonblank": "true",
+    "pixelCount": "726998",
+    "version": "current"
+  },
+  {
+    "detail": "true",
+    "engine": "three.js r180",
+    "family": "battery",
+    "nonblank": "true",
+    "pixelCount": "686361",
+    "version": "current"
+  }
+]

@@ -1,4 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js?v=dev";
+import {addCableSupport,addCableLacing} from "./cable-installation.mjs?v=dev";
 
 // Part 15: the lander battery. Published: an 11.5 kWh lithium-ion pack built by APL "using large,
 // high-energy-density cells made by GS Yuasa" (Aerospace America, Sept. 2022); a 134 Ah battery
@@ -23,7 +24,7 @@ import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 // wax is not drawn: where it sits is not published.
 const floorY = -0.284;
 export const batteryAsset = Object.freeze({
-  revision: "battery-2026-10-15",
+  revision: "battery-2026-10-25-installation",
   publishedKwh: 11.5,
   publishedAh: 134,
   cellCount: 24,
@@ -54,6 +55,10 @@ export function buildBattery({ parent, mesh }) {
   const cells = group("battery-cells", "equipment-casings");
   const bus = group("battery-bus-bars", "harnesses");
   const ports = group("battery-connectors", "interfaces");
+  ports.userData.inspectionLabel="External connectors (test-article-inspired estimate)";
+  const externalLeads=new THREE.Group();externalLeads.name="battery-external-leads";
+  externalLeads.userData.inspectionLabel="External lead supports (installation estimate)";bus.add(externalLeads);
+  const externalSupports=group("battery-external-supports","mounts");
   const cream = new THREE.MeshStandardMaterial({ color: 0xd6ceb5, roughness: 0.7, metalness: 0.1 });
   const creamRib = new THREE.MeshStandardMaterial({ color: 0xf0ebdc, roughness: 0.5, metalness: 0.15 });
   const bare = new THREE.MeshStandardMaterial({ color: 0xd4d8db, roughness: 0.35, metalness: 0.65 });
@@ -191,8 +196,12 @@ export function buildBattery({ parent, mesh }) {
     rod(r, 0.02, [x, connY, front - 0.012], name.includes("power") ? steel : gold, ports, "z", name, 20);
   }
   for (const [px, py] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) rod(0.004, 0.003, [-0.2 + px * 0.008, connY + py * 0.008, front - 0.023], fanBlack, ports, "z", "battery-power-connector-socket", 8);
-  for (const [x, r] of [[-0.2, 0.011], [-0.12, 0.006], [-0.07, 0.006]]) {
-    tube([[x, connY, front - 0.024], [x, connY - 0.03, front - 0.034], [x, -0.12, front - 0.03], [x * 1.05, -0.25, front - 0.034], [x * 1.08, -0.262, front - 0.07]], r, jacket, bus, "battery-cable");
+  for (const [i,[x, r]] of [[-0.2, 0.011], [-0.12, 0.006], [-0.07, 0.006]].entries()) {
+    const cable=tube([[x, connY, front - 0.024], [x, connY - 0.03, front - 0.034], [x, -0.12, front - 0.03], [x * 1.05, -0.25, front - 0.034], [x * 1.08, -0.262, front - 0.07]], r, jacket, externalLeads, "battery-cable");
+    cable.userData.connectionId=`battery-external-${i+1}`;
+    const fraction=.35,p=cable.geometry.parameters.path.getPointAt(fraction);
+    addCableSupport({wire:cable,fraction,foot:[p.x,p.y,front],normal:[0,0,-1],mounts:externalSupports,id:`battery-${i+1}`});
+    addCableLacing({wire:cable,fraction:.55,parent:externalLeads,id:`battery-${i+1}`});
   }
   rod(0.016, 0.01, [-0.2 * 1.08, -0.262, front - 0.062], lacing, bus, "z", "battery-harness-tie", 12);
   return { assembly, mounts, covers, cells, bus, ports, lid };

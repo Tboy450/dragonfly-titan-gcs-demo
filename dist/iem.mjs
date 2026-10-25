@@ -1,4 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js?v=dev";
+import {addCableSupport,addCableLacing} from "./cable-installation.mjs?v=dev";
 
 // Part 12: Integrated Electronics Module (IEM), Dragonfly's core avionics box (command and data
 // handling, guidance and navigation, communications). Drawn from NASA/APL's March 2026 photos at
@@ -15,7 +16,7 @@ import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 // connector counts, depth and the wall it is on (port, with the PSU on its left as seen from
 // inside, as photographed) are [EST]. Red handling handles are not drawn.
 export const iemAsset = Object.freeze({
-  revision: "iem-2026-10-24-lower-service-pair",
+  revision: "iem-2026-10-25-installation-supports",
   widthM: 0.28, heightM: 0.28, depthM: 0.22,
   // Back against the port wall (cavity edge about x -0.36), on the bay floor [EST].
   position: Object.freeze([-0.244, -0.284, -0.17]),
@@ -58,6 +59,9 @@ export function buildIem({ parent, mesh }) {
   Object.assign(lowerServicePair.userData, { inspectionLabel: "Lower cable pair (installation estimate)",
     inspectionMinimumRadiusM: .10, flightMatingConfirmed: false });
   harness.add(lowerServicePair);
+  const secondColumn=new THREE.Group();secondColumn.name="iem-second-column";
+  secondColumn.userData.inspectionLabel="Second-column supports (routing estimate)";
+  harness.add(secondColumn);
   const black = new THREE.MeshStandardMaterial({ color: 0x16181a, roughness: 0.6, metalness: 0.3 });
   const plate = new THREE.MeshStandardMaterial({ color: 0xc4c9cc, roughness: 0.32, metalness: 0.72 });
   const windowMat = new THREE.MeshStandardMaterial({ color: 0x0d0e10, roughness: 0.75, metalness: 0.2 });
@@ -154,7 +158,7 @@ export function buildIem({ parent, mesh }) {
   const z0 = face - 0.024;
   plugs.forEach(([x, y, len], i) => {
     const service = iemServiceAsset.leadIndices.includes(i), lower = i === 2 || i === 3;
-    const target = lower ? lowerServicePair : service ? servicePair : harness;
+    const target = lower ? lowerServicePair : service ? servicePair : i>=4&&i<=6 ? secondColumn : harness;
     const backshell = box([0.011, len + 0.004, 0.014], [x, y, face - 0.017], wrap, target, "iem-harness-backshell");
     const label = box([0.012, 0.016, 0.003], [x, y - len / 2 - 0.012, z0 + 0.004], tag, target, "iem-harness-label");
     backshell.userData.connectionId = label.userData.connectionId = `iem-local-lead-${i + 1}`;
@@ -177,6 +181,11 @@ export function buildIem({ parent, mesh }) {
     const cable = tube(points, iemServiceAsset.radiusM, wrap, target, "iem-harness-cable", service ? 80 : 20);
     Object.assign(cable.userData, { connectionId: `iem-local-lead-${i + 1}`, servicePair: service,
       routeConfidence: "EST", flightMatingConfirmed: false });
+    if(i===4||i===6){
+      const fraction=i===4?.10:.03,p=cable.geometry.parameters.path.getPointAt(fraction);
+      addCableSupport({wire:cable,fraction,foot:[p.x+(i===4?.020:.015),p.y,face-.004],normal:[0,0,-1],mounts,id:`iem-${i+1}`});
+      if(i===6)addCableLacing({wire:cable,fraction:.08,parent:target,id:`iem-${i+1}`});
+    }
     if (!service) return;
     const path = cable.geometry.parameters.path;
     const labelFraction = lower ? .24 : .12;

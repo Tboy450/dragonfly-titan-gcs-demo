@@ -11,7 +11,7 @@ const unit = (name, label, dimensions, position, yaw) => Object.freeze({
   name, label, dimensions: Object.freeze(dimensions), position: Object.freeze(position), yaw,
 });
 export const noseElectronicsAsset = Object.freeze({
-  revision: "nose-electronics-ocellus-outer-estimate-2026-10-19",
+  revision: "nose-electronics-2026-10-25-retention",
   floorY: -0.284,
   units: Object.freeze([
     unit("ocellus-meb", "Ocellus MEB (outer-structure estimate)", [0.2419,0.1204,0.1854],[-0.207,-0.284,-1.39],Math.PI/2),
@@ -126,9 +126,25 @@ export function buildNoseElectronics({parent,mesh}) {
     }
     for(const x of [-1,1])for(const z of [-1,1]){
       box(`${spec.name}-mount-foot`,[0.022,base,0.027],[x*(W-0.022)/2,base/2,z*(D-0.027)/2],silver,mounts);
+      const head=mesh(new THREE.CylinderGeometry(.003,.003,.002,6),steel,
+        [x*(W/2-.0035),base+.001,z*(D-.027)/2],mounts);
+      head.name=`install-${spec.name}-retention-head`;head.userData.installationExample=true;
     }
     return {spec,group,casing,cover,mounts};
   });
+  // [EST] retention hardware on the existing family-envelope mounting pads; ports stay capped.
+  const retention=new THREE.Group();retention.name="navigation-retention";
+  retention.userData.inspectionLayer="mounts";assembly.add(retention);
+  for(const spec of A.imus){
+    const frame=new THREE.Group();frame.position.fromArray(spec.position);frame.rotation.y=spec.yaw;retention.add(frame);
+    for(let i=0;i<4;i++){
+      const a=Math.PI/4+i*Math.PI/2,x=Math.sin(a)*.108,z=Math.cos(a)*.108;
+      const washer=mesh(new THREE.CylinderGeometry(.004,.004,.001,16),steel,[x,.005,z],frame);
+      washer.name=`install-${spec.name}-washer`;washer.userData.installationExample=true;
+      const head=mesh(new THREE.CylinderGeometry(.0027,.0027,.001,6),steel,[x,.006,z],frame);
+      head.name=`install-${spec.name}-retention-head`;head.userData.installationExample=true;
+    }
+  }
   const imus=A.imus.map(spec=>{
     const group=new THREE.Group();group.name=spec.name;group.position.fromArray(spec.position);group.rotation.y=spec.yaw;
     Object.assign(group.userData,{inspectionLabel:spec.label,hardwareFamily:"Honeywell space MIMU",

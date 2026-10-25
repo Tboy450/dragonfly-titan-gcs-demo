@@ -1,0 +1,62 @@
+[
+  {
+    "family": "iem",
+    "method": "saved mobile canvas screenshot crop",
+    "cropPx": [
+      45,
+      70,
+      320,
+      330
+    ],
+    "uniqueColors": 9500,
+    "nonblank": true
+  },
+  {
+    "family": "power-units",
+    "method": "saved mobile canvas screenshot crop",
+    "cropPx": [
+      45,
+      70,
+      320,
+      330
+    ],
+    "uniqueColors": 6979,
+    "nonblank": true
+  },
+  {
+    "family": "frontier-radio",
+    "method": "saved mobile canvas screenshot crop",
+    "cropPx": [
+      45,
+      70,
+      320,
+      330
+    ],
+    "uniqueColors": 5751,
+    "nonblank": true
+  },
+  {
+    "family": "nose-electronics",
+    "method": "saved mobile canvas screenshot crop",
+    "cropPx": [
+      45,
+      70,
+      320,
+      330
+    ],
+    "uniqueColors": 6529,
+    "nonblank": true
+  },
+  {
+    "family": "battery",
+    "method": "saved mobile canvas screenshot crop",
+    "cropPx": [
+      45,
+      70,
+      320,
+      330
+    ],
+    "uniqueColors": 13891,
+    "nonblank": true
+  }
+]
