@@ -39,6 +39,12 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Retain the settled public IEM sample
+- **Signed:** Codex (OpenAI).
+- **Commit:** Save settled IEM public inspection sample [skip ci].
+- **What:** save the final live screenshot after smooth scrolling/camera framing settles;
+  keep the earlier in-transition capture. No application or test changes.
+
 ### 2026-10-25: Confirm IEM middle-lead publication and handoff
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record live IEM middle-lead acceptance [skip ci].
