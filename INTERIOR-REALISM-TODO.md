@@ -16,6 +16,8 @@ October25 UI request: [inspection controls](research/inspection-controls-2026-10
 - [x] Interior c light-grey grid, reusing Thermal's painter with independent preferences.
 - [x]623 tests; actual desktop/phone wheel checks, no horizontal overflow or part loss.
 No hardware work in this pass. Next remains fifth IEM column15/16/17 below.
+Published051c9d9; Pages40217478630 succeeded. Live wheel/grid/toolbar/24 parts
+verified, zero errors. Public sample/JSON saved; recovery tag pushed and preview stopped.
 
 Latest October25: [fourth column, IDs12-14](research/iem-fourth-column-2026-10-25/README.md).
 - [x] Three separated estimated routes/attached labels, three supports, six ties and seventh focus.

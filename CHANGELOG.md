@@ -39,6 +39,15 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Verify inspection-controls publication
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record inspection controls publication receipt [skip ci].
+- **Published:**051c9d9b940de9018e234afb0a31ec94feb6cec1; Pages40217478630 succeeded.
+- **Checks:**623 tests; live100->131->100% wheel zoom with no page movement,
+  ordinary scrolling outside canvas, Interior c/toolbar/24 parts and zero errors.
+  Desktop/phone nonblank-pixel checks pass; public sample/JSON saved. Recovery tag
+  pushed, preview stopped. Reverse physics unchanged; hardware next15/16/17.
+
 ### 2026-10-25: Model wheel zoom, layer toolbar and Interior grey grid
 - **Signed:** Codex (OpenAI).
 - **Commit:** Improve inspection wheel zoom and layer layout.

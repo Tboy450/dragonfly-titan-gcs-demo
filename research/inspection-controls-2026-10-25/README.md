@@ -24,6 +24,17 @@ wheel tests: selected zoom 100->131->100% with page Y unchanged; deselected whee
 scrolls page 180px with zoom unchanged. Thermal and phone wheel checks pass.
 Phone client/scroll widths both 375px. Published-build verification recorded below.
 
+## Publication Receipt
+
+Published source `051c9d9b940de9018e234afb0a31ec94feb6cec1`;
+GitHub Pages run `40217478630` succeeded. Live build stamp, Interior c,
+toolbar position and all24 parts verified with zero browser errors.
+Live wheel zoom100->131->100% kept pageY904; wheel outside the canvas scrolled
+the page without changing model zoom. `public.png` is the complete live view;
+`public-checks.json` holds the observed results. Desktop/phone screenshot
+pixel checks found15,185/6,267 colored hardware pixels and28,221/19,425 distinct
+colors in the model region (nonblank). Recovery tag pushed; local preview stopped.
+
 Owner also asked about Reverse (sim). Existing code only arms an opt-in fictional
 vertical pulse: zero manual throttle, above 1m, no altitude hold/auto guidance,
 not over liquid; adds 0.2m/s^2 until 0.6m/s descent. It has no horizontal braking.

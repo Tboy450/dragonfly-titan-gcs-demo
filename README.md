@@ -10,10 +10,11 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-October25 viewing update: [inspection controls](research/inspection-controls-2026-10-25/README.md).
+Published build **051c9d9**: [inspection controls](research/inspection-controls-2026-10-25/README.md).
 Rotate-selected mouse-wheel zoom; layer selector above the viewport; Interior c adds
 Thermal's grey grid. All controls/details retained, with corrected phone section order.
 623 tests pass. Flight physics and all hardware are unchanged; IEM15/16/17 remain next.
+Pages40217478630 succeeded; live wheel/grid/layout/24-part checks pass without errors.
 
 Previous published build **e372a1b**: [IEM fourth-column leads 12-14](research/iem-fourth-column-2026-10-25/README.md).
 Three estimated routes with attached labels, supports and ties; eleven completed routes
