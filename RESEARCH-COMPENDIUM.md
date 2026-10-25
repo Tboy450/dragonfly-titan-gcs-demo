@@ -4,6 +4,13 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October24 IEM upper service pair (Codex):** [sources, audit and comparison](research/iem-service-bends-2026-10-24/README.md).
+[PUB] NASA/APL real IEM/PSU testing and general NASA harness workmanship principles;
+[EST] two cable bows, lacing and support installation, not verified flight routes/radii.
+[CALC] all26 retained endpoints, exact unrelated mesh manifests and swept-wire clearance.
+Other24 curves, enclosure and main harness unchanged. No new circuit or thermal solver.
+Next lower pair indices2/3; full installation and actual flight identities remain open.
+
 **October24 sampling-electronics gate (Codex):** [accepted evidence / gaps](research/sampling-electronics-2026-10-24/README.md).
 [PUB] documented separate roles for lander IEM/PSUs, DrACO avionics, DraMS main electronics,
 NASA's laser-electronics EM and warm carousel actuators. Physical flight mating remains

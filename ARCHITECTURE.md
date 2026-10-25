@@ -43,6 +43,13 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October24 IEM installation: `iem.mjs` refines only existing upper-pair indices0/1;
+all26 endpoints and unrelated geometry are manifest-tested against the exact archive.
+Independent connector/pair targets reuse existing visibility controls. Research-only
+`iem-service-bends-2026-10-24/audit.mjs` exports a26-lead EST register, not flight topology.
+Support contact and swept-wire tests supplement unchanged main-harness clearance tests.
+No new solver, IEM enclosure or game change; remaining24 local leads are still open.
+
 October22 construction checkpoint: `dist/body-foam.mjs` partitions the original outer body
 triangles into five surface-only inspection regions. Global mask IDs live in the shared
 `bodyFoamRegions` definition; `body-shell` remains the aggregate for save/UI compatibility.

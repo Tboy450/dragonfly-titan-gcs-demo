@@ -58,6 +58,7 @@ const sources = {
   dracoPaper: ["DrACO drill design (Honeybee, APL, Goddard; LPSC 2022)", "https://www.hou.usra.edu/meetings/lpsc2022/pdf/1069.pdf"],
   psuPhoto: ["PSU testing photo: NASA/Johns Hopkins APL/Ed Whitman", "https://www.jhuapl.edu/news/news-releases/260312-dragonfly-integration-begins"],
   iemPhotos: ["IEM integration photos: NASA/Johns Hopkins APL", "https://www.jhuapl.edu/news/news-releases/260312-dragonfly-integration-begins"],
+  iemWorkmanship: ["NASA harness workmanship: general routing and support principles, not verified IEM installation", "https://standards.nasa.gov/standard/NASA/NASA-STD-87394"],
   frontierPhoto: ["Frontier radio photo: Johns Hopkins APL", "https://science.nasa.gov/image-detail/amf-48b4901b-44b0-4c89-802b-0c615842aa09/"],
   frontierSpecs: ["Frontier radio specifications (eoPortal)", "https://www.eoportal.org/satellite-missions/frontier-radio"],
   lroTwta: ["LRO TWTA photo and sizes (NASA/TM-2010-216262)", "https://ntrs.nasa.gov/api/citations/20100012836/downloads/20100012836.pdf"],
@@ -105,6 +106,7 @@ const componentInfo = {
 };
 
 const connectionNotes = {
+  iem: "The first upper connector pair now has estimated service slack, four lacing ties and two face-mounted supports, guided by real NASA/APL hardware photographs and general NASA harness workmanship principles. All 26 lead endpoints, the enclosure and plug poses are unchanged; the other 24 cable paths retain their previous geometry and still need installation review. Connector face and Upper cable pair are separate focus targets. Interfaces, Harnesses / lines and Mounts remain independently removable. Routing, support attachment, cable construction and actual circuit destinations are unverified; these bends are not flight-qualified, and geometric contact does not identify a flight splice or pinout. No new attic bus, hidden electronics or thermal/electrical solver is added.",
   drams: "Connection access: Harnesses / lines hides only the two local electrical examples here. Gas / sample tubing examples hides the three estimated valve tubes, leaving valve hardware visible. Unclassified / schematic lines hides the laser/interface and GC-route sketches whose flight media and mating ports are unresolved. The short photo-inspired wire example retains both endpoints and gains estimated slack, lacing and one support against its existing enclosure. All circuit assignments, connector types and cable construction remain unverified. No new attic trunk, controller, gas-flow or cable heat-leak solver is added.",
   "sample-carousel": "Three warm-drive installation examples now have separate focus targets, metallic cans, wrapped necks, dark end caps and local electrical lead examples after NASA's real underside photo. The prior nominal can sizes and drive centers are retained estimates, not measured flight dimensions or identified motor types. Casings, Covers, Mounts, Interfaces and Harnesses / lines hide independently; hidden motor internals are not invented. Each estimated lead meets a generic side-exit example, has slack/lacing and a support under the existing baseplate, and ends before any remote controller or bus connection. Actual flight connector, conductor count, routing and complete attic network remain unverified; no qualified bend radius or cable heat-leak calculation is claimed. The top white-line example keeps its geometry and independent Unclassified / schematic lines mask; its function remains unverified. Open interior remains available. Thermal uses the shared warm equipment-bay node for the drives, not cold-attic temperature or a new per-motor solver.",
 };
@@ -211,6 +213,7 @@ export function updateLayerPanel() {
       if (selected.name === "attic") entries.splice(1, 0, "bodyFoamDevelopment", "thermal2020", "thermal", "structureFit");
       if (selected.name === "side-cameras") entries.splice(1, 0, "thermal2020", "bodyFoamTest");
       if (selected.name === "main-harness") entries.splice(1, 0, "harnessRegister", "rdeWorkmanship", "dragonCam");
+      if (selected.name === "iem") entries.splice(1, 0, "harnessRegister", "iemWorkmanship");
       if (["drams", "sample-carousel"].includes(selected.name)) entries.splice(1, 0, "atticRegister", "rdeWorkmanship");
       if (selected.name === "nose-bulkhead") entries.splice(1, 0, "structureFit", "thermal");
       if (selected.name === "nose-electronics") entries.splice(1, 0, "mimu", "mimuStudy", "ocellus", "ocellusPackaging", "sqrliReview", "ocellusReuse", "navigation", "thermal");

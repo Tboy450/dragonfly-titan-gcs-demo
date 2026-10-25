@@ -1,0 +1,501 @@
+{
+  "revision": "iem-2026-10-24-upper-service-pair",
+  "frame": "construction metres: +x starboard, +y up, +z aft",
+  "rows": [
+    {
+      "id": "iem-local-lead-1",
+      "servicePair": true,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999996,
+        -0.07409999999999997,
+        -0.055375000000000035
+      ],
+      "end": [
+        -0.086,
+        -0.27299999999999996,
+        -0.33100000000000007
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.48221771910696837,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-2",
+      "servicePair": true,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999996,
+        -0.12449999999999997,
+        -0.055375000000000035
+      ],
+      "end": [
+        -0.09000000000000008,
+        -0.27299999999999996,
+        -0.3360000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.4330439125259762,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-3",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999996,
+        -0.20064999999999997,
+        -0.055375000000000035
+      ],
+      "end": [
+        -0.094,
+        -0.27299999999999996,
+        -0.34100000000000014
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.35797563607074373,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-4",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999996,
+        -0.24229999999999996,
+        -0.055375000000000035
+      ],
+      "end": [
+        -0.08600000000000002,
+        -0.27299999999999996,
+        -0.3460000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.3385286515425363,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-5",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999996,
+        -0.06609999999999999,
+        -0.08812500000000004
+      ],
+      "end": [
+        -0.09000000000000005,
+        -0.27299999999999996,
+        -0.35100000000000003
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.471512458373528,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-6",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999996,
+        -0.10809999999999997,
+        -0.08812500000000004
+      ],
+      "end": [
+        -0.09400000000000003,
+        -0.27299999999999996,
+        -0.33100000000000007
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.408810722966393,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-7",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999996,
+        -0.21809999999999996,
+        -0.08812500000000004
+      ],
+      "end": [
+        -0.08600000000000005,
+        -0.27299999999999996,
+        -0.3360000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.3034626393023136,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-8",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.07344999999999996,
+        -0.12087500000000004
+      ],
+      "end": [
+        -0.09000000000000002,
+        -0.27299999999999996,
+        -0.3410000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.42080911199992255,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-9",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.12449999999999997,
+        -0.12087500000000004
+      ],
+      "end": [
+        -0.094,
+        -0.27299999999999996,
+        -0.3460000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.37425228507763403,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-10",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.20269999999999996,
+        -0.12087500000000004
+      ],
+      "end": [
+        -0.08600000000000005,
+        -0.27299999999999996,
+        -0.351
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.3001243243476749,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-11",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.25029999999999997,
+        -0.12087500000000004
+      ],
+      "end": [
+        -0.09000000000000002,
+        -0.27299999999999996,
+        -0.33100000000000007
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.26350463825188386,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-12",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.08249999999999999,
+        -0.15362500000000004
+      ],
+      "end": [
+        -0.09400000000000003,
+        -0.27299999999999996,
+        -0.3360000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.37364510813053525,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-13",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.19749999999999995,
+        -0.15362500000000004
+      ],
+      "end": [
+        -0.08600000000000005,
+        -0.27299999999999996,
+        -0.3410000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.2623467997578163,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-14",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.24229999999999996,
+        -0.15362500000000004
+      ],
+      "end": [
+        -0.09,
+        -0.27299999999999996,
+        -0.3460000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.2402629774645522,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-15",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.07409999999999997,
+        -0.18637500000000004
+      ],
+      "end": [
+        -0.09400000000000003,
+        -0.27299999999999996,
+        -0.3510000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.3641823304097562,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-16",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.12384999999999996,
+        -0.18637500000000004
+      ],
+      "end": [
+        -0.08600000000000002,
+        -0.27299999999999996,
+        -0.33100000000000007
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.2934405406705117,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-17",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.19989999999999997,
+        -0.18637500000000004
+      ],
+      "end": [
+        -0.09000000000000002,
+        -0.27299999999999996,
+        -0.3360000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.2221398037082926,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-18",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.06469999999999998,
+        -0.21912500000000004
+      ],
+      "end": [
+        -0.09400000000000003,
+        -0.27299999999999996,
+        -0.3410000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.33040799073471105,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-19",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.10069999999999998,
+        -0.21912500000000004
+      ],
+      "end": [
+        -0.08600000000000005,
+        -0.27299999999999996,
+        -0.3460000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.29885414523061754,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-20",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.20204999999999995,
+        -0.21912500000000004
+      ],
+      "end": [
+        -0.09000000000000002,
+        -0.27299999999999996,
+        -0.35100000000000003
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.20224997439753495,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-21",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11599999999999999,
+        -0.25029999999999997,
+        -0.21912500000000004
+      ],
+      "end": [
+        -0.094,
+        -0.27299999999999996,
+        -0.33100000000000007
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.16561425852660527,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-22",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11600000000000002,
+        -0.07409999999999997,
+        -0.25187500000000007
+      ],
+      "end": [
+        -0.086,
+        -0.27299999999999996,
+        -0.3360000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.28235704826904195,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-23",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11600000000000002,
+        -0.12449999999999997,
+        -0.25187500000000007
+      ],
+      "end": [
+        -0.09000000000000002,
+        -0.27299999999999996,
+        -0.3410000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.2367798441886629,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-24",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11600000000000002,
+        -0.07904999999999995,
+        -0.284625
+      ],
+      "end": [
+        -0.094,
+        -0.27299999999999996,
+        -0.3460000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.2550693956765214,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-25",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11600000000000002,
+        -0.19609999999999997,
+        -0.284625
+      ],
+      "end": [
+        -0.086,
+        -0.27299999999999996,
+        -0.3510000000000001
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.14250893130248557,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    },
+    {
+      "id": "iem-local-lead-26",
+      "servicePair": false,
+      "confidence": "EST",
+      "flightMatingConfirmed": false,
+      "start": [
+        -0.11600000000000002,
+        -0.23809999999999998,
+        -0.284625
+      ],
+      "end": [
+        -0.09000000000000002,
+        -0.27299999999999996,
+        -0.33100000000000007
+      ],
+      "radiusM": 0.0045,
+      "lengthM": 0.09357513316165708,
+      "limits": "Photo-inspired model lead only; connector identity, flight destination and electrical topology unverified."
+    }
+  ],
+  "missing": "Remaining 24 local leads retain prior paths; full IEM installation, redundancy and circuit identities remain unresolved. Bay branch endpoints unchanged."
+}

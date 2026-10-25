@@ -10,6 +10,13 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+Latest October24 installation: [IEM upper pair](research/iem-service-bends-2026-10-24/README.md).
+First two existing leads gain estimated slack, lacing/supports and two focus targets.
+All26 endpoints, enclosure, main harness and other24 curves preserved exactly.580 tests
+pass; browser focus/masks/phone/Pilot/model-switch checks pass with zero errors.
+Archive/source comparison saved. This does NOT finish the full IEM or avionics harness.
+Next: existing lower pair indices2/3, same photo/scale and endpoint preservation process.
+
 Latest October24 source gate: [sampling electronics role/coverage audit](research/sampling-electronics-2026-10-24/README.md).
 Public roles documented for IEM, PSUs, DrACO avionics, DraMS main/laser electronics and
 carousel drives. New expandable panel exposes gaps and four existing inspection targets.
@@ -1020,7 +1027,12 @@ statuses: initial part, installation, construction access, and final UI/integrat
   mounting zone, actual mating interfaces and supported routes; not the IEM or a carousel motor.
 - [ ] **DraMS LEU accommodation:** real NASA EM photo now saved; exact flight external case,
   scale/location and interfaces still needed. Do not conflate LEU, DraMS MEB and Ocellus MEB.
-- [ ] **IEM local connector installation:** next bounded pass; audit its existing service
+- [x] **IEM first upper pair (Codex, October24):** estimated service bows/lacing/supports,
+  all26 endpoints retained; two focuses, independent masks, archive and real/CAD/model
+  comparison. [Scoped results and limits](research/iem-service-bends-2026-10-24/README.md).
+- [ ] **IEM remaining24 local leads:** next first-column lower pair indices2/3, then other
+  groups. Preserve completed upper pair and all endpoints; no new flight circuit assignments.
+- [ ] **Complete IEM local connector installation:** audit remaining service
   bends, lacing and support contact without moving the photo-referenced enclosure or claiming
   circuit identity. Keep main-branch/stub endpoints from the current bay register.
 - [x] **Attic local-line audit / DraMS short wire (Codex, October23):** eight examples

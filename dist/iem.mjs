@@ -15,7 +15,7 @@ import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 // connector counts, depth and the wall it is on (port, with the PSU on its left as seen from
 // inside, as photographed) are [EST]. Red handling handles are not drawn.
 export const iemAsset = Object.freeze({
-  revision: "iem-2026-10-13b",
+  revision: "iem-2026-10-24-upper-service-pair",
   widthM: 0.28, heightM: 0.28, depthM: 0.22,
   // Back against the port wall (cavity edge about x -0.36), on the bay floor [EST].
   position: Object.freeze([-0.244, -0.284, -0.17]),
@@ -26,6 +26,12 @@ export const iemAsset = Object.freeze({
 
 // Micro-D (MIL-DTL-83513) overall flange length by contact count, from Glenair's table [PUB].
 const microD = { 15: 0.0238, 25: 0.0302, 37: 0.0378, 51: 0.0365 };
+
+export const iemServiceAsset = Object.freeze({
+  leadIndices: Object.freeze([0, 1]), radiusM: .0045,
+  bowDepthsM: Object.freeze([.035, .048]), supportFractions: Object.freeze([.70, .78]),
+  confidence: "EST: local service installation, not an identified flight circuit or qualified bend",
+});
 
 export function buildIem({ parent, mesh }) {
   const { widthM: W, heightM: H, depthM: D, position, yaw } = iemAsset;
@@ -43,6 +49,11 @@ export function buildIem({ parent, mesh }) {
   const mounts = group("iem-mounts", "mounts");
   const connectors = group("iem-connectors", "interfaces");
   const harness = group("iem-harness", "harnesses");
+  connectors.userData.inspectionLabel = "Connector face (layout estimate)";
+  const servicePair = new THREE.Group(); servicePair.name = "iem-upper-service-pair";
+  Object.assign(servicePair.userData, { inspectionLabel: "Upper cable pair (installation estimate)",
+    inspectionMinimumRadiusM: .12, flightMatingConfirmed: false });
+  harness.add(servicePair);
   const black = new THREE.MeshStandardMaterial({ color: 0x16181a, roughness: 0.6, metalness: 0.3 });
   const plate = new THREE.MeshStandardMaterial({ color: 0xc4c9cc, roughness: 0.32, metalness: 0.72 });
   const windowMat = new THREE.MeshStandardMaterial({ color: 0x0d0e10, roughness: 0.75, metalness: 0.2 });
@@ -61,9 +72,9 @@ export function buildIem({ parent, mesh }) {
     if (axis === "z") part.rotation.x = Math.PI / 2;
     part.name = name; return part;
   };
-  const tube = (points, radius, material, target, name) => {
+  const tube = (points, radius, material, target, name, segments = 20) => {
     const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)), false, "centripetal");
-    const part = mesh(new THREE.TubeGeometry(curve, 20, radius, 6, false), material, [0, 0, 0], target);
+    const part = mesh(new THREE.TubeGeometry(curve, segments, radius, 6, false), material, [0, 0, 0], target);
     part.name = name; return part;
   };
   const finH = 0.012, bodyH = H - finH, face = -D / 2;
@@ -138,12 +149,43 @@ export function buildIem({ parent, mesh }) {
   // gather at one end into a trunk (silver-wrapped, as photographed) [EST routes].
   const z0 = face - 0.024;
   plugs.forEach(([x, y, len], i) => {
-    box([0.011, len + 0.004, 0.014], [x, y, face - 0.017], wrap, harness, "iem-harness-backshell");
-    box([0.012, 0.016, 0.003], [x, y - len / 2 - 0.012, z0 + 0.004], tag, harness, "iem-harness-label");
+    const service = iemServiceAsset.leadIndices.includes(i), target = service ? servicePair : harness;
+    const backshell = box([0.011, len + 0.004, 0.014], [x, y, face - 0.017], wrap, target, "iem-harness-backshell");
+    const label = box([0.012, 0.016, 0.003], [x, y - len / 2 - 0.012, z0 + 0.004], tag, target, "iem-harness-label");
+    backshell.userData.connectionId = label.userData.connectionId = `iem-local-lead-${i + 1}`;
     const run = -PW / 2 - 0.015 - (i % 5) * 0.005;
-    tube([[x, y - len / 2, z0 + 0.006], [x, y - len / 2 - 0.03, z0 - 0.004], [x, 0.018, z0 - 0.016], [(x + run) / 2, 0.011, z0 - 0.022], [run, 0.011, z0 - 0.024 + (i % 3) * 0.004]],
-      0.0045, wrap, harness, "iem-harness-cable");
+    const end = [run, 0.011, z0 - 0.024 + (i % 3) * 0.004];
+    const start = [x, y - len / 2, z0 + 0.006];
+    const depth = iemServiceAsset.bowDepthsM[i];
+    const side = i === 1 ? -.02 : .006;
+    const points = service ? [start, [x + (i === 1 ? -.014 : 0), start[1] - .014, z0 - .012],
+      [x + side, start[1] - .05, z0 - depth], [x + side, .04, z0 - depth],
+      [x + side, .035, z0 - depth], [(x + run) / 2, .035, z0 - depth],
+      [run + .025, .028, z0 - depth], end] :
+      [start, [x, y - len / 2 - .03, z0 - .004], [x, .018, z0 - .016], [(x + run) / 2, .011, z0 - .022], end];
+    const cable = tube(points, iemServiceAsset.radiusM, wrap, target, "iem-harness-cable", service ? 80 : 20);
+    Object.assign(cable.userData, { connectionId: `iem-local-lead-${i + 1}`, servicePair: service,
+      routeConfidence: "EST", flightMatingConfirmed: false });
+    if (!service) return;
+    const path = cable.geometry.parameters.path;
+    label.position.copy(path.getPointAt(.12));
+    label.position.x -= .009;
+    label.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), path.getTangentAt(.12));
+    for (const fraction of [.25, .52]) {
+      const tie = mesh(new THREE.TorusGeometry(.0056, .00065, 6, 20), tag, path.getPointAt(fraction).toArray(), target);
+      tie.name = "iem-service-lacing";
+      tie.userData.connectionId = cable.userData.connectionId;
+      tie.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), path.getTangentAt(fraction));
+    }
+    // [EST] low face-mounted stand-off: no new panel hole or verified flight fastener.
+    const p = path.getPointAt(iemServiceAsset.supportFractions[i]);
+    const foot = box([.012, .008, .003], [p.x, p.y - .0055, face - .0055], steel, mounts, "iem-service-support-foot");
+    const stand = box([.006, .002, face - .007 - p.z], [p.x, p.y - .0055, (face - .007 + p.z) / 2], steel, mounts, "iem-service-support-stand");
+    foot.userData.connectionId = stand.userData.connectionId = cable.userData.connectionId;
+    const clip = mesh(new THREE.TorusGeometry(.0055, .0008, 6, 20), tag, p.toArray(), mounts);
+    clip.name = "iem-service-clip"; clip.userData.connectionId = cable.userData.connectionId;
+    clip.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), path.getTangentAt(iemServiceAsset.supportFractions[i]));
   });
   for (const k of [0, 1, 2]) box([0.016, 0.014, 0.012], [-PW / 2 - 0.026, 0.01, z0 - 0.024 + k * 0.007], kapton, harness, "iem-harness-tie");
-  return { assembly, chassis, mounts, connectors, harness };
+  return { assembly, chassis, mounts, connectors, harness, servicePair };
 }

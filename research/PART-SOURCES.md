@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**IEM upper service pair (Codex, October24):** [comparison, register and limits](iem-service-bends-2026-10-24/README.md).
+Reuses saved real NASA/APL IEM integration and NASA/APL/Ed Whitman testing photographs.
+TFAWS2023 slide3 is CAD arrangement only; NASA workmanship pp29-31 are general principles,
+not flight qualification. Two existing leads refined; all26 endpoints fixed. Other24
+paths and enclosure unchanged; circuit identities and full wiring remain open.
+
 **Sampling-electronics source gate (Codex, October24):** [reviewed roles, gaps and sources](sampling-electronics-2026-10-24/README.md).
 New saved NASA GSFC LEU engineering-model webpage/photo and ICES2024-103 p2 thermal
 schematic. Reuses real IEM/PSU and carousel photographs; Blue Origin confirms DrACO's

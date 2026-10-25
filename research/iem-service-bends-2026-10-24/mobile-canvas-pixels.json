@@ -1,0 +1,11 @@
+{
+  "method": "saved mobile canvas screenshot crop, not a framebuffer readback",
+  "cropPx": [
+    65,
+    80,
+    295,
+    315
+  ],
+  "uniqueColors": 10646,
+  "nonblank": true
+}

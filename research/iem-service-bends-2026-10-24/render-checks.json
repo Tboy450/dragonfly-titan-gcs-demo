@@ -1,0 +1,38 @@
+[
+  {
+    "client": 1265,
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "273503",
+    "scroll": 1265,
+    "version": "current",
+    "view": "whole"
+  },
+  {
+    "client": 1265,
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "280473",
+    "scroll": 1265,
+    "version": "before",
+    "view": "whole"
+  },
+  {
+    "client": 1265,
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "274963",
+    "scroll": 1265,
+    "version": "draft",
+    "view": "whole"
+  },
+  {
+    "client": 1265,
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "273503",
+    "scroll": 1265,
+    "version": "current",
+    "view": "whole"
+  }
+]

@@ -39,6 +39,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-24: Refine only the IEM upper service pair
+- **Signed:** Codex (OpenAI).
+- **Commit:** Refine IEM upper service pair with preserved endpoints.
+- **What:** two existing leads gain estimated service slack, four lacing ties and two
+  face-mounted supports; labels follow wires. Separate connector-face/pair focuses and
+  existing independent Interfaces/Harnesses/Mounts. Accuracy notes/source links expanded.
+- **Preservation:** all26 endpoints/radii, enclosure/plug poses and other24 paths exact;
+  main harness, neighbors, physics and game untouched. Baseline code/UI/test and pictures,
+  rejected draft and recovery tag saved under archive/iem-service-bends-2026-10-24.
+- **Evidence:** real NASA/APL integration/testing photos, general NASA workmanship;
+  CAD arrangement only. No flight route, circuit, pinout or qualified bend claimed.
+- **Checks:**580 tests pass. Actual geometry checks caught label/pair crowding and a floor
+  bundle clash; adjusted only the new paths/labels, with unchanged existing harness-test exemptions.
+  Browser: both focuses, independent masks, Restore/Open interior, Internal/Thermal,
+  original model/Pilot and375px client/scroll widths,24 numbered parts, zero errors.
+  Real/CAD/before/after, desktop/mobile and endpoint JSON saved in research.
+- **Next:** first-column lower pair indices2/3. Other24 IEM leads and complete networks
+  remain open; do not repeat the attic bus search or rebuild the enclosure.
+
 ### 2026-10-24: Confirm sampling-coverage publication and model-switch regression
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record live sampling-coverage acceptance [skip ci].

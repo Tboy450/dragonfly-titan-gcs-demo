@@ -1,0 +1,127 @@
+[
+  [
+    {
+      "checked": true,
+      "id": "inspection-part-equipment-casings"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-equipment-covers"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-mounts"
+    },
+    {
+      "checked": false,
+      "id": "inspection-part-interfaces"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-harnesses"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-plumbing"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-unclassified-lines"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-insulation"
+    }
+  ],
+  [
+    {
+      "checked": true,
+      "id": "inspection-part-equipment-casings"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-equipment-covers"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-mounts"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-interfaces"
+    },
+    {
+      "checked": false,
+      "id": "inspection-part-harnesses"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-plumbing"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-unclassified-lines"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-insulation"
+    }
+  ],
+  [
+    {
+      "checked": true,
+      "id": "inspection-part-equipment-casings"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-equipment-covers"
+    },
+    {
+      "checked": false,
+      "id": "inspection-part-mounts"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-interfaces"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-harnesses"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-plumbing"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-unclassified-lines"
+    },
+    {
+      "checked": true,
+      "id": "inspection-part-insulation"
+    }
+  ],
+  {
+    "part": "iem",
+    "selected": "iem-connectors"
+  },
+  {
+    "part": "iem",
+    "selected": "iem-upper-service-pair"
+  },
+  {
+    "mobile": {
+      "client": 375,
+      "scroll": 375
+    },
+    "parts": 24,
+    "target": "iem-upper-service-pair"
+  },
+  {
+    "originalInspectorHidden": true
+  },
+  {
+    "pilotSelected": "true",
+    "errors": []
+  }
+]
