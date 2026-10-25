@@ -16,6 +16,8 @@ and main harness are unchanged. Third focus, attached labels and connector-clear
 583 tests pass, desktop/mobile and six focus cases verified, zero browser errors.
 Next: second card column indices4/5/6 (three existing leads). Earlier next-step notes below
 are historical; do not repeat the now-finished first-column lower pair.
+Published **38f297e**, Pages40159761299 succeeded. Live three-focus/accuracy/source/count
+checks pass without errors; public sample/JSON saved. Preview and watcher stopped.
 
 Latest October24 installation: [IEM upper pair](research/iem-service-bends-2026-10-24/README.md).
 First two existing leads gain estimated slack, lacing/supports and two focus targets.

@@ -66,6 +66,15 @@ Archive and restore: [iem-lower-pair-2026-10-24](../../archive/iem-lower-pair-20
 tag `archive/iem-lower-pair-2026-10-24` on `7a50d2e`. Rejected low-support draft is retained
 with its picture. No unrelated files changed.
 
+## Publication Receipt
+
+Build **38f297e** (`38f297e0d152cd04b5006d779526d9e4bceac73d`) published successfully
+through Pages run **40159761299**, including its full test step. Normal public navigation
+verified all three focus values, the updated22-remaining accuracy note, five source links,
+24 numbered parts, matching desktop client/scroll width and zero browser errors.
+Evidence: `public-38f297e-checks.json` and `public-38f297e-lower.png`. Recovery tag pushed;
+local preview and deployment watcher stopped. Public app retained at lower-pair inspection.
+
 ## Next / Handoff
 
 Next bounded group: second card column, existing indices4/5/6 (three leads). Keep all four

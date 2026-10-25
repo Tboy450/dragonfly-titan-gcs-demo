@@ -1,0 +1,31 @@
+[
+  {
+    "part": "iem",
+    "target": "iem-connectors"
+  },
+  {
+    "part": "iem",
+    "target": "iem-upper-service-pair"
+  },
+  {
+    "part": "iem",
+    "target": "iem-lower-service-pair"
+  },
+  {
+    "build": "Build 38f297e · 2026-10-24",
+    "client": 1265,
+    "parts": 24,
+    "remaining22Note": true,
+    "scroll": 1265,
+    "sourceLinks": [
+      "https://www.jhuapl.edu/news/news-releases/260312-dragonfly-integration-begins",
+      "https://github.com/Tboy450/dragonfly-titan-gcs-demo/blob/main/research/harness-endpoints-2026-10-23/ENDPOINTS.md",
+      "https://standards.nasa.gov/standard/NASA/NASA-STD-87394",
+      "https://science.nasa.gov/blogs/dragonfly/2026/03/10/nasas-dragonfly-mission-begins-rotorcraft-integration-testing-stage/",
+      "https://dragonfly.jhuapl.edu/What-Is-Dragonfly/Spacecraft-and-Science-Payload.php"
+    ]
+  },
+  {
+    "errors": []
+  }
+]

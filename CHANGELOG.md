@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-24: Confirm lower-IEM publication and handoff
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record live lower-IEM acceptance [skip ci].
+- **Release:**38f297e0d152cd04b5006d779526d9e4bceac73d; Pages40159761299 succeeded.
+- **Checks:**583 local tests and workflow checks pass. Normal public navigation confirms
+  all three focuses,22-remaining note, five source links,24 parts and zero browser errors.
+  Live screenshot/JSON saved with research. Preview/watcher stopped; archive tag pushed.
+- **Next:** second card column indices4/5/6. Keep four completed leads and all endpoints
+  fixed;22 legacy leads and full flight interface identity remain open.
+
 ### 2026-10-24: Refine IEM lower pair without moving the completed upper installation
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine IEM lower service pair and preserve upper installation.
