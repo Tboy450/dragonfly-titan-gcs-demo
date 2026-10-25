@@ -1,0 +1,28 @@
+{
+  "build": "Build a68e08a · 2026-10-25",
+  "before": {
+    "canvas": {
+      "bottom": 553.9000091552734,
+      "height": 387.2000122070313,
+      "left": 342.8000183105469,
+      "right": 913.8500061035156,
+      "top": 166.6999969482422,
+      "width": 571.0499877929688,
+      "x": 342.8000183105469,
+      "y": 166.6999969482422
+    },
+    "parts": 24,
+    "scrollY": 598.4000244140625
+  },
+  "after": {
+    "rotate": "true",
+    "scrollY": 598.4000244140625,
+    "tooltip": "Left-drag to rotate; right-drag or Shift+arrows to pan; mouse wheel to zoom; Ctrl+wheel zooms the page",
+    "zoom": "100%"
+  },
+  "wheel": {
+    "scrollY": 598.4000244140625,
+    "zoom": "124%"
+  },
+  "errors": []
+}

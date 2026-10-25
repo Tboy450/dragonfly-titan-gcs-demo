@@ -10,10 +10,11 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-October25: [right-drag inspection pan](research/inspection-pan-2026-10-25/README.md).
+Published build **a68e08a**: [right-drag inspection pan](research/inspection-pan-2026-10-25/README.md).
 With Rotate selected: left drag rotates, right drag pans, wheel zooms. Shift+arrows
 also pan; focus/reset recenter.628 tests pass. Hardware and flight are unchanged.
 OneDrive warning handoff and command-local no-cleanup Git flags are recorded there.
+Pages40222640031 succeeded; live pan/zoom/24-part checks pass without browser errors.
 
 Previous published build **051c9d9**: [inspection controls](research/inspection-controls-2026-10-25/README.md).
 Rotate-selected mouse-wheel zoom; layer selector above the viewport; Interior c adds

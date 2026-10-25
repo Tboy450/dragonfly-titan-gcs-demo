@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Verify inspection-pan publication
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record inspection pan publication receipt [skip ci].
+- **Published:**a68e08abc942dd7339e55557ef6e15e0daf09097; Pages40222640031 succeeded.
+- **Checks:**628 tests; live build/tooltip, keyboard-equivalent pan, wheel zoom,
+  stable page position,24 parts and zero errors. Public screenshot/JSON saved.
+  Right-drag listener behavior covered by UI harness; native right-hold automation
+  unavailable. Recovery tag pushed; preview stopped. Git automatic cleanup disabled
+  for publication/receipt commands. No hardware or flight changes.
+
 ### 2026-10-25: Right-drag inspection pan
 - **Signed:** Codex (OpenAI).
 - **Commit:** Add right-drag inspection panning.

@@ -17,6 +17,9 @@ October25: [inspection pan](research/inspection-pan-2026-10-25/README.md).
 Hardware unchanged; next IEM15/16/17. IMPORTANT: after OneDrive's mass-deletion
 warning owner chose Keep. Use `git -c gc.auto=0 -c maintenance.auto=false` for writes;
 do not clean/prune or approve/suppress OneDrive deletion prompts.
+Publisheda68e08a, Pages40222640031 succeeded; live sample/JSON saved,24 parts,
+zero errors.628 tests pass; recovery tag pushed and preview stopped. No automatic
+cleanup during publication. Hardware next remains15/16/17.
 
 October25 UI request: [inspection controls](research/inspection-controls-2026-10-25/README.md).
 - [x] Rotate-selected mouse-wheel zoom, without hijacking normal scroll/browser zoom.

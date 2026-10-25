@@ -40,3 +40,13 @@ For this pass, all Git writes/network maintenance use command-local
 `git -c gc.auto=0 -c maintenance.auto=false ...`.
 Do not run cleanup/prune or approve/suppress OneDrive's deletion warning.
 No global/repository configuration is changed.
+
+## Publication Receipt
+
+Source `a68e08abc942dd7339e55557ef6e15e0daf09097`, Pages run40222640031 succeeded.
+The live stamp/tooltip and24 parts are verified. Keyboard-equivalent pan kept
+pageY598.4 at100%; wheel zoom reached124% with page position unchanged, then
+returned to100%. Zero browser errors. `public.png` and `public-checks.json`
+record this live sample.628 tests pass locally and in deployment.
+Recovery tag pushed; temporary preview/server stopped. Both publication and
+receipt Git commands disable automatic maintenance; no cleanup was invoked.
