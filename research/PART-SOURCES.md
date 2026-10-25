@@ -6,6 +6,11 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**IEM fourth-column IDs12-14 (Codex, October25):** [scope/measurements](iem-fourth-column-2026-10-25/README.md).
+Uses the existing NASA/APL/Ed Whitman photo and shared NASA workmanship/CAD records below;
+no new flight photograph identified and no duplicate comparison sheet made. Installation
+remains EST. Owner clarified source reuse is preferred unless a new detail needs research.
+
 **IEM third-column lower IDs 10/11 (Codex, October25):** [real/CAD/model evidence](iem-third-lower-2026-10-25/README.md).
 Rechecked NASA/APL March2026 testing and active NASA-STD-8739.4A Change4 records. Reuses
 credited saved real photo/crop and workmanship pages; TFAWS2023 CAD is arrangement only.

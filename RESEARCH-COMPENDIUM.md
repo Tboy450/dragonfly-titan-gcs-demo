@@ -4,6 +4,12 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October25 fourth IEM column (Codex):** [measured record](research/iem-fourth-column-2026-10-25/README.md).
+Reuses shared real-photo/workmanship/CAD records without duplicate comparison imagery.
+[EST] three accommodation routes/labels/supports/lacing. [CALC] all26 endpoints/radii and
+eleven reviewed routes/fittings exact; sampled gaps3.0/3.1/3.1mm,619 tests pass. Fourteen
+reviewed,twelve open. Original whole-bay/envelope limits retained; terminal overlap open.
+
 **October25 IEM third lower pair (Codex):** [sources/checks/samples](research/iem-third-lower-2026-10-25/README.md).
 Real NASA/APL testing and NASA workmanship primary records rechecked; CAD context only.
 [EST] two local accommodation routes/labels/supports/lacing. [CALC] all 26 endpoints/radii

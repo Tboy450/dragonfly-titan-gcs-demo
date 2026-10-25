@@ -39,6 +39,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Refine IEM fourth-column leads 12-14
+- **Signed:** Codex (OpenAI).
+- **Commit:** Refine fourth-column IEM routes with shared reference evidence.
+- **What:** three EST routes/labels, three supports/six ties, seventh non-nested focus;
+  all eleven completed routes/fittings and26 endpoints/radii preserved. Fourteen reviewed,
+  twelve remain. Existing disclosures updated; no game/save/solver changes.
+- **Checks:**619 tests pass, sampled gaps3.0/3.1/3.1mm; original main-harness, envelope and
+  contact bounds unchanged. Recovery baseline/tag and rejected support parameters saved.
+- **Process:** shared source images/credits reused; no duplicate real/CAD comparison.
+  New offline research corridor search screens candidate geometry, never flight circuits.
+- **Browser:** new focus in Internal/Thermal, whole IEM, hide/Restore, phone375/375px,
+  mock/Exterior hiding and Pilot return pass; all24 parts, zero errors.
+- **Next:** fifth column15/16/17. Terminal overlap, remote mating and qualified bends open.
+
 ### 2026-10-25: Verify third-column lower publication
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record third-column lower publication receipt [skip ci].

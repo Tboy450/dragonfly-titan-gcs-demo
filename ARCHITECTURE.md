@@ -43,6 +43,13 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October25 fourth-column continuation: IDs12-14, labels and18 EST fitting meshes only;
+`iemFourthColumnAsset` stores three local waypoint/fitting records. Short resampled controls
+limit spline overshoot; seventh focus uses existing inspector. New exact-baseline tests
+preserve eleven completed routes/fittings. Main-harness/envelope/contact limits unchanged.
+Offline corridor-search utility is research-only, not an app dependency or flight solver.
+Owner clarified: reuse unchanged source imagery; no repeated per-column comparison sheets.
+
 October25 third-lower continuation: only IDs 10/11 and attached labels change, plus twelve
 EST fitting meshes and a sixth non-nested focus. `iemThirdLowerAsset` holds the fractions.
 New baseline fingerprint covers all nine completed routes/fittings and unrelated geometry;

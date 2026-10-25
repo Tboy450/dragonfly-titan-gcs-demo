@@ -10,6 +10,18 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+Latest October25: [fourth column, IDs12-14](research/iem-fourth-column-2026-10-25/README.md).
+- [x] Three separated estimated routes/attached labels, three supports, six ties and seventh focus.
+- [x] Preserve all eleven completed routes/fittings and26 endpoints;619 tests pass.
+- [x] Keep original main-harness, IEM envelope and gathering/contact limits unchanged.
+- [x] New focus in Internal/Thermal, whole IEM, hide/Restore and compatibility;24 parts,
+  phone375/375px client/scroll, zero errors. Shared reference records reused.
+- [ ] Next: fifth column IDs15/16/17; fourteen reviewed, twelve still open.
+Owner's process clarification: reuse source records/photos unless resolving a new detail.
+Do not duplicate real/CAD comparison sheets per cable or column. One current model sample
+and concise measured evidence are enough; retain baseline/rejected parameters for recovery.
+Terminal bundle overlap, actual circuits, full harness and qualified bends remain open.
+
 Latest October25: [third-column lower IDs 10/11](research/iem-third-lower-2026-10-25/README.md)
 complete the third card column as an installation estimate. Two routes/labels, two supports,
 four ties and a sixth focus; all nine completed routes and 26 endpoints remain exact.
@@ -18,7 +30,7 @@ about 4.4/2.5 mm; inherited terminal overlaps and flight mating remain unresolve
 Desktop/phone, 12 focus cases and hide/Restore pass; all 24 parts retained, zero browser errors.
 Real/CAD/model and full-component samples, recovery tag and rejected draft saved.
 - [x] Refine third-column lower pair IDs 10/11 as explicitly estimated installation examples.
-- [ ] Next: fourth card column IDs 12/13/14; preserve all eleven completed routes/fittings.
+- [x] Fourth card column IDs 12/13/14; completed by the later pass above.
 Eleven reviewed, 15 remain. Earlier next-step notes below are historical, not current tasks.
 Published **2491558**, Pages 40211931773 succeeded. Live build/six focuses, eleven-reviewed/
 15-open notes, five links and all 24 parts verified without errors. Public full-IEM sample

@@ -1,0 +1,11 @@
+{
+  "scope": "Unpublished support-14 candidates; not flight hardware",
+  "builder": "dist/iem.mjs, fourth-column support block",
+  "fraction": 0.25,
+  "normal": [0,0,-1],
+  "candidates": [
+    {"foot": "[p.x,p.y,face-.004]", "failure": "post intersects new lead 13"},
+    {"foot": [-0.030,0.065,-0.114], "failure": "post intersects completed lead 3"}
+  ],
+  "restore": "In a review-only checkout, substitute either foot in the current fourth-column support block. Curves/endpoints are unchanged. Run the fourth-column and avionics installation tests to reproduce failures. Do not publish these rejected candidates."
+}

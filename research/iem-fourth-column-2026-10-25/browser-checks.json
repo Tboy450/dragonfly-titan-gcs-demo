@@ -1,0 +1,37 @@
+{
+  "collapsedDefault": true,
+  "focuses": [
+    {
+      "layer": "internal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-fourth-column"
+    },
+    {
+      "layer": "thermal",
+      "access": "open",
+      "isolate": true,
+      "part": "iem",
+      "target": "iem-fourth-column"
+    }
+  ],
+  "hidden": {
+    "harnesses": false,
+    "mounts": false
+  },
+  "restored": {
+    "harnesses": true,
+    "mounts": true
+  },
+  "phone": {
+    "client": 375,
+    "parts": 24,
+    "scroll": 375,
+    "wholeComponent": true
+  },
+  "exteriorHidden": true,
+  "mockHidden": true,
+  "pilot": true,
+  "errors": []
+}
