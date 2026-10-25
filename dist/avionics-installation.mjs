@@ -6,8 +6,8 @@ export const installationSources=Object.freeze({
 });
 export const installationFamilies=Object.freeze([
  {id:"iem",name:"IEM installation",source:"lander",inspect:"iem",subassembly:"iem-second-column",azimuth:-2.9,elevation:.35,
-  role:"The second-column middle lead has a separated estimated service bend, attached label, support and two lacing ties. Its neighboring supports and the completed first column remain fixed.",
-  modeled:"Five of 26 local routes reviewed; 21 remain. All endpoints stay fixed. Free-span clearance is sampled, but the inherited terminal bundle still overlaps. Actual flight mating and bend qualification remain unknown."},
+  role:"All three second-column leads now have separated estimated service bends, attached labels, one support and two lacing ties each. The completed first column and middle-lead geometry remain fixed.",
+  modeled:"Seven of 26 local routes reviewed; 19 remain. All endpoints stay fixed. Free-span clearance is sampled, but the inherited terminal bundle still overlaps. Actual flight mating and bend qualification remain unknown."},
  {id:"power-units",name:"PSU installations",source:"lander",inspect:"power-units",subassembly:"psu-1",azimuth:-1.8,elevation:.35,
   role:"One existing lead per PSU gains an estimated support and lacing. PSU 1 and PSU 2 now have separate inspection targets.",
   modeled:"All 26 cable curves and both enclosures are unchanged. Most local leads, actual circuits and PSU 2's flight accommodation remain unresolved."},
@@ -22,7 +22,7 @@ export const installationFamilies=Object.freeze([
   modeled:"Enclosure, cells, internal bus bars and all lead endpoints are unchanged. The appearance reference is a sub-scale test module, not the flight pack."},
 ].map(row=>Object.freeze({...row,confidence:"EST",flightMatingConfirmed:false})));
 export const installationLimits=Object.freeze({
- scope:"Illustrative installation work on five equipment families, not a complete flight wiring diagram. Equipment poses and all cable endpoints are retained; IEM lead 6 now has a separated local service route.",
+ scope:"Illustrative installation work on five equipment families, not a complete flight wiring diagram. Equipment poses and all cable endpoints are retained; the first two IEM card columns have reviewed local service routes.",
  naming:"Supports, lacing and retention hardware are installation estimates. The reference photographs do not establish their exact flight construction.",
  boundary:"Geometric contact does not assign a circuit, pinout or qualified bend radius. No electrical, cable heat-leak or structural solver is added.",
 });

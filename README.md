@@ -10,7 +10,12 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-Published build **95d5f89**: [IEM middle-lead route](research/iem-middle-lead-2026-10-25/README.md).
+Latest model work: [IEM second-column upper/lower routes](research/iem-second-column-2026-10-25/README.md).
+Both routes, labels and their own fittings are refined around the unchanged middle lead.
+All 26 endpoints and unrelated geometry stay fixed; 604 tests pass. Seven local routes
+reviewed, 19 still open. Terminal bundle overlaps and actual flight circuits remain unresolved.
+
+Previous published build **95d5f89**: [IEM middle-lead route](research/iem-middle-lead-2026-10-25/README.md).
 One overlapping lead now has a separated estimated service bend, attached label, support
 and two ties. All 26 endpoints and other geometry stay fixed; 599 tests pass. Five local
 routes reviewed, 21 remain; the inherited terminal bundle overlaps are explicitly open.

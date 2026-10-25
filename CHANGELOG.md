@@ -39,6 +39,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Refine IEM second-column upper/lower service routes
+- **Signed:** Codex (OpenAI).
+- **Commit:** Refine IEM second-column routes around the completed middle lead.
+- **What:** IDs 5/7 gain separated bends, attached labels, refitted supports and two ties
+  each. First column, middle installation, enclosure, floor harness and all endpoints exact.
+  Existing focus/layer controls reused; coverage now seven reviewed routes, 19 open.
+- **Evidence:** existing real NASA/APL testing imagery and general NASA workmanship
+  context, CAD for arrangement only. All new routes/fittings remain EST, not flight wiring.
+  Exact baseline, two rejected drafts, comparison/detail images and endpoint register saved.
+- **Checks:** 604 tests pass; sampled free-span gaps about 3.1/4.9 mm. Actual triangle,
+  support, label, original envelope and main-harness checks pass without larger tolerances.
+  Inherited terminal overlap and the exact gathering exclusion remain explicitly unresolved.
+  Eight Internal/Thermal focus cases, removable masks/Restore and mode switches pass;
+  24 parts, 375 px phone client/scroll widths and zero browser errors verified.
+- **Next:** third-column upper pair IDs 8/9, then lower 10/11; preserve seven reviewed routes.
+
 ### 2026-10-25: Retain the settled public IEM sample
 - **Signed:** Codex (OpenAI).
 - **Commit:** Save settled IEM public inspection sample [skip ci].

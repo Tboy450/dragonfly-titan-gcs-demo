@@ -1,0 +1,51 @@
+[
+  {
+    "name": "before",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "249300",
+    "version": "before"
+  },
+  {
+    "name": "current",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "249115",
+    "version": "current"
+  },
+  {
+    "name": "side",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "317030",
+    "version": "current"
+  },
+  {
+    "name": "upper-support",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "815490",
+    "version": "current"
+  },
+  {
+    "name": "lower-support",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "813559",
+    "version": "current"
+  },
+  {
+    "name": "draft-shared",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "249104",
+    "version": "draft"
+  },
+  {
+    "name": "draft-low",
+    "engine": "three.js r180",
+    "nonblank": "true",
+    "pixelCount": "249078",
+    "version": "draft"
+  }
+]

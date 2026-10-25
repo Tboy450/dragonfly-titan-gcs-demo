@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**IEM second-column upper/lower (Codex, October25):** [real/CAD/model comparison](iem-second-column-2026-10-25/README.md).
+Same real NASA/APL/Ed Whitman testing photo/crop; saved TFAWS2023 CAD is context only.
+NASA workmanship guides relief/support principles, not flight routes or qualification.
+IDs 5/7 and their own fittings refined; all endpoints and completed middle lead fixed.
+Primary source URLs, credits, limits and archive links are in the research record.
+
 **IEM middle lead (Codex, October25):** [real/CAD/model comparison and credits](iem-middle-lead-2026-10-25/README.md).
 Reuses real NASA/APL/Ed Whitman testing photo with a saved crop; TFAWS2023 CAD slide is
 arrangement context only. NASA workmanship record rechecked, not flight qualification.

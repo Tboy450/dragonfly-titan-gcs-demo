@@ -4,6 +4,13 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October25 second IEM column (Codex):** [sources/measurements/samples](research/iem-second-column-2026-10-25/README.md).
+Reuses real NASA/APL testing photos and saved NASA workmanship context; CAD is arrangement
+only. [EST] upper/lower bends, refitted supports, attached labels and lacing. [CALC] all
+26 endpoints/radii and every unrelated mesh preserved; sampled gaps about 3.1/4.9 mm;
+original floor-harness/envelope checks unchanged. Terminal junction overlaps and flight
+circuits remain unverified. Seven reviewed routes, 19 open; 604 tests pass.
+
 **October25 IEM middle-lead route (Codex):** [evidence and measurements](research/iem-middle-lead-2026-10-25/README.md).
 Real NASA/APL/Ed Whitman IEM testing image and active NASA workmanship record rechecked.
 [EST] separated local lead, attached label, support and lacing, not flight hardware.

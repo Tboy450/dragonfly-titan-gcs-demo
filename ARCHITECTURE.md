@@ -43,6 +43,12 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October25 second-column continuation: `iemSecondColumnAsset` specifies upper/lower fitting
+fractions; only IDs 5/7, labels and their own fittings change. The middle route is exact.
+Five new tests preserve every unrelated mesh/endpoints, screen cable radii against curves
+and actual equipment triangles, verify own label contact and seven-reviewed/19-open state.
+Existing IEM envelope/main-harness tolerances are unchanged; no new targets or simulator logic.
+
 October25 IEM routing continuation: only lead 6 and its label change in `iem.mjs`, plus a
 shared estimated support/two ties. `iemMiddleLeadAsset` holds fitting fractions; the four
 completed first-column routes stay in `iemServiceAsset` unchanged. Focus/status text now

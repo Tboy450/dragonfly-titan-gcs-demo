@@ -1,0 +1,42 @@
+[
+  {
+    "id": "iem-local-lead-5",
+    "lengthM": 0.47592683489191506,
+    "freeSpanMinSurfaceGapM": 0.003116058599868148,
+    "terminalMinSurfaceGapM": -0.008999999999999944,
+    "closest": {
+      "other": "iem-local-lead-6",
+      "p": [
+        -0.184,
+        0.031404166795940804,
+        -0.16956991221602108
+      ],
+      "q": [
+        -0.17832653172408855,
+        0.04070717858008529,
+        -0.16427230846887897
+      ]
+    },
+    "limits": "EST; dense sampled screen outside unchanged terminal gathering boundary, not qualified flight routing."
+  },
+  {
+    "id": "iem-local-lead-7",
+    "lengthM": 0.4330884251031154,
+    "freeSpanMinSurfaceGapM": 0.0048541043653683455,
+    "terminalMinSurfaceGapM": -0.008999999999999944,
+    "closest": {
+      "other": "iem-local-lead-3",
+      "p": [
+        -0.1582022069152652,
+        0.011592655995243662,
+        -0.14915114488272493
+      ],
+      "q": [
+        -0.1614432478784027,
+        0.025015984656337444,
+        -0.14803485240400743
+      ]
+    },
+    "limits": "EST; dense sampled screen outside unchanged terminal gathering boundary, not qualified flight routing."
+  }
+]

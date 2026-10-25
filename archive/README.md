@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [iem-second-column-2026-10-25](iem-second-column-2026-10-25/README.md) | Exact completed-middle IEM/status/test baseline, before view and rejected shared/low-return code/renders | 2026-10-25 | `archive/iem-second-column-2026-10-25` on f62b5ff |
 | [iem-middle-lead-2026-10-25](iem-middle-lead-2026-10-25/README.md) | Exact IEM/status/preservation-test baseline, before image; rejected departure/return code and renders | 2026-10-25 | `archive/iem-middle-lead-2026-10-25` on abad1f6 |
 | [avionics-installation-2026-10-25](avionics-installation-2026-10-25/README.md) | Exact five builders/UI/preservation tests, five baseline views; rejected IEM/PSU support and navigation head/rib drafts | 2026-10-25 | `archive/avionics-installation-2026-10-25` on b83d9eb |
 | [iem-lower-pair-2026-10-24](iem-lower-pair-2026-10-24/README.md) | Exact upper-pair baseline builder/UI/test/audit, whole/lower before pictures; rejected low-support draft and sample | 2026-10-24 | `archive/iem-lower-pair-2026-10-24` on7a50d2e |
