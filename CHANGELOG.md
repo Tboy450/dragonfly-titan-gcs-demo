@@ -39,6 +39,18 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Verify third-column upper publication and full-IEM visibility
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record third-column upper publication receipt [skip ci].
+- **Published:** `09e58ebc3877ddbdd37f8455faf23a4aedd19f85`; Pages run `40171467980` succeeded.
+- **Checks:** 609 local tests pass; workflow checks passed. Live build, all five IEM
+  focuses, nine-reviewed/17-open notes, five source links and 24 numbered parts verified;
+  zero browser errors. Public full-component screenshot and JSON saved with research.
+- **Visibility:** All subassemblies shows the first column and every other column;
+  focused isolation never removed their geometry. No isolation behavior was changed.
+- **Handoff:** recovery tag pushed, preview/watcher stopped. Next IDs 10/11 not started;
+  terminal-bundle overlap and actual flight mating remain unresolved.
+
 ### 2026-10-25: Refine the next two IEM leads, third-column upper IDs 8/9
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine third-column IEM upper leads and preserve completed routes.

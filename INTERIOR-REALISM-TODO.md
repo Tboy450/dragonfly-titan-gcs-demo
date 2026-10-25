@@ -17,6 +17,9 @@ previously reviewed routes, fittings, enclosure, floor harness and 26 endpoints 
 third-column lower IDs 10/11. Terminal gathering overlaps and flight circuits remain open.
 Owner's visibility concern: first column was hidden by isolated subassembly view, not
 removed. New samples include Whole component / full-IEM views with every column present.
+Published **09e58eb**, Pages 40171467980 succeeded. Live five-focus/count/source checks
+pass with zero errors; public full-IEM screenshot/JSON saved. Recovery tag pushed;
+temporary preview and deployment watcher stopped. Next IDs 10/11 have not been started.
 
 Latest October25: [second-column upper/lower routes](research/iem-second-column-2026-10-25/README.md)
 complete the local installation estimate for the first two card columns. IDs 5/7 gain

@@ -68,6 +68,16 @@ them. Full-IEM samples explicitly retain all columns to answer the owner's visib
   `archive/iem-third-upper-2026-10-25` on `a9da566`. Before image, exact code/data and the
   rejected crossed-return draft are retained; no rejected candidate was published.
 
+## Publication Receipt
+
+Published commit `09e58ebc3877ddbdd37f8455faf23a4aedd19f85`, October 25, 2026.
+GitHub Pages run `40171467980` succeeded, including the simulation and terrain checks.
+The local suite passes all 609 tests. The public app reports build `09e58eb` and passes
+all five IEM focus checks with Open interior/isolation, nine-reviewed/17-open notes,
+five source links and all 24 numbered parts. Zero browser errors were recorded.
+`public-checks.json` records those checks; `public-full-iem.png` shows All subassemblies,
+including the first column. The recovery tag is pushed; preview and watcher are stopped.
+
 ## Next Handoff
 
 Nine of 26 local routes reviewed, **17 remain**. Next two are third-column lower IDs
