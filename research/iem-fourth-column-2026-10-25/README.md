@@ -48,6 +48,13 @@ Phone client/scroll widths are375/375px, all24 parts retained, zero browser erro
 
 ## Handoff
 
+Published `e372a1b64c4258cf65f12989d3296b88fcc4b370`; Pages40213913093 succeeded,
+including workflow tests. Live build, new focus and seven available targets,14/12 notes,
+five source links and24 parts verified without errors. Phone canvas fits at375/375px;
+neutral hardware pixel counts16364 desktop/13615 phone confirm nonblank renders.
+`public-checks.json` records acceptance; `public-full-iem.png` is the single new model
+sample. No source/CAD comparison duplicated. Recovery tag pushed; preview/watcher stopped.
+
 [Recovery archive](../../archive/iem-fourth-column-2026-10-25/README.md), baseline `c5e4b58`,
 tag `archive/iem-fourth-column-2026-10-25`. Two rejected support foot choices are retained
 as parameter records; the previous appearance is saved without repeating a comparison.

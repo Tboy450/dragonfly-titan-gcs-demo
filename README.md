@@ -10,10 +10,12 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-Latest model work: [IEM fourth-column leads 12-14](research/iem-fourth-column-2026-10-25/README.md).
+Published build **e372a1b**: [IEM fourth-column leads 12-14](research/iem-fourth-column-2026-10-25/README.md).
 Three estimated routes with attached labels, supports and ties; eleven completed routes
 and all endpoints stay fixed. Fourteen reviewed, twelve remain; 619 tests pass.
 Shared reference imagery is reused, with one current model sample instead of another comparison.
+Pages40213913093 succeeded; live target/count/source/24-part checks and desktop/phone
+render checks pass, zero browser errors. Recovery tag and single public sample saved.
 
 Previous published build **2491558**: [IEM third-column lower pair, IDs 10/11](research/iem-third-lower-2026-10-25/README.md).
 Two source-labeled estimated routes with attached labels, supports and lacing. All nine

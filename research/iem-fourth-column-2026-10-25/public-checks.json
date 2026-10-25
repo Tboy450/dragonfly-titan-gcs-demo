@@ -1,0 +1,49 @@
+{
+  "build": "Build e372a1b \u00c2\u00b7 2026-10-25",
+  "focus": {
+    "access": "open",
+    "isolate": true,
+    "options": [
+      "",
+      "iem-connectors",
+      "iem-upper-service-pair",
+      "iem-lower-service-pair",
+      "iem-second-column",
+      "iem-third-upper-pair",
+      "iem-third-lower-pair",
+      "iem-fourth-column"
+    ],
+    "part": "iem",
+    "target": "iem-fourth-column"
+  },
+  "notes": "Illustrative installation work on five equipment families, not a complete flight wiring diagram. Equipment poses and all cable endpoints are retained; fourteen IEM local service routes are reviewed estimates.\n\nIEM installation\n\nThe fourth column gains three separated estimated service routes, attached labels, one support and two ties each. All eleven completed routes remain fixed; the column has its own inspection target.\n\nFourteen of 26 local routes reviewed; 12 remain. All endpoints stay fixed. Free-span clearance is sampled, but the inherited terminal bundle still overlaps. Actual flight mating and bend qualification remain unknown.\n\nNASA/APL real IEM / PSU testing\nPSU installations\n\nOne existing lead per PSU gains an estimated support and lacing. PSU 1 and PSU 2 now have separate inspection targets.\n\nAll 26 cable curves and both enclosures are unchanged. Most local leads, actual circuits and PSU 2's flight accommodation remain unresolved.\n\nNASA/APL real IEM / PSU testing\nFrontier radio installation\n\nThree unchanged local RF jumpers gain estimated cushioned supports. Connector face and jumpers have separate focuses.\n\nNo external power/data or antenna link is invented. Flight configuration, exact cable construction and destinations remain unverified.\n\nNASA/APL Frontier hardware photograph\nNavigation installations\n\nEstimated retention heads are added at the existing Ocellus mounting feet and MIMU pads; all source envelopes and capped ports remain unchanged.\n\nNo navigation harness is fabricated. Exact flight ports, mating circuits, bracket fasteners and harness routing remain open.\n\nHoneywell space MIMU family reference\nBattery installation\n\nThree unchanged exterior lead examples gain estimated cushioned supports and lacing. External connectors and leads have separate focuses.\n\nEnclosure, cells, internal bus bars and all lead endpoints are unchanged. The appearance reference is a sub-scale test module, not the flight pack.\n\nAPL ICES2022 battery test module\n\nSupports, lacing and retention hardware are installation estimates. The reference photographs do not establish their exact flight construction.\n\nGeometric contact does not assign a circuit, pinout or qualified bend radius. No electrical, cable heat-leak or structural solver is added.",
+  "parts": 24,
+  "sourceLinks": 5,
+  "desktopCanvas": {
+    "height": 378.3999938964844,
+    "width": 540.7999877929688,
+    "x": 342.8000183105469,
+    "y": 0.30000001192092896
+  },
+  "phone": {
+    "canvas": {
+      "height": 437.2749938964844,
+      "width": 353.6000061035156,
+      "x": 10.800000190734863,
+      "y": 0.3375000059604645
+    },
+    "client": 375,
+    "scroll": 375
+  },
+  "errors": [],
+  "pixelChecks": {
+    "desktop": {
+      "neutralHardwarePixels": 16364,
+      "nonblank": true
+    },
+    "phone": {
+      "neutralHardwarePixels": 13615,
+      "nonblank": true
+    }
+  }
+}

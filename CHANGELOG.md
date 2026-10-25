@@ -39,6 +39,15 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Verify fourth-column publication
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record fourth-column publication receipt [skip ci].
+- **Published:**`e372a1b64c4258cf65f12989d3296b88fcc4b370`, Pages40213913093 succeeded.
+- **Checks:**619 local tests; live build/new focus/seven targets,14-reviewed/12-open notes,
+  five links,24 parts, zero errors. Desktop/phone canvas pixel checks pass; phone375/375px.
+- **Record:** one new full-IEM sample; no duplicate source comparison. Recovery tag pushed;
+  preview/watcher stopped. Next15/16/17; terminal overlap and flight mating remain open.
+
 ### 2026-10-25: Refine IEM fourth-column leads 12-14
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine fourth-column IEM routes with shared reference evidence.

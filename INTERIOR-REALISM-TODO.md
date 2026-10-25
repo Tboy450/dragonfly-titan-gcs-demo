@@ -21,6 +21,10 @@ Owner's process clarification: reuse source records/photos unless resolving a ne
 Do not duplicate real/CAD comparison sheets per cable or column. One current model sample
 and concise measured evidence are enough; retain baseline/rejected parameters for recovery.
 Terminal bundle overlap, actual circuits, full harness and qualified bends remain open.
+Published **e372a1b**, Pages40213913093 succeeded. Live new focus,14-reviewed/12-open notes,
+seven focus options, five source links and24 parts verified; zero errors. Phone375/375px
+with full canvas visible; desktop/phone hardware-pixel checks pass. One public sample saved,
+shared references reused; recovery tag pushed, preview/watcher stopped. Next15/16/17.
 
 Latest October25: [third-column lower IDs 10/11](research/iem-third-lower-2026-10-25/README.md)
 complete the third card column as an installation estimate. Two routes/labels, two supports,
