@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createFlightState } from "../dist/flight-model.mjs";
 import { createInspector, inspectionDefaults, inspectionAvailable, inspectionTarget, resetInspector,
-  rotateInspector, zoomInspector, focusInspector, inspectionGroups, inspectionModified } from "../dist/vehicle-inspector.mjs";
+  rotateInspector, zoomInspector, wheelZoomInspector, focusInspector, inspectionGroups, inspectionModified } from "../dist/vehicle-inspector.mjs";
 import { setInspectionLayer, inspectionLayerVisible, restoreInspectionLayers, hiddenInspectionCount } from "../dist/inspection-visibility.mjs";
 
 const state = () => ({ ...createFlightState(), view: "mission", missionLayer: "internal", vehicleModel: "research", inspector: createInspector() });
@@ -41,6 +41,46 @@ test("Orbit and zoom are bounded and ignore invalid input", () => {
   rotateInspector(i, NaN, 0, 600, 600);
   rotateInspector(i, 1, 1, 0, 600);
   assert.deepEqual(i, before);
+});
+
+test("Wheel zoom captures only selected research-model rotation, leaving browser zoom and page scrolling alone", () => {
+  const s = state(), wheel = { deltaY: -100, deltaMode: 0 };
+  assert.equal(wheelZoomInspector(s, wheel), false);
+  s.inspector.rotate = true;
+  for (const patch of [{ view: "pilot" }, { missionLayer: "exterior" }, { vehicleModel: "original" }]) {
+    assert.equal(wheelZoomInspector({ ...s, ...patch }, wheel), false);
+  }
+  for (const patch of [{ ctrlKey: true }, { metaKey: true }, { deltaY: NaN }, { deltaY: Infinity }, { deltaY: 0 }]) {
+    assert.equal(wheelZoomInspector(s, { ...wheel, ...patch }), false);
+  }
+  assert.equal(s.inspector.zoom, 1);
+  for (const missionLayer of ["internal", "thermal"]) {
+    const current = { ...s, missionLayer, inspector: { ...s.inspector } };
+    const before = structuredClone(current);
+    assert.equal(wheelZoomInspector(current, wheel), true);
+    assert.ok(current.inspector.zoom > 1, "wheel up zooms in");
+    current.inspector.zoom = before.inspector.zoom;
+    assert.deepEqual(current, before, "wheel never changes attitude, flight, science or camera rotation");
+  }
+});
+
+test("Wheel zoom normalizes line/page units, reverses smoothly and stays captured at its limits", () => {
+  const s = state(); s.inspector.rotate = true;
+  wheelZoomInspector(s, { deltaY: -3, deltaMode: 1 });
+  const lineZoom = s.inspector.zoom;
+  s.inspector.zoom = 1;
+  wheelZoomInspector(s, { deltaY: -48, deltaMode: 0 });
+  assert.equal(s.inspector.zoom, lineZoom);
+  wheelZoomInspector(s, { deltaY: 48, deltaMode: 0 });
+  assert.ok(Math.abs(s.inspector.zoom - 1) < 1e-12);
+  wheelZoomInspector(s, { deltaY: -1, deltaMode: 2 }, 100);
+  assert.equal(s.inspector.zoom, Math.exp(.15));
+  for (let n = 0; n < 20; n++) wheelZoomInspector(s, { deltaY: -1e9 });
+  assert.equal(s.inspector.zoom, 3);
+  assert.equal(wheelZoomInspector(s, { deltaY: -100 }), true, "no page-scroll leak at maximum zoom");
+  for (let n = 0; n < 20; n++) wheelZoomInspector(s, { deltaY: 1e9 });
+  assert.equal(s.inspector.zoom, .6);
+  assert.equal(wheelZoomInspector(s, { deltaY: 100 }), true, "no page-scroll leak at minimum zoom");
 });
 
 test("Follow sampling uses the shared clock, releases completed jobs, and permits manual inspection", () => {

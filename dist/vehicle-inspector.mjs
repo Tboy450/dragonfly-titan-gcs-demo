@@ -28,6 +28,15 @@ export function rotateInspector(i, dx, dy, width, height) {
 export function zoomInspector(i, factor) {
   if (Number.isFinite(factor) && factor > 0) i.zoom = clamp(i.zoom * factor, 0.6, 3);
 }
+export function wheelZoomInspector(state, event, pageHeight = 600) {
+  if (!inspectionAvailable(state) || !state.inspector?.rotate || event.ctrlKey || event.metaKey) return false;
+  if (!Number.isFinite(event.deltaY) || event.deltaY === 0) return false;
+  // Wheel events report pixels, lines or pages; cap each step for smooth bounded zoom.
+  const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2
+    ? (Number.isFinite(pageHeight) && pageHeight > 0 ? pageHeight : 600) : 1;
+  zoomInspector(state.inspector, Math.exp(-clamp(event.deltaY * unit, -200, 200) * 0.0015));
+  return true;
+}
 export function focusInspector(state, name) {
   state.selectedPart = name;
   state.inspector.focusPart = name;

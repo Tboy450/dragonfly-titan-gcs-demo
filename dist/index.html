@@ -219,6 +219,14 @@
         </aside>
 
         <section class="center-stage">
+          <div class="panel-heading vehicle-layer-toolbar">
+            <span id="layer-title">Vehicle Layers</span>
+            <div class="layer-switch" role="group" aria-label="Vehicle layer">
+              <button type="button" data-layer="exterior" aria-pressed="true">Exterior</button>
+              <button type="button" data-layer="internal" aria-pressed="false">Internal</button>
+              <button type="button" data-layer="thermal" aria-pressed="false">Thermal</button>
+            </div>
+          </div>
           <div class="visual-wrap">
             <canvas id="flight-canvas" aria-label="Scaled Dragonfly octocopter over Titan terrain"></canvas>
             <div class="visual-overlay top-left">
@@ -324,7 +332,7 @@
                 <select id="inspection-subassembly" aria-label="Inspect subassembly"><option value="">All subassemblies</option></select>
               </label>
               <div class="inspection-tools" role="group" aria-label="Inspection camera">
-                <button id="inspection-rotate" type="button" aria-label="Enable model rotation" aria-pressed="false" title="Rotate model: drag or focus the canvas and use arrow keys"><img src="./vendor/lucide/rotate-3d.svg?v=dev" alt=""></button>
+                <button id="inspection-rotate" type="button" aria-label="Enable model rotation" aria-pressed="false" title="Rotate model: drag to turn, mouse wheel to zoom; Ctrl+wheel zooms the page"><img src="./vendor/lucide/rotate-3d.svg?v=dev" alt=""></button>
                 <button id="inspection-zoom-out" type="button" aria-label="Zoom out" title="Zoom out"><img src="./vendor/lucide/zoom-out.svg?v=dev" alt=""></button>
                 <output id="inspection-zoom-value" aria-label="Inspection zoom">100%</output>
                 <button id="inspection-zoom-in" type="button" aria-label="Zoom in" title="Zoom in"><img src="./vendor/lucide/zoom-in.svg?v=dev" alt=""></button>
@@ -345,14 +353,6 @@
                 </div>
                 <button id="inspection-restore-layers" class="inspection-restore" type="button" title="Restore all inspection layers without moving the camera" disabled><img src="./vendor/lucide/rotate-ccw.svg?v=dev" alt="">Restore layers</button>
               </details>
-            </div>
-            <div class="panel-heading">
-              <span id="layer-title">Vehicle Layers</span>
-              <div class="layer-switch" role="group" aria-label="Vehicle layer">
-                <button type="button" data-layer="exterior" aria-pressed="true">Exterior</button>
-                <button type="button" data-layer="internal" aria-pressed="false">Internal</button>
-                <button type="button" data-layer="thermal" aria-pressed="false">Thermal</button>
-              </div>
             </div>
             <p id="mock-banner" class="mock-banner" hidden>Mock-up views: the original demo model is not based on the real Dragonfly design, so its interior and thermal layout are made up for illustration. Switch <b>Model</b> to NASA / APL for the research-based views.</p>
             <p id="layer-hint" class="rest-status">Research model: 2023 thermal layout, refined with APL CAD and NASA's 2026 print guide. Component shapes and placement are approximate; readings are simulated.</p>

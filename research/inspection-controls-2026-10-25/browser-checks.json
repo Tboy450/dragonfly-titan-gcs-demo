@@ -1,0 +1,128 @@
+{
+  "wheel": {
+    "internal": {
+      "upZoom": "131%",
+      "downZoom": "100%",
+      "pageYBefore": 743.2000122070312,
+      "pageYAfter": 743.2000122070312
+    },
+    "disabled": {
+      "zoomBefore": "100%",
+      "zoomAfter": "100%",
+      "pageYBefore": 743.2000122070312,
+      "pageYAfter": 923.2000122070312
+    },
+    "thermalBefore": {
+      "scrollY": 743.2000122070312,
+      "zoom": "100%"
+    },
+    "thermalAfter": {
+      "scrollY": 743.2000122070312,
+      "zoom": "131%"
+    }
+  },
+  "desktop": {
+    "canvas": {
+      "bottom": 567.5000152587891,
+      "height": 387.2000122070313,
+      "left": 342.8000183105469,
+      "right": 913.8500061035156,
+      "top": 180.3000030517578,
+      "width": 571.0499877929688,
+      "x": 342.8000183105469,
+      "y": 180.3000030517578
+    },
+    "parts": 24,
+    "scrollWidth": 1265,
+    "toolbar": {
+      "bottom": 165.5,
+      "height": 44.400001525878906,
+      "left": 342,
+      "right": 914.6500244140624,
+      "top": 121.0999984741211,
+      "width": 572.6500244140625,
+      "x": 342,
+      "y": 121.0999984741211
+    },
+    "width": 1265
+  },
+  "phone": {
+    "canvas": {
+      "bottom": 563.9749984741211,
+      "height": 437.2749938964844,
+      "left": 10.800000190734863,
+      "right": 364.4000062942505,
+      "top": 126.70000457763672,
+      "width": 353.6000061035156,
+      "x": 10.800000190734863,
+      "y": 126.70000457763672
+    },
+    "inspector": {
+      "bottom": 879.1750183105469,
+      "height": 289.6000061035156,
+      "left": 24.80000114440918,
+      "right": 350.4000072479248,
+      "top": 589.5750122070312,
+      "width": 325.6000061035156,
+      "x": 24.80000114440918,
+      "y": 589.5750122070312
+    },
+    "parts": 24,
+    "picker": "Light grey grid",
+    "scrollWidth": 375,
+    "toolbar": {
+      "bottom": 113.9000015258789,
+      "height": 44.400001525878906,
+      "left": 10,
+      "right": 365.2000122070313,
+      "top": 69.5,
+      "width": 355.20001220703125,
+      "x": 10,
+      "y": 69.5
+    },
+    "width": 375
+  },
+  "phoneWheelBefore": {
+    "scrollY": 1244,
+    "zoom": "100%"
+  },
+  "phoneWheelAfter": {
+    "scrollY": 1244,
+    "zoom": "135%"
+  },
+  "pilotBefore": {
+    "canvas": {
+      "bottom": 579.2000122070312,
+      "height": 579.2000122070312,
+      "left": 6.800000190734863,
+      "right": 368.4000062942505,
+      "top": 0,
+      "width": 361.6000061035156,
+      "x": 6.800000190734863,
+      "y": 0
+    },
+    "free": "true",
+    "scrollWidth": 375,
+    "scrollY": 256,
+    "toolbarDisplay": "none",
+    "width": 375
+  },
+  "pilotAfter": {
+    "scrollY": 256,
+    "toolbarDisplay": "none"
+  },
+  "exteriorBefore": {
+    "inspectorHidden": true,
+    "scrollY": 1188,
+    "zoom": "135%"
+  },
+  "exteriorAfter": {
+    "scrollY": 1314.4000244140625,
+    "zoom": "135%"
+  },
+  "original": {
+    "inspectorHidden": true,
+    "mockVisible": true
+  },
+  "errors": []
+}

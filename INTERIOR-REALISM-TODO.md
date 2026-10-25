@@ -10,6 +10,13 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October25 UI request: [inspection controls](research/inspection-controls-2026-10-25/README.md).
+- [x] Rotate-selected mouse-wheel zoom, without hijacking normal scroll/browser zoom.
+- [x] Layer selector above viewport; keep all details below, including phone order.
+- [x] Interior c light-grey grid, reusing Thermal's painter with independent preferences.
+- [x]623 tests; actual desktop/phone wheel checks, no horizontal overflow or part loss.
+No hardware work in this pass. Next remains fifth IEM column15/16/17 below.
+
 Latest October25: [fourth column, IDs12-14](research/iem-fourth-column-2026-10-25/README.md).
 - [x] Three separated estimated routes/attached labels, three supports, six ties and seventh focus.
 - [x] Preserve all eleven completed routes/fittings and26 endpoints;619 tests pass.

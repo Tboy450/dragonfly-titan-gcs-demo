@@ -39,6 +39,21 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Model wheel zoom, layer toolbar and Interior grey grid
+- **Signed:** Codex (OpenAI).
+- **Commit:** Improve inspection wheel zoom and layer layout.
+- **What changed:** Rotate-selected wheel zoom on research-model Internal/Thermal,
+  preserving ordinary scrolling and Ctrl/Meta browser zoom. Layer selector moved
+  above viewport; phone details follow it. Interior c reuses Thermal's grey grid,
+  with independent persisted choices. No controls, parts or detail sections removed.
+- **Files:** index/style, pure/UI inspector, mission backdrop and focused tests.
+- **Assumptions:** UI only; no new hardware/physics. Reverse (sim) was inspected and
+  explained as the existing gated vertical pulse, not horizontal braking.
+- **Checks:**623 tests pass; native desktop/phone wheel, scroll and Pilot checks.
+  Before/after samples, rejected phone-order draft and recovery tag saved in
+  `archive/inspection-controls-2026-10-25`; evidence in matching research folder.
+- **Open / next:** IEM15/16/17 remain next; no wiring/model changes in this pass.
+
 ### 2026-10-25: Verify fourth-column publication
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record fourth-column publication receipt [skip ci].

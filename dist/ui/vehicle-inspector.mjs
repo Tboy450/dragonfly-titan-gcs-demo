@@ -1,7 +1,7 @@
 import { $, chaseRenderer, flightCanvas, state } from "./context.mjs?v=dev";
 import { commandFlight } from "../flight-model.mjs?v=dev";
 import { samplingSequence } from "../science.mjs?v=dev";
-import { focusInspector, inspectionAvailable, inspectionTarget, resetInspector, rotateInspector, zoomInspector,
+import { focusInspector, inspectionAvailable, inspectionTarget, resetInspector, rotateInspector, zoomInspector, wheelZoomInspector,
   inspectionSubassemblies, inspectionSubassembly, selectInspectionSubassembly } from "../vehicle-inspector.mjs?v=dev";
 import { globalInspectionLayers, partInspectionLayers, inspectionLayerVisible, setInspectionLayer,
   restoreInspectionLayers, hiddenInspectionCount,applyInspectionAccessPreset,inspectionAccessPreset } from "../inspection-visibility.mjs?v=dev";
@@ -158,6 +158,11 @@ flightCanvas.addEventListener("pointerup", event => {
 });
 flightCanvas.addEventListener("pointercancel", releasePointer);
 flightCanvas.addEventListener("lostpointercapture", () => { pointer = null; });
+flightCanvas.addEventListener("wheel", event => {
+  if (!available() || !wheelZoomInspector(state, event, flightCanvas.clientHeight)) return;
+  event.preventDefault();
+  updateInspectorUI();
+}, { passive: false });
 flightCanvas.addEventListener("click", event => {
   if (!suppressClick) return;
   suppressClick = false;

@@ -1,8 +1,8 @@
 // Backdrops behind the Mission view's vehicle diagram, one per layer:
 // - Exterior: a choice of (a) the Titan landing area, (b) an assembly clean room, where Dragonfly is
 //   being built in 2026, or (c) a Titan-and-Saturn poster, picked with the a/b/c buttons.
-// - Internal, picked with a / b: (a) an engineering blueprint, (b) black with a yellow grid and
-//   yellow text; both with the published envelope dimensions.
+// - Internal, picked with a / b / c: (a) an engineering blueprint, (b) black with a yellow grid
+//   and yellow text, (c) light grey with a dark grid; all with the published envelope dimensions.
 // - Thermal, also picked with a / b / c: (a) Titan's -179 C air in the thermal scale's own color
 //   (dimmed so parts at air temperature stay visible), (b) light grey with a dark grid, like NASA's
 //   published thermal-model figures (the default: cold blue parts stand out), (c) black with a
@@ -27,6 +27,7 @@ export const thermalBackdrops = Object.freeze([
 export const internalBackdrops = Object.freeze([
   { id: "blueprint", letter: "a", name: "Blueprint" },
   { id: "yellow", letter: "b", name: "Black with yellow grid and text" },
+  { id: "light", letter: "c", name: "Light grey grid" },
 ]);
 const THERMAL_PREF_KEY = "dragonfly-thermal-backdrop", INTERNAL_PREF_KEY = "dragonfly-internal-backdrop";
 let exterior = "titan", thermal = "light", internal = "blueprint";
@@ -394,7 +395,7 @@ const ink = {
 // Colors for the current backdrop: light (clean room, light grey), yellow (yellow modes), blue (blueprint).
 export function backdropInk() {
   const layer = state.missionLayer;
-  if (layer === "internal") return internal === "yellow" ? ink.yellow : ink.blue;
+  if (layer === "internal") return internal === "light" ? ink.light : internal === "yellow" ? ink.yellow : ink.blue;
   if (layer === "thermal") return thermal === "light" ? ink.light : thermal === "dark" ? ink.yellow : ink.default;
   return exterior === "cleanroom" ? ink.light : exterior === "titan" ? ink.photo : ink.default;
 }
@@ -408,7 +409,8 @@ const painters = {
 export function drawMissionBackdrop(ctx, w, h) {
   const layer = state.missionLayer;
   if (layer === "thermal" && thermal === "air") { drawThermalAir(ctx, w, h); return; }
-  const kind = layer === "thermal" ? `thermal-${thermal}` : layer === "internal" ? (internal === "yellow" ? "internal-yellow" : "blueprint") : exterior;
+  const kind = layer === "thermal" ? `thermal-${thermal}` : layer === "internal"
+    ? (internal === "light" ? "thermal-light" : internal === "yellow" ? "internal-yellow" : "blueprint") : exterior;
   ctx.drawImage(cached(kind, w, h, painters[kind]), 0, 0, w, h);
 }
 
@@ -477,7 +479,7 @@ export function drawMissionBackdropOverlay(ctx, w, h, labels) {
   ctx.restore();
 }
 
-// a / b / c picker for the Exterior and Thermal backdrops (bottom left of the vehicle view).
+// a / b / c picker for each layer's backdrops (bottom left of the vehicle view).
 function showPicker() {
   const picker = $("backdrop-picker");
   const layer = state.missionLayer;
