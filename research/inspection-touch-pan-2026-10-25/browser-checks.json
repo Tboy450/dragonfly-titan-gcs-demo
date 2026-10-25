@@ -1,0 +1,16 @@
+{
+  "canvas": {
+    "bottom": 640.375,
+    "height": 437.2749938964844,
+    "left": 10.800000190734863,
+    "right": 364.4000062942505,
+    "top": 203.1000061035156,
+    "width": 353.6000061035156,
+    "x": 10.800000190734863,
+    "y": 203.1000061035156
+  },
+  "parts": 24,
+  "scrollWidth": 375,
+  "tooltip": "Left-drag or one finger to rotate; right-drag, two-finger slide or Shift+arrows to pan; mouse wheel to zoom; Ctrl+wheel zooms the page",
+  "width": 375
+}

@@ -11,7 +11,7 @@ const files={iem:'iem.mjs','power-units':'power-units.mjs','frontier-radio':'fro
 const fingerprint=root=>{
  const rows=[];root.updateMatrixWorld(true);
  root.traverse(o=>{if(!o.isMesh||o.userData.installationExample)return;
- if(['iem-local-lead-5','iem-local-lead-6','iem-local-lead-7','iem-local-lead-8','iem-local-lead-9','iem-local-lead-10','iem-local-lead-11','iem-local-lead-12','iem-local-lead-13','iem-local-lead-14'].includes(o.userData.connectionId)&&['iem-harness-cable','iem-harness-label'].includes(o.name))return;
+ if(['iem-local-lead-5','iem-local-lead-6','iem-local-lead-7','iem-local-lead-8','iem-local-lead-9','iem-local-lead-10','iem-local-lead-11','iem-local-lead-12','iem-local-lead-13','iem-local-lead-14','iem-local-lead-15','iem-local-lead-16','iem-local-lead-17','iem-local-lead-18','iem-local-lead-19','iem-local-lead-20','iem-local-lead-21'].includes(o.userData.connectionId)&&['iem-harness-cable','iem-harness-label'].includes(o.name))return;
  rows.push(JSON.stringify({name:o.name,matrix:o.matrixWorld.toArray(),positions:[...o.geometry.attributes.position.array],
  indices:o.geometry.index?[...o.geometry.index.array]:null,color:o.material.color?.getHex(),metalness:o.material.metalness,roughness:o.material.roughness}));
  });return createHash('sha256').update(rows.sort().join('\n')).digest('hex');
@@ -24,9 +24,9 @@ for(const[id,builder]of Object.entries(builders))test(id+': pre-existing meshes 
  assert.equal(fingerprint(after.parent),fingerprint(before.parent));
 });
 
-test('Five-family register distinguishes eighteen support examples, unassigned electrical routes and mechanical tether',()=>{
+test('Five-family register distinguishes twenty-five support examples, unassigned electrical routes and mechanical tether',()=>{
  const report=installationAudit();assert.equal(report.families.length,5);
- assert.deepEqual(report.families.map(f=>f.supports.length),[10,2,3,0,3]);
+ assert.deepEqual(report.families.map(f=>f.supports.length),[17,2,3,0,3]);
  assert.equal(report.families.find(f=>f.id==='nose-electronics').rows.length,0);
  assert.equal(report.families.find(f=>f.id==='nose-electronics').additions.length,24);
  assert.ok(report.families.flatMap(f=>f.rows).every(r=>r.confidence==='EST'&&!r.flightMatingConfirmed));
@@ -108,6 +108,11 @@ test('New clamp rings and lacing do not penetrate other existing wire curves',()
   for(const ring of rings){
    const box=new T.Box3().setFromObject(ring),vertices=ring.geometry.attributes.position;
    for(const wire of wires){if((wire.userData.connectionId??wire.name)===ring.userData.wireId)continue;
+    // Owner's new-to-new policy: unreworked 22-26 remain fixed placeholders.
+    // Only the new 15-21 fittings defer these contacts; the separate audit records them.
+    if(id==='iem'&&Number(ring.userData.wireId?.split('-').at(-1))>=15
+     &&Number(ring.userData.wireId?.split('-').at(-1))<=21
+     &&Number(wire.userData.connectionId?.split('-').at(-1))>=22)continue;
     const radius=wire.geometry.parameters.radius,points=wire.geometry.parameters.path.getSpacedPoints(160).map(p=>p.applyMatrix4(wire.matrixWorld));
     const near=points.filter(p=>box.distanceToPoint(p)<radius);if(!near.length)continue;
     for(let i=0;i<vertices.count;i++)for(const p of near){

@@ -43,6 +43,17 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October25 columns five/six: `iem-next-service-routes.mjs` contains frozen static
+controls for IDs15-21 only; `iemNextServiceAsset` holds fitting/tag fractions.
+Research-only search/repair/measurement tools are not loaded by the simulator.
+Exact-baseline tests retain all14 completed routes/fittings and5 placeholders.
+Nine non-nested focuses;21 reviewed/5 open. Sampled new-to-new screens explicitly
+report legacy22-26 interference separately. Original envelope/main-harness/contact
+limits and the existing second-column3 mm guard remain unchanged.635 tests pass.
+The existing UI inspector now tracks up to two touch pointers: one rotates, two
+pan by centroid, with capture cleanup/rebasing. Browser automation cannot synthesize
+simultaneous fingers; actual handler tests cover it. No simulation/game/save changes.
+
 October25 fourth-column continuation: IDs12-14, labels and18 EST fitting meshes only;
 `iemFourthColumnAsset` stores three local waypoint/fitting records. Short resampled controls
 limit spline overshoot; seventh focus uses existing inspector. New exact-baseline tests

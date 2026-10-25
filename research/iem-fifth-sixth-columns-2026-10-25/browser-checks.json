@@ -1,0 +1,48 @@
+{
+  "desktop": {
+    "focusCount": 9,
+    "parts": 24,
+    "scrollWidth": 1265,
+    "tooltip": "Left-drag or one finger to rotate; right-drag, two-finger slide or Shift+arrows to pan; mouse wheel to zoom; Ctrl+wheel zooms the page",
+    "width": 1265
+  },
+  "phone": [
+    {
+      "mode": "internal",
+      "id": "iem-fifth-column",
+      "parts": 24,
+      "scrollWidth": 375,
+      "width": 375
+    },
+    {
+      "mode": "internal",
+      "id": "iem-sixth-column",
+      "parts": 24,
+      "scrollWidth": 375,
+      "width": 375
+    },
+    {
+      "mode": "thermal",
+      "id": "iem-fifth-column",
+      "parts": 24,
+      "scrollWidth": 375,
+      "width": 375
+    },
+    {
+      "mode": "thermal",
+      "id": "iem-sixth-column",
+      "parts": 24,
+      "scrollWidth": 375,
+      "width": 375
+    }
+  ],
+  "desktopFocusCases": 18,
+  "phoneFocusCases": 4,
+  "restoredLayers": [
+    "harnesses",
+    "interfaces",
+    "mounts"
+  ],
+  "errors": [],
+  "touchLimitation": "Simultaneous physical contacts unavailable; actual listener tests cover centroid/capture lifecycle."
+}

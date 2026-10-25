@@ -1,0 +1,156 @@
+[
+  {
+    "mode": "internal",
+    "target": "iem-connectors",
+    "phone": false,
+    "hardwarePixels": 39164,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "internal",
+    "target": "iem-upper-service-pair",
+    "phone": false,
+    "hardwarePixels": 41570,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "internal",
+    "target": "iem-lower-service-pair",
+    "phone": false,
+    "hardwarePixels": 35681,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "internal",
+    "target": "iem-second-column",
+    "phone": false,
+    "hardwarePixels": 35244,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "internal",
+    "target": "iem-third-upper-pair",
+    "phone": false,
+    "hardwarePixels": 44762,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "internal",
+    "target": "iem-third-lower-pair",
+    "phone": false,
+    "hardwarePixels": 30350,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "internal",
+    "target": "iem-fourth-column",
+    "phone": false,
+    "hardwarePixels": 48976,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "internal",
+    "target": "iem-fifth-column",
+    "phone": false,
+    "hardwarePixels": 46629,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "internal",
+    "target": "iem-sixth-column",
+    "phone": false,
+    "hardwarePixels": 42893,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "thermal",
+    "target": "iem-connectors",
+    "phone": false,
+    "hardwarePixels": 40447,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "thermal",
+    "target": "iem-upper-service-pair",
+    "phone": false,
+    "hardwarePixels": 44484,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "thermal",
+    "target": "iem-lower-service-pair",
+    "phone": false,
+    "hardwarePixels": 39482,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "thermal",
+    "target": "iem-second-column",
+    "phone": false,
+    "hardwarePixels": 38723,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "thermal",
+    "target": "iem-third-upper-pair",
+    "phone": false,
+    "hardwarePixels": 48926,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "thermal",
+    "target": "iem-third-lower-pair",
+    "phone": false,
+    "hardwarePixels": 33988,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "thermal",
+    "target": "iem-fourth-column",
+    "phone": false,
+    "hardwarePixels": 52736,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "thermal",
+    "target": "iem-fifth-column",
+    "phone": false,
+    "hardwarePixels": 50408,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "thermal",
+    "target": "iem-sixth-column",
+    "phone": false,
+    "hardwarePixels": 46566,
+    "totalPixels": 96535
+  },
+  {
+    "mode": "internal",
+    "target": "iem-fifth-column",
+    "phone": true,
+    "hardwarePixels": 25256,
+    "totalPixels": 61215
+  },
+  {
+    "mode": "internal",
+    "target": "iem-sixth-column",
+    "phone": true,
+    "hardwarePixels": 22401,
+    "totalPixels": 61215
+  },
+  {
+    "mode": "thermal",
+    "target": "iem-fifth-column",
+    "phone": true,
+    "hardwarePixels": 27442,
+    "totalPixels": 61215
+  },
+  {
+    "mode": "thermal",
+    "target": "iem-sixth-column",
+    "phone": true,
+    "hardwarePixels": 24329,
+    "totalPixels": 61215
+  }
+]

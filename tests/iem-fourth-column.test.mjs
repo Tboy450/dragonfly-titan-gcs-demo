@@ -8,7 +8,8 @@ import {pairAudit,pairIds} from '../research/iem-fourth-column-2026-10-25/audit.
 import {iemFourthColumnAsset as A} from '../dist/iem.mjs';
 import {iemLeadAudit} from '../research/iem-service-bends-2026-10-24/audit.mjs';
 const ids=new Set(pairIds);
-const ownChange=o=>(ids.has(o.userData.connectionId)&&['iem-harness-cable','iem-harness-label'].includes(o.name))||ids.has(o.userData.wireId);
+const changedIds=new Set([...ids,'iem-local-lead-15','iem-local-lead-16','iem-local-lead-17','iem-local-lead-18','iem-local-lead-19','iem-local-lead-20','iem-local-lead-21']);
+const ownChange=o=>(changedIds.has(o.userData.connectionId)&&['iem-harness-cable','iem-harness-label'].includes(o.name))||changedIds.has(o.userData.wireId);
 const fingerprint=root=>{
  const rows=[];root.updateMatrixWorld(true);root.traverse(o=>{if(!o.isMesh||ownChange(o))return;
  rows.push(JSON.stringify({name:o.name,matrix:o.matrixWorld.toArray(),positions:[...o.geometry.attributes.position.array],indices:o.geometry.index?[...o.geometry.index.array]:null,color:o.material.color?.getHex(),metalness:o.material.metalness,roughness:o.material.roughness}));});
@@ -68,8 +69,8 @@ test('Revised labels meet their own cables and all three supports and lacing rem
  }
 });
 
-test('IEM review register records fourteen local routes and twelve still open without assigning flight circuits',()=>{
- const report=iemLeadAudit();assert.equal(report.rows.length,26);assert.equal(report.rows.filter(row=>row.routingReviewed).length,14);
- assert.match(report.missing,/Remaining 12/);assert.ok(report.rows.every(row=>!row.flightMatingConfirmed));
+test('IEM review register records twenty-one local routes and five still open without assigning flight circuits',()=>{
+ const report=iemLeadAudit();assert.equal(report.rows.length,26);assert.equal(report.rows.filter(row=>row.routingReviewed).length,21);
+ assert.match(report.missing,/Remaining 5/);assert.ok(report.rows.every(row=>!row.flightMatingConfirmed));
  assert.ok(Object.isFrozen(A)&&Object.isFrozen(A.leadIndices));
 });

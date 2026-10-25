@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**IEM columns five/six IDs15-21 (Codex, October25):** [scope/measurements](iem-fifth-sixth-columns-2026-10-25/README.md).
+Reuses the saved real NASA/APL/Ed Whitman photos, engineering context and workmanship
+records below. Seven local routes/supports and fourteen ties are EST, not flight
+circuits or qualified bends. All prior14 routes and26 endpoints retained;21 reviewed,
+5 placeholders open. Per owner request, no duplicate source/comparison sheet per column.
+
 **IEM fourth-column IDs12-14 (Codex, October25):** [scope/measurements](iem-fourth-column-2026-10-25/README.md).
 Uses the existing NASA/APL/Ed Whitman photo and shared NASA workmanship/CAD records below;
 no new flight photograph identified and no duplicate comparison sheet made. Installation

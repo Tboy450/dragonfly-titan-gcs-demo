@@ -1,0 +1,395 @@
+{
+  "routes": [
+    {
+      "id": "iem-local-lead-15",
+      "lengthM": 0.3536484780424712,
+      "directM": 0.2591266111865008,
+      "freeSpanMinSurfaceGapM": 0.0021344372874740787,
+      "terminalMinSurfaceGapM": -0.008447338695180611,
+      "legacyFreeSpanMinSurfaceGapM": 0.02075726698834038,
+      "closest": {
+        "other": "iem-local-lead-11",
+        "p": [
+          -0.1747289283562112,
+          0.021232779056857505,
+          -0.13458441855964806
+        ],
+        "q": [
+          -0.183,
+          0.02512322906445425,
+          -0.1282260015938934
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-16",
+      "lengthM": 0.2869683103276543,
+      "directM": 0.20990977377197095,
+      "freeSpanMinSurfaceGapM": 0.0020371700577885184,
+      "terminalMinSurfaceGapM": -0.008999999999999972,
+      "legacyFreeSpanMinSurfaceGapM": 0.00637099817543636,
+      "closest": {
+        "other": "iem-local-lead-8",
+        "p": [
+          -0.1471607637937942,
+          0.06523361168616715,
+          -0.123
+        ],
+        "q": [
+          -0.15700001896234445,
+          0.06515927586706804,
+          -0.11799973452717763
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-17",
+      "lengthM": 0.18412086991130908,
+      "directM": 0.16854450636256293,
+      "freeSpanMinSurfaceGapM": 0.00208924685308526,
+      "terminalMinSurfaceGapM": -0.008999999999999937,
+      "legacyFreeSpanMinSurfaceGapM": 0.0007128464777221757,
+      "closest": {
+        "other": "iem-local-lead-21",
+        "p": [
+          -0.13680437306560145,
+          0.023199528273767672,
+          -0.14719952827376764
+        ],
+        "q": [
+          -0.13497348046282812,
+          0.014614918173916048,
+          -0.15397623082584241
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-18",
+      "lengthM": 0.32019491198890465,
+      "directM": 0.24233531650380638,
+      "freeSpanMinSurfaceGapM": 0.0021848440566910356,
+      "terminalMinSurfaceGapM": -0.008999999999999885,
+      "legacyFreeSpanMinSurfaceGapM": 0.014889376166294536,
+      "closest": {
+        "other": "iem-local-lead-10",
+        "p": [
+          -0.157,
+          0.025345813105876212,
+          -0.18493872706519543
+        ],
+        "q": [
+          -0.16726714598879452,
+          0.0244331773270379,
+          -0.1805966600744108
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-19",
+      "lengthM": 0.27830819392557543,
+      "directM": 0.2160660908726772,
+      "freeSpanMinSurfaceGapM": 0.0020892097290828426,
+      "terminalMinSurfaceGapM": -0.00899999999999996,
+      "legacyFreeSpanMinSurfaceGapM": -0.006506638359666221,
+      "closest": {
+        "other": "iem-local-lead-9",
+        "p": [
+          -0.1366462006381064,
+          0.03338150447911408,
+          -0.137
+        ],
+        "q": [
+          -0.13597954694510828,
+          0.03285900230318387,
+          -0.12594318595863413
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-20",
+      "lengthM": 0.21676354811087828,
+      "directM": 0.15198986191519484,
+      "freeSpanMinSurfaceGapM": 0.002098618501461022,
+      "terminalMinSurfaceGapM": -0.008999999999999937,
+      "legacyFreeSpanMinSurfaceGapM": -0.005552273070077081,
+      "closest": {
+        "other": "iem-local-lead-17",
+        "p": [
+          -0.07156118121246154,
+          0.06243881878753848,
+          -0.1491343176770513
+        ],
+        "q": [
+          -0.07265928032871578,
+          0.07019153138161204,
+          -0.157
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-21",
+      "lengthM": 0.13218821062827157,
+      "directM": 0.11625534665124011,
+      "freeSpanMinSurfaceGapM": 0.00208621485304903,
+      "terminalMinSurfaceGapM": -0.008999999999999944,
+      "legacyFreeSpanMinSurfaceGapM": -0.007286768866636971,
+      "closest": {
+        "other": "iem-local-lead-17",
+        "p": [
+          -0.13499478452613875,
+          0.014611958359919257,
+          -0.1539729771273045
+        ],
+        "q": [
+          -0.1367871153459742,
+          0.023217470774485733,
+          -0.14721747077448571
+        ]
+      }
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "iem-local-lead-1",
+      "minSurfaceGapM": 0.0013487101801611919,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-21",
+        "point": [
+          -0.1510081620941863,
+          0.019254001001599873,
+          -0.16343565521200656
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-2",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-3",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-4",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-5",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-6",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-7",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-8",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-9",
+      "minSurfaceGapM": 0.0021972237358237924,
+      "closest": {
+        "name": "install-iem-19-0.6-lacing",
+        "id": "iem-local-lead-19",
+        "point": [
+          -0.13555585432158412,
+          0.043501688852369325,
+          -0.12476626200440027
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-10",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-11",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-12",
+      "minSurfaceGapM": 0.00036806896896937613,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-21",
+        "point": [
+          -0.15078068888359694,
+          0.020504995987906866,
+          -0.15290154392382926
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-13",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-14",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-15",
+      "minSurfaceGapM": 0.00021107501661383424,
+      "closest": {
+        "name": "iem-harness-backshell",
+        "id": "iem-local-lead-16",
+        "point": [
+          -0.022989715284525838,
+          0.20255300973003948,
+          -0.13639126621813719
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-16",
+      "minSurfaceGapM": 0.0002391501908081883,
+      "closest": {
+        "name": "install-iem-12-post",
+        "id": "iem-local-lead-12",
+        "point": [
+          -0.024793436124181185,
+          0.15209018317641568,
+          -0.12678434135390887
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-17",
+      "minSurfaceGapM": 0.00047973683319245744,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-17",
+        "point": [
+          -0.06645514795523515,
+          0.0711145283173353,
+          -0.15681866003357542
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-18",
+      "minSurfaceGapM": 0.00022710104276897798,
+      "closest": {
+        "name": "iem-harness-backshell",
+        "id": "iem-local-lead-19",
+        "point": [
+          -0.05369744564418855,
+          0.2129453640458342,
+          -0.1367493014165314
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-19",
+      "minSurfaceGapM": 0.00033516941398698593,
+      "closest": {
+        "name": "iem-harness-backshell",
+        "id": "iem-local-lead-26",
+        "point": [
+          -0.12391484143745223,
+          0.08026057465579743,
+          -0.1360851585625478
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-20",
+      "minSurfaceGapM": 0.0002084322281504106,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-21",
+        "point": [
+          -0.129722806709974,
+          0.004980614911692995,
+          -0.16401343771907453
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-21",
+      "minSurfaceGapM": 0.00027939373479096436,
+      "closest": {
+        "name": "iem-service-support-stand",
+        "id": "iem-local-lead-2",
+        "point": [
+          -0.08398842131154094,
+          0.02259616424685718,
+          -0.15685248660265455
+        ]
+      }
+    }
+  ],
+  "legacyFittingContacts": [
+    {
+      "id": "iem-local-lead-22",
+      "minSurfaceGapM": -0.004492325004081149,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-21",
+        "point": [
+          -0.14507710673567625,
+          0.010572598456269415,
+          -0.15724938163118538
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-23",
+      "minSurfaceGapM": -0.004470751100392124,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-19",
+        "point": [
+          -0.081875,
+          0.13285496941383404,
+          -0.137218695952025
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-24",
+      "minSurfaceGapM": -0.0035129724994883635,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-21",
+        "point": [
+          -0.14627744434251302,
+          0.010898095945239264,
+          -0.15598602737634026
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-25",
+      "minSurfaceGapM": -0.0034177166646721328,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-21",
+        "point": [
+          -0.14654792556594898,
+          0.011119945156788286,
+          -0.15584903430125466
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-26",
+      "minSurfaceGapM": -0.003296296419137403,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-21",
+        "point": [
+          -0.1462299945955116,
+          0.010511283155721987,
+          -0.15583249626662402
+        ]
+      }
+    }
+  ],
+  "limits": "EST; dense sampled screens, not continuous collision certification. Fixed terminal region unchanged; legacy 22-26 wire/label/fitting interference deferred and reported separately."
+}

@@ -10,6 +10,29 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October25 current checkpoint: [IEM columns five/six](research/iem-fifth-sixth-columns-2026-10-25/README.md).
+- [x] IDs15-21: seven EST routes/tags/supports, fourteen ties and two column focuses.
+- [x] Preserve fourteen completed routes/fittings, five placeholders and26 endpoints/radii.
+- [x]635 tests; all original envelope/main-harness/contact checks retained, including
+  the second column's3 mm guard. Rebuilt sampled gaps exceed2 mm. Terminal and
+  legacy-placeholder interference remain open and separately measured.
+- [x] Nine focuses in Internal/Thermal, hide/restore and phone375/375px;24 parts,
+ 22 nonblank focus render checks and no browser errors. Shared references reused.
+- [x] Two-finger centroid pan when Rotate is selected; one-finger orbit/native
+  page scroll off retained. Actual UI-event tests, not a claimed physical-device test.
+- [ ] Next: seventh column IDs22/23, then eighth IDs24/25/26.21 reviewed,5 remain.
+Publication pending final receipt. Git cleanup remains paused: backup is partial,
+OneDrive could not supply some files; no deletion performed. Command-local automatic
+cleanup suppression only, not a permanent repository/global setting. Do not touch
+Assets Lab/Swarmfall data. Earlier dated next-step entries below are historical.
+
+October25 owner follow-up:
+- [ ] Validate port/starboard DrACO drill equipment asymmetry. Inventory both drill heads,
+  feed/drive hardware, brackets, guards, hoses/harnesses and nearby optical/sample interfaces
+  against real NASA/APL photos and published diagrams. Distinguish intentional shared or
+  one-sided equipment from a missing modeled part before adding or mirroring anything.
+  Save a side-by-side inventory and source evidence; symmetry is not assumed.
+
 October25: [inspection pan](research/inspection-pan-2026-10-25/README.md).
 - [x] Right hold/drag slides the view only while Rotate is selected; left drag still orbits.
 - [x] Shared camera keeps part labels attached; focus/reset/follow recenter.
@@ -36,7 +59,7 @@ Latest October25: [fourth column, IDs12-14](research/iem-fourth-column-2026-10-2
 - [x] Keep original main-harness, IEM envelope and gathering/contact limits unchanged.
 - [x] New focus in Internal/Thermal, whole IEM, hide/Restore and compatibility;24 parts,
   phone375/375px client/scroll, zero errors. Shared reference records reused.
-- [ ] Next: fifth column IDs15/16/17; fourteen reviewed, twelve still open.
+- [x] Fifth column IDs15/16/17; completed in the later combined five/six pass above.
 Owner's process clarification: reuse source records/photos unless resolving a new detail.
 Do not duplicate real/CAD comparison sheets per cable or column. One current model sample
 and concise measured evidence are enough; retain baseline/rejected parameters for recovery.

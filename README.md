@@ -10,7 +10,14 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-Published build **a68e08a**: [right-drag inspection pan](research/inspection-pan-2026-10-25/README.md).
+Current local update: [IEM columns five/six](research/iem-fifth-sixth-columns-2026-10-25/README.md)
+and [two-finger inspection pan](research/inspection-touch-pan-2026-10-25/README.md).
+Seven estimated routes/tags/supports and fourteen ties; all prior routes and endpoints
+retained.21 reviewed,5 open.635 tests pass; desktop/phone checks retain24 parts.
+Git cleanup remains paused at the unverified backup; no deletion or game-data changes.
+Publication receipt follows after the live build is verified.
+
+Previous published build **a68e08a**: [right-drag inspection pan](research/inspection-pan-2026-10-25/README.md).
 With Rotate selected: left drag rotates, right drag pans, wheel zooms. Shift+arrows
 also pan; focus/reset recenter.628 tests pass. Hardware and flight are unchanged.
 OneDrive warning handoff and command-local no-cleanup Git flags are recorded there.

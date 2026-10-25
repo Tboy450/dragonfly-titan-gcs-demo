@@ -12,6 +12,8 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [iem-fifth-sixth-columns-2026-10-25](iem-fifth-sixth-columns-2026-10-25/README.md) | Exact fourteen-route IEM/status baseline, prior whole-model view reused; rejected parameter record | 2026-10-25 | `archive/iem-fifth-sixth-columns-2026-10-25` on3e21c5e |
+| [inspection-touch-pan-2026-10-25](inspection-touch-pan-2026-10-25/README.md) | Prior single-touch inspector/HTML, shared prior public image | 2026-10-25 | `archive/inspection-touch-pan-2026-10-25` on3e21c5e |
 | [inspection-pan-2026-10-25](inspection-pan-2026-10-25/README.md) | Exact prior inspector/renderer/HTML without pan; previous public sample reused | 2026-10-25 | `archive/inspection-pan-2026-10-25` onde2500a |
 | [inspection-controls-2026-10-25](inspection-controls-2026-10-25/README.md) | Exact prior selector/layout, inspector wheel behavior and two Interior grids; before view and rejected phone-order draft | 2026-10-25 | `archive/inspection-controls-2026-10-25` on7cb0d32 |
 | [iem-fourth-column-2026-10-25](iem-fourth-column-2026-10-25/README.md) | Exact eleven-route IEM/status baseline and model view; two rejected support-foot parameter records | 2026-10-25 | `archive/iem-fourth-column-2026-10-25` on c5e4b58 |

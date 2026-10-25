@@ -36,11 +36,29 @@ for (const [scope, definitions] of [["global", globalInspectionLayers], ["part",
   }
 }
 let pointer = null, dragMode = "rotate", moved = false, suppressClick = false, lastX = 0, lastY = 0, startX = 0, startY = 0;
+const touches = new Map();
+let touchCenter = null;
+const centroid = () => {
+  const [a,b] = [...touches.values()];
+  return {x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+};
 const available = () => !!chaseRenderer && inspectionAvailable(state);
 const rotating = () => available() && state.inspector.rotate;
 function releasePointer() {
-  if (pointer !== null && flightCanvas.hasPointerCapture(pointer)) flightCanvas.releasePointerCapture(pointer);
-  pointer = null;
+  const ids = new Set(touches.keys());
+  if (pointer !== null) ids.add(pointer);
+  pointer = null; touches.clear(); touchCenter = null;
+  for (const id of ids) if (flightCanvas.hasPointerCapture(id)) flightCanvas.releasePointerCapture(id);
+}
+function releaseTouch(id) {
+  touches.delete(id); pointer = null; touchCenter = null;
+  if (flightCanvas.hasPointerCapture(id)) flightCanvas.releasePointerCapture(id);
+  if (touches.size === 1) {
+    const [remaining,point] = [...touches][0];
+    pointer = remaining; dragMode = "rotate";
+    lastX = startX = point.x; lastY = startY = point.y;
+    moved = true; suppressClick = true;
+  }
 }
 
 export function updateInspectorUI() {
@@ -138,14 +156,36 @@ $("inspection-follow").addEventListener("change", event => {
 $("inspection-pause").addEventListener("click", () => { commandFlight(state, "hold"); updateInspectorUI(); });
 
 flightCanvas.addEventListener("pointerdown", event => {
-  if (!rotating() || pointer !== null || (event.button !== 0 && !(event.pointerType === "mouse" && event.button === 2))) return;
-  dragMode = event.button === 2 ? "pan" : "rotate";
-  if (dragMode === "pan") event.preventDefault();
+  if (!rotating()) return;
+  if (event.pointerType === "touch") {
+    if ((pointer !== null && !touches.size) || touches.size >= 2) return;
+    touches.set(event.pointerId,{x:event.clientX,y:event.clientY});
+    flightCanvas.setPointerCapture(event.pointerId);
+    dragMode = "rotate";
+    if (touches.size === 2) {
+      pointer = null; touchCenter = centroid(); moved = true; suppressClick = true;
+      return;
+    }
+  } else {
+    if (pointer !== null || touches.size || (event.button !== 0 && !(event.pointerType === "mouse" && event.button === 2))) return;
+    dragMode = event.button === 2 ? "pan" : "rotate";
+    if (dragMode === "pan") event.preventDefault();
+    flightCanvas.setPointerCapture(event.pointerId);
+  }
   pointer = event.pointerId; moved = false; suppressClick = false;
   lastX = startX = event.clientX; lastY = startY = event.clientY;
-  flightCanvas.setPointerCapture(pointer);
 });
 flightCanvas.addEventListener("pointermove", event => {
+  if (touches.has(event.pointerId)) {
+    touches.set(event.pointerId,{x:event.clientX,y:event.clientY});
+    if (!rotating()) { releasePointer(); return; }
+    if (touches.size === 2) {
+      const center = centroid(), rect = flightCanvas.getBoundingClientRect();
+      panInspector(state.inspector,center.x-touchCenter.x,center.y-touchCenter.y,rect.width,rect.height);
+      touchCenter = center; moved = true; suppressClick = true;
+      return;
+    }
+  }
   if (event.pointerId !== pointer) return;
   if (!rotating()) { releasePointer(); return; }
   if (event.pointerType === "mouse" && event.buttons !== (dragMode === "pan" ? 2 : 1)) { releasePointer(); return; }
@@ -157,12 +197,22 @@ flightCanvas.addEventListener("pointermove", event => {
   lastX = event.clientX; lastY = event.clientY;
 });
 flightCanvas.addEventListener("pointerup", event => {
+  if (touches.has(event.pointerId)) {
+    suppressClick = moved || touches.size === 2;
+    releaseTouch(event.pointerId);
+    return;
+  }
   if (event.pointerId !== pointer) return;
   suppressClick = moved;
   releasePointer();
 });
-flightCanvas.addEventListener("pointercancel", releasePointer);
-flightCanvas.addEventListener("lostpointercapture", () => { pointer = null; });
+flightCanvas.addEventListener("pointercancel", event => {
+  if (touches.has(event.pointerId) || pointer === event.pointerId) releasePointer();
+});
+flightCanvas.addEventListener("lostpointercapture", event => {
+  if (touches.has(event.pointerId)) releaseTouch(event.pointerId);
+  else if (pointer === event.pointerId) pointer = null;
+});
 flightCanvas.addEventListener("contextmenu", event => {
   if (rotating()) event.preventDefault();
 });

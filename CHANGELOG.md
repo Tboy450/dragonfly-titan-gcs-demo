@@ -39,6 +39,27 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: IEM fifth/sixth columns and two-finger inspection pan
+- **Signed:** Codex (OpenAI).
+- **Commit:** Refine IEM columns five and six and add touch inspection pan.
+- **What changed:** Seven EST routes/tags/supports, fourteen ties and two focuses;
+  all fourteen prior routes/fittings, last five placeholders and26 endpoints/radii
+  fixed.21 reviewed/5 open. Existing inspector supports two-finger centroid pan
+  only while Rotate is selected; one-finger orbit and normal page scrolling off retained.
+- **Checks:**635 tests, exact preservation and sampled cable/triangle screens;
+  original global/envelope/contact guards and second-column3 mm gap retained.
+ 18 desktop focuses plus4 phone focuses render nonblank;375/375px phone width,
+ 24 parts, hide/restore and no browser errors. Touch lifecycle tested through
+  actual UI listeners; browser automation cannot emulate simultaneous fingers.
+- **Sources/recovery:** Reuse real NASA/APL/Ed Whitman and engineering/workmanship
+  records; no repeated comparison sheets. Both exact baseline archives/tags and
+  prior view links retained. Research README records rejected parameter passes.
+- **Open / next:** IDs22/23 then24-26; fixed terminal overlaps and legacy wire/tag/
+  fitting interference separately reported, not cleared. No flight circuits or
+  bend qualification claimed. Drill-side equipment asymmetry audit added to TODO.
+  Supervised Git cleanup remains paused at partial/unverified backup; no deletion.
+  Automatic maintenance disabled only per Git command. Assets Lab/Swarmfall data untouched.
+
 ### 2026-10-25: Verify inspection-pan publication
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record inspection pan publication receipt [skip ci].

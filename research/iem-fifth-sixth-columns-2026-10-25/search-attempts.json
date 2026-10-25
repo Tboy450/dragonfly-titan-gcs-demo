@@ -1,0 +1,17 @@
+[
+  {
+    "seed": 0,
+    "order": [
+      21,
+      20,
+      17,
+      19,
+      16,
+      18,
+      15
+    ],
+    "status": 0,
+    "failed": null,
+    "log": "iem-local-lead-21 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-21 49865 13 0.12701647728721366\niem-local-lead-20 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-20 115007 24 0.19689292927660318\niem-local-lead-17 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-17 43905 19 0.18438728117662162\niem-local-lead-19 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-19 214558 28 0.23947039967465333\niem-local-lead-16 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-16 212159 28 0.2707118871822334\niem-local-lead-18 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-18 587356 35 0.313381559586605\niem-local-lead-15 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-15 995102 35 0.3285026161856839\n"
+  }
+]
