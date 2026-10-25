@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-25: Confirm IEM middle-lead publication and handoff
+- **Signed:** Codex (OpenAI).
+- **Commit:** Record live IEM middle-lead acceptance [skip ci].
+- **Release:** 95d5f898a91ceacfddabcbebe326580465cacdc0, Pages 40165566073 succeeded.
+- **Checks:** 599 local tests and workflow tests pass. Public build stamp, all four IEM
+  focuses, five-reviewed/21-open notes, five source links, 24 parts and zero errors verified.
+  Public sample/JSON saved; archive tag pushed. Preview and watcher stopped.
+- **Next:** second-column IDs 5/7, preserving all five reviewed routes and endpoints.
+  Inherited terminal overlaps and actual flight topology remain explicitly unresolved.
+
 ### 2026-10-25: Separate the IEM middle lead without moving completed installation
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine IEM middle-lead service route and preserve completed fittings.

@@ -1,5 +1,14 @@
 # IEM Middle-Lead Installation
 
+## Publication Receipt
+
+Published build **95d5f898a91ceacfddabcbebe326580465cacdc0**; Pages run
+**40165566073** succeeded, including all workflow tests. Live normal navigation verifies
+the build stamp, all four IEM focuses, updated five-reviewed/21-open limits, five source
+links, 24 numbered parts and zero browser errors. Evidence: `public-iem.png` and
+`public-checks.json`. Recovery tag pushed; local preview and watcher stopped.
+The receipt-only follow-up commit does not change the deployed app.
+
 Codex (OpenAI), October 25, 2026. Owner approved the next cable-routing pass after the
 five-family fitting package. This pass revises **only `iem-local-lead-6`**, its white label
 and six new fitting meshes: one four-piece support and two lacing examples.

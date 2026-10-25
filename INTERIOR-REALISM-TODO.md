@@ -18,6 +18,9 @@ overlap and are explicitly unresolved. Five local routes reviewed, 21 remain.
 Next: second-column upper/lower leads (IDs 5 and 7), preserving the now-completed middle
 route and all first-column work. Desktop/phone, eight focuses and reversible layer checks
 pass; all 24 numbered parts retained and zero browser errors. Archive/samples saved.
+Published **95d5f89**, Pages 40165566073 succeeded. Live build/four focuses, updated
+five-reviewed/21-open notes, five source links, 24 parts and zero errors verified.
+Public screenshot/JSON saved; recovery tag pushed. Preview and watcher stopped.
 
 Current October25 checkpoint: owner requested all five avionics installation families.
 [Five-family support/inspection pass](research/avionics-installation-2026-10-25/README.md)
