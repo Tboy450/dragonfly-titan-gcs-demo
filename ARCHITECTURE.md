@@ -43,6 +43,16 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October26 tag/terminal cleanup: only lead8 label placement and the three terminal
+block geometries change in `iem.mjs`. The tag uses its rotated surface normal;
+each block becomes four thin panels with the same outer footprint. All26 full
+curves, radii and endpoints stay exact, as do325 pair measurements. New strict
+baseline and whole-tag-cable tests supplement the26-wire sweep, which now has no
+lead8 exception.645 tests pass. Retained terminal overlaps are not hidden:26x9 mm
+modeled cables cannot fit an18 mm branch (45.9 mm area-equivalent minimum).
+The real photo does not establish topology; no branch size, splice or circuit is invented.
+Research/recovery baseline05cc359 and a whole-IEM sample retained; no solver/game edits.
+
 October26 final IEM columns: `iem-final-service-routes.mjs` holds frozen controls and
 fittings for approved4/13/21 and22-26. The builder retains original endpoints/radii,
 other18 installations and enclosure. Two extra focuses complete11 targets. Owner approved

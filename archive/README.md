@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [iem-terminal-cleanup-2026-10-26](iem-terminal-cleanup-2026-10-26/README.md) | Exact prior tag/solid terminal blocks and disclosures; previous whole-model image reused | 2026-10-26 | `archive/iem-terminal-cleanup-2026-10-26` on05cc359 |
 | [iem-final-columns-2026-10-25](iem-final-columns-2026-10-25/README.md) | Exact21-route IEM/status baseline; shared earlier model picture and recovery steps; accepted/rejected final-column research retained separately | 2026-10-26 | `archive/iem-final-columns-2026-10-25` ona2a055c |
 | [iem-fifth-sixth-columns-2026-10-25](iem-fifth-sixth-columns-2026-10-25/README.md) | Exact fourteen-route IEM/status baseline, prior whole-model view reused; rejected parameter record | 2026-10-25 | `archive/iem-fifth-sixth-columns-2026-10-25` on3e21c5e |
 | [inspection-touch-pan-2026-10-25](inspection-touch-pan-2026-10-25/README.md) | Prior single-touch inspector/HTML, shared prior public image | 2026-10-25 | `archive/inspection-touch-pan-2026-10-25` on3e21c5e |

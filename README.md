@@ -10,7 +10,12 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-Published build **020bfae**: [all eight IEM columns](research/iem-final-columns-2026-10-25/README.md).
+October26 cleanup: [IEM tag and terminal wraps](research/iem-terminal-cleanup-2026-10-26/README.md).
+Lead8 label no longer clips; terminal blocks become hollow wraps. All26 cable curves,
+endpoints/radii and other fittings remain exact.645 tests; desktop/phone retain24 parts
+and11 focuses. Literal terminal capacity mismatch remains disclosed; publication follows.
+
+Previous published build **020bfae**: [all eight IEM columns](research/iem-final-columns-2026-10-25/README.md).
 Final five leads plus approved4/13/21 refits; other18 installations and26 endpoints/radii
 retained.640 tests pass, all325 cable-pair screens pass; desktop/phone retain24 parts.
 Measured return extension10.4 mm fits the approved2 cm allowance. Terminal convergence

@@ -40,13 +40,12 @@ test('All 325 IEM cable pairs clear outside unchanged gathering limits, includin
  assert.ok(pairs.some(row=>row.terminalMinSurfaceGapM<0),'Fixed terminal overlaps must still be reported');
 });
 
-test('All twenty-six swept IEM cables have no new contacts; the exact inherited lead8 own-tag exception remains recorded',async()=>{
+test('All twenty-six swept IEM cables clear; the earlier lead8 own-tag contact stays in the historical record',async()=>{
  const rows=surfaceAudit();assert.equal(rows.length,26);
  const accepted=JSON.parse(await readFile(new URL('../research/iem-final-columns-2026-10-25/candidate-checks.json',import.meta.url),'utf8'));
  assert.deepEqual(accepted.inheritedContacts.map(r=>r.id),['iem-local-lead-8']);
  assert.deepEqual(surfaceAudit(await baselineBuilder()).find(r=>r.id==='iem-local-lead-8'),accepted.inheritedContacts[0]);
- for(const row of rows){if(row.id==='iem-local-lead-8'){assert.deepEqual(row,accepted.inheritedContacts[0]);continue;}
-  assert.ok(row.minSurfaceGapM===null||row.minSurfaceGapM>-.0001,JSON.stringify(row));}
+ for(const row of rows)assert.ok(row.minSurfaceGapM===null||row.minSurfaceGapM>-.0001,JSON.stringify(row));
 });
 
 test('Last five have attached tags, one support and two ties each, with immutable estimated route records',()=>{

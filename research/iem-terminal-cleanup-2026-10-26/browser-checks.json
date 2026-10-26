@@ -1,0 +1,15 @@
+{
+  "desktop": {
+    "client": 1585,
+    "focuses": 11,
+    "parts": 24,
+    "scroll": 1585
+  },
+  "phone": {
+    "client": 375,
+    "focuses": 11,
+    "parts": 24,
+    "scroll": 375
+  },
+  "errors": []
+}

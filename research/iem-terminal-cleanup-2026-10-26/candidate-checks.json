@@ -1,0 +1,323 @@
+{
+  "baselineLead8": {
+    "id": "iem-local-lead-8",
+    "minSurfaceGapM": -0.0003576096027765171,
+    "closest": {
+      "name": "iem-harness-label",
+      "id": "iem-local-lead-8",
+      "point": [
+        0.033983581887865696,
+        0.15858729397106922,
+        -0.1975150037090862
+      ]
+    }
+  },
+  "surfaces": [
+    {
+      "id": "iem-local-lead-1",
+      "minSurfaceGapM": 0.00009585466941501586,
+      "closest": {
+        "name": "iem-service-support-stand",
+        "id": "iem-local-lead-2",
+        "point": [
+          -0.09156950754731778,
+          0.033735160578874324,
+          -0.17082392880328698
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-2",
+      "minSurfaceGapM": 0.0025702455251963782,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-2",
+        "point": [
+          0.09529223987054494,
+          0.11941027175085925,
+          -0.17593374563571293
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-3",
+      "minSurfaceGapM": 0.00023450044469732097,
+      "closest": {
+        "name": "iem-harness-backshell",
+        "id": "iem-local-lead-4",
+        "point": [
+          0.12283971100172485,
+          0.077778766298778,
+          -0.13403188006514657
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-4",
+      "minSurfaceGapM": 0.0002139914043306013,
+      "closest": {
+        "name": "iem-service-support-stand",
+        "id": "iem-local-lead-1",
+        "point": [
+          -0.021088815794987222,
+          0.02376098941528601,
+          -0.14881545864483572
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-5",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-6",
+      "minSurfaceGapM": 0.0010084703946098604,
+      "closest": {
+        "name": "iem-harness-tie",
+        "point": [
+          -0.17226208294346854,
+          0.022508470401734454,
+          -0.15001874652021097
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-7",
+      "minSurfaceGapM": -0.000043812388134777634,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-7",
+        "point": [
+          0.07905251729765969,
+          0.047275173001407336,
+          -0.19730932408738006
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-8",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-9",
+      "minSurfaceGapM": 0.0008001475633645375,
+      "closest": {
+        "name": "iem-harness-tie",
+        "point": [
+          -0.17200683130157685,
+          0.02230014757048913,
+          -0.13912197298342732
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-10",
+      "minSurfaceGapM": 0.00041824521704461864,
+      "closest": {
+        "name": "iem-harness-backshell",
+        "id": "iem-local-lead-11",
+        "point": [
+          0.05418358279096389,
+          0.07810822720063369,
+          -0.13571853943254386
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-11",
+      "minSurfaceGapM": 0.0014837107343944151,
+      "closest": {
+        "name": "iem-face-screw",
+        "point": [
+          0.14071982335960412,
+          0.026,
+          -0.1224830014292493
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-12",
+      "minSurfaceGapM": 0.003310264558384836,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-12",
+        "point": [
+          -0.02541313116594498,
+          0.159586868834055,
+          -0.15395485624353422
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-13",
+      "minSurfaceGapM": 0.0003189961716924183,
+      "closest": {
+        "name": "iem-service-support-stand",
+        "id": "iem-local-lead-3",
+        "point": [
+          -0.07286199493942502,
+          0.04755320708480499,
+          -0.13398479797577004
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-14",
+      "minSurfaceGapM": null
+    },
+    {
+      "id": "iem-local-lead-15",
+      "minSurfaceGapM": 0.00021068924713122696,
+      "closest": {
+        "name": "iem-harness-backshell",
+        "id": "iem-local-lead-16",
+        "point": [
+          -0.023075624681849084,
+          0.20245760437188765,
+          -0.13650024878088868
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-16",
+      "minSurfaceGapM": 0.0002383293194055027,
+      "closest": {
+        "name": "install-iem-12-post",
+        "id": "iem-local-lead-12",
+        "point": [
+          -0.024916153851938926,
+          0.15197269313525558,
+          -0.1267666203823915
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-17",
+      "minSurfaceGapM": 0.0005642273223218971,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-17",
+        "point": [
+          -0.06653495844966316,
+          0.07109687173971257,
+          -0.15684957375041045
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-18",
+      "minSurfaceGapM": 0.0002281418677587575,
+      "closest": {
+        "name": "iem-harness-backshell",
+        "id": "iem-local-lead-19",
+        "point": [
+          -0.053667757378661356,
+          0.21298662510323305,
+          -0.1366924838778035
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-19",
+      "minSurfaceGapM": 0.0003337059913009095,
+      "closest": {
+        "name": "iem-harness-tie",
+        "point": [
+          -0.1593676757120831,
+          0.015333,
+          -0.16538068298748743
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-20",
+      "minSurfaceGapM": 0.00022810783154240694,
+      "closest": {
+        "name": "iem-harness-backshell",
+        "id": "iem-local-lead-21",
+        "point": [
+          -0.05552984494051292,
+          0.07794403011536945,
+          -0.13533673301416638
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-21",
+      "minSurfaceGapM": 0.0010212424783056177,
+      "closest": {
+        "name": "iem-service-support-stand",
+        "id": "iem-local-lead-2",
+        "point": [
+          -0.08365236702122696,
+          0.021926624179128797,
+          -0.13206772773644446
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-22",
+      "minSurfaceGapM": 0.00030835338061997643,
+      "closest": {
+        "name": "iem-harness-tie",
+        "point": [
+          -0.18338854057054907,
+          0.0116,
+          -0.16741145942945093
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-23",
+      "minSurfaceGapM": 0.0004796464329035787,
+      "closest": {
+        "name": "iem-harness-tie",
+        "point": [
+          -0.18497964644002818,
+          0.014178398454680424,
+          -0.14682534550136292
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-24",
+      "minSurfaceGapM": 0.0006568725034494429,
+      "closest": {
+        "name": "iem-harness-tie",
+        "point": [
+          -0.1850487947127185,
+          0.013498480852338023,
+          -0.13694975900520479
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-25",
+      "minSurfaceGapM": 0.002962740645053949,
+      "closest": {
+        "name": "install-iem-16-0.6-lacing",
+        "id": "iem-local-lead-16",
+        "point": [
+          -0.1481395112289804,
+          0.08060811241410411,
+          -0.13402567759971418
+        ]
+      }
+    },
+    {
+      "id": "iem-local-lead-26",
+      "minSurfaceGapM": 0.0002160436166230642,
+      "closest": {
+        "name": "iem-harness-label",
+        "id": "iem-local-lead-20",
+        "point": [
+          -0.15570412900356606,
+          0.012227391713266832,
+          -0.1749780461362344
+        ]
+      }
+    }
+  ],
+  "pairsUnchanged": true,
+  "badSurfaces": []
+}

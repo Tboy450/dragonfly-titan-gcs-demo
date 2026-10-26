@@ -18,7 +18,7 @@ import {iemFinalServiceRoutes,iemFinalServiceFittings} from "./iem-final-service
 // connector counts, depth and the wall it is on (port, with the PSU on its left as seen from
 // inside, as photographed) are [EST]. Red handling handles are not drawn.
 export const iemAsset = Object.freeze({
-  revision: "iem-2026-10-26-all-columns",
+  revision: "iem-2026-10-26-tag-terminal-wraps",
   widthM: 0.28, heightM: 0.28, depthM: 0.22,
   // Back against the port wall (cavity edge about x -0.36), on the bay floor [EST].
   position: Object.freeze([-0.244, -0.284, -0.17]),
@@ -351,6 +351,11 @@ export function buildIem({ parent, mesh }) {
       cable.userData.routingReviewed=true;cable.userData.labelFraction=iemThirdUpperAsset.labelFractions[n];
       label.position.copy(path.getPointAt(cable.userData.labelFraction));label.position.z-=.005;
       label.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),path.getTangentAt(cable.userData.labelFraction));
+      if(i===7){
+        const normal=new THREE.Vector3(0,0,1).applyQuaternion(label.quaternion);
+        if(normal.z>0)normal.negate();
+        label.position.copy(path.getPointAt(cable.userData.labelFraction)).addScaledVector(normal,iemServiceAsset.radiusM+label.geometry.parameters.depth/2);
+      }
     }
     if(middle){
       cable.userData.routingReviewed=true;
@@ -395,6 +400,15 @@ export function buildIem({ parent, mesh }) {
     clip.name = "iem-service-clip"; clip.userData.connectionId = cable.userData.connectionId;
     clip.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), path.getTangentAt(iemServiceAsset.supportFractions[i]));
   });
-  for (const k of [0, 1, 2]) box([0.016, 0.014, 0.012], [-PW / 2 - 0.026, 0.01, z0 - 0.024 + k * 0.007], kapton, harness, "iem-harness-tie");
+  // EST hollow retention wraps, not solid junction blocks or verified flight splices.
+  const wrapThickness=.0003,wrapWidth=.016,wrapHeight=.014,wrapDepth=.012,wrapY=.01,wrapX=-PW/2-.026;
+  for(const k of [0,1,2]){
+    const wrapZ=z0-.024+k*.007;
+    for(const sign of [-1,1]){
+      const top=box([wrapWidth,wrapThickness,wrapDepth],[wrapX,wrapY+sign*(wrapHeight-wrapThickness)/2,wrapZ],kapton,harness,"iem-harness-tie");
+      const side=box([wrapThickness,wrapHeight-2*wrapThickness,wrapDepth],[wrapX+sign*(wrapWidth-wrapThickness)/2,wrapY,wrapZ],kapton,harness,"iem-harness-tie");
+      for(const piece of [top,side])Object.assign(piece.userData,{terminalWrapIndex:k,confidence:"EST",flightMatingConfirmed:false});
+    }
+  }
   return { assembly, chassis, mounts, connectors, harness, servicePair, lowerServicePair };
 }

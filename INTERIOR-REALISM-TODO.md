@@ -10,6 +10,21 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October26: [IEM tag / terminal cleanup](research/iem-terminal-cleanup-2026-10-26/README.md).
+- [x] Lead8 label surface-attached, no sampled penetration anywhere on its cable.
+- [x] Three hollow EST retention wraps replace solid terminal blocks, original footprints.
+- [x] All26 complete cable curves/endpoints/radii and other fittings exact; all325 pair
+  measurements unchanged.645 tests pass; no lead8 exception or enlarged contact limits.
+- [x] Real APL hardware photo rechecked/reused, source/recovery records and sample saved.
+- [x] Desktop/phone:24 parts,11 focuses, no overflow or browser errors; Internal/Thermal checked.
+- [ ] Publish and verify the cleanup build, then add receipt.
+- [ ] Literal terminal topology/capacity redesign remains open:26 modeled9 mm leads need
+  at least45.9 mm area-equivalent diameter, versus the illustrative18 mm branch. Photos
+  do not identify all destinations. Do not add a false splice, conceal the mismatch or
+  arbitrarily resize flight hardware. Further network changes need a separately scoped pass.
+Next independent part-validation task: DrACO equipment asymmetry inventory below.
+Git cleanup remains paused; Assets Lab/Swarmfall/save data untouched.
+
 October26: [final IEM columns and approved lower refit](research/iem-final-columns-2026-10-25/README.md).
 - [x] Finish columns7/8, IDs22-26, with attached tags/supports/two ties and two focuses.
 - [x] Owner-approved refits4/13/21; all26 endpoints/radii and other18 installations exact.
@@ -21,8 +36,8 @@ October26: [final IEM columns and approved lower refit](research/iem-final-colum
 - [x] Publish020bfae; Pages40276054426 succeeded. Live build/disclosures,11 targets,
  24 parts and phone375/375px verified with zero browser errors. Public sample/JSON
  and recovery tag saved. Preview stopped. Previous live build below is historical.
-- [ ] Follow-up: inherited lead8 own-label contact (0.36 mm beyond unchanged own-contact
-  exemption) and terminal convergence remain explicitly measured/open. No flight topology claim.
+- [x] Lead8 contact resolved in the later tag cleanup above; historical measurements retained.
+- [ ] Terminal convergence remains explicitly measured/open. No flight topology claim.
 The eight local columns are reviewed estimates, not a completed or flight-qualified harness.
 Next broader task remains the port/starboard DrACO equipment inventory below; do not mirror
 equipment without evidence. Git cleanup paused; no Assets Lab/Swarmfall/save changes.

@@ -39,6 +39,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-26: Surface-attach IEM lead8 label and hollow the terminal wraps
+- **Signed:** Codex (OpenAI).
+- **Commit:** Fix IEM tag attachment and hollow terminal wraps.
+- Rechecked real APL IEM/PSU photo, reused existing credited imagery. Lead8 label
+  follows its quaternion surface normal; whole sampled cable clears the label.
+  Three solid terminal blocks become thin hollow EST wraps in identical footprints.
+- All26 complete cable paths/endpoints/radii, other labels/supports and325 cable-pair
+  measurements are exact.645 tests pass. The old lead8 exception is removed, not enlarged.
+- Terminal overlap remains unresolved and disclosed: modeled local tails have6.5 times
+  the18 mm branch area (45.9 mm area-equivalent diameter before packing/sheathing).
+  No invented flight splice, rerouted endpoints or enlarged branch without evidence.
+- Isolated candidate checked before app edits; exact baseline/tag05cc359, rejected
+  wider wraps and research/sample records retained. Desktop/phone keep24 parts,
+ 11 focuses, Internal/Thermal render, zero overflow/browser errors.
+- No new model, flight solver, Assets Lab/Swarmfall/save edits or Git cleanup.
+
 ### 2026-10-26: Complete IEM local columns seven/eight with approved lower refits
 - **Signed:** Codex (OpenAI).
 - **Commit:** Complete final IEM columns and approved lower refits.
