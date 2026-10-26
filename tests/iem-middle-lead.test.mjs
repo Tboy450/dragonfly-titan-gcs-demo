@@ -1,3 +1,4 @@
+import {finalRefitMesh,finalFit} from './iem-final-compat.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -17,7 +18,7 @@ const revisedIds=new Set([id,'iem-local-lead-5','iem-local-lead-7','iem-local-le
 const changed=o=>(revisedIds.has(o.userData.connectionId)&&['iem-harness-cable','iem-harness-label'].includes(o.name))||revisedIds.has(o.userData.wireId);
 const fingerprint=root=>{
  const rows=[];root.updateMatrixWorld(true);
- root.traverse(o=>{if(!o.isMesh||changed(o))return;rows.push(JSON.stringify({name:o.name,matrix:o.matrixWorld.toArray(),vertices:[...o.geometry.attributes.position.array],indices:o.geometry.index?[...o.geometry.index.array]:null,color:o.material.color?.getHex(),metalness:o.material.metalness,roughness:o.material.roughness}));});
+ root.traverse(o=>{if(!o.isMesh||finalRefitMesh(o)||changed(o))return;rows.push(JSON.stringify({name:o.name,matrix:o.matrixWorld.toArray(),vertices:[...o.geometry.attributes.position.array],indices:o.geometry.index?[...o.geometry.index.array]:null,color:o.material.color?.getHex(),metalness:o.material.metalness,roughness:o.material.roughness}));});
  return createHash('sha256').update(rows.sort().join('\n')).digest('hex');
 };
 const find=(parent,name)=>parent.getObjectsByProperty('name',name).find(o=>o.userData.connectionId===id);
@@ -74,7 +75,7 @@ test('Middle label meets its own cable, two lacing examples follow tangents and 
  const support=wire.userData.installationSupports[0],pad=parent.getObjectByName('install-iem-6-pad');
  assert.ok(Math.abs(pad.position.z+.0006+.114)<1e-12);
  assert.equal(support.fraction,A.supportFraction);
- const report=iemLeadAudit();assert.equal(report.rows.filter(r=>r.routingReviewed).length,21);
- assert.match(report.missing,/Remaining 5/);
- assert.match(installationFamilies.find(row=>row.id==='iem').modeled,/5 remain/);
+ const report=iemLeadAudit();assert.equal(report.rows.filter(r=>r.routingReviewed).length,26);
+ assert.match(report.missing,/Remaining 0/);
+ assert.match(installationFamilies.find(row=>row.id==='iem').modeled,/0 remain/);
 });

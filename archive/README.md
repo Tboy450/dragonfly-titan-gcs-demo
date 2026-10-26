@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [iem-final-columns-2026-10-25](iem-final-columns-2026-10-25/README.md) | Exact21-route IEM/status baseline; shared earlier model picture and recovery steps; accepted/rejected final-column research retained separately | 2026-10-26 | `archive/iem-final-columns-2026-10-25` ona2a055c |
 | [iem-fifth-sixth-columns-2026-10-25](iem-fifth-sixth-columns-2026-10-25/README.md) | Exact fourteen-route IEM/status baseline, prior whole-model view reused; rejected parameter record | 2026-10-25 | `archive/iem-fifth-sixth-columns-2026-10-25` on3e21c5e |
 | [inspection-touch-pan-2026-10-25](inspection-touch-pan-2026-10-25/README.md) | Prior single-touch inspector/HTML, shared prior public image | 2026-10-25 | `archive/inspection-touch-pan-2026-10-25` on3e21c5e |
 | [inspection-pan-2026-10-25](inspection-pan-2026-10-25/README.md) | Exact prior inspector/renderer/HTML without pan; previous public sample reused | 2026-10-25 | `archive/inspection-pan-2026-10-25` onde2500a |

@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-26: Complete IEM local columns seven/eight with approved lower refits
+- **Signed:** Codex (OpenAI).
+- **Commit:** Complete final IEM columns and approved lower refits.
+- Finish22-26 and refit4/13/21, tags/supports/two ties each; all26 endpoints/radii,
+  other18 installations, casing and equipment pose fixed.11 non-nested focuses.
+- Owner approved2 cm accommodation before3 cm; measured extra return extent10.4 mm,
+  accommodated by12 mm extra estimated envelope at the return end, not a larger box.
+- Complete isolated acceptance precedes app installation.640 tests, all325 pair screens,
+  original second-column3 mm and main-harness tests pass; no legacy exclusion remains
+  in the installation ring screen.26-wire sweep records an exact inherited lead8
+  own-label contact (0.36 mm beyond bounded attachment) separately; terminal overlaps
+  and flight circuits/qualification stay unresolved and disclosed.
+- Desktop/phone retain24 parts and11 focuses, Internal/Thermal targets render distinctly,
+  no horizontal overflow/browser errors. Whole-IEM/phone samples saved; source images
+  reused, not duplicated. Status/assumptions/checklist and architecture reconciled.
+- Exact baseline/recovery tag and rejected route data retained. No image generation,
+  Assets Lab/Swarmfall/save changes or Git cleanup; command-local no-cleanup flags only.
+
 ### 2026-10-25: Verify IEM five/six and touch-pan publication
 - **Signed:** Codex (OpenAI).
 - **Commit:** Record IEM five-six publication receipt [skip ci].

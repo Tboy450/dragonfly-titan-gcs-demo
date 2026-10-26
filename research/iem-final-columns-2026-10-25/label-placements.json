@@ -1,0 +1,50 @@
+[
+  {
+    "id": "iem-local-lead-4",
+    "labelFraction": 0.2,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  },
+  {
+    "id": "iem-local-lead-13",
+    "labelFraction": 0.03,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  },
+  {
+    "id": "iem-local-lead-21",
+    "labelFraction": 0.46,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  },
+  {
+    "id": "iem-local-lead-22",
+    "labelFraction": 0.2,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  },
+  {
+    "id": "iem-local-lead-23",
+    "labelFraction": 0.27,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  },
+  {
+    "id": "iem-local-lead-24",
+    "labelFraction": 0.24,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  },
+  {
+    "id": "iem-local-lead-25",
+    "labelFraction": 0.04,
+    "labelOffsetZ": 0.005,
+    "labelRoll": 0
+  },
+  {
+    "id": "iem-local-lead-26",
+    "labelFraction": 0.07,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  }
+]

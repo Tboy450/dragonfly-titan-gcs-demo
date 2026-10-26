@@ -1,0 +1,38 @@
+[
+  {
+    "seed": 0,
+    "status": 0,
+    "log": "iem-local-lead-4 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-4 803768 157 0.3037730239628163\niem-local-lead-13 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-13 1018886 137 0.2672571329613597\niem-local-lead-21 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-21 351093 68 0.12974715304742518\niem-local-lead-22 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-22 405846 135 0.26018221135537445\niem-local-lead-23 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-23 1358635 117 0.21918725434613612\niem-local-lead-24 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-24 496467 166 0.3166070073105938\niem-local-lead-25 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-25 230110 84 0.15595249857091295\niem-local-lead-26 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-26 117571 41 0.07530103943148081\n",
+    "error": ""
+  },
+  {
+    "seed": 1,
+    "status": 1,
+    "log": "iem-local-lead-4 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-4 394806 175 0.33706762554866754\niem-local-lead-13 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-13 804415 131 0.2556790270454171\niem-local-lead-21 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-21 272367 68 0.1313997313755481\niem-local-lead-22 {\"clearStart\":true,\"clearEnd\":true}\n",
+    "error": "file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:97\r\n if(!finish)throw new Error(id+' no corridor after '+visits+' visits; nearest '+JSON.stringify(nearestGoal));\r\n                  ^\r\n\r\nError: iem-local-lead-22 no corridor after 4000001 visits; nearest {\"distance\":0.007360409295684595,\"point\":[-0.0834,0.2066,-0.13440000000000002]}\r\n    at file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:97:19\r\n\r\nNode.js v24.22.1\r\n"
+  },
+  {
+    "seed": 2,
+    "status": 0,
+    "log": "iem-local-lead-4 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-4 1116678 157 0.3082614499573904\niem-local-lead-13 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-13 253720 114 0.2213401748566246\niem-local-lead-21 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-21 79665 62 0.1184554921914078\niem-local-lead-22 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-22 1475196 150 0.2822709612507063\niem-local-lead-23 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-23 1537090 113 0.21494235384760912\niem-local-lead-24 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-24 394695 149 0.28535007022000675\niem-local-lead-25 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-25 393004 91 0.1664890341885714\niem-local-lead-26 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-26 58898 39 0.07354840153543035\n",
+    "error": ""
+  },
+  {
+    "seed": 3,
+    "status": 1,
+    "log": "iem-local-lead-4 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-4 701385 158 0.30541813302661497\niem-local-lead-13 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-13 927748 137 0.2672571329613597\niem-local-lead-21 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-21 367053 68 0.13170142307746452\niem-local-lead-22 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-22 494420 136 0.2603897456184689\niem-local-lead-23 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-23 959057 118 0.22182738055901294\niem-local-lead-24 {\"clearStart\":true,\"clearEnd\":true}\n",
+    "error": "file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:97\r\n if(!finish)throw new Error(id+' no corridor after '+visits+' visits; nearest '+JSON.stringify(nearestGoal));\r\n                  ^\r\n\r\nError: iem-local-lead-24 no corridor after 4000001 visits; nearest {\"distance\":0.004993308021742722,\"point\":[-0.1144,0.2026,-0.13240000000000002]}\r\n    at file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:97:19\r\n\r\nNode.js v24.22.1\r\n"
+  },
+  {
+    "seed": 4,
+    "status": 0,
+    "log": "iem-local-lead-4 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-4 513425 174 0.3394402419476923\niem-local-lead-13 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-13 748966 112 0.214178541945703\niem-local-lead-21 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-21 186495 64 0.1234254754953489\niem-local-lead-22 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-22 3293285 155 0.29138620191641934\niem-local-lead-23 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-23 323989 113 0.2149307900853708\niem-local-lead-24 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-24 1441792 159 0.2998151511192266\niem-local-lead-25 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-25 385753 86 0.15666560150847222\niem-local-lead-26 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-26 53379 40 0.07571883899920266\n",
+    "error": ""
+  },
+  {
+    "seed": 5,
+    "status": 0,
+    "log": "iem-local-lead-4 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-4 913961 157 0.3071007596194985\niem-local-lead-13 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-13 239823 112 0.2201781294559421\niem-local-lead-21 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-21 109983 67 0.1304617534916561\niem-local-lead-22 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-22 977130 141 0.2670537583741631\niem-local-lead-23 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-23 1493604 113 0.2148441843984324\niem-local-lead-24 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-24 374426 148 0.2822396419485333\niem-local-lead-25 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-25 302587 85 0.15728951204193398\niem-local-lead-26 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-26 115866 41 0.07530103943148081\n",
+    "error": ""
+  }
+]

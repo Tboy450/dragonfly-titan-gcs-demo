@@ -1,0 +1,54 @@
+[
+  {
+    "canvas": {
+      "height": 538.4000244140625,
+      "width": 727.3125,
+      "x": 419.7375183105469,
+      "y": 79.5999984741211
+    },
+    "client": 1585,
+    "scroll": 1585,
+    "mode": "Internal",
+    "column": "iem-seventh-column",
+    "file": "render-Internal-iem-seventh-column.png"
+  },
+  {
+    "canvas": {
+      "height": 538.4000244140625,
+      "width": 727.3125,
+      "x": 419.7375183105469,
+      "y": 79.5999984741211
+    },
+    "client": 1585,
+    "scroll": 1585,
+    "mode": "Internal",
+    "column": "iem-eighth-column",
+    "file": "render-Internal-iem-eighth-column.png"
+  },
+  {
+    "canvas": {
+      "height": 538.4000244140625,
+      "width": 727.3125,
+      "x": 419.7375183105469,
+      "y": 80.4000015258789
+    },
+    "client": 1585,
+    "scroll": 1585,
+    "mode": "Thermal",
+    "column": "iem-seventh-column",
+    "file": "render-Thermal-iem-seventh-column.png"
+  },
+  {
+    "canvas": {
+      "height": 538.4000244140625,
+      "width": 727.3125,
+      "x": 419.7375183105469,
+      "y": 80.4000015258789
+    },
+    "client": 1585,
+    "scroll": 1585,
+    "mode": "Thermal",
+    "column": "iem-eighth-column",
+    "file": "render-Thermal-iem-eighth-column.png"
+  }
+]

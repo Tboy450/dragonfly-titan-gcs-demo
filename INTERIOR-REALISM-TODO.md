@@ -10,6 +10,21 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October26: [final IEM columns and approved lower refit](research/iem-final-columns-2026-10-25/README.md).
+- [x] Finish columns7/8, IDs22-26, with attached tags/supports/two ties and two focuses.
+- [x] Owner-approved refits4/13/21; all26 endpoints/radii and other18 installations exact.
+- [x] Try2 cm accommodation first; measured extra return extent10.4 mm, envelope allowance12 mm.
+  No enclosure enlargement or3 cm expansion. Original main-harness/contact limits retained.
+- [x] Complete isolated validation before installation, then640 tests; all325 pairs clear,
+  second-column3 mm guard retained.11 focuses,24 parts, desktop/phone and zero browser errors.
+- [x] Baseline archive/recovery tag, rejected trial parameters, full-IEM and phone samples.
+- [ ] Publish and verify Pages; add the receipt here. Previous live build below is historical.
+- [ ] Follow-up: inherited lead8 own-label contact (0.36 mm beyond unchanged own-contact
+  exemption) and terminal convergence remain explicitly measured/open. No flight topology claim.
+The eight local columns are reviewed estimates, not a completed or flight-qualified harness.
+Next broader task remains the port/starboard DrACO equipment inventory below; do not mirror
+equipment without evidence. Git cleanup paused; no Assets Lab/Swarmfall/save changes.
+
 October25 current checkpoint: [IEM columns five/six](research/iem-fifth-sixth-columns-2026-10-25/README.md).
 - [x] IDs15-21: seven EST routes/tags/supports, fourteen ties and two column focuses.
 - [x] Preserve fourteen completed routes/fittings, five placeholders and26 endpoints/radii.

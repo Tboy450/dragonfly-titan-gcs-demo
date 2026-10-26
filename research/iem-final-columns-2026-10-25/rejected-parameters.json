@@ -1,0 +1,16 @@
+{
+  "base": "candidate-before-slack.json",
+  "deformation": "On each internal point with lo < x < hi, add amplitude * sin(pi*(x-lo)/(hi-lo))^2 on the specified axis. Endpoints fixed.",
+  "rejected": [
+    {"lead":4,"lo":-0.08,"hi":0.08,"axis":"y","amplitude":0.023,"reason":"Crosses lead3, lead14 and lead3 lacing"},
+    {"lead":21,"lo":-0.12,"hi":-0.065,"axis":"y","amplitude":0.006,"reason":"Crosses the fixed lead2 support stand"},
+    {"lead":4,"lo":-0.08,"hi":0.08,"axis":"z","amplitude":-0.023,"reason":"Lead1 free surface gap -0.144 mm"},
+    {"lead":21,"lo":-0.12,"hi":-0.065,"axis":"z","amplitude":-0.006,"reason":"Lead20 free surface gap 0.452 mm"},
+    {"lead":4,"lo":0.065,"hi":0.105,"axis":"y","amplitude":0.019,"reason":"Lead7 gap 2.092 mm violates retained second-column3 mm guard"}
+  ],
+  "accepted": [
+    {"lead":4,"lo":0.085,"hi":0.115,"axis":"y","amplitude":0.012},
+    {"lead":21,"lo":-0.07,"hi":-0.052,"axis":"y","amplitude":0.005}
+  ],
+  "other_trials": "candidate-pool.json, strict-initial-pool.json, pre-approval-attempts.json, pool-attempts.json, side-clearance-candidate.json and pre-approval-checkpoint.md retain earlier candidates/settings. Diagnostic fitting omissions were never accepted or installed."
+}

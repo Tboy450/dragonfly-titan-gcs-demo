@@ -43,6 +43,16 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October26 final IEM columns: `iem-final-service-routes.mjs` holds frozen controls and
+fittings for approved4/13/21 and22-26. The builder retains original endpoints/radii,
+other18 installations and enclosure. Two extra focuses complete11 targets. Owner approved
+2 cm accommodation first; actual return extension10.4 mm fits a12 mm envelope change.
+All325 sampled free-span pairs pass, retaining second-column3 mm and original floor-harness
+guards. New full-sweep audit records the exact inherited lead8 own-tag contact separately;
+terminal convergence and real circuits remain unresolved.640 tests pass. Research-only
+planners/fixtures are not app dependencies. Baseline/rejected candidates and sample images
+are retained; no game/save or Git-cleanup changes.
+
 October25 columns five/six: `iem-next-service-routes.mjs` contains frozen static
 controls for IDs15-21 only; `iemNextServiceAsset` holds fitting/tag fractions.
 Research-only search/repair/measurement tools are not loaded by the simulator.

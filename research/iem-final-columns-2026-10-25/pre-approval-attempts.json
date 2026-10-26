@@ -1,0 +1,92 @@
+[
+  {
+    "seed": 0,
+    "order": [
+      26,
+      25,
+      23,
+      24,
+      22,
+      13,
+      21,
+      4
+    ],
+    "status": 1,
+    "completed": 5,
+    "failed": 13,
+    "log": "iem-local-lead-26 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-26 128415 41 0.07530103943148081\niem-local-lead-25 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-25 303584 92 0.1687617630039173\niem-local-lead-23 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-23 1339599 130 0.2471697483791315\niem-local-lead-24 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-24 318681 165 0.3136626270386342\niem-local-lead-22 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-22 402113 165 0.3134395445089221\niem-local-lead-13 {\"clearStart\":true,\"clearEnd\":true}\n",
+    "error": "file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:92\r\n if(!finish)throw new Error(id+' no corridor after '+visits+' visits; nearest '+JSON.stringify(nearestGoal));\r\n                  ^\r\n\r\nError: iem-local-lead-13 no corridor after 74726 visits; nearest {\"distance\":0.16673278209458395,\"point\":[-0.13540000000000002,0.0186,-0.1404]}\r\n    at file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:92:19\r\n\r\nNode.js v24.22.1\r\n"
+  },
+  {
+    "seed": 1,
+    "order": [
+      13,
+      26,
+      25,
+      23,
+      24,
+      22,
+      21,
+      4
+    ],
+    "status": 1,
+    "completed": 5,
+    "failed": 22,
+    "log": "iem-local-lead-13 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-13 874844 131 0.25646857055152994\niem-local-lead-26 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-26 62261 43 0.07895049371740578\niem-local-lead-25 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-25 105597 93 0.17786036254393411\niem-local-lead-23 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-23 272243 118 0.2223648904501273\niem-local-lead-24 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-24 3195125 202 0.37699443468451327\niem-local-lead-22 {\"clearStart\":true,\"clearEnd\":true}\n",
+    "error": "file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:92\r\n if(!finish)throw new Error(id+' no corridor after '+visits+' visits; nearest '+JSON.stringify(nearestGoal));\r\n                  ^\r\n\r\nError: iem-local-lead-22 no corridor after 4000001 visits; nearest {\"distance\":0.012658026109943044,\"point\":[-0.08040000000000001,0.2046,-0.1394]}\r\n    at file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:92:19\r\n\r\nNode.js v24.22.1\r\n"
+  },
+  {
+    "seed": 2,
+    "order": [
+      22,
+      13,
+      26,
+      25,
+      23,
+      24,
+      21,
+      4
+    ],
+    "status": 1,
+    "completed": 6,
+    "failed": 21,
+    "log": "iem-local-lead-22 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-22 1547014 150 0.2822709612507063\niem-local-lead-13 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-13 259618 114 0.2213401748566246\niem-local-lead-26 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-26 53960 49 0.09167236666342826\niem-local-lead-25 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-25 406073 100 0.18869686669749075\niem-local-lead-23 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-23 1367286 144 0.2736652183230658\niem-local-lead-24 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-24 456477 188 0.34920609766396493\niem-local-lead-21 {\"clearStart\":false,\"clearEnd\":true}\n",
+    "error": "file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:92\r\n if(!finish)throw new Error(id+' no corridor after '+visits+' visits; nearest '+JSON.stringify(nearestGoal));\r\n                  ^\r\n\r\nError: iem-local-lead-21 no corridor after 75777 visits; nearest {\"distance\":0.08954605309559995,\"point\":[-0.13640000000000002,0.0156,-0.1194]}\r\n    at file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:92:19\r\n\r\nNode.js v24.22.1\r\n"
+  },
+  {
+    "seed": 3,
+    "order": [
+      21,
+      22,
+      13,
+      26,
+      25,
+      23,
+      24,
+      4
+    ],
+    "status": 1,
+    "completed": 6,
+    "failed": 24,
+    "log": "iem-local-lead-21 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-21 391999 72 0.14017605356753668\niem-local-lead-22 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-22 475487 135 0.2616957216780362\niem-local-lead-13 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-13 854951 136 0.2667142430675181\niem-local-lead-26 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-26 129930 52 0.09297322818275824\niem-local-lead-25 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-25 224712 111 0.2024079369145067\niem-local-lead-23 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-23 901379 143 0.2676671343099489\niem-local-lead-24 {\"clearStart\":true,\"clearEnd\":true}\n",
+    "error": "file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:92\r\n if(!finish)throw new Error(id+' no corridor after '+visits+' visits; nearest '+JSON.stringify(nearestGoal));\r\n                  ^\r\n\r\nError: iem-local-lead-24 no corridor after 73328 visits; nearest {\"distance\":0.18638329626068964,\"point\":[-0.1504,0.0226,-0.1424]}\r\n    at file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:92:19\r\n\r\nNode.js v24.22.1\r\n"
+  },
+  {
+    "seed": 4,
+    "order": [
+      24,
+      21,
+      22,
+      13,
+      26,
+      25,
+      23,
+      4
+    ],
+    "status": 1,
+    "completed": 5,
+    "failed": 25,
+    "log": "iem-local-lead-24 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-24 1512735 159 0.29921446416273795\niem-local-lead-21 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-21 304671 71 0.13539980843041474\niem-local-lead-22 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-22 3569374 161 0.3102207983660411\niem-local-lead-13 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-13 759253 119 0.22701565988194405\niem-local-lead-26 {\"clearStart\":true,\"clearEnd\":true}\niem-local-lead-26 96948 50 0.0931230616276739\niem-local-lead-25 {\"clearStart\":true,\"clearEnd\":true}\n",
+    "error": "file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:92\r\n if(!finish)throw new Error(id+' no corridor after '+visits+' visits; nearest '+JSON.stringify(nearestGoal));\r\n                  ^\r\n\r\nError: iem-local-lead-25 no corridor after 72173 visits; nearest {\"distance\":0.0734019797076346,\"point\":[-0.13540000000000002,0.0186,-0.1404]}\r\n    at file:///C:/Users/Heemi/.codex/visualizations/2026/09/21/01a0c1fe-26e1-7300-9b26-02e6197228f6/nose-sensors-worktree/research/iem-final-columns-2026-10-25/route-candidates.mjs:92:19\r\n\r\nNode.js v24.22.1\r\n"
+  }
+]

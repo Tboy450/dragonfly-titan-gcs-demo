@@ -1,3 +1,4 @@
+import {finalRefitMesh,finalFit} from './iem-final-compat.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -11,7 +12,7 @@ const ids=new Set(pairIds);
 const changedIds=new Set([...ids,'iem-local-lead-15','iem-local-lead-16','iem-local-lead-17','iem-local-lead-18','iem-local-lead-19','iem-local-lead-20','iem-local-lead-21']);
 const ownChange=o=>(changedIds.has(o.userData.connectionId)&&['iem-harness-cable','iem-harness-label'].includes(o.name))||changedIds.has(o.userData.wireId);
 const fingerprint=root=>{
- const rows=[];root.updateMatrixWorld(true);root.traverse(o=>{if(!o.isMesh||ownChange(o))return;
+ const rows=[];root.updateMatrixWorld(true);root.traverse(o=>{if(!o.isMesh||finalRefitMesh(o)||ownChange(o))return;
  rows.push(JSON.stringify({name:o.name,matrix:o.matrixWorld.toArray(),positions:[...o.geometry.attributes.position.array],indices:o.geometry.index?[...o.geometry.index.array]:null,color:o.material.color?.getHex(),metalness:o.material.metalness,roughness:o.material.roughness}));});
  return createHash('sha256').update(rows.sort().join('\n')).digest('hex');
 };
@@ -63,14 +64,14 @@ test('Revised labels meet their own cables and all three supports and lacing rem
   const wire=find(parent,id,'iem-harness-cable'),label=find(parent,id,'iem-harness-label'),path=wire.geometry.parameters.path;
   assert.ok(new T.Box3().setFromObject(label).distanceToPoint(path.getPointAt(wire.userData.labelFraction).applyMatrix4(wire.matrixWorld))<=.0045);
   assert.equal(wire.userData.routingReviewed,true);assert.equal(wire.userData.flightMatingConfirmed,false);
-  assert.equal(wire.userData.installationSupports.length,1);assert.equal(wire.userData.installationSupports[0].fraction,A.supportFractions[n]);
+  assert.equal(wire.userData.installationSupports.length,1);assert.equal(wire.userData.installationSupports[0].fraction,(finalFit(id)?.supportFraction??A.supportFractions[n]));
   const ties=[];parent.traverse(o=>{if(o.userData.wireId===id&&o.name.endsWith('-lacing'))ties.push(o);});assert.equal(ties.length,2);
-  for(let i=0;i<ties.length;i++)assert.ok(ties[i].position.distanceTo(path.getPointAt(A.lacingFractions[i]))<1e-12);
+  for(let i=0;i<ties.length;i++)assert.ok(ties[i].position.distanceTo(path.getPointAt((finalFit(id)?.lacingFractions[i]??A.lacingFractions[i])))<1e-12);
  }
 });
 
-test('IEM review register records twenty-one local routes and five still open without assigning flight circuits',()=>{
- const report=iemLeadAudit();assert.equal(report.rows.length,26);assert.equal(report.rows.filter(row=>row.routingReviewed).length,21);
- assert.match(report.missing,/Remaining 5/);assert.ok(report.rows.every(row=>!row.flightMatingConfirmed));
+test('IEM review register records twenty-six local routes and no placeholders without assigning flight circuits',()=>{
+ const report=iemLeadAudit();assert.equal(report.rows.length,26);assert.equal(report.rows.filter(row=>row.routingReviewed).length,26);
+ assert.match(report.missing,/Remaining 0/);assert.ok(report.rows.every(row=>!row.flightMatingConfirmed));
  assert.ok(Object.isFrozen(A)&&Object.isFrozen(A.leadIndices));
 });

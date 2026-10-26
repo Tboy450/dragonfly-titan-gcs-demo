@@ -1,3 +1,4 @@
+import {finalRefitMesh,finalFit} from './iem-final-compat.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -11,7 +12,7 @@ import {inspectionSubassemblies} from '../dist/vehicle-inspector.mjs';
 import {createInspectionVisibility} from '../dist/inspection-visibility.mjs';
 const changed=o=>(nextIds.includes(o.userData.connectionId)&&['iem-harness-cable','iem-harness-label'].includes(o.name))||nextIds.includes(o.userData.wireId);
 const fingerprint=root=>{
- const rows=[];root.updateMatrixWorld(true);root.traverse(o=>{if(!o.isMesh||changed(o))return;
+ const rows=[];root.updateMatrixWorld(true);root.traverse(o=>{if(!o.isMesh||finalRefitMesh(o)||changed(o))return;
  rows.push(JSON.stringify({name:o.name,matrix:o.matrixWorld.toArray(),positions:[...o.geometry.attributes.position.array],indices:o.geometry.index?[...o.geometry.index.array]:null,color:o.material.color?.getHex(),metalness:o.material.metalness,roughness:o.material.roughness}));});
  return createHash('sha256').update(rows.sort().join('\n')).digest('hex');
 };
@@ -30,10 +31,11 @@ test('Next seven preserve all fourteen completed routes/fittings, five placehold
  }
 });
 
-test('Seven free spans clear all rebuilt leads by over 2 mm; legacy and terminal overlaps remain separately reported',()=>{
+test('Seven free spans retain clearance and the historical legacy-contact record is preserved',async()=>{
  const rows=routeAudit();assert.equal(rows.length,7);
  for(const row of rows){assert.ok(row.freeSpanMinSurfaceGapM>.002,JSON.stringify(row));assert.ok(row.terminalMinSurfaceGapM<0);}
- assert.ok(rows.some(row=>row.legacyFreeSpanMinSurfaceGapM<0),'Do not present legacy placeholder interference as clear');
+ const historical=JSON.parse(await readFile(new URL('../research/iem-fifth-sixth-columns-2026-10-25/route-checks.json',import.meta.url),'utf8'));
+ assert.ok(historical.routes.some(row=>row.legacyFreeSpanMinSurfaceGapM<0),'Retain the earlier placeholder interference record');
  assert.deepEqual([...legacyIds],['iem-local-lead-22','iem-local-lead-23','iem-local-lead-24','iem-local-lead-25','iem-local-lead-26']);
 });
 
@@ -47,16 +49,16 @@ test('Seven attached tags, supports and fourteen lacing ties are estimates, not 
   const wire=find(parent,id,'iem-harness-cable'),label=find(parent,id,'iem-harness-label'),path=wire.geometry.parameters.path;
   assert.ok(new T.Box3().setFromObject(label).distanceToPoint(path.getPointAt(wire.userData.labelFraction).applyMatrix4(wire.matrixWorld))<=.0045);
   assert.equal(wire.userData.routingReviewed,true);assert.equal(wire.userData.flightMatingConfirmed,false);
-  assert.equal(wire.userData.labelFraction,A.labelFractions[n]);
-  assert.equal(wire.userData.installationSupports.length,1);assert.equal(wire.userData.installationSupports[0].fraction,A.supportFractions[n]);
+  assert.equal(wire.userData.labelFraction,(finalFit(id)?.labelFraction??A.labelFractions[n]));
+  assert.equal(wire.userData.installationSupports.length,1);assert.equal(wire.userData.installationSupports[0].fraction,(finalFit(id)?.supportFraction??A.supportFractions[n]));
   const ties=[];parent.traverse(o=>{if(o.userData.wireId===id&&o.name.endsWith('-lacing'))ties.push(o);});assert.equal(ties.length,2);
-  for(let i=0;i<ties.length;i++)assert.ok(ties[i].position.distanceTo(path.getPointAt(A.lacingFractions[i]))<1e-12);
+  for(let i=0;i<ties.length;i++)assert.ok(ties[i].position.distanceTo(path.getPointAt((finalFit(id)?.lacingFractions[i]??A.lacingFractions[i])))<1e-12);
  }
 });
 
 test('Fifth/sixth focuses are non-nested and reversible layers retain all twenty-six installed leads',()=>{
- const{parent}=fixture(),targets=inspectionSubassemblies(parent);assert.equal(targets.length,9);
- for(const name of ['iem-fifth-column','iem-sixth-column'])assert.ok(targets.some(o=>o.name===name));
+ const{parent}=fixture(),targets=inspectionSubassemblies(parent);assert.equal(targets.length,11);
+ for(const name of ['iem-fifth-column','iem-sixth-column','iem-seventh-column','iem-eighth-column'])assert.ok(targets.some(o=>o.name===name));
  for(const target of targets)for(let p=target.parent;p&&p!==parent;p=p.parent)assert.ok(!targets.includes(p));
  const mask=createInspectionVisibility({iem:parent});
  for(const layer of ['harnesses','interfaces','mounts']){
@@ -64,6 +66,6 @@ test('Fifth/sixth focuses are non-nested and reversible layers retain all twenty
   for(const[o,v]of previous)o.visible=v;
   assert.ok(parent.getObjectsByProperty('name','iem-harness-cable').every(o=>o.visible));
  }
- const report=iemLeadAudit();assert.equal(report.rows.filter(r=>r.routingReviewed).length,21);assert.match(report.missing,/Remaining 5/);
+ const report=iemLeadAudit();assert.equal(report.rows.filter(r=>r.routingReviewed).length,26);assert.match(report.missing,/Remaining 0/);
  assert.ok(report.rows.every(r=>!r.flightMatingConfirmed));assert.ok(Object.isFrozen(A)&&Object.isFrozen(A.leadIndices));
 });

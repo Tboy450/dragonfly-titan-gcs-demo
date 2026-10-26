@@ -1,0 +1,122 @@
+{
+  "iem-local-lead-4": {
+    "supportFraction": 0.16,
+    "foot": [
+      0.07514382021514446,
+      0.03524690865758241,
+      -0.114
+    ],
+    "lacingFractions": [
+      0.35,
+      0.6
+    ],
+    "labelFraction": 0.2,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  },
+  "iem-local-lead-13": {
+    "supportFraction": 0.1,
+    "foot": [
+      -0.0033566441425731093,
+      0.07869410675315973,
+      -0.114
+    ],
+    "lacingFractions": [
+      0.35,
+      0.6
+    ],
+    "labelFraction": 0.03,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  },
+  "iem-local-lead-21": {
+    "supportFraction": 0.16,
+    "foot": [
+      -0.06624185662758403,
+      0.029740883607665858,
+      -0.114
+    ],
+    "lacingFractions": [
+      0.35,
+      0.6
+    ],
+    "labelFraction": 0.46,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  },
+  "iem-local-lead-22": {
+    "supportFraction": 0.16,
+    "foot": [
+      -0.09307011928924507,
+      0.17145859296906474,
+      -0.114
+    ],
+    "lacingFractions": [
+      0.35,
+      0.6
+    ],
+    "labelFraction": 0.2,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  },
+  "iem-local-lead-23": {
+    "supportFraction": 0.16,
+    "foot": [
+      -0.11305252060615338,
+      0.13993724373190242,
+      -0.114
+    ],
+    "lacingFractions": [
+      0.35,
+      0.6
+    ],
+    "labelFraction": 0.27,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  },
+  "iem-local-lead-24": {
+    "supportFraction": 0.16,
+    "foot": [
+      -0.1405715515637069,
+      0.17331221580359196,
+      -0.114
+    ],
+    "lacingFractions": [
+      0.35,
+      0.6
+    ],
+    "labelFraction": 0.24,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  },
+  "iem-local-lead-25": {
+    "supportFraction": 0.15,
+    "foot": [
+      -0.13215562476604378,
+      0.08809517877196249,
+      -0.114
+    ],
+    "lacingFractions": [
+      0.35,
+      0.6
+    ],
+    "labelFraction": 0.04,
+    "labelOffsetZ": 0.005,
+    "labelRoll": 0
+  },
+  "iem-local-lead-26": {
+    "supportFraction": 0.16,
+    "foot": [
+      -0.10900550876459723,
+      0.021555686201467153,
+      -0.114
+    ],
+    "lacingFractions": [
+      0.29,
+      0.6
+    ],
+    "labelFraction": 0.07,
+    "labelOffsetZ": -0.005,
+    "labelRoll": 0
+  }
+}

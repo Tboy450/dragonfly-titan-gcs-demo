@@ -1,0 +1,32 @@
+{
+  "cases": [
+    {
+      "mode": "Internal",
+      "column": "iem-seventh-column",
+      "dark": 56940,
+      "green": 52
+    },
+    {
+      "mode": "Internal",
+      "column": "iem-eighth-column",
+      "dark": 54050,
+      "green": 48
+    },
+    {
+      "mode": "Thermal",
+      "column": "iem-seventh-column",
+      "dark": 258,
+      "green": 92003
+    },
+    {
+      "mode": "Thermal",
+      "column": "iem-eighth-column",
+      "dark": 263,
+      "green": 87499
+    }
+  ],
+  "differences": {
+    "Internal": 57450,
+    "Thermal": 43124
+  }
+}
