@@ -13,7 +13,9 @@ rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 October26 cleanup: [IEM tag and terminal wraps](research/iem-terminal-cleanup-2026-10-26/README.md).
 Lead8 label no longer clips; terminal blocks become hollow wraps. All26 cable curves,
 endpoints/radii and other fittings remain exact.645 tests; desktop/phone retain24 parts
-and11 focuses. Literal terminal capacity mismatch remains disclosed; publication follows.
+and11 focuses. Literal terminal capacity mismatch remains disclosed. Published **7538184**;
+Pages40278240471 succeeded. Live build/disclosures,24 parts and11 focuses verified,
+zero browser errors. Public sample/JSON saved; preview stopped.
 
 Previous published build **020bfae**: [all eight IEM columns](research/iem-final-columns-2026-10-25/README.md).
 Final five leads plus approved4/13/21 refits; other18 installations and26 endpoints/radii

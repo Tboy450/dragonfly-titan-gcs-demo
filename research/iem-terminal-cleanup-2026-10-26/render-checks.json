@@ -1,0 +1,17 @@
+[
+  {
+    "view": "Internal",
+    "dark": 60692,
+    "green": 46
+  },
+  {
+    "view": "Thermal",
+    "dark": 1514,
+    "green": 90458
+  },
+  {
+    "view": "Phone",
+    "dark": 25470,
+    "green": 20
+  }
+]

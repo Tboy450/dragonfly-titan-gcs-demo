@@ -54,6 +54,8 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   wider wraps and research/sample records retained. Desktop/phone keep24 parts,
  11 focuses, Internal/Thermal render, zero overflow/browser errors.
 - No new model, flight solver, Assets Lab/Swarmfall/save edits or Git cleanup.
+- **Published:**7538184; Pages40278240471 succeeded. Live build/disclosures,24 parts,
+ 11 focuses and zero errors verified; public sample/JSON saved and preview stopped.
 
 ### 2026-10-26: Complete IEM local columns seven/eight with approved lower refits
 - **Signed:** Codex (OpenAI).

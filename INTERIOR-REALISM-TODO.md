@@ -17,7 +17,9 @@ October26: [IEM tag / terminal cleanup](research/iem-terminal-cleanup-2026-10-26
   measurements unchanged.645 tests pass; no lead8 exception or enlarged contact limits.
 - [x] Real APL hardware photo rechecked/reused, source/recovery records and sample saved.
 - [x] Desktop/phone:24 parts,11 focuses, no overflow or browser errors; Internal/Thermal checked.
-- [ ] Publish and verify the cleanup build, then add receipt.
+- [x] Published7538184; Pages40278240471 succeeded. Live build, corrected-label and
+  capacity disclosures,24 parts and11 focuses verified without browser errors.
+  Public sample/JSON saved, preview stopped;645 tests pass.
 - [ ] Literal terminal topology/capacity redesign remains open:26 modeled9 mm leads need
   at least45.9 mm area-equivalent diameter, versus the illustrative18 mm branch. Photos
   do not identify all destinations. Do not add a false splice, conceal the mismatch or

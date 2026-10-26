@@ -43,7 +43,17 @@ endpoint was introduced. The literal terminal network remains open and disclosed
 `candidate-checks.json` retains its measurements. Five independent current-builder
 tests bring the full suite to645 passing tests. Desktop and390px phone checks
 retain24 parts,11 focuses and no overflow/errors; Internal/Thermal renders checked.
-`full-iem.png` is the current model sample. Publication receipt follows verification.
+`full-iem.png` is the current model sample.
+
+## Publication Receipt
+
+Published app commit7538184a25650507465b2e4007c09049abdc56ac to main and the working
+branch; recovery tag pushed. GitHub Pages run40278240471 succeeded. Live build7538184,
+surface-attached-label and capacity disclosures,24 parts and11 inspection focuses
+verified without browser errors or horizontal overflow. See `public-checks.json`
+and `public-full-iem.png`; local desktop/phone and pixel checks are in
+`browser-checks.json` and `render-checks.json`. All645 tests pass. Preview stopped.
+Receipt-only follow-up uses [skip ci]; the live application build remains7538184.
 
 Recovery baseline05cc359, tag `archive/iem-terminal-cleanup-2026-10-26`.
 Reuse the preceding public whole-model sample for the old appearance. Saved source
