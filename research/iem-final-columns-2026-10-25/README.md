@@ -1,7 +1,9 @@
 # IEM Final Columns
 
-Codex (OpenAI), October26,2026. Implementation and local verification complete.
-Publication receipt follows after Pages succeeds.
+Codex (OpenAI), October26,2026. Published **020bfae**;
+Pages deployment **40276054426** succeeded. Live build/disclosures,11 targets,
+24 parts and phone375/375px verified with zero browser errors. Public screenshot
+and `public-checks.json` saved, recovery tag pushed. Preview stopped.
 
 ## Scope And Measurement
 

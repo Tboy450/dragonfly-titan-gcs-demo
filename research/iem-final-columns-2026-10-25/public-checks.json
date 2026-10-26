@@ -1,0 +1,27 @@
+{
+  "build": "Build 020bfae · 2026-10-26",
+  "client": 1265,
+  "focuses": [
+    "iem-connectors",
+    "iem-upper-service-pair",
+    "iem-lower-service-pair",
+    "iem-second-column",
+    "iem-third-upper-pair",
+    "iem-third-lower-pair",
+    "iem-fourth-column",
+    "iem-fifth-column",
+    "iem-sixth-column",
+    "iem-seventh-column",
+    "iem-eighth-column"
+  ],
+  "inheritedContactDisclosure": true,
+  "parts": 24,
+  "reviewedStatus": true,
+  "scroll": 1265,
+  "phone": {
+    "client": 375,
+    "parts": 24,
+    "scroll": 375
+  },
+  "errors": []
+}

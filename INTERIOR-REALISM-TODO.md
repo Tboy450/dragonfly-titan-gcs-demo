@@ -18,7 +18,9 @@ October26: [final IEM columns and approved lower refit](research/iem-final-colum
 - [x] Complete isolated validation before installation, then640 tests; all325 pairs clear,
   second-column3 mm guard retained.11 focuses,24 parts, desktop/phone and zero browser errors.
 - [x] Baseline archive/recovery tag, rejected trial parameters, full-IEM and phone samples.
-- [ ] Publish and verify Pages; add the receipt here. Previous live build below is historical.
+- [x] Publish020bfae; Pages40276054426 succeeded. Live build/disclosures,11 targets,
+ 24 parts and phone375/375px verified with zero browser errors. Public sample/JSON
+ and recovery tag saved. Preview stopped. Previous live build below is historical.
 - [ ] Follow-up: inherited lead8 own-label contact (0.36 mm beyond unchanged own-contact
   exemption) and terminal convergence remain explicitly measured/open. No flight topology claim.
 The eight local columns are reviewed estimates, not a completed or flight-qualified harness.

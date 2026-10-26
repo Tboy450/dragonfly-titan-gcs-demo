@@ -10,11 +10,13 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
-October26 implementation: [all eight IEM columns](research/iem-final-columns-2026-10-25/README.md).
+Published build **020bfae**: [all eight IEM columns](research/iem-final-columns-2026-10-25/README.md).
 Final five leads plus approved4/13/21 refits; other18 installations and26 endpoints/radii
 retained.640 tests pass, all325 cable-pair screens pass; desktop/phone retain24 parts.
 Measured return extension10.4 mm fits the approved2 cm allowance. Terminal convergence
-and an inherited lead8 own-tag contact remain open. Publishing receipt follows.
+and an inherited lead8 own-tag contact remain open. Pages40276054426 succeeded;
+live build/status,11 targets,24 parts and phone375/375px verified, zero browser errors.
+Public sample/JSON and recovery tag saved; preview stopped. Git cleanup remains paused.
 
 Previous published build **00d32be**: [IEM columns five/six](research/iem-fifth-sixth-columns-2026-10-25/README.md)
 and [two-finger inspection pan](research/inspection-touch-pan-2026-10-25/README.md).

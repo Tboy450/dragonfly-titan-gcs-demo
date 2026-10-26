@@ -56,6 +56,9 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   reused, not duplicated. Status/assumptions/checklist and architecture reconciled.
 - Exact baseline/recovery tag and rejected route data retained. No image generation,
   Assets Lab/Swarmfall/save changes or Git cleanup; command-local no-cleanup flags only.
+- **Publication:**020bfae, Pages40276054426 succeeded. Live status/build,11 focuses,
+ 24 parts and phone375/375px verified with zero browser errors; public sample/JSON
+ and recovery tag saved. Local preview stopped. Receipt signed Codex (OpenAI).
 
 ### 2026-10-25: Verify IEM five/six and touch-pan publication
 - **Signed:** Codex (OpenAI).
