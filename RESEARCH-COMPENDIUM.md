@@ -4,6 +4,13 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 27 fixed feed lead (Codex):** [evidence/implementation](research/drill-fixed-feed-lead-2026-10-27/README.md).
+[PUB] real EM1 development electrical leads; Costa's prototype used EGSE. Neither
+identifies exact flight exits/circuits. [EST] one 4 mm stationary service-lead example
+per drill with opening, grommet and local frame retention; not a flight cable count.
+[CALC] chosen-layout radius 38.5 mm, length 164.951 mm. Remote continuation/material/
+cold life unknown. 712 tests; numbered Open interior UI requested by owner included.
+
 **October 27 upper drill drive (Codex):** [fit audit and handoff](research/drill-drive-2026-10-27/README.md).
 [PUB] covered EM1 actuator/gearbox/joint; real two-DOF upper joint and free lower
 screw. [CALC] old drawn output gap 80 mm; upper relief now leaves 12 mm to old shaft.

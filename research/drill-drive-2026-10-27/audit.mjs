@@ -2,11 +2,12 @@ import * as T from '../../dist/vendor/three/three.module.min.js';
 import {readFile,writeFile} from 'node:fs/promises';
 import {pathToFileURL} from 'node:url';
 import {fixture} from '../drill-moving-leads-2026-10-27/audit.mjs';
+import {fixedFeedChangedNames} from '../drill-fixed-feed-lead-2026-10-27/audit.mjs';
 export {fixture};
 export const driveChangedNames=new Set(['drill-body-mount','drill-feed-actuator-foot',
  'drill-feed-joint-cover','drill-feed-actuator-cover','drill-drive-motor-shoe',
  'drill-drive-input-neck','drill-drive-input-envelope','drill-drive-output-envelope',
- 'drill-drive-output-flange','drill-drive-lower-adapter','drill-drive-gearbox-fastener','drill-drive-flange-fastener']);
+ 'drill-drive-output-flange','drill-drive-lower-adapter','drill-drive-gearbox-fastener','drill-drive-flange-fastener',...fixedFeedChangedNames]);
 export const retainedBeforeDrive=row=>!driveChangedNames.has(row.name);
 export async function baseline(){
  let source=await readFile(new URL('../../archive/drill-drive-2026-10-27/drills.mjs',import.meta.url),'utf8');

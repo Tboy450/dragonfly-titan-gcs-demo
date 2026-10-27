@@ -1,10 +1,11 @@
 import * as T from './vendor/three/three.module.min.js?v=dev';
+import {drillFixedLeadAsset} from './drill-fixed-feed-lead.mjs?v=dev';
 
 // [PUB] Adams et al., AMS2024 fig.2: covered actuator, gearbox and covered U-joint.
 // [EST] fitted envelopes/fasteners/supports. The photo does not reveal the joint
 // forks, gears, motor internals or flight mounting/load path. Do not invent those.
 export const drillDriveAsset=Object.freeze({
- revision:'drill-drive-2026-10-27',jointBoreRadiusM:.006,shaftRadiusM:.004,
+ revision:'drill-drive-lead-exit-2026-10-27',jointBoreRadiusM:.006,shaftRadiusM:.004,
  outputBottomY:-.28,outputTopY:-.20,mountFrontZ:.029,
 });
 
@@ -41,6 +42,15 @@ export function buildDrillDrive({mesh,side,railX,silver,grey,stage,covers,casing
    g.translate(0,0,-t/2);g.rotateX(Math.PI/2);
    const cap=mesh(g,silver,p,covers);cap.name='drill-feed-actuator-cover';
    cap.userData.inputReliefIllustration=true;
+  }else if(axis===2&&sign===-1){
+   // Estimated local pigtail opening; not a photographed flight connector/pinout.
+   const shape=new T.Shape([[-.022,-.05],[.022,-.05],[.022,.05],[-.022,.05]].map(p=>new T.Vector2(...p)));
+   const hole=new T.Path();hole.absarc(0,drillFixedLeadAsset.exitY-center[1],drillFixedLeadAsset.coverHoleRadiusM,0,Math.PI*2,true);
+   shape.holes.push(hole);
+   const g=new T.ExtrudeGeometry(shape,{depth:t,bevelEnabled:false,steps:1,curveSegments:24});
+   g.translate(0,0,-t/2);
+   const panel=mesh(g,silver,p,covers);panel.name='drill-feed-actuator-cover';
+   panel.userData.pigtailReliefIllustration=true;
   }else box(dims,p,silver,covers,'drill-feed-actuator-cover');
  }
  const gearbox=box([.10,.040,.060],[railX+side*.0225,-.18,.035],dark,casings,'drill-z-gearhead');

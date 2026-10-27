@@ -2,6 +2,7 @@ import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { buildDrillMovingLeads } from "./drill-moving-leads.mjs?v=dev";
 import { buildDrillFeedStage } from "./drill-feed-stage.mjs?v=dev";
 import { buildDrillCarriage, drillGuideGeometry } from "./drill-carriage.mjs?v=dev";
+import { buildFixedFeedLead } from "./drill-fixed-feed-lead.mjs?v=dev";
 
 // Part 01: DrACO Sample Acquisition Drills (SAD), one beside each side of the body above the
 // skids. Drawn from Zacny et al., DrACO, LPSC 2022, fig. 2 (Phase B CAD): a gold drill-head
@@ -21,7 +22,7 @@ import { buildDrillCarriage, drillGuideGeometry } from "./drill-carriage.mjs?v=d
 // needle bearings, drive U-joint internals and thread/contact physics remain unmodeled.
 // The carriage slides down the rail while drilling; only the bit turns.
 export const drillAsset = Object.freeze({
-  revision: "drills-drive-2026-10-27",
+  revision: "drills-fixed-feed-lead-2026-10-27",
   lateralM: 0.54, foreAftM: -0.43,
   stowedY: -0.72, // carriage origin when stowed
   bitTipBelowOrigin: 0.058, // stowed bit tip at -0.778, 7.2 cm above the skid contact plane
@@ -126,6 +127,7 @@ export function buildDrill({ parent, mesh, side }) {
 
   const movingLeads=buildDrillMovingLeads({drill,carriage,mesh,side,stowedY:drillAsset.stowedY,black,silver,grey});
   const feedStage=buildDrillFeedStage({drill,carriage,stage,mesh,side,railX,stowedY:drillAsset.stowedY,silver,grey});
+  const fixedFeedLead=buildFixedFeedLead({drill,mesh,drive:feedStage.drive,black,silver,grey});
   const setFeed=value=>{movingLeads.setFeed(value);feedStage.setFeed(value);rollerCarriage.setFeed(value);};
-  return { drill, carriage, bit, stage, head, port, ...movingLeads, feedStage, rollerCarriage, setFeed };
+  return { drill, carriage, bit, stage, head, port, ...movingLeads, feedStage, rollerCarriage, fixedFeedLead, setFeed };
 }

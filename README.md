@@ -10,6 +10,13 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
+October 27: [Fixed feed lead and numbered open-interior defaults](research/drill-fixed-feed-lead-2026-10-27/README.md).
+One estimated stationary feed-drive service lead per drill, with a real cover
+opening/grommet and supported local retention. Flight circuits/remote routes remain
+unknown. Component selector numbers match the 24 model labels. Fresh/reset inspection
+defaults Open interior; fresh Mission uses Internal, preserving explicit saved modes.
+712 tests and desktop/phone checks pass; sources, archive and samples saved.
+
 October 27: [Upper drill drive fit](research/drill-drive-2026-10-27/README.md).
 Corrected the exposed screw-to-drive drawing gap and upper mount crossing; added
 supported motor seating, panel openings and hollow coupling cover/fittings.

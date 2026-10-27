@@ -11,7 +11,7 @@ export const state = {
   cameraPitch: 0.10,
   throttleSpring: readThrottlePreference(),
   vehicleModel: readVehicleModelPreference(),
-  missionLayer: "exterior", thermalRange: "full", selectedPart: null,
+  missionLayer: "internal", thermalRange: "full", selectedPart: null,
   inspector: createInspector(),
   lastTick: performance.now(),
 };

@@ -1,12 +1,20 @@
 // Mission-only viewing controls. None of these fields affect flight, science or saved missions.
 import { samplingSequence } from "./science.mjs?v=dev";
-import { visibilityDefaults } from "./inspection-visibility.mjs?v=dev";
+import { visibilityDefaults, openInteriorLayers } from "./inspection-visibility.mjs?v=dev";
 
 export const inspectionDefaults = Object.freeze({
   azimuth: Math.atan2(1.6, 7.2), elevation: Math.atan2(5.35, Math.hypot(1.6, 7.2)),
   zoom: 1, panX: 0, panY: 0, rotate: false, focusPart: null, subassembly: null, isolate: false, followSampling: false,
   ...visibilityDefaults,
+  hiddenLayers: openInteriorLayers,
 });
+// Same ordered labeled groups that supply the 3D markers and temperature list.
+// Extra assemblies are deliberately unnumbered; they must not shift parts 1–24.
+export function inspectionOptionTitle(part,numberedParts,hiddenCount=0){
+  const index=numberedParts.findIndex(candidate=>candidate.name===part.name);
+  const title=part.userData.label??part.userData.inspectionTitle;
+  return `${index>=0?String(index+1)+". ":""}${title}${hiddenCount>0?` / ${hiddenCount} hidden`:""}`;
+}
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 export const createInspector = () => ({ ...inspectionDefaults, resetSerial: 0 });
 export const inspectionAvailable = state => state.view === "mission" && state.missionLayer !== "exterior" && state.vehicleModel !== "original";

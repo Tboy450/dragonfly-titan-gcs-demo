@@ -78,8 +78,9 @@ test('Side inventory distinguishes paired mechanisms, shared suction, one-sided 
   assert.equal(rows.length,8);assert.equal(new Set(rows.map(r=>r.id)).size,8);
   for(const row of rows){assert.ok(Object.isFrozen(row));assert.equal(row.flightMatingConfirmed,false);assert.ok(sources[row.source]);}
   assert.match(rows.find(r=>r.id==='draco-blower-location').modeled,/does not confirm both exact flight positions/);
-  assert.match(rows.find(r=>r.id==='draco-electrical-gap').modeled,/Z-feed leads/);
-  assert.equal(rows.find(r=>r.id==='draco-electrical-gap').inspect,null);
+  assert.match(rows.find(r=>r.id==='draco-electrical-gap').modeled,/fixed feed-drive service-lead example/);
+  assert.match(rows.find(r=>r.id==='draco-electrical-gap').modeled,/sensors, remote\/body continuations and blower\/diverter leads remain unresolved/);
+  assert.equal(rows.find(r=>r.id==='draco-electrical-gap').inspect,'drills');
   assert.match(limits.scope,/matching counts do not establish flight completeness/);
 });
 

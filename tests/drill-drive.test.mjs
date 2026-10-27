@@ -6,6 +6,7 @@ import {fingerprint} from '../research/draco-side-audit-2026-10-26/audit.mjs';
 import {fullModel,triangles} from '../research/drill-moving-leads-2026-10-27/audit.mjs';
 import {createFlightState} from '../dist/flight-model.mjs';
 import {createInspectionVisibility} from '../dist/inspection-visibility.mjs';
+import {fixedFeedChangedNames} from '../research/drill-fixed-feed-lead-2026-10-27/audit.mjs';
 const bound=o=>new T.Box3().setFromObject(o),touch=(a,b)=>bound(a).expandByScalar(1e-7).intersectsBox(bound(b));
 const mounts=d=>d.stage.getObjectsByProperty('name','drill-body-mount').sort((a,b)=>b.position.y-a.position.y);
 
@@ -32,15 +33,16 @@ test('Archive reproduces the 80 mm output gap and upper-mount crossing; new reli
  }
 });
 
-test('Four side panels remain exact; bottom mounting notch and top input opening clear their fitted interfaces',async()=>{
+test('Three side panels remain exact after the later pigtail relief; original bottom/top openings clear their fitted interfaces',async()=>{
  const before=await baseline(),after=fixture();
  for(let i=0;i<2;i++){
   const old=before.drills[i],d=after.drills[i];
   const previous=old.feedStage.covers.children.filter(o=>o.name==='drill-feed-actuator-cover');
   const panels=d.feedStage.covers.children.filter(o=>o.name==='drill-feed-actuator-cover');
   assert.equal(panels.length,6);assert.equal(panels.filter(o=>o.userData.mountingReliefIllustration).length,1);
-  const untouched=o=>!o.userData.mountingReliefIllustration&&!o.userData.inputReliefIllustration;
-  assert.deepEqual(panels.filter(untouched).map(o=>fingerprint(o)),previous.filter((o,j)=>![2,3].includes(j)).map(o=>fingerprint(o)));
+  // The later fixed-lead suite separately checks only its new rear-panel hole.
+  const untouched=o=>!o.userData.mountingReliefIllustration&&!o.userData.inputReliefIllustration&&!o.userData.pigtailReliefIllustration;
+  assert.deepEqual(panels.filter(untouched).map(o=>fingerprint(o)),previous.filter((o,j)=>![2,3,4].includes(j)).map(o=>fingerprint(o)));
   const floor=panels.find(o=>o.userData.mountingReliefIllustration);
   const oldFloor=previous[2],ray=new T.Raycaster();let oldHits=0;
   const motorX=d.feedStage.drive.motor.position.x,side=i===0?-1:1;
@@ -117,7 +119,7 @@ test('New drive fittings/foot clear installed old hardware through sampling exce
   ['drill-drive-lower-adapter',new Set(['drill-bellows-upper-fixed-collar'])],
   ['drill-drive-gearbox-fastener',new Set(['drill-z-gearhead'])],
  ]);
- const newNames=new Set([...driveChangedNames].filter(n=>!['drill-body-mount','drill-feed-actuator-cover'].includes(n)));
+ const newNames=new Set([...driveChangedNames].filter(n=>!fixedFeedChangedNames.has(n)&&!['drill-body-mount','drill-feed-actuator-cover'].includes(n)));
  const near=new T.Vector3();let checked=0;
  for(let i=0;i<=12;i++){
   s.science.sampleSeconds=i*2/3;f.poseSampling(s,'internal');f.root.updateMatrixWorld(true);

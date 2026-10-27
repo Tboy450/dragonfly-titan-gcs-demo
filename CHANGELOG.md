@@ -39,6 +39,27 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Add fixed feed lead and numbered open-interior inspection
+- **Signed:** Codex (OpenAI).
+- **Commit:** Add fixed feed lead and numbered open-interior inspection.
+- Reuse real EM1 and prototype/GSE references. Add one estimated stationary feed-drive
+  service-lead example per drill: 4 mm envelope, 38.5 mm bend radius, 164.951 mm length,
+  actual rear opening/grommet and local retention ring/tab. No flight circuit/count,
+  construction, controller or cold-life claim.
+- Preserve five other cover panels and all motor/gearbox/carriage/head/bit/sleeve/
+  moving-lead/plumbing geometry, 130 mm travel and science/flight behavior.
+- **Owner UI addition:** selector numbers match existing 24 markers/list entries.
+  Extra assemblies stay unnumbered; suffixes retain numbering. Fresh Mission Internal;
+  fresh/reset inspection Open interior. Explicit saved modes/All/custom remain available.
+- **Checks:** 712 tests; archived preservation, 41 stationary-frame poses, length/
+  tangent/aperture/support/layer tests, installed proximity through 13 sampling
+  poses (2,229,760 narrow-phase candidates). Actual model numbering/default tests.
+  Desktop/phone Internal/Thermal, fresh/reset/saved modes: no overflow/errors.
+- **Archive:** tag on cf714c6; previous sources/pictures reused, exact sources saved.
+  New real/model/UI comparison and screenshots; inventory/assumptions and handoff updated.
+- **Next:** feed sensing and blower/diverter electrical evidence; exact flight
+  interfaces and remote continuation remain unresolved.
+
 ### 2026-10-27: Correct upper drill drive seating and mounting relief
 - **Signed:** Codex (OpenAI).
 - **Commit:** Correct upper drill drive seating and mounting relief.

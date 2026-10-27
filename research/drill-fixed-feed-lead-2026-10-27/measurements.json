@@ -1,0 +1,47 @@
+{
+  "scope": "One estimated fixed feed-drive service-lead example per drill; no flight circuit/connector count",
+  "rows": [
+    {
+      "side": "drill-port",
+      "diameterM": 0.004,
+      "lengthM": 0.16495131716320702,
+      "bendRadiusM": 0.03849999999999999,
+      "motorLocal": [
+        0.03,
+        -0.223,
+        0.002
+      ],
+      "retentionLocal": [
+        0.03,
+        -0.3,
+        -0.017999999999999988
+      ],
+      "fixedFrame": true,
+      "flightMatingConfirmed": false
+    },
+    {
+      "side": "drill-starboard",
+      "diameterM": 0.004,
+      "lengthM": 0.16495131716320702,
+      "bendRadiusM": 0.03849999999999999,
+      "motorLocal": [
+        -0.03,
+        -0.223,
+        0.002
+      ],
+      "retentionLocal": [
+        -0.03,
+        -0.3,
+        -0.017999999999999988
+      ],
+      "fixedFrame": true,
+      "flightMatingConfirmed": false
+    }
+  ],
+  "open": [
+    "Exact motor electrical exit/circuit assignment",
+    "Flight cable construction",
+    "Sensor count/type",
+    "Remote controller continuation"
+  ]
+}

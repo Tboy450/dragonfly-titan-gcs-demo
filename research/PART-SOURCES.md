@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Fixed feed lead (Codex, October 27):** [pass and limits](drill-fixed-feed-lead-2026-10-27/README.md).
+Reuses real AMS2024 EM1 fig.2, saved Costa prototype photographs/own EGSE account,
+related TRIDENT harness context and NASA workmanship only as general reasoning.
+No flight plug/circuit inference, no new CGI source or duplicate source images.
+One fitted local example per drill, remote wiring unresolved; 712 tests.
+
 **Upper drill drive (Codex, October 27):** [fit and limits](drill-drive-2026-10-27/README.md).
 Reuse real AMS2024 EM1 fig.2, add original printed193 text/table once. Covered
 joint/gearbox evidence does not reveal internals. Mount relief, shoe, external

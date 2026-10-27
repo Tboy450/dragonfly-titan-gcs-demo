@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><meta charset="utf-8">
+<title>Fixed DrACO feed-lead inspection sample</title>
+<style>body{margin:0;background:#e5e9eb;color:#172b39;font:16px Arial}header,footer{padding:14px 24px}h1{margin:0 0 8px;font-size:22px}button{padding:8px;margin-top:8px}canvas{display:block;width:640px;height:520px;margin:auto}footer{max-width:840px;margin:auto;font-size:14px}</style>
+<header><h1>Fixed feed-drive service lead / estimated local example</h1>Actual simulator meshes; head and unrelated equipment omitted.
+<br><button id="covers" aria-pressed="true">Covers on</button></header>
+<canvas></canvas>
+<footer>One 4 mm lead envelope per drill, with estimated exit and local retention. No identified circuit, flight connector, wire construction or remote controller destination. Real EM1 development photo: Honeybee Robotics / Adams et al., AMS2024 fig.2.</footer>
+<script type="module">
+import * as T from '../../dist/vendor/three/three.module.min.js';
+import {buildDrill} from '../../dist/drills.mjs';
+const scene=new T.Scene();scene.background=new T.Color(0xe5e9eb);
+const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};
+const root=new T.Group();scene.add(root);const d=buildDrill({parent:root,mesh,side:-1});
+const keep=new Set(['drill-z-rail','drill-lead-screw','drill-z-motor','drill-z-gearhead',
+ 'drill-feed-actuator-cover','drill-feed-joint-cover','drill-feed-actuator-foot',
+ 'drill-drive-motor-shoe','drill-drive-input-neck','drill-drive-input-envelope',
+ 'drill-drive-output-envelope','drill-drive-output-flange','drill-drive-lower-adapter',
+ 'drill-drive-gearbox-fastener','drill-drive-flange-fastener','drill-feed-service-lead',
+ 'drill-feed-cover-grommet','drill-feed-retention-ring','drill-feed-retention-tab']);
+d.drill.traverse(o=>{if(o.isMesh)o.visible=keep.has(o.name)||(o.name==='drill-body-mount'&&o.position.y>-.5);});
+const target=new T.Vector3(-.495,-.26,-.445),camera=new T.PerspectiveCamera(38,640/520,.001,10);
+camera.position.copy(target).add(new T.Vector3(-.16,.065,-.19));camera.lookAt(target);
+scene.add(new T.HemisphereLight(0xffffff,0x7a8791,2.3));
+for(const [p,intensity]of [[[-1,2,-2],3],[[2,0,-1],1.2]]){
+ const light=new T.DirectionalLight(0xffffff,intensity);light.position.fromArray(p);scene.add(light);
+}
+const renderer=new T.WebGLRenderer({canvas:document.querySelector('canvas'),antialias:true});
+renderer.setPixelRatio(1);renderer.setSize(640,520,false);
+const render=()=>renderer.render(scene,camera);render();
+document.querySelector('#covers').onclick=event=>{
+ const b=event.currentTarget,on=b.getAttribute('aria-pressed')!=='true';
+ b.setAttribute('aria-pressed',String(on));b.textContent=on?'Covers on':'Covers off';
+ d.drill.traverse(o=>{if(['drill-feed-actuator-cover','drill-feed-joint-cover'].includes(o.name))o.visible=on;});render();
+};
+</script></html>

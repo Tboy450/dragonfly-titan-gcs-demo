@@ -43,6 +43,13 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October 27 fixed feed lead: `drill-fixed-feed-lead.mjs` owns a static, arc-length
+parameterized lead example, exit grommet and frame retention; no per-frame update.
+`drill-drive.mjs` provides the rear cover opening. Specific archive guard preserves
+everything else and separately checks five untouched panels. Inspector helper uses
+actual labeled-group order for option numbers; default masks are Open interior and
+UI context starts Internal. Existing saved mode selection still restores. 712 tests.
+
 October 27 upper drive: `drill-drive.mjs` owns fitted fixed drive exterior, motor
 shoe/foot, open cover panels, annular fittings and simplified continuity envelopes.
 `drill-feed-stage.mjs` supplies existing Covers/Casings/Interfaces/Mounts groups.

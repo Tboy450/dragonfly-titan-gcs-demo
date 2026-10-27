@@ -116,6 +116,8 @@ test("Isolation includes the related transfer and sensor assemblies", () => {
 
 test("Layer masks stay per component, reset independently of the camera, and never share defaults", () => {
   const s = state(), other = createInspector(), flight = structuredClone(s);
+  // Exercise explicit All layers; fresh/reset inspection now defaults to Open interior.
+  restoreInspectionLayers(s.inspector);restoreInspectionLayers(other);
   focusInspector(s, "drams");
   zoomInspector(s.inspector, 1.5);
   rotateInspector(s.inspector, 130, 15, 600, 600);

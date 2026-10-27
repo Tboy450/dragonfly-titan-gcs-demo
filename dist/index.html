@@ -222,8 +222,8 @@
           <div class="panel-heading vehicle-layer-toolbar">
             <span id="layer-title">Vehicle Layers</span>
             <div class="layer-switch" role="group" aria-label="Vehicle layer">
-              <button type="button" data-layer="exterior" aria-pressed="true">Exterior</button>
-              <button type="button" data-layer="internal" aria-pressed="false">Internal</button>
+              <button type="button" data-layer="exterior" aria-pressed="false">Exterior</button>
+              <button type="button" data-layer="internal" aria-pressed="true">Internal</button>
               <button type="button" data-layer="thermal" aria-pressed="false">Thermal</button>
             </div>
           </div>
@@ -323,7 +323,7 @@
           <section class="panel layer-panel" aria-labelledby="layer-title">
             <div id="vehicle-inspector" class="vehicle-inspector" hidden>
               <label class="inspection-select">Access view
-                <select id="inspection-access-preset" aria-label="Interior access view"><option value="all">All layers</option><option value="open">Open interior</option><option value="custom" disabled>Custom layers</option></select>
+                <select id="inspection-access-preset" aria-label="Interior access view"><option value="all">All layers</option><option value="open" selected>Open interior</option><option value="custom" disabled>Custom layers</option></select>
               </label>
               <label class="inspection-select">Component
                 <select id="inspection-part" aria-label="Inspect component"><option value="">Whole vehicle</option></select>

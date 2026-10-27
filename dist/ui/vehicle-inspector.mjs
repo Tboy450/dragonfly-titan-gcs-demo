@@ -2,20 +2,19 @@ import { $, chaseRenderer, flightCanvas, state } from "./context.mjs?v=dev";
 import { commandFlight } from "../flight-model.mjs?v=dev";
 import { samplingSequence } from "../science.mjs?v=dev";
 import { focusInspector, inspectionAvailable, inspectionTarget, resetInspector, rotateInspector, panInspector, zoomInspector, wheelZoomInspector,
-  inspectionSubassemblies, inspectionSubassembly, selectInspectionSubassembly } from "../vehicle-inspector.mjs?v=dev";
+  inspectionSubassemblies, inspectionSubassembly, selectInspectionSubassembly, inspectionOptionTitle } from "../vehicle-inspector.mjs?v=dev";
 import { globalInspectionLayers, partInspectionLayers, inspectionLayerVisible, setInspectionLayer,
   restoreInspectionLayers, hiddenInspectionCount,applyInspectionAccessPreset,inspectionAccessPreset } from "../inspection-visibility.mjs?v=dev";
 
 const numberedParts = Object.values(chaseRenderer?.subsystems ?? {}).filter(group => group.userData.label);
 const parts = [...numberedParts, ...Object.values(chaseRenderer?.subsystems ?? {}).filter(group => group.userData.inspectionTitle && !group.userData.label)];
-const partTitle = part => part.userData.label ?? part.userData.inspectionTitle;
 const select = $("inspection-part");
 const subassemblySelect = $("inspection-subassembly");
 let subassemblyTarget;
 for (const part of parts) {
   const option = document.createElement("option");
   option.value = part.name;
-  option.textContent = partTitle(part);
+  option.textContent = inspectionOptionTitle(part,numberedParts);
   select.append(option);
 }
 const layerControls = [];
@@ -85,7 +84,7 @@ export function updateInspectorUI() {
     if (!option.value) continue;
     const part = parts.find(part => part.name === option.value);
     const count = i.hiddenPartLayers?.[option.value]?.length ?? 0;
-    const text = `${partTitle(part)}${count ? ` / ${count} hidden` : ""}`;
+    const text = inspectionOptionTitle(part,numberedParts,count);
     if (option.textContent !== text) option.textContent = text;
   }
   $("inspection-hidden-count").textContent = hidden ? `${hidden} hidden` : "All visible";

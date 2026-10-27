@@ -10,6 +10,23 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October 27: [Fixed feed lead + inspection defaults/numbers](research/drill-fixed-feed-lead-2026-10-27/README.md).
+- [x] Recheck real EM1 and Costa prototype/GSE evidence; do not copy development
+  plugs or assign a flight circuit/controller. Related TRIDENT remains separate.
+- [x] One fixed-frame local service-lead example per drill; 4 mm diameter/exit/
+  routing, actual rear opening/grommet and supported retention remain EST.
+- [x] Preserve five other cover panels, full drive/carriage/head/bit/bellows, moving
+  leads and sample routes. 712 tests; stationary frame, geometry/clearance/layers checked.
+- [x] Owner addition: selector numbers 1–24 match model markers; extra assemblies
+  stay unnumbered. Fresh Mission Internal, fresh/reset Open interior; saved mode
+  choices and All/custom/Exterior/Thermal controls retained.
+- [x] Desktop/390px phone, fresh/reset default, saved Exterior and IEM 12, port/
+  Thermal starboard checked; no overflow/errors. Sources, archive and samples saved.
+- [ ] Publish and verify deployed build; record receipt.
+- [ ] NEXT: feed sensing + blower/diverter electrical evidence audit. No inferred
+  sensor count/type, flight connector/pinout or remote circuit from loose plugs.
+  Exact flight wiring and hidden mechanics remain unresolved; see pass handoff.
+
 October 27: [Upper drive exterior and mounting fit](research/drill-drive-2026-10-27/README.md).
 - [x] Reuse real EM1 fig.2; save printed193 once for kinematic/free-end evidence.
   No uncovered flight gear/joint reference found; do not fabricate those internals.
@@ -23,7 +40,7 @@ October 27: [Upper drive exterior and mounting fit](research/drill-drive-2026-10
 - [x] Published badbec2; Pages 40591034163 succeeded. Shared-branch updates preserved
   unchanged; 703 combined tests pass. Live build/disclosure, 24 parts/two targets,
   no overflow/errors verified. Public sample/JSON saved; server stopped, viewport reset.
-- [ ] NEXT: fixed Z-feed actuator electrical exit/local retention evidence audit.
+- [x] Fixed feed-drive lead audit/local example completed above. Original next item:
   Reuse real EM1/prototype photos, distinguish GSE cables from flight wiring.
   No invented controller, pinout or sensor type. Remote wiring and real joint
   internals remain open; current handoff has exact limits.

@@ -1,0 +1,22 @@
+{
+  "freshMissionDefaults": {
+    "access": "open",
+    "client": 1265,
+    "first": "1. DrACO drill and feed assemblies",
+    "internal": "true",
+    "lastNumbered": "24. DrACO blowers: forward and aft centrifugal blowers behind the port forward arm",
+    "numberedOptions": 24,
+    "scroll": 1265,
+    "selectedComponent": ""
+  },
+  "savedExteriorRestored": true,
+  "phone": {
+    "access": "open",
+    "client": 375,
+    "numberedOptions": 24,
+    "part": "1. DrACO drill and feed assemblies",
+    "scroll": 375
+  },
+  "thermalStarboard": true,
+  "errors": []
+}
