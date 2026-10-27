@@ -18,7 +18,9 @@ October27: [Feed covers and dust bellows](research/drill-feed-stage-2026-10-27/R
 - [x] Covers can expose the screw/actuator separately;669 tests, desktop Internal/
   Thermal and390px phone checks,24 parts/two focuses, no overflow/browser errors.
 - [x] Exact before archive/tag, reused real/CAD sources, samples/measurement JSON.
-- [ ] Publish/verify and record receipt; stop temporary preview.
+- [x] Publisheddc0ee8a; Pages40497034993 succeeded including669 tests. Live build,
+  new stage/limits text,24 parts/two targets, no overflow/errors verified. Public
+  sample/JSON saved; temporary preview stopped and viewport restored.
 - [ ] NEXT: guide/roller carriage and self-aligning nut/U-joint exterior. Read saved
   EM1 photo and AMS2024 fig.6 first; preserve completed sleeves/leads and revalidate
   full stroke after changes. Flight travel/load path and hidden mechanisms stay open.

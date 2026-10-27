@@ -1,0 +1,13 @@
+{
+  "build": "Build dc0ee8a · 2026-10-27",
+  "client": 1265,
+  "parts": 24,
+  "scroll": 1265,
+  "subassembly": "drill-port",
+  "targets": 2,
+  "newStageDisclosed": true,
+  "surfaceOnlyDisclosed": true,
+  "errors": [],
+  "pagesRun": 40497034993,
+  "release": "dc0ee8a3d29714ac351f562772c53408fddd3863"
+}

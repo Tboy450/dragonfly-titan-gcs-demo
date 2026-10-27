@@ -54,7 +54,10 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   24 parts/two targets, no overflow/errors, covers hide/restore and Thermal checked.
 - **Archive:** e42240d exact files/tag, previous samples and source pages reused.
 - **Next:** roller carriage/self-aligning joint exterior; flight dimensions/travel,
-  hidden mechanisms and full wiring still open. Publication receipt follows.
+  hidden mechanisms and full wiring still open.
+- **Publication:**dc0ee8a; Pages40497034993 succeeded including669 tests. Public
+  header/stage/limits,24 parts/two targets and no overflow/errors verified. Public
+  sample/JSON saved; preview stopped. Receipt signed Codex (OpenAI).
 
 ### 2026-10-27: Add local moving drill motor-lead accommodation
 - **Signed:** Codex (OpenAI).

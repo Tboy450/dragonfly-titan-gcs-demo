@@ -50,7 +50,12 @@ Local sample paused at15.9096 s, with port extended and starboard stowed. No exi
 public mission reset. `port-stowed.png`, `port-extended.png`, `port-covers-off.png`,
 `phone-port.png`, `thermal-starboard.png`, `browser-checks.json` and `measurements.json`
 save the actual results. Comparison reuses credited real/CAD sources with a new model
-sample. Publication receipt follows; temporary preview must stop before completion.
+sample. Published **dc0ee8a3d29714ac351f562772c53408fddd3863**, October27,2026.
+[Public app](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=dc0ee8a).
+Pages40497034993 succeeded including669 tests. Live build, new stage/surface-only
+disclosures,24 parts/two targets,1265/1265px and zero errors verified. `public-port.png`
+and `public-checks.json` saved. Recovery tag pushed. Local server stopped, viewport
+restored and shared project tab returned to the public app. Receipt: Codex (OpenAI).
 
 ## Continue from here
 

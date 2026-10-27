@@ -15,7 +15,9 @@ Real EM1 photo-informed cover/gearbox, metal guide finish and moving bellows; di
 remain estimates. Covers can expose the screw and provisional actuator.130 mm travel,
 bit depth, hoses and moving leads retained.669 tests and desktop/phone checks pass.
 Next: roller carriage/self-aligning joint; exact flight configuration remains open.
-Publication receipt follows; previous release entries below are historical.
+Published **dc0ee8a**; Pages40497034993 succeeded. Live build, stage/limits text,
+24 parts/two targets and no overflow/errors verified. Public sample/JSON saved;
+temporary preview stopped. Previous release entries below are historical.
 
 October27 wrap-up: [Moving drill lead examples](research/drill-moving-leads-2026-10-27/README.md).
 Both drills now have constant-length lead loops between moving motor caps and fixed
