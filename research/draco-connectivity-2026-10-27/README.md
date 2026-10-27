@@ -46,7 +46,15 @@ Desktop browser: sample-lines isolation shows both drill routes, carousel and bl
 24 parts, eight inventory rows, route/limits text verified,1265/1265px and zero errors.
 `network-local.png` and `browser-checks.json` saved. The old4196 origin retained stale
 dev imports; the4197 fresh-origin check verified new text. Only one preview server
-remained active. Public verification and publication receipt follow.
+remained active. Both temporary servers and the local preview tab are now stopped.
+
+Published **b27cb6e9c7a2f3f1e4b0ab95a0fa2a96329bc35d**, October27,2026.
+[Public simulator](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=b27cb6e).
+Pages40475925194 succeeded, including the full655-test suite. Live header/build,
+full-network inspection, route/limits/3 mm seat text,24 numbered parts/eight rows,
+1265/1265px and zero browser errors verified. Inventory collapsed on page load.
+`public-checks.json` and `public-network.png` record the result; the latter is a
+canvas crop of an actual screenshot. Recovery tag pushed. Receipt: Codex (OpenAI).
 
 Recovery tag `archive/draco-return-seat-2026-10-27` on1431199; exact before files
 and measurements in the matching archive. Assembled neighborhood samples are kept

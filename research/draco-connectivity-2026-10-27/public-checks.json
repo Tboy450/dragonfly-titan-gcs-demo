@@ -1,0 +1,25 @@
+{
+  "build": "Build b27cb6e · 2026-10-27",
+  "canvas": {
+    "bottom": 553.5000152587891,
+    "height": 387.2000122070313,
+    "left": 342.8000183105469,
+    "right": 913.8500061035156,
+    "top": 166.3000030517578,
+    "width": 571.0499877929688,
+    "x": 342.8000183105469,
+    "y": 166.3000030517578
+  },
+  "client": 1265,
+  "isolate": true,
+  "part": "sample-lines",
+  "parts": 24,
+  "rows": 8,
+  "scroll": 1265,
+  "routeDisclosed": true,
+  "limitsDisclosed": true,
+  "seatDisclosed": true,
+  "pagesRun": 40475925194,
+  "release": "b27cb6e9c7a2f3f1e4b0ab95a0fa2a96329bc35d",
+  "errors": []
+}

@@ -51,7 +51,10 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - Collapsed inventory explains the route and existing complete-network inspection.
 - Exact before files/measurements and recovery tag on1431199; existing source and
   assembled images reused. Desktop network sample,24 parts, eight rows, new route/
-  limits text, no overflow/errors verified. Public receipt follows. No game/save/cleanup edits.
+  limits text, no overflow/errors verified. No game/save/cleanup edits.
+- **Publication:**b27cb6e; Pages40475925194 succeeded including tests. Live build,
+  full-network focus, route/limits/seat text,24 parts/eight rows, no overflow/errors
+  verified. Public sample/JSON saved; temporary previews stopped. Receipt: Codex (OpenAI).
 
 ### 2026-10-27: Audit paired DrACO equipment and add side inspection
 - **Signed:** Codex (OpenAI).

@@ -16,7 +16,9 @@ October27: [Both-drill plumbing continuity](research/draco-connectivity-2026-10-
 - [x] Reproduce/fix1 mm return-selector gap; advance only the last control4 mm into
   a3 mm estimated seat. Preserve all other hardware/routes; strict10-join checks.
 - [x] 655 tests pass. Explain route/valve limits in existing collapsed inventory.
-- [ ] Complete browser/public checks and publication receipt.
+- [x] Publishedb27cb6e; Pages40475925194 succeeded. Public full-network focus,
+  route/limits/seat text,24 parts/eight rows, no overflow/errors verified. Samples
+  and JSON saved; temporary previews stopped.655 tests pass.
 - [ ] Next: local moving drill leads; full electrical networks remain open.
 
 October27: [DrACO side inventory](research/draco-side-audit-2026-10-26/README.md).

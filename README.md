@@ -14,7 +14,9 @@ October27: [Both-drill plumbing trace](research/draco-connectivity-2026-10-27/RE
 Both intake routes exist through the shared carousel/return. Corrected a1 mm gap
 at the blower selector; only the final return control advances4 mm into a3 mm EST seat.
 Collapsed inventory explains the route; valve interiors remain unmodeled.655 tests pass.
-Browser/public verification follows; previous release details below are historical.
+Published **b27cb6e**; Pages40475925194 succeeded. Public build, full-network focus,
+route/limits/seat text,24 parts/eight rows and no overflow/errors verified. Public
+sample/JSON saved; temporary previews stopped. Previous release details are historical.
 
 October27: [DrACO side-by-side equipment audit](research/draco-side-audit-2026-10-26/README.md).
 Both drill mechanisms retain matching 45-piece inventories. Separate port/starboard
