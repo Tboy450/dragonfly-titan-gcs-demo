@@ -78,4 +78,12 @@ gap rather than fabricate exact internals. Remote controller routes, full electr
 networks, current flight stroke and the unidentified old cylinder/cone remain open.
 No Assets Lab, Swarmfall, saves, unrelated projects or Git cleanup touched.
 
-Publication receipt will be added after the deployed build is verified.
+## Publication receipt
+
+Published **ee24ad0faa3216d9fdedc4205f8ad9fac6c43f1a**, October 27, 2026.
+[Open the public simulator](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=ee24ad0).
+Pages **40505971224** succeeded including all 675 tests. Verified live build stamp,
+new carriage disclosure, 24 numbered parts/two drill targets, 1265/1265px layout and
+zero browser errors. `public-port.png` and `public-checks.json` record it. Recovery
+tag and both project branches pushed. Temporary server stopped, viewport restored
+and the shared project tab returned to the public app. Signed: Codex (OpenAI).

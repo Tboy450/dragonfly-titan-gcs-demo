@@ -19,7 +19,9 @@ October 27: [Roller carriage and spherical nut](research/drill-carriage-2026-10-
   130 mm travel. Exact archived preservation guard; 675 tests and browser samples.
 - [x] Desktop/390px phone, Thermal and removable covers checked; 24 numbered parts,
   two drill focuses, no overflow/browser errors. Real/CAD/model comparison saved.
-- [ ] Publish and verify deployed build; add receipt here and in pass README.
+- [x] Published ee24ad0; Pages 40505971224 succeeded including 675 tests. Live build,
+  new disclosure, 24 parts/two targets, no overflow/errors verified; public sample/
+  JSON saved. Preview stopped, viewport restored, shared tab returned to public app.
 - [ ] NEXT: upper drive coupling/gearbox exterior and support/load-path reconciliation.
   Reuse real fig.2; do not infer hidden gears or a flight motor from a covered can.
   Preserve this pass, sleeves and leads. Full wiring/flight dimensions remain open.

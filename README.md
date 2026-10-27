@@ -16,6 +16,9 @@ follows real ETU/EM1 hardware. Roller arrangement uses a labeled engineering dra
 fitted dimensions and finish remain estimates. 675 tests, desktop/phone/layer checks
 pass. Drive covers, sleeves, cables, hoses, travel and bit depth preserved.
 Next: upper drive coupling/support reconciliation; hidden internals and wiring remain open.
+Published **ee24ad0**; Pages 40505971224 succeeded, including all 675 tests. Live
+build, carriage disclosure, 24 parts/two targets and no overflow/errors verified.
+Public sample/JSON saved; preview stopped and viewport restored.
 
 October27: [Feed covers and paired dust sleeves](research/drill-feed-stage-2026-10-27/README.md).
 Real EM1 photo-informed cover/gearbox, metal guide finish and moving bellows; dimensions

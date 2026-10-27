@@ -58,6 +58,10 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   previous pictures reused. New real/CAD/model comparison and browser samples saved.
 - **Next:** upper drive coupling/support reconciliation; actual flight load path,
   dimensions, hidden mechanisms and full feed/sensor/controller wiring remain open.
+- **Publication:** ee24ad0faa3216d9fdedc4205f8ad9fac6c43f1a; Pages 40505971224
+  succeeded including all 675 tests. Public build/disclosure, 24 parts/two targets,
+  1265/1265px and zero errors verified. Public sample/JSON saved; local preview
+  stopped and viewport restored. Receipt signed Codex (OpenAI).
 
 ### 2026-10-27: Refine drill feed covers and paired dust sleeves
 - **Signed:** Codex (OpenAI).
