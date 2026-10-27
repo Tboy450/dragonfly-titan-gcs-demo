@@ -360,8 +360,23 @@ complete solely because its assets download or its unit tests pass.
   - Societies: troops, defenses, capture speed and artillery.
   - Hazards: warning time, duration and advice.
   Evidence: `tests/invasion-field-guide.test.mjs`; the browser shows 31 entries in 4 sections.
-- [ ] **TUT-04 (P2)** Tooltips on drop-panel rows and HUD items (alarm thresholds, hazard
-  effects, supply).
+- [x] **TUT-04 (P2) — Claude (October 27)** Tooltips on drop-panel rows and HUD items (alarm
+  thresholds, hazard effects, supply).
+  - All tooltips are built from the rules (field-guide.mjs), so they match the game and the
+    Field guide:
+    - Drop rows: each drone's role, cost, slots, health, speed, sight, capture rate, weapons and
+      worst threats (the same facts as its Field guide entry).
+    - Wave summary: pod capacity, the Hive's slots per wave and pod timing.
+    - Matter: income right now (from held zones and drilling drones), salvage and repairs.
+    - Alarm: the level and every threshold for this world, marked "Now" once passed:
+      militia at 25, raids at 50, artillery at 70 where the society has it, panic at 75.
+    - Hazard badge: what the coming or current hazard does, with damage scaled for the planet,
+      and how long it lasts.
+  - `tests/invasion-tooltips.test.mjs` (5 tests). The matter income in the tooltip matched what
+    the battle paid over 10 s. In the browser on Ashfall, the alarm tooltip at 72 marked the
+    25, 50 and 70 thresholds as "Now", and the eruption warning listed 19.5 damage/s in 55 m.
+  - Still open: touch screens do not show these hover tooltips. The Field guide covers the
+    same facts there.
 - [ ] **TUT-05 (P3)** A short intro screen for the Hive and the campaign.
 
 ## 3. Controls and HUD (CTRL)

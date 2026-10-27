@@ -39,6 +39,27 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Swarmfall tooltips for the drop panel and HUD
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add rule-based tooltips to the drop panel and HUD"
+- **What changed:** Checklist TUT-04. Hovering now explains, with the game's own numbers:
+  - Drop rows: each drone's role, cost, health, speed, capture rate, weapons and worst threats
+    (the same facts as the Field guide).
+  - Wave summary: pod capacity, slots per wave and pod timing.
+  - Matter: current income from held zones and drilling drones, salvage and repairs.
+  - Alarm: the current level and each threshold on this world (militia 25, raids 50,
+    artillery 70 where it exists, panic 75), marked "Now" once passed.
+  - Hazard badge: what the hazard does, with damage scaled for the planet, and how long it
+    lasts.
+  - The rules now export the numbers these use (`alarmStages`, `artilleryAlarm`,
+    `salvageMatter`, `healPerS`, `zoneIncome`); the game plays the same.
+- **Files:** `dist/invasion/field-guide.mjs`, `dist/invasion/battle.mjs`, `dist/invasion/main.mjs`,
+  `dist/invasion/index.html`, `tests/invasion-tooltips.test.mjs` (new), `SWARMFALL-TODO.md`,
+  `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (251 pass). In the browser on Ashfall, the
+  tooltips were on every drop row, and the alarm and hazard tooltips showed live values.
+  Touch screens do not show hover tooltips; the Field guide covers the same facts there.
+
 ### 2026-10-27: Swarmfall zone rings show through hills
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Let zone rings show through hills and houses"

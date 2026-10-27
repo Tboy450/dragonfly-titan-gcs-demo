@@ -24,8 +24,8 @@ const squadColors = ["#7ce7ff", "#ffb457", "#9dff8a", "#ff7ab8", "#c6a6ff", "#ff
 const syllables = ["ka", "ro", "vel", "tan", "mi", "shu", "or", "ze", "li", "dra", "no", "pe", "qua", "ith", "mar", "sol"];
 // Spacing between drones in a formation (m); drones are drawn about 4 m across.
 const separation = 7;
-const healPerS = 1.5;
-const salvageMatter = 6;
+export const healPerS = 1.5;
+export const salvageMatter = 6;
 
 export const flatTerrain = Object.freeze({ heightAt: () => 0, isLand: () => true });
 export const defOf = (unit) => droneTypes[unit.type] || defenderTypes[unit.type];
@@ -941,11 +941,15 @@ export function captureBlocker(b, zone) {
   return null;
 }
 
+// Matter per second from a held zone: richer, more developed worlds yield more.
+export const zoneIncome = (b, zone) => (zone.value || 0) * (1 + 0.15 * b.threat);
+// Artillery answers an alarm this high (on worlds whose society has it).
+export const artilleryAlarm = 70;
+
 function economy(b, dt, swarm) {
   for (const zone of b.zones) {
     if (!zone.captured || !zone.value) continue;
-    // Richer, more developed worlds yield more matter per zone.
-    const income = zone.value * (1 + 0.15 * b.threat) * dt;
+    const income = zoneIncome(b, zone) * dt;
     b.matter += income;
     b.stats.matterHarvested += income;
   }
@@ -960,7 +964,7 @@ function economy(b, dt, swarm) {
   }
 }
 
-const alarmStages = [
+export const alarmStages = [
   { at: 25, text: "The public is uneasy: militia are gathering." },
   { at: 50, text: "The public is alarmed: militia now raid the zones you hold." },
   { at: 75, text: "Panic: defenses hit harder and every town sends fighters." },
@@ -1024,7 +1028,7 @@ function reinforce(b, dt) {
 }
 
 function artillery(b, dt, swarm) {
-  if (!societies[b.tier]?.strikes || b.alarm < 70) return;
+  if (!societies[b.tier]?.strikes || b.alarm < artilleryAlarm) return;
   b.strikeIn -= dt;
   if (b.strikeIn > 0) return;
   b.strikeIn = randomRange(b, 16, 26) * (1.2 - b.alarm / 250);

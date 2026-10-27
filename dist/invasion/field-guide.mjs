@@ -3,6 +3,7 @@
 // (ACCESS-01). Plain data; the page renders it.
 import { droneTypes, droneOrder, defenderTypes, societies } from "./units.mjs?v=dev";
 import { hazardTypes } from "./hazards.mjs?v=dev";
+import { alarmStages, artilleryAlarm, salvageMatter, healPerS, zoneIncome, publicMood } from "./battle.mjs?v=dev";
 
 const classOf = (def) => (def.structure ? "structure" : def.air ? "air" : "ground");
 const weaponText = (w) => `${w.name}: ${w.damage}/s against ${w.hits.join(", ")} out to ${w.range} m${w.splash ? `, ${w.splash} m splash` : ""}`;
@@ -14,6 +15,64 @@ const auraText = (aura) => !aura ? null
   : aura.boost ? `Defenders within ${aura.radius} m hit ${Math.round(aura.boost * 100)}% harder`
   : aura.jam ? `Within ${aura.radius} m drones slow down and Links cannot hack`
   : aura.armor ? `Defenses within ${aura.radius} m take ${Math.round(aura.armor * 100)}% less damage` : null;
+
+// A drone's numbers: cost, health, speed, capture, weapons and what threatens it.
+export function droneFacts(id) {
+  const d = droneTypes[id], defenders = Object.values(defenderTypes);
+  return [
+    `${d.cost} matter · ${d.slots} wave ${d.slots === 1 ? "slot" : "slots"} · ${d.hp} health · ${d.speed} m/s · flies at ${d.cruise} m · sees ${d.sight} m`,
+    `Captures at ${d.capture}/s${d.hack ? "; hacks defended zones" : ""}${d.calm ? "; calms the public in zones" : ""}${d.harvest ? "; lands to drill matter" : ""}${d.limit ? `; at most ${d.limit} per mission` : ""}`,
+    ...d.weapons.map(weaponText),
+    `Most dangerous to it: ${strongest(defenders, "air").join(", ")}`,
+  ];
+}
+
+// Tooltips (TUT-04) for the drop panel and the HUD, from the same rules as the guide.
+const percent = (factor) => Math.round(Math.abs(1 - factor) * 100);
+const rounded = (n) => Math.round(n * 100) / 100;
+export const droneTooltip = (id) => [`${droneTypes[id].name}: ${droneTypes[id].role}`, ...droneFacts(id)].join("\n");
+
+// What a hazard does to drones while it lasts; severity scales damage on harder planets.
+export function hazardEffects(type, severity = 1) {
+  const h = hazardTypes[type];
+  if (!h) return [];
+  return [
+    h.speed && h.speed < 1 ? `${percent(h.speed)}% slower` : null,
+    h.sight && h.sight < 1 ? `see ${percent(h.sight)}% less` : null,
+    h.range && h.range < 1 ? `weapons reach ${percent(h.range)}% less` : null,
+    h.damage && h.kind === "weather" ? `lose ${rounded(h.damage * severity)} health/s outside your zones (half inside)` : null,
+    h.kind === "eruption" ? `${rounded(h.damage * severity)} damage/s inside a ${h.radius} m circle` : null,
+    h.strikeDamage ? `bolts every ${h.strikeEveryS} s, ${rounded(h.strikeDamage * severity)} damage within ${h.radius} m, marked ${h.strikeWarnS} s ahead` : null,
+    h.wind ? `wind pushes drones up to ${h.wind} m/s` : null,
+    h.kind === "flare" ? "drones outside your zones are stunned" : null,
+  ].filter(Boolean);
+}
+export function hazardTooltip(type, severity = 1) {
+  const h = hazardTypes[type];
+  if (!h) return "";
+  return [`${h.name}: ${h.advice}`, `While it lasts: ${hazardEffects(type, severity).join(", ")}.`,
+    `Lasts ${h.durationS[0]}-${h.durationS[1]} s and returns every ${h.gapS[0]}-${h.gapS[1]} s.`].join("\n");
+}
+
+// The public alarm: where it stands and what each threshold brings on this world.
+export function alarmTooltip(b) {
+  const society = societies[b.tier];
+  if (!society || b.tier === 0) return "Public alarm: nobody lives here, so nothing raises it.";
+  const stages = [...alarmStages, ...(society.strikes ? [{ at: artilleryAlarm, text: "Artillery shells your drones." }] : [])].sort((a, c) => a.at - c.at);
+  return [`Public alarm: ${Math.round(b.alarm)} of 100 (${publicMood(b.alarm)}).`,
+    "Visible drones, kills and civilians caught in crossfire raise it. Links in your zones calm it, and it eases slowly on its own.",
+    ...stages.map(s => `${b.alarm >= s.at ? "Now" : "At"} ${s.at}: ${s.text}`)].join("\n");
+}
+
+// Matter: what it buys and where it comes from right now.
+export function matterTooltip(b) {
+  const held = b.zones.filter(z => z.captured && z.value);
+  const zones = held.reduce((sum, z) => sum + zoneIncome(b, z), 0);
+  const drills = b.units.filter(u => u.alive && u.side === "swarm" && droneTypes[u.type]?.harvest && u.landed && u.alt < 0.5).reduce((sum, u) => sum + droneTypes[u.type].harvest, 0);
+  const rate = (n) => String(Math.round(n * 10) / 10);
+  return [`Matter pays for drop waves. Income now ${rate(zones + drills)}/s: ${rate(zones)}/s from ${held.length} held ${held.length === 1 ? "zone" : "zones"}${drills ? `, ${rate(drills)}/s from drilling drones` : ""}.`,
+    `Each defense destroyed pays ${salvageMatter} salvage (but raises the alarm). Drones in your zones repair ${healPerS} health/s.`].join("\n");
+}
 
 // Keyboard first, then mouse and touch. Every essential action has a key; Tab reaches each button.
 const controls = [
@@ -48,15 +107,7 @@ const controls = [
 export function fieldGuide() {
   const drones = droneOrder.map(id => droneTypes[id]), defenders = Object.values(defenderTypes);
   return [
-    { section: "Drones", items: drones.map(d => ({
-      name: d.name, summary: d.role,
-      facts: [
-        `${d.cost} matter · ${d.slots} wave ${d.slots === 1 ? "slot" : "slots"} · ${d.hp} health · ${d.speed} m/s · flies at ${d.cruise} m · sees ${d.sight} m`,
-        `Captures at ${d.capture}/s${d.hack ? "; hacks defended zones" : ""}${d.calm ? "; calms the public in zones" : ""}${d.harvest ? "; lands to drill matter" : ""}${d.limit ? `; at most ${d.limit} per mission` : ""}`,
-        ...d.weapons.map(weaponText),
-        `Most dangerous to it: ${strongest(defenders, "air").join(", ")}`,
-      ],
-    })) },
+    { section: "Drones", items: droneOrder.map(id => ({ name: droneTypes[id].name, summary: droneTypes[id].role, facts: droneFacts(id) })) },
     { section: "Defenders", items: defenders.map(d => {
       const cls = classOf(d), beats = strongest(drones, cls);
       return {

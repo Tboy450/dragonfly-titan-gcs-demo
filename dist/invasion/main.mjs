@@ -28,7 +28,7 @@ import { frameSteps, trackLag } from "./frame-clock.mjs?v=dev";
 import { cycleSound, soundLabel, updateBattleSound, quietSound } from "./sound.mjs?v=dev";
 import { qualityLevels, nextQuality } from "./quality.mjs?v=dev";
 import { newTips } from "./tips.mjs?v=dev";
-import { fieldGuide } from "./field-guide.mjs?v=dev";
+import { fieldGuide, droneTooltip, hazardTooltip, alarmTooltip, matterTooltip } from "./field-guide.mjs?v=dev";
 import { tutorialState } from "./tutorial.mjs?v=dev";
 
 // First-time tips (tips.mjs), each shown once per device.
@@ -48,6 +48,7 @@ import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecove
 
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (text) => String(text).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const setTitle = (element, text) => { if (element.title !== text) element.title = text; };
 const clock = (seconds) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
 const isDrone = (unit) => unit.alive && unit.side === "swarm" && !unit.structure;
 
@@ -972,7 +973,7 @@ function updateDropPanel(rebuild = false) {
     mission.dropTypes = types.join();
     $("drop-rows").innerHTML = types.map(type => {
       const d = droneTypes[type];
-      return `<div class="drop-row" data-type="${type}">
+      return `<div class="drop-row" data-type="${type}" title="${escapeHtml(droneTooltip(type))}">
         <span class="name">${escapeHtml(d.name)}</span>
         <span class="meta">${d.cost} matter · ${d.slots} slot${d.slots > 1 ? "s" : ""}${d.limit ? ` · max ${d.limit}` : ""} · ${escapeHtml(d.role)}</span>
         <span class="stepper"><button type="button" data-step="-1" aria-label="One fewer ${escapeHtml(d.name)}">−</button><output>0</output><button type="button" data-step="1" aria-label="One more ${escapeHtml(d.name)}">+</button></span>
@@ -983,6 +984,7 @@ function updateDropPanel(rebuild = false) {
   const slots = payloadSlots(mission.payload), cost = payloadCost(mission.payload);
   const podCount = packDropPods(mission.payload).length;
   $("drop-summary").textContent = `${podCount} pod${podCount === 1 ? "" : "s"} · wave slots ${slots}/${b.podSlots} · cost ${cost} of ${Math.floor(b.matter)} matter · arrivals ${(dropDurationS + Math.max(0, podCount - 1) * podStaggerS).toFixed(1)} s`;
+  setTitle($("drop-summary"), `A pod holds up to 3 drones; a Dragonfly travels alone. Your Hive fills ${b.podSlots} slots per wave (Upgrades add more). The first pod lands ${dropDurationS} s after launch and the rest follow ${podStaggerS} s apart.`);
   const check = checkDrop(b, { payload: mission.payload });
   const home = b.zones.find(z => z.kind === "beachhead");
   const homeCheck = checkDrop(b, { x: home.x, z: home.z, payload: mission.payload });
@@ -1237,6 +1239,9 @@ function updateHud() {
   $("extract-button").hidden = !b.victoryAvailable || !!b.outcome;
   $("retreat-button").hidden = b.victoryAvailable || !!b.outcome;
   $("hud-matter").textContent = Math.floor(b.matter);
+  // Tooltips with the live numbers (TUT-04, field-guide.mjs); written only when they change.
+  setTitle($("hud-matter-box"), matterTooltip(b));
+  setTitle($("hud-alarm-box"), alarmTooltip(b));
   if (b.tier === 0) {
     $("hud-mood").textContent = "nobody here";
     $("hud-alarm").style.width = "0%";
@@ -1246,7 +1251,7 @@ function updateHud() {
   }
   const advisory = hazardAdvisory(b);
   $("hud-hazard").hidden = !advisory;
-  if (advisory) { $("hud-hazard").textContent = advisory.text; $("hud-hazard").classList.toggle("active", advisory.tone === "active"); }
+  if (advisory) { $("hud-hazard").textContent = advisory.text; $("hud-hazard").classList.toggle("active", advisory.tone === "active"); setTitle($("hud-hazard"), hazardTooltip(advisory.type, b.hazards.severity)); }
   $("hud-time").textContent = clock(b.time);
   $("pause-button").textContent = mission.paused ? "Resume" : "Pause";
   $("pause-button").setAttribute("aria-pressed", String(mission.paused));
