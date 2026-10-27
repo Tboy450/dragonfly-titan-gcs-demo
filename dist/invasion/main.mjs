@@ -207,7 +207,9 @@ function renderPlanetPanel() {
   if (planet.reward.unlock) reward.push(`${droneTypes[planet.reward.unlock].name} drones`);
   if (planet.reward.podSlots) reward.push(`+${planet.reward.podSlots} pod slots`);
   const defenders = society.tier === 0 ? "None." : `${defenderTypes[society.militia].name}s; ${society.structures.map(t => defenderTypes[t].name.toLowerCase()).join(", ")}.`;
+  const saved = savedMission && planetById(savedMission.battle.planetId);
   $("planet-panel").innerHTML = `
+    ${saved ? `<button id="galaxy-resume" class="primary galaxy-resume" type="button">Resume battle · ${escapeHtml(saved.name)}</button>` : ""}
     <h3>${escapeHtml(planet.name)}</h3>
     <p class="subtitle">${escapeHtml(planet.subtitle)}${planet.practice ? " · practice" : ""}</p>
     <div class="badges">
@@ -228,6 +230,7 @@ function renderPlanetPanel() {
       <button id="invade-button" class="primary invade" type="button">${progress.captured[planet.id] ? "Invade again" : `Invade ${escapeHtml(planet.name)}`}</button>`
       : `<p class="locked-note">Locked. Conquer ${escapeHtml(previous?.name || "the previous planet")} first.</p>`}
   `;
+  $("galaxy-resume")?.addEventListener("click", () => { if (savedMission) startMission(planetById(savedMission.battle.planetId), savedMission); });
   $("invade-button")?.addEventListener("click", async () => {
     if (savedMission && !await confirmDialog("Start a new mission and replace your saved battle? Campaign progress will be kept.")) return;
     startMission(planet);
@@ -1094,6 +1097,80 @@ $("retreat-button").addEventListener("click", async () => {
   else mission.paused = wasPaused;
 });
 
+// ---- Pause menu (CTRL-12): resume, restart, quit to the galaxy, and sound, speed and the guide ----
+function openPauseMenu() {
+  if (!mission || mission.battle.outcome || $("pause-menu").open) return;
+  mission.menuWasPaused = mission.paused;
+  mission.paused = true;
+  resetPointers(); cancelPlacement(); closeDropPanel();
+  const b = mission.battle, summary = battleSummary(b);
+  $("pause-summary").textContent = `${mission.planet.name} · ${clock(b.time)} · ${summary.held} of ${summary.required} zones held`;
+  $("pause-quit").textContent = mission.planet.frontier ? "Quit to the title" : "Quit to the galaxy";
+  $("pause-note").textContent = `Quitting keeps this battle saved. Resume it from the ${mission.planet.frontier ? "title screen" : "galaxy map or the title screen"}.`;
+  updatePauseSettings();
+  updateHud();
+  $("pause-menu").showModal();
+  $("pause-resume").focus();
+}
+function updatePauseSettings() {
+  $("pause-sound").textContent = soundLabel();
+  $("pause-speed").textContent = `Speed ${mission?.speed || 1}×`;
+}
+// Resume plays on; closing with Escape returns to the pause state the menu found.
+function closePauseMenu(play) {
+  if (!$("pause-menu").open) return;
+  $("pause-menu").close();
+  if (mission) { mission.paused = play ? false : mission.menuWasPaused ?? mission.paused; updateHud(); }
+}
+async function restartMission() {
+  if (!mission || mission.battle.outcome) return;
+  $("pause-menu").close();
+  const planet = mission.planet, win = mission.battle.victoryAvailable, was = mission.menuWasPaused;
+  const ok = await confirmDialog(win
+    ? `Restart ${planet.name}? You hold enough zones, so this attempt is recorded as a victory first.`
+    : `Restart ${planet.name}? This attempt is recorded as a retreat: surviving drones return for half their cost, and cargo still in the air is refunded.`);
+  if (!ok) { openPauseMenu(); mission.menuWasPaused = was; return; }
+  retreat(mission.battle);
+  finishMission();
+  $("debrief").close();
+  startMission(planet);
+  toast(`${planet.name} restarted. The last attempt was recorded as ${win ? "a victory" : "a retreat"}.`, "info", 5000);
+}
+async function quitToGalaxy() {
+  if (!mission || mission.battle.outcome) return;
+  $("pause-menu").close();
+  const was = mission.menuWasPaused;
+  checkpointMission();
+  if (lastSaveError && !await confirmDialog("This battle could not be saved, so quitting would lose it. Quit anyway?")) { openPauseMenu(); mission.menuWasPaused = was; return; }
+  const planet = mission.planet;
+  quietSound();
+  resetPointers();
+  mission = null;
+  scene?.unload();
+  if (!planet.frontier) selectedPlanet = planet.id;
+  show(planet.frontier ? "title" : "galaxy");
+}
+$("menu-button").addEventListener("click", openPauseMenu);
+$("pause-resume").addEventListener("click", () => closePauseMenu(true));
+$("pause-menu").addEventListener("cancel", event => { event.preventDefault(); closePauseMenu(false); });
+$("pause-restart").addEventListener("click", restartMission);
+$("pause-quit").addEventListener("click", quitToGalaxy);
+$("pause-sound").addEventListener("click", () => { $("sound-button").textContent = cycleSound(); updatePauseSettings(); });
+$("pause-speed").addEventListener("click", () => { if (mission) { mission.speed = mission.speed % 3 + 1; updatePauseSettings(); updateHud(); } });
+// The guide opened from the menu keeps the battle paused and returns to the menu when it closes.
+$("pause-guide").addEventListener("click", () => {
+  $("pause-menu").close();
+  if (mission) mission.guideFromMenu = mission.menuWasPaused;
+  showFieldGuide();
+});
+$("guide-dialog").addEventListener("close", () => {
+  if (mission?.guideFromMenu === undefined || current !== "mission") return;
+  const was = mission.guideFromMenu;
+  delete mission.guideFromMenu;
+  openPauseMenu();
+  mission.menuWasPaused = was;
+});
+
 function offerVictoryChoice() {
   if (!mission || mission.battle.outcome || !mission.battle.victoryAvailable || mission.battle.victoryChoiceMade || $("victory-dialog").open) return;
   mission.victoryWasPaused = mission.paused;
@@ -1149,6 +1226,9 @@ window.addEventListener("keydown", (event) => {
   if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
   if (key === "escape") {
     const panelOpen = !$("drop-panel").hidden;
+    // Nothing to close or cancel: Escape opens the pause menu (CTRL-12). preventDefault stops the
+    // browser from treating the same key press as a request to close the menu it just opened.
+    if (!panelOpen && !mission.placing && !mission.cleanView) { event.preventDefault(); openPauseMenu(); return; }
     resetPointers(); setCleanView(false); cancelPlacement(); closeDropPanel();
     if (panelOpen) $("drop-button").focus();
     return;

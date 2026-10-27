@@ -101,6 +101,7 @@ const controls = [
   ] },
   { name: "Mission", summary: "Pause, sound and leaving", facts: [
     "Space pauses and resumes; M changes the sound",
+    "Escape (or Menu) opens the pause menu: resume, restart, quit to the galaxy with the battle saved, sound and speed",
     "Shortcuts pause while you type or use a menu, and Ctrl, Alt or Cmd shortcuts stay with the browser",
   ] },
 ];
