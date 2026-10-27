@@ -39,6 +39,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Correct upper drill drive seating and mounting relief
+- **Signed:** Codex (OpenAI).
+- **Commit:** Correct upper drill drive seating and mounting relief.
+- Reuse real EM1 fig.2 and save printed193. Reproduce 80 mm exposed output gap
+  and upper return crossing the screw. Add estimated supported motor shoe/foot,
+  hollow output cover/flange/adapter, input/output continuity envelopes and external
+  fasteners. Cut upper mounting return to clear old screw by 12 mm.
+- Cover floor has actual mounting notch; top has input opening. Four side panels,
+  existing motor/gearbox, lower mount and entire carriage remain exact.
+- **Limits:** envelopes are not real gears or a rigid replacement for the two-DOF
+  universal joint. Flight dimensions, bolt pattern, actual mount/load path and
+  structural strength remain unresolved; all new fit details EST.
+- **Checks:** 682 tests, including archive preservation, gap/crossing reproducer,
+  panel ray/open-bore/contact checks, independent layers and installed-model
+  screens over 13 sampling poses (605,696 narrow-phase candidates). Earlier
+  full-stroke lead/bellows/carriage/plumbing guards pass. Desktop/390px phone,
+  Internal/Thermal and cover restoration: 24 parts/two targets, no overflow/errors.
+- Leads, hoses, bellows/fittings, 130 mm travel, bit depth and flight/science behavior
+  preserved. Sources, real/model samples, archive/tag on 0e5ca42 and handoff saved.
+- **Next:** fixed feed-actuator electrical exit/local retention evidence audit;
+  sensor/remote wiring and uncovered drive internals remain open.
+
 ### 2026-10-27: Refine drill roller carriage and spherical lead nut
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine drill roller carriage and spherical lead nut.

@@ -1,0 +1,18 @@
+{
+  "desktop": {
+    "client": 1265,
+    "disclosure": true,
+    "parts": 24,
+    "scroll": 1265,
+    "targets": 2
+  },
+  "phone": {
+    "client": 375,
+    "parts": 24,
+    "scroll": 375,
+    "targets": 2
+  },
+  "coversHiddenAndRestored": true,
+  "thermalStarboard": true,
+  "errors": []
+}

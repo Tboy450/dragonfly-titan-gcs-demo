@@ -1,0 +1,41 @@
+{
+  "scope": "Geometric seating and relief only; no actual flight load-path/strength validation",
+  "rows": [
+    {
+      "side": "drill-port",
+      "oldGapAboveScrewM": 0.08000000581145289,
+      "oldUpperMountCrossesScrew": true,
+      "upperMountFrontZLocalM": 0.029,
+      "upperMountToScrewGapM": 0.011999999109655601,
+      "outputEnvelopeYLocalM": [
+        -0.28,
+        -0.2
+      ],
+      "jointBoreRadiusM": 0.006,
+      "shaftRadiusM": 0.004,
+      "boreRadialGapM": 0.002,
+      "lowerMountAndCarriageRetained": true
+    },
+    {
+      "side": "drill-starboard",
+      "oldGapAboveScrewM": 0.08000000581145289,
+      "oldUpperMountCrossesScrew": true,
+      "upperMountFrontZLocalM": 0.029,
+      "upperMountToScrewGapM": 0.011999999109655601,
+      "outputEnvelopeYLocalM": [
+        -0.28,
+        -0.2
+      ],
+      "jointBoreRadiusM": 0.006,
+      "shaftRadiusM": 0.004,
+      "boreRadialGapM": 0.002,
+      "lowerMountAndCarriageRetained": true
+    }
+  ],
+  "open": [
+    "Covered joint forks and gearbox internals",
+    "Flight motor, dimensions and mount design",
+    "Feed/sensor and remote wiring",
+    "Physical alignment/friction/thermal contraction"
+  ]
+}

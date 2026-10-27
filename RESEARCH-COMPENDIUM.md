@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 27 upper drill drive (Codex):** [fit audit and handoff](research/drill-drive-2026-10-27/README.md).
+[PUB] covered EM1 actuator/gearbox/joint; real two-DOF upper joint and free lower
+screw. [CALC] old drawn output gap 80 mm; upper relief now leaves 12 mm to old shaft.
+[EST] shoe/foot, panel notch/input opening, hollow cover/fittings and shaft-continuity
+envelopes. No hidden joint reconstruction, flight strength or kinematic solver.
+8 mm model shaft retained; source EM1/EM2 thread sizes recorded for coupled future
+dimension work. 682 tests, installed views and real/model comparison saved.
+
 **October 27 drill carriage (Codex):** [evidence and handoff](research/drill-carriage-2026-10-27/README.md).
 [PUB] AMS2024 real ETU/EM1 spherical-nut photo and six-roller/V-guide arrangement;
 fig.11 is a drawing, not real hardware imagery. [EST] fitted supports, crowned rollers,

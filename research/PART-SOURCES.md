@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Upper drill drive (Codex, October 27):** [fit and limits](drill-drive-2026-10-27/README.md).
+Reuse real AMS2024 EM1 fig.2, add original printed193 text/table once. Covered
+joint/gearbox evidence does not reveal internals. Mount relief, shoe, external
+fittings/fasteners and neutral shaft envelopes EST; no flight load-path claim.
+Real/Covers-on/Covers-off comparison; 682 tests and desktop/phone checks.
+
 **Drill carriage (Codex, October 27):** [implementation and limits](drill-carriage-2026-10-27/README.md).
 Reuses real EM1 assembly; adds original AMS2024 fig.6 real spherical-nut photograph
 and figs.10-11 roller drawings to the shared packet. EM1-style exterior, estimated

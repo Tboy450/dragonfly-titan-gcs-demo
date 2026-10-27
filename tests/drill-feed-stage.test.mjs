@@ -59,13 +59,13 @@ test('Drive cover panels enclose their provisional motor and sleeves/collars mee
  }
 });
 
-test('Upper mount stays exact, lower return clears the sleeve while retaining guide contact, and fixed fittings have support',async()=>{
+test('Lower return retains the fitted guide contact and fixed fittings stay supported; upper relief is guarded by drive suite',async()=>{
  const after=fixture(),before=await baseline();
  for(let i=0;i<2;i++){
   const d=after.drills[i],old=before.drills[i];
   const mounts=d.stage.getObjectsByProperty('name','drill-body-mount').sort((a,b)=>b.position.y-a.position.y);
   const previous=old.stage.getObjectsByProperty('name','drill-body-mount').sort((a,b)=>b.position.y-a.position.y);
-  assert.deepEqual(fingerprint(mounts[0]),fingerprint(previous[0]));
+  // Later drive pass cuts only the upper forward return, now tested against its archive.
   assert.deepEqual(mounts[1].position.toArray().slice(0,2),previous[1].position.toArray().slice(0,2));
   assert.equal(mounts[1].geometry.parameters.depth,.040);
   const b=o=>new T.Box3().setFromObject(o).expandByScalar(1e-8);

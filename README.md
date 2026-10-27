@@ -10,6 +10,13 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
+October 27: [Upper drill drive fit](research/drill-drive-2026-10-27/README.md).
+Corrected the exposed screw-to-drive drawing gap and upper mount crossing; added
+supported motor seating, panel openings and hollow coupling cover/fittings.
+Hidden joint/gears remain unresolved; exposed shaft envelopes are explicitly
+illustrative. Carriage, leads, bellows, hoses, travel and bit depth preserved.
+682 tests and desktop/phone checks pass. Next: fixed feed-actuator lead evidence.
+
 October 27: [Drill roller carriage and spherical nut](research/drill-carriage-2026-10-27/README.md).
 Six crossed roller exteriors meet a V-shaped guide; an open-bore spherical nut/pocket
 follows real ETU/EM1 hardware. Roller arrangement uses a labeled engineering drawing;

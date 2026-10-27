@@ -21,7 +21,7 @@ import { buildDrillCarriage, drillGuideGeometry } from "./drill-carriage.mjs?v=d
 // needle bearings, drive U-joint internals and thread/contact physics remain unmodeled.
 // The carriage slides down the rail while drilling; only the bit turns.
 export const drillAsset = Object.freeze({
-  revision: "drills-carriage-2026-10-27",
+  revision: "drills-drive-2026-10-27",
   lateralM: 0.54, foreAftM: -0.43,
   stowedY: -0.72, // carriage origin when stowed
   bitTipBelowOrigin: 0.058, // stowed bit tip at -0.778, 7.2 cm above the skid contact plane
@@ -67,9 +67,9 @@ export function buildDrill({ parent, mesh, side }) {
   // Brackets from the rail back to the body side [EST].
   const span = drillAsset.lateralM - Math.abs(railX) - drillAsset.bodyOuterX; // body side to rail center
   for (const y of [drillAsset.rail.top - 0.02, drillAsset.rail.bottom + 0.06]) {
-    // [EST] Lower return stops at the guide's front face, clearing the dust sleeve.
+    // [EST] Returns stop near the guide face, clearing screw/sleeve/coupling.
     const lower=y < -0.5;
-    box([span, 0.012, lower ? 0.040 : 0.09], [inb * (drillAsset.lateralM - drillAsset.bodyOuterX - span / 2), y, lower ? -0.005 : 0.02], grey, stage, "drill-body-mount");
+    box([span, 0.012, lower ? 0.040 : 0.054], [inb * (drillAsset.lateralM - drillAsset.bodyOuterX - span / 2), y, lower ? -0.005 : 0.002], grey, stage, "drill-body-mount");
   }
 
   // Moving carriage: everything that rides the rail; the bit turns inside it.

@@ -1,10 +1,11 @@
 import * as T from './vendor/three/three.module.min.js?v=dev';
+import {buildDrillDrive} from './drill-drive.mjs?v=dev';
 
 // [PUB] Adams et al., AMS2024 printed192 fig2: covered actuator/gear pair,
 // metal guide and two polymer dust bellows. Printed197: ETFE film and fold family.
 // [EST] all fitted dimensions/outline/fold counts below. Existing130 mm stroke kept.
 export const drillFeedAsset=Object.freeze({
- revision:'drill-feed-stage-2026-10-27',strokeM:.13,
+ revision:'drill-feed-drive-2026-10-27',strokeM:.13,
  filmReferenceM:.000127,filmThicknessModeled:false,
  outerRadiusM:.020,innerRadiusM:.013,folds:16,facets:8,
  upperFixedY:-.312,lowerFixedY:-.745,
@@ -41,21 +42,8 @@ export function buildDrillFeedStage({drill,carriage,stage,mesh,side,railX,stowed
  const casings=group(drill,'drill-feed-drive-casings','equipment-casings');
  const interfaces=group(drill,'drill-feed-fixed-interfaces','interfaces');
  const movingInterfaces=group(carriage,'drill-feed-moving-interfaces','interfaces');
- const dark=new T.MeshStandardMaterial({color:0x293034,roughness:.46,metalness:.5});
  const film=new T.MeshStandardMaterial({color:0xe1dfca,roughness:.56,metalness:0,flatShading:true,side:T.DoubleSide,transparent:true,opacity:.90,depthWrite:false});
- const box=(size,at,material,parent,name)=>{const o=mesh(new T.BoxGeometry(...size),material,at,parent);o.name=name;return o;};
- const motorX=railX+side*.045;
- const motor=mesh(new T.CylinderGeometry(.018,.018,.080,20),grey,[motorX,-.25,.020],casings);motor.name='drill-z-motor';
- // Photo-referenced casing, with an explicitly provisional motor envelope inside.
- const center=[motorX,-.25,.020],size=[.044,.10,.050],t=.0015;
- for(let axis=0;axis<3;axis++)for(const sign of [-1,1]){
-  const dims=[...size],p=[...center];dims[axis]=t;p[axis]+=sign*(size[axis]-t)/2;
-  box(dims,p,silver,covers,'drill-feed-actuator-cover');
- }
- box([.10,.040,.060],[railX+side*.0225,-.18,.035],dark,casings,'drill-z-gearhead');
- box([.023,.009,.030],[railX+side*.0115,-.30,.020],grey,stage,'drill-feed-actuator-foot');
- const joint=mesh(new T.CylinderGeometry(.016,.016,.090,20),dark,[railX,-.245,.045],covers);
- joint.name='drill-feed-joint-cover';
+ const drive=buildDrillDrive({mesh,side,railX,silver,grey,stage,covers,casings,interfaces});
  // Actual estimated V-flanks now live in drillGuideGeometry; no painted groove strips.
  const collar=(parent,y,name)=>{
   const h=.006,ri=.007,ro=.020;
@@ -77,5 +65,5 @@ export function buildDrillFeedStage({drill,carriage,stage,mesh,side,railX,stowed
   upper.geometry.userData.update(stowedY-value+drillFeedAsset.upperMovingY,drillFeedAsset.upperFixedY);
   lower.geometry.userData.update(drillFeedAsset.lowerFixedY,stowedY-value+drillFeedAsset.lowerMovingY);
  };
- setFeed(0);return{covers,casings,interfaces,movingInterfaces,upper,lower,setFeed};
+ setFeed(0);return{covers,casings,interfaces,movingInterfaces,upper,lower,drive,setFeed};
 }

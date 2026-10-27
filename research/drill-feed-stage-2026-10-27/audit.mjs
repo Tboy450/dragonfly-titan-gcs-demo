@@ -3,13 +3,14 @@ import {buildDrill} from '../../dist/drills.mjs';
 import {readFile,writeFile} from 'node:fs/promises';
 import {pathToFileURL} from 'node:url';
 import {carriageChangedNames} from '../drill-carriage-2026-10-27/audit.mjs';
+import {driveChangedNames} from '../drill-drive-2026-10-27/audit.mjs';
 
 // Every allowed change is checked against an archive in the new feed-stage suite.
 export const feedChangedNames=new Set(['drill-z-rail','drill-z-motor','drill-z-gearhead',
  'drill-carriage-bracket','drill-carriage-bolt','drill-guide-groove','drill-body-mount',
  'drill-feed-actuator-cover','drill-feed-joint-cover','drill-upper-dust-bellows','drill-lower-dust-bellows',
  'drill-bellows-upper-fixed-collar','drill-bellows-lower-fixed-collar','drill-bellows-upper-moving-collar','drill-bellows-lower-moving-collar',
- 'drill-bellows-lower-stand','drill-feed-actuator-foot',...carriageChangedNames]);
+ 'drill-bellows-lower-stand','drill-feed-actuator-foot',...carriageChangedNames,...driveChangedNames]);
 export const retainedBeforeFeedStage=row=>!feedChangedNames.has(row.name);
 const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};
 export function fixture(builder=buildDrill){const root=new T.Group(),drills=[-1,1].map(side=>builder({parent:root,mesh,side}));root.updateMatrixWorld(true);return{root,drills};}

@@ -10,6 +10,22 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October 27: [Upper drive exterior and mounting fit](research/drill-drive-2026-10-27/README.md).
+- [x] Reuse real EM1 fig.2; save printed193 once for kinematic/free-end evidence.
+  No uncovered flight gear/joint reference found; do not fabricate those internals.
+- [x] Reproduce 80 mm drawing gap and upper mount crossing. Add neutral continuity
+  envelopes, hollow cover/fittings, shoe/foot and actual cover openings; upper
+  return now clears shaft by 12 mm. Fitted geometry EST, not flight load validation.
+- [x] Preserve motor/gearbox, four cover sides, lower mount, entire carriage,
+  bellows, leads, plumbing, bit depth and 130 mm travel. 682 tests.
+- [x] Installed Internal/Thermal, covers hide/restore, 390px phone: 24 parts/two
+  focuses, no overflow/errors. Real/Covers-on/Covers-off samples and comparison saved.
+- [ ] Publish and verify live build; add deployment receipt.
+- [ ] NEXT: fixed Z-feed actuator electrical exit/local retention evidence audit.
+  Reuse real EM1/prototype photos, distinguish GSE cables from flight wiring.
+  No invented controller, pinout or sensor type. Remote wiring and real joint
+  internals remain open; current handoff has exact limits.
+
 October 27: [Roller carriage and spherical nut](research/drill-carriage-2026-10-27/README.md).
 - [x] Read real fig.6 and EM1 assembly; save original source pages once. Correctly
   identify fig.11 as CAD, distinguish spherical EM1 nut from universal-style EM2.
@@ -22,7 +38,8 @@ October 27: [Roller carriage and spherical nut](research/drill-carriage-2026-10-
 - [x] Published ee24ad0; Pages 40505971224 succeeded including 675 tests. Live build,
   new disclosure, 24 parts/two targets, no overflow/errors verified; public sample/
   JSON saved. Preview stopped, viewport restored, shared tab returned to public app.
-- [ ] NEXT: upper drive coupling/gearbox exterior and support/load-path reconciliation.
+- [x] Upper drive exterior/seating pass completed above; actual flight load path and
+  hidden mechanism remain open. Original next item:
   Reuse real fig.2; do not infer hidden gears or a flight motor from a covered can.
   Preserve this pass, sleeves and leads. Full wiring/flight dimensions remain open.
 

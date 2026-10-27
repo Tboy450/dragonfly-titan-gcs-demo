@@ -1,11 +1,13 @@
 import {readFile,writeFile} from 'node:fs/promises';
 import {pathToFileURL} from 'node:url';
 import {fixture} from '../drill-moving-leads-2026-10-27/audit.mjs';
+import {driveChangedNames} from '../drill-drive-2026-10-27/audit.mjs';
 export {fixture};
 export const carriageChangedNames=new Set(['drill-z-rail','drill-guide-groove',
  'drill-carriage-bracket','drill-carriage-bolt','drill-lead-nut','drill-cam-roller',
  'drill-roller-stud','drill-roller-stud-cap','drill-roller-support','drill-nut-pocket','drill-nut-pocket-ear']);
-export const retainedBeforeCarriage=row=>!carriageChangedNames.has(row.name);
+// The next drive pass separately guards its exact archive; do not weaken carriage checks.
+export const retainedBeforeCarriage=row=>!carriageChangedNames.has(row.name)&&!driveChangedNames.has(row.name);
 export async function baseline(){
  let source=await readFile(new URL('../../archive/drill-carriage-2026-10-27/drills.mjs',import.meta.url),'utf8');
  let feed=await readFile(new URL('../../archive/drill-carriage-2026-10-27/drill-feed-stage.mjs',import.meta.url),'utf8');

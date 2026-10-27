@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [drill-drive-2026-10-27](drill-drive-2026-10-27/README.md) | Before upper-drive seating/relief; exact modules, reproduced gap/crossing and failed closed-top draft; previous pictures reused | 2026-10-27 | `archive/drill-drive-2026-10-27` on 0e5ca42 |
 | [drill-carriage-2026-10-27](drill-carriage-2026-10-27/README.md) | Before V-guide, six-roller carriage and hollow spherical nut/pocket; exact modules and failed cap draft, previous pictures reused | 2026-10-27 | `archive/drill-carriage-2026-10-27` on 6a3d71f |
 | [drill-feed-stage-2026-10-27](drill-feed-stage-2026-10-27/README.md) | Before photo-informed feed covers, metal guide and paired dust sleeves; earlier real/CAD/model samples reused | 2026-10-27 | `archive/drill-feed-stage-2026-10-27` one42240d |
 | [drill-moving-leads-2026-10-27](drill-moving-leads-2026-10-27/README.md) | Old carriage-local leads, pose integration and disclosures; prior source/model pictures reused | 2026-10-27 | `archive/drill-moving-leads-2026-10-27` onc99f0dc |

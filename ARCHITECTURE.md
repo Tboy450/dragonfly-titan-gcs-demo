@@ -43,6 +43,13 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October 27 upper drive: `drill-drive.mjs` owns fitted fixed drive exterior, motor
+shoe/foot, open cover panels, annular fittings and simplified continuity envelopes.
+`drill-feed-stage.mjs` supplies existing Covers/Casings/Interfaces/Mounts groups.
+No new pose logic: carriage, leads, bellows, travel and plumbing stay exact. New
+drive preservation suite guards its specific changes; lower mount and four cover
+sides additionally checked against archive. 682 tests. No hidden joint/gear solver.
+
 October 27 carriage: `drill-carriage.mjs` owns the estimated V-guide cross-section,
 six roller exteriors and separate spherical nut/pocket. `buildDrill.setFeed` also
 updates roller transforms in place. New archive-preservation tests guard everything
