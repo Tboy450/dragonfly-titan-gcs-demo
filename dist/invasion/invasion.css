@@ -152,6 +152,9 @@ a { color: var(--swarm); }
 .drop-panel { position: absolute; right: 10px; bottom: 70px; width: min(380px, calc(100% - 20px)); padding: 12px; z-index: 5; }
 .drop-panel header { display: flex; align-items: center; justify-content: space-between; }
 .drop-panel h3 { margin: 0; }
+.drop-presets { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0 0; }
+.drop-presets button { padding: 4px 10px; font-size: 13px; }
+.drop-presets button[aria-pressed="true"] { border-color: var(--accent, #5fe3ff); color: var(--accent, #5fe3ff); }
 .drop-rows { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; max-height: 46vh; overflow: auto; }
 .drop-row { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: center; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; }
 .drop-row .name { font-weight: 600; }

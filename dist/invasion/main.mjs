@@ -13,7 +13,7 @@ import {
   orderFor, queueOrder, setPatrol, replaceOrders,
 } from "./battle.mjs?v=dev";
 import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
-import { packDropPods, podRadius, podStaggerS } from "./drop-waves.mjs?v=dev";
+import { packDropPods, podRadius, podStaggerS, dropPresets, fillPayload, presetAvailable } from "./drop-waves.mjs?v=dev";
 import { hazardTypes, hazardAdvisory } from "./hazards.mjs?v=dev";
 import { achievements, achievementContext, newAchievements, recordAchievements } from "./achievements.mjs?v=dev";
 import { createPlanetTerrain } from "./planet-terrain.mjs?v=dev";
@@ -369,6 +369,13 @@ function ensureScene() {
   return scene;
 }
 
+// The last wave launched on this planet (CTRL-09), refilled to what this mission can afford.
+function rememberedPayload(b, planet) {
+  const wave = progress.lastWaves?.[planet.id];
+  if (!wave) return null;
+  const payload = fillPayload(wave, b);
+  return Object.keys(payload).length ? payload : null;
+}
 function defaultPayload(b) {
   const want = b.practice ? { scout: 6, link: 3 } : { striker: 3, link: 2, scout: 4 };
   const payload = {};
@@ -401,7 +408,7 @@ function startMission(planet, checkpoint = null) {
     planet, battle, terrain, follow: false, lastAlert: null, mouse: null, zoneWatch: new Set(),
     cam: restored?.cam || homeView(battle),
     selected: new Set(restored?.command.selected || []), speed: 1, paused: !!restored,
-    payload: restored?.command.payload ?? defaultPayload(battle), placing: false, dropPoint: null, dropPreview: null, dropPanelOpen: false,
+    payload: restored?.command.payload ?? rememberedPayload(battle, planet) ?? defaultPayload(battle), placing: false, dropPoint: null, dropPreview: null, dropPanelOpen: false,
     cleanView: false, minimapOrders: false, minimapPing: null, phoneHudCollapsed: false, freeCam: null, freeInput: { up: 0, look: 0 },
     seenLog: new WeakSet(), ended: false, lastHud: 0, lastMinimap: 0, lastAchievements: 0, cards: new Map(), dropTypes: "",
     lag: { seconds: 0, lagging: false }, lagNoted: false,
@@ -981,6 +988,7 @@ function updateDropPanel(rebuild = false) {
     }).join("");
   }
   for (const row of $("drop-rows").querySelectorAll(".drop-row")) row.querySelector("output").textContent = mission.payload[row.dataset.type] || 0;
+  renderDropPresets(b);
   const slots = payloadSlots(mission.payload), cost = payloadCost(mission.payload);
   const podCount = packDropPods(mission.payload).length;
   $("drop-summary").textContent = `${podCount} pod${podCount === 1 ? "" : "s"} · wave slots ${slots}/${b.podSlots} · cost ${cost} of ${Math.floor(b.matter)} matter · arrivals ${(dropDurationS + Math.max(0, podCount - 1) * podStaggerS).toFixed(1)} s`;
@@ -992,6 +1000,35 @@ function updateDropPanel(rebuild = false) {
   $("drop-home").disabled = !homeCheck.ok;
   $("drop-pick").disabled = !check.ok;
 }
+
+// Presets (CTRL-09, drop-waves.mjs): fill the wave with a mix, or repeat the last wave sent on
+// this planet. Each button says what it would send now; the one matching the wave is pressed.
+const samePayload = (a, c) => droneOrder.every(type => (a[type] || 0) === (c[type] || 0));
+const mixText = (payload) => droneOrder.filter(type => payload[type]).map(type => `${payload[type]} ${droneTypes[type].name}${payload[type] > 1 ? "s" : ""}`).join(", ") || "nothing you can afford";
+function presetChoices(b) {
+  const choices = dropPresets.filter(preset => presetAvailable(preset, b.unlocks)).map(preset => ({ id: preset.id, name: preset.name, note: preset.note, payload: fillPayload(preset.want, b, { cap: false }) }));
+  const last = progress.lastWaves?.[mission.planet.id];
+  if (last) choices.push({ id: "last", name: "Last wave", note: `Repeat the last wave you sent here (${mixText(last)}).`, payload: fillPayload(last, b) });
+  return choices;
+}
+function renderDropPresets(b) {
+  const html = presetChoices(b).map(choice => {
+    const empty = !Object.keys(choice.payload).length;
+    return `<button type="button" data-preset="${choice.id}" aria-pressed="${!empty && samePayload(choice.payload, mission.payload)}"${empty ? " disabled" : ""} title="${escapeHtml(`${choice.note}\nNow: ${mixText(choice.payload)}.`)}">${escapeHtml(choice.name)}</button>`;
+  }).join("");
+  if ($("drop-presets").innerHTML !== html) $("drop-presets").innerHTML = html;
+}
+function applyPreset(id) {
+  const choice = mission && presetChoices(mission.battle).find(c => c.id === id);
+  if (!choice || !Object.keys(choice.payload).length) return false;
+  mission.payload = { ...choice.payload };
+  updateDropPanel();
+  return true;
+}
+$("drop-presets").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-preset]");
+  if (button && !button.disabled) applyPreset(button.dataset.preset);
+});
 
 $("drop-rows").addEventListener("click", (event) => {
   const button = event.target.closest("[data-step]");
@@ -1005,6 +1042,8 @@ $("drop-rows").addEventListener("click", (event) => {
 function launch(x, z) {
   const result = requestDrop(mission.battle, { x, z, payload: mission.payload });
   if (!result.ok) { toast(result.reason, "warn"); return; }
+  // Remembered for this planet: the next mission here starts with it, and "Last wave" repeats it.
+  progress.lastWaves = { ...progress.lastWaves, [mission.planet.id]: Object.fromEntries(droneOrder.filter(type => mission.payload[type] > 0).map(type => [type, mission.payload[type]])) };
   mission.placing = false;
   $("placement-hint").hidden = true;
   closeDropPanel();

@@ -39,6 +39,26 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Swarmfall drop presets, remembered per planet
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add drop presets and remember each planet's last wave"
+- **What changed:** Checklist CTRL-09.
+  - The drop panel has preset buttons: Assault (Strikers, Breachers and Scouts), Hack team
+    (Links and Scouts) and Scout swarm. Each fills the wave in its proportions, up to the slots
+    and matter you have. A preset shows once a drone it needs is unlocked, its tooltip says
+    what it would send now, and the button matching the current wave is pressed.
+  - The last wave you launch on each planet or frontier map is saved with your progress. The
+    next mission there starts with it, refilled to what you can afford, and a "Last wave"
+    button repeats it.
+  - The Field guide's drop wave controls mention presets.
+- **Files:** `dist/invasion/drop-waves.mjs`, `dist/invasion/campaign.mjs`, `dist/invasion/main.mjs`,
+  `dist/invasion/index.html`, `dist/invasion/invasion.css`, `dist/invasion/field-guide.mjs`,
+  `tests/invasion-drop-presets.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (255 pass). In the browser on Corvan,
+  Assault filled 12 slots with 3 Scouts, 3 Strikers and 1 Breacher. After launching it, a new
+  Corvan mission started with that wave and offered "Last wave". The preview's test save was
+  put back afterwards.
+
 ### 2026-10-27: Swarmfall tooltips for the drop panel and HUD
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add rule-based tooltips to the drop panel and HUD"

@@ -1,6 +1,6 @@
 // The invasion campaign: planets in the order they are invaded, what each one rewards, and the
 // player's saved progress between missions. No DOM; covered by tests/invasion-campaign.test.mjs.
-import { droneOrder, droneTypes, startingDrones, basePodSlots } from "./units.mjs?v=dev";
+import { droneOrder, droneTypes, startingDrones, basePodSlots, payloadCount } from "./units.mjs?v=dev";
 import { objectiveText } from './objective-rules.mjs?v=dev';
 import { validMissionId } from "./mission-id.mjs?v=dev";
 
@@ -207,6 +207,8 @@ export function createProgress() {
     frontier: {},
     // Hive upgrade levels by ID (hiveUpgrades).
     upgrades: {},
+    // The last wave launched on each planet or frontier map (CTRL-09): { planetId: payload }.
+    lastWaves: {},
     stats: Object.fromEntries(statNames.map(name => [name, 0])),
   };
 }
@@ -340,6 +342,13 @@ export function validProgress(raw) {
     const record = raw.frontier?.[map.id];
     if (Number.isInteger(record?.wins) && record.wins >= 1 && Number.isInteger(record.stars) && record.stars >= 1 && record.stars <= 3 && Number.isFinite(record.best) && record.best > 0)
       clean.frontier[map.id] = { wins: Math.min(1e6, record.wins), stars: record.stars, best: Math.round(record.best) };
+  }
+  if (raw.lastWaves && typeof raw.lastWaves === "object" && !Array.isArray(raw.lastWaves)) {
+    for (const map of [...planets, ...frontiers]) {
+      const wave = raw.lastWaves[map.id];
+      if (wave && typeof wave === "object" && !Array.isArray(wave) && Object.entries(wave).every(([type, n]) => Object.hasOwn(droneTypes, type) && Number.isInteger(n) && n >= 0 && n <= 44) && payloadCount(wave) > 0)
+        clean.lastWaves[map.id] = Object.fromEntries(droneOrder.filter(type => wave[type] > 0).map(type => [type, wave[type]]));
+    }
   }
   for (const name of statNames) clean.stats[name] = count(raw.stats?.[name]);
   if (raw.settledMissions && typeof raw.settledMissions === "object" && !Array.isArray(raw.settledMissions)) {

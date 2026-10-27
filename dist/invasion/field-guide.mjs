@@ -92,6 +92,7 @@ const controls = [
     "B opens the drop panel; Tab moves between its buttons and Enter presses one",
     "While picking a zone, Enter previews pods at the middle of the screen and Enter again launches",
     "Escape cancels placement and closes the panel",
+    "Presets fill the wave with a mix: Assault, Hack team or Scout swarm. Last wave repeats the wave you last sent on this planet, and the next mission there starts with it",
   ] },
   { name: "Camera", summary: "Look around the battle", facts: [
     "W A S D or the arrow keys pan; Q and E turn; R and F tilt; Z and X (or the wheel) zoom",

@@ -466,7 +466,24 @@ complete solely because its assets download or its unit tests pass.
   View mode; Clean view hides map controls. **400 tests pass**;
   [evidence](research/swarmfall-minimap-orders-2026-10-20/README.md). Native browser/touch/device
   acceptance remains open under TEST/accessibility tasks.
-- [ ] **CTRL-09 (P2)** Drop presets ("assault", "hack team"), remembered per planet.
+- [x] **CTRL-09 (P2) — Claude (October 27)** Drop presets ("assault", "hack team"), remembered per
+  planet.
+  - Preset buttons at the top of the drop panel (`dropPresets` and `fillPayload`,
+    drop-waves.mjs):
+    - Assault: Strikers, Breachers and Scouts, 2:1:1.
+    - Hack team: Links and Scouts, 2:1.
+    - Scout swarm: Scouts only.
+  - Each preset is a ratio that fills the wave up to its slots and the matter on hand. Drones
+    are added to whichever type is furthest behind its share, so a short budget keeps the mix.
+    A preset appears once a drone it needs is unlocked, and is disabled when nothing fits. Its
+    tooltip says what it would send now. The button matching the current wave is pressed.
+  - Remembered per planet: launching a wave saves it for that planet or frontier map
+    (`progress.lastWaves`, validated on load). The next mission there starts with it, refilled
+    to what that mission can afford, and a "Last wave" button repeats it.
+  - The Field guide's drop wave controls mention presets.
+  - `tests/invasion-drop-presets.test.mjs` (4 tests). In the browser on Corvan, Assault filled
+    12 slots with 3 Scouts, 3 Strikers and 1 Breacher. After launching it, a new Corvan mission
+    started with that wave and offered "Last wave".
 - [ ] **CTRL-10 (P2)** Settings: camera speed, invert drag, key rebinding, UI size.
 - [ ] **CTRL-11 (P3)** Gamepad support.
 - [ ] **CTRL-12 (P3)** Pause menu with restart, settings and quit to the galaxy.
