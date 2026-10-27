@@ -4,6 +4,12 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October27 feed covers/bellows (Codex):** [implementation and open work](research/drill-feed-stage-2026-10-27/README.md).
+[PUB] real EM1 covered drive/gearbox and paired polymer bellows; source film details
+remain distinct from the simulation. [EST] fitted geometry,16-fold surfaces, collars
+and mount changes; no thickness/fatigue/thermal solver.130 mm motion retained.
+669 tests. Detailed rollers and self-aligning joint remain next, not completed here.
+
 **October27 moving drill leads (Codex):** [pass and handoff](research/drill-moving-leads-2026-10-27/README.md).
 [PUB] real EM1 photo and distinct related TRIDENT flex circuits. [CALC] fixed-length
 341.2/415.2 mm local curves,56.1/41.4 mm bend radii. [EST] round6 mm envelopes,

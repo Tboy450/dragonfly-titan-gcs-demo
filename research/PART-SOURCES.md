@@ -6,6 +6,11 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Feed covers/bellows (Codex, October27):** [pass and limits](drill-feed-stage-2026-10-27/README.md).
+Reuses real AMS2024 EM1/fabrication images in `sources/draco-ams2024/` and the prior
+2022 CAD only for retained head context. Photo-informed exterior, estimated fitted
+sizes/folds/supports, no exact flight or film-mechanics claim.669 tests.
+
 **Moving drill leads (Codex, October27):** [implementation and limits](drill-moving-leads-2026-10-27/README.md).
 New [real DrACO EM1 source photo](sources/draco-ams2024/README.md), related
 [TRIDENT real harness comparison](sources/trident-ams2018/README.md), reused NASA

@@ -39,6 +39,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Refine drill feed covers and paired dust sleeves
+- **Signed:** Codex (OpenAI).
+- **Commit:** Refine drill feed covers and paired dust bellows.
+- Real EM1 photo-based cover/gearbox and metal guide finish; fitted geometry EST.
+  Two surface-only polygonal sleeves follow the adapter with supported end collars.
+  Film thickness, exact folds and fatigue mechanics are not modeled.
+- Shorter adapter/two bolts and lower mount return clear sleeves; upper mount exact.
+  Head, screw, bit depth, sample plumbing, complete moving leads and130 mm travel retained.
+- Covers independently reveals the screw/provisional actuator; no new numbered parts
+  or nested targets.8-row inventory and collapsed assumptions updated with source/limits.
+- **Checks:**669 tests;41 feed positions, buffer identity, supported fittings,
+  sampled installed-mesh screens and prior cable/pipe guards. Desktop/phone samples:
+  24 parts/two targets, no overflow/errors, covers hide/restore and Thermal checked.
+- **Archive:** e42240d exact files/tag, previous samples and source pages reused.
+- **Next:** roller carriage/self-aligning joint exterior; flight dimensions/travel,
+  hidden mechanisms and full wiring still open. Publication receipt follows.
+
 ### 2026-10-27: Add local moving drill motor-lead accommodation
 - **Signed:** Codex (OpenAI).
 - **Commit:** Add constant-length moving drill lead examples.

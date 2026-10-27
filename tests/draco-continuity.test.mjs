@@ -4,6 +4,7 @@ import {fixture,baseline,fingerprint} from '../research/draco-side-audit-2026-10
 import {trace} from '../research/draco-connectivity-2026-10-27/trace.mjs';
 import {dracoPlumbingAsset} from '../dist/draco-plumbing.mjs';
 import {unchangedDrillMesh} from '../research/drill-moving-leads-2026-10-27/audit.mjs';
+import {retainedBeforeFeedStage} from '../research/drill-feed-stage-2026-10-27/audit.mjs';
 
 test('Both drill intake routes reach the shared selector/return and both blower inlet envelopes without a seating margin',()=>{
   const result=trace();
@@ -27,7 +28,7 @@ test('Return correction retains all other plumbing and mechanics; later lead upd
   assert.deepEqual(a.slice(0,-1),b.slice(0,-1));
   assert.deepEqual(a.at(-1).slice(0,2),b.at(-1).slice(0,2));
   assert.ok(Math.abs(a.at(-1)[2]-b.at(-1)[2]-.004)<1e-12);
-  const keep=root=>fingerprint(root).filter(row=>row.name!=='draco-return-tube').filter(unchangedDrillMesh);
+  const keep=root=>fingerprint(root).filter(row=>row.name!=='draco-return-tube').filter(unchangedDrillMesh).filter(retainedBeforeFeedStage);
   assert.deepEqual(keep(current.root),keep(before.root));
   const oldTube=before.root.getObjectByName('draco-return-tube'),newTube=current.root.getObjectByName('draco-return-tube');
   for(const parameter of ['radius','tubularSegments','radialSegments','closed'])

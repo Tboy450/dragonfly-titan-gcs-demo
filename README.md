@@ -10,6 +10,13 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
+October27: [Feed covers and paired dust sleeves](research/drill-feed-stage-2026-10-27/README.md).
+Real EM1 photo-informed cover/gearbox, metal guide finish and moving bellows; dimensions
+remain estimates. Covers can expose the screw and provisional actuator.130 mm travel,
+bit depth, hoses and moving leads retained.669 tests and desktop/phone checks pass.
+Next: roller carriage/self-aligning joint; exact flight configuration remains open.
+Publication receipt follows; previous release entries below are historical.
+
 October27 wrap-up: [Moving drill lead examples](research/drill-moving-leads-2026-10-27/README.md).
 Both drills now have constant-length lead loops between moving motor caps and fixed
 local supports. Their flight routing/material remains unknown.662 tests, desktop/

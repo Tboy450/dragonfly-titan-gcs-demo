@@ -1,0 +1,19 @@
+{
+  "desktop": {
+    "client": 1265,
+    "parts": 24,
+    "scroll": 1265,
+    "subassembly": "drill-starboard",
+    "targets": 2
+  },
+  "phone": {
+    "client": 375,
+    "parts": 24,
+    "scroll": 375,
+    "subassembly": "drill-port",
+    "targets": 2
+  },
+  "pausedProgressSeconds": 15.90960000000003,
+  "coversHiddenAndRestored": true,
+  "errors": []
+}

@@ -10,6 +10,20 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October27: [Feed covers and dust bellows](research/drill-feed-stage-2026-10-27/README.md).
+- [x] Real EM1 photo-referenced drive cover/gearbox, metal guide, paired sleeves/end
+  fittings. Preserve130 mm travel, bit depth, pneumatic network and moving lead paths.
+- [x] Upper mount exact; lower return cut back to clear sleeve while retaining rail
+  contact. Supported drive foot/lower collar; no floating fitting accepted.
+- [x] Covers can expose the screw/actuator separately;669 tests, desktop Internal/
+  Thermal and390px phone checks,24 parts/two focuses, no overflow/browser errors.
+- [x] Exact before archive/tag, reused real/CAD sources, samples/measurement JSON.
+- [ ] Publish/verify and record receipt; stop temporary preview.
+- [ ] NEXT: guide/roller carriage and self-aligning nut/U-joint exterior. Read saved
+  EM1 photo and AMS2024 fig.6 first; preserve completed sleeves/leads and revalidate
+  full stroke after changes. Flight travel/load path and hidden mechanisms stay open.
+- [ ] Feed/sensor and body-to-controller wiring remain unresolved, as do full networks.
+
 October27 wrap-up: [Drill moving lead pass](research/drill-moving-leads-2026-10-27/README.md).
 - [x] Two constant-length moving lead examples per drill, fixed upper-mount retention
   points, supports and motor boots. Original motor ends/diameters and mechanics retained.
@@ -27,7 +41,7 @@ October27 wrap-up: [Drill moving lead pass](research/drill-moving-leads-2026-10-
   development160/300 mm figures do not automatically identify flight travel.
 - [ ] Fixed retention-to-controller continuation, feed motor/sensors, blower/diverter
   wiring and actual cable construction/cryogenic life remain open. No new remote mating claim.
-Owner requested this wrap-up; do not begin that next mechanical pass in this turn.
+Historical wrap-up instruction applied to the earlier turn; owner resumed this work above.
 
 October27: [Both-drill plumbing continuity](research/draco-connectivity-2026-10-27/README.md).
 - [x] Confirm owner's assembled-equipment concern; retain both neighborhood samples.

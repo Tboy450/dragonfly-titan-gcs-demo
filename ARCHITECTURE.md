@@ -43,6 +43,14 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October27 feed covers: `drill-feed-stage.mjs` owns covered drive geometry, surface-only
+paired bellows and end fittings. `buildDrill.setFeed` invokes both cable and bellows
+updates; stable vertex/normal buffers, no per-frame mesh replacement. Existing
+inspector categories provide independent Covers/Casings/Interfaces/Mounts access.
+130 mm travel, bit and hose geometry, all cable curves remain exact. Explicit stage
+allowlist defers old preservation tests to new archive/pose/fit guards.669 tests.
+Roller/joint internals and actual flight configuration remain open in the checklist.
+
 October27 moving leads: `drill-moving-leads.mjs` owns constant-length piecewise
 line/semicircle curves and bounded dynamic mesh buffers. `buildDrill.setFeed` moves
 the carriage and updates both leads; `vehicle-research.poseSampling` calls it.

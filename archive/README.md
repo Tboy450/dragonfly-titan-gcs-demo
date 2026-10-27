@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [drill-feed-stage-2026-10-27](drill-feed-stage-2026-10-27/README.md) | Before photo-informed feed covers, metal guide and paired dust sleeves; earlier real/CAD/model samples reused | 2026-10-27 | `archive/drill-feed-stage-2026-10-27` one42240d |
 | [drill-moving-leads-2026-10-27](drill-moving-leads-2026-10-27/README.md) | Old carriage-local leads, pose integration and disclosures; prior source/model pictures reused | 2026-10-27 | `archive/drill-moving-leads-2026-10-27` onc99f0dc |
 | [draco-return-seat-2026-10-27](draco-return-seat-2026-10-27/README.md) | Exact prior tube/status files and measured1 mm return/selector gap; assembled samples reused | 2026-10-27 | `archive/draco-return-seat-2026-10-27` on1431199 |
 | [draco-side-audit-2026-10-26](draco-side-audit-2026-10-26/README.md) | Before drill-focus metadata, plumbing classification and collapsed inventory; hardware unchanged, existing source/model pictures reused | 2026-10-27 | `archive/draco-side-audit-2026-10-26` on a67cb6f |

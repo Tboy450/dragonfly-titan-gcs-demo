@@ -7,10 +7,11 @@ import {drillLeadAsset} from '../dist/drill-moving-leads.mjs';
 import {createFlightState} from '../dist/flight-model.mjs';
 import {samplingSequence} from '../dist/science.mjs';
 import {createInspectionVisibility} from '../dist/inspection-visibility.mjs';
+import {retainedBeforeFeedStage} from '../research/drill-feed-stage-2026-10-27/audit.mjs';
 
 test('Moving accommodation preserves every mechanical mesh and both original motor-cap endpoints/diameters',async()=>{
  const current=fixture(),before=await baseline();
- assert.deepEqual(fingerprint(current.root).filter(unchangedDrillMesh),fingerprint(before.root).filter(unchangedDrillMesh));
+ assert.deepEqual(fingerprint(current.root).filter(unchangedDrillMesh).filter(retainedBeforeFeedStage),fingerprint(before.root).filter(unchangedDrillMesh).filter(retainedBeforeFeedStage));
  for(const [i,d]of current.drills.entries()){
   const old=[];before.drills[i].leads.traverse(o=>{if(o.name==='drill-motor-lead')old.push(o);});
   for(const [j,c]of d.cables.entries()){
