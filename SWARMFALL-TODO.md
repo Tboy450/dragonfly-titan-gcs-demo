@@ -287,8 +287,15 @@ complete solely because its assets download or its unit tests pass.
   - A selected squad gets a notice naming the new target ("Tap to look, H to hold"). Tapping it
     brings the camera there; the attack line already points at the new target.
   - H or Hold stops the squad and now says so. Tested in `tests/invasion-squad-intent.test.mjs`.
-- [ ] **FIX-06 (P2)** Zone rings follow the ground but steep Titan dunes and trees can still
-  hide parts of them. Consider drawing them on top at low opacity.
+- [x] **FIX-06 (P2) — Claude (October 27)** Zone rings follow the ground but steep Titan dunes
+  and trees can still hide parts of them. Consider drawing them on top at low opacity.
+  - Each zone ring (the outline and the capture-progress ring) now has a faint copy drawn over
+    everything at 40% of the ring's opacity (`ringGhost`, scene.mjs). Hills, trees and houses
+    no longer hide a ring, and where the ring is in view it looks the same as before.
+  - The copy shares the ring's shape and its color, progress and opacity, and hides with it.
+  - `tests/invasion-zone-rings.test.mjs`. In the browser, looking low over the hill by
+    Ashfall's Katan Citadel, the ring was completely hidden without the copy and shows through
+    with it. The Hive beacon's ring from above looks unchanged.
 - [x] **FIX-07 (P2) — Codex, October 20; implementation and automated checks** On phones,
   collapse Objectives and Battle log once after the first capture; both have independent
   summary toggles. Respect manual reopening, reset new missions and compact captured resumes.
@@ -298,14 +305,29 @@ complete solely because its assets download or its unit tests pass.
   a mission ends. Close them in `finishMission`.
 - [ ] **FIX-09 (P2)** Aurex, the last planet, is very hard (bot: about 16 minutes and 150 drones
   lost). Revisit after human playtests.
-- [ ] **FIX-10 (P2)** The title card hides the title screen's spiral galaxy.
+- [x] **FIX-10 (P2) — Claude (October 27)** The title card hides the title screen's spiral galaxy.
+  - On wide screens the card now sits on the left; on tall phones it sits low. The galaxy is
+    drawn in the middle of the space the card leaves (`titleGalaxyPlace`, galaxy.mjs), sized to
+    fit. A small screen the card fills keeps the old centered layout.
+  - Checked in the browser at 800×600, 1280×760 and 375×812 (phone).
 - [x] **FIX-11 (P3) — Codex, October 19; implementation and focused checks** Hold and H
   now explain how to select a squad when none is selected. Reveal the HUD for that hint,
   ignore held-key repeats, and preserve selected-squad Hold behavior. Ended missions receive
   no command/warning. **390 tests pass** plus entry-point control checks;
   [evidence](research/swarmfall-hold-hint-2026-10-19/README.md).
-- [ ] **FIX-12 (P3)** Strikes, retaken zones and lost squads off screen give no cue. Add an
-  edge-of-screen marker (see CTRL-06).
+- [x] **FIX-12 (P3) — Claude (October 27)** Strikes, retaken zones and lost squads off screen
+  give no cue. Add an edge-of-screen marker (see CTRL-06).
+  - A red arrow at the screen's edge points to the newest alert while it is off screen (for
+    20 s, like its minimap ring) and to every marked strike still on its way. Its label says
+    what it is and how far, for example "Dratan is being retaken · 482 m". Tapping the arrow
+    looks there; J still jumps to the newest alert. Clean view hides the arrows.
+  - The arrows stay clear of the top and bottom HUD bars (`edgeMarker`, camera-assist.mjs). An
+    alert behind the camera is marked low on the matching side.
+  - A squad whose last drone falls, with no pods still on the way, now raises "Squad N was
+    lost", a warning toast and alert where it fell (`squadLosses`; the rules' destroyed event
+    now names the squad).
+  - `tests/invasion-edge-alerts.test.mjs` (5 tests, with FIX-10). In the browser, an alert for a
+    far zone showed an arrow at the top edge, and clicking it brought the camera to the zone.
 
 ## 2. Tutorial and onboarding (TUT)
 
@@ -338,8 +360,23 @@ complete solely because its assets download or its unit tests pass.
   - Societies: troops, defenses, capture speed and artillery.
   - Hazards: warning time, duration and advice.
   Evidence: `tests/invasion-field-guide.test.mjs`; the browser shows 31 entries in 4 sections.
-- [ ] **TUT-04 (P2)** Tooltips on drop-panel rows and HUD items (alarm thresholds, hazard
-  effects, supply).
+- [x] **TUT-04 (P2) — Claude (October 27)** Tooltips on drop-panel rows and HUD items (alarm
+  thresholds, hazard effects, supply).
+  - All tooltips are built from the rules (field-guide.mjs), so they match the game and the
+    Field guide:
+    - Drop rows: each drone's role, cost, slots, health, speed, sight, capture rate, weapons and
+      worst threats (the same facts as its Field guide entry).
+    - Wave summary: pod capacity, the Hive's slots per wave and pod timing.
+    - Matter: income right now (from held zones and drilling drones), salvage and repairs.
+    - Alarm: the level and every threshold for this world, marked "Now" once passed:
+      militia at 25, raids at 50, artillery at 70 where the society has it, panic at 75.
+    - Hazard badge: what the coming or current hazard does, with damage scaled for the planet,
+      and how long it lasts.
+  - `tests/invasion-tooltips.test.mjs` (5 tests). The matter income in the tooltip matched what
+    the battle paid over 10 s. In the browser on Ashfall, the alarm tooltip at 72 marked the
+    25, 50 and 70 thresholds as "Now", and the eruption warning listed 19.5 damage/s in 55 m.
+  - Still open: touch screens do not show these hover tooltips. The Field guide covers the
+    same facts there.
 - [ ] **TUT-05 (P3)** A short intro screen for the Hive and the campaign.
 
 ## 3. Controls and HUD (CTRL)
@@ -406,8 +443,21 @@ complete solely because its assets download or its unit tests pass.
     toast appeared and tapping it centered the view on the zone.
   - Weather fronts that cover the whole map have no single place to jump to. A list of
     recent alerts could come later.
-- [ ] **CTRL-07 (P2)** Formation choices (spread, tight, line) and stances (aggressive, hold
-  fire for a quiet takeover).
+- [x] **CTRL-07 (P2) — Claude (October 27)** Formation choices (spread, tight, line) and stances
+  (aggressive, hold fire for a quiet takeover).
+  - Formations (`setFormation`, battle.mjs): spread is the old layout, unchanged. Tight halves
+    the spacing: it fits streets and zone centers, but splash hits more drones. Line flies
+    abreast across the direction of travel, 12 to a rank.
+  - A squad on its way re-forms for its current order. In a zone the formation is squeezed to
+    fit, as before.
+  - Stance (`setStance`): holding fire, drones shoot only at a target they were ordered to
+    attack and attack-move does not hunt. That avoids the crossfire outrage in towns
+    (ENEMY-01), whose log line now suggests it.
+  - Split squads keep both settings, and saves check them.
+  - Controls: L cycles the formation, Y toggles hold fire, and both are in the Squad ▾ menu.
+    The squad card shows "line" or "tight" and "holding fire". The Field guide lists both.
+  - `tests/invasion-formations.test.mjs` (6 tests). In the browser, ten drones in line formation
+    flew east and settled into a north-south line.
 - [x] **CTRL-08 (P2) — Codex, October 20; implementation and automated checks** Minimap
   defaults to View taps. Desktop right-click orders selected squads; Map: Orders enables
   touch/pen taps for attack/capture/move, with a brief target pulse. Paused orders work;
@@ -416,7 +466,24 @@ complete solely because its assets download or its unit tests pass.
   View mode; Clean view hides map controls. **400 tests pass**;
   [evidence](research/swarmfall-minimap-orders-2026-10-20/README.md). Native browser/touch/device
   acceptance remains open under TEST/accessibility tasks.
-- [ ] **CTRL-09 (P2)** Drop presets ("assault", "hack team"), remembered per planet.
+- [x] **CTRL-09 (P2) — Claude (October 27)** Drop presets ("assault", "hack team"), remembered per
+  planet.
+  - Preset buttons at the top of the drop panel (`dropPresets` and `fillPayload`,
+    drop-waves.mjs):
+    - Assault: Strikers, Breachers and Scouts, 2:1:1.
+    - Hack team: Links and Scouts, 2:1.
+    - Scout swarm: Scouts only.
+  - Each preset is a ratio that fills the wave up to its slots and the matter on hand. Drones
+    are added to whichever type is furthest behind its share, so a short budget keeps the mix.
+    A preset appears once a drone it needs is unlocked, and is disabled when nothing fits. Its
+    tooltip says what it would send now. The button matching the current wave is pressed.
+  - Remembered per planet: launching a wave saves it for that planet or frontier map
+    (`progress.lastWaves`, validated on load). The next mission there starts with it, refilled
+    to what that mission can afford, and a "Last wave" button repeats it.
+  - The Field guide's drop wave controls mention presets.
+  - `tests/invasion-drop-presets.test.mjs` (4 tests). In the browser on Corvan, Assault filled
+    12 slots with 3 Scouts, 3 Strikers and 1 Breacher. After launching it, a new Corvan mission
+    started with that wave and offered "Last wave".
 - [ ] **CTRL-10 (P2)** Settings: camera speed, invert drag, key rebinding, UI size.
 - [ ] **CTRL-11 (P3)** Gamepad support.
 - [ ] **CTRL-12 (P3)** Pause menu with restart, settings and quit to the galaxy.

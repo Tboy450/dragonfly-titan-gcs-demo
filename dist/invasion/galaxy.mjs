@@ -9,7 +9,8 @@ function seeded(seed) {
 
 const gaussian = (rand) => Math.sqrt(-2 * Math.log(Math.max(1e-9, rand()))) * Math.cos(2 * Math.PI * rand());
 
-export function drawStarfield(ctx, width, height, { arms = 2, count = 2600, center = [0.55, 0.5] } = {}) {
+// radius: the galaxy's size in pixels (by default nearly half the shorter side).
+export function drawStarfield(ctx, width, height, { arms = 2, count = 2600, center = [0.55, 0.5], radius = null } = {}) {
   const rand = seeded(9157);
   const background = ctx.createRadialGradient(width * center[0], height * center[1], 0, width * center[0], height * center[1], Math.max(width, height) * 0.8);
   background.addColorStop(0, "#1a1430");
@@ -17,7 +18,7 @@ export function drawStarfield(ctx, width, height, { arms = 2, count = 2600, cent
   background.addColorStop(1, "#04050c");
   ctx.fillStyle = background;
   ctx.fillRect(0, 0, width, height);
-  const cx = width * center[0], cy = height * center[1], scale = Math.min(width, height) * 0.48;
+  const cx = width * center[0], cy = height * center[1], scale = radius || Math.min(width, height) * 0.48;
   // Background stars.
   for (let i = 0; i < 700; i += 1) {
     ctx.fillStyle = `rgba(220, 225, 255, ${0.15 + rand() * 0.5})`;
@@ -46,6 +47,30 @@ export function drawStarfield(ctx, width, height, { arms = 2, count = 2600, cent
   ctx.beginPath();
   ctx.ellipse(cx, cy, scale * 0.42, scale * 0.26, 0, 0, Math.PI * 2);
   ctx.fill();
+}
+
+// Where the title screen's galaxy goes (FIX-10): the middle of the largest clear part of the
+// screen beside, above or below the title card, so the card no longer covers it. card is the
+// card's rectangle in canvas pixels. With no room anywhere (a small screen the card fills), the
+// galaxy stays in the middle, behind the card, as before.
+export function titleGalaxyPlace(width, height, card) {
+  const full = Math.min(width, height) * 0.48, middle = { center: [0.5, 0.55], radius: full };
+  if (!card || !(width > 0 && height > 0)) return middle;
+  // The spiral is about 2.3 radii wide and 1.3 tall (arms stretched 1.25 by 0.72); scattered
+  // outer stars may cross onto the card.
+  const left = Math.max(0, card.left), right = Math.min(width, card.right), top = Math.max(0, card.top), bottom = Math.min(height, card.bottom);
+  const regions = [
+    { x: right, y: 0, w: width - right, h: height },
+    { x: 0, y: 0, w: left, h: height },
+    { x: 0, y: 0, w: width, h: top },
+    { x: 0, y: bottom, w: width, h: height - bottom },
+  ];
+  let best = null;
+  for (const r of regions) {
+    const radius = Math.min(full, r.w / 2.3, r.h / 1.3);
+    if (!best || radius > best.radius) best = { radius, center: [(r.x + r.w / 2) / width, (r.y + r.h / 2) / height] };
+  }
+  return best.radius >= full * 0.4 ? best : middle;
 }
 
 // Draws the campaign map. Returns the planets' screen positions for tapping.

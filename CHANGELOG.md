@@ -61,6 +61,104 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Next:** fixed feed-actuator electrical exit/local retention evidence audit;
   sensor/remote wiring and uncovered drive internals remain open.
 
+### 2026-10-27: Swarmfall drop presets, remembered per planet
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add drop presets and remember each planet's last wave"
+- **What changed:** Checklist CTRL-09.
+  - The drop panel has preset buttons: Assault (Strikers, Breachers and Scouts), Hack team
+    (Links and Scouts) and Scout swarm. Each fills the wave in its proportions, up to the slots
+    and matter you have. A preset shows once a drone it needs is unlocked, its tooltip says
+    what it would send now, and the button matching the current wave is pressed.
+  - The last wave you launch on each planet or frontier map is saved with your progress. The
+    next mission there starts with it, refilled to what you can afford, and a "Last wave"
+    button repeats it.
+  - The Field guide's drop wave controls mention presets.
+- **Files:** `dist/invasion/drop-waves.mjs`, `dist/invasion/campaign.mjs`, `dist/invasion/main.mjs`,
+  `dist/invasion/index.html`, `dist/invasion/invasion.css`, `dist/invasion/field-guide.mjs`,
+  `tests/invasion-drop-presets.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (255 pass). In the browser on Corvan,
+  Assault filled 12 slots with 3 Scouts, 3 Strikers and 1 Breacher. After launching it, a new
+  Corvan mission started with that wave and offered "Last wave". The preview's test save was
+  put back afterwards.
+
+### 2026-10-27: Swarmfall tooltips for the drop panel and HUD
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add rule-based tooltips to the drop panel and HUD"
+- **What changed:** Checklist TUT-04. Hovering now explains, with the game's own numbers:
+  - Drop rows: each drone's role, cost, health, speed, capture rate, weapons and worst threats
+    (the same facts as the Field guide).
+  - Wave summary: pod capacity, slots per wave and pod timing.
+  - Matter: current income from held zones and drilling drones, salvage and repairs.
+  - Alarm: the current level and each threshold on this world (militia 25, raids 50,
+    artillery 70 where it exists, panic 75), marked "Now" once passed.
+  - Hazard badge: what the hazard does, with damage scaled for the planet, and how long it
+    lasts.
+  - The rules now export the numbers these use (`alarmStages`, `artilleryAlarm`,
+    `salvageMatter`, `healPerS`, `zoneIncome`); the game plays the same.
+- **Files:** `dist/invasion/field-guide.mjs`, `dist/invasion/battle.mjs`, `dist/invasion/main.mjs`,
+  `dist/invasion/index.html`, `tests/invasion-tooltips.test.mjs` (new), `SWARMFALL-TODO.md`,
+  `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (251 pass). In the browser on Ashfall, the
+  tooltips were on every drop row, and the alarm and hazard tooltips showed live values.
+  Touch screens do not show hover tooltips; the Field guide covers the same facts there.
+
+### 2026-10-27: Swarmfall zone rings show through hills
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Let zone rings show through hills and houses"
+- **What changed:** Checklist FIX-06. Steep ground, trees and houses could hide parts of a
+  zone's ring. Each ring (the outline and the capture-progress ring) now has a faint copy
+  drawn over everything at 40% of its opacity, so a hidden ring still shows through. It
+  follows the ring's color, capture progress and visibility. Rings in plain view look as
+  before.
+- **Files:** `dist/invasion/scene.mjs`, `tests/invasion-zone-rings.test.mjs` (new),
+  `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (246 pass). In the browser, looking low
+  over the hill by Ashfall's Katan Citadel, the ring was hidden without the copy and shows
+  through with it. The Hive beacon ring from above is unchanged.
+
+### 2026-10-27: Swarmfall title galaxy and off-screen alert arrows
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Show the title galaxy and mark off-screen alerts"
+- **What changed:** Checklist FIX-10 and FIX-12.
+  - Title screen (FIX-10): the card no longer covers the spiral galaxy. On wide screens the
+    card sits on the left and the galaxy fills the space to its right. On tall phones the card
+    sits low and the galaxy shows above it. A small screen the card fills keeps the old layout.
+  - Off-screen alerts (FIX-12): a red arrow at the screen's edge points to the newest alert
+    while it is off screen (20 s), and to every artillery or lightning strike still on its way.
+    Its label says what it is and how far away. Tapping the arrow brings the camera there. The
+    arrows stay clear of the HUD bars, and Clean view hides them.
+  - A squad whose last drone falls (with no pods still coming) now raises "Squad N was lost":
+    a warning toast and an alert where it fell. The rules' destroyed event names the squad.
+- **Files:** `dist/invasion/galaxy.mjs`, `dist/invasion/camera-assist.mjs`, `dist/invasion/main.mjs`,
+  `dist/invasion/battle.mjs`, `dist/invasion/index.html`, `dist/invasion/invasion.css`,
+  `tests/invasion-edge-alerts.test.mjs` (new), `tests/helpers/invasion-ui-harness.mjs` (binds
+  the title helper), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (245 pass). In the browser, the title
+  galaxy shows beside the card at 800×600 and 1280×760 and above it on a 375×812 phone. In a
+  Kepra mission, an alert for a far zone showed an arrow at the top edge, and clicking it
+  brought the camera to the zone, after which the arrow went away.
+
+### 2026-10-27: Swarmfall formations and hold fire
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add squad formations and a hold-fire stance"
+- **What changed:** Checklist CTRL-07. Squads now have a formation and a stance:
+  - Formation, cycled with L or chosen in the Squad ▾ menu:
+    - Spread is the old layout, unchanged.
+    - Tight halves the spacing: it fits streets and zone centers, but splash hits more drones.
+    - Line flies abreast across the way the squad is going: a wide front for sweeping and
+      scouting.
+    - A squad already on its way re-forms immediately.
+  - Hold fire (Y, or the menu): drones shoot only at a target you order them to attack, and
+    attack-move does not hunt. A squad holding fire can take a town without the crossfire
+    outrage. The crossfire message now suggests it.
+  - The squad card shows the formation and "holding fire". Split squads keep both settings,
+    and saves keep them. The Field guide lists L and Y.
+- **Files:** `dist/invasion/battle.mjs`, `dist/invasion/main.mjs`, `dist/invasion/mission-save.mjs`,
+  `dist/invasion/field-guide.mjs`, `tests/invasion-formations.test.mjs` (new), `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (567 pass). In the browser on Kepra, ten drones in
+  line formation holding fire flew east and settled into a north-south line. The squad card
+  and menu show the new settings, with no console errors.
+
 ### 2026-10-27: Refine drill roller carriage and spherical lead nut
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine drill roller carriage and spherical lead nut.

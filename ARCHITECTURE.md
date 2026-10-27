@@ -314,7 +314,7 @@ same split as the simulator: plain modules with tests, plus a page layer.
 | File | What it does |
 |---|---|
 | `invasion/units.mjs` | Drone, defender and society types; weapons per target class (ground, structure, air) so drones can later carry different arms against rival drones; pod slots and costs |
-| `invasion/campaign.mjs` | The seven planets in campaign order, rewards, per-planet supply, saved progress (validated field by field) and `applyMissionResult`; Frontier maps (`frontiers`), `missionSupply` and `applyFrontierResult`, which never touch the campaign bank |
+| `invasion/campaign.mjs` | The seven planets in campaign order, rewards, per-planet supply, saved progress (validated field by field, including each planet's last wave) and `applyMissionResult`; Frontier maps (`frontiers`), `missionSupply` and `applyFrontierResult`, which never touch the campaign bank |
 | `invasion/mission-save.mjs` | Versioned JSON battle checkpoints, validation and terrain callback/pad restoration; stored with campaign progress by the page; battles record their map, city and landform, and `checkpointPlanet` rebuilds exactly that world (older Corvan saves included) |
 | `invasion/battle.mjs` | One mission: zones, drops, orders (group pace, attack-move), movement, combat, capture (damage or control path, converted defenses), public alarm, reinforcements, artillery, income, objectives, stars, outcome; frontier scouting (`cityFound`, `hiddenUnits` for the page); direct fire needs a clear line past city buildings |
 | `invasion/hazards.mjs` | Seeded environmental threats with advance warning; shelter in held zones |
@@ -324,17 +324,17 @@ same split as the simulator: plain modules with tests, plus a page layer.
 | `invasion/city-render.mjs` | Draws a city layout with the Environment Lab kit: streets, sidewalks, squares, parks, merged facade buildings and rooftop gear; forge cities get halls, stacks, towers, slag yards and animated smoke; towns get tile-roofed houses, a keep and crenellated walls |
 | `invasion/random.mjs` | Seeded random numbers stored on the battle (reproducible missions) |
 | `invasion/models.mjs` | Procedural drone, defender, structure and building geometry (vertex colors, merged for instancing) and the compacted Dragonfly research model |
-| `invasion/scene.mjs` | three.js view: planet ground/sky/liquid/decor (Titan via `createTitanTerrain`), zone rings, instanced units, townspeople who flee drones (drawn only), shots, explosions, strike markers, weather particles, pods via `createArrivalHardware` + `edlStateAt` |
-| `invasion/galaxy.mjs` | The campaign galaxy drawing |
+| `invasion/scene.mjs` | three.js view: planet ground/sky/liquid/decor (Titan via `createTitanTerrain`), zone rings (with faint copies drawn on top so hills never hide them), instanced units, townspeople who flee drones (drawn only), shots, explosions, strike markers, weather particles, pods via `createArrivalHardware` + `edlStateAt` |
+| `invasion/galaxy.mjs` | The campaign galaxy drawing, and where the title screen's galaxy goes beside the card |
 | `invasion/battle-sound.mjs` | What the optional sound should be: hum, rain, wind and rumble levels from the battle and view, one-shot cues from events, and the sound levels |
 | `invasion/sound.mjs` | Plays it with Web Audio (no sound files): beds, shots, explosions, chimes, sirens, thunder, pod entry and parachutes; off by default |
 | `invasion/quality.mjs` | Graphics quality levels (decor, city detail, ground, pixel ratio) and adaptive resolution from frame time |
 | `invasion/tips.mjs` | First-time tips: first defenders in sight, each kind of defense, alarm stages, first artillery and captured defense |
-| `invasion/field-guide.mjs` | The Field guide: every drone, defender, society and hazard with numbers and counters, generated from the rules, plus the controls |
+| `invasion/field-guide.mjs` | The Field guide: every drone, defender, society and hazard with numbers and counters, generated from the rules, plus the controls, and the same facts as tooltips for drop rows, matter, alarm and hazards (TUT-04) |
 | `invasion/paths.mjs` | Ground routes: a deterministic grid search round water, buildings and walls, used by troops on foot when blocked |
 | `invasion/tutorial.mjs` | The Titan tutorial: checked steps from the battle (drop to win, plus a weather step) and the button to highlight |
 | `invasion/swarm-dust.mjs` | Rotor-wash dust: a pooled, seeded puff simulation for low drones and pod touchdowns, drawn with sprites |
-| `invasion/camera-assist.mjs` | Follow the selected squads' center, the newest alert to jump to, edge scrolling and the starting view |
+| `invasion/camera-assist.mjs` | Follow the selected squads' center, the newest alert to jump to, lost-squad alerts, edge-of-screen alert arrows, edge scrolling and the starting view |
 | `invasion/frame-clock.mjs` | Turns each frame's real time into battle steps of at most 0.05 s: slow frames catch up, stalls are dropped, sustained lag is detected |
 | `invasion/free-camera.mjs` | The free camera's movement: start from and return to the orbit camera, fly with limits (ground, roofs, ceiling, map edge, no flying into buildings) |
 | `invasion/main.mjs` | Screens, saving, the mission loop, camera and touch controls, selection, orders, drop panel, HUD, minimap, debrief |

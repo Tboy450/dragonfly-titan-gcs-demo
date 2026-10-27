@@ -11,7 +11,7 @@ const importPattern=/^import[\s\S]*?from\s+["']([^"']+)["'];?\r?$/gm;
 const bindings={};
 for(const match of source.matchAll(importPattern)){
   if(match[1].includes('scene.mjs')){bindings.createInvasionScene=()=>{throw new Error('No renderer in this test');};continue;}
-  if(match[1].includes('galaxy.mjs')){Object.assign(bindings,{drawStarfield(){},drawGalaxy:()=>[]});continue;}
+  if(match[1].includes('galaxy.mjs')){Object.assign(bindings,{drawStarfield(){},drawGalaxy:()=>[],titleGalaxyPlace:(await import(new URL(match[1],entry).href)).titleGalaxyPlace});continue;}
   Object.assign(bindings,await import(new URL(match[1],entry).href));
 }
 

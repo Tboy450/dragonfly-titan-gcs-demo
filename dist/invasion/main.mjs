@@ -9,26 +9,26 @@ import {
 import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, orderHold, battleSummary,
   objectiveStatus, starsEarned, missionResult, retreat, publicMood, dropZoneAt, extractVictory, continueCapturing,
-  cityFound, hiddenUnits, shotBlocked, mergeSquads, splitSquad, renameSquad, captureBlocker,
+  cityFound, hiddenUnits, shotBlocked, mergeSquads, splitSquad, renameSquad, captureBlocker, setFormation, setStance, formations,
   orderFor, queueOrder, setPatrol, replaceOrders,
 } from "./battle.mjs?v=dev";
 import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
-import { packDropPods, podRadius, podStaggerS } from "./drop-waves.mjs?v=dev";
+import { packDropPods, podRadius, podStaggerS, dropPresets, fillPayload, presetAvailable } from "./drop-waves.mjs?v=dev";
 import { hazardTypes, hazardAdvisory } from "./hazards.mjs?v=dev";
 import { achievements, achievementContext, newAchievements, recordAchievements } from "./achievements.mjs?v=dev";
 import { createPlanetTerrain } from "./planet-terrain.mjs?v=dev";
-import { drawGalaxy, drawStarfield } from "./galaxy.mjs?v=dev";
+import { drawGalaxy, drawStarfield, titleGalaxyPlace } from "./galaxy.mjs?v=dev";
 import { createInvasionScene, swarmColor, nativeColor } from "./scene.mjs?v=dev";
 import { missionCheckpoint, restoreMissionCheckpoint, checkpointPlanet } from "./mission-save.mjs?v=dev";
 import { pointerIntent, exceedsTapSlop, holdToBoxMs, boxRect, squadsInBox } from './pointer-controls.mjs?v=dev';
 import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
 import { enterFree, exitFree, placeFree, moveFree, freeLimits } from "./free-camera.mjs?v=dev";
-import { squadCenter, latestAlert, zoneAlerts, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
+import { squadCenter, latestAlert, zoneAlerts, squadLosses, edgeMarker, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
 import { frameSteps, trackLag } from "./frame-clock.mjs?v=dev";
 import { cycleSound, soundLabel, updateBattleSound, quietSound } from "./sound.mjs?v=dev";
 import { qualityLevels, nextQuality } from "./quality.mjs?v=dev";
 import { newTips } from "./tips.mjs?v=dev";
-import { fieldGuide } from "./field-guide.mjs?v=dev";
+import { fieldGuide, droneTooltip, hazardTooltip, alarmTooltip, matterTooltip } from "./field-guide.mjs?v=dev";
 import { tutorialState } from "./tutorial.mjs?v=dev";
 
 // First-time tips (tips.mjs), each shown once per device.
@@ -48,6 +48,7 @@ import { readCampaignSave, writeCampaignSave, recoveryFailureMessage, listRecove
 
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (text) => String(text).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const setTitle = (element, text) => { if (element.title !== text) element.title = text; };
 const clock = (seconds) => `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
 const isDrone = (unit) => unit.alive && unit.side === "swarm" && !unit.structure;
 
@@ -84,8 +85,10 @@ function fitCanvas(canvas, scale = Math.min(2, window.devicePixelRatio || 1)) {
 }
 
 function drawTitle() {
-  const { ctx, width, height } = fitCanvas($("title-stars"));
-  drawStarfield(ctx, width, height, { center: [0.5, 0.55] });
+  const canvas = $("title-stars"), { ctx, width, height } = fitCanvas(canvas);
+  // The galaxy goes in the open space beside or above the card (FIX-10), not behind it.
+  const box = canvas.getBoundingClientRect(), card = $("title-card").getBoundingClientRect();
+  drawStarfield(ctx, width, height, titleGalaxyPlace(width, height, { left: card.left - box.left, right: card.left - box.left + card.width, top: card.top - box.top, bottom: card.top - box.top + card.height }));
   const done = planets.filter(p => progress.captured[p.id]).length;
   const earned = Object.keys(progress.achievements).length;
   $("title-progress").textContent = done || earned ? `${done} of ${planets.length} planets conquered · ${earned} of ${achievements.length} achievements` : "";
@@ -366,6 +369,13 @@ function ensureScene() {
   return scene;
 }
 
+// The last wave launched on this planet (CTRL-09), refilled to what this mission can afford.
+function rememberedPayload(b, planet) {
+  const wave = progress.lastWaves?.[planet.id];
+  if (!wave) return null;
+  const payload = fillPayload(wave, b);
+  return Object.keys(payload).length ? payload : null;
+}
 function defaultPayload(b) {
   const want = b.practice ? { scout: 6, link: 3 } : { striker: 3, link: 2, scout: 4 };
   const payload = {};
@@ -398,7 +408,7 @@ function startMission(planet, checkpoint = null) {
     planet, battle, terrain, follow: false, lastAlert: null, mouse: null, zoneWatch: new Set(),
     cam: restored?.cam || homeView(battle),
     selected: new Set(restored?.command.selected || []), speed: 1, paused: !!restored,
-    payload: restored?.command.payload ?? defaultPayload(battle), placing: false, dropPoint: null, dropPreview: null, dropPanelOpen: false,
+    payload: restored?.command.payload ?? rememberedPayload(battle, planet) ?? defaultPayload(battle), placing: false, dropPoint: null, dropPreview: null, dropPanelOpen: false,
     cleanView: false, minimapOrders: false, minimapPing: null, phoneHudCollapsed: false, freeCam: null, freeInput: { up: 0, look: 0 },
     seenLog: new WeakSet(), ended: false, lastHud: 0, lastMinimap: 0, lastAchievements: 0, cards: new Map(), dropTypes: "",
     lag: { seconds: 0, lagging: false }, lagNoted: false,
@@ -747,6 +757,14 @@ function tap(clientX, clientY, additive, action = "smart") {
     updateDropPreview();
     return;
   }
+  // An arrow at the screen's edge for an alert off screen (FIX-12): tapping it looks there.
+  const mark = action === "order" ? null : (mission.edgeMarks || []).find(m => Math.hypot(m.x - x, m.y - y) < 30);
+  if (mark) {
+    setFollow(false);
+    lookAt(mark.alert.x, mark.alert.z);
+    mission.minimapPing = { x: mark.alert.x, z: mark.alert.z, at: performance.now() };
+    return;
+  }
   const drone = action === "order" ? null : unitAtScreen(x, y, isDrone);
   if (drone) {
     if (action === "select" && !additive && mission.selected.size === 1 && mission.selected.has(drone.squad)) return;
@@ -813,6 +831,29 @@ function togglePatrol() {
   updateSquadTools();
 }
 
+// Formation and stance of the selected squads (CTRL-07, battle.mjs setFormation/setStance).
+const formationNames = { spread: "spread", tight: "tight", line: "line" };
+const formationNotes = { spread: "spread out, so splash hits fewer drones", tight: "tight, to fit streets and zone centers (splash hits more)", line: "in a line across their path, a wide front for sweeping" };
+function chooseFormation(formation) {
+  const ids = [...mission.selected];
+  if (!setFormation(mission.battle, ids, formation)) { toast("Select a squad first.", "info"); return; }
+  toast(`Formation: ${formationNotes[formation]}.`, "info", 2600);
+  updateSquadTools();
+}
+function cycleFormation() {
+  const squads = mission.battle.squads.filter(s => mission.selected.has(s.id));
+  if (!squads.length) { toast("Select a squad first.", "info"); return; }
+  chooseFormation(formations[(formations.indexOf(squads[0].formation || "spread") + 1) % formations.length]);
+}
+function toggleHoldFire() {
+  const ids = [...mission.selected], squads = mission.battle.squads.filter(s => ids.includes(s.id));
+  if (!squads.length) { toast("Select a squad first.", "info"); return; }
+  const on = !squads.every(s => s.stance === "hold");
+  setStance(mission.battle, ids, on ? "hold" : "fire");
+  toast(on ? "Holding fire: drones shoot only at a target you order them to attack. Good for quiet takeovers." : "Firing at will.", "info", 3200);
+  updateSquadTools();
+}
+
 function selectSquad(id, additive = false) {
   const selected = mission.selected;
   if (additive) { if (selected.has(id)) selected.delete(id); else selected.add(id); } else if (selected.size === 1 && selected.has(id)) selected.clear(); else { selected.clear(); selected.add(id); }
@@ -866,6 +907,11 @@ function updateSquadTools() {
     options.push(["queue", "Queue next order"], ["hunt", "Attack-move next order (T)"]);
     const patrolling = b.squads.filter(s => chosen.includes(s.id)).every(s => s.patrol);
     options.push(["patrol", patrolling ? "Patrol: on → off (P)" : "Patrol: off → on (P)"]);
+    // Formation and stance (CTRL-07): the choices not already set on every selected squad.
+    const squads = b.squads.filter(s => chosen.includes(s.id));
+    for (const formation of formations) if (!squads.every(s => (s.formation || "spread") === formation)) options.push([`formation:${formation}`, `Formation: ${formationNames[formation]} (L)`]);
+    const holding = squads.every(s => s.stance === "hold");
+    options.push(["stance", holding ? "Hold fire: on → off (Y)" : "Hold fire: off → on (Y)"]);
   }
   const signature = options.map(o => o.join(":")).join("|");
   if (select.dataset.signature !== signature) {
@@ -890,6 +936,8 @@ $("squad-tools").addEventListener("change", (event) => {
     toast("Next order is a waypoint: tap or click where to go.", "info", 2500);
   } else if (action === "hunt") armAttackMove();
   else if (action === "patrol") togglePatrol();
+  else if (action.startsWith("formation:")) chooseFormation(action.slice(10));
+  else if (action === "stance") toggleHoldFire();
   else if (action === "rename") {
     const squad = b.squads.find(s => s.id === chosen[0]);
     const name = window.prompt("Rename squad (up to 24 characters):", squad?.name || "");
@@ -932,7 +980,7 @@ function updateDropPanel(rebuild = false) {
     mission.dropTypes = types.join();
     $("drop-rows").innerHTML = types.map(type => {
       const d = droneTypes[type];
-      return `<div class="drop-row" data-type="${type}">
+      return `<div class="drop-row" data-type="${type}" title="${escapeHtml(droneTooltip(type))}">
         <span class="name">${escapeHtml(d.name)}</span>
         <span class="meta">${d.cost} matter · ${d.slots} slot${d.slots > 1 ? "s" : ""}${d.limit ? ` · max ${d.limit}` : ""} · ${escapeHtml(d.role)}</span>
         <span class="stepper"><button type="button" data-step="-1" aria-label="One fewer ${escapeHtml(d.name)}">−</button><output>0</output><button type="button" data-step="1" aria-label="One more ${escapeHtml(d.name)}">+</button></span>
@@ -940,9 +988,11 @@ function updateDropPanel(rebuild = false) {
     }).join("");
   }
   for (const row of $("drop-rows").querySelectorAll(".drop-row")) row.querySelector("output").textContent = mission.payload[row.dataset.type] || 0;
+  renderDropPresets(b);
   const slots = payloadSlots(mission.payload), cost = payloadCost(mission.payload);
   const podCount = packDropPods(mission.payload).length;
   $("drop-summary").textContent = `${podCount} pod${podCount === 1 ? "" : "s"} · wave slots ${slots}/${b.podSlots} · cost ${cost} of ${Math.floor(b.matter)} matter · arrivals ${(dropDurationS + Math.max(0, podCount - 1) * podStaggerS).toFixed(1)} s`;
+  setTitle($("drop-summary"), `A pod holds up to 3 drones; a Dragonfly travels alone. Your Hive fills ${b.podSlots} slots per wave (Upgrades add more). The first pod lands ${dropDurationS} s after launch and the rest follow ${podStaggerS} s apart.`);
   const check = checkDrop(b, { payload: mission.payload });
   const home = b.zones.find(z => z.kind === "beachhead");
   const homeCheck = checkDrop(b, { x: home.x, z: home.z, payload: mission.payload });
@@ -950,6 +1000,35 @@ function updateDropPanel(rebuild = false) {
   $("drop-home").disabled = !homeCheck.ok;
   $("drop-pick").disabled = !check.ok;
 }
+
+// Presets (CTRL-09, drop-waves.mjs): fill the wave with a mix, or repeat the last wave sent on
+// this planet. Each button says what it would send now; the one matching the wave is pressed.
+const samePayload = (a, c) => droneOrder.every(type => (a[type] || 0) === (c[type] || 0));
+const mixText = (payload) => droneOrder.filter(type => payload[type]).map(type => `${payload[type]} ${droneTypes[type].name}${payload[type] > 1 ? "s" : ""}`).join(", ") || "nothing you can afford";
+function presetChoices(b) {
+  const choices = dropPresets.filter(preset => presetAvailable(preset, b.unlocks)).map(preset => ({ id: preset.id, name: preset.name, note: preset.note, payload: fillPayload(preset.want, b, { cap: false }) }));
+  const last = progress.lastWaves?.[mission.planet.id];
+  if (last) choices.push({ id: "last", name: "Last wave", note: `Repeat the last wave you sent here (${mixText(last)}).`, payload: fillPayload(last, b) });
+  return choices;
+}
+function renderDropPresets(b) {
+  const html = presetChoices(b).map(choice => {
+    const empty = !Object.keys(choice.payload).length;
+    return `<button type="button" data-preset="${choice.id}" aria-pressed="${!empty && samePayload(choice.payload, mission.payload)}"${empty ? " disabled" : ""} title="${escapeHtml(`${choice.note}\nNow: ${mixText(choice.payload)}.`)}">${escapeHtml(choice.name)}</button>`;
+  }).join("");
+  if ($("drop-presets").innerHTML !== html) $("drop-presets").innerHTML = html;
+}
+function applyPreset(id) {
+  const choice = mission && presetChoices(mission.battle).find(c => c.id === id);
+  if (!choice || !Object.keys(choice.payload).length) return false;
+  mission.payload = { ...choice.payload };
+  updateDropPanel();
+  return true;
+}
+$("drop-presets").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-preset]");
+  if (button && !button.disabled) applyPreset(button.dataset.preset);
+});
 
 $("drop-rows").addEventListener("click", (event) => {
   const button = event.target.closest("[data-step]");
@@ -963,6 +1042,8 @@ $("drop-rows").addEventListener("click", (event) => {
 function launch(x, z) {
   const result = requestDrop(mission.battle, { x, z, payload: mission.payload });
   if (!result.ok) { toast(result.reason, "warn"); return; }
+  // Remembered for this planet: the next mission here starts with it, and "Last wave" repeats it.
+  progress.lastWaves = { ...progress.lastWaves, [mission.planet.id]: Object.fromEntries(droneOrder.filter(type => mission.payload[type] > 0).map(type => [type, mission.payload[type]])) };
   mission.placing = false;
   $("placement-hint").hidden = true;
   closeDropPanel();
@@ -1062,6 +1143,8 @@ window.addEventListener("keydown", (event) => {
   if (key === "j" && !event.repeat) { jumpToAlert(); return; }
   if (key === "t" && !event.repeat) { armAttackMove(); return; }
   if (key === "p" && !event.repeat) { togglePatrol(); return; }
+  if (key === "l" && !event.repeat) { cycleFormation(); checkpointMission(); return; }
+  if (key === "y" && !event.repeat) { toggleHoldFire(); checkpointMission(); return; }
   if (key === "home") { resetView(); event.preventDefault(); return; }
   if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
   if (key === "escape") {
@@ -1169,7 +1252,7 @@ function updateSquadBar() {
     const mix = {};
     for (const unit of members) mix[unit.type] = (mix[unit.type] || 0) + 1;
     const health = members.length ? members.reduce((s, u) => s + u.hp / u.maxHp, 0) / members.length : 1;
-    card.querySelector("strong").textContent = `${squad.name} · ${members.length} ready${squad.inbound ? ` · ${squad.inboundPods} pods inbound` : ""}`;
+    card.querySelector("strong").textContent = `${squad.name} · ${members.length} ready${squad.inbound ? ` · ${squad.inboundPods} pods inbound` : ""}${squad.formation && squad.formation !== "spread" ? ` · ${squad.formation}` : ""}${squad.stance === "hold" ? " · holding fire" : ""}`;
     card.querySelector(".mix").textContent = [Object.entries(mix).map(([t, n]) => `${n} ${droneTypes[t].name}`).join(", "), squad.inboundDrones ? `${squad.inboundDrones} arriving` : ""].filter(Boolean).join(" · ");
     card.querySelector(".health i").style.width = `${Math.round(health * 100)}%`;
     card.setAttribute("aria-pressed", String(mission.selected.has(squad.id)));
@@ -1195,6 +1278,9 @@ function updateHud() {
   $("extract-button").hidden = !b.victoryAvailable || !!b.outcome;
   $("retreat-button").hidden = b.victoryAvailable || !!b.outcome;
   $("hud-matter").textContent = Math.floor(b.matter);
+  // Tooltips with the live numbers (TUT-04, field-guide.mjs); written only when they change.
+  setTitle($("hud-matter-box"), matterTooltip(b));
+  setTitle($("hud-alarm-box"), alarmTooltip(b));
   if (b.tier === 0) {
     $("hud-mood").textContent = "nobody here";
     $("hud-alarm").style.width = "0%";
@@ -1204,7 +1290,7 @@ function updateHud() {
   }
   const advisory = hazardAdvisory(b);
   $("hud-hazard").hidden = !advisory;
-  if (advisory) { $("hud-hazard").textContent = advisory.text; $("hud-hazard").classList.toggle("active", advisory.tone === "active"); }
+  if (advisory) { $("hud-hazard").textContent = advisory.text; $("hud-hazard").classList.toggle("active", advisory.tone === "active"); setTitle($("hud-hazard"), hazardTooltip(advisory.type, b.hazards.severity)); }
   $("hud-time").textContent = clock(b.time);
   $("pause-button").textContent = mission.paused ? "Resume" : "Pause";
   $("pause-button").setAttribute("aria-pressed", String(mission.paused));
@@ -1255,6 +1341,7 @@ function squadReach(b, squadId) {
 function drawOverlay() {
   const { ctx, width, height } = fitCanvas(overlay);
   ctx.clearRect(0, 0, width, height);
+  mission.edgeMarks = [];
   if (mission.cleanView) return;
   const b = mission.battle;
   ctx.font = "600 12px system-ui, sans-serif";
@@ -1404,6 +1491,41 @@ function drawOverlay() {
     }
   }
   drawNoShotNotes(ctx, noShot, width, height);
+  drawEdgeMarks(ctx, b, width, height);
+}
+
+// Alerts off screen (FIX-12): a red arrow at the screen's edge toward the newest alert (for
+// 20 s, like its minimap ring) and toward every strike still on its way, with what it is and
+// how far. Tapping an arrow looks there (tap); J still jumps to the newest alert.
+function drawEdgeMarks(ctx, b, width, height) {
+  const alerts = [];
+  if (mission.lastAlert && b.time - mission.lastAlert.at < 20) alerts.push(mission.lastAlert);
+  for (const strike of b.strikes) {
+    if (strike.hit || alerts.some(a => Math.hypot(a.x - strike.x, a.z - strike.z) < 20)) continue;
+    alerts.push({ x: strike.x, z: strike.z, text: strike.source === "lightning" ? "Lightning strike marked" : "Artillery incoming" });
+  }
+  const from = mission.freeCam || mission.cam.focus;
+  ctx.font = "600 12px system-ui, sans-serif";
+  for (const alert of alerts.slice(0, 4)) {
+    const edge = edgeMarker(scene.project(alert.x, scene.heightAt(alert.x, alert.z) + 6, alert.z, width, height), width, height);
+    if (!edge) continue;
+    mission.edgeMarks.push({ x: edge.x, y: edge.y, alert });
+    ctx.save();
+    ctx.translate(edge.x, edge.y); ctx.rotate(edge.angle);
+    ctx.fillStyle = "#ff4a3a"; ctx.strokeStyle = "rgba(6, 8, 16, 0.85)"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(14, 0); ctx.lineTo(-6, -10); ctx.lineTo(-2, 0); ctx.lineTo(-6, 10); ctx.closePath();
+    ctx.stroke(); ctx.fill();
+    ctx.restore();
+    // The label sits just inside the arrow, kept on screen.
+    const text = `${alert.text} · ${Math.round(Math.hypot(alert.x - from.x, alert.z - from.z))} m`, w = ctx.measureText(text).width + 14;
+    const lx = Math.min(width - w / 2 - 4, Math.max(w / 2 + 4, edge.x - Math.cos(edge.angle) * (w / 2 + 18)));
+    const ly = Math.min(height - 14, Math.max(14, edge.y - Math.sin(edge.angle) * 24));
+    ctx.fillStyle = "rgba(6, 8, 16, 0.78)";
+    ctx.beginPath(); ctx.roundRect(lx - w / 2, ly - 10, w, 20, 10); ctx.fill();
+    ctx.strokeStyle = "#ff4a3a"; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = "#f1f4ff"; ctx.textAlign = "center";
+    ctx.fillText(text, lx, ly + 4);
+  }
 }
 
 function drawMinimap() {
@@ -1703,7 +1825,7 @@ function tick(now) {
   const events = b.events.splice(0);
   mission.lastAlert = latestAlert(mission.lastAlert, events, b);
   for (const event of events) if (event.kind === "alarm" || event.kind === "artillery") tipEvents.push(event);
-  for (const alert of zoneAlerts(mission.zoneWatch, b)) {
+  for (const alert of [...zoneAlerts(mission.zoneWatch, b), ...squadLosses(events, b)]) {
     mission.lastAlert = alert;
     toast(`${alert.text}. Tap to view (J).`, "bad", 6000, jumpToAlert);
   }

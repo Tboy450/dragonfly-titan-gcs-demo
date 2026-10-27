@@ -89,14 +89,33 @@ function drapedRing(cx, cz, radius, width, heightAt, lift = 0.6, segments = 128)
 
 function ringMaterial(color, opacity) {
   return new THREE.ShaderMaterial({
-    uniforms: { color: { value: new THREE.Color(color) }, progress: { value: 1 }, opacity: { value: opacity } },
+    uniforms: { color: { value: new THREE.Color(color) }, progress: { value: 1 }, opacity: { value: opacity }, fade: { value: 1 } },
     transparent: true, depthWrite: false, side: THREE.DoubleSide,
     vertexShader: "attribute float frac; varying float vFrac; void main() { vFrac = frac; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
-    fragmentShader: `uniform vec3 color; uniform float progress; uniform float opacity; varying float vFrac;
-      void main() { if (vFrac > progress) discard; gl_FragColor = vec4(color, opacity);
+    fragmentShader: `uniform vec3 color; uniform float progress; uniform float opacity; uniform float fade; varying float vFrac;
+      void main() { if (vFrac > progress) discard; gl_FragColor = vec4(color, opacity * fade);
       #include <colorspace_fragment>
       }`,
   });
+}
+
+// A faint copy of a ground ring drawn over everything (FIX-06), so the parts that steep dunes,
+// trees or houses hide still show through. It shares the ring's shape and its color, progress
+// and opacity (the same uniform objects), and hides with it as its child.
+const ringGhostFade = 0.4;
+function ringGhost(ring) {
+  const { color, progress, opacity } = ring.material.uniforms;
+  const material = ringMaterial("#ffffff", 0);
+  Object.assign(material.uniforms, { color, progress, opacity });
+  material.uniforms.fade.value = ringGhostFade;
+  material.depthTest = false;
+  const ghost = new THREE.Mesh(ring.geometry, material);
+  ghost.name = "ring-ghost";
+  ghost.userData.ownMaterial = true;
+  ghost.userData.shared = true; // the ring disposes the shape
+  ghost.renderOrder = 3;
+  ring.add(ghost);
+  return ghost;
 }
 
 function instanced(geometry, material, capacity) {
@@ -528,7 +547,7 @@ export function createInvasionScene(canvas, options = {}) {
     const at = (x, z) => terrain.heightAt(x, z);
     const base = new THREE.Mesh(drapedRing(zone.x, zone.z, zone.radius, 2.2, at), ringMaterial("#ffffff", 0.35));
     const control = new THREE.Mesh(drapedRing(zone.x, zone.z, zone.radius - 2.6, 1.6, at, 0.7), ringMaterial(swarmColor, 0.85));
-    for (const ring of [base, control]) { ring.userData.ownMaterial = true; ring.renderOrder = 2; group.add(ring); }
+    for (const ring of [base, control]) { ring.userData.ownMaterial = true; ring.renderOrder = 2; group.add(ring); ringGhost(ring); }
     const y = at(zone.x, zone.z);
     const rand = seeded(zone.x * 31 + zone.z * 7 + 3);
     let beacon = null;
