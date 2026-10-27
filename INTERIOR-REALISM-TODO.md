@@ -22,14 +22,16 @@ October 27: [Electrical evidence / blower scale audit](research/draco-electrical
   scale warning; 721 tests, desktop/390px checks and real/model/scale sample saved.
 - [x] Published 5e25b65; Pages 40602293824 passed. Live Open interior, 24 numbers,
   closed audit, no overflow/errors verified. Public evidence screenshot/JSON saved.
-- [ ] Owner screenshot 2026-10-27 192728, clarified **line from part 5**:
-  identified in code and isolated live view as `imu-estimated-support-post` /
-  `imu-estimated-support-foot`, not a cable. Post meets shelf underside at y=-.104;
-  post and foot end at the assumed floor datum y=-.284. A physical receiving
-  floor/crossmember and its fastening/load-path detail are not modeled here.
-  Reconcile this unfinished installation interface against structural evidence;
-  do not claim a hidden electrical connection or invent one. Real flight bracket
-  remains unknown. Owner screenshot and isolated support sample saved in audit packet.
+- [ ] Owner screenshot **2026-10-27 193738** clarifies the curved line by part 5:
+  `main-harness-navigation-meb`, owned by Bay harness, NOT the part-5 support leg.
+  Earlier identification was wrong. Its network end joins the trunk; its device
+  end approaches Ocellus MEB at [-.2,-.235,-1.262] m without an assigned mating
+  connector. Already `mating-interface-unresolved` in the October23 endpoint
+  register. Reconcile this existing branch with the rebuilt MEB and a justified,
+  labeled installation interface; do not invent a flight pinout or circuit.
+  Part-5 isolation hides this separately owned harness, explaining its disappearance.
+  FEB/IMU navigation branch remains independently unresolved. See current audit
+  README and saved clarification screenshot. No geometry changed for this diagnosis.
 - [ ] NEXT: rebuild **part 24 blower pair together** from real supplier photos and
   published overall dimensions. Reconcile orientation/centers, supports, inlet,
   exhaust, selector and return fit; check other rebuilt parts and access layers.

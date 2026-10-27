@@ -84,12 +84,17 @@ succeeded, including tests. Live build, closed audit, Open interior, 24 numbered
 parts and no overflow/errors verified; public screenshot/JSON saved. First CDN
 load was static preflight; one reload loaded the new modules successfully.
 
-Owner clarified the circled **line from part 5** in `owner-connection-question.png`.
-Code and isolated live inspection identify `imu-estimated-support-post` and
-`imu-estimated-support-foot` in `nose-electronics.mjs`: a shelf support, not a
-cable. Shelf underside and post top meet at y=-.104 m; post bottom/foot bottom
-are at the assumed floor datum y=-.284 m. The receiving floor/crossmember and
-fastening detail are **unfinished**, not a verified hidden attachment. Real
-flight bracket/load path remains unknown. `part-5-support.png` records the
-isolated support. Checklist carries this structural reconciliation forward.
-The red/gold duct beside it is a separate part 18; do not confuse the two.
+**Correction after owner clarification, screenshot 2026-10-27 193738:** the
+curved line is `main-harness-navigation-meb` in `main-harness.mjs`, NOT the
+part-5 shelf leg. `part-5-support.png` and the duct sample are retained records
+of the wrong initial identification, not evidence for the questioned line.
+The new `owner-navigation-line-clarification.png` makes the intended line clear.
+
+This branch starts on the shared trunk at [0,-.268,-1.0] m and ends near Ocellus
+MEB at [-.2,-.235,-1.262] m. It belongs to the **Bay harness** assembly, so part-5
+isolation hides it. Its network end joins the trunk, but its equipment end has
+no assigned plug or mating interface: **unfinished**, not a verified hidden
+connection. This was already recorded as `mating-interface-unresolved` in
+[the October23 endpoint register](../harness-endpoints-2026-10-23/ENDPOINTS.md).
+The FEB/IMU branch is separately unresolved. Checklist corrected; no geometry,
+flight connector/circuit or destination invented during this diagnosis.
