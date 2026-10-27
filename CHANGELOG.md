@@ -54,7 +54,10 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Archive:** exact c99f0dc source files/recovery tag; prior pictures reused.
 - **Handoff:** owner requested wrap. Next is separate2024 feed-stage/gearbox/bellows
   reconciliation; preserve130 mm motion until coupled geometry/depth is checked.
-  Fixed-end continuations and complete flight networks remain open. Publication receipt follows.
+  Fixed-end continuations and complete flight networks remain open.
+- **Publication:**b6fb179; Pages40481602061 succeeded. Live header/new disclosures,
+  24 parts/two drill targets and no overflow/errors verified. Public sample/JSON
+  saved; temporary preview stopped. Receipt signed Codex (OpenAI).
 
 ### 2026-10-27: Seat shared DrACO return and trace both drill intakes
 - **Signed:** Codex (OpenAI).

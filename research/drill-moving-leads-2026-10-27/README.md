@@ -55,7 +55,13 @@ Local disposable sampling paused at10.0415 s with port extended; no existing use
 mission was reset.24 parts, two drill targets,1265/1265px desktop and375/375px phone,
 zero browser errors. `browser-checks.json` and `measurements.json` record results.
 Source comparison uses real EM1, prior CAD and actual model sample with explicit labels.
-Publication receipt follows. Preview must stop before finishing.
+Published **b6fb179f766f1ff9ba63b4aab104d43133f6b506**, October27,2026.
+[Public app](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=b6fb179).
+Pages40481602061 succeeded including662 tests. Live build, constant-length and
+unresolved-controller disclosures,24 numbered parts/two drill targets,1265/1265px
+and zero browser errors verified. `public-port.png` and `public-checks.json` saved.
+Recovery tag pushed. Temporary preview server/tab stopped; viewport restored.
+Receipt signed Codex (OpenAI). Owner-requested handoff is below and in the checklist.
 
 ## Next
 

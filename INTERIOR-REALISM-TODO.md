@@ -17,7 +17,9 @@ October27 wrap-up: [Drill moving lead pass](research/drill-moving-leads-2026-10-
   workmanship evidence saved/reused; round envelopes and routes explicitly EST.
 - [x] 662 tests:41 stroke positions, installed mesh/pair clearance, real sampling pose,
   buffer reuse, support contacts and independent layers. Desktop/phone samples/JSON saved.
-- [ ] Publish/verify this pass and save final receipt before starting new geometry.
+- [x] Publishedb6fb179; Pages40481602061 succeeded including tests. Live build,
+  constant-length/controller disclosures,24 parts/two targets and no overflow/errors
+  verified. Public sample/JSON saved; temporary server/tab stopped.662 tests pass.
 - [ ] NEXT PASS: reconcile retained2022 feed-stage geometry against2024 EM1/ETU
   real hardware: actuator/gearbox enclosure, guide/roller carriage and paired dust bellows.
   Start from saved `research/sources/draco-ams2024/` pages210/214/215. Keep130 mm

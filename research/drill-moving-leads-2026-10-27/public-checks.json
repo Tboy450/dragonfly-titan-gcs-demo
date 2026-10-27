@@ -1,0 +1,13 @@
+{
+  "build": "Build b6fb179 · 2026-10-27",
+  "client": 1265,
+  "parts": 24,
+  "scroll": 1265,
+  "subassembly": "drill-port",
+  "targets": 2,
+  "constantLengthDisclosed": true,
+  "unresolvedControllerDisclosed": true,
+  "errors": [],
+  "pagesRun": 40481602061,
+  "release": "b6fb179f766f1ff9ba63b4aab104d43133f6b506"
+}

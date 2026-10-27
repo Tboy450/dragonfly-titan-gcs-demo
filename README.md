@@ -14,7 +14,9 @@ October27 wrap-up: [Moving drill lead examples](research/drill-moving-leads-2026
 Both drills now have constant-length lead loops between moving motor caps and fixed
 local supports. Their flight routing/material remains unknown.662 tests, desktop/
 phone Internal/Thermal checks pass; mechanics and sample plumbing preserved. New real
-EM1 and related TRIDENT source photos saved. Publication receipt follows.
+EM1 and related TRIDENT source photos saved. Published **b6fb179**;
+Pages40481602061 succeeded. Live build, new disclosures,24 parts/two drill targets,
+no overflow/errors verified; public sample/JSON saved. Local preview stopped.
 Next pass is the2024 feed-stage/gearbox/bellows reconciliation; checklist has exact handoff.
 
 October27: [Both-drill plumbing trace](research/draco-connectivity-2026-10-27/README.md).
