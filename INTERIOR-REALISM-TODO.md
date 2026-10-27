@@ -22,7 +22,10 @@ October 27: [Fixed feed lead + inspection defaults/numbers](research/drill-fixed
   choices and All/custom/Exterior/Thermal controls retained.
 - [x] Desktop/390px phone, fresh/reset default, saved Exterior and IEM 12, port/
   Thermal starboard checked; no overflow/errors. Sources, archive and samples saved.
-- [ ] Publish and verify deployed build; record receipt.
+- [x] Published 6ee178c; Pages 40596670874 succeeded including 717 combined tests.
+  Shared update preserved unchanged. Live Internal/Open, numbers 1–24, IEM 12,
+  reset Open, fixed-lead disclosure and no overflow/errors verified; public samples/
+  JSON saved. Preview stopped, viewport restored, tab left at Open interior.
 - [ ] NEXT: feed sensing + blower/diverter electrical evidence audit. No inferred
   sensor count/type, flight connector/pinout or remote circuit from loose plugs.
   Exact flight wiring and hidden mechanics remain unresolved; see pass handoff.

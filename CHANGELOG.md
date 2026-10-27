@@ -59,6 +59,11 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   New real/model/UI comparison and screenshots; inventory/assumptions and handoff updated.
 - **Next:** feed sensing and blower/diverter electrical evidence; exact flight
   interfaces and remote continuation remain unresolved.
+- **Publication:** implementation 8c8d384, integrated release 6ee178c. Concurrent
+  c420425 preserved unchanged; both changelog entries retained. 717 combined tests
+  pass; Pages 40596670874 succeeded. Live Internal/Open, 1–24 options/IEM 12, reset
+  Open, fixed-lead disclosure and zero overflow/errors verified. Public samples/
+  JSON saved, preview stopped and viewport restored. Signed Codex (OpenAI).
 
 
 ### 2026-10-27: Swarmfall pause menu

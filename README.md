@@ -16,6 +16,9 @@ opening/grommet and supported local retention. Flight circuits/remote routes rem
 unknown. Component selector numbers match the 24 model labels. Fresh/reset inspection
 defaults Open interior; fresh Mission uses Internal, preserving explicit saved modes.
 712 tests and desktop/phone checks pass; sources, archive and samples saved.
+Published **6ee178c**; Pages 40596670874 succeeded. Concurrent shared work was
+preserved unchanged and all **717 combined tests** pass. Live Internal/Open default,
+1–24 numbering, reset behavior and fixed-lead disclosure verified; public samples saved.
 
 October 27: [Upper drill drive fit](research/drill-drive-2026-10-27/README.md).
 Corrected the exposed screw-to-drive drawing gap and upper mount crossing; added

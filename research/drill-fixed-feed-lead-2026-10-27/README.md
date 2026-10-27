@@ -92,4 +92,21 @@ gear mechanics and a coupled screw/nut/bellows dimension review remain open.
 Preserve this fixed lead, completed head leads, drive/carriage and masking choices.
 No Assets Lab, Swarmfall data, unrelated saves or Git cleanup touched.
 
-Publication receipt will follow live verification.
+Useful next-audit candidate:
+[Barber-Nichols' June 2024 engineering-model blower article](https://barber-nichols.com/barber-nichols-blower-will-ride-on-nasas-dragonfly-rotorcraft-to-saturns-moon-titan/).
+Review the supplier's actual hardware before assigning electrical exits or fittings;
+engineering-model images do not establish flight interfaces.
+
+## Publication receipt
+
+Implementation **8c8d384**; integrated release
+**6ee178ceb55b81e28de605411b16fb7a746691b7**, October 27, 2026.
+[Open the public simulator](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=6ee178c).
+Concurrent shared-branch update c420425 was preserved unchanged; only the changelog
+needed both entries retained. All **717 combined tests** pass.
+Pages **40596670874** succeeded. Verified live Internal/Open interior without
+changing the initial mode, 24 numbered options (1 through24), IEM marker/selector12,
+reset returning Open, fixed-lead disclosure, 1265/1265px and zero browser errors.
+`public-open-interior.png`, `public-numbered-selector.png` and `public-checks.json`
+record it. Recovery tag pushed; local server stopped, viewport reset and the one
+project tab left at the public Open interior view. Receipt: Codex (OpenAI).
