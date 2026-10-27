@@ -39,6 +39,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Swarmfall zone rings show through hills
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Let zone rings show through hills and houses"
+- **What changed:** Checklist FIX-06. Steep ground, trees and houses could hide parts of a
+  zone's ring. Each ring (the outline and the capture-progress ring) now has a faint copy
+  drawn over everything at 40% of its opacity, so a hidden ring still shows through. It
+  follows the ring's color, capture progress and visibility. Rings in plain view look as
+  before.
+- **Files:** `dist/invasion/scene.mjs`, `tests/invasion-zone-rings.test.mjs` (new),
+  `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (246 pass). In the browser, looking low
+  over the hill by Ashfall's Katan Citadel, the ring was hidden without the copy and shows
+  through with it. The Hive beacon ring from above is unchanged.
+
 ### 2026-10-27: Swarmfall title galaxy and off-screen alert arrows
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Show the title galaxy and mark off-screen alerts"

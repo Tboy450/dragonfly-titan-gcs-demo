@@ -287,8 +287,15 @@ complete solely because its assets download or its unit tests pass.
   - A selected squad gets a notice naming the new target ("Tap to look, H to hold"). Tapping it
     brings the camera there; the attack line already points at the new target.
   - H or Hold stops the squad and now says so. Tested in `tests/invasion-squad-intent.test.mjs`.
-- [ ] **FIX-06 (P2)** Zone rings follow the ground but steep Titan dunes and trees can still
-  hide parts of them. Consider drawing them on top at low opacity.
+- [x] **FIX-06 (P2) — Claude (October 27)** Zone rings follow the ground but steep Titan dunes
+  and trees can still hide parts of them. Consider drawing them on top at low opacity.
+  - Each zone ring (the outline and the capture-progress ring) now has a faint copy drawn over
+    everything at 40% of the ring's opacity (`ringGhost`, scene.mjs). Hills, trees and houses
+    no longer hide a ring, and where the ring is in view it looks the same as before.
+  - The copy shares the ring's shape and its color, progress and opacity, and hides with it.
+  - `tests/invasion-zone-rings.test.mjs`. In the browser, looking low over the hill by
+    Ashfall's Katan Citadel, the ring was completely hidden without the copy and shows through
+    with it. The Hive beacon's ring from above looks unchanged.
 - [x] **FIX-07 (P2) — Codex, October 20; implementation and automated checks** On phones,
   collapse Objectives and Battle log once after the first capture; both have independent
   summary toggles. Respect manual reopening, reset new missions and compact captured resumes.
