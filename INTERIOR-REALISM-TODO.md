@@ -20,6 +20,16 @@ October 27: [Electrical evidence / blower scale audit](research/draco-electrical
   Parallel-cylinder overlap is screening only, not actual solid-collision proof.
 - [x] Nested closed Electrical audit & blower size panel, focus links, part 24
   scale warning; 721 tests, desktop/390px checks and real/model/scale sample saved.
+- [x] Published 5e25b65; Pages 40602293824 passed. Live Open interior, 24 numbers,
+  closed audit, no overflow/errors verified. Public evidence screenshot/JSON saved.
+- [ ] Owner screenshot 2026-10-27 192728, clarified **line from part 5**:
+  identified in code and isolated live view as `imu-estimated-support-post` /
+  `imu-estimated-support-foot`, not a cable. Post meets shelf underside at y=-.104;
+  post and foot end at the assumed floor datum y=-.284. A physical receiving
+  floor/crossmember and its fastening/load-path detail are not modeled here.
+  Reconcile this unfinished installation interface against structural evidence;
+  do not claim a hidden electrical connection or invent one. Real flight bracket
+  remains unknown. Owner screenshot and isolated support sample saved in audit packet.
 - [ ] NEXT: rebuild **part 24 blower pair together** from real supplier photos and
   published overall dimensions. Reconcile orientation/centers, supports, inlet,
   exhaust, selector and return fit; check other rebuilt parts and access layers.

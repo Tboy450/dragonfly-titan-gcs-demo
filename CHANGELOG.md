@@ -53,6 +53,9 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Open / next:** Coordinated part 24 motor/cone housing pair rebuild and plumbing
   fit before wiring. 85 mm current spacing versus 168 mm reference cylinders is
   an envelope screen, not proof of solid collision. See research handoff/archive.
+  Published 5e25b65 / Pages 40602293824 verified. Owner's circled part 5 "line"
+  identified as an estimated shelf support post/foot, not a cable. Its receiving
+  floor/fastening remains unfinished; checklist and isolated live sample saved.
 
 
 ### 2026-10-27: Add fixed feed lead and numbered open-interior inspection

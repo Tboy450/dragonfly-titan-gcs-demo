@@ -78,3 +78,18 @@ focus behavior. Desktop/390px phone checks and samples recorded beside this file
 Baseline: 58148de; recovery tag `archive/draco-electrical-audit-2026-10-27`.
 [Exact before sources / restore](../../archive/draco-electrical-audit-2026-10-27/README.md).
 Supplier figures are read-only references; no new mass/flow/power budgets inferred.
+
+Published **5e25b65**. [Pages run 40602293824](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/40602293824)
+succeeded, including tests. Live build, closed audit, Open interior, 24 numbered
+parts and no overflow/errors verified; public screenshot/JSON saved. First CDN
+load was static preflight; one reload loaded the new modules successfully.
+
+Owner clarified the circled **line from part 5** in `owner-connection-question.png`.
+Code and isolated live inspection identify `imu-estimated-support-post` and
+`imu-estimated-support-foot` in `nose-electronics.mjs`: a shelf support, not a
+cable. Shelf underside and post top meet at y=-.104 m; post bottom/foot bottom
+are at the assumed floor datum y=-.284 m. The receiving floor/crossmember and
+fastening detail are **unfinished**, not a verified hidden attachment. Real
+flight bracket/load path remains unknown. `part-5-support.png` records the
+isolated support. Checklist carries this structural reconciliation forward.
+The red/gold duct beside it is a separate part 18; do not confuse the two.

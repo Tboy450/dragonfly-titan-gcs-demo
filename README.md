@@ -5,6 +5,8 @@ Real supplier photos and BNCP-74-000 specifications reveal that the current blow
 pair needs a coordinated housing/placement/plumbing rebuild. Added a nested, closed
 evidence panel with inspection links; no speculative sensors or wiring added.
 721 tests and desktop/phone checks pass. Next: part 24, before electrical routing.
+Published **5e25b65**; Pages 40602293824 succeeded. Live build, closed audit,
+Open interior, 24 numbered parts and no overflow/errors verified; public sample saved.
 
 [Open the simulator](https://tboy450.github.io/dragonfly-titan-gcs-demo/)
 
