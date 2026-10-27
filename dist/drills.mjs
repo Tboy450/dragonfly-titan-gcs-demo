@@ -1,6 +1,7 @@
 import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { buildDrillMovingLeads } from "./drill-moving-leads.mjs?v=dev";
 import { buildDrillFeedStage } from "./drill-feed-stage.mjs?v=dev";
+import { buildDrillCarriage, drillGuideGeometry } from "./drill-carriage.mjs?v=dev";
 
 // Part 01: DrACO Sample Acquisition Drills (SAD), one beside each side of the body above the
 // skids. Drawn from Zacny et al., DrACO, LPSC 2022, fig. 2 (Phase B CAD): a gold drill-head
@@ -16,9 +17,11 @@ import { buildDrillFeedStage } from "./drill-feed-stage.mjs?v=dev";
 // follows DragonCam fig. 3; head sizes remain proportioned from LPSC fig. 2 [EST].
 // Feed covers, metal guide finish and paired dust sleeves now reference real AMS2024
 // EM1 photographs; fitted dimensions remain estimates, not current flight geometry.
+// Six-roller/V-guide exterior and spherical nut now follow AMS2024 figs.6,10-11;
+// needle bearings, drive U-joint internals and thread/contact physics remain unmodeled.
 // The carriage slides down the rail while drilling; only the bit turns.
 export const drillAsset = Object.freeze({
-  revision: "drills-feed-stage-2026-10-27",
+  revision: "drills-carriage-2026-10-27",
   lateralM: 0.54, foreAftM: -0.43,
   stowedY: -0.72, // carriage origin when stowed
   bitTipBelowOrigin: 0.058, // stowed bit tip at -0.778, 7.2 cm above the skid contact plane
@@ -58,7 +61,7 @@ export function buildDrill({ parent, mesh, side }) {
   // Fixed parts: Z-stage rail, lead screw, Z motor, lower bracket, mounts to the body side.
   const stage = layer(drill, "z-stage", "mounts");
   const railX = inb * 0.075, railMid = (drillAsset.rail.top + drillAsset.rail.bottom) / 2, railLen = drillAsset.rail.top - drillAsset.rail.bottom;
-  box([0.03, railLen, 0.016], [railX, railMid, 0.02], silver, stage, "drill-z-rail");
+  mesh(drillGuideGeometry(railLen),silver,[railX,railMid,.02],stage).name="drill-z-rail";
   cyl(0.004, railLen, [railX, railMid, 0.045], steel, stage, "drill-lead-screw", 10);
   box([0.05, 0.01, 0.08], [railX, drillAsset.rail.bottom - 0.005, 0.03], grey, stage, "drill-lower-bracket");
   // Brackets from the rail back to the body side [EST].
@@ -98,10 +101,7 @@ export function buildDrill({ parent, mesh, side }) {
   cyl(0.025, 0.018, [side * 0.02, 0.31, -0.025], silver, head, "drill-actuator-band");
   cyl(0.022, 0.14, [0, 0.245, -0.072], black, head, "drill-rotation-actuator");
   cyl(0.023, 0.018, [0, 0.18, -0.072], silver, head, "drill-actuator-band");
-  // Carriage bracket and lead-screw nut on the rail side.
-  box([0.008, 0.04, 0.05], [inb * 0.055, 0.19, 0.02], grey, head, "drill-carriage-bracket");
-  box([0.022, 0.03, 0.022], [railX, 0.19, 0.045], grey, head, "drill-lead-nut");
-  for (const y of [0.175, 0.205]) cyl(0.004, 0.012, [inb * 0.06, y, 0.035], silver, head, "drill-carriage-bolt", 6).rotation.z = Math.PI / 2;
+  const rollerCarriage=buildDrillCarriage({carriage,head,mesh,railX,silver,grey});
 
   // Swivel and its angled pneumatic port (the transfer line attaches here).
   cyl(0.025, 0.02, [0, 0.13, 0], silver, head, "drill-bearing-collar");
@@ -126,6 +126,6 @@ export function buildDrill({ parent, mesh, side }) {
 
   const movingLeads=buildDrillMovingLeads({drill,carriage,mesh,side,stowedY:drillAsset.stowedY,black,silver,grey});
   const feedStage=buildDrillFeedStage({drill,carriage,stage,mesh,side,railX,stowedY:drillAsset.stowedY,silver,grey});
-  const setFeed=value=>{movingLeads.setFeed(value);feedStage.setFeed(value);};
-  return { drill, carriage, bit, stage, head, port, ...movingLeads, feedStage, setFeed };
+  const setFeed=value=>{movingLeads.setFeed(value);feedStage.setFeed(value);rollerCarriage.setFeed(value);};
+  return { drill, carriage, bit, stage, head, port, ...movingLeads, feedStage, rollerCarriage, setFeed };
 }

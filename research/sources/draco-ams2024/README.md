@@ -12,6 +12,11 @@ Saved original pages mechanically rendered with Poppler at1800px:
   Braided leads and actuator enclosure are visible; the full moving flight route is not.
 - `draco-ams2024-214.jpg`: printed196, polymeric bellows discussion.
 - `draco-ams2024-215.jpg`: printed197, fold diagram and real bellows fabrication photos.
+- `draco-ams2024-213.jpg`: printed195 fig.6, real ETU/EM1 spherical-nut hardware
+  and the different EM2 universal-style mount. Bare nut before DFL, not flight finish.
+- `draco-ams2024-216.jpg`: printed198, real bellows test photo and roller section drawings.
+- `draco-ams2024-217.jpg`: printed199 fig.11, engineering/CAD roller arrangement,
+  **not a photograph**. EM1 six rollers versus EM2 eight; fitted simulator sizes EST.
 
 Source distinguishes EM1/ETU160 mm travel from an alternate EM2 configuration300 mm.
 Neither is automatically the current flight stroke or this simulator's130 mm.

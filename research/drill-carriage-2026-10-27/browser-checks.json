@@ -1,0 +1,18 @@
+{
+  "desktop": {
+    "client": 1265,
+    "newDisclosure": true,
+    "parts": 24,
+    "scroll": 1265,
+    "targets": 2
+  },
+  "phone": {
+    "client": 375,
+    "parts": 24,
+    "scroll": 375,
+    "targets": 2
+  },
+  "coversHiddenAndRestored": true,
+  "samplingSnapshot": "Paused during late analysis; full stroke verified by installed-model tests",
+  "errors": []
+}

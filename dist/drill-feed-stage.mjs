@@ -56,8 +56,7 @@ export function buildDrillFeedStage({drill,carriage,stage,mesh,side,railX,stowed
  box([.023,.009,.030],[railX+side*.0115,-.30,.020],grey,stage,'drill-feed-actuator-foot');
  const joint=mesh(new T.CylinderGeometry(.016,.016,.090,20),dark,[railX,-.245,.045],covers);
  joint.name='drill-feed-joint-cover';
- // Decorative groove strips sit on the retained guide face, not through its volume.
- for(const dx of [-.010,.010])box([.0025,.44,.0006],[railX+dx,-.52,.0283],dark,stage,'drill-guide-groove');
+ // Actual estimated V-flanks now live in drillGuideGeometry; no painted groove strips.
  const collar=(parent,y,name)=>{
   const h=.006,ri=.007,ro=.020;
   const shape=[new T.Vector2(ri,-h/2),new T.Vector2(ro,-h/2),new T.Vector2(ro,h/2),new T.Vector2(ri,h/2),new T.Vector2(ri,-h/2)];

@@ -10,6 +10,20 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October 27: [Roller carriage and spherical nut](research/drill-carriage-2026-10-27/README.md).
+- [x] Read real fig.6 and EM1 assembly; save original source pages once. Correctly
+  identify fig.11 as CAD, distinguish spherical EM1 nut from universal-style EM2.
+- [x] Six crossed crowned roller exteriors, V-guide, supported bridge and hollow
+  spherical nut/pocket. Fitted sizes/finish EST; no hidden needle/friction solver.
+- [x] Preserve complete leads, bellows/drive covers, sample plumbing, bit depth and
+  130 mm travel. Exact archived preservation guard; 675 tests and browser samples.
+- [x] Desktop/390px phone, Thermal and removable covers checked; 24 numbered parts,
+  two drill focuses, no overflow/browser errors. Real/CAD/model comparison saved.
+- [ ] Publish and verify deployed build; add receipt here and in pass README.
+- [ ] NEXT: upper drive coupling/gearbox exterior and support/load-path reconciliation.
+  Reuse real fig.2; do not infer hidden gears or a flight motor from a covered can.
+  Preserve this pass, sleeves and leads. Full wiring/flight dimensions remain open.
+
 October27: [Feed covers and dust bellows](research/drill-feed-stage-2026-10-27/README.md).
 - [x] Real EM1 photo-referenced drive cover/gearbox, metal guide, paired sleeves/end
   fittings. Preserve130 mm travel, bit depth, pneumatic network and moving lead paths.
@@ -21,7 +35,8 @@ October27: [Feed covers and dust bellows](research/drill-feed-stage-2026-10-27/R
 - [x] Publisheddc0ee8a; Pages40497034993 succeeded including669 tests. Live build,
   new stage/limits text,24 parts/two targets, no overflow/errors verified. Public
   sample/JSON saved; temporary preview stopped and viewport restored.
-- [ ] NEXT: guide/roller carriage and self-aligning nut/U-joint exterior. Read saved
+- [x] Guide/roller carriage and spherical nut exterior completed in the pass above.
+  Upper drive U-joint internals remain open. Original instruction: read saved
   EM1 photo and AMS2024 fig.6 first; preserve completed sleeves/leads and revalidate
   full stroke after changes. Flight travel/load path and hidden mechanisms stay open.
 - [ ] Feed/sensor and body-to-controller wiring remain unresolved, as do full networks.

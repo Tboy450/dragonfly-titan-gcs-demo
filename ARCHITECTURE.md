@@ -43,6 +43,13 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October 27 carriage: `drill-carriage.mjs` owns the estimated V-guide cross-section,
+six roller exteriors and separate spherical nut/pocket. `buildDrill.setFeed` also
+updates roller transforms in place. New archive-preservation tests guard everything
+outside an exact carriage allowlist; the earlier stage suite defers only those names.
+675 tests, including full-stroke contact/clearance and reversible rolling direction.
+Upper drive-joint interior, threads, needle bearings and friction physics remain open.
+
 October27 feed covers: `drill-feed-stage.mjs` owns covered drive geometry, surface-only
 paired bellows and end fittings. `buildDrill.setFeed` invokes both cable and bellows
 updates; stable vertex/normal buffers, no per-frame mesh replacement. Existing

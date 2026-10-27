@@ -34,7 +34,7 @@ export const samplingConnectionLimits = Object.freeze({
 });
 
 export const dracoInventorySources = Object.freeze({
-  feedStage: Object.freeze({label:"Honeybee / NASA, AMS2024 printed192 fig.2 and197: real EM1 / bellows",url:"https://ntrs.nasa.gov/api/citations/20240005548/downloads/Proceedings%20of%20the%2047th%20AMS.pdf?attachment=true#page=210"}),
+  feedStage: Object.freeze({label:"Honeybee / NASA, AMS2024 figs.2,6,10-11: EM1 hardware and mechanism drawings",url:"https://ntrs.nasa.gov/api/citations/20240005548/downloads/Proceedings%20of%20the%2047th%20AMS.pdf?attachment=true#page=210"}),
   nasa: Object.freeze({label:"NASA: Playing Lacrosse on Titan",url:"https://science.nasa.gov/science-research/science-enabling-technology/technology-highlights/playing-lacrosse-on-titan/"}),
   design: Object.freeze({label:"Honeybee / APL / NASA, LPSC2022 figs.1-2 (Phase B design)",url:"https://www.hou.usra.edu/meetings/lpsc2022/pdf/1069.pdf"}),
   thermal: Object.freeze({label:"APL ICES2023-389 p.7 / fig.2 (thermal model)",url:"https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content"}),
@@ -65,7 +65,7 @@ export const dracoInventory = Object.freeze([
     modeled:"Two local moving lead examples per drill retain constant length over the modeled 130 mm travel. Round 6 mm envelopes, support positions and routing are estimates, not flight cable construction or cryogenic fatigue qualification. They end at local retention points, not controllers. Z-feed leads, body-side continuations, blower/diverter leads and identified controller connections remain unmodeled or unresolved."},
   {id:"draco-guards-gap",name:"Feed-stage covers and remaining gaps",source:"feedStage",inspect:"drills",
     role:"Real EM1 hardware shows a covered actuator/gearbox, guide carriage and paired polymeric dust bellows. This is development hardware, not a complete current flight bill of materials.",
-    modeled:"Photo-informed drive covers, a metal guide and two moving bellows surfaces per drill; Covers hides the sleeves and actuator/joint covers. Dimensions, folds and fittings are estimates fitted to the retained 130 mm travel. Film thickness, roller internals, self-aligning nut/joint and other guards or concealed brackets remain unmodeled. The unidentified older cylinder/cone is still unresolved."},
+    modeled:"Photo-informed drive covers and paired bellows, plus an EM1-style six-roller carriage on V-shaped guide flanks and a hollow spherical nut/pocket. The joint reference is real hardware; roller arrangement uses the paper's engineering drawing. Fitted dimensions, supports, folds and finishes are estimates with the existing 130 mm travel. Covers exposes the screw; Mounts and Interfaces separately hide the carriage supports and nut. Helical threads, bearing needles, upper drive-joint internals, friction, film mechanics and other concealed equipment remain unmodeled. The unidentified older cylinder/cone is still unresolved."},
 ].map(row=>Object.freeze({...row,flightMatingConfirmed:false})));
 export const dracoInventoryLimits = Object.freeze({
   scope:"Port / starboard equipment audit. Published system roles are distinct from estimated model shapes, routing and placement; matching counts do not establish flight completeness.",

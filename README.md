@@ -10,6 +10,13 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
+October 27: [Drill roller carriage and spherical nut](research/drill-carriage-2026-10-27/README.md).
+Six crossed roller exteriors meet a V-shaped guide; an open-bore spherical nut/pocket
+follows real ETU/EM1 hardware. Roller arrangement uses a labeled engineering drawing;
+fitted dimensions and finish remain estimates. 675 tests, desktop/phone/layer checks
+pass. Drive covers, sleeves, cables, hoses, travel and bit depth preserved.
+Next: upper drive coupling/support reconciliation; hidden internals and wiring remain open.
+
 October27: [Feed covers and paired dust sleeves](research/drill-feed-stage-2026-10-27/README.md).
 Real EM1 photo-informed cover/gearbox, metal guide finish and moving bellows; dimensions
 remain estimates. Covers can expose the screw and provisional actuator.130 mm travel,

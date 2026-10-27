@@ -39,6 +39,26 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Refine drill roller carriage and spherical lead nut
+- **Signed:** Codex (OpenAI).
+- **Commit:** Refine drill roller carriage and spherical lead nut.
+- Real ETU/EM1 joint photo and labeled roller engineering drawings saved/credited.
+  Six crossed crowned roller exteriors meet estimated V-guide flanks; hollow nut/
+  separate pocket, supported bridge, studs and ears replace plain adapter/solid box.
+- **Assumptions:** fitted dimensions, finish and supports EST. EM1 consistent; no
+  EM2/flight-equivalence claim, hidden bearings, helical threads or friction solver.
+- **Checks:** 675 tests; 41 full-stroke positions, flank contact/no guide penetration,
+  open shaft bore, support contacts, rolling direction/retraction, stable geometry,
+  installed-mesh screens and exact archive preservation outside mechanical allowlist.
+  Existing wire/bellows/plumbing checks pass. Desktop/390px phone Internal/Thermal,
+  covers hide/restore: 24 parts, two drill targets, no overflow/errors.
+- All head/bit geometry outside replaced adapter/nut pieces, sleeves, drive covers,
+  complete cable/hose paths, bit depth and 130 mm travel retained.
+- **Archive:** tag on 6a3d71f; exact modules and failed oversized-cap draft retained;
+  previous pictures reused. New real/CAD/model comparison and browser samples saved.
+- **Next:** upper drive coupling/support reconciliation; actual flight load path,
+  dimensions, hidden mechanisms and full feed/sensor/controller wiring remain open.
+
 ### 2026-10-27: Refine drill feed covers and paired dust sleeves
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine drill feed covers and paired dust bellows.

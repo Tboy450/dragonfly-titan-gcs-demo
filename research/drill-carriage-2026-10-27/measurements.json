@@ -1,0 +1,52 @@
+{
+  "scope": "EM1-informed exterior approximation, not flight geometry or a friction solver",
+  "rollerCountPerDrill": 6,
+  "rollerRadiusM": 0.0045,
+  "rollerWidthM": 0.005,
+  "nutBoreRadiusM": 0.005,
+  "shaftRadiusM": 0.004,
+  "radialShaftGapM": 0.001,
+  "poses": [
+    {
+      "feedM": 0,
+      "rollerAngleMagnitudeRad": 0,
+      "contactY": [
+        -0.5449999999999999,
+        -0.53,
+        -0.515
+      ]
+    },
+    {
+      "feedM": 0.065,
+      "rollerAngleMagnitudeRad": 14.444444444444446,
+      "contactY": [
+        -0.6099999999999999,
+        -0.595,
+        -0.58
+      ]
+    },
+    {
+      "feedM": 0.13,
+      "rollerAngleMagnitudeRad": 28.888888888888893,
+      "contactY": [
+        -0.675,
+        -0.6599999999999999,
+        -0.645
+      ]
+    }
+  ],
+  "preserved": [
+    "130 mm feed",
+    "Bit depth",
+    "All hose paths",
+    "All moving lead paths",
+    "Drive covers and sleeves"
+  ],
+  "open": [
+    "Flight configuration/dimensions",
+    "Upper drive universal-joint interior",
+    "Helical threads and needle rollers",
+    "Friction, eccentric adjustment, thermal contraction and bearing fatigue",
+    "Feed/sensor and remote wiring"
+  ]
+}

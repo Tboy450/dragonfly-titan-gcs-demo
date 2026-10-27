@@ -4,6 +4,13 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 27 drill carriage (Codex):** [evidence and handoff](research/drill-carriage-2026-10-27/README.md).
+[PUB] AMS2024 real ETU/EM1 spherical-nut photo and six-roller/V-guide arrangement;
+fig.11 is a drawing, not real hardware imagery. [EST] fitted supports, crowned rollers,
+guide, hollow nut/pocket, sizes and finishes. [CALC] estimated-radius rolling direction,
+flank contact and 1 mm modeled radial shaft gap. 675 tests. No EM2/flight equivalence,
+joint friction, threads, needle internals or thermal contraction solver claimed.
+
 **October27 feed covers/bellows (Codex):** [implementation and open work](research/drill-feed-stage-2026-10-27/README.md).
 [PUB] real EM1 covered drive/gearbox and paired polymer bellows; source film details
 remain distinct from the simulation. [EST] fitted geometry,16-fold surfaces, collars

@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Drill carriage (Codex, October 27):** [implementation and limits](drill-carriage-2026-10-27/README.md).
+Reuses real EM1 assembly; adds original AMS2024 fig.6 real spherical-nut photograph
+and figs.10-11 roller drawings to the shared packet. EM1-style exterior, estimated
+fit/finish, no hidden needle/thread/friction reconstruction. Comparison labels real,
+CAD and actual model separately. 675 tests; full stroke and prior geometry preserved.
+
 **Feed covers/bellows (Codex, October27):** [pass and limits](drill-feed-stage-2026-10-27/README.md).
 Reuses real AMS2024 EM1/fabrication images in `sources/draco-ams2024/` and the prior
 2022 CAD only for retained head context. Photo-informed exterior, estimated fitted
