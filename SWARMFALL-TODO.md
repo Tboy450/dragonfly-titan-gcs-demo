@@ -298,14 +298,29 @@ complete solely because its assets download or its unit tests pass.
   a mission ends. Close them in `finishMission`.
 - [ ] **FIX-09 (P2)** Aurex, the last planet, is very hard (bot: about 16 minutes and 150 drones
   lost). Revisit after human playtests.
-- [ ] **FIX-10 (P2)** The title card hides the title screen's spiral galaxy.
+- [x] **FIX-10 (P2) — Claude (October 27)** The title card hides the title screen's spiral galaxy.
+  - On wide screens the card now sits on the left; on tall phones it sits low. The galaxy is
+    drawn in the middle of the space the card leaves (`titleGalaxyPlace`, galaxy.mjs), sized to
+    fit. A small screen the card fills keeps the old centered layout.
+  - Checked in the browser at 800×600, 1280×760 and 375×812 (phone).
 - [x] **FIX-11 (P3) — Codex, October 19; implementation and focused checks** Hold and H
   now explain how to select a squad when none is selected. Reveal the HUD for that hint,
   ignore held-key repeats, and preserve selected-squad Hold behavior. Ended missions receive
   no command/warning. **390 tests pass** plus entry-point control checks;
   [evidence](research/swarmfall-hold-hint-2026-10-19/README.md).
-- [ ] **FIX-12 (P3)** Strikes, retaken zones and lost squads off screen give no cue. Add an
-  edge-of-screen marker (see CTRL-06).
+- [x] **FIX-12 (P3) — Claude (October 27)** Strikes, retaken zones and lost squads off screen
+  give no cue. Add an edge-of-screen marker (see CTRL-06).
+  - A red arrow at the screen's edge points to the newest alert while it is off screen (for
+    20 s, like its minimap ring) and to every marked strike still on its way. Its label says
+    what it is and how far, for example "Dratan is being retaken · 482 m". Tapping the arrow
+    looks there; J still jumps to the newest alert. Clean view hides the arrows.
+  - The arrows stay clear of the top and bottom HUD bars (`edgeMarker`, camera-assist.mjs). An
+    alert behind the camera is marked low on the matching side.
+  - A squad whose last drone falls, with no pods still on the way, now raises "Squad N was
+    lost", a warning toast and alert where it fell (`squadLosses`; the rules' destroyed event
+    now names the squad).
+  - `tests/invasion-edge-alerts.test.mjs` (5 tests, with FIX-10). In the browser, an alert for a
+    far zone showed an arrow at the top edge, and clicking it brought the camera to the zone.
 
 ## 2. Tutorial and onboarding (TUT)
 

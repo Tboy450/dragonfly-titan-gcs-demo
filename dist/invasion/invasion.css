@@ -38,6 +38,15 @@ a { color: var(--swarm); }
 .title-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 .title-actions .primary { padding: 10px 26px; font-size: 17px; }
 .title-card { max-height: calc(100dvh - 24px); overflow-y: auto; }
+/* FIX-10: keep the title galaxy in view. On wide screens the card sits on the left and the galaxy
+   fills the right; on tall phones the card sits low and the galaxy shows above it. drawTitle
+   (main.mjs) places the galaxy in whatever space the card leaves. */
+@media (min-width: 720px) and (min-aspect-ratio: 5/4) {
+  .title-card { left: clamp(16px, 5vw, 80px); transform: translateY(-50%); width: min(520px, 46vw); }
+}
+@media (max-aspect-ratio: 4/5) and (min-height: 640px) {
+  .title-card { top: auto; bottom: 16px; transform: translateX(-50%); }
+}
 .save-notice { margin: 14px 0 0; padding: 12px; text-align: left; border: 1px solid var(--amber); border-radius: 8px; font-size: 13px; }
 .save-notice p { margin: 0 0 10px; }
 #save-backups { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--line); }

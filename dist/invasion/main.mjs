@@ -17,13 +17,13 @@ import { packDropPods, podRadius, podStaggerS } from "./drop-waves.mjs?v=dev";
 import { hazardTypes, hazardAdvisory } from "./hazards.mjs?v=dev";
 import { achievements, achievementContext, newAchievements, recordAchievements } from "./achievements.mjs?v=dev";
 import { createPlanetTerrain } from "./planet-terrain.mjs?v=dev";
-import { drawGalaxy, drawStarfield } from "./galaxy.mjs?v=dev";
+import { drawGalaxy, drawStarfield, titleGalaxyPlace } from "./galaxy.mjs?v=dev";
 import { createInvasionScene, swarmColor, nativeColor } from "./scene.mjs?v=dev";
 import { missionCheckpoint, restoreMissionCheckpoint, checkpointPlanet } from "./mission-save.mjs?v=dev";
 import { pointerIntent, exceedsTapSlop, holdToBoxMs, boxRect, squadsInBox } from './pointer-controls.mjs?v=dev';
 import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
 import { enterFree, exitFree, placeFree, moveFree, freeLimits } from "./free-camera.mjs?v=dev";
-import { squadCenter, latestAlert, zoneAlerts, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
+import { squadCenter, latestAlert, zoneAlerts, squadLosses, edgeMarker, edgeScroll, homeView } from "./camera-assist.mjs?v=dev";
 import { frameSteps, trackLag } from "./frame-clock.mjs?v=dev";
 import { cycleSound, soundLabel, updateBattleSound, quietSound } from "./sound.mjs?v=dev";
 import { qualityLevels, nextQuality } from "./quality.mjs?v=dev";
@@ -84,8 +84,10 @@ function fitCanvas(canvas, scale = Math.min(2, window.devicePixelRatio || 1)) {
 }
 
 function drawTitle() {
-  const { ctx, width, height } = fitCanvas($("title-stars"));
-  drawStarfield(ctx, width, height, { center: [0.5, 0.55] });
+  const canvas = $("title-stars"), { ctx, width, height } = fitCanvas(canvas);
+  // The galaxy goes in the open space beside or above the card (FIX-10), not behind it.
+  const box = canvas.getBoundingClientRect(), card = $("title-card").getBoundingClientRect();
+  drawStarfield(ctx, width, height, titleGalaxyPlace(width, height, { left: card.left - box.left, right: card.left - box.left + card.width, top: card.top - box.top, bottom: card.top - box.top + card.height }));
   const done = planets.filter(p => progress.captured[p.id]).length;
   const earned = Object.keys(progress.achievements).length;
   $("title-progress").textContent = done || earned ? `${done} of ${planets.length} planets conquered · ${earned} of ${achievements.length} achievements` : "";
@@ -747,6 +749,14 @@ function tap(clientX, clientY, additive, action = "smart") {
     updateDropPreview();
     return;
   }
+  // An arrow at the screen's edge for an alert off screen (FIX-12): tapping it looks there.
+  const mark = action === "order" ? null : (mission.edgeMarks || []).find(m => Math.hypot(m.x - x, m.y - y) < 30);
+  if (mark) {
+    setFollow(false);
+    lookAt(mark.alert.x, mark.alert.z);
+    mission.minimapPing = { x: mark.alert.x, z: mark.alert.z, at: performance.now() };
+    return;
+  }
   const drone = action === "order" ? null : unitAtScreen(x, y, isDrone);
   if (drone) {
     if (action === "select" && !additive && mission.selected.size === 1 && mission.selected.has(drone.squad)) return;
@@ -1287,6 +1297,7 @@ function squadReach(b, squadId) {
 function drawOverlay() {
   const { ctx, width, height } = fitCanvas(overlay);
   ctx.clearRect(0, 0, width, height);
+  mission.edgeMarks = [];
   if (mission.cleanView) return;
   const b = mission.battle;
   ctx.font = "600 12px system-ui, sans-serif";
@@ -1436,6 +1447,41 @@ function drawOverlay() {
     }
   }
   drawNoShotNotes(ctx, noShot, width, height);
+  drawEdgeMarks(ctx, b, width, height);
+}
+
+// Alerts off screen (FIX-12): a red arrow at the screen's edge toward the newest alert (for
+// 20 s, like its minimap ring) and toward every strike still on its way, with what it is and
+// how far. Tapping an arrow looks there (tap); J still jumps to the newest alert.
+function drawEdgeMarks(ctx, b, width, height) {
+  const alerts = [];
+  if (mission.lastAlert && b.time - mission.lastAlert.at < 20) alerts.push(mission.lastAlert);
+  for (const strike of b.strikes) {
+    if (strike.hit || alerts.some(a => Math.hypot(a.x - strike.x, a.z - strike.z) < 20)) continue;
+    alerts.push({ x: strike.x, z: strike.z, text: strike.source === "lightning" ? "Lightning strike marked" : "Artillery incoming" });
+  }
+  const from = mission.freeCam || mission.cam.focus;
+  ctx.font = "600 12px system-ui, sans-serif";
+  for (const alert of alerts.slice(0, 4)) {
+    const edge = edgeMarker(scene.project(alert.x, scene.heightAt(alert.x, alert.z) + 6, alert.z, width, height), width, height);
+    if (!edge) continue;
+    mission.edgeMarks.push({ x: edge.x, y: edge.y, alert });
+    ctx.save();
+    ctx.translate(edge.x, edge.y); ctx.rotate(edge.angle);
+    ctx.fillStyle = "#ff4a3a"; ctx.strokeStyle = "rgba(6, 8, 16, 0.85)"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(14, 0); ctx.lineTo(-6, -10); ctx.lineTo(-2, 0); ctx.lineTo(-6, 10); ctx.closePath();
+    ctx.stroke(); ctx.fill();
+    ctx.restore();
+    // The label sits just inside the arrow, kept on screen.
+    const text = `${alert.text} · ${Math.round(Math.hypot(alert.x - from.x, alert.z - from.z))} m`, w = ctx.measureText(text).width + 14;
+    const lx = Math.min(width - w / 2 - 4, Math.max(w / 2 + 4, edge.x - Math.cos(edge.angle) * (w / 2 + 18)));
+    const ly = Math.min(height - 14, Math.max(14, edge.y - Math.sin(edge.angle) * 24));
+    ctx.fillStyle = "rgba(6, 8, 16, 0.78)";
+    ctx.beginPath(); ctx.roundRect(lx - w / 2, ly - 10, w, 20, 10); ctx.fill();
+    ctx.strokeStyle = "#ff4a3a"; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = "#f1f4ff"; ctx.textAlign = "center";
+    ctx.fillText(text, lx, ly + 4);
+  }
 }
 
 function drawMinimap() {
@@ -1735,7 +1781,7 @@ function tick(now) {
   const events = b.events.splice(0);
   mission.lastAlert = latestAlert(mission.lastAlert, events, b);
   for (const event of events) if (event.kind === "alarm" || event.kind === "artillery") tipEvents.push(event);
-  for (const alert of zoneAlerts(mission.zoneWatch, b)) {
+  for (const alert of [...zoneAlerts(mission.zoneWatch, b), ...squadLosses(events, b)]) {
     mission.lastAlert = alert;
     toast(`${alert.text}. Tap to view (J).`, "bad", 6000, jumpToAlert);
   }

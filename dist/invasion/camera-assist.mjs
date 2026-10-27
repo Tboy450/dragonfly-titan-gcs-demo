@@ -44,6 +44,36 @@ export function zoneAlerts(watch, b) {
   return alerts;
 }
 
+// Squads wiped out this frame (FIX-12): their last drone destroyed and no pods still on the way.
+// One alert per squad, where its last drone fell.
+export function squadLosses(events, b) {
+  const last = new Map();
+  for (const event of events) if (event.kind === "destroyed" && event.side === "swarm" && !event.structure && event.squad != null) last.set(event.squad, event);
+  const alerts = [];
+  for (const [id, event] of last) {
+    if (b.units.some(unit => unit.alive && unit.side === "swarm" && !unit.structure && unit.squad === id)) continue;
+    if (b.pods.some(pod => !pod.released && pod.squad === id)) continue;
+    const squad = b.squads.find(s => s.id === id);
+    alerts.push({ x: event.x, z: event.z, at: b.time, text: `${squad?.name || "A squad"} was lost` });
+  }
+  return alerts;
+}
+
+// Where an alert off screen is marked (FIX-12): on the edge of the area the HUD leaves clear,
+// along the line from its middle toward the alert. p is the alert's projected screen position
+// (visible false when it is behind the camera). Null when the alert is on screen.
+export function edgeMarker(p, width, height, { top = 70, bottom = 110, side = 30 } = {}) {
+  if (p.visible && p.x >= 0 && p.x <= width && p.y >= 0 && p.y <= height) return null;
+  const halfW = Math.max(1, width / 2 - side), halfH = Math.max(1, (height - top - bottom) / 2);
+  const cx = width / 2, cy = top + halfH;
+  let dx = p.x - cx, dy = p.y - cy;
+  // Behind the camera the projection is mirrored, and behind is toward the bottom of the screen.
+  if (!p.visible) { dx = -dx; dy = Math.abs(dy); }
+  if (!dx && !dy) dy = 1;
+  const t = Math.min(dx ? halfW / Math.abs(dx) : Infinity, dy ? halfH / Math.abs(dy) : Infinity);
+  return { x: cx + dx * t, y: cy + dy * t, angle: Math.atan2(dy, dx) };
+}
+
 // Edge scrolling with a mouse: a drag direction (as if dragging the map) when the pointer is
 // within `margin` pixels of an edge, else zeros.
 export function edgeScroll(x, y, width, height, margin = 14) {

@@ -39,6 +39,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Swarmfall title galaxy and off-screen alert arrows
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Show the title galaxy and mark off-screen alerts"
+- **What changed:** Checklist FIX-10 and FIX-12.
+  - Title screen (FIX-10): the card no longer covers the spiral galaxy. On wide screens the
+    card sits on the left and the galaxy fills the space to its right. On tall phones the card
+    sits low and the galaxy shows above it. A small screen the card fills keeps the old layout.
+  - Off-screen alerts (FIX-12): a red arrow at the screen's edge points to the newest alert
+    while it is off screen (20 s), and to every artillery or lightning strike still on its way.
+    Its label says what it is and how far away. Tapping the arrow brings the camera there. The
+    arrows stay clear of the HUD bars, and Clean view hides them.
+  - A squad whose last drone falls (with no pods still coming) now raises "Squad N was lost":
+    a warning toast and an alert where it fell. The rules' destroyed event names the squad.
+- **Files:** `dist/invasion/galaxy.mjs`, `dist/invasion/camera-assist.mjs`, `dist/invasion/main.mjs`,
+  `dist/invasion/battle.mjs`, `dist/invasion/index.html`, `dist/invasion/invasion.css`,
+  `tests/invasion-edge-alerts.test.mjs` (new), `tests/helpers/invasion-ui-harness.mjs` (binds
+  the title helper), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (245 pass). In the browser, the title
+  galaxy shows beside the card at 800×600 and 1280×760 and above it on a 375×812 phone. In a
+  Kepra mission, an alert for a far zone showed an arrow at the top edge, and clicking it
+  brought the camera to the zone, after which the arrow went away.
+
 ### 2026-10-27: Swarmfall formations and hold fire
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add squad formations and a hold-fire stance"

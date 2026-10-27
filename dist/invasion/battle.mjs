@@ -719,7 +719,7 @@ const alarmGain = (b) => societies[b.tier]?.alarmGain ?? 0;
 function kill(b, unit, cause) {
   unit.alive = false;
   unit.hp = 0;
-  b.events.push({ kind: "destroyed", id: unit.id, side: unit.side, type: unit.type, structure: unit.structure, x: unit.x, z: unit.z, alt: unit.alt });
+  b.events.push({ kind: "destroyed", id: unit.id, side: unit.side, type: unit.type, structure: unit.structure, squad: unit.squad, x: unit.x, z: unit.z, alt: unit.alt });
   if (unit.side === "swarm") {
     if (!unit.structure) {
       b.stats.dronesLost += 1;
