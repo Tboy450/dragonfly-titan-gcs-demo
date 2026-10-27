@@ -1,0 +1,23 @@
+{
+  "desktop": {
+    "client": 1265,
+    "layer": "thermal",
+    "parts": 24,
+    "pause": "Resume simulation and sampling",
+    "progress": "10.041500000000001",
+    "scroll": 1265,
+    "subassembly": "drill-starboard",
+    "targets": 2
+  },
+  "phone": {
+    "client": 375,
+    "part": "drills",
+    "parts": 24,
+    "progress": "10.041500000000001",
+    "scroll": 375,
+    "subassembly": "drill-port",
+    "targets": 2
+  },
+  "errors": [],
+  "scope": "Real browser rendering and UI checks; fresh disposable local origin. No physical-device or flight-harness qualification."
+}

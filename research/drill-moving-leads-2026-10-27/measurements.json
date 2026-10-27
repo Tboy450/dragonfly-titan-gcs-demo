@@ -1,0 +1,92 @@
+{
+  "scope": "Local estimated moving leads, not a flight harness or fatigue qualification",
+  "rows": [
+    {
+      "side": "port",
+      "motor": "percussion",
+      "lengthM": 0.34118145714412185,
+      "radiusM": 0.05608029957123981,
+      "cableDiameterM": 0.006,
+      "fixedLocal": [
+        0.092,
+        -0.3,
+        -0.031
+      ],
+      "motorLocal": [
+        -0.02,
+        0.455,
+        -0.025
+      ],
+      "strokeM": 0.13,
+      "topAtStowedM": -0.14391970042876015,
+      "flightMatingConfirmed": false
+    },
+    {
+      "side": "port",
+      "motor": "rotation",
+      "lengthM": 0.4151772282569821,
+      "radiusM": 0.04143669871020132,
+      "cableDiameterM": 0.006,
+      "fixedLocal": [
+        0.082,
+        -0.3,
+        -0.06
+      ],
+      "motorLocal": [
+        0,
+        0.315,
+        -0.072
+      ],
+      "strokeM": 0.13,
+      "topAtStowedM": -0.16856330128979868,
+      "flightMatingConfirmed": false
+    },
+    {
+      "side": "starboard",
+      "motor": "percussion",
+      "lengthM": 0.34118145714412185,
+      "radiusM": 0.05608029957123981,
+      "cableDiameterM": 0.006,
+      "fixedLocal": [
+        -0.092,
+        -0.3,
+        -0.031
+      ],
+      "motorLocal": [
+        0.02,
+        0.455,
+        -0.025
+      ],
+      "strokeM": 0.13,
+      "topAtStowedM": -0.14391970042876015,
+      "flightMatingConfirmed": false
+    },
+    {
+      "side": "starboard",
+      "motor": "rotation",
+      "lengthM": 0.4151772282569821,
+      "radiusM": 0.04143669871020132,
+      "cableDiameterM": 0.006,
+      "fixedLocal": [
+        -0.082,
+        -0.3,
+        -0.06
+      ],
+      "motorLocal": [
+        0,
+        0.315,
+        -0.072
+      ],
+      "strokeM": 0.13,
+      "topAtStowedM": -0.16856330128979868,
+      "flightMatingConfirmed": false
+    }
+  ],
+  "open": [
+    "Wire construction and cryogenic life",
+    "Remote controller and body-side continuation",
+    "Z-feed motor and sensor leads",
+    "Flight clamps and guards",
+    "2024 feed-stage/bellows geometry and stroke reconciliation"
+  ]
+}

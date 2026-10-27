@@ -10,6 +10,13 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
+October27 wrap-up: [Moving drill lead examples](research/drill-moving-leads-2026-10-27/README.md).
+Both drills now have constant-length lead loops between moving motor caps and fixed
+local supports. Their flight routing/material remains unknown.662 tests, desktop/
+phone Internal/Thermal checks pass; mechanics and sample plumbing preserved. New real
+EM1 and related TRIDENT source photos saved. Publication receipt follows.
+Next pass is the2024 feed-stage/gearbox/bellows reconciliation; checklist has exact handoff.
+
 October27: [Both-drill plumbing trace](research/draco-connectivity-2026-10-27/README.md).
 Both intake routes exist through the shared carousel/return. Corrected a1 mm gap
 at the blower selector; only the final return control advances4 mm into a3 mm EST seat.

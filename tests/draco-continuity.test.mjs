@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {fixture,baseline,fingerprint} from '../research/draco-side-audit-2026-10-26/audit.mjs';
 import {trace} from '../research/draco-connectivity-2026-10-27/trace.mjs';
 import {dracoPlumbingAsset} from '../dist/draco-plumbing.mjs';
+import {unchangedDrillMesh} from '../research/drill-moving-leads-2026-10-27/audit.mjs';
 
 test('Both drill intake routes reach the shared selector/return and both blower inlet envelopes without a seating margin',()=>{
   const result=trace();
@@ -20,13 +21,13 @@ test('Strict continuity check detects the archived 1 mm return gap that the olde
   assert.ok(Math.abs(gaps[0].gapM-.001)<1e-8);
 });
 
-test('Return correction changes only its final control point by 4 mm, preserving all other hardware and line endpoints',async()=>{
+test('Return correction retains all other plumbing and mechanics; later lead updates have separate archive guards',async()=>{
   const current=fixture(),before=await baseline();
   const a=current.lines.returnRoute,b=before.lines.returnRoute;
   assert.deepEqual(a.slice(0,-1),b.slice(0,-1));
   assert.deepEqual(a.at(-1).slice(0,2),b.at(-1).slice(0,2));
   assert.ok(Math.abs(a.at(-1)[2]-b.at(-1)[2]-.004)<1e-12);
-  const keep=root=>fingerprint(root).filter(row=>row.name!=='draco-return-tube');
+  const keep=root=>fingerprint(root).filter(row=>row.name!=='draco-return-tube').filter(unchangedDrillMesh);
   assert.deepEqual(keep(current.root),keep(before.root));
   const oldTube=before.root.getObjectByName('draco-return-tube'),newTube=current.root.getObjectByName('draco-return-tube');
   for(const parameter of ['radius','tubularSegments','radialSegments','closed'])

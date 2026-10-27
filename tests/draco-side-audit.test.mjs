@@ -4,14 +4,15 @@ import * as THREE from '../dist/vendor/three/three.module.min.js';
 import {readFile} from 'node:fs/promises';
 import {fixture,baseline,fingerprint,counts,report} from '../research/draco-side-audit-2026-10-26/audit.mjs';
 import {drillAsset} from '../dist/drills.mjs';
+import {unchangedDrillMesh} from '../research/drill-moving-leads-2026-10-27/audit.mjs';
 import {inspectionSubassemblies,createInspector,focusInspector,selectInspectionSubassembly} from '../dist/vehicle-inspector.mjs';
 import {createInspectionVisibility,setInspectionLayer} from '../dist/inspection-visibility.mjs';
 import {dracoInventory as rows,dracoInventorySources as sources,dracoInventoryLimits as limits} from '../dist/sampling-connections.mjs';
 
-test('DrACO audit retains all hardware except the separately tested October27 return seating correction',async()=>{
+test('DrACO audit retains all mechanics except the separately tested return and moving-lead updates',async()=>{
   const current=fixture(),before=await baseline();
-  // The continuity regression suite verifies the sole later geometry change and detects its old gap.
-  const unchanged = root => fingerprint(root).filter(row=>row.name!=='draco-return-tube');
+  // Later continuity and moving-lead suites verify their explicit changes against archives.
+  const unchanged = root => fingerprint(root).filter(row=>row.name!=='draco-return-tube').filter(unchangedDrillMesh);
   assert.deepEqual(unchanged(current.root),unchanged(before.root));
   for(const feed of [0,.065,.13]){
     for(const f of [current,before])for(const [i,d] of f.drills.entries()){

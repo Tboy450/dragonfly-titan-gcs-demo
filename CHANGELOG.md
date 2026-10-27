@@ -39,6 +39,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Add local moving drill motor-lead accommodation
+- **Signed:** Codex (OpenAI).
+- **Commit:** Add constant-length moving drill lead examples.
+- Two lead examples per drill retain motor-cap endpoints and6 mm envelopes; fixed
+  ends stop at new local retention supports, not invented controller connectors.
+  Circular rolling bends preserve length and tangents; geometry buffers update in place.
+- All43 non-lead mechanical meshes per drill, sample plumbing and flight/science
+  rules retained. Mount/Interface/Harness masks remain independent;24 parts/two drill targets.
+- Saved real EM1 feed-stage and related TRIDENT hardware pages; reused workmanship
+  and prior CAD. Routes, supports, boots and cable construction remain EST/unverified.
+- **Checks:**662 pass;41 stroke positions, actual installed-mesh screens/pairs, pose
+  integration, storage reuse, desktop Internal/Thermal and375px phone without overflow/errors.
+- **Archive:** exact c99f0dc source files/recovery tag; prior pictures reused.
+- **Handoff:** owner requested wrap. Next is separate2024 feed-stage/gearbox/bellows
+  reconciliation; preserve130 mm motion until coupled geometry/depth is checked.
+  Fixed-end continuations and complete flight networks remain open. Publication receipt follows.
+
 ### 2026-10-27: Seat shared DrACO return and trace both drill intakes
 - **Signed:** Codex (OpenAI).
 - **Commit:** Seat DrACO shared return and verify both drill routes.

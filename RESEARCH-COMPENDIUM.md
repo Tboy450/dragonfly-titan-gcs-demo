@@ -4,6 +4,13 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October27 moving drill leads (Codex):** [pass and handoff](research/drill-moving-leads-2026-10-27/README.md).
+[PUB] real EM1 photo and distinct related TRIDENT flex circuits. [CALC] fixed-length
+341.2/415.2 mm local curves,56.1/41.4 mm bend radii. [EST] round6 mm envelopes,
+retention points/boots/routes, no identified flight wire construction or remote mating.
+2024 feed-stage/bellows differences saved for a separate mechanical pass; existing
+130 mm motion is retained pending coupled stroke/depth/hose/wire checks.662 tests.
+
 **October27 DrACO continuity (Codex):** [both-drill trace](research/draco-connectivity-2026-10-27/README.md).
 [PUB] either drill can use either blower. [CALC] ten drawn endpoint/envelope joins;
 old shared-return gap1 mm. [EST] corrected by4 mm endpoint advance into a3 mm seat.

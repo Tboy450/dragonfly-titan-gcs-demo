@@ -32,7 +32,7 @@ import { buildSideCameras } from "./side-cameras.mjs?v=dev";
 import { buildNoseCameras } from "./nose-cameras.mjs?v=dev";
 import { buildNoseBulkhead } from "./nose-bulkhead.mjs?v=dev";
 import { buildNoseElectronics } from "./nose-electronics.mjs?v=dev";
-import { buildDrill, drillAsset } from "./drills.mjs?v=dev";
+import { buildDrill } from "./drills.mjs?v=dev";
 import { buildSampleLines, buildBlowers } from "./draco-plumbing.mjs?v=dev";
 import { buildFans, buildWarmDuct, buildTrimDevice, airLoopPaths, thermalLoopAsset } from "./thermal-loop.mjs?v=dev";
 
@@ -247,7 +247,7 @@ export function buildResearchModel(kit) {
     // DrACO Sample Acquisition Drills: see drills.mjs (LPSC 2022 fig. 2; placement from the APL
     // cutaway, NASA printable model and DragonCam fig. 3).
     subsystem("drills", "drills");
-    drillFeeds.push(buildDrill({ parent: buildTarget, mesh, side }).carriage);
+    drillFeeds.push(buildDrill({ parent: buildTarget, mesh, side }));
   }
   // DrACO pneumatic transport: hoses, transfer tubes, carousel flow diverter and return line
   // (draco-plumbing.mjs; LPSC 2022 fig. 1 and schematic). The blowers are built with part 24.
@@ -550,10 +550,10 @@ export function buildResearchModel(kit) {
   function poseSampling(state, layer = "exterior") {
     const job = samplingSequence(state);
     // One redundant drill is illustrated; this is not a commanded flight-hardware port choice.
-    drillFeeds.forEach((feed, index) => {
+    drillFeeds.forEach((drill, index) => {
       // The carriage slides down the Z-stage; only the bit turns.
-      feed.position.y = drillAsset.stowedY - (index === 0 ? job.drillFeed : 0);
-      feed.userData.bit.rotation.y = index === 0 ? job.drillAngle : 0;
+      drill.setFeed(index === 0 ? job.drillFeed : 0);
+      drill.bit.rotation.y = index === 0 ? job.drillAngle : 0;
       sampleLines.hoseParts[index].setFeed(index === 0 ? job.drillFeed : 0);
     });
     carousel.carrier.rotation.y = job.carouselAngle;

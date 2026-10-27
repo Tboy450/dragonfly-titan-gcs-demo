@@ -1,4 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js?v=dev";
+import { buildDrillMovingLeads } from "./drill-moving-leads.mjs?v=dev";
 
 // Part 01: DrACO Sample Acquisition Drills (SAD), one beside each side of the body above the
 // skids. Drawn from Zacny et al., DrACO, LPSC 2022, fig. 2 (Phase B CAD): a gold drill-head
@@ -15,7 +16,7 @@ import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 // the CAD (gold housing, red rail). The carriage slides down the rail while drilling; only the
 // bit turns.
 export const drillAsset = Object.freeze({
-  revision: "drills-2026-10-13",
+  revision: "drills-moving-leads-2026-10-27",
   lateralM: 0.54, foreAftM: -0.43,
   stowedY: -0.72, // carriage origin when stowed
   bitTipBelowOrigin: 0.058, // stowed bit tip at -0.778, 7.2 cm above the skid contact plane
@@ -74,7 +75,6 @@ export function buildDrill({ parent, mesh, side }) {
   drill.add(carriage);
   const head = layer(carriage, "head", "equipment-casings");
   const port = layer(carriage, "pneumatic-port", "interfaces");
-  const leads = layer(carriage, "motor-leads", "harnesses");
   const bit = new THREE.Group();
   bit.name = `drill-${name}-bit`;
   bit.userData.inspectionLayer = "equipment-casings";
@@ -123,10 +123,6 @@ export function buildDrill({ parent, mesh, side }) {
     if (i % 2) box([0.002, 0.009, 0.006], [Math.cos(a + 0.4) * 0.0172, tip + 0.009, Math.sin(a + 0.4) * 0.0172], dark, bit, "drill-bit-slot").rotation.y = -(a + 0.4);
   }
 
-  // Motor leads run up toward the rail top [EST].
-  for (const [x, y, z] of [[side * 0.02, 0.455, -0.025], [0, 0.315, -0.072]]) {
-    const curve = new THREE.CatmullRomCurve3([new THREE.Vector3(x, y, z), new THREE.Vector3(x + inb * 0.02, y + 0.03, z + 0.03), new THREE.Vector3(railX, y + 0.05, 0.03)]);
-    mesh(new THREE.TubeGeometry(curve, 10, 0.003, 6, false), black, [0, 0, 0], leads).name = "drill-motor-lead";
-  }
-  return { drill, carriage, bit, stage, head, port, leads };
+  const movingLeads=buildDrillMovingLeads({drill,carriage,mesh,side,stowedY:drillAsset.stowedY,black,silver,grey});
+  return { drill, carriage, bit, stage, head, port, ...movingLeads };
 }

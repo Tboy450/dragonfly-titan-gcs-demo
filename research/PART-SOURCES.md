@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Moving drill leads (Codex, October27):** [implementation and limits](drill-moving-leads-2026-10-27/README.md).
+New [real DrACO EM1 source photo](sources/draco-ams2024/README.md), related
+[TRIDENT real harness comparison](sources/trident-ams2018/README.md), reused NASA
+workmanship and2022 CAD for retained mechanics only. Local wire envelopes, support
+positions and routes remain EST; no flight construction or cryogenic-life claim.
+
 **DrACO continuity (Codex, October27):** [trace and measurements](draco-connectivity-2026-10-27/README.md).
 Reuses LPSC2022 fig.1 and NASA's cross-strapped system description. Both intake paths
 exist; only the return's final control advances4 mm into a3 mm EST selector seat.

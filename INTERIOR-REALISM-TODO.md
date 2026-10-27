@@ -10,6 +10,23 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October27 wrap-up: [Drill moving lead pass](research/drill-moving-leads-2026-10-27/README.md).
+- [x] Two constant-length moving lead examples per drill, fixed upper-mount retention
+  points, supports and motor boots. Original motor ends/diameters and mechanics retained.
+- [x] Real2024 EM1 source photo, related TRIDENT harness photos and existing NASA
+  workmanship evidence saved/reused; round envelopes and routes explicitly EST.
+- [x] 662 tests:41 stroke positions, installed mesh/pair clearance, real sampling pose,
+  buffer reuse, support contacts and independent layers. Desktop/phone samples/JSON saved.
+- [ ] Publish/verify this pass and save final receipt before starting new geometry.
+- [ ] NEXT PASS: reconcile retained2022 feed-stage geometry against2024 EM1/ETU
+  real hardware: actuator/gearbox enclosure, guide/roller carriage and paired dust bellows.
+  Start from saved `research/sources/draco-ams2024/` pages210/214/215. Keep130 mm
+  travel until bit depth, ground clearance, hose and cable envelopes are reconciled;
+  development160/300 mm figures do not automatically identify flight travel.
+- [ ] Fixed retention-to-controller continuation, feed motor/sensors, blower/diverter
+  wiring and actual cable construction/cryogenic life remain open. No new remote mating claim.
+Owner requested this wrap-up; do not begin that next mechanical pass in this turn.
+
 October27: [Both-drill plumbing continuity](research/draco-connectivity-2026-10-27/README.md).
 - [x] Confirm owner's assembled-equipment concern; retain both neighborhood samples.
   Trace both intake routes, carousel/return and both blower inlets.
@@ -19,7 +36,7 @@ October27: [Both-drill plumbing continuity](research/draco-connectivity-2026-10-
 - [x] Publishedb27cb6e; Pages40475925194 succeeded. Public full-network focus,
   route/limits/seat text,24 parts/eight rows, no overflow/errors verified. Samples
   and JSON saved; temporary previews stopped.655 tests pass.
-- [ ] Next: local moving drill leads; full electrical networks remain open.
+- [x] Local moving lead examples completed in the later pass above; full networks remain open.
 
 October27: [DrACO side inventory](research/draco-side-audit-2026-10-26/README.md).
 - [x] Inventory both mechanisms: matching 45 mesh pieces, two body mounts and two
@@ -34,7 +51,7 @@ October27: [DrACO side inventory](research/draco-side-audit-2026-10-26/README.md
 - [x] Published4f375be; Pages40463472979 succeeded. Live build, eight inventory rows,
   both drill focuses,24 parts and11 IEM targets verified, zero browser errors.
   Public sample/JSON saved; local preview stopped.652 tests pass.
-- [ ] Next source-led candidate: local drill motor-lead moving service accommodation;
+- [x] Local drill motor-lead moving service accommodation completed above;
   full Z-feed/blower/diverter wiring, identified avionics mating, separate elevator
   paths, guards and hidden brackets remain open. Do not claim flight completeness.
 Outreach was handled separately; its private local send log is not part of this release.

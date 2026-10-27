@@ -43,6 +43,16 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October27 moving leads: `drill-moving-leads.mjs` owns constant-length piecewise
+line/semicircle curves and bounded dynamic mesh buffers. `buildDrill.setFeed` moves
+the carriage and updates both leads; `vehicle-research.poseSampling` calls it.
+Fixed support/harness groups belong to the drill frame; boots belong to the carriage.
+All retained mechanical meshes and pneumatic routes remain exact. New regression
+suite covers preservation, motion/length/tangents, actual installed mesh triangles,
+fittings/layers and buffer identity. Full-model test fixture mocks decorative canvas
+paint only; actual browser renders checked separately.662 tests. Next mechanical
+reconciliation and unresolved remote endpoints are recorded in the checklist.
+
 October27 plumbing continuity: only the last return control changes by4 mm into
 a3 mm estimated selector seat. Research-only trace checks10 external joins without
 an expanded box, reproducing the archived1 mm gap. Three regressions preserve all
