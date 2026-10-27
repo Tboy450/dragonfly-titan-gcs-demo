@@ -16,7 +16,9 @@ inspection targets have pinned numbers; sample hoses/tubes hide as plumbing rath
 than electrical harnesses. New evidence/coverage notes stay collapsed. All hardware
 geometry is unchanged; complete wiring and exact flight blower locations remain open.
 652 tests and desktop/phone checks pass, with 24 numbered parts and 11 IEM targets retained.
-Publication verification follows. Previous published release below is historical.
+Published **4f375be**; Pages40463472979 succeeded. Live build, eight inventory rows,
+both drill focuses, 24 parts and 11 IEM targets verified without browser errors.
+Public sample/JSON saved; local preview stopped. Previous release below is historical.
 
 October26 cleanup: [IEM tag and terminal wraps](research/iem-terminal-cleanup-2026-10-26/README.md).
 Lead8 label no longer clips; terminal blocks become hollow wraps. All26 cable curves,

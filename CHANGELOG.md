@@ -55,6 +55,9 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   inventory focus destinations. No overflow or browser errors. No controls removed.
 - **Archive/sources:** exact baseline a67cb6f and recovery tag, existing credited
   real-prototype/design/paper images reused, inventory JSON and new samples saved.
+- **Publication:**4f375be; Pages40463472979 succeeded. Public build, eight inventory
+  rows, both drill focuses,24 parts and11 IEM targets verified without browser errors.
+  Public sample/JSON saved; local preview stopped. Receipt signed Codex (OpenAI).
 - **Open:** full motor/Z-feed/blower/diverter wiring, moving accommodation, identified
   avionics mating, separate elevator paths, flight guards and hidden brackets.
   IEM terminal topology remains open separately. No Assets Lab/Swarmfall/save edits,

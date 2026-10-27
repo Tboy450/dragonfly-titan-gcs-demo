@@ -20,7 +20,9 @@ October27: [DrACO side inventory](research/draco-side-audit-2026-10-26/README.md
 - [x] Exact before files/recovery tag, reused source imagery and desktop/phone samples.
 - [x] 652 tests, Internal/Thermal pixels, 24 parts, 11 IEM targets, hide/restore,
   research-only gating, all focus callbacks, no overflow/browser errors.
-- [ ] Publish and verify Pages, then record receipt and stop preview.
+- [x] Published4f375be; Pages40463472979 succeeded. Live build, eight inventory rows,
+  both drill focuses,24 parts and11 IEM targets verified, zero browser errors.
+  Public sample/JSON saved; local preview stopped.652 tests pass.
 - [ ] Next source-led candidate: local drill motor-lead moving service accommodation;
   full Z-feed/blower/diverter wiring, identified avionics mating, separate elevator
   paths, guards and hidden brackets remain open. Do not claim flight completeness.

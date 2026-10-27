@@ -73,7 +73,16 @@ No hardware geometry or endpoints changed in this audit.
 
 ## Remaining Work
 
-Publish and verify this audit before starting another installation pass. Keep every
+Published release **4f375be4eefdddba286182873ae10436cc207de4**, October27,2026.
+[Public simulator](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=4f375be).
+GitHub Pages run40463472979 succeeded, including its complete test step. Live header
+shows4f375be; eight inventory rows were collapsed on load, both drill targets work,
+24 numbered parts and11 IEM focuses remain. Desktop1265/1265px, zero browser errors.
+`public-checks.json` and `public-port-focus.png` save the actual public verification.
+Recovery tag pushed; temporary local preview tab closed and server stopped.
+Publication receipt signed Codex (OpenAI). Local/full CI suite:652 tests pass.
+
+Keep every
 `?v=dev` stamp; use command-local no-cleanup Git flags. No cleanup or pruning.
 Next source-led installation candidate: the existing short drill motor leads and
 their moving service accommodation. Preserve current endpoints initially, research
