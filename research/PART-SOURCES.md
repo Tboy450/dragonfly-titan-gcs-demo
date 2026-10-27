@@ -6,6 +6,15 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**DrACO side audit (Codex, October27):** [inventory and evidence limits](draco-side-audit-2026-10-26/README.md).
+Reuses Costa/Honeybee's real prototype photos, NASA's sampling-system description,
+saved LPSC2022 figs.1-2, APL ICES2023 fig.2/p7 and DragonCam figs.2-3. No generated
+imagery or new CGI appearance model. The prototype is not flight hardware; CAD is
+arrangement only. Matching model inventories do not prove a complete flight BOM.
+One visible port blower is sourced; both exact flight locations are not. Cameras
+and shared return/blowers explain much of the asymmetric surrounding equipment.
+No geometry rebuilt; independent focus/media classification and disclosures only.
+
 **IEM columns five/six IDs15-21 (Codex, October25):** [scope/measurements](iem-fifth-sixth-columns-2026-10-25/README.md).
 Reuses the saved real NASA/APL/Ed Whitman photos, engineering context and workmanship
 records below. Seven local routes/supports and fourteen ties are EST, not flight

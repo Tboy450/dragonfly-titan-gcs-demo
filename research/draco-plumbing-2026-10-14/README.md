@@ -1,5 +1,10 @@
 # Parts 02 and 24: DrACO Sample-Transfer Lines and Blowers
 
+October27 source clarification: the [side audit](../draco-side-audit-2026-10-26/README.md)
+supersedes the stronger placement inference below. ICES identifies one visible blower
+behind the port forward arm, not both exact flight locations. Both modeled blower
+positions remain estimates; no physical geometry was changed by that audit.
+
 Implemented October 14, 2026 by Claude (Anthropic Claude Opus 5.5). Revision
 `draco-plumbing-2026-10-14`. Source: `dist/draco-plumbing.mjs`. Replaces the single tube per
 side and the one-cylinder blower placeholder, archived in

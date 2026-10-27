@@ -1,0 +1,139 @@
+{
+  "renders": [
+    {
+      "mode": "desktop Internal port",
+      "file": "port-focus.png",
+      "canvas": {
+        "height": 387.2000122070313,
+        "width": 571.0499877929688,
+        "x": 342.8000183105469,
+        "y": 159.5
+      },
+      "client": 1265,
+      "focusCount": 2,
+      "inventoryCollapsed": true,
+      "inventoryRows": 8,
+      "part": "drills",
+      "partCount": 24,
+      "scroll": 1265,
+      "subassembly": "drill-port"
+    },
+    {
+      "mode": "desktop Internal starboard",
+      "file": "starboard-focus.png",
+      "canvas": {
+        "height": 387.2000122070313,
+        "width": 571.0499877929688,
+        "x": 342.8000183105469,
+        "y": 159.5
+      },
+      "client": 1265,
+      "focusCount": 2,
+      "inventoryCollapsed": true,
+      "inventoryRows": 8,
+      "part": "drills",
+      "partCount": 24,
+      "scroll": 1265,
+      "subassembly": "drill-starboard"
+    },
+    {
+      "mode": "desktop Thermal starboard",
+      "file": "thermal-starboard.png",
+      "canvas": {
+        "height": 387.2000122070313,
+        "width": 571.0499877929688,
+        "x": 342.8000183105469,
+        "y": 166.6999969482422
+      },
+      "client": 1265,
+      "focusCount": 2,
+      "inventoryCollapsed": false,
+      "inventoryRows": 8,
+      "part": "drills",
+      "partCount": 24,
+      "scroll": 1265,
+      "subassembly": "drill-starboard"
+    },
+    {
+      "mode": "phone Internal inventory port",
+      "file": "phone-port.png",
+      "canvas": {
+        "height": 437.2749938964844,
+        "width": 353.6000061035156,
+        "x": 10.800000190734863,
+        "y": 203.5
+      },
+      "client": 375,
+      "focusCount": 2,
+      "inventoryCollapsed": false,
+      "inventoryRows": 8,
+      "part": "drills",
+      "partCount": 24,
+      "scroll": 375,
+      "subassembly": "drill-port"
+    },
+    {
+      "mode": "phone Thermal starboard",
+      "file": "phone-thermal-starboard.png",
+      "canvas": {
+        "height": 437.2749938964844,
+        "width": 353.6000061035156,
+        "x": 10.800000190734863,
+        "y": 203.5
+      },
+      "client": 375,
+      "focusCount": 2,
+      "inventoryCollapsed": false,
+      "inventoryRows": 8,
+      "part": "drills",
+      "partCount": 24,
+      "scroll": 375,
+      "subassembly": "drill-starboard"
+    }
+  ],
+  "callbacks": [
+    {
+      "label": "Inspect Starboard drill",
+      "part": "drills",
+      "subassembly": "drill-starboard",
+      "canvasY": 203.5,
+      "overflow": 0
+    },
+    {
+      "label": "Inspect Shared suction equipment",
+      "part": "drill-blower",
+      "subassembly": "",
+      "canvasY": 203.5,
+      "overflow": 0
+    },
+    {
+      "label": "Inspect Drill hoses and sample tubes",
+      "part": "sample-lines",
+      "subassembly": "",
+      "canvasY": 203.5,
+      "overflow": 0
+    },
+    {
+      "label": "Inspect Nearby camera and illumination",
+      "part": "side-cameras",
+      "subassembly": "microscopic-camera",
+      "canvasY": 203.5,
+      "overflow": 0
+    }
+  ],
+  "layers": {
+    "sampleTubingOff": true,
+    "drillHarness": {
+      "checked": true,
+      "enabled": true
+    },
+    "tubingStayedOff": true,
+    "restored": true
+  },
+  "visibility": {
+    "exteriorHidden": true,
+    "originalHidden": true,
+    "iemFocusCount": 11
+  },
+  "errors": []
+}

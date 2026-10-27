@@ -61,7 +61,9 @@ test("Layer selector precedes the canvas, all existing controls survive, and Pil
   const html = readFileSync(new URL("../dist/index.html", import.meta.url), "utf8");
   const before = readFileSync(new URL("../archive/inspection-controls-2026-10-25/index.html", import.meta.url), "utf8");
   const ids = text => [...text.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]).sort();
-  assert.deepEqual(ids(html), ids(before), "no existing section or control is removed or duplicated");
+  const additions = ["draco-inventory", "draco-inventory-body"];
+  assert.deepEqual(ids(html), [...ids(before), ...additions].sort(),
+    "all previous IDs survive exactly once, plus the two explicit DrACO inventory IDs");
   assert.equal((html.match(/aria-label="Vehicle layer"/g) ?? []).length, 1);
   assert.ok(html.indexOf('id="layer-title"') < html.indexOf('id="flight-canvas"'));
   assert.ok(html.indexOf('id="vehicle-inspector"') > html.indexOf('id="flight-canvas"'));

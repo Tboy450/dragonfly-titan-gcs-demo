@@ -39,6 +39,27 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Audit paired DrACO equipment and add side inspection
+- **Signed:** Codex (OpenAI).
+- **Commit:** Add sourced DrACO side inventory and inspection targets.
+- Both drills retain matching 45-piece modeled inventories. Shared return/blowers
+  and the published one-sided microscope/LED arrangement explain extra nearby gear;
+  matching model counts do not establish a complete flight installation.
+- Add two independent drill targets and fixed-rail number anchors. Sample hoses/tubes
+  hide as Plumbing, independently of electrical leads. New eight-row source/coverage
+  inventory is collapsed; inspection buttons return the selected model to view.
+- Narrow part24 assumptions: ICES identifies a visible port blower, not both exact
+  flight locations. Keep estimated hardware and all physical geometry/endpoints exact.
+- **Checks:** 652 tests; desktop/phone Internal/Thermal samples and pixel checks,
+  24 numbered parts, 11 IEM targets, media hide/restore, research-only gating and
+  inventory focus destinations. No overflow or browser errors. No controls removed.
+- **Archive/sources:** exact baseline a67cb6f and recovery tag, existing credited
+  real-prototype/design/paper images reused, inventory JSON and new samples saved.
+- **Open:** full motor/Z-feed/blower/diverter wiring, moving accommodation, identified
+  avionics mating, separate elevator paths, flight guards and hidden brackets.
+  IEM terminal topology remains open separately. No Assets Lab/Swarmfall/save edits,
+  Git cleanup, new physics or public outreach log in this release.
+
 ### 2026-10-26: Surface-attach IEM lead8 label and hollow the terminal wraps
 - **Signed:** Codex (OpenAI).
 - **Commit:** Fix IEM tag attachment and hollow terminal wraps.

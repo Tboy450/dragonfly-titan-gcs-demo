@@ -7,7 +7,8 @@ import { drillAsset } from "./drills.mjs?v=dev";
 // in Titan air through transfer tubes; either drill can feed either the LDMS or GCMS cups using
 // either of two centrifugal blowers (impellers designed for Titan air); flow diverters route the
 // air; the blower exhausts outside; the hose is flexible and can be routed around obstacles; the
-// blower is exposed to Titan and sits behind the port forward arm.
+// visible blower is exposed to Titan behind the port forward arm. Placing both modeled
+// blowers there is an estimate, not confirmation of both flight mounting locations.
 // Flow drawn here, as in fig. 1: each drill's swivel port -> flexible hose -> transfer tube along
 // the body to the nose and up into the cold attic -> flow-diverter manifold on the carousel's
 // sample inlet (where the cup elevators sit) -> return tube down the port side -> blower inlet
@@ -64,8 +65,8 @@ export function buildSampleLines({ parent, mesh, carouselInlet }) {
   const layer = (name, inspectionLayer) => {
     const g = new THREE.Group(); g.name = name; g.userData.inspectionLayer = inspectionLayer; lines.add(g); return g;
   };
-  const tubes = layer("draco-transfer-tubes", "harnesses");
-  const hoses = layer("draco-flexible-hoses", "harnesses");
+  const tubes = layer("draco-transfer-tubes", "plumbing");
+  const hoses = layer("draco-flexible-hoses", "plumbing");
   const diverters = layer("draco-carousel-flow-diverter", "interfaces");
   const clamps = layer("draco-tube-clamps", "mounts");
   const steel = new THREE.MeshStandardMaterial({ color: 0xb9c0c4, roughness: 0.3, metalness: 0.85 });

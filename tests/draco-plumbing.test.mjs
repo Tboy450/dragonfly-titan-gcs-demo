@@ -32,7 +32,7 @@ test("The cross-strapped layout of LPSC 2022 fig. 1: two intakes, one carousel d
   for (const name of ["draco-forward-blower-volute", "draco-aft-blower-volute", "draco-forward-blower-exhaust", "draco-aft-blower-exhaust",
     "draco-blower-flow-diverter"]) assert.ok(find(blowers.group, name), name);
   assert.deepEqual([lines.tubes, lines.hoses, lines.diverters, lines.clamps].map(g => g.userData.inspectionLayer),
-    ["harnesses", "harnesses", "interfaces", "mounts"]);
+    ["plumbing", "plumbing", "interfaces", "mounts"]);
   assert.deepEqual([blowers.casings, blowers.ports, blowers.mounts].map(g => g.userData.inspectionLayer),
     ["equipment-casings", "interfaces", "mounts"]);
   assert.equal(lines.paths.length, 2, "a particle path from each drill");

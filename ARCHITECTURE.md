@@ -43,6 +43,17 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October27 DrACO audit: no physical model or solver changes. `drills.mjs` adds two
+non-nested inspection labels with craft-frame anchors on the fixed Z rails.
+`draco-plumbing.mjs` classifies sample tubes/hoses as Plumbing, not Harnesses.
+`sampling-connections.mjs` holds a separate immutable eight-row side inventory;
+the existing coverage renderer and focus/visibility APIs render its collapsed UI.
+New inventory callbacks scroll the selected model into view. Seven new tests cover
+exact before/after geometry, counts, moving hose endpoints, label attachment and
+media independence; the layout preservation guard allows only the two new IDs.
+Source authority and open installation gaps remain explicit. Research audit/pixel
+helpers are not imported by the application. 652 tests; no game/save/cleanup changes.
+
 October26 tag/terminal cleanup: only lead8 label placement and the three terminal
 block geometries change in `iem.mjs`. The tag uses its rotated surface normal;
 each block becomes four thin panels with the same outer footprint. All26 full

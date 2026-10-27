@@ -40,6 +40,11 @@ export function buildDrill({ parent, mesh, side }) {
 
   const drill = new THREE.Group();
   drill.name = `drill-${name}`;
+  drill.userData.inspectionLabel = `${name === "port" ? "Port" : "Starboard"} drill / feed mechanism`;
+  drill.userData.dimensionConfidence = "EST";
+  // Inspector labels use craft-local coordinates; the fixed rail stays put during feed.
+  drill.userData.labelAnchor = new THREE.Vector3(side * (drillAsset.lateralM - 0.075),
+    (drillAsset.rail.top + drillAsset.rail.bottom) / 2, drillAsset.foreAftM + 0.02);
   drill.position.set(side * drillAsset.lateralM, 0, drillAsset.foreAftM);
   parent.add(drill);
   const layer = (target, n, inspectionLayer) => {

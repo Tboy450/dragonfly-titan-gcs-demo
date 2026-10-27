@@ -32,3 +32,42 @@ export const samplingConnectionLimits = Object.freeze({
   naming: "DraMS MEB means main electronics box. Ocellus MEB is the lidar's main electronics box: a different instrument and a different unit.",
   boundary: "Sample/gas paths, electrical leads and thermal-air paths are distinct. A sample neck or nearby connector does not establish an electrical feedthrough.",
 });
+
+export const dracoInventorySources = Object.freeze({
+  nasa: Object.freeze({label:"NASA: Playing Lacrosse on Titan",url:"https://science.nasa.gov/science-research/science-enabling-technology/technology-highlights/playing-lacrosse-on-titan/"}),
+  design: Object.freeze({label:"Honeybee / APL / NASA, LPSC2022 figs.1-2 (Phase B design)",url:"https://www.hou.usra.edu/meetings/lpsc2022/pdf/1069.pdf"}),
+  thermal: Object.freeze({label:"APL ICES2023-389 p.7 / fig.2 (thermal model)",url:"https://ttu-ir.tdl.org/server/api/core/bitstreams/0737a596-5ba9-488b-9cc6-0b2ed93e2cd5/content"}),
+  cameras: Object.freeze({label:"DragonCam authors, figs.2-3 (published arrangement)",url:"https://arxiv.org/abs/2601.13221"}),
+  avionics: samplingConnectionSources.draco,
+});
+export const dracoInventory = Object.freeze([
+  {id:"draco-port-drill",name:"Port drill",source:"design",inspect:"drills",subassembly:"drill-port",
+    role:"One of two redundant rotary-percussive drills; separate rotation, percussion and feed mechanisms.",
+    modeled:"Head, two head actuators, Z motor/gearhead, rail/screw, swivel, bit, two body mounts and two short motor leads. Same equipment inventory as starboard; shapes and sizes estimated."},
+  {id:"draco-starboard-drill",name:"Starboard drill",source:"design",inspect:"drills",subassembly:"drill-starboard",
+    role:"The second redundant drill serves the shared sample-delivery system, not a separate dedicated blower.",
+    modeled:"The same head/feed/bit/mount and short-lead inventory as port. No missing counterpart found in this modeled drill mechanism; this is not verification of every flight component."},
+  {id:"draco-shared-suction",name:"Shared suction equipment",source:"nasa",inspect:"drill-blower",
+    role:"Either drill can use either of the two blowers. They are shared redundant equipment, not one blower assigned to each drill.",
+    modeled:"Two blower approximations, inlet diverter and a single return path sit on port. This explains much of the extra gear there. Exact flight housings, fittings and mounting locations remain unverified."},
+  {id:"draco-blower-location",name:"Port-side placement evidence",source:"thermal",inspect:"sample-lines",
+    role:"The thermal paper identifies a DrACO blower behind the port forward arm. Its figure is a thermal model, not a hardware photograph.",
+    modeled:"Both blowers are placed together there as an estimate. This source does not confirm both exact flight positions, so no starboard copies were added."},
+  {id:"draco-paired-transfer",name:"Drill hoses and sample tubes",source:"design",inspect:"sample-lines",
+    role:"Each drill has a pneumatic intake; the shared system can deliver to LDMS or GCMS sample cups.",
+    modeled:"One flexible hose, one intake tube and four tube clamps per side; port has the additional shared return and three clamps. These are plumbing, not electrical harnesses. The single carousel junction simplifies the separate published elevator paths."},
+  {id:"draco-nearby-optics",name:"Nearby camera and illumination",source:"cameras",inspect:"side-cameras",subassembly:"microscopic-camera",
+    role:"The camera arrangement includes one Microscopic Camera with co-aligned illumination, plus port and starboard Down Cameras.",
+    modeled:"The microscope and LED assembly sit on port near the drill site. They are camera equipment, not a missing second drill actuator. The starboard Down Camera is present; do not mirror the microscope solely for symmetry."},
+  {id:"draco-electrical-gap",name:"Electrical routing still open",source:"avionics",inspect:null,
+    role:"Honeybee's DrACO scope includes dedicated avionics and flight software.",
+    modeled:"Two short motor-lead examples per drill do not complete the wiring. Z-feed leads, moving service loops, blower/diverter leads and identified controller connections remain unmodeled or unresolved on both sides."},
+  {id:"draco-guards-gap",name:"Guards, brackets and unidentified hardware",source:"design",inspect:null,
+    role:"The published drill figure identifies the main mechanisms, not a complete flight installation bill of materials.",
+    modeled:"Mounting brackets are estimates. Protective guards, concealed brackets and the unidentified cylinder/cone in the older APL visualization are not established as missing flight parts. Do not invent or mirror them without evidence."},
+].map(row=>Object.freeze({...row,flightMatingConfirmed:false})));
+export const dracoInventoryLimits = Object.freeze({
+  scope:"Port / starboard equipment audit. Published system roles are distinct from estimated model shapes, routing and placement; matching counts do not establish flight completeness.",
+  naming:"Shared equipment may legitimately make one side busier. The two drill mechanisms have matching modeled inventories; surrounding equipment is not required to be symmetric.",
+  boundary:"Sample transport, electrical harnesses and thermal-air ducts are separate systems. No geometry, flight circuit or physics was added by this audit.",
+});

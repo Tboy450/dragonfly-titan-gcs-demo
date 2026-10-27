@@ -10,6 +10,22 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October27: [DrACO side inventory](research/draco-side-audit-2026-10-26/README.md).
+- [x] Inventory both mechanisms: matching 45 mesh pieces, two body mounts and two
+  short motor-lead examples each. No missing named drill counterpart found.
+- [x] Separate paired mechanisms from shared suction and one-sided camera equipment.
+  Both exact flight blower positions remain unverified; no arbitrary mirror copy.
+- [x] Two independent drill focuses with fixed-rail numbers; sample tubing uses Plumbing.
+- [x] Eight source/coverage rows in a collapsed inventory; buttons return to the model.
+- [x] Exact before files/recovery tag, reused source imagery and desktop/phone samples.
+- [x] 652 tests, Internal/Thermal pixels, 24 parts, 11 IEM targets, hide/restore,
+  research-only gating, all focus callbacks, no overflow/browser errors.
+- [ ] Publish and verify Pages, then record receipt and stop preview.
+- [ ] Next source-led candidate: local drill motor-lead moving service accommodation;
+  full Z-feed/blower/diverter wiring, identified avionics mating, separate elevator
+  paths, guards and hidden brackets remain open. Do not claim flight completeness.
+Outreach was handled separately; its private local send log is not part of this release.
+
 October26: [IEM tag / terminal cleanup](research/iem-terminal-cleanup-2026-10-26/README.md).
 - [x] Lead8 label surface-attached, no sampled penetration anywhere on its cable.
 - [x] Three hollow EST retention wraps replace solid terminal blocks, original footprints.
@@ -24,7 +40,7 @@ October26: [IEM tag / terminal cleanup](research/iem-terminal-cleanup-2026-10-26
   at least45.9 mm area-equivalent diameter, versus the illustrative18 mm branch. Photos
   do not identify all destinations. Do not add a false splice, conceal the mismatch or
   arbitrarily resize flight hardware. Further network changes need a separately scoped pass.
-Next independent part-validation task: DrACO equipment asymmetry inventory below.
+DrACO equipment asymmetry inventory is completed above; its unresolved hardware stays open.
 Git cleanup remains paused; Assets Lab/Swarmfall/save data untouched.
 
 October26: [final IEM columns and approved lower refit](research/iem-final-columns-2026-10-25/README.md).
@@ -63,7 +79,8 @@ cleanup suppression only, not a permanent repository/global setting. Do not touc
 Assets Lab/Swarmfall data. Earlier dated next-step entries below are historical.
 
 October25 owner follow-up:
-- [ ] Validate port/starboard DrACO drill equipment asymmetry. Inventory both drill heads,
+- [x] Validate port/starboard DrACO drill equipment asymmetry (October27 inventory above;
+  no missing named paired mechanism found, flight installation still incomplete). Inventory both drill heads,
   feed/drive hardware, brackets, guards, hoses/harnesses and nearby optical/sample interfaces
   against real NASA/APL photos and published diagrams. Distinguish intentional shared or
   one-sided equipment from a missing modeled part before adding or mirroring anything.

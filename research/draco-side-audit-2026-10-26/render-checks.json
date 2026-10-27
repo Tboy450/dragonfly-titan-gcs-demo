@@ -1,0 +1,32 @@
+[
+  {
+    "mode": "desktop Internal port",
+    "gold": 4374,
+    "cold": 9,
+    "dark": 3565
+  },
+  {
+    "mode": "desktop Internal starboard",
+    "gold": 3316,
+    "cold": 15,
+    "dark": 3151
+  },
+  {
+    "mode": "desktop Thermal starboard",
+    "gold": 0,
+    "cold": 9794,
+    "dark": 2312
+  },
+  {
+    "mode": "phone Internal inventory port",
+    "gold": 3463,
+    "cold": 19,
+    "dark": 2935
+  },
+  {
+    "mode": "phone Thermal starboard",
+    "gold": 0,
+    "cold": 7715,
+    "dark": 1839
+  }
+]

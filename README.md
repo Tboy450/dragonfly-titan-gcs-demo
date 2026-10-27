@@ -10,6 +10,14 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
+October27: [DrACO side-by-side equipment audit](research/draco-side-audit-2026-10-26/README.md).
+Both drill mechanisms retain matching 45-piece inventories. Separate port/starboard
+inspection targets have pinned numbers; sample hoses/tubes hide as plumbing rather
+than electrical harnesses. New evidence/coverage notes stay collapsed. All hardware
+geometry is unchanged; complete wiring and exact flight blower locations remain open.
+652 tests and desktop/phone checks pass, with 24 numbered parts and 11 IEM targets retained.
+Publication verification follows. Previous published release below is historical.
+
 October26 cleanup: [IEM tag and terminal wraps](research/iem-terminal-cleanup-2026-10-26/README.md).
 Lead8 label no longer clips; terminal blocks become hollow wraps. All26 cable curves,
 endpoints/radii and other fittings remain exact.645 tests; desktop/phone retain24 parts

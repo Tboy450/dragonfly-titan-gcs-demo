@@ -4,6 +4,15 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October27 DrACO side audit (Codex):** [side-by-side inventory](research/draco-side-audit-2026-10-26/README.md).
+[PUB] two redundant drills, shared cross-strapped blowers, single microscope/LED
+arrangement and paired Down Cameras. [CALC] each modeled drill retains 45 mesh pieces,
+two mounts and two short lead examples; all hardware meshes/poses/endpoints are exact.
+[EST] both modeled blower positions, brackets, routing and simplified carousel junction.
+ICES2023 identifies a visible port blower, not both exact flight locations. Seven new
+tests, 652 total, and desktop/phone inspection checks pass. Complete wiring, moving
+service loops, avionics mating, elevators and flight guards remain unresolved.
+
 **October25 fourth IEM column (Codex):** [measured record](research/iem-fourth-column-2026-10-25/README.md).
 Reuses shared real-photo/workmanship/CAD records without duplicate comparison imagery.
 [EST] three accommodation routes/labels/supports/lacing. [CALC] all26 endpoints/radii and

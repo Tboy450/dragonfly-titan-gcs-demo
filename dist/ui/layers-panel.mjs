@@ -8,6 +8,7 @@ import { updateInspectorUI } from "./vehicle-inspector.mjs?v=dev";
 import { focusInspector, selectInspectionSubassembly } from "../vehicle-inspector.mjs?v=dev";
 import { renderSamplingConnections, renderConnectionCoverage } from "./sampling-connections.mjs?v=dev";
 import {installationFamilies,installationSources,installationLimits} from "../avionics-installation.mjs?v=dev";
+import {dracoInventory,dracoInventorySources,dracoInventoryLimits} from "../sampling-connections.mjs?v=dev";
 import {applyInspectionAccessPreset} from "../inspection-visibility.mjs?v=dev";
 
 renderSamplingConnections($("sampling-connections-body"), row => {
@@ -16,6 +17,15 @@ renderSamplingConnections($("sampling-connections-body"), row => {
   if (row.subassembly) selectInspectionSubassembly(state, chaseRenderer.subsystems[row.inspect], row.subassembly);
   updateInspectorUI();
 });
+renderConnectionCoverage($("draco-inventory-body"),row=>{
+  if(!chaseRenderer?.subsystems[row.inspect])return;
+  applyInspectionAccessPreset(state.inspector,"open");
+  focusInspector(state,row.inspect);
+  state.inspector.isolate=true;
+  if(row.subassembly)selectInspectionSubassembly(state,chaseRenderer.subsystems[row.inspect],row.subassembly);
+  updateInspectorUI();
+  $("flight-canvas").scrollIntoView({block:"center"});
+},{rows:dracoInventory,sources:dracoInventorySources,limits:dracoInventoryLimits});
 renderConnectionCoverage($("avionics-installation-body"),row=>{
   if(!chaseRenderer?.subsystems[row.inspect])return;
   applyInspectionAccessPreset(state.inspector,"open");
@@ -110,7 +120,7 @@ const componentInfo = {
   "sample-carousel": ["Photo-referenced casing and cooling fins surround the sample cups; the drives sit below. The housing stays fixed. The indexing ring is a diagram cue, not visible flight hardware. Drum diameter (0.36 m), fittings and placement are estimates, not flight CAD. Thermal uses cold-attic temperature above and bay temperature for the drives; no separate sensor or fin-gradient simulation. The foil-wrapped unit, the valve block with bolted flanges and the white wire loop on top follow NASA's 2026 integration photo; what they are is not stated, and their positions are estimated.", "carouselPhotos"],
   wonderwall: ["Separates the cold carousel region from warm DraMS. The published roughly 5 cm instrument separation is not wall thickness. This contoured interface, apertures and facing/core construction are estimates, not a verified flight material stack. Thermal colors use shared warm/cold nodes, not a solved temperature gradient. The rebuilt DraMS interface is aligned to this aperture; exact flight connections remain unverified. The khaki facesheets, machined pocketed frame, spoked port fitting, orange Kapton and edge clip tabs follow NASA's 2026 integration photos (sizes estimated). In the photos the port sits lower on the panel than drawn; it stays aligned with the modeled DraMS interface here.", "carouselDesign"],
   drams: ["DraMS analyzes samples by laser desorption or gas chromatography/mass spectrometry. This warm-side reconstruction has enclosed instrument bodies, separate covers and an interface through the modeled Wonderwall opening. Dimensions, enclosure details, routes and fan geometry are estimates, not flight CAD. Hidden electrodes, GC columns, laser optics and the sample oven are not reconstructed. Temperature is the shared bay model, not measured hardware telemetry. The insulation blanket over the analyzer, valve bodies with lines into the gas chromatograph, brass cylinder and wire bundle follow NASA's 2026 integration photo (identities and positions estimated); the photo's test cables and connector table are ground equipment and are not drawn.", "carouselDesign"],
-  "drill-blower": ["DrACO's two redundant centrifugal blowers (forward and aft), with impellers designed for Titan air, behind the port forward arm and exposed to Titan (ICES-2023). An inlet flow diverter picks which blower pulls the air; each exhausts outboard and down. Sizes and shapes are estimates.", "dracoPaper"],
+  "drill-blower": ["DrACO has two redundant centrifugal blowers, shared by the two drills, with impellers designed for Titan air. ICES-2023 identifies a blower exposed to Titan behind the port forward arm; it does not establish both exact flight locations. This model places both there as an estimate. The inlet diverter, outboard/down exhausts, housings, sizes and fittings are illustrative approximations, not photo-verified flight hardware. The collapsed DrACO side-by-side inventory distinguishes paired mechanisms from shared equipment and unresolved wiring.", "dracoPaper"],
   battery: ["The battery supplies flight power and recharges from the MMRTG. The thermal model includes a phase-change buffer and inhibits charging outside its permitted band. Published: an 11.5 kWh pack built by APL with GS Yuasa cells, 134 Ah, 24 cells; fans that push heat into the lander air in flight, heat pipes in three directions to keep the cells within 5 C of each other, aluminum fins between the cell stacks, and 7.5 kg of phase-change wax as a buffer for flights. Drawn: 24 upright cells of GS Yuasa's 134 Ah space cell (130 x 50 x 271 mm; the cell model is an inference, not published), four across and six deep, with fins, copper heat pipes and bus straps. The enclosure's look follows real photos of APL's 9-cell thermal test module: a cream ribbed lower section, a bare aluminum upper housing with 2 in fans on its ends, small 1 in fans on the lower walls and round connectors. That is a test article, so the flight pack's enclosure, cell arrangement, fan layout, connectors and its place just forward of the aft arms (from NASA/APL's 2023 plan view) are estimates; where the wax sits is not published, so it is not drawn. The lid is see-through here so the cells show.", "batteryModule"],
   fan: ["Two circulation fans (Fan-A and Fan-B) at the MMRTG end pull its waste-heat-warmed, nitrogen-rich gas into the duct: 0.052 kg/s by design, within a 15 W allocation; their speed also controls the MMRTG fin-root temperature. Drawn from NASA/APL's 2023 thermal talk (plan view and controller diagram); size scaled from the plan view, housings estimated. Their revised fore-aft placement and adapter collar fit the estimated canted aft panel; the real passage through that panel is not reconstructed. A flight-like fan was tested at 5,000-6,200 rpm in the 2024 full-scale test.", "thermal"],
   "underfloor-duct": ["The warm duct runs forward under the equipment floor on the centerline, about 14 cm wide (scaled from the 2023 plan view), and turns up into the body below the nose; the gas then returns aft through the bay to the MMRTG. Its height is an estimate.", "thermal"],
@@ -148,6 +158,7 @@ export function updateLayerPanel() {
   $("thermal-legend").hidden = !layered;
   const mock = layered && state.vehicleModel === "original";
   $("sampling-connections").hidden = !layered || mock || !chaseRenderer;
+  $("draco-inventory").hidden = !layered || mock || !chaseRenderer;
   $("avionics-installation").hidden = !layered || mock || !chaseRenderer;
   $("part-list").hidden = !layered;
   $("mock-banner").hidden = !mock;
