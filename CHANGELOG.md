@@ -60,6 +60,11 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   preserved. Sources, real/model samples, archive/tag on 0e5ca42 and handoff saved.
 - **Next:** fixed feed-actuator electrical exit/local retention evidence audit;
   sensor/remote wiring and uncovered drive internals remain open.
+- **Publication:** drill commit 6090dc7; integrated release badbec2. Shared branch's
+  concurrent project files preserved byte-for-byte, both changelog sections retained.
+  703 combined tests pass; Pages 40591034163 succeeded. Live build/new disclosure,
+  24 parts/two targets, 1265/1265px and zero errors verified. Public sample/JSON saved;
+  preview stopped, viewport reset. Receipt signed Codex (OpenAI).
 
 ### 2026-10-27: Swarmfall drop presets, remembered per planet
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)

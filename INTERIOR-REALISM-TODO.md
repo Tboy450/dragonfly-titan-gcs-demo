@@ -20,7 +20,9 @@ October 27: [Upper drive exterior and mounting fit](research/drill-drive-2026-10
   bellows, leads, plumbing, bit depth and 130 mm travel. 682 tests.
 - [x] Installed Internal/Thermal, covers hide/restore, 390px phone: 24 parts/two
   focuses, no overflow/errors. Real/Covers-on/Covers-off samples and comparison saved.
-- [ ] Publish and verify live build; add deployment receipt.
+- [x] Published badbec2; Pages 40591034163 succeeded. Shared-branch updates preserved
+  unchanged; 703 combined tests pass. Live build/disclosure, 24 parts/two targets,
+  no overflow/errors verified. Public sample/JSON saved; server stopped, viewport reset.
 - [ ] NEXT: fixed Z-feed actuator electrical exit/local retention evidence audit.
   Reuse real EM1/prototype photos, distinguish GSE cables from flight wiring.
   No invented controller, pinout or sensor type. Remote wiring and real joint

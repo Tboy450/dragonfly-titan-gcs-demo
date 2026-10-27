@@ -86,4 +86,16 @@ Hidden drive mechanics and actual flight mount/load paths remain unresolved; don
 keep adding speculative gear/joint detail just to fill context. Preserve this drive,
 carriage, sleeves and head leads. No Assets Lab, Swarmfall, saves or Git cleanup work.
 
-Publication receipt follows live verification.
+## Publication receipt
+
+Drill implementation commit **6090dc7**; integrated release
+**badbec29114070088602c49ec6613fc019234f04**, October 27, 2026.
+[Open the public simulator](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=badbec2).
+Concurrent shared-branch work through 9a0affa was incorporated unchanged; the only
+conflict was the shared changelog, resolved by retaining both sets of entries.
+No Swarmfall code or data was edited by this pass. All **703 combined tests** pass.
+Pages **40591034163** succeeded. Verified working live build, new drive disclosure,
+24 numbered parts/two drill targets, 1265/1265px and zero browser errors.
+`public-port.png` and `public-checks.json` record it. Recovery tag pushed; local
+preview stopped, viewport restored, one project tab kept on the public app.
+Receipt signed Codex (OpenAI).

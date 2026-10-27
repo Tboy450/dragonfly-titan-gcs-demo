@@ -16,6 +16,9 @@ supported motor seating, panel openings and hollow coupling cover/fittings.
 Hidden joint/gears remain unresolved; exposed shaft envelopes are explicitly
 illustrative. Carriage, leads, bellows, hoses, travel and bit depth preserved.
 682 tests and desktop/phone checks pass. Next: fixed feed-actuator lead evidence.
+Published **badbec2**; Pages 40591034163 succeeded. Concurrent shared-project work
+was preserved unchanged, and all **703 combined tests** pass. Live build/disclosure,
+24 parts/two targets and no overflow/errors verified; public sample/JSON saved.
 
 October 27: [Drill roller carriage and spherical nut](research/drill-carriage-2026-10-27/README.md).
 Six crossed roller exteriors meet a V-shaped guide; an open-bore spherical nut/pocket
