@@ -406,8 +406,21 @@ complete solely because its assets download or its unit tests pass.
     toast appeared and tapping it centered the view on the zone.
   - Weather fronts that cover the whole map have no single place to jump to. A list of
     recent alerts could come later.
-- [ ] **CTRL-07 (P2)** Formation choices (spread, tight, line) and stances (aggressive, hold
-  fire for a quiet takeover).
+- [x] **CTRL-07 (P2) — Claude (October 27)** Formation choices (spread, tight, line) and stances
+  (aggressive, hold fire for a quiet takeover).
+  - Formations (`setFormation`, battle.mjs): spread is the old layout, unchanged. Tight halves
+    the spacing: it fits streets and zone centers, but splash hits more drones. Line flies
+    abreast across the direction of travel, 12 to a rank.
+  - A squad on its way re-forms for its current order. In a zone the formation is squeezed to
+    fit, as before.
+  - Stance (`setStance`): holding fire, drones shoot only at a target they were ordered to
+    attack and attack-move does not hunt. That avoids the crossfire outrage in towns
+    (ENEMY-01), whose log line now suggests it.
+  - Split squads keep both settings, and saves check them.
+  - Controls: L cycles the formation, Y toggles hold fire, and both are in the Squad ▾ menu.
+    The squad card shows "line" or "tight" and "holding fire". The Field guide lists both.
+  - `tests/invasion-formations.test.mjs` (6 tests). In the browser, ten drones in line formation
+    flew east and settled into a north-south line.
 - [x] **CTRL-08 (P2) — Codex, October 20; implementation and automated checks** Minimap
   defaults to View taps. Desktop right-click orders selected squads; Map: Orders enables
   touch/pen taps for attack/capture/move, with a brief target pulse. Paused orders work;

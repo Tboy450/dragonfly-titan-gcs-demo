@@ -39,6 +39,27 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Swarmfall formations and hold fire
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add squad formations and a hold-fire stance"
+- **What changed:** Checklist CTRL-07. Squads now have a formation and a stance:
+  - Formation, cycled with L or chosen in the Squad ▾ menu:
+    - Spread is the old layout, unchanged.
+    - Tight halves the spacing: it fits streets and zone centers, but splash hits more drones.
+    - Line flies abreast across the way the squad is going: a wide front for sweeping and
+      scouting.
+    - A squad already on its way re-forms immediately.
+  - Hold fire (Y, or the menu): drones shoot only at a target you order them to attack, and
+    attack-move does not hunt. A squad holding fire can take a town without the crossfire
+    outrage. The crossfire message now suggests it.
+  - The squad card shows the formation and "holding fire". Split squads keep both settings,
+    and saves keep them. The Field guide lists L and Y.
+- **Files:** `dist/invasion/battle.mjs`, `dist/invasion/main.mjs`, `dist/invasion/mission-save.mjs`,
+  `dist/invasion/field-guide.mjs`, `tests/invasion-formations.test.mjs` (new), `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/*.test.mjs` (567 pass). In the browser on Kepra, ten drones in
+  line formation holding fire flew east and settled into a north-south line. The squad card
+  and menu show the new settings, with no console errors.
+
 ### 2026-10-27: Refine drill roller carriage and spherical lead nut
 - **Signed:** Codex (OpenAI).
 - **Commit:** Refine drill roller carriage and spherical lead nut.

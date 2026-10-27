@@ -26,6 +26,8 @@ const controls = [
     "Enter orders them to the middle of the screen, or attacks the defender there; Shift+Enter adds a waypoint",
     "Right-click the ground to move, or a defender to attack; Shift+right-click adds a waypoint; on touch, tap",
     "T arms attack-move for the next order; P turns patrol on or off",
+    "L changes formation: spread (less splash), tight (fits streets), line (a wide front)",
+    "Y holds fire: drones shoot only at what you order them to attack, for a quiet takeover",
   ] },
   { name: "Drop waves", summary: "Buy drones and land them in a zone you hold", facts: [
     "B opens the drop panel; Tab moves between its buttons and Enter presses one",

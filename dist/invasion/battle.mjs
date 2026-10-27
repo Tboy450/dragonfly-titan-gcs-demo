@@ -268,6 +268,28 @@ export function formationSlot(index, spacing = separation) {
   return { dx: Math.cos(angle) * r, dz: Math.sin(angle) * r };
 }
 
+// Formations and stances (CTRL-07). A squad flies spread out (the default: splash hits fewer
+// drones), tight (half the spacing: fits streets and zone centers, but splash hits more), or in
+// a line across its direction of travel (a wide front for sweeping and scouting). A squad told
+// to hold fire shoots only at a target it was ordered to attack, so it can take a town quietly:
+// no crossfire (ENEMY-01) and no attack-move.
+export const formations = Object.freeze(["spread", "tight", "line"]);
+export const stances = Object.freeze(["fire", "hold"]);
+const tightSpacing = separation / 2, lineRank = 12;
+// Slot `index` of a formation; heading is the direction of travel (radians, atan2(dx, dz)).
+export function formationOffset(formation, index, spacing, heading = 0) {
+  if (formation === "tight") return formationSlot(index, Math.min(spacing, tightSpacing));
+  if (formation !== "line") return formationSlot(index, spacing);
+  const rank = Math.floor(index / lineRank), k = index % lineRank, across = (k % 2 ? 1 : -1) * Math.ceil(k / 2) * spacing, back = rank * spacing * 1.2;
+  const fx = Math.sin(heading), fz = Math.cos(heading);
+  return { dx: fz * across - fx * back, dz: -fx * across - fz * back };
+}
+// The formation an order for these squads uses: theirs when they all agree, otherwise spread.
+function sharedFormation(b, squadIds) {
+  const chosen = b.squads.filter(s => squadIds.includes(s.id)).map(s => s.formation || "spread");
+  return chosen.length && chosen.every(f => f === chosen[0]) ? chosen[0] : "spread";
+}
+
 function releasePod(b, pod) {
   pod.released = true;
   let index = 0;
@@ -312,17 +334,23 @@ export function orderSquads(b, squadIds, order) {
   const total = drones.length + pending.reduce((n, p) => n + payloadCount(p.payload), 0);
   if (!total) return 0;
   const zone = order.zone ? zoneById(b, order.zone) : null;
-  const spacing = zone ? Math.min(separation, zone.radius * 0.75 / Math.sqrt(total)) : separation;
+  const formation = sharedFormation(b, squadIds);
+  const fit = formation === "line" ? Math.min(lineRank, total) : Math.sqrt(total);
+  const spacing = zone ? Math.min(separation, zone.radius * (formation === "line" ? 1.5 : 0.75) / fit) : separation;
+  // A line faces the way the squad travels: from its drones' center (or the Hive) to the point.
+  const from = drones.length ? { x: drones.reduce((s, u) => s + u.x, 0) / drones.length, z: drones.reduce((s, u) => s + u.z, 0) / drones.length } : b.zones[0];
+  const heading = Number.isFinite(order.x) && from ? Math.atan2(order.x - from.x, order.z - from.z) : 0;
+  const slotAt = (index) => (order.kind === "attack" ? formationSlot(index, 5) : formationOffset(formation, index, spacing, heading));
   // pace: the group travels at its slowest drone's speed so it arrives together.
   const pace = Math.min(...drones.map(unit => droneTypes[unit.type].speed), ...pending.flatMap(p => Object.keys(p.payload).map(t => droneTypes[t].speed)));
   for (const squad of b.squads) if (squadIds.includes(squad.id)) squad.order = { ...order, pace };
   drones.forEach((unit, index) => {
     unit.order = { ...order, pace };
-    unit.slot = order.kind === "attack" ? formationSlot(index, 5) : formationSlot(index, spacing);
+    unit.slot = slotAt(index);
     unit.landed = false;
   });
   let index = drones.length;
-  for (const pod of pending) pod.pendingSlots = Array.from({ length: payloadCount(pod.payload) }, () => formationSlot(index++, order.kind === "attack" ? 5 : spacing));
+  for (const pod of pending) pod.pendingSlots = Array.from({ length: payloadCount(pod.payload) }, () => slotAt(index++));
   b.events.push({ kind: "order", order: order.kind, x: order.x, z: order.z, target: order.target ?? null });
   return total;
 }
@@ -439,10 +467,39 @@ export function splitSquad(b, squadId, type = null) {
   const leaving = type ? drones.filter(unit => unit.type === type) : drones.slice(Math.ceil(drones.length / 2));
   if (!leaving.length || leaving.length === drones.length) return null;
   const fresh = { id: b.squads.length + 1, name: `Squad ${b.squads.length + 1}`, color: squadColors[b.squads.length % squadColors.length], order: { kind: "hold" } };
+  if (squad.formation) fresh.formation = squad.formation;
+  if (squad.stance) fresh.stance = squad.stance;
   b.squads.push(fresh);
   for (const unit of leaving) { unit.squad = fresh.id; unit.order = { kind: "hold", x: unit.x, z: unit.z }; unit.slot = { dx: 0, dz: 0 }; }
   b.log.push({ t: b.time, tone: "info", text: `${fresh.name}: ${leaving.length} drones split from ${squad.name}.` });
   return fresh.id;
+}
+
+// Formation for these squads; a squad on its way re-forms for its current order. Returns the
+// number of squads changed (0 for an unknown formation).
+export function setFormation(b, squadIds, formation) {
+  if (!formations.includes(formation)) return 0;
+  let changed = 0;
+  for (const squad of b.squads) {
+    if (!squadIds.includes(squad.id)) continue;
+    squad.formation = formation;
+    changed += 1;
+    const order = squad.order;
+    if ((order?.kind === "move" || order?.kind === "capture") && Number.isFinite(order.x)) orderSquads(b, [squad.id], order);
+  }
+  return changed;
+}
+// "fire" (the default) or "hold": hold fire drops every target except an ordered attack.
+export function setStance(b, squadIds, stance) {
+  if (!stances.includes(stance)) return 0;
+  let changed = 0;
+  for (const squad of b.squads) {
+    if (!squadIds.includes(squad.id)) continue;
+    squad.stance = stance;
+    changed += 1;
+  }
+  if (stance === "hold") for (const unit of squadDrones(b, squadIds)) if (unit.order?.kind !== "attack") unit.target = null;
+  return changed;
 }
 
 // Rename: 1-24 characters, spaces tidied. Returns false (and keeps the name) for a blank one.
@@ -522,6 +579,8 @@ function moveUnits(b, dt, auras, swarm, natives) {
   const grid = buildGrid(swarm, 8);
   let routes = routeBudget;
   const told = new Set(); // squads already reported moving on this step (one event per squad)
+  const quiet = new Set(), tight = new Set();
+  for (const squad of b.squads) { if (squad.stance === "hold") quiet.add(squad.id); if (squad.formation === "tight") tight.add(squad.id); }
   const huntable = swarm.filter(drone => !inBeachhead(b, drone));
   const { centerX, centerZ, half } = b.map;
   for (const unit of b.units) {
@@ -535,7 +594,7 @@ function moveUnits(b, dt, auras, swarm, natives) {
       const order = unit.order;
       let destination = order;
       // Attack-move: armed drones turn on the nearest defender in sight, then go on.
-      const prey = order.hunt && order.kind === "move" && def.weapons.length ? nearestEnemy(unit, natives, def.sight) : null;
+      const prey = order.hunt && order.kind === "move" && def.weapons.length && !quiet.has(unit.squad) ? nearestEnemy(unit, natives, def.sight) : null;
       if (prey) {
         const reach = Math.max(6, reachFor(def, prey) * effects.range * 0.8);
         if (shotRange(b, unit, prey) > reach || !clearShot(b, unit, prey)) { tx = prey.x + unit.slot.dx; tz = prey.z + unit.slot.dz; arrive = 2; }
@@ -601,13 +660,13 @@ function moveUnits(b, dt, auras, swarm, natives) {
     let wantX = 0, wantZ = 0;
     if (d > 0.4) { const s = speed * Math.min(1, d / arrive); wantX = dx / d * s; wantZ = dz / d * s; }
     if (unit.side === "swarm") {
-      // Keep a little space between drones so a squad spreads instead of stacking.
-      const cx = Math.floor(unit.x / 8), cz = Math.floor(unit.z / 8);
+      // Keep a little space between drones so a squad spreads instead of stacking (less in a tight one).
+      const cx = Math.floor(unit.x / 8), cz = Math.floor(unit.z / 8), gap = tight.has(unit.squad) ? tightSpacing : separation;
       for (let gx = cx - 1; gx <= cx + 1; gx += 1) for (let gz = cz - 1; gz <= cz + 1; gz += 1) {
         for (const other of grid.get(`${gx},${gz}`) || []) {
           if (other === unit) continue;
           const ox = unit.x - other.x, oz = unit.z - other.z, od = Math.hypot(ox, oz);
-          if (od < separation && od > 1e-6) { const push = (separation - od) * 1.6 / od; wantX += ox * push; wantZ += oz * push; }
+          if (od < gap && od > 1e-6) { const push = (gap - od) * 1.6 / od; wantX += ox * push; wantZ += oz * push; }
         }
       }
       if (!unit.landed) { wantX += effects.wind.x; wantZ += effects.wind.z; }
@@ -711,6 +770,7 @@ function fight(b, dt, auras, swarm, natives) {
   const swarmIndex = combatIndex(swarm), nativeIndex = combatIndex(natives);
   const eyes = new Map(), eyeOf = (u) => { let y = eyes.get(u); if (y === undefined) eyes.set(u, y = worldEye(b, u)); return y; };
   const range = (u, other) => Math.sqrt(dist2(u, other) + (eyeOf(other) - eyeOf(u)) ** 2);
+  const quiet = new Set(b.squads.filter(s => s.stance === "hold").map(s => s.id));
   for (const unit of b.units) {
     if (!unit.alive) continue;
     const def = defOf(unit);
@@ -723,11 +783,13 @@ function fight(b, dt, auras, swarm, natives) {
       const ordered = unitById(b, unit.order.target);
       if (armed(ordered)) target = ordered;
     }
-    if (!target && unit.target) {
+    // Drones holding fire shoot only at a target they were ordered to attack.
+    const holding = unit.side === "swarm" && !unit.structure && quiet.has(unit.squad);
+    if (!target && unit.target && !holding) {
       const previous = unitById(b, unit.target);
       if (armed(previous)) target = previous;
     }
-    if (!target) {
+    if (!target && !holding) {
       let bestD = Infinity;
       for (const other of combatNear(enemyIndex, unit.x, unit.z, maxRange(def) * rangeScale)) {
         const d = dist2(unit, other);
@@ -921,7 +983,7 @@ function stepAlarm(b, dt, swarm) {
         crossfire += 1;
         if (!town.crossfire) {
           town.crossfire = true;
-          b.log.push({ t: b.time, tone: "bad", text: `Civilians caught in the crossfire in ${town.name}: the public is outraged. Links capture quietly instead.` });
+          b.log.push({ t: b.time, tone: "bad", text: `Civilians caught in the crossfire in ${town.name}: the public is outraged. Hold fire (Y) and let Links capture quietly instead.` });
         }
       }
     }

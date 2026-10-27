@@ -9,7 +9,7 @@ import {
 import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, orderHold, battleSummary,
   objectiveStatus, starsEarned, missionResult, retreat, publicMood, dropZoneAt, extractVictory, continueCapturing,
-  cityFound, hiddenUnits, shotBlocked, mergeSquads, splitSquad, renameSquad, captureBlocker,
+  cityFound, hiddenUnits, shotBlocked, mergeSquads, splitSquad, renameSquad, captureBlocker, setFormation, setStance, formations,
   orderFor, queueOrder, setPatrol, replaceOrders,
 } from "./battle.mjs?v=dev";
 import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
@@ -813,6 +813,29 @@ function togglePatrol() {
   updateSquadTools();
 }
 
+// Formation and stance of the selected squads (CTRL-07, battle.mjs setFormation/setStance).
+const formationNames = { spread: "spread", tight: "tight", line: "line" };
+const formationNotes = { spread: "spread out, so splash hits fewer drones", tight: "tight, to fit streets and zone centers (splash hits more)", line: "in a line across their path, a wide front for sweeping" };
+function chooseFormation(formation) {
+  const ids = [...mission.selected];
+  if (!setFormation(mission.battle, ids, formation)) { toast("Select a squad first.", "info"); return; }
+  toast(`Formation: ${formationNotes[formation]}.`, "info", 2600);
+  updateSquadTools();
+}
+function cycleFormation() {
+  const squads = mission.battle.squads.filter(s => mission.selected.has(s.id));
+  if (!squads.length) { toast("Select a squad first.", "info"); return; }
+  chooseFormation(formations[(formations.indexOf(squads[0].formation || "spread") + 1) % formations.length]);
+}
+function toggleHoldFire() {
+  const ids = [...mission.selected], squads = mission.battle.squads.filter(s => ids.includes(s.id));
+  if (!squads.length) { toast("Select a squad first.", "info"); return; }
+  const on = !squads.every(s => s.stance === "hold");
+  setStance(mission.battle, ids, on ? "hold" : "fire");
+  toast(on ? "Holding fire: drones shoot only at a target you order them to attack. Good for quiet takeovers." : "Firing at will.", "info", 3200);
+  updateSquadTools();
+}
+
 function selectSquad(id, additive = false) {
   const selected = mission.selected;
   if (additive) { if (selected.has(id)) selected.delete(id); else selected.add(id); } else if (selected.size === 1 && selected.has(id)) selected.clear(); else { selected.clear(); selected.add(id); }
@@ -866,6 +889,11 @@ function updateSquadTools() {
     options.push(["queue", "Queue next order"], ["hunt", "Attack-move next order (T)"]);
     const patrolling = b.squads.filter(s => chosen.includes(s.id)).every(s => s.patrol);
     options.push(["patrol", patrolling ? "Patrol: on → off (P)" : "Patrol: off → on (P)"]);
+    // Formation and stance (CTRL-07): the choices not already set on every selected squad.
+    const squads = b.squads.filter(s => chosen.includes(s.id));
+    for (const formation of formations) if (!squads.every(s => (s.formation || "spread") === formation)) options.push([`formation:${formation}`, `Formation: ${formationNames[formation]} (L)`]);
+    const holding = squads.every(s => s.stance === "hold");
+    options.push(["stance", holding ? "Hold fire: on → off (Y)" : "Hold fire: off → on (Y)"]);
   }
   const signature = options.map(o => o.join(":")).join("|");
   if (select.dataset.signature !== signature) {
@@ -890,6 +918,8 @@ $("squad-tools").addEventListener("change", (event) => {
     toast("Next order is a waypoint: tap or click where to go.", "info", 2500);
   } else if (action === "hunt") armAttackMove();
   else if (action === "patrol") togglePatrol();
+  else if (action.startsWith("formation:")) chooseFormation(action.slice(10));
+  else if (action === "stance") toggleHoldFire();
   else if (action === "rename") {
     const squad = b.squads.find(s => s.id === chosen[0]);
     const name = window.prompt("Rename squad (up to 24 characters):", squad?.name || "");
@@ -1062,6 +1092,8 @@ window.addEventListener("keydown", (event) => {
   if (key === "j" && !event.repeat) { jumpToAlert(); return; }
   if (key === "t" && !event.repeat) { armAttackMove(); return; }
   if (key === "p" && !event.repeat) { togglePatrol(); return; }
+  if (key === "l" && !event.repeat) { cycleFormation(); checkpointMission(); return; }
+  if (key === "y" && !event.repeat) { toggleHoldFire(); checkpointMission(); return; }
   if (key === "home") { resetView(); event.preventDefault(); return; }
   if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
   if (key === "escape") {
@@ -1169,7 +1201,7 @@ function updateSquadBar() {
     const mix = {};
     for (const unit of members) mix[unit.type] = (mix[unit.type] || 0) + 1;
     const health = members.length ? members.reduce((s, u) => s + u.hp / u.maxHp, 0) / members.length : 1;
-    card.querySelector("strong").textContent = `${squad.name} · ${members.length} ready${squad.inbound ? ` · ${squad.inboundPods} pods inbound` : ""}`;
+    card.querySelector("strong").textContent = `${squad.name} · ${members.length} ready${squad.inbound ? ` · ${squad.inboundPods} pods inbound` : ""}${squad.formation && squad.formation !== "spread" ? ` · ${squad.formation}` : ""}${squad.stance === "hold" ? " · holding fire" : ""}`;
     card.querySelector(".mix").textContent = [Object.entries(mix).map(([t, n]) => `${n} ${droneTypes[t].name}`).join(", "), squad.inboundDrones ? `${squad.inboundDrones} arriving` : ""].filter(Boolean).join(" · ");
     card.querySelector(".health i").style.width = `${Math.round(health * 100)}%`;
     card.setAttribute("aria-pressed", String(mission.selected.has(squad.id)));
