@@ -61,6 +61,7 @@
         <div id="hud-hazard" class="hud-hazard" hidden></div>
         <div class="hud-stat"><span>Time</span><strong id="hud-time">0:00</strong></div>
         <div class="hud-buttons">
+          <button id="menu-button" type="button" title="Menu: resume, restart, quit to the galaxy, sound and speed (Escape)">Menu</button>
           <button id="pause-button" type="button" title="Pause (Space)">Pause</button>
           <button id="speed-button" type="button" title="Game speed">1×</button>
           <button id="sound-button" type="button" title="Sound: off, quiet, medium, loud (M). Off by default.">♪ Off</button>
@@ -176,6 +177,23 @@
       <section id="save-backups" hidden><label for="save-backup-choice">Preserved browser backups</label><select id="save-backup-choice"></select><button id="save-download-backup" type="button">Download selected backup</button></section>
       <p id="save-action-status" role="status"></p>
       <div class="dialog-actions"><button id="save-retry-read" type="button">Retry reading saved data</button><button id="save-resolve" class="primary" type="button" hidden>Recover campaign data</button><button id="save-close" type="button">Close</button></div>
+    </dialog>
+
+    <dialog id="pause-menu" class="dialog pause-menu" aria-labelledby="pause-title" aria-describedby="pause-summary">
+      <h2 id="pause-title">Paused</h2>
+      <p id="pause-summary" class="pause-summary"></p>
+      <div class="pause-actions">
+        <button id="pause-resume" class="primary" type="button">Resume</button>
+        <button id="pause-restart" type="button">Restart mission</button>
+        <button id="pause-quit" type="button">Quit to the galaxy</button>
+      </div>
+      <p class="section-title">Settings</p>
+      <div class="pause-settings">
+        <button id="pause-sound" type="button" title="Sound: off, quiet, medium, loud (M)">♪ Off</button>
+        <button id="pause-speed" type="button" title="Game speed: 1×, 2× or 3×">Speed 1×</button>
+        <button id="pause-guide" type="button" title="Every drone, defender, society and hazard, and the controls">Field guide</button>
+      </div>
+      <p id="pause-note" class="pause-note">Quitting keeps this battle saved. Resume it from the galaxy map or the title screen.</p>
     </dialog>
 
     <dialog id="confirm-dialog" class="dialog">

@@ -39,6 +39,26 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Swarmfall pause menu
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add a pause menu with restart and quit to the galaxy"
+- **What changed:** Checklist CTRL-12. A Menu button in the HUD, or Escape when nothing else
+  needs closing, pauses the battle and opens a menu:
+  - Resume.
+  - Restart mission, after a confirmation. The attempt is recorded as a retreat (or a victory
+    when enough zones are held), then a fresh battle starts.
+  - Quit to the galaxy, keeping the battle saved. The galaxy's planet panel now has a "Resume
+    battle" button. Frontier maps quit to the title, where Resume mission already is.
+  - Sound, game speed and the Field guide. The guide keeps the battle paused and returns to the
+    menu.
+  - The Field guide's Mission controls mention the menu.
+- **Files:** `dist/invasion/main.mjs`, `dist/invasion/index.html`, `dist/invasion/invasion.css`,
+  `dist/invasion/field-guide.mjs`, `tests/invasion-pause-menu.test.mjs` (new), `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (260 pass). In the browser, Escape opened
+  and closed the menu. The first try showed that the browser treated the same Escape press as
+  closing the new menu, so the key's default action is now cancelled. Quit to the galaxy and
+  Resume battle brought back Kepra at the same moment, paused. On a 375 px phone, the HUD
+  buttons still fit one row.
 ### 2026-10-27: Correct upper drill drive seating and mounting relief
 - **Signed:** Codex (OpenAI).
 - **Commit:** Correct upper drill drive seating and mounting relief.

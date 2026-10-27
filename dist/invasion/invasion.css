@@ -195,6 +195,13 @@ a { color: var(--swarm); }
 .stat-grid dt { color: var(--muted); }
 .stat-grid dd { margin: 0; text-align: right; }
 .notes li { margin: 4px 0; color: var(--good); }
+.pause-menu { width: min(360px, calc(100% - 24px)); }
+.pause-summary { color: var(--muted); margin: 0 0 12px; }
+.pause-actions { display: flex; flex-direction: column; gap: 8px; }
+.pause-actions button { padding: 10px; font-size: 15px; }
+.pause-settings { display: flex; gap: 8px; flex-wrap: wrap; }
+.pause-note { color: var(--muted); font-size: 13px; margin: 12px 0 0; }
+.galaxy-resume { width: 100%; margin: 0 0 12px; }
 .dialog-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
 .achievement-list { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 6px; }
 .achievement-list li { padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; }

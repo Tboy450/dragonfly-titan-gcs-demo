@@ -486,7 +486,20 @@ complete solely because its assets download or its unit tests pass.
     started with that wave and offered "Last wave".
 - [ ] **CTRL-10 (P2)** Settings: camera speed, invert drag, key rebinding, UI size.
 - [ ] **CTRL-11 (P3)** Gamepad support.
-- [ ] **CTRL-12 (P3)** Pause menu with restart, settings and quit to the galaxy.
+- [x] **CTRL-12 (P3) — Claude (October 27)** Pause menu with restart, settings and quit to the
+  galaxy.
+  - A Menu button in the HUD, or Escape when there is nothing else to close (the drop panel,
+    placement and Clean view still come first), pauses the battle and opens the menu.
+  - Resume plays on; closing the menu with Escape returns to the pause state it found.
+  - Restart mission (confirmed): the attempt is recorded as a retreat, or a victory when
+    enough zones are held, and a fresh battle starts with no debrief in between.
+  - Quit to the galaxy (to the title on frontier maps): the battle is saved and the galaxy's
+    planet panel offers "Resume battle". If the save fails, the menu warns before quitting.
+  - Settings: sound level, game speed, and the Field guide, which keeps the battle paused and
+    returns to the menu when closed. Graphics quality stays on the title screen.
+  - `tests/invasion-pause-menu.test.mjs` (5 tests). In the browser, Escape opened and closed
+    the menu. Quitting to the galaxy showed "Resume battle · Kepra", which brought back the
+    battle at the same moment, paused. On a 375 px phone the HUD buttons still fit one row.
 - [ ] **CTRL-13 ★ (P1) — implementation by Codex, October 19; browser review pending**
   Clean view hides mission panels, minimap, toasts and battlefield labels. A small restore
   button remains; V toggles and Escape restores the HUD. Drop controls/mission end restore
