@@ -1,0 +1,16 @@
+{
+  "desktop": {
+    "defaultAccess": "open",
+    "auditClosedInitially": true,
+    "blowerFocus": "drill-blower",
+    "numberedParts": 24,
+    "overflow": false
+  },
+  "phone": {
+    "access": "open",
+    "overflow": false,
+    "part": "sample-lines",
+    "width": 390
+  },
+  "errors": []
+}

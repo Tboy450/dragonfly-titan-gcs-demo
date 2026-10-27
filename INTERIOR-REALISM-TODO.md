@@ -10,6 +10,25 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October 27: [Electrical evidence / blower scale audit](research/draco-electrical-audit-2026-10-27/README.md).
+- [x] Research actual supplier hardware/specs; save original EM composite and
+  catalog photo, correctly separating real hardware, concept art and edited background.
+- [x] Audit feed sensing and sample diverters. Related KArLE sensors are not DrACO
+  flight evidence. No invented sensor count, controller, connector or pinout.
+- [x] Measure unchanged blower meshes; 117.5 mm full span / 79.3 mm casing versus
+  supplier 345 mm length / 168 mm diameter. 85 mm current pair spacing needs review.
+  Parallel-cylinder overlap is screening only, not actual solid-collision proof.
+- [x] Nested closed Electrical audit & blower size panel, focus links, part 24
+  scale warning; 721 tests, desktop/390px checks and real/model/scale sample saved.
+- [ ] NEXT: rebuild **part 24 blower pair together** from real supplier photos and
+  published overall dimensions. Reconcile orientation/centers, supports, inlet,
+  exhaust, selector and return fit; check other rebuilt parts and access layers.
+  Preserve two redundant units; older APL cylinder/cone identity remains a candidate,
+  not proof of a third blower. Exact port/foot detail and installed positions EST.
+- [ ] Only after housing/plumbing fit, revisit electrical leads if supported.
+  Supplier voltage/power/pinouts and flight feed-sensor identities remain unresolved.
+  BNCP-21 water/glycol cooling is a different product; do not assign it to Dragonfly.
+
 October 27: [Fixed feed lead + inspection defaults/numbers](research/drill-fixed-feed-lead-2026-10-27/README.md).
 - [x] Recheck real EM1 and Costa prototype/GSE evidence; do not copy development
   plugs or assign a flight circuit/controller. Related TRIDENT remains separate.
@@ -26,7 +45,7 @@ October 27: [Fixed feed lead + inspection defaults/numbers](research/drill-fixed
   Shared update preserved unchanged. Live Internal/Open, numbers 1–24, IEM 12,
   reset Open, fixed-lead disclosure and no overflow/errors verified; public samples/
   JSON saved. Preview stopped, viewport restored, tab left at Open interior.
-- [ ] NEXT: feed sensing + blower/diverter electrical evidence audit. No inferred
+- [x] Feed sensing + blower/diverter electrical evidence audit completed above. No inferred
   sensor count/type, flight connector/pinout or remote circuit from loose plugs.
   Exact flight wiring and hidden mechanics remain unresolved; see pass handoff.
 

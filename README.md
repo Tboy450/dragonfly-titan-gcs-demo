@@ -1,5 +1,11 @@
 # Dragonfly Titan GCS
 
+October 27: [DrACO electrical evidence and blower scale audit](research/draco-electrical-audit-2026-10-27/README.md).
+Real supplier photos and BNCP-74-000 specifications reveal that the current blower
+pair needs a coordinated housing/placement/plumbing rebuild. Added a nested, closed
+evidence panel with inspection links; no speculative sensors or wiring added.
+721 tests and desktop/phone checks pass. Next: part 24, before electrical routing.
+
 [Open the simulator](https://tboy450.github.io/dragonfly-titan-gcs-demo/)
 
 A browser-based, NASA Dragonfly-inspired flight and telemetry demo. Includes a

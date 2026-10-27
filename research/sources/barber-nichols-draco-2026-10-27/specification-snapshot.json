@@ -1,0 +1,14 @@
+{
+  "recordedDate": "2026-10-27",
+  "source": "https://barber-nichols.com/cryogenic-compressors-blowers/",
+  "heading": "BNCP-74-000 Nitrogen Blower",
+  "lengthMm": 345,
+  "diameterMm": 168,
+  "massKg": 2.83,
+  "volumeFlowLitersPerSec": 1.3,
+  "gasHeadMeters": 190,
+  "maxRpm": 25000,
+  "referenceConditionsStated": false,
+  "flightInterfaceDrawingAvailableInSource": false,
+  "adjacentProductBoundary": "Water/glycol motor/bearing cooling is listed under BNCP-21, not BNCP-74-000."
+}

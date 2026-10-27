@@ -1,0 +1,19 @@
+{
+  "recordedDate": "2026-10-27",
+  "images": [
+    {
+      "file": "engineering-models-original.png",
+      "url": "https://barber-nichols.com/wp-content/uploads/2024/06/honeybee-post-image.png",
+      "credit": "Barber-Nichols",
+      "scope": "Composite: NASA concept art upper left; real bench hardware upper right and below. Article identifies two engineering-model blowers, not installed flight units.",
+      "sha256": "fffa721acf7ac75c097a03fe294ccce59472c62dbf6e25b4069cdd3a9d4b0b59"
+    },
+    {
+      "file": "bncp74-catalog-original.jpg",
+      "url": "https://barber-nichols.com/wp-content/uploads/2024/08/BNCP-74-000-extend-background-fotor-20240508144122-e1723148279452.jpg",
+      "credit": "Barber-Nichols",
+      "scope": "Supplier product/background-edited image; outline reference, not an installed flight photo.",
+      "sha256": "47723db1d78fc56afb2794ff3742bd83473bf9705542bfb886bd61eceb8b5ada"
+    }
+  ]
+}

@@ -4,6 +4,16 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 27 DrACO electrical/scale audit (Codex):** [packet and continuation](research/draco-electrical-audit-2026-10-27/README.md).
+[PUB] Barber-Nichols BNCP-74-000: 345 × 168 mm, 2.83 kg, 1.3 L/s, 190 m gas head,
+up to 25,000 rpm; real EM photos saved. Flow/head conditions and flight ICD not
+stated. BNCP-21 water/glycol cooling is another product. [CALC] current unit full
+span 117.5 mm, casing 79.3 mm, pair spacing 85 mm; conservative envelope screen
+only. [EST] current compact blower geometry unchanged, needs coordinated housing/
+pair/plumbing rebuild. No feed sensor or diverter electrical identity established;
+related KArLE encoder/Hall/switch design not transferred. 721 tests; nested evidence
+UI and source sheet saved. No dynamic power/mass/flow changes.
+
 **October 27 fixed feed lead (Codex):** [evidence/implementation](research/drill-fixed-feed-lead-2026-10-27/README.md).
 [PUB] real EM1 development electrical leads; Costa's prototype used EGSE. Neither
 identifies exact flight exits/circuits. [EST] one 4 mm stationary service-lead example

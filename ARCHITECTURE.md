@@ -5,6 +5,13 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ## The short version
 
+October 27 evidence audit: `draco-electrical-evidence.mjs` is immutable reference
+data only. `ui/sampling-connections.mjs` renders its closed nested disclosure in
+the DrACO inventory; existing focus callbacks are reused. Supplier values must
+not enter flight/thermal budgets without a separate sourced model change. Part 24
+geometry is unchanged and now explicitly flagged for supplier-scale reconciliation.
+See `research/draco-electrical-audit-2026-10-27/README.md` before its next rebuild.
+
 - A static web app with **no build step**: everything in `dist/` is served as-is.
   `index.html` loads `app.js`, which imports the other modules.
 - **Tests:** `node --test tests/*.test.mjs` (Node 22). They must pass before publishing.

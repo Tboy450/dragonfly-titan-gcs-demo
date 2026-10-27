@@ -50,7 +50,7 @@ export const dracoInventory = Object.freeze([
     modeled:"The same head/feed/bit/mount and moving-lead inventory as port. No missing counterpart found in this modeled drill mechanism; this is not verification of every flight component."},
   {id:"draco-shared-suction",name:"Shared suction equipment",source:"nasa",inspect:"drill-blower",
     role:"Either drill can use either of the two blowers. They are shared redundant equipment, not one blower assigned to each drill.",
-    modeled:"Two blower approximations, inlet diverter and a single return path sit on port. This explains much of the extra gear there. Exact flight housings, fittings and mounting locations remain unverified."},
+    modeled:"Two compact blower approximations, inlet diverter and a single return path sit on port. Supplier BNCP-74-000 dimensions are substantially larger; the nested Electrical audit & blower size records that mismatch and the required housing/plumbing fit pass. Exact flight housings, fittings and mounting locations remain unverified."},
   {id:"draco-blower-location",name:"Port-side placement evidence",source:"thermal",inspect:"sample-lines",
     role:"The thermal paper identifies a DrACO blower behind the port forward arm. Its figure is a thermal model, not a hardware photograph.",
     modeled:"Both blowers are placed together there as an estimate. This source does not confirm both exact flight positions, so no starboard copies were added."},

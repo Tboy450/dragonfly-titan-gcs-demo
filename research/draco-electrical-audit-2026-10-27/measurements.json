@@ -1,0 +1,59 @@
+{
+  "scope": "Scale/space screening of existing placeholders; not flight installation or actual solid collision proof",
+  "rows": [
+    {
+      "unit": "forward",
+      "modelCenterM": [
+        -0.475,
+        -0.245,
+        -0.64
+      ],
+      "modelFullLocalSizeM": [
+        0.12676552479694259,
+        0.11750000111758707,
+        0.088567798594407
+      ],
+      "modelHousingLocalSizeM": [
+        0.07925999899208547,
+        0.07700000098906457,
+        0.07925999899208547
+      ],
+      "currentMotorAxis": "Y",
+      "supplierLengthM": 0.345,
+      "supplierDiameterM": 0.168,
+      "axialLengthRatio": 2.9361701848389288,
+      "housingDiameterRatio": 2.119606385773178
+    },
+    {
+      "unit": "aft",
+      "modelCenterM": [
+        -0.475,
+        -0.245,
+        -0.555
+      ],
+      "modelFullLocalSizeM": [
+        0.12676552479694259,
+        0.11750000111758707,
+        0.088567798594407
+      ],
+      "modelHousingLocalSizeM": [
+        0.07925999899208547,
+        0.07700000098906457,
+        0.07925999899208547
+      ],
+      "currentMotorAxis": "Y",
+      "supplierLengthM": 0.345,
+      "supplierDiameterM": 0.168,
+      "axialLengthRatio": 2.9361701848389288,
+      "housingDiameterRatio": 2.119606385773178
+    }
+  ],
+  "sameAxisEnvelopeScreen": {
+    "parallelAxisAssumed": "Y as currently modeled",
+    "transverseCenterSpacingM": 0.08499999999999996,
+    "supplierCylinderDiameterM": 0.168,
+    "cylinderEnvelopeOverlapM": 0.08300000000000005,
+    "warning": "Bounding cylinders overlap at current centers; actual shaped solids/flight orientation not established."
+  },
+  "next": "Rebuild part24 housing pair and reconcile centers/inlet/exhaust/mounts before electrical routing. Keep two redundant blowers; do not add a third inferred cone unit."
+}

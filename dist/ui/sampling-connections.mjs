@@ -1,4 +1,5 @@
 import { samplingElectronics, samplingConnectionSources, samplingConnectionLimits } from "../sampling-connections.mjs?v=dev";
+import {dracoElectricalEvidence,dracoElectricalSources,dracoElectricalLimits} from "../draco-electrical-evidence.mjs?v=dev";
 
 export function renderConnectionCoverage(container, onInspect, {rows,sources,limits}) {
   const intro = document.createElement("p"); intro.className = "rest-status";
@@ -27,4 +28,12 @@ export function renderConnectionCoverage(container, onInspect, {rows,sources,lim
 }
 export function renderSamplingConnections(container,onInspect){
   return renderConnectionCoverage(container,onInspect,{rows:samplingElectronics,sources:samplingConnectionSources,limits:samplingConnectionLimits});
+}
+export function renderDracoElectricalAudit(container,onInspect){
+  const details=document.createElement("details"),title=document.createElement("summary"),body=document.createElement("div");
+  details.className="component-temperatures";details.dataset.dracoElectricalAudit="true";
+  title.textContent="Electrical audit & blower size";
+  renderConnectionCoverage(body,onInspect,{rows:dracoElectricalEvidence,sources:dracoElectricalSources,limits:dracoElectricalLimits});
+  details.append(title,body);container.append(details);
+  return details;
 }

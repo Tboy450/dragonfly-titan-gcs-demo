@@ -39,6 +39,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: DrACO electrical evidence and supplier blower scale audit
+- **Signed:** Codex (OpenAI).
+- **Commit:** Audit DrACO electrical evidence and supplier blower scale.
+- **What changed:** Closed nested evidence panel, existing focus links, part 24
+  supplier-scale warning; real EM/catalog source packet and measured comparison.
+  Catalog lists 345 × 168 mm, 2.83 kg, 1.3 L/s, 190 m gas head and up to 25,000 rpm.
+- **Assumptions:** Reference conditions/flight installation and electrical ICD
+  unresolved. Related KArLE sensor design is not copied. BNCP-21 coolant description
+  belongs to another product. No housing/wiring/flight state changed this pass.
+- **Checks:** 721 tests; exact geometry preservation, source units/boundaries,
+  closed panel and focus callbacks; desktop/390px phone without overflow/errors.
+- **Open / next:** Coordinated part 24 motor/cone housing pair rebuild and plumbing
+  fit before wiring. 85 mm current spacing versus 168 mm reference cylinders is
+  an envelope screen, not proof of solid collision. See research handoff/archive.
+
+
 ### 2026-10-27: Add fixed feed lead and numbered open-interior inspection
 - **Signed:** Codex (OpenAI).
 - **Commit:** Add fixed feed lead and numbered open-interior inspection.

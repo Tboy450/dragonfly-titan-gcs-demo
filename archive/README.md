@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [draco-electrical-audit-2026-10-27](draco-electrical-audit-2026-10-27/README.md) | Before nested electrical evidence/scale warning; exact UI/inventory and unchanged geometry baseline; prior samples reused | 2026-10-27 | `archive/draco-electrical-audit-2026-10-27` on 58148de |
 | [drill-fixed-feed-lead-2026-10-27](drill-fixed-feed-lead-2026-10-27/README.md) | Before fixed service lead/rear relief and numbered Open interior defaults; exact model/UI sources and prior samples reused | 2026-10-27 | `archive/drill-fixed-feed-lead-2026-10-27` on cf714c6 |
 | [drill-drive-2026-10-27](drill-drive-2026-10-27/README.md) | Before upper-drive seating/relief; exact modules, reproduced gap/crossing and failed closed-top draft; previous pictures reused | 2026-10-27 | `archive/drill-drive-2026-10-27` on 0e5ca42 |
 | [drill-carriage-2026-10-27](drill-carriage-2026-10-27/README.md) | Before V-guide, six-roller carriage and hollow spherical nut/pocket; exact modules and failed cap draft, previous pictures reused | 2026-10-27 | `archive/drill-carriage-2026-10-27` on 6a3d71f |

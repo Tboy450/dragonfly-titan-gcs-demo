@@ -6,6 +6,16 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**DrACO electrical evidence / part 24 scale (Codex, October 27):**
+[audit](draco-electrical-audit-2026-10-27/README.md),
+[real supplier hardware / specs](sources/barber-nichols-draco-2026-10-27/README.md),
+[related KArLE boundary](sources/karle-shs-2022/README.md).
+Original supplier EM composite (CGI upper left, real bench/lower panels) and
+catalog physical unit on edited blue background saved once, with credit/hashes.
+Published 345 × 168 mm exposes scale mismatch; current pair unchanged. AMS/LPSC
+sources reused. KArLE pages 1/4 retained to document why its sensors are not
+DrACO evidence. No sensor/wire model added; next part 24 housing/plumbing rebuild.
+
 **Fixed feed lead (Codex, October 27):** [pass and limits](drill-fixed-feed-lead-2026-10-27/README.md).
 Reuses real AMS2024 EM1 fig.2, saved Costa prototype photographs/own EGSE account,
 related TRIDENT harness context and NASA workmanship only as general reasoning.
