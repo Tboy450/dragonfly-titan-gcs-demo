@@ -6,6 +6,11 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**DrACO continuity (Codex, October27):** [trace and measurements](draco-connectivity-2026-10-27/README.md).
+Reuses LPSC2022 fig.1 and NASA's cross-strapped system description. Both intake paths
+exist; only the return's final control advances4 mm into a3 mm EST selector seat.
+No new appearance reference or flight coupling dimension. Valve internals remain open.
+
 **DrACO side audit (Codex, October27):** [inventory and evidence limits](draco-side-audit-2026-10-26/README.md).
 Reuses Costa/Honeybee's real prototype photos, NASA's sampling-system description,
 saved LPSC2022 figs.1-2, APL ICES2023 fig.2/p7 and DragonCam figs.2-3. No generated

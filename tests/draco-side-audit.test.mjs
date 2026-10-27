@@ -8,14 +8,16 @@ import {inspectionSubassemblies,createInspector,focusInspector,selectInspectionS
 import {createInspectionVisibility,setInspectionLayer} from '../dist/inspection-visibility.mjs';
 import {dracoInventory as rows,dracoInventorySources as sources,dracoInventoryLimits as limits} from '../dist/sampling-connections.mjs';
 
-test('DrACO audit preserves every physical mesh, material and pose',async()=>{
+test('DrACO audit retains all hardware except the separately tested October27 return seating correction',async()=>{
   const current=fixture(),before=await baseline();
-  assert.deepEqual(fingerprint(current.root),fingerprint(before.root));
+  // The continuity regression suite verifies the sole later geometry change and detects its old gap.
+  const unchanged = root => fingerprint(root).filter(row=>row.name!=='draco-return-tube');
+  assert.deepEqual(unchanged(current.root),unchanged(before.root));
   for(const feed of [0,.065,.13]){
     for(const f of [current,before])for(const [i,d] of f.drills.entries()){
       d.carriage.position.y=drillAsset.stowedY-feed;f.lines.hoseParts[i].setFeed(feed);
     }
-    assert.deepEqual(fingerprint(current.root),fingerprint(before.root));
+    assert.deepEqual(unchanged(current.root),unchanged(before.root));
   }
 });
 

@@ -1,0 +1,108 @@
+{
+  "scope": "Rendered endpoint/envelope continuity only; no valve-interior or flow solver",
+  "rows": [
+    {
+      "name": "port hose to intake",
+      "target": "draco-intake-tube-port",
+      "gapM": 0,
+      "connected": true
+    },
+    {
+      "name": "port intake to carousel selector",
+      "target": "draco-flow-diverter-manifold",
+      "gapM": 6.70552502413102e-10,
+      "connected": true,
+      "point": [
+        -0.21499999999999997,
+        0.41499999999999987,
+        -1.4300000000000002
+      ]
+    },
+    {
+      "name": "starboard hose to intake",
+      "target": "draco-intake-tube-starboard",
+      "gapM": 0,
+      "connected": true
+    },
+    {
+      "name": "starboard intake to carousel selector",
+      "target": "draco-flow-diverter-manifold",
+      "gapM": 6.705529465023119e-10,
+      "connected": true,
+      "point": [
+        -0.185,
+        0.4249999999999999,
+        -1.4300000000000006
+      ]
+    },
+    {
+      "name": "carousel selector to shared return",
+      "target": "draco-flow-diverter-manifold",
+      "gapM": -1.490116086078075e-10,
+      "connected": true,
+      "point": [
+        -0.23500000000000001,
+        0.415,
+        -1.4
+      ]
+    },
+    {
+      "name": "shared return to blower selector",
+      "target": "draco-blower-flow-diverter",
+      "gapM": 0.0010000002980231626,
+      "connected": false,
+      "point": [
+        -0.4620000000000001,
+        -0.17499999999999988,
+        -0.6535
+      ]
+    },
+    {
+      "name": "blower selector to forward inlet",
+      "target": "draco-blower-flow-diverter",
+      "gapM": -1.8626450382086546e-10,
+      "connected": true,
+      "point": [
+        -0.475,
+        -0.1875,
+        -0.64
+      ]
+    },
+    {
+      "name": "forward inlet to blower body",
+      "target": "draco-forward-blower-volute",
+      "gapM": 3.3527614018424856e-10,
+      "connected": true,
+      "point": [
+        -0.475,
+        -0.22999999999999998,
+        -0.64
+      ]
+    },
+    {
+      "name": "blower selector to aft inlet",
+      "target": "draco-blower-flow-diverter",
+      "gapM": -1.8626450382086546e-10,
+      "connected": true,
+      "point": [
+        -0.475,
+        -0.1875,
+        -0.555
+      ]
+    },
+    {
+      "name": "aft inlet to blower body",
+      "target": "draco-aft-blower-volute",
+      "gapM": 3.3527614018424856e-10,
+      "connected": true,
+      "point": [
+        -0.475,
+        -0.22999999999999998,
+        -0.555
+      ]
+    }
+  ],
+  "connected": false,
+  "route": "Either drill -> its flexible hose -> its own intake tube -> shared carousel selector -> shared return -> blower selector -> either blower",
+  "limits": "Simplified carousel junction; separate LDMS/GCMS elevator branches and internal valve passages remain unmodeled."
+}

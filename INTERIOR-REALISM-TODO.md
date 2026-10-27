@@ -10,6 +10,15 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October27: [Both-drill plumbing continuity](research/draco-connectivity-2026-10-27/README.md).
+- [x] Confirm owner's assembled-equipment concern; retain both neighborhood samples.
+  Trace both intake routes, carousel/return and both blower inlets.
+- [x] Reproduce/fix1 mm return-selector gap; advance only the last control4 mm into
+  a3 mm estimated seat. Preserve all other hardware/routes; strict10-join checks.
+- [x] 655 tests pass. Explain route/valve limits in existing collapsed inventory.
+- [ ] Complete browser/public checks and publication receipt.
+- [ ] Next: local moving drill leads; full electrical networks remain open.
+
 October27: [DrACO side inventory](research/draco-side-audit-2026-10-26/README.md).
 - [x] Inventory both mechanisms: matching 45 mesh pieces, two body mounts and two
   short motor-lead examples each. No missing named drill counterpart found.

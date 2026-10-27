@@ -1,0 +1,13 @@
+{
+  "client": 1265,
+  "isolate": true,
+  "part": "sample-lines",
+  "parts": 24,
+  "rows": 8,
+  "scroll": 1265,
+  "routeDisclosed": true,
+  "limitsDisclosed": true,
+  "previewOrigin": "http://127.0.0.1:4197",
+  "cacheNote": "Earlier 4196 preview retained stale dev imports; verified refreshed content on a fresh origin.",
+  "errors": []
+}

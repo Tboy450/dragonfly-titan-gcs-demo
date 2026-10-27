@@ -55,7 +55,7 @@ export const dracoInventory = Object.freeze([
     modeled:"Both blowers are placed together there as an estimate. This source does not confirm both exact flight positions, so no starboard copies were added."},
   {id:"draco-paired-transfer",name:"Drill hoses and sample tubes",source:"design",inspect:"sample-lines",
     role:"Each drill has a pneumatic intake; the shared system can deliver to LDMS or GCMS sample cups.",
-    modeled:"One flexible hose, one intake tube and four tube clamps per side; port has the additional shared return and three clamps. These are plumbing, not electrical harnesses. The single carousel junction simplifies the separate published elevator paths."},
+    modeled:"Each drill connects through its own flexible hose and intake tube to the carousel selector. From there a shared return runs down port to the blower selector, which joins both blower inlets. The path goes around the body, not directly across between drills. Four intake clamps per side; port also has three return clamps. The single carousel junction simplifies the separate published elevator paths; internal valve passages are not reconstructed."},
   {id:"draco-nearby-optics",name:"Nearby camera and illumination",source:"cameras",inspect:"side-cameras",subassembly:"microscopic-camera",
     role:"The camera arrangement includes one Microscopic Camera with co-aligned illumination, plus port and starboard Down Cameras.",
     modeled:"The microscope and LED assembly sit on port near the drill site. They are camera equipment, not a missing second drill actuator. The starboard Down Camera is present; do not mirror the microscope solely for symmetry."},
@@ -69,5 +69,5 @@ export const dracoInventory = Object.freeze([
 export const dracoInventoryLimits = Object.freeze({
   scope:"Port / starboard equipment audit. Published system roles are distinct from estimated model shapes, routing and placement; matching counts do not establish flight completeness.",
   naming:"Shared equipment may legitimately make one side busier. The two drill mechanisms have matching modeled inventories; surrounding equipment is not required to be symmetric.",
-  boundary:"Sample transport, electrical harnesses and thermal-air ducts are separate systems. No geometry, flight circuit or physics was added by this audit.",
+  boundary:"Sample transport, electrical harnesses and thermal-air ducts are separate systems. Inspect Drill hoses and sample tubes shows both drills, carousel and blowers together. External joins are checked; valve interiors, pressure losses and complete flight plumbing are not simulated. The shared return has an estimated 3 mm seat into its selector.",
 });

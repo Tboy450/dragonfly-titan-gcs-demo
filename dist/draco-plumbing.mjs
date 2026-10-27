@@ -18,7 +18,8 @@ import { drillAsset } from "./drills.mjs?v=dev";
 // body side and up the front of the attic.
 const TUBE = 0.0065, HOSE = 0.0075;
 export const dracoPlumbingAsset = Object.freeze({
-  revision: "draco-plumbing-2026-10-14",
+  revision: "draco-plumbing-2026-10-27",
+  returnSeatDepthM: 0.003, // [EST] drawn overlap into selector, not a flight coupling specification
   tubeOuterDiameterM: 2 * TUBE,
   hoseAnchors: Object.freeze([Object.freeze([-0.40, -0.40, -0.52]), Object.freeze([0.40, -0.40, -0.52])]),
   manifold: Object.freeze([-0.20, 0.415, -1.40]),
@@ -124,7 +125,8 @@ export function buildSampleLines({ parent, mesh, carouselInlet }) {
   const [bx, by, bz] = dracoPlumbingAsset.blowerDiverter;
   const ret = [
     [mx - 0.035, my, mz], [-0.30, 0.41, -1.40], [-0.42, 0.40, -1.43], [-0.448, 0.36, -1.44], [-0.448, 0.0, -1.44],
-    [-0.448, -0.15, -1.44], [-0.448, -0.2, -1.39], [-0.448, -0.2, -1.0], [-0.448, -0.2, -0.72], [bx, -0.19, bz - 0.075], [bx, by, bz - 0.056],
+    // The former last point stopped 1 mm short of the selector's -Z face (bz - .055).
+    [-0.448, -0.15, -1.44], [-0.448, -0.2, -1.39], [-0.448, -0.2, -1.0], [-0.448, -0.2, -0.72], [bx, -0.19, bz - 0.075], [bx, by, bz - 0.055 + dracoPlumbingAsset.returnSeatDepthM],
   ];
   tube(ret, TUBE, steel, tubes, "draco-return-tube", 96);
   for (const z of [-1.2, -0.95]) clamp([-0.448, -0.2, z], [0.012, 0, 0]);

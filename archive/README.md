@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [draco-return-seat-2026-10-27](draco-return-seat-2026-10-27/README.md) | Exact prior tube/status files and measured1 mm return/selector gap; assembled samples reused | 2026-10-27 | `archive/draco-return-seat-2026-10-27` on1431199 |
 | [draco-side-audit-2026-10-26](draco-side-audit-2026-10-26/README.md) | Before drill-focus metadata, plumbing classification and collapsed inventory; hardware unchanged, existing source/model pictures reused | 2026-10-27 | `archive/draco-side-audit-2026-10-26` on a67cb6f |
 | [iem-terminal-cleanup-2026-10-26](iem-terminal-cleanup-2026-10-26/README.md) | Exact prior tag/solid terminal blocks and disclosures; previous whole-model image reused | 2026-10-26 | `archive/iem-terminal-cleanup-2026-10-26` on05cc359 |
 | [iem-final-columns-2026-10-25](iem-final-columns-2026-10-25/README.md) | Exact21-route IEM/status baseline; shared earlier model picture and recovery steps; accepted/rejected final-column research retained separately | 2026-10-26 | `archive/iem-final-columns-2026-10-25` ona2a055c |

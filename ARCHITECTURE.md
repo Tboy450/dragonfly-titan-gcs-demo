@@ -43,6 +43,12 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ### Simulation (no DOM; covered by tests)
 
+October27 plumbing continuity: only the last return control changes by4 mm into
+a3 mm estimated selector seat. Research-only trace checks10 external joins without
+an expanded box, reproducing the archived1 mm gap. Three regressions preserve all
+other meshes/controls. Existing sample-lines isolation includes both drills,
+carousel and blowers. Collapsed inventory explains route and valve-interior limits.
+
 October27 DrACO audit: no physical model or solver changes. `drills.mjs` adds two
 non-nested inspection labels with craft-frame anchors on the fixed Z rails.
 `draco-plumbing.mjs` classifies sample tubes/hoses as Plumbing, not Harnesses.

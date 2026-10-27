@@ -10,6 +10,12 @@ NASA flight product or a validated flight dynamics model.
 New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md) (file map, shared state, house
 rules) and the latest entries in [CHANGELOG.md](CHANGELOG.md).
 
+October27: [Both-drill plumbing trace](research/draco-connectivity-2026-10-27/README.md).
+Both intake routes exist through the shared carousel/return. Corrected a1 mm gap
+at the blower selector; only the final return control advances4 mm into a3 mm EST seat.
+Collapsed inventory explains the route; valve interiors remain unmodeled.655 tests pass.
+Browser/public verification follows; previous release details below are historical.
+
 October27: [DrACO side-by-side equipment audit](research/draco-side-audit-2026-10-26/README.md).
 Both drill mechanisms retain matching 45-piece inventories. Separate port/starboard
 inspection targets have pinned numbers; sample hoses/tubes hide as plumbing rather

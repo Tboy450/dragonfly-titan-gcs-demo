@@ -39,6 +39,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Seat shared DrACO return and trace both drill intakes
+- **Signed:** Codex (OpenAI).
+- **Commit:** Seat DrACO shared return and verify both drill routes.
+- Both intake paths exist via the carousel and shared return/blowers. Retain the
+  owner's assembled-view samples; isolated drills alone hid that context.
+- Correct1 mm return/selector gap missed by the older2 mm expanded-box check:
+  only the last return control advances4 mm into a3 mm estimated seat.
+- 655 tests pass. Three new regressions check10 joins, reproduce the prior gap,
+  preserve unrelated hardware and all other controls. No internal valve/flow solver.
+- Collapsed inventory explains the route and existing complete-network inspection.
+- Exact before files/measurements and recovery tag on1431199; existing source and
+  assembled images reused. Desktop network sample,24 parts, eight rows, new route/
+  limits text, no overflow/errors verified. Public receipt follows. No game/save/cleanup edits.
+
 ### 2026-10-27: Audit paired DrACO equipment and add side inspection
 - **Signed:** Codex (OpenAI).
 - **Commit:** Add sourced DrACO side inventory and inspection targets.

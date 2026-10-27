@@ -4,6 +4,11 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October27 DrACO continuity (Codex):** [both-drill trace](research/draco-connectivity-2026-10-27/README.md).
+[PUB] either drill can use either blower. [CALC] ten drawn endpoint/envelope joins;
+old shared-return gap1 mm. [EST] corrected by4 mm endpoint advance into a3 mm seat.
+Other geometry unchanged; internal valves and separate elevator branches not reconstructed.
+
 **October27 DrACO side audit (Codex):** [side-by-side inventory](research/draco-side-audit-2026-10-26/README.md).
 [PUB] two redundant drills, shared cross-strapped blowers, single microscope/LED
 arrangement and paired Down Cameras. [CALC] each modeled drill retains 45 mesh pieces,

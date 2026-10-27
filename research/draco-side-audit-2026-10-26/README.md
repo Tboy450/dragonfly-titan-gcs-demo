@@ -73,6 +73,17 @@ No hardware geometry or endpoints changed in this audit.
 
 ## Remaining Work
 
+October27 owner clarification: the concern is equipment attached near one drill in
+the other view, not just equality of the isolated drill mechanisms. The original
+isolated samples do not visually establish that surrounding installation. Saved
+`assembled-port-neighborhood.png` and `assembled-starboard-neighborhood.png` from
+live4f375be with isolation off and opposite camera directions; these are crops of
+actual browser screenshots, not new geometry or generated reference images. Owner
+confirmed this is the intended cluster, then asked whether both drills connect to it.
+The [follow-up continuity pass](../draco-connectivity-2026-10-27/README.md) traces
+both intakes and corrects a1 mm shared-return gap. The inventory above still does
+not identify every visible fitting or verify internal valve passages.
+
 Published release **4f375be4eefdddba286182873ae10436cc207de4**, October27,2026.
 [Public simulator](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=4f375be).
 GitHub Pages run40463472979 succeeded, including its complete test step. Live header
