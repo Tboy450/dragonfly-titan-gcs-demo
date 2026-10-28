@@ -77,5 +77,6 @@ test("The page puts the tooltips on drop rows, the wave summary, matter, alarm a
   assert.match(h.nodes.get("hud-alarm-box").title, /^Public alarm: 55 of 100 \(Alarmed\)/);
   // A hazard on its way: its badge explains it.
   h.run(`mission.battle.hazards.events.push({ type: "dustStorm", name: "Dust storm", phase: "warning", activeAt: mission.battle.time + 9 }); updateHud();`);
-  assert.match(h.nodes.get("hud-hazard").title, /^Dust storm: .*\nWhile it lasts: 20% slower/);
+  // The forecast leads (HAZ-03), then what the hazard does.
+  assert.match(h.nodes.get("hud-hazard").title, /^Forecast: Dust storm in about 0:10\.\nDust storm: .*\nWhile it lasts: 20% slower/);
 });

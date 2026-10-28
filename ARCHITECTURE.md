@@ -344,7 +344,7 @@ same split as the simulator: plain modules with tests, plus a page layer.
 | `invasion/sound.mjs` | Plays it with Web Audio (no sound files): beds, shots, explosions, chimes, sirens, thunder, pod entry and parachutes; off by default |
 | `invasion/quality.mjs` | Graphics quality levels (decor, city detail, ground, pixel ratio) and adaptive resolution from frame time |
 | `invasion/tips.mjs` | First-time tips: first defenders in sight, each kind of defense, alarm stages, first artillery and captured defense |
-| `invasion/field-guide.mjs` | The Field guide: every drone, defender, society and hazard with numbers and counters, generated from the rules, plus the controls, and the same facts as tooltips for drop rows, matter, alarm and hazards (TUT-04) |
+| `invasion/field-guide.mjs` | The Field guide: every drone, defender, society and hazard with numbers and counters, generated from the rules, plus the controls, and the same facts as tooltips for drop rows, matter, alarm and hazards (TUT-04), with the hazard forecast and counters (HAZ-03) |
 | `invasion/paths.mjs` | Ground routes: a deterministic grid search round water, buildings and walls, used by troops on foot when blocked |
 | `invasion/tutorial.mjs` | The Titan tutorial: checked steps from the battle (drop to win, plus a weather step) and the button to highlight |
 | `invasion/swarm-dust.mjs` | Rotor-wash dust: a pooled, seeded puff simulation for low drones and pod touchdowns, drawn with sprites |
