@@ -619,10 +619,52 @@ complete solely because its assets download or its unit tests pass.
   - `tests/invasion-hazard-forecast.test.mjs` (4 tests). The first forecast hazard struck
     within two 0.1 s steps of the forecast time. In the browser on Ashfall, the badge read
     "Next: Eruption ~1:20", and its tooltip listed the eruption and then the ash cloud.
-- [ ] **HAZ-04 (P2)** Let some hazards hit defenders too (lightning, eruptions), so the
-  weather can be used as a weapon.
+- [x] **HAZ-04 (P2) — Claude (October 28)** Let some hazards hit defenders too (lightning,
+  eruptions), so the weather can be used as a weapon.
+  - Lightning: 60% of bolts aim at the swarm and 40% at defenders when both are on the field.
+    Every bolt hurts any defender in its circle, defenses included.
+  - Eruptions burn defenders in the circle: troops take the full damage, defenses 40%
+    (`ventStructureDamage`).
+  - A defender killed by the weather still pays salvage (log: "destroyed by the weather"), but
+    raises no alarm: the public does not blame the swarm for the weather.
+  - Weather sealing now softens lightning on drones as well, as its "-20% hazard damage" says.
+  - The hazard advice, tooltips and Field guide say they hit defenders too.
+  - Tested in `tests/invasion-hazard-aim.test.mjs` with HAZ-06.
 - [ ] **HAZ-05 (P3)** Day and night per planet (ideas from `titan-day.mjs`): shorter sight at
   night, defenders' searchlights.
+- [x] **HAZ-06 ★ (P2) — Claude (October 28)** Hazards feel too targeted (owner, October 27: "some
+  of the Hazzard's seem a tad too targeted we should have close misses generate sometimes").
+  - Done:
+    - Near misses (`clearSpot`, hazards.mjs) land at the nearest spot clear of every drone, so
+      they miss the whole group, not just one drone.
+    - Lightning: 30% of the bolts aimed at the swarm are near misses. Artillery: 25% of its
+      shells (`artilleryNearMiss`). Direct hits still land within 6 m of a drone.
+    - Eruptions open beside the squad, their circle 6-26 m clear of every drone. One in five
+      (`ventGraze`) opens closer and may catch a drone or two at the edge of a flock, never
+      more than 5 m inside the circle.
+    - All of them keep their warning rings.
+  - Measured with a tight squad of 20 held still over six seeds, before and after:
+    - Lightning: 43 of 43 bolts hit drones before; 13 of 43 after, and 22 hit defenders.
+    - Artillery: 87 of 87 shells hit before; 64 of 84 after.
+    - Eruptions: all 36 vents caught all 20 drones before; 5 of 36 caught drones after,
+      15 drones in all.
+  - `tests/invasion-hazard-aim.test.mjs` (6 tests). In the browser on Ashfall, an eruption's
+    circle opened beside a parked squad, 12 m clear of the nearest drone.
+  - Not checked: overall balance. Hazards now hurt the swarm less, so Ashfall, Halcyon and the
+    artillery worlds get easier. Revisit with FIX-09 after human playtests.
+  - The original note, as written before the work ("Today" means before October 28):
+    - Today every bolt and shell is aimed at a drone. `threatPoint` (hazards.mjs) puts lightning
+      within 10 m of a random drone and eruptions within 30 m, avoiding the Hive beacon.
+      Artillery (battle.mjs `artillery`) lands within 6 m of a random drone.
+    - Idea: some strikes land as near misses, scattered further from the drone, so they are not
+      all direct hits. Keep the marked warning ring, so the player can still read and dodge them.
+    - A near miss must miss the whole group, not just the drone it was aimed at (owner: missing one
+      drone to hit the one beside it is not really a miss). Place it clear of every drone's blast
+      radius, beside the squad rather than inside it.
+    - Eruptions especially (owner, October 27): opening within 30 m of a drone is still targeted
+      when the squad is clustered. Vents should open somewhat further off, so an eruption only
+      rarely catches a drone, such as one at the edge of a flock.
+    - Do it with HAZ-04 (hazards that also hit defenders), since both change where strikes land.
 
 ## 8. Objectives, campaign and story (OBJ)
 

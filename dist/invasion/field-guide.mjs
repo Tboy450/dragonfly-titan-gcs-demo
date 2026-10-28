@@ -2,7 +2,7 @@
 // it, generated from units.mjs and hazards.mjs so it never drifts from the rules, then the controls
 // (ACCESS-01). Plain data; the page renders it.
 import { droneTypes, droneOrder, defenderTypes, societies } from "./units.mjs?v=dev";
-import { hazardTypes } from "./hazards.mjs?v=dev";
+import { hazardTypes, ventStructureDamage } from "./hazards.mjs?v=dev";
 import { alarmStages, artilleryAlarm, salvageMatter, healPerS, zoneIncome, publicMood, upgradeEffects } from "./battle.mjs?v=dev";
 
 const classOf = (def) => (def.structure ? "structure" : def.air ? "air" : "ground");
@@ -41,8 +41,8 @@ export function hazardEffects(type, severity = 1) {
     h.sight && h.sight < 1 ? `see ${percent(h.sight)}% less` : null,
     h.range && h.range < 1 ? `weapons reach ${percent(h.range)}% less` : null,
     h.damage && h.kind === "weather" ? `lose ${rounded(h.damage * severity)} health/s outside your zones (half inside)` : null,
-    h.kind === "eruption" ? `${rounded(h.damage * severity)} damage/s inside a ${h.radius} m circle` : null,
-    h.strikeDamage ? `bolts every ${h.strikeEveryS} s, ${rounded(h.strikeDamage * severity)} damage within ${h.radius} m, marked ${h.strikeWarnS} s ahead` : null,
+    h.kind === "eruption" ? `${rounded(h.damage * severity)} damage/s inside a ${h.radius} m circle, to defenders too (defenses take ${Math.round(ventStructureDamage * 100)}%)` : null,
+    h.strikeDamage ? `bolts every ${h.strikeEveryS} s on drones and defenders alike, ${rounded(h.strikeDamage * severity)} damage within ${h.radius} m, marked ${h.strikeWarnS} s ahead` : null,
     h.wind ? `wind pushes drones up to ${h.wind} m/s` : null,
     h.kind === "flare" ? "drones outside your zones are stunned" : null,
   ].filter(Boolean);

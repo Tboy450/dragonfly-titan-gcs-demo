@@ -79,6 +79,29 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   or physics changes. Owner requests blower-pair reconstruction next; combined
   publication follows it. Sources and fit boundaries already saved in electrical audit.
 
+### 2026-10-28: Swarmfall near misses, and weather that hits defenders
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Give strikes near misses and let the weather hit defenders"
+- **What changed:** Checklist HAZ-06 (owner request: hazards were too targeted) and HAZ-04.
+  - Near misses: 30% of the lightning bolts aimed at the swarm and 25% of artillery shells land
+    beside it instead, clear of every drone, so a miss misses the whole group.
+  - Eruptions open beside the squad, their circle 6-26 m clear of every drone. One in five opens
+    closer and may catch a drone or two at the edge of a flock.
+  - Lightning falls on defenders as well (40% of bolts aim at them) and hurts any defender it
+    hits. Eruptions burn defenders in the circle, defenses at 40%. The weather's kills pay
+    salvage but raise no alarm.
+  - Weather sealing now softens lightning on drones too.
+  - The hazard advice, tooltips and Field guide describe the change.
+  - Measured with a tight squad of 20 held still: lightning hit drones with 13 of 43 bolts
+    (was 43 of 43), artillery 64 of 84 shells (was all), and eruptions caught drones in 5 of 36
+    vents (was all 36, every drone each time).
+- **Files:** `dist/invasion/hazards.mjs`, `dist/invasion/battle.mjs`, `dist/invasion/field-guide.mjs`,
+  `tests/invasion-hazard-aim.test.mjs` (new), `tests/invasion-tooltips.test.mjs` (new effect
+  text), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (270 pass). In the browser on Ashfall, an
+  eruption's circle opened beside a parked squad, 12 m clear of the nearest drone, with no
+  console errors. Overall balance is not checked: hazards now hurt the swarm less.
+
 ### 2026-10-27: Fit the MEB branch and retain it in part-5 inspection
 - **Signed:** Codex (OpenAI).
 - **Commit:** Fit estimated MEB harness interface and shared inspection context.

@@ -1,6 +1,7 @@
 // Environmental threats for the invasion game: seeded weather fronts, eruptions, lightning and
-// solar flares, each announced before it starts. Only the swarm suffers; the locals are used to
-// their own weather. Zones the swarm holds give shelter (half weather damage, no flare stun).
+// solar flares, each announced before it starts. The locals are used to their own weather, but
+// lightning and eruptions hit defenders too (HAZ-04), so the swarm can turn them into weapons.
+// Zones the swarm holds give shelter (half weather damage, no flare stun).
 // Effects are gameplay multipliers, not physics. No DOM; covered by tests/invasion-battle.test.mjs.
 import { nextRandom, randomRange } from "./random.mjs?v=dev";
 
@@ -34,12 +35,12 @@ export const hazardTypes = Object.freeze({
   },
   eruption: {
     id: "eruption", name: "Eruption", kind: "eruption", warnS: 8, durationS: [12, 18], gapS: [35, 65],
-    radius: 55, damage: 15, advice: "A vent is about to blow: move drones out of the red circle.",
+    radius: 55, damage: 15, advice: "A vent is about to blow near the swarm: keep drones out of the red circle. It burns defenders too.",
   },
   lightning: {
     id: "lightning", name: "Lightning storm", kind: "storm", warnS: 12, durationS: [20, 30], gapS: [40, 75],
     speed: 0.95, sight: 0.8, strikeEveryS: 3.5, strikeWarnS: 1.8, radius: 10, strikeDamage: 24,
-    advice: "Bolts hit where drones bunch up; each spot glows before it lands. Zones you hold halve the damage.",
+    advice: "Bolts fall on drones and defenders alike, sometimes just missing; each spot glows before it lands. Zones you hold halve the damage to drones.",
   },
   solarFlare: {
     id: "solarFlare", name: "Solar flare", kind: "flare", warnS: 15, durationS: [8, 12], gapS: [60, 100],
@@ -63,6 +64,33 @@ export function createHazardState(holder, planet) {
   return { types, next, events: [], effects: neutralEffects(), calm, severity, serial: 0 };
 }
 
+// Where strikes land (HAZ-06): not every one is a direct hit. A near miss lands beside the swarm,
+// clear of every drone, not on the drone next to the one it missed. Bolts aimed at the swarm miss
+// this often; artillery uses its own share (battle.mjs).
+export const boltNearMiss = 0.3;
+// Bolts fall on drones and defenders alike (HAZ-04): this share aims at the swarm when both are
+// on the field.
+export const boltsAtSwarm = 0.6;
+// Defenses stand up to an eruption better than troops and drones do.
+export const ventStructureDamage = 0.4;
+
+const swarmDrones = (b) => b.units.filter(u => u.alive && u.side === "swarm" && !u.structure);
+const onMap = (b, p) => Math.abs(p.x - b.map.centerX) < b.map.half && Math.abs(p.z - b.map.centerZ) < b.map.half;
+
+// The nearest spot to `from` that is at least `clear` metres from every drone, looking outward
+// in rings up to `reach` metres, eight directions per ring from a random start. allowed can rule
+// out more spots. Null when there is no such spot within reach.
+export function clearSpot(b, from, clear, reach, allowed = () => true) {
+  const drones = swarmDrones(b), base = nextRandom(b) * Math.PI * 2;
+  for (let distance = 0; distance <= reach; distance += Math.max(4, clear * 0.25)) {
+    for (let k = 0; k < (distance ? 8 : 1); k += 1) {
+      const angle = base + k * Math.PI / 4, p = { x: from.x + Math.cos(angle) * distance, z: from.z + Math.sin(angle) * distance };
+      if (onMap(b, p) && allowed(p) && drones.every(d => (d.x - p.x) ** 2 + (d.z - p.z) ** 2 >= clear * clear)) return p;
+    }
+  }
+  return null;
+}
+
 // A spot that threatens the swarm: near a random drone. clearOfBeacon keeps it away from the
 // Hive beacon (no vent opens under the landing zone); with no drone to aim at, it falls at a
 // random spot of the map.
@@ -83,6 +111,34 @@ function threatPoint(b, spread, clearOfBeacon = false) {
   return { x: centerX, z: centerZ };
 }
 
+// Where a vent opens (HAZ-06): near the swarm but off to one side, its circle usually 6-26 m
+// clear of every drone. Now and then (ventGraze) it opens closer and catches a drone or two at
+// the edge of a flock. Never under the Hive beacon.
+export const ventGraze = 0.2;
+function ventPoint(b, radius) {
+  const beacon = b.zones.find(zone => zone.kind === "beachhead");
+  const awayFromBeacon = (p) => !beacon || Math.hypot(p.x - beacon.x, p.z - beacon.z) > beacon.radius + 70;
+  const near = threatPoint(b, 30, true);
+  const clear = nextRandom(b) < ventGraze ? radius - 5 : radius + 6 + nextRandom(b) * 20;
+  return clearSpot(b, near, clear, 200, awayFromBeacon) || near;
+}
+
+// Where a bolt lands: on a random drone or defender (HAZ-04), within 6 m. A bolt aimed at the
+// swarm is sometimes a near miss beside it instead (HAZ-06).
+function boltPoint(b, radius) {
+  const drones = swarmDrones(b), natives = b.units.filter(u => u.alive && u.side === "native");
+  const atSwarm = drones.length > 0 && (!natives.length || nextRandom(b) < boltsAtSwarm);
+  const pool = atSwarm ? drones : natives;
+  if (!pool.length) return threatPoint(b, 10);
+  const target = pool[Math.floor(nextRandom(b) * pool.length) % pool.length];
+  if (atSwarm && nextRandom(b) < boltNearMiss) {
+    const miss = clearSpot(b, target, radius + 2, 50);
+    if (miss) return { ...miss, nearMiss: true };
+  }
+  const angle = nextRandom(b) * Math.PI * 2, distance = nextRandom(b) * 6;
+  return { x: target.x + Math.cos(angle) * distance, z: target.z + Math.sin(angle) * distance };
+}
+
 function startEvent(b, type) {
   const h = b.hazards, def = hazardTypes[type];
   const activeAt = b.time + def.warnS;
@@ -91,7 +147,7 @@ function startEvent(b, type) {
     startedAt: b.time, activeAt, endsAt: activeAt + randomRange(b, ...def.durationS),
     windAngle: nextRandom(b) * Math.PI * 2, nextStrike: activeAt,
   };
-  if (def.kind === "eruption") Object.assign(event, threatPoint(b, 30, true), { radius: def.radius });
+  if (def.kind === "eruption") Object.assign(event, ventPoint(b, def.radius), { radius: def.radius });
   h.events.push(event);
   b.stats.hazardEvents += 1;
   b.log.push({ t: b.time, tone: "warn", text: `${def.name} in ${def.warnS} s. ${def.advice}` });
@@ -119,7 +175,7 @@ export function stepHazards(b, dt) {
     // Lightning: each bolt is aimed at the swarm and marked before it lands.
     if (event.phase === "active" && event.kind === "storm" && b.time >= event.nextStrike) {
       const def = hazardTypes[event.type];
-      b.strikes.push({ ...threatPoint(b, 10), radius: def.radius, damage: def.strikeDamage * h.severity, markedAt: b.time, hitAt: b.time + def.strikeWarnS, source: "lightning", hit: false });
+      b.strikes.push({ ...boltPoint(b, def.radius), radius: def.radius, damage: def.strikeDamage * h.severity, markedAt: b.time, hitAt: b.time + def.strikeWarnS, source: "lightning", hit: false });
       event.nextStrike = b.time + def.strikeEveryS * randomRange(b, 0.7, 1.3);
     }
   }
