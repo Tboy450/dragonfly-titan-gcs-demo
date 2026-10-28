@@ -22,6 +22,9 @@ October 27: [Part 5 MEB harness connection](research/navigation-meb-link-2026-10
   725 tests, actual mesh seating/clearance and desktop/390px Internal/Thermal checked.
 - [x] Archive exact prior modules/tag; useful connector/installed samples saved.
   Geometric connection is an illustrative example, NOT verified flight mating.
+- [x] Published 00a7e35; Pages 40625667490 succeeded. Shared update preserved
+  unchanged, 729 combined tests pass. Public MEB isolation sample/JSON saved;
+  24 numbered parts, Open interior and no overflow/errors verified.
 - [ ] Actual flight MEB ports/circuits, separate FEB/IMU leads and internal routing
   remain open. Do not declare the whole navigation harness complete.
 - [ ] NEXT scheduled model rebuild: part 24 supplier-scale blower pair/plumbing,

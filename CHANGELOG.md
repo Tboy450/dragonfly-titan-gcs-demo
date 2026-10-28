@@ -54,6 +54,8 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   and earlier photos reused, actual connector samples saved without another source sheet.
 - **Next:** Supplier-scale part 24 pair/plumbing rebuild. Actual MEB flight interface
   and separate FEB/IMU connections remain unresolved; no power/physics changes.
+  Release 00a7e35 / Pages 40625667490 succeeded; 729 combined tests, shared work
+  preserved unchanged, live MEB isolation/default/count and no overflow/errors verified.
 
 ### 2026-10-27: Swarmfall hazard forecast and counters
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)

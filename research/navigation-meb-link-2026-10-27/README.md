@@ -75,3 +75,13 @@ packet; original diagnostic samples remain as records, not evidence for this lin
 Next scheduled rebuild is part 24's supplier-scale blower pair/connected plumbing.
 Separate FEB/IMU routes still need evidence before an installation pass; this
 single MEB example does not close the whole navigation harness or flight interfaces.
+
+## Publication receipt
+
+Implementation a075ce5, integrated release **00a7e35**. The concurrent Swarmfall
+commit 7f3a9e5 was preserved unchanged; only both change-log entries needed manual
+merge reconciliation. **729 combined tests pass**. [Pages 40625667490](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/40625667490)
+succeeded. [Live simulator](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=00a7e35)
+verified at this build, MEB-only isolation, 24 numbered parts, Open interior and
+no overflow/browser errors. `public-meb.png` / `public-checks.json` saved.
+Temporary loopback preview stopped; phone viewport override reset before delivery.
