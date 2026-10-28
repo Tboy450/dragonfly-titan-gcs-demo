@@ -94,5 +94,5 @@ test("A zone label says when a capture needs Links", () => {
     scene.project = () => ({ x: 400, y: 300, visible: true }); scene.unitPixelSize = () => 12; // everything on screen
     drawOverlay();`);
   const zoneName = h.json("zoneName");
-  assert.ok(h.texts.some(t => t.startsWith(`${zoneName} · `) && t.endsWith("needs Links")), h.texts.filter(t => t.includes(zoneName)).join(" | "));
+  assert.ok(h.texts.some(t => t.startsWith(`${zoneName} · `) && t.includes(" · needs Links")), h.texts.filter(t => t.includes(zoneName)).join(" | "));
 });

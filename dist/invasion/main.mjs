@@ -10,6 +10,7 @@ import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, orderHold, battleSummary,
   objectiveStatus, starsEarned, missionResult, retreat, publicMood, dropZoneAt, extractVictory, continueCapturing,
   cityFound, hiddenUnits, shotBlocked, mergeSquads, splitSquad, renameSquad, captureBlocker, setFormation, setStance, formations,
+  canSurrender, surrenderControl,
   orderFor, queueOrder, setPatrol, replaceOrders,
 } from "./battle.mjs?v=dev";
 import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
@@ -1441,7 +1442,9 @@ function drawOverlay() {
     if (!p.visible || p.x < -80 || p.x > width + 80 || p.y < -20 || p.y > height + 20) continue;
     // Why drones in the zone are not capturing it (COMBAT-04), from the rules.
     const blocked = zone.drones > 0 ? { links: "needs Links", jammed: "jammed", stunned: "drones stunned" }[captureBlocker(b, zone)] : null;
-    const status = zone.kind === "beachhead" ? "Hive beacon" : zone.captured ? "held" : `${Math.round(zone.control)}%${zone.contested ? " · contested" : ""}${blocked ? ` · ${blocked}` : ""}`;
+    // A calm town gives up at surrenderControl (ENEMY-07): said while drones are there to take it.
+    const yields = zone.drones > 0 && canSurrender(b, zone) ? ` · surrenders at ${surrenderControl}%` : "";
+    const status = zone.kind === "beachhead" ? "Hive beacon" : zone.captured ? "held" : `${Math.round(zone.control)}%${zone.contested ? " · contested" : ""}${blocked ? ` · ${blocked}` : ""}${yields}`;
     const text = zone.kind === "beachhead" ? status : `${zone.name} · ${status}`;
     const w = ctx.measureText(text).width + 14;
     ctx.fillStyle = "rgba(6, 8, 16, 0.72)";
@@ -1799,6 +1802,10 @@ function handleEvents(events) {
       if (squad) toast(event.kind === "retarget"
         ? `${squad.name}: target down, moving on to a ${defenderTypes[event.type]?.name || "defender"}. Tap to look, H to hold.`
         : `${squad.name}: target down, no defenders within 110 m. Holding.`, "info", 4500, () => { setFollow(false); lookAt(event.x, event.z); });
+    }
+    if (event.kind === "surrender") {
+      const zone = b.zones.find(z => z.id === event.zone);
+      toast(`${zone?.name || "A town"} surrendered without a fight${event.troops ? `: ${event.troops} militia stood down` : ""}.`, "good", 5000, () => { setFollow(false); lookAt(event.x, event.z); });
     }
     if (event.kind === "release" && !mission.selected.size) {
       const pod = b.pods.find(p => p.id === event.pod);

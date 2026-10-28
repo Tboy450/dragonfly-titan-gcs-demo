@@ -594,8 +594,23 @@ complete solely because its assets download or its unit tests pass.
   with rubble.
 - [ ] **ENEMY-06 (P2)** The public beyond one alarm meter: morale per zone, Link broadcasts,
   uprisings that flip zones back.
-- [ ] **ENEMY-07 (P3)** Surrender: high control and low alarm make a settlement give up without
-  a fight.
+- [x] **ENEMY-07 (P3) — Claude (October 28)** Surrender: high control and low alarm make a
+  settlement give up without a fight.
+  - When it happens (`canSurrender`, battle.mjs): a settlement reaches 60% control, with drones
+    inside, while the alarm is under 25 and no civilians were caught in crossfire there.
+    Capitals, mines, beacons and relics never surrender.
+  - What happens: the town's militia stand down and go home, including any out raiding. They
+    are not killed, so no kill counts or alarm. Its defenses join the swarm as in any capture,
+    with no alarm bump for the capture.
+  - The zone label adds "surrenders at 60%" while drones are there and the town would give up.
+    A toast reports the surrender (tap to look).
+  - The alarm tooltip has an "Under 25" line, and the Field guide's societies say when towns
+    surrender.
+  - It rewards quiet play: Links under hold fire (CTRL-07) take a defended town at 60% instead
+    of 100%.
+  - `tests/invasion-surrender.test.mjs` (3 tests). In the browser on Velm, six Links in Zemi
+    showed "surrenders at 60%". At 60% the town surrendered: 2 militia stood down and 2
+    defenses joined the swarm.
 
 ## 7. Planet threats and hazards (HAZ)
 

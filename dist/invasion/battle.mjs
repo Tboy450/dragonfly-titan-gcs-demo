@@ -851,11 +851,29 @@ function hazardDamage(b, dt, swarm) {
   }
 }
 
-function captureZone(b, zone) {
+// Surrender (ENEMY-07): a settlement whose control reaches surrenderControl while the public is
+// still calm (alarm under surrenderAlarm), with drones inside and no civilians caught in the
+// crossfire there, gives up without a fight. Its troops stand down and go home, wherever they
+// are; its defenses join the swarm as in any capture; the public stays calm.
+export const surrenderControl = 60, surrenderAlarm = 25;
+export const canSurrender = (b, zone) => zone.kind === "settlement" && b.tier > 0 && !zone.captured && !zone.crossfire && b.alarm < surrenderAlarm;
+function surrender(b, zone) {
+  let troops = 0;
+  for (const unit of b.units) {
+    if (!unit.alive || unit.side !== "native" || unit.structure || unit.home !== zone.id) continue;
+    unit.alive = false;
+    troops += 1;
+  }
+  b.log.push({ t: b.time, tone: "good", text: `${zone.name} surrenders without a fight${troops ? `: ${troops} militia stand down` : ""}.` });
+  b.events.push({ kind: "surrender", zone: zone.id, x: zone.x, z: zone.z, troops });
+  captureZone(b, zone, { quiet: true });
+}
+
+function captureZone(b, zone, { quiet = false } = {}) {
   zone.captured = true;
   zone.control = 100;
   b.stats.zonesCaptured += 1;
-  b.alarm += 4 * alarmGain(b);
+  if (!quiet) b.alarm += 4 * alarmGain(b);
   let converted = 0;
   for (const unit of b.units) {
     if (unit.alive && unit.structure && unit.side === "native" && dist2(unit, zone) <= (zone.radius + 4) ** 2) {
@@ -917,6 +935,7 @@ function captureZones(b, dt, auras) {
         rate *= resistance * (zone.kind === "capital" ? 0.7 : 1);
         zone.control = Math.min(100, zone.control + rate * dt);
         if (zone.control >= 100) captureZone(b, zone);
+        else if (zone.control >= surrenderControl && canSurrender(b, zone)) surrender(b, zone);
       } else if (locals > 0 || (b.tier > 0 && defenses > 0)) {
         zone.control = Math.max(0, zone.control - 0.5 * dt);
       }

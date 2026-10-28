@@ -3,7 +3,7 @@
 // (ACCESS-01). Plain data; the page renders it.
 import { droneTypes, droneOrder, defenderTypes, societies } from "./units.mjs?v=dev";
 import { hazardTypes, ventStructureDamage } from "./hazards.mjs?v=dev";
-import { alarmStages, artilleryAlarm, salvageMatter, healPerS, zoneIncome, publicMood, upgradeEffects } from "./battle.mjs?v=dev";
+import { alarmStages, artilleryAlarm, salvageMatter, healPerS, zoneIncome, publicMood, upgradeEffects, surrenderControl, surrenderAlarm } from "./battle.mjs?v=dev";
 
 const classOf = (def) => (def.structure ? "structure" : def.air ? "air" : "ground");
 const weaponText = (w) => `${w.name}: ${w.damage}/s against ${w.hits.join(", ")} out to ${w.range} m${w.splash ? `, ${w.splash} m splash` : ""}`;
@@ -79,6 +79,7 @@ export function alarmTooltip(b) {
   const stages = [...alarmStages, ...(society.strikes ? [{ at: artilleryAlarm, text: "Artillery shells your drones." }] : [])].sort((a, c) => a.at - c.at);
   return [`Public alarm: ${Math.round(b.alarm)} of 100 (${publicMood(b.alarm)}).`,
     "Visible drones, kills and civilians caught in crossfire raise it. Links in your zones calm it, and it eases slowly on its own.",
+    `${b.alarm < surrenderAlarm ? "Now under" : "Under"} ${surrenderAlarm}: settlements surrender at ${surrenderControl}% control, without a fight.`,
     ...stages.map(s => `${b.alarm >= s.at ? "Now" : "At"} ${s.at}: ${s.text}`)].join("\n");
 }
 
@@ -145,6 +146,7 @@ export function fieldGuide() {
       facts: s.tier === 0 ? ["No defenders"] : [
         `Troops: ${defenderTypes[s.militia].name}; defenses: ${s.structures.map(t => defenderTypes[t].name).join(", ")}`,
         `Captures run at ${Math.round(s.resistance * 100)}% speed${s.strikes ? "; artillery answers a full alarm" : ""}`,
+        `Settlements surrender at ${surrenderControl}% control while the alarm is under ${surrenderAlarm}, unless civilians were caught in crossfire`,
       ],
     })) },
     { section: "Hazards", items: Object.values(hazardTypes).map(h => ({

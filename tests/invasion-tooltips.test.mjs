@@ -50,7 +50,7 @@ test("The alarm tooltip gives the level and each threshold, with artillery only 
   const atAshfall = alarmTooltip(ashfall).split("\n");
   assert.ok(atAshfall.includes(`Now ${artilleryAlarm}: Artillery shells your drones.`));
   // Thresholds in order: 25, 50, 70, 75.
-  assert.deepEqual(atAshfall.slice(2).map(l => Number(l.match(/^(?:Now|At) (\d+)/)[1])), [25, 50, 70, 75]);
+  assert.deepEqual(atAshfall.slice(3).map(l => Number(l.match(/^(?:Now|At) (\d+)/)[1])), [25, 50, 70, 75]);
 });
 
 test("The matter tooltip's income matches what the battle pays", () => {

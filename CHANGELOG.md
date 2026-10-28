@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-28: Swarmfall towns surrender to a quiet swarm
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Let calm settlements surrender at 60% control"
+- **What changed:** Checklist ENEMY-07.
+  - A settlement gives up without a fight when its control reaches 60% with drones inside,
+    the alarm is under 25, and no civilians were caught in crossfire there.
+  - Its militia stand down and go home, even those out raiding. Its defenses join the swarm,
+    and the capture raises no alarm.
+  - Capitals and other zone kinds never surrender.
+  - The zone label adds "surrenders at 60%" while it would happen, and a toast reports it.
+  - The alarm tooltip and the Field guide explain the rule.
+- **Files:** `dist/invasion/battle.mjs`, `dist/invasion/main.mjs`, `dist/invasion/field-guide.mjs`,
+  `tests/invasion-surrender.test.mjs` (new), `tests/invasion-squad-intent.test.mjs` and
+  `tests/invasion-tooltips.test.mjs` (the label and tooltip have one more part), `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (273 pass). In the browser on Velm, six
+  Links held in Zemi showed "surrenders at 60%". At 60% the town surrendered: 2 militia stood
+  down and 2 defenses joined the swarm, with the log line and toast.
+
 ### 2026-10-28: Verify public numbering and blower release
 - **Signed:** Codex (OpenAI).
 - **Published:** 92ef530; Pages40734789253 succeeded. Numbering8bca7a2 and blower
