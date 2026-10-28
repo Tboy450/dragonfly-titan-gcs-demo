@@ -59,3 +59,10 @@ Open interior and current compact-tube disclosure, no overflow or console errors
 Measurements: forward intake0.457 m (-51.5%), aft0.866 m (-36.5%), each exhaust
 0.106 m (-60.7%). `before-after.jpg` uses the same camera for both archived and
 corrected geometry. No duplicate unchanged hardware/photo comparison made.
+
+Published **6de0fab**. Pages [40740446629](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/40740446629)
+succeeded, including CI checks. Public build stamp, part24, compact-routing
+disclosure, Open interior,32 numbered rows/33 options and no overflow/errors
+verified. `public.png` and `public-checks.json` save the public result. Archive
+tag pushed; preview stopped, viewport restored and live blower inspection left
+open. Before/after sample queued in the right-hand file panel at owner's request.

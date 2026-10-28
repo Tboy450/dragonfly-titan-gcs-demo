@@ -20,9 +20,14 @@ October 28 corrective pass: [Blower tube layout](research/blower-routing-2026-10
 - [x] New archive guards and route length/extent/clip checks; original full-model
   triangle/stroke/mask suite retained. Old broad-phase cable-box false hit now
   disambiguated with actual surfaces. No new flight/dynamic inputs.
-- [ ] Finish merged full-suite/public check; save before/after and desktop/phone
-  samples, publish corrected layout and record receipt. Exact flight installation,
-  materials/bend radius/qualification and electrical interfaces remain open.
+- [x] Finish merged full-suite/public check: **751 tests pass**, published
+  **6de0fab**, Pages **40740446629** succeeded. Before/after, desktop/Thermal/phone
+  and public samples/JSON saved. Live32 list entries/33 selector options, compact
+  disclosure and Open interior verified without overflow/errors. Archive tag pushed;
+  preview stopped, viewport restored, live blower inspection retained. Before/after
+  queued in the right-hand file panel per owner preference.
+- [ ] Exact flight installation, materials/bend radius/qualification and electrical
+  interfaces remain open; a compact illustrative route is not a flight drawing.
 
 Owner steering, October 27, current pass:
 - [x] Number every currently selectable top-level inspection assembly consistently

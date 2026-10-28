@@ -39,6 +39,16 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-28: Verify compact blower tubing on the public site
+- **Signed:** Codex (OpenAI).
+- **Published:** 6de0fab; Pages40740446629 succeeded.751 merged tests pass.
+- **Live check:** Part24 compact tube geometry/disclosure, Open interior,32 list
+  IDs/33 selector options, no overflow/errors. Public sample and JSON saved under
+  research/blower-routing-2026-10-28. Archive tag pushed; before/after queued in
+  right file panel, preview stopped and viewport restored. All unrelated work preserved.
+- **Next:** Exact flight routing/ports and electrical identities remain unresolved.
+  The owner's hose-layout correction is complete; no unsupported hardware claims.
+
 ### 2026-10-28: Correct the blower pair's loose-looking tube layout
 - **Signed:** Codex (OpenAI).
 - **What changed:** Owner rejected the first oversized loops. Four shorter rigid

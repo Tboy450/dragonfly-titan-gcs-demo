@@ -8,6 +8,8 @@ Unit exteriors, poses, selector and all upstream sample plumbing stay exact.
 Routes/supports remain estimated; no flight installation or pressure-loss claim.
 Before/after sample and prior source/archive retained.
 751 merged tests pass; desktop/Thermal/390px phone have no overflow/errors.
+Published **6de0fab**; Pages **40740446629** succeeded. Live compact-pipe disclosure,
+32 numbered list entries and33 selector options verified; public sample/receipt saved.
 
 October 28: [Supplier-referenced DrACO blower pair](research/draco-blower-pair-2026-10-27/README.md).
 Real engineering-model photos replace the compact placeholders, with nominal
