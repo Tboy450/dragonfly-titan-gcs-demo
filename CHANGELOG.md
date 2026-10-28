@@ -55,6 +55,26 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Next:** Supplier-scale part 24 pair/plumbing rebuild. Actual MEB flight interface
   and separate FEB/IMU connections remain unresolved; no power/physics changes.
 
+### 2026-10-27: Swarmfall hazard forecast and counters
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Forecast coming hazards and show their counters"
+- **What changed:** Checklist HAZ-03.
+  - When no hazard is warned of, the HUD badge now shows the next one dimly, for example "Next:
+    Eruption ~1:20". Warnings and active hazards look as before.
+  - The badge's tooltip lists the next three hazards. It then says what the first one does and
+    gives the counters: shelter in held zones, and your Weather sealing level. Its damage
+    figures now include Weather sealing.
+  - The galaxy's planet panel lists the counters under the planet's threats.
+  - On phones the quiet forecast is hidden so the HUD buttons keep their row.
+- **Files:** `dist/invasion/hazards.mjs`, `dist/invasion/field-guide.mjs`, `dist/invasion/main.mjs`,
+  `dist/invasion/invasion.css`, `tests/invasion-hazard-forecast.test.mjs` (new),
+  `tests/invasion-tooltips.test.mjs` (the badge tooltip now starts with the forecast),
+  `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (264 pass). The first forecast hazard
+  struck within two 0.1 s steps of its forecast time. In the browser on Ashfall, the badge read
+  "Next: Eruption ~1:20" and the galaxy panel showed the counters. On a 375 px phone the HUD
+  buttons stayed on their row, and a warning still showed.
+
 ### 2026-10-27: DrACO electrical evidence and supplier blower scale audit
 - **Signed:** Codex (OpenAI).
 - **Commit:** Audit DrACO electrical evidence and supplier blower scale.

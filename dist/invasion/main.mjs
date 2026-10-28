@@ -14,7 +14,7 @@ import {
 } from "./battle.mjs?v=dev";
 import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
 import { packDropPods, podRadius, podStaggerS, dropPresets, fillPayload, presetAvailable } from "./drop-waves.mjs?v=dev";
-import { hazardTypes, hazardAdvisory } from "./hazards.mjs?v=dev";
+import { hazardTypes, hazardAdvisory, hazardForecast } from "./hazards.mjs?v=dev";
 import { achievements, achievementContext, newAchievements, recordAchievements } from "./achievements.mjs?v=dev";
 import { createPlanetTerrain } from "./planet-terrain.mjs?v=dev";
 import { drawGalaxy, drawStarfield, titleGalaxyPlace } from "./galaxy.mjs?v=dev";
@@ -28,7 +28,7 @@ import { frameSteps, trackLag } from "./frame-clock.mjs?v=dev";
 import { cycleSound, soundLabel, updateBattleSound, quietSound } from "./sound.mjs?v=dev";
 import { qualityLevels, nextQuality } from "./quality.mjs?v=dev";
 import { newTips } from "./tips.mjs?v=dev";
-import { fieldGuide, droneTooltip, hazardTooltip, alarmTooltip, matterTooltip } from "./field-guide.mjs?v=dev";
+import { fieldGuide, droneTooltip, alarmTooltip, matterTooltip, forecastTooltip, hazardCounters, aboutTime } from "./field-guide.mjs?v=dev";
 import { tutorialState } from "./tutorial.mjs?v=dev";
 
 // First-time tips (tips.mjs), each shown once per device.
@@ -219,6 +219,7 @@ function renderPlanetPanel() {
     <p>${escapeHtml(planet.description)}</p>
     <p class="section-title">Environmental threats</p>
     <ul class="hazard-list">${planet.hazards.map(h => `<li><strong>${escapeHtml(hazardTypes[h].name)}</strong><small>${escapeHtml(hazardTypes[h].advice)}</small></li>`).join("")}</ul>
+    ${planet.hazards.length ? `<p class="hazard-counters">${hazardCounters(progress.upgrades?.sealing || 0).map(escapeHtml).join(" ")}</p>` : ""}
     <p class="section-title">Defenders</p>
     <p>${escapeHtml(defenders)} ${escapeHtml(society.description)}</p>
     <p class="section-title">Objectives</p>
@@ -1368,9 +1369,17 @@ function updateHud() {
     $("hud-mood").textContent = `${publicMood(b.alarm)} (${Math.round(b.alarm)})`;
     $("hud-alarm").style.width = `${b.alarm}%`;
   }
-  const advisory = hazardAdvisory(b);
-  $("hud-hazard").hidden = !advisory;
-  if (advisory) { $("hud-hazard").textContent = advisory.text; $("hud-hazard").classList.toggle("active", advisory.tone === "active"); setTitle($("hud-hazard"), hazardTooltip(advisory.type, b.hazards.severity)); }
+  // The hazard badge: the hazard under way or warned of, else the forecast's next one (HAZ-03).
+  const advisory = hazardAdvisory(b), forecast = hazardForecast(b, 3);
+  const pressing = advisory ? forecast.find(f => f.type === advisory.type) : null;
+  const order = pressing ? [pressing, ...forecast.filter(f => f !== pressing)] : forecast;
+  $("hud-hazard").hidden = !order.length;
+  if (order.length) {
+    $("hud-hazard").textContent = advisory ? advisory.text : `Next: ${order[0].name} ~${aboutTime(order[0].in)}`;
+    $("hud-hazard").classList.toggle("active", advisory?.tone === "active");
+    $("hud-hazard").classList.toggle("forecast", !advisory);
+    setTitle($("hud-hazard"), forecastTooltip(b, order));
+  }
   $("hud-time").textContent = clock(b.time);
   $("pause-button").textContent = mission.paused ? "Resume" : "Pause";
   $("pause-button").setAttribute("aria-pressed", String(mission.paused));

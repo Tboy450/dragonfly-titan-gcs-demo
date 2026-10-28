@@ -604,8 +604,21 @@ complete solely because its assets download or its unit tests pass.
   attack anything nearby.
 - [ ] **HAZ-02 (P2)** More hazards: quakes, floods and tides on Halcyon, meteor showers,
   radiation storms, sinkholes.
-- [ ] **HAZ-03 (P2)** A forecast of the next hazards, and counters (shelters, resistance
-  upgrades from ECON-01).
+- [x] **HAZ-03 (P2) — Claude (October 27)** A forecast of the next hazards, and counters
+  (shelters, resistance upgrades from ECON-01).
+  - Forecast (`hazardForecast`, hazards.mjs): the coming hazards, soonest first, read from the
+    real schedule. When nothing is warned of, the HUD badge shows the next one dimly, for
+    example "Next: Eruption ~1:20" (rounded up to 10 s). Warnings and active hazards show as
+    before.
+  - The badge's tooltip lists the next three hazards. It then says what the first one does and
+    gives the counters: shelter in held zones (and for landed drones), and the Weather sealing
+    level. The damage figures now include sealing as well as the planet's severity.
+  - The galaxy's planet panel lists the same counters under the planet's threats.
+  - Phones (under 720 px) hide the quiet forecast so the HUD buttons keep their row. Warnings
+    still show there.
+  - `tests/invasion-hazard-forecast.test.mjs` (4 tests). The first forecast hazard struck
+    within two 0.1 s steps of the forecast time. In the browser on Ashfall, the badge read
+    "Next: Eruption ~1:20", and its tooltip listed the eruption and then the ash cloud.
 - [ ] **HAZ-04 (P2)** Let some hazards hit defenders too (lightning, eruptions), so the
   weather can be used as a weapon.
 - [ ] **HAZ-05 (P3)** Day and night per planet (ideas from `titan-day.mjs`): shorter sight at

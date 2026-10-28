@@ -139,6 +139,20 @@ export function stepHazards(b, dt) {
   h.effects = effects;
 }
 
+// The forecast (HAZ-03): the hazards coming next, soonest first. Each type appears once: the one
+// already under way, or its next scheduled front. in is seconds until it strikes (0 once active).
+export function hazardForecast(b, count = 3) {
+  const h = b.hazards;
+  if (!h) return [];
+  const list = [];
+  for (const type of h.types) {
+    const event = h.events.find(e => e.type === type);
+    const at = event ? event.activeAt : h.next[type] + hazardTypes[type].warnS;
+    if (Number.isFinite(at)) list.push({ type, name: hazardTypes[type].name, in: Math.max(0, at - b.time), phase: event ? event.phase : "forecast" });
+  }
+  return list.sort((a, c) => a.in - c.in).slice(0, count);
+}
+
 // The most pressing hazard for the status strip: an active one first, then the next warning.
 export function hazardAdvisory(b) {
   const events = b.hazards?.events || [];

@@ -3,7 +3,7 @@
 // (ACCESS-01). Plain data; the page renders it.
 import { droneTypes, droneOrder, defenderTypes, societies } from "./units.mjs?v=dev";
 import { hazardTypes } from "./hazards.mjs?v=dev";
-import { alarmStages, artilleryAlarm, salvageMatter, healPerS, zoneIncome, publicMood } from "./battle.mjs?v=dev";
+import { alarmStages, artilleryAlarm, salvageMatter, healPerS, zoneIncome, publicMood, upgradeEffects } from "./battle.mjs?v=dev";
 
 const classOf = (def) => (def.structure ? "structure" : def.air ? "air" : "ground");
 const weaponText = (w) => `${w.name}: ${w.damage}/s against ${w.hits.join(", ")} out to ${w.range} m${w.splash ? `, ${w.splash} m splash` : ""}`;
@@ -52,6 +52,24 @@ export function hazardTooltip(type, severity = 1) {
   if (!h) return "";
   return [`${h.name}: ${h.advice}`, `While it lasts: ${hazardEffects(type, severity).join(", ")}.`,
     `Lasts ${h.durationS[0]}-${h.durationS[1]} s and returns every ${h.gapS[0]}-${h.gapS[1]} s.`].join("\n");
+}
+
+// Counters to the weather (HAZ-03): shelter in held zones and the Weather sealing upgrade.
+// sealing is its level (0-3).
+export function hazardCounters(sealing = 0) {
+  return [
+    "Shelter: drones in zones you hold, or landed, take half weather damage, and flares do not stun drones in your zones.",
+    sealing ? `Weather sealing level ${sealing}: ${sealing * 20}% less hazard damage.` : "Weather sealing (a Hive upgrade) cuts hazard damage by 20% a level.",
+  ];
+}
+// "about 1:20": forecasts round up to the next 10 s.
+export const aboutTime = (seconds) => { const s = Math.ceil(seconds / 10) * 10; return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+// The hazard badge's tooltip: the forecast, what the first hazard does, and the counters.
+// Damage figures include the planet's severity and the swarm's sealing.
+export function forecastTooltip(b, forecast) {
+  const scale = (b.hazards?.severity ?? 1) * upgradeEffects(b).hazard;
+  const coming = forecast.map(f => f.phase === "active" ? `${f.name} now` : `${f.name} in about ${aboutTime(f.in)}`);
+  return [`Forecast: ${coming.join("; ")}.`, forecast[0] ? hazardTooltip(forecast[0].type, scale) : null, ...hazardCounters(b.upgrades?.sealing || 0)].filter(Boolean).join("\n");
 }
 
 // The public alarm: where it stands and what each threshold brings on this world.
