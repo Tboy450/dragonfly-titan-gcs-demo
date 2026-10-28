@@ -5,6 +5,13 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ## The short version
 
+October 27 MEB link: `navigation-meb-interface.mjs` defines an EST external shell/
+strain relief and terminal approach. `main-harness.mjs` builds the single cable;
+`vehicle-research.mjs` gives it a separate unnumbered context root shared by part 5
+and Bay harness. `inspectionGroups(name,subassembly)` excludes unrelated focused
+units; visibility masks alias the same objects for both owners. No duplicated
+meshes, new state or solver. Original navigation unit geometry remains unchanged.
+
 October 27 evidence audit: `draco-electrical-evidence.mjs` is immutable reference
 data only. `ui/sampling-connections.mjs` renders its closed nested disclosure in
 the DrACO inventory; existing focus callbacks are reused. Supplier values must

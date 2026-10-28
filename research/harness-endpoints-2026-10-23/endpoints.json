@@ -1,5 +1,5 @@
 {
-  "revision": "main-harness-2026-10-23-lower-cameras",
+  "revision": "main-harness-2026-10-27-meb-interface",
   "coordinateFrame": "construction metres: +x starboard, +y up, +z aft",
   "measurement": "World-space tube endpoints and sampled peer centerlines. <=1 mm surface gap means geometric contact only, never verified electrical mating.",
   "references": [
@@ -908,16 +908,16 @@
       "confidence": "EST",
       "flightTopologyConfirmed": false,
       "radiusM": 0.008,
-      "lengthM": 0.397423,
+      "lengthM": 0.369461,
       "start": [
         0,
         -0.268,
         -1
       ],
       "end": [
-        -0.2,
+        -0.18995,
         -0.235,
-        -1.262
+        -1.24505
       ],
       "startAttachment": {
         "run": "trunk",
@@ -926,8 +926,21 @@
         "radiusM": 0.012
       },
       "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
-      "status": "mating-interface-unresolved",
-      "missingSegment": "Branch approaches MEB; no modeled mating electrical interface identified."
+      "targetStubs": [
+        {
+          "id": "navigation-meb-interface/estimated-cable-seat",
+          "end": [
+            -0.18995,
+            -0.235,
+            -1.24505
+          ],
+          "radiusM": 0.008,
+          "centerlineGapM": 0,
+          "surfaceGapM": 0
+        }
+      ],
+      "status": "geometric-contact-only",
+      "missingSegment": "Electrical identity, circuit continuity and actual mating hardware remain unverified."
     },
     {
       "id": "bay/starboard-down-camera",

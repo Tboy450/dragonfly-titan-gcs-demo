@@ -1,5 +1,6 @@
 import * as THREE from "../../dist/vendor/three/three.module.min.js?v=dev";
 import { mainHarnessAsset } from "../../dist/main-harness.mjs";
+import {navigationMebInterface} from "../../dist/navigation-meb-interface.mjs";
 import { buildIem } from "../../dist/iem.mjs";
 import { buildPowerUnits } from "../../dist/power-units.mjs";
 import { buildBattery } from "../../dist/battery.mjs";
@@ -60,6 +61,8 @@ function targetStubs() {
     object.geometry?.dispose();
     for (const material of Array.isArray(object.material) ? object.material : [object.material]) material?.dispose();
   });
+  targets.set("navigation-meb",[{id:"navigation-meb-interface/estimated-cable-seat",
+    point:new THREE.Vector3(...navigationMebInterface.seat),radiusM:.008}]);
   return targets;
 }
 

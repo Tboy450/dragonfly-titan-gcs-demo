@@ -83,8 +83,10 @@ export function selectInspectionSubassembly(state, group, name) {
   state.inspector.panX = state.inspector.panY = 0;
   state.inspector.resetSerial += 1;
 }
-export function inspectionGroups(name) {
+export function inspectionGroups(name, subassemblyName = null) {
   const related = {
+    "nose-electronics": !subassemblyName || subassemblyName==='ocellus-meb' ? ["nose-electronics","navigation-meb-link"] : ["nose-electronics"],
+    "main-harness": subassemblyName ? ["main-harness"] : ["main-harness","navigation-meb-link"],
     "sample-lines": ["drills", "sample-lines", "sample-flow", "sample-carousel", "drill-blower"],
     drams: ["drams"],
     battery: ["battery", "battery-sensor"],

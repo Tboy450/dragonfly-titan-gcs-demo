@@ -467,9 +467,12 @@ export function buildResearchModel(kit) {
   // Main wiring harness on the bay floor (main-harness.mjs; NASA/APL's September 2026 harness
   // photo): a trunk down the centerline and branches to the units' cable stubs and connectors.
   // Not a numbered part; it shows in Internal and Thermal like the other interior hardware.
+  subsystem("navigation-meb-link", "equipment-bay");
+  subsystems["navigation-meb-link"].userData.layer="interior";
+  const navigationParent=buildTarget;
   subsystem("main-harness", "equipment-bay");
   subsystems["main-harness"].userData.layer = "interior";
-  buildMainHarness({ parent: buildTarget, mesh });
+  buildMainHarness({ parent: buildTarget, mesh, navigationParent });
 
   // Circulation loop (ICES-2023 p2-p3): MMRTG -> fan -> under-floor duct forward -> into the body
   // below the nose -> aft through the bay -> back into the MMRTG. Arrows move along it at a speed

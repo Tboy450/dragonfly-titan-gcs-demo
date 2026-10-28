@@ -39,6 +39,22 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Fit the MEB branch and retain it in part-5 inspection
+- **Signed:** Codex (OpenAI).
+- **Commit:** Fit estimated MEB harness interface and shared inspection context.
+- **What changed:** MEB branch tail seats in a fitted external flange/shell and
+  strain relief. Single shared root is visible with part 5/MEB or Bay harness,
+  excluded from isolated IMUs/FEB/shelf/camera routes. Masks and collapsed text updated.
+- **Assumptions:** Generic external interface is EST, not flight connector/photo
+  verification. No pins, internal circuits, wall penetration, seal or qualified bend.
+  Original enclosures, poses, cable sizes, trunk and all other routes stay exact.
+- **Checks:** 725 tests; actual rib/wall fit and cable clearance; desktop/390px,
+  Internal/Thermal, shared isolation and independent masks; no overflow/errors.
+- **Archive:** `archive/navigation-meb-link-2026-10-27`, tag at f9660ce; sources
+  and earlier photos reused, actual connector samples saved without another source sheet.
+- **Next:** Supplier-scale part 24 pair/plumbing rebuild. Actual MEB flight interface
+  and separate FEB/IMU connections remain unresolved; no power/physics changes.
+
 ### 2026-10-27: DrACO electrical evidence and supplier blower scale audit
 - **Signed:** Codex (OpenAI).
 - **Commit:** Audit DrACO electrical evidence and supplier blower scale.

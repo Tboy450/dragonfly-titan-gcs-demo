@@ -1,0 +1,18 @@
+{
+  "numberedParts": 24,
+  "desktopOverflow": false,
+  "phone": {
+    "width": 390,
+    "overflow": false,
+    "part": "nose-electronics",
+    "sub": "ocellus-meb",
+    "completeBranchInFrame": true
+  },
+  "visualChecks": [
+    "Part 5 and MEB isolation retain one bay branch",
+    "IMU-only isolation omits branch",
+    "Harnesses and Interfaces masks restore independently",
+    "Internal and Thermal checked"
+  ],
+  "errors": []
+}

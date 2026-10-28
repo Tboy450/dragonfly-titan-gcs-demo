@@ -88,6 +88,12 @@ export function createInspectionVisibility(subsystems) {
     });
     parts.set(name, layers);
   }
+  // The single navigation link is shared inspection context, not duplicated geometry.
+  const navigation=parts.get("navigation-meb-link");
+  if(navigation)for(const owner of ["nose-electronics","main-harness"]){
+    const target=parts.get(owner);if(!target)continue;
+    for(const [category,objects]of navigation)target.get(category).push(...objects);
+  }
   return {
     available: (id, part = null) => !!(part ? parts.get(part)?.get(id) : global.get(id))?.length,
     apply(inspector, previous) {

@@ -6,6 +6,13 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**MEB link, part 5 (Codex, October 27):** [pass / sources / limits](navigation-meb-link-2026-10-27/README.md).
+Reuses real NASA/APL/Ed Whitman September wiring photo and NASA workmanship pages
+29–31 for general wire dress/backshell reasoning. Prior Ocellus real-related/CAD
+hierarchy unchanged. New shell/strain relief and endpoint location EST, no flight
+port/circuit claim. Only connection/installed samples added, no duplicated photos
+or redundant comparison sheet; 725 tests and desktop/phone checks pass.
+
 **DrACO electrical evidence / part 24 scale (Codex, October 27):**
 [audit](draco-electrical-audit-2026-10-27/README.md),
 [real supplier hardware / specs](sources/barber-nichols-draco-2026-10-27/README.md),

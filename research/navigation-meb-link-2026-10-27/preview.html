@@ -1,0 +1,24 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>MEB harness installation example</title>
+<style>body{margin:0;background:#e5e9eb;color:#182d3c;font:16px Arial}header,footer{padding:16px 24px;max-width:920px;margin:auto}h1{font-size:22px;margin:0 0 8px}canvas{display:block;width:760px;height:520px;margin:auto}button{padding:8px;margin:10px 6px 0 0}</style>
+<header><h1>Part 5 / MEB harness connection — installation estimate</h1>Existing box and cable; fitted external shell and strain relief. Exact flight connector and circuit unknown.<br><button id="overview">Box and branch</button><button id="detail">Connection detail</button></header><canvas></canvas>
+<footer>Single shared branch is now visible with part 5 or Bay harness. Solid blind panel-facing flange; no invented pins, internal wiring or wall penetration. NASA workmanship is general design context, not an Ocellus connector identification.</footer>
+<script type="module">
+import * as T from '../../dist/vendor/three/three.module.min.js';
+import {buildNoseElectronics} from '../../dist/nose-electronics.mjs';
+import {buildMainHarness} from '../../dist/main-harness.mjs';
+import {navigationMebInterface as A} from '../../dist/navigation-meb-interface.mjs';
+const scene=new T.Scene();scene.background=new T.Color(0xe5e9eb);
+const equipment=new T.Group(),navigation=new T.Group(),bay=new T.Group();scene.add(equipment,navigation);
+const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};
+const units=buildNoseElectronics({parent:equipment,mesh});
+for(const u of units.units)u.group.visible=u.spec.name==='ocellus-meb';
+for(const u of units.imus)u.visible=false;units.support.visible=false;
+buildMainHarness({parent:bay,navigationParent:navigation,mesh});
+scene.add(new T.HemisphereLight(0xffffff,0x737f8b,2.3));
+for(const [p,i]of [[[-1,2,2],3],[[1,1,-1],1.4]]){const l=new T.DirectionalLight(0xffffff,i);l.position.fromArray(p);scene.add(l);}
+const camera=new T.PerspectiveCamera(38,760/520,.001,10);
+const renderer=new T.WebGLRenderer({canvas:document.querySelector('canvas'),antialias:true});renderer.setPixelRatio(1);renderer.setSize(760,520,false);
+function view(detail){const target=new T.Vector3(A.centerX,A.centerY,detail?A.wallZ+.022:-1.30);
+camera.position.copy(target).add(detail?new T.Vector3(.075,.055,.13):new T.Vector3(.30,.28,.55));camera.lookAt(target);renderer.render(scene,camera);}
+document.querySelector('#overview').onclick=()=>view(false);document.querySelector('#detail').onclick=()=>view(true);view(false);
+</script></html>

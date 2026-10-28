@@ -1,4 +1,5 @@
 import * as THREE from "./vendor/three/three.module.min.js?v=dev";
+import {navigationMebInterface,buildNavigationMebInterface} from "./navigation-meb-interface.mjs?v=dev";
 
 // Main wiring harness on the equipment-bay floor (owner, October 20: "a lot of connecting
 // equipment is left"). NASA/APL's September 2, 2026 photo of the flight fuselage being wired
@@ -15,7 +16,7 @@ const onFloor = (r) => floorY + r + 0.004;   // on low standoffs
 const T = onFloor(0.012);
 const B = -0.27;   // branches' floor height: 4-5 mm above the floor and the units' mounting flanges
 export const mainHarnessAsset = Object.freeze({
-  revision: "main-harness-2026-10-23-lower-cameras",
+  revision: "main-harness-2026-10-27-meb-interface",
   trunk: Object.freeze({ radiusM: 0.012, points: Object.freeze([[0, T, -1.0], [0, T, -0.75], [0, T, -0.4], [0, T, -0.1], [0, T, 0.12], [-0.02, T, 0.27]].map(Object.freeze)) }),
   // [name, radius, points]: each branch starts on the trunk and ends at its unit.
   branches: Object.freeze([
@@ -27,7 +28,7 @@ export const mainHarnessAsset = Object.freeze({
     ["rde-1", 0.007, [[0, T, -0.75], [-0.08, B, -0.735], [-0.16, -0.25, -0.70]]],
     ["rde-2", 0.007, [[0, T, -0.75], [0.08, B, -0.735], [0.16, -0.25, -0.70]]],
     ["navigation-feb-imu", 0.008, [[0, T, -1.0], [0.1, B, -1.005], [0.2, -0.24, -1.014]]],
-    ["navigation-meb", 0.008, [[0, T, -1.0], [-0.12, B, -1.02], [-0.2, B, -1.14], [-0.2, -0.235, -1.262]]],
+    ["navigation-meb", 0.008, navigationMebInterface.cableControls],
     // Lower cameras: explicit stub endpoints measured in the construction frame. These are
     // illustrative bundled joins, not flight splices, pinouts or assigned circuits.
     ["starboard-down-camera", 0.005, [[0.058, B, 0.12], [0.2, B, 0.118], [0.33, B, 0.125], [0.345, -0.24, 0.15], [0.362, -0.2065, 0.16]]],
@@ -61,7 +62,7 @@ export const mainHarnessAsset = Object.freeze({
   clampSpacingM: 0.16,
 });
 
-export function buildMainHarness({ parent, mesh }) {
+export function buildMainHarness({ parent, mesh, navigationParent = parent }) {
   const A = mainHarnessAsset;
   const harness = new THREE.Group();
   harness.name = "main-harness";
@@ -112,5 +113,10 @@ export function buildMainHarness({ parent, mesh }) {
   stand.name = "main-harness-port-camera-support-stand";
   Object.assign(foot.userData, { routeConfidence: "EST", routeName: "port-down-camera", matingStructure: "port-wall-outer-aluminum-face" });
   stand.userData.routeName = "port-down-camera";
-  return { harness, mounts };
+  // One shared context root, not duplicate wires. Both inspector owners can reveal it.
+  const navigationWire=new THREE.Group();navigationWire.name='navigation-meb-wire';
+  navigationWire.userData.inspectionLayer='harnesses';navigationParent.add(navigationWire);
+  for(const object of [...harness.children])if(object.userData.routeName==='navigation-meb')navigationWire.add(object);
+  const navigationInterface=buildNavigationMebInterface({parent:navigationParent,mesh});
+  return { harness, mounts, navigationWire, navigationInterface };
 }

@@ -1,5 +1,11 @@
 # Dragonfly Titan GCS
 
+October 27: [MEB harness connection and isolation](research/navigation-meb-link-2026-10-27/README.md).
+The curved line by part 5 now seats in an estimated external connector shell and
+strain relief; the same single branch remains visible with part 5/MEB or Bay harness.
+Actual flight connector/circuit unknown. All other routes and enclosures preserved.
+725 tests and desktop/phone inspection checks pass; archive and samples saved.
+
 October 27: [DrACO electrical evidence and blower scale audit](research/draco-electrical-audit-2026-10-27/README.md).
 Real supplier photos and BNCP-74-000 specifications reveal that the current blower
 pair needs a coordinated housing/placement/plumbing rebuild. Added a nested, closed

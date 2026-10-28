@@ -16,13 +16,13 @@ export const installationFamilies=Object.freeze([
   modeled:"No external power/data or antenna link is invented. Flight configuration, exact cable construction and destinations remain unverified."},
  {id:"nose-electronics",name:"Navigation installations",source:"navigation",inspect:"nose-electronics",subassembly:"imu-a",
   role:"Estimated retention heads are added at the existing Ocellus mounting feet and MIMU pads; all source envelopes and capped ports remain unchanged.",
-  modeled:"No navigation harness is fabricated. Exact flight ports, mating circuits, bracket fasteners and harness routing remain open."},
+  modeled:"The existing bay branch now seats in an estimated external MEB connector shell/strain relief. It stays visible with part 5 or Bay harness; isolated IMU/FEB views omit it. This is an installation illustration, not an identified flight connector, wiring diagram or pinout. Exact flight ports, circuits and the separate FEB/IMU routes remain open."},
  {id:"battery",name:"Battery installation",source:"battery",inspect:"battery",subassembly:"battery-external-leads",azimuth:-1.8,elevation:.35,
   role:"Three unchanged exterior lead examples gain estimated cushioned supports and lacing. External connectors and leads have separate focuses.",
   modeled:"Enclosure, cells, internal bus bars and all lead endpoints are unchanged. The appearance reference is a sub-scale test module, not the flight pack."},
 ].map(row=>Object.freeze({...row,confidence:"EST",flightMatingConfirmed:false})));
 export const installationLimits=Object.freeze({
- scope:"Illustrative installation work on five equipment families, not a complete flight wiring diagram. Equipment poses and all cable endpoints are retained; all twenty-six IEM local service routes are reviewed estimates.",
+ scope:"Illustrative installation work on five equipment families, not a complete flight wiring diagram. Equipment poses are retained; only the navigation MEB branch tail is fitted to its estimated interface. All twenty-six IEM local service routes are reviewed estimates.",
  naming:"Supports, lacing and retention hardware are installation estimates. The reference photographs do not establish their exact flight construction.",
  boundary:"Geometric contact does not assign a circuit, pinout or qualified bend radius. No electrical, cable heat-leak or structural solver is added.",
 });

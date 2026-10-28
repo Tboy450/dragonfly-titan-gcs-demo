@@ -397,10 +397,15 @@ export function createChaseRenderer(options = {}) {
       if (inspector) {
         craft.updateMatrixWorld(true);
         const center = new THREE.Vector3(0, -0.15, 0);
-        const groups = inspectionGroups(focusName);
+        const groups = inspectionGroups(focusName,subassembly?.name);
         if (focusName) {
           const bounds = new THREE.Box3();
-          if (subassembly) bounds.setFromObject(subassembly);
+          if (subassembly) {
+            bounds.setFromObject(subassembly);
+            // MEB focus includes its shared cable so the junction stays on screen on phones.
+            if(groups.includes("navigation-meb-link")&&subsystems["navigation-meb-link"])
+              bounds.union(new THREE.Box3().setFromObject(subsystems["navigation-meb-link"]));
+          }
           else for (const name of groups) if (subsystems[name]) bounds.union(new THREE.Box3().setFromObject(subsystems[name]));
           bounds.getCenter(center);
           // A bounding sphere keeps the entire selected assembly framed at every orbit angle.

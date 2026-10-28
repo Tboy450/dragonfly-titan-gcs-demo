@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 27 MEB link (Codex):** [evidence and fitted example](research/navigation-meb-link-2026-10-27/README.md).
+[PUB] real wiring appearance and generic NASA backshell/stress-relief guidance.
+[EST] external MEB shell/flange, blind panel-facing interface, strain relief,
+location and final branch approach. No exact Ocellus flight connector identified.
+[CALC] about 26 mm sampled cable-surface clearance to existing navigation hardware,
+straight seated end. Existing historical box dimensions unchanged; new fitting
+is external, not a verified overall flight envelope. 725 tests and inspector samples.
+
 **October 27 DrACO electrical/scale audit (Codex):** [packet and continuation](research/draco-electrical-audit-2026-10-27/README.md).
 [PUB] Barber-Nichols BNCP-74-000: 345 × 168 mm, 2.83 kg, 1.3 L/s, 190 m gas head,
 up to 25,000 rpm; real EM photos saved. Flow/head conditions and flight ICD not

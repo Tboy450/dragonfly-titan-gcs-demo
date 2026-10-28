@@ -10,6 +10,23 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October 27: [Part 5 MEB harness connection](research/navigation-meb-link-2026-10-27/README.md).
+- [x] Correctly identify the curved line as Bay harness `navigation-meb`; earlier
+  shelf-leg interpretation was wrong. Reuse original real wiring/workmanship and
+  Ocellus source packets. No exact flight connector or circuit established.
+- [x] Fit one EST external flange/shell/backshell and strain relief between existing
+  MEB ribs. Only branch tail changes; first two controls, all cable diameters,
+  other routes, equipment geometry/poses and historical design boxes preserved.
+- [x] Single shared inspection context: part 5/MEB and Bay harness retain branch;
+  isolated IMU/FEB/shelf and camera routes omit it. Masks restore independently.
+  725 tests, actual mesh seating/clearance and desktop/390px Internal/Thermal checked.
+- [x] Archive exact prior modules/tag; useful connector/installed samples saved.
+  Geometric connection is an illustrative example, NOT verified flight mating.
+- [ ] Actual flight MEB ports/circuits, separate FEB/IMU leads and internal routing
+  remain open. Do not declare the whole navigation harness complete.
+- [ ] NEXT scheduled model rebuild: part 24 supplier-scale blower pair/plumbing,
+  as detailed in the electrical audit below. No third inferred blower or guessed pinout.
+
 October 27: [Electrical evidence / blower scale audit](research/draco-electrical-audit-2026-10-27/README.md).
 - [x] Research actual supplier hardware/specs; save original EM composite and
   catalog photo, correctly separating real hardware, concept art and edited background.
@@ -22,7 +39,7 @@ October 27: [Electrical evidence / blower scale audit](research/draco-electrical
   scale warning; 721 tests, desktop/390px checks and real/model/scale sample saved.
 - [x] Published 5e25b65; Pages 40602293824 passed. Live Open interior, 24 numbers,
   closed audit, no overflow/errors verified. Public evidence screenshot/JSON saved.
-- [ ] Owner screenshot **2026-10-27 193738** clarifies the curved line by part 5:
+- [x] Owner screenshot **2026-10-27 193738** clarifies the curved line by part 5:
   `main-harness-navigation-meb`, owned by Bay harness, NOT the part-5 support leg.
   Earlier identification was wrong. Its network end joins the trunk; its device
   end approaches Ocellus MEB at [-.2,-.235,-1.262] m without an assigned mating
@@ -32,6 +49,8 @@ October 27: [Electrical evidence / blower scale audit](research/draco-electrical
   Part-5 isolation hides this separately owned harness, explaining its disappearance.
   FEB/IMU navigation branch remains independently unresolved. See current audit
   README and saved clarification screenshot. No geometry changed for this diagnosis.
+  Its estimated external installation/inspection continuation is completed in the
+  newer MEB link pass above; exact flight mating remains unresolved.
 - [ ] NEXT: rebuild **part 24 blower pair together** from real supplier photos and
   published overall dimensions. Reconcile orientation/centers, supports, inlet,
   exhaust, selector and return fit; check other rebuilt parts and access layers.
