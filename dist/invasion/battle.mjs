@@ -9,7 +9,7 @@
 //             standing when the zone falls switch sides and fire for the swarm.
 import {
   droneTypes, defenderTypes, societies, droneOrder, dropCooldownS, dropDurationS,
-  payloadSlots, payloadCost, payloadCount, weaponFor, reachFor,
+  payloadSlots, payloadCost, payloadCount, weaponFor, reachFor, difficulties, difficultyOf,
 } from "./units.mjs?v=dev";
 import { nextRandom, randomRange, randomPick } from "./random.mjs?v=dev";
 import { createHazardState, stepHazards, clearSpot, ventStructureDamage } from "./hazards.mjs?v=dev";
@@ -34,7 +34,7 @@ const isDrone = (unit) => unit.alive && unit.side === "swarm" && !unit.structure
 
 // options: seed, unlocks, podSlots, matter (the campaign bank), terrain ({ heightAt, isLand, setPads? }).
 export function createBattle(planet, options = {}) {
-  const { seed = planet.seed ?? 1, unlocks = ["scout", "link"], podSlots = 12, matter = 160, terrain = flatTerrain, upgrades = {} } = options;
+  const { seed = planet.seed ?? 1, unlocks = ["scout", "link"], podSlots = 12, matter = 160, terrain = flatTerrain, upgrades = {}, difficulty = "normal" } = options;
   const society = societies[planet.society] || societies[0];
   const b = {
     planetId: planet.id, practice: !!planet.practice, threat: planet.threat || 0, tier: society.tier,
@@ -51,6 +51,8 @@ export function createBattle(planet, options = {}) {
     ...(terrain.skylineVersion ? { skyline: terrain.skylineVersion } : {}),
     // Hive upgrade levels bought in the campaign (campaign.mjs hiveUpgrades), fixed for the battle.
     upgrades: Object.fromEntries(Object.entries(upgrades).filter(([id, n]) => upgradeIds.includes(id) && Number.isInteger(n) && n > 0)),
+    // Difficulty (OBJ-05, units.mjs difficulties), fixed for the battle.
+    difficulty: Object.hasOwn(difficulties, difficulty) ? difficulty : "normal",
     matter, unlocks: [...unlocks], podSlots, required: planet.required, objectives: planet.objectives || [],
     alarm: 0, alarmStage: 0, zones: [], units: [], squads: [], pods: [], strikes: [],
     events: [], log: [], nextId: 1, lastDropAt: -Infinity,
@@ -72,6 +74,7 @@ export function createBattle(planet, options = {}) {
   terrain.setPads?.(b.zones);
   garrison(b, planet, society);
   b.hazards = createHazardState(b, planet);
+  b.hazards.severity *= difficultyOf(b.difficulty).hazards;
   b.log.push({ t: 0, tone: "info", text: planet.practice
     ? "Practice planet: call a drop on the Hive beacon, then send drones to the beacons."
     : `${society.name} society, threat ${planet.threat}. Call a drop on the Hive beacon to begin.` });
@@ -134,7 +137,11 @@ function placeZones(b, planet, terrain) {
 }
 
 // Defender strength grows with the planet's threat level.
-const strength = (b) => ({ hp: 1 + 0.1 * Math.max(0, b.threat - 1), damage: 1 + 0.08 * Math.max(0, b.threat - 1) });
+// Defenders grow with the planet's threat, scaled by the difficulty (older battles: Normal).
+const strength = (b) => {
+  const level = difficultyOf(b.difficulty);
+  return { hp: (1 + 0.1 * Math.max(0, b.threat - 1)) * level.hp, damage: (1 + 0.08 * Math.max(0, b.threat - 1)) * level.damage };
+};
 
 // Hive upgrades in battle: multipliers from the levels in b.upgrades (none on older battles).
 export const upgradeIds = Object.freeze(["launch", "armor", "engines", "weapons", "sealing", "firmware"]);
@@ -1038,7 +1045,7 @@ function reinforce(b, dt) {
   if (!society?.militia) return;
   b.reinforceIn -= dt;
   if (b.reinforceIn > 0) return;
-  b.reinforceIn = (70 - 52 * b.alarm / 100) / (0.6 + 0.2 * b.threat);
+  b.reinforceIn = (70 - 52 * b.alarm / 100) / (0.6 + 0.2 * b.threat) / difficultyOf(b.difficulty).reinforce;
   const sources = b.zones.filter(zone => !zone.captured && ["settlement", "capital", "mine"].includes(zone.kind));
   if (!sources.length) return;
   const fielded = b.units.filter(u => u.alive && u.side === "native" && !u.structure).length;

@@ -1,6 +1,6 @@
 // Versioned, JSON-safe battle checkpoints. Terrain functions and renderer state are rebuilt.
 import { planetById } from "./campaign.mjs?v=dev";
-import { droneTypes, defenderTypes } from "./units.mjs?v=dev";
+import { droneTypes, defenderTypes, difficulties } from "./units.mjs?v=dev";
 import { hazardTypes } from "./hazards.mjs?v=dev";
 import { validPayload, podStaggerS, dronesPerPod } from "./drop-waves.mjs?v=dev";
 import { payloadCount, payloadSlots, dropDurationS } from "./units.mjs?v=dev";
@@ -202,7 +202,9 @@ export function validMissionCheckpoint(value) {
       || !integer(b.podSlots, 1, 44) || !integer(b.required, 1, b.zones.length - 1)
       || !between(b.matter, 0, 1e12) || !between(b.refund, 0, 1e12) || !between(b.alarm, 0, 100)
       || !integer(b.alarmStage, 0, 3) || !integer(b.tier, 0, 5) || !integer(b.threat, 0, 5)
-      || !between(b.reinforceIn, -1, 1e6) || !between(b.strikeIn, -1, 1e6)) return null;
+      || !between(b.reinforceIn, -1, 1e6) || !between(b.strikeIn, -1, 1e6)
+      // Difficulty (OBJ-05): absent on battles saved before it existed (they play as Normal).
+      || b.difficulty !== undefined && !known(difficulties, b.difficulty)) return null;
     if (b.lastDropAt !== null && !between(b.lastDropAt, 0, b.time)) return null;
     if (!point({ x: b.map?.centerX, z: b.map?.centerZ }) || !between(b.map.half, 1, 1e5)) return null;
     if (!validWorld(b)) return null;

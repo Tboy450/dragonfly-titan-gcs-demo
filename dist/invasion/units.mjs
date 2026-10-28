@@ -46,6 +46,20 @@ export const droneTypes = Object.freeze({
 export const droneOrder = Object.freeze(["scout", "link", "striker", "breacher", "dragonfly"]);
 export const startingDrones = Object.freeze(["scout", "link"]);
 export const basePodSlots = 12;
+
+// Difficulty levels (OBJ-05), chosen on the title screen for every new mission. hp and damage
+// scale the defenders; reinforce how fast militia arrive; hazards how hard the weather hits;
+// supply each planet's guaranteed matter.
+export const difficulties = Object.freeze({
+  easy: Object.freeze({ id: "easy", name: "Easy", hp: 0.8, damage: 0.75, reinforce: 0.75, hazards: 0.65, supply: 1.3,
+    note: "Defenders have 20% less health and hit 25% softer, reinforcements come slower, hazards hit 35% softer, and each planet guarantees 30% more matter." }),
+  normal: Object.freeze({ id: "normal", name: "Normal", hp: 1, damage: 1, reinforce: 1, hazards: 1, supply: 1,
+    note: "The campaign as designed." }),
+  hard: Object.freeze({ id: "hard", name: "Hard", hp: 1.25, damage: 1.2, reinforce: 1.3, hazards: 1.3, supply: 0.85,
+    note: "Defenders have 25% more health and hit 20% harder, reinforcements come 30% faster, hazards hit 30% harder, and each planet guarantees 15% less matter." }),
+});
+export const difficultyOrder = Object.freeze(["easy", "normal", "hard"]);
+export const difficultyOf = (id) => (Object.hasOwn(difficulties, id ?? "") ? difficulties[id] : difficulties.normal);
 export const dropCooldownS = 6;
 // Seconds from the pod leaving orbit to the drones being released above the ground.
 export const dropDurationS = 10;

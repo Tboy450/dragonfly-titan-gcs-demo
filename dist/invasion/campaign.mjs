@@ -1,6 +1,6 @@
 // The invasion campaign: planets in the order they are invaded, what each one rewards, and the
 // player's saved progress between missions. No DOM; covered by tests/invasion-campaign.test.mjs.
-import { droneOrder, droneTypes, startingDrones, basePodSlots, payloadCount } from "./units.mjs?v=dev";
+import { droneOrder, droneTypes, startingDrones, basePodSlots, payloadCount, difficulties, difficultyOf } from "./units.mjs?v=dev";
 import { objectiveText } from './objective-rules.mjs?v=dev';
 import { validMissionId } from "./mission-id.mjs?v=dev";
 
@@ -209,6 +209,8 @@ export function createProgress() {
     upgrades: {},
     // The last wave launched on each planet or frontier map (CTRL-09): { planetId: payload }.
     lastWaves: {},
+    // Difficulty for new missions (OBJ-05, units.mjs difficulties).
+    difficulty: "normal",
     stats: Object.fromEntries(statNames.map(name => [name, 0])),
   };
 }
@@ -226,17 +228,19 @@ export function nextPlanet(progress) {
 
 export const availableDrones = (progress) => droneOrder.filter(type => progress.unlocks.includes(type));
 
-// Matter available at the start of an attempt on this planet.
-export const missionMatter = (progress, planet) => Math.max(progress.matter, planet.supply || 0);
+// Matter available at the start of an attempt on this planet: the bank, or the planet's
+// guaranteed supply (scaled by the difficulty, OBJ-05) when that is more.
+export const missionMatter = (progress, planet) => Math.max(progress.matter, Math.round((planet.supply || 0) * difficultyOf(progress.difficulty).supply));
 
 // What an attempt starts with. A frontier brings its own matter and at least its kit; the
 // campaign bank is neither used nor changed.
 export function missionSupply(progress, planet) {
   const upgrades = Object.fromEntries(Object.keys(hiveUpgrades).filter(id => id !== "pods").map(id => [id, upgradeLevel(progress, id)]).filter(([, n]) => n > 0));
   const extraSlots = 4 * upgradeLevel(progress, "pods"), slots = (base) => Math.min(44, base + extraSlots);
-  if (!planet.frontier) return { matter: missionMatter(progress, planet), unlocks: [...progress.unlocks], podSlots: slots(progress.podSlots), upgrades };
+  const difficulty = difficultyOf(progress.difficulty).id;
+  if (!planet.frontier) return { matter: missionMatter(progress, planet), unlocks: [...progress.unlocks], podSlots: slots(progress.podSlots), upgrades, difficulty };
   const unlocks = droneOrder.filter(type => progress.unlocks.includes(type) || planet.kit.unlocks.includes(type));
-  return { matter: planet.supply, unlocks, podSlots: slots(Math.max(progress.podSlots, planet.kit.podSlots)), upgrades };
+  return { matter: Math.round(planet.supply * difficultyOf(difficulty).supply), unlocks, podSlots: slots(Math.max(progress.podSlots, planet.kit.podSlots)), upgrades, difficulty };
 }
 
 // A finished frontier mission: statistics and its settlement only (never counted twice).
@@ -343,6 +347,7 @@ export function validProgress(raw) {
     if (Number.isInteger(record?.wins) && record.wins >= 1 && Number.isInteger(record.stars) && record.stars >= 1 && record.stars <= 3 && Number.isFinite(record.best) && record.best > 0)
       clean.frontier[map.id] = { wins: Math.min(1e6, record.wins), stars: record.stars, best: Math.round(record.best) };
   }
+  if (typeof raw.difficulty === "string" && Object.hasOwn(difficulties, raw.difficulty)) clean.difficulty = raw.difficulty;
   if (raw.lastWaves && typeof raw.lastWaves === "object" && !Array.isArray(raw.lastWaves)) {
     for (const map of [...planets, ...frontiers]) {
       const wave = raw.lastWaves[map.id];

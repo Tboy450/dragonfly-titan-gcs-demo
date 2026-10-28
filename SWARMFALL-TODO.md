@@ -691,7 +691,21 @@ complete solely because its assets download or its unit tests pass.
 - [ ] **OBJ-03 (P2)** Briefing and debrief text per planet; story beats along the campaign.
 - [ ] **OBJ-04 (P2)** More achievements (per planet, per drone), badge art, progress bars for
   counting goals.
-- [ ] **OBJ-05 (P2)** Difficulty levels that scale defenders, hazards and supply.
+- [x] **OBJ-05 (P2) — Claude (October 28)** Difficulty levels that scale defenders, hazards and
+  supply.
+  - Easy, Normal and Hard (`difficulties`, units.mjs). Each scales defenders' health and damage,
+    how fast reinforcements come, how hard hazards hit, and each planet's guaranteed matter:
+    - Easy: health 80%, damage 75%, reinforcements 0.75×, hazards 65%, supply 130%.
+    - Hard: health 125%, damage 120%, reinforcements 1.3×, hazards 130%, supply 85%.
+    Only the guaranteed supply changes; a bigger bank is untouched, so Easy cannot inflate it.
+  - Chosen with the title screen's Difficulty button, whose tooltip lists the effects. It is
+    saved with the campaign (`progress.difficulty`) and applies to new missions.
+  - Each battle stores its own (`b.difficulty`), so a saved battle keeps its level. Battles
+    saved before this have none and play as Normal.
+  - The galaxy's supply line, the pause menu (when not Normal) and the debrief show the level.
+  - Rewards and stars are the same on every level.
+  - `tests/invasion-difficulty.test.mjs` (4 tests). In the browser, the button cycled and its
+    tooltip listed the Hard effects. On a 375 px phone the title card still fits.
 - [ ] **OBJ-06 (P3)** More planets: several star systems on the campaign map, branching routes.
 
 ## 9. Game modes (MODE)

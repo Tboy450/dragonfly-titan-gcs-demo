@@ -13,7 +13,7 @@ import {
   canSurrender, surrenderControl,
   orderFor, queueOrder, setPatrol, replaceOrders,
 } from "./battle.mjs?v=dev";
-import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS } from "./units.mjs?v=dev";
+import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS, difficultyOrder, difficultyOf } from "./units.mjs?v=dev";
 import { packDropPods, podRadius, podStaggerS, dropPresets, fillPayload, presetAvailable } from "./drop-waves.mjs?v=dev";
 import { hazardTypes, hazardAdvisory, hazardForecast } from "./hazards.mjs?v=dev";
 import { achievements, achievementContext, newAchievements, recordAchievements } from "./achievements.mjs?v=dev";
@@ -228,7 +228,7 @@ function renderPlanetPanel() {
     <p class="section-title">Reward for conquest</p>
     <p>${escapeHtml(reward.join(" · "))}</p>
     ${progress.captured[planet.id] ? `<p class="section-title">Your record</p><p>${"★".repeat(stars)}${"☆".repeat(3 - stars)}${best ? ` · best time ${clock(best)}` : ""}</p>` : ""}
-    ${open ? `<p class="section-title">Supply for this attempt</p><p>${missionMatter(progress, planet)} matter · ${progress.podSlots} slots per wave · 1–3 drones per pod</p>
+    ${open ? `<p class="section-title">Supply for this attempt</p><p>${missionMatter(progress, planet)} matter · ${progress.podSlots} slots per wave · 1–3 drones per pod · ${difficultyOf(progress.difficulty).name} difficulty</p>
       <button id="invade-button" class="primary invade" type="button">${progress.captured[planet.id] ? "Invade again" : `Invade ${escapeHtml(planet.name)}`}</button>`
       : `<p class="locked-note">Locked. Conquer ${escapeHtml(previous?.name || "the previous planet")} first.</p>`}
   `;
@@ -360,6 +360,20 @@ $("quality-button").addEventListener("click", () => {
   showGraphics();
 });
 showGraphics();
+
+// Difficulty (OBJ-05), kept with the campaign save; it applies to missions started after a change.
+function showDifficulty() {
+  const level = difficultyOf(progress.difficulty);
+  $("difficulty-button").textContent = `Difficulty: ${level.name}`;
+  $("difficulty-button").title = `${level.note} Applies to new missions; a saved battle keeps its own.`;
+}
+$("difficulty-button").addEventListener("click", () => {
+  const order = difficultyOrder, now = difficultyOf(progress.difficulty).id;
+  progress = { ...progress, difficulty: order[(order.indexOf(now) + 1) % order.length] };
+  saveProgress();
+  showDifficulty();
+});
+showDifficulty();
 
 function ensureScene() {
   if (scene) return scene;
@@ -1106,7 +1120,7 @@ function openPauseMenu() {
   mission.paused = true;
   resetPointers(); cancelPlacement(); closeDropPanel();
   const b = mission.battle, summary = battleSummary(b);
-  $("pause-summary").textContent = `${mission.planet.name} · ${clock(b.time)} · ${summary.held} of ${summary.required} zones held`;
+  $("pause-summary").textContent = `${mission.planet.name} · ${clock(b.time)} · ${summary.held} of ${summary.required} zones held${b.difficulty && b.difficulty !== "normal" ? ` · ${difficultyOf(b.difficulty).name}` : ""}`;
   $("pause-quit").textContent = mission.planet.frontier ? "Quit to the title" : "Quit to the galaxy";
   $("pause-note").textContent = `Quitting keeps this battle saved. Resume it from the ${mission.planet.frontier ? "title screen" : "galaxy map or the title screen"}.`;
   updatePauseSettings();
@@ -1856,7 +1870,7 @@ function finishMission() {
     ["Time", clock(result.time)], ["Drop waves", s.drops], ["Pods launched", s.podsLaunched || s.drops], ["Drones dropped", s.dronesDropped], ["Drones lost", s.dronesLost],
     ["Lost to hazards", s.hazardLosses], ["Zones captured", s.zonesCaptured], ["Defenses destroyed", s.defensesDestroyed],
     ["Matter gathered", Math.round(s.matterHarvested)], ["Hazards weathered", s.hazardEvents], ["Peak alarm", Math.round(s.alarmPeak)],
-    ["Recall/cancelled cargo refund", `${b.refund} matter`], ["Matter in the bank", progress.matter],
+    ["Recall/cancelled cargo refund", `${b.refund} matter`], ["Matter in the bank", progress.matter], ["Difficulty", difficultyOf(b.difficulty).name],
   ];
   $("debrief-stats").innerHTML = rows.map(([k, v]) => `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd>`).join("");
   $("debrief-notes").innerHTML = [...applied.notes, ...earned.map(a => `Achievement: ${a.name}`)].map(n => `<li>${escapeHtml(n)}</li>`).join("");

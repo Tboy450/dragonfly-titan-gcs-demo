@@ -39,6 +39,26 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-28: Swarmfall difficulty levels
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add Easy, Normal and Hard difficulty"
+- **What changed:** Checklist OBJ-05.
+  - A Difficulty button on the title screen cycles Easy, Normal and Hard. Its tooltip says what
+    each does.
+  - Easy: defenders have 20% less health and hit 25% softer, reinforcements come slower, hazards
+    hit 35% softer, and each planet guarantees 30% more matter.
+  - Hard: 25% more health, 20% harder hits, reinforcements 30% faster, hazards 30% harder,
+    15% less guaranteed matter.
+  - The level is saved with the campaign and applies to new missions. A battle keeps the level
+    it started with, and older saved battles play as Normal.
+  - The galaxy, pause menu and debrief show it. Rewards and stars are unchanged.
+- **Files:** `dist/invasion/units.mjs`, `dist/invasion/battle.mjs`, `dist/invasion/campaign.mjs`,
+  `dist/invasion/mission-save.mjs`, `dist/invasion/main.mjs`, `dist/invasion/index.html`,
+  `tests/invasion-difficulty.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (277 pass). In the browser, the button
+  cycled and its tooltip listed the effects. The title card still fits a 375 px phone. The
+  preview's test save was set back to Normal.
+
 ### 2026-10-28: Verify compact blower tubing on the public site
 - **Signed:** Codex (OpenAI).
 - **Published:** 6de0fab; Pages40740446629 succeeded.751 merged tests pass.
