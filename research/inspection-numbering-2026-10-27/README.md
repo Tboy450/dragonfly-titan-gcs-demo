@@ -43,6 +43,8 @@ this presentation change and no redundant per-part comparison sheet created.
 
 Exact prior files: [archive](../../archive/inspection-numbering-2026-10-27/README.md),
 tag `archive/inspection-numbering-2026-10-27` at 7db927e. Numbering pass is complete
-locally; publish with the following owner-requested part 24 blower-pair rebuild.
+and published with the owner-requested part24 blower rebuild as **92ef530**.
+Pages40734789253 succeeded; 746 combined tests pass. Live list/menu IDs1–32,
+grouped part5 and no overflow/errors verified; see the blower pass public receipt.
 See `research/draco-electrical-audit-2026-10-27/README.md` for the primary supplier
 photos/dimensions, two-unit/plumbing fit plan and unresolved flight interfaces.

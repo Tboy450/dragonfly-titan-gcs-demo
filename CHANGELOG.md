@@ -39,6 +39,17 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-28: Verify public numbering and blower release
+- **Signed:** Codex (OpenAI).
+- **Published:** 92ef530; Pages40734789253 succeeded. Numbering8bca7a2 and blower
+  replacement4ffd00c shipped together with both restore tags.746 combined tests pass.
+- **Verified live:** IDs1–32 in the list/selector,33 options total, part24 pair,
+  part5 grouped with all five original subassemblies, Open interior, no overflow/errors.
+  Public screenshots/JSON saved in the blower pass; concurrent project files unchanged.
+- **Handoff:** Requested pass complete. Flight blower/diverter electrical interfaces,
+  feed sensing and FEB/IMU leads remain unresolved. Do not invent flight circuits.
+  Preview stopped, viewport restored, public blower tab retained.
+
 ### 2026-10-28: Rebuild part 24 from real supplier hardware and fit the pair
 - **Signed:** Codex (OpenAI)
 - **Commit:** Rebuild DrACO blower pair from real supplier references

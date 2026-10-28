@@ -39,6 +39,11 @@ October 28: [Part 24 supplier-referenced replacement](research/draco-blower-pair
   seating/insulation openings and independent access masks. 740 full tests pass.
 - [x] Single/pair/installed/Internal/Thermal/390px samples and real/model/layout
   comparison saved; source packet reused. Part 5 stays grouped, 32 IDs consistent.
+- [x] Published **92ef530**, Pages **40734789253** succeeded; **746 combined tests**
+  pass. Concurrent project files preserved unchanged. Live IDs1–32, all33 options,
+  grouped part5 with all five subassemblies, part24 and Open interior verified
+  without overflow/errors. Public samples/JSON saved. Both archive tags pushed;
+  preview stopped, browser viewport restored.
 - [ ] Actual flight installation, supplier dimensioned drawing, electrical power,
   ports/pinout, blower/diverter leads, feed sensor identity and remote controller
   continuation remain unresolved. Do not invent them to check off completion.

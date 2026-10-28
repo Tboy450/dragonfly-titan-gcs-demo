@@ -77,6 +77,16 @@ reported body crossing is the intended retained return-to-selector seating.
 
 ## Next handoff
 
+Published **92ef530** with numbering commit **8bca7a2** and blower commit **4ffd00c**.
+Pages [40734789253](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/40734789253)
+succeeded, including CI checks. **746 combined tests** pass after merging the
+concurrent update; its `dist/invasion` and `SWARMFALL-TODO.md` files match the
+incoming remote exactly. Both restore tags pushed. Live build stamp,33 options,
+IDs1–32, grouped part5/all five subassemblies and Open interior verified without
+overflow/errors. `public-checks.json`, `public-blowers.png` and
+`public-navigation-grouped.png` record the public result. Preview stopped and
+viewport restored; public blower inspection left open.
+
 The housing/plumbing fit pass completes the requested illustrative replacement.
 Do not equate this with completed flight wiring. Next evidence-driven work is the
 remaining DrACO feed-sensor identity and blower/diverter electrical interfaces;

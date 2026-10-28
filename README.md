@@ -7,6 +7,10 @@ supports/insulation clearances. Detailed proportions and installed poses remain
 estimates; flight wiring/ICDs unresolved. All 740 tests pass; useful real/model
 comparison and installed desktop/phone samples saved. Ships with the 32-part
 numbering/visible-surface anchor pass below; part 5 stays grouped.
+Published **92ef530**; Pages **40734789253** succeeded. The merged project passes
+**746 tests**; concurrent project files preserved unchanged. Live 32-entry list,
+33 selector options, grouped navigation and part24 verified without overflow/errors.
+[Public verification](research/draco-blower-pair-2026-10-27/public-checks.json).
 
 October 27: [Complete inspection numbering and anchor check](research/inspection-numbering-2026-10-27/README.md).
 All 32 selectable assemblies have matching menu/canvas/list IDs; original 1–24
