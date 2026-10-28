@@ -1,13 +1,14 @@
 import { $, chaseRenderer, flightCanvas, state } from "./context.mjs?v=dev";
 import { commandFlight } from "../flight-model.mjs?v=dev";
+import {numberedInspectionParts} from '../inspection-catalog.mjs?v=dev';
 import { samplingSequence } from "../science.mjs?v=dev";
 import { focusInspector, inspectionAvailable, inspectionTarget, resetInspector, rotateInspector, panInspector, zoomInspector, wheelZoomInspector,
   inspectionSubassemblies, inspectionSubassembly, selectInspectionSubassembly, inspectionOptionTitle } from "../vehicle-inspector.mjs?v=dev";
 import { globalInspectionLayers, partInspectionLayers, inspectionLayerVisible, setInspectionLayer,
   restoreInspectionLayers, hiddenInspectionCount,applyInspectionAccessPreset,inspectionAccessPreset } from "../inspection-visibility.mjs?v=dev";
 
-const numberedParts = Object.values(chaseRenderer?.subsystems ?? {}).filter(group => group.userData.label);
-const parts = [...numberedParts, ...Object.values(chaseRenderer?.subsystems ?? {}).filter(group => group.userData.inspectionTitle && !group.userData.label)];
+const numberedParts = numberedInspectionParts(chaseRenderer?.subsystems??{});
+const parts = numberedParts;
 const select = $("inspection-part");
 const subassemblySelect = $("inspection-subassembly");
 let subassemblyTarget;

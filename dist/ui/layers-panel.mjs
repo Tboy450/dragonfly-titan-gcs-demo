@@ -3,6 +3,7 @@ import { systemsModel, thermalZoneTemps } from "../mission-systems.mjs?v=dev";
 import { thermalCss, thermalGradientCss, thermalRanges } from "../thermal-scale.mjs?v=dev";
 import { $, chaseRenderer, flightCanvas, state } from "./context.mjs?v=dev";
 import { partMarkers } from "./flight-view.mjs?v=dev";
+import {inspectionPartNumber} from '../inspection-catalog.mjs?v=dev';
 import { samplingSequence } from "../science.mjs?v=dev";
 import { updateInspectorUI } from "./vehicle-inspector.mjs?v=dev";
 import { focusInspector, selectInspectionSubassembly } from "../vehicle-inspector.mjs?v=dev";
@@ -217,7 +218,7 @@ export function updateLayerPanel() {
   }
   const external = mock ? null : chaseRenderer?.subsystems[state.selectedPart];
   const selected = markers.find(marker => marker.name === state.selectedPart) ?? (external?.userData.inspectionTitle ? {
-    name: external.name, label: external.userData.inspectionTitle,
+    name: external.name, index:inspectionPartNumber(external),label: external.userData.inspectionTitle,
     source: external.userData.source, zone: external.userData.thermalZone,
   } : null);
   $("part-detail").hidden = !selected;

@@ -1,0 +1,20 @@
+{
+  "count": 32,
+  "originalIdsPreserved": "1–24",
+  "addedIds": "25–32",
+  "options": 33,
+  "rows": 32,
+  "part5Grouped": true,
+  "subassemblies": 5,
+  "phone": {
+    "width": 390,
+    "overflow": false
+  },
+  "checks": [
+    "MMRTG 31",
+    "Bay harness 32",
+    "wall 27 rotated/Thermal",
+    "part 5 covers hidden/restored"
+  ],
+  "errors": []
+}

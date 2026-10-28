@@ -9,6 +9,8 @@ import { thermalRgb } from "./thermal-scale.mjs?v=dev";
 import { buildResearchModel } from "./vehicle-research.mjs?v=dev";
 import { createArrivalHardware } from "./arrival-hardware.mjs?v=dev";
 import { createDownwashDust } from "./downwash-dust.mjs?v=dev";
+import {numberedInspectionParts,inspectionPartNumber} from './inspection-catalog.mjs?v=dev';
+import {createInspectionAnchorResolver} from './inspection-anchor.mjs?v=dev';
 
 // options.renderer lets tests drive the full scene without a GPU.
 export function createChaseRenderer(options = {}) {
@@ -227,6 +229,7 @@ export function createChaseRenderer(options = {}) {
   mesh(new THREE.BoxGeometry(0.12, 0.03, 1.9), mockMaterial, [0, -0.125, 0]);
   buildTarget = classicModel;
 
+
   // Research model (NASA/APL 2023 design) and its interior: see vehicle-research.mjs.
   const { researchRotors, researchAntenna, subsystems, labeledParts, poseAirflow, poseSampling, rotorDiscMaterial } = buildResearchModel({
     group: researchModel, mesh, strut, metal, deck, gold, buildAntenna, upAxis,
@@ -234,6 +237,7 @@ export function createChaseRenderer(options = {}) {
     // Earth's direction in the craft frame, for pointing the research model's antenna gimbal.
     earthLocal: (out) => out.copy(earthDirection).applyQuaternion(craftInverse.copy(craft.quaternion).invert()),
   });
+  const inspectionParts=numberedInspectionParts(subsystems);
   buildTarget = classicModel;
 
   // ---- Mission-view layers: exterior, internal (see-through shell) and thermal (live colors) ----
@@ -290,29 +294,7 @@ export function createChaseRenderer(options = {}) {
     subsystems.airflow.visible = layer === "internal" && which === "research";
   }
   applyLayer("exterior");
-  const labelBox = new THREE.Box3(), labelPoint = new THREE.Vector3();
-  // Each labeled part gets one fixed anchor in the craft's frame, on its own hardware: the middle of
-  // the part if that falls on a mesh, else the middle of its largest mesh (so a pair of units, or a
-  // part with separated pieces, is numbered on a real piece rather than empty space between them).
-  // Computed once, so the number stays pinned to the same spot as the view or the part moves.
-  const meshBox = new THREE.Box3(), craftInverse4 = new THREE.Matrix4();
-  function labelAnchor(group) {
-    craft.updateMatrixWorld(true);
-    labelBox.setFromObject(group);
-    const center = labelBox.getCenter(new THREE.Vector3());
-    let onMesh = false, largest = null, largestVolume = -1;
-    group.traverse((part) => {
-      if (!part.isMesh) return;
-      meshBox.setFromObject(part);
-      if (meshBox.isEmpty()) return;
-      if (meshBox.clone().expandByScalar(0.02).containsPoint(center)) onMesh = true;
-      const size = meshBox.getSize(labelPoint);
-      const volume = Math.max(size.x, 0.01) * Math.max(size.y, 0.01) * Math.max(size.z, 0.01);
-      if (volume > largestVolume) { largestVolume = volume; largest = meshBox.getCenter(new THREE.Vector3()); }
-    });
-    const anchor = onMesh || !largest ? center : largest;
-    return anchor.applyMatrix4(craftInverse4.copy(craft.matrixWorld).invert());
-  }
+  const labelPoint = new THREE.Vector3(),resolveLabelAnchor=createInspectionAnchorResolver();
 
   // Arrival-sequence hardware: see arrival-hardware.mjs.
   const { group: edlGroup, pose: poseArrival } = createArrivalHardware(scene, craft, upAxis);
@@ -485,16 +467,19 @@ export function createChaseRenderer(options = {}) {
         if (modified || (inspector && (inspectionCenter.distanceTo(new THREE.Vector3(0, -0.15, 0)) > 0.01))) labels.inspection = true;
         if (layered) {
           craft.updateMatrixWorld(true);
-          for (const group of which === "research" ? labeledParts : mockParts) {
-            group.userData.labelAnchor ??= labelAnchor(group);
-            const anchor = group.name === focusName && subassembly?.userData.labelAnchor
-              ? subassembly.userData.labelAnchor : group.userData.labelAnchor;
-            labelPoint.copy(anchor).applyMatrix4(craft.matrixWorld).project(missionCamera);
+          for (const group of which === "research" ? inspectionParts : mockParts) {
+            const hardwareVisible=visibleInspectionHardware(group);
+            const owner=group.name===focusName&&subassembly?subassembly:group;
+            const anchor=hardwareVisible?resolveLabelAnchor(owner,craft):null;
+            labelPoint.copy(anchor?.point??new THREE.Vector3()).applyMatrix4(craft.matrixWorld).project(missionCamera);
             labels.push({
-              name: group.name, label: group.userData.label, source: group.userData.source,
+              name: group.name, number:which==='research'?inspectionPartNumber(group):undefined,
+              label: group.userData.label??group.userData.inspectionTitle,
+              source: group.userData.source??'Estimated inspection assembly; see model assumptions.',
+              anchorMesh:anchor?.mesh.name??null,anchorPoint:anchor?.point.toArray()??null,
               zone: group.userData.thermalZone, color: group.userData.color, mock: !!group.userData.mock,
               x: (labelPoint.x + 1) / 2 * w, y: (1 - labelPoint.y) / 2 * h, depth: labelPoint.z,
-              onCanvas: visibleInspectionHardware(group) && (!focusName || group.name === focusName) && labelPoint.z >= -1 && labelPoint.z <= 1,
+              onCanvas: !!anchor && hardwareVisible && (!focusName || group.name === focusName) && labelPoint.z >= -1 && labelPoint.z <= 1,
             });
           }
           if (which === "research" && !labels.inspection) {

@@ -28,7 +28,7 @@ const inRect = (x, y, r, pad) => x > r.x - pad && x < r.x + r.w + pad && y > r.y
 // scale shrinks the spacing and spots on phones, where the circles are drawn smaller.
 export function layoutPartLabels(labels, { width, height, selected = null, memory = new Map(), now = 0, margin = 14, avoid = [], scale = 1 }) {
   const markers = labels.map((label, i) => ({
-    ...label, index: i + 1, anchorX: label.x, anchorY: label.y, drawn: false, displaced: false,
+    ...label, index: label.number ?? i + 1, anchorX: label.x, anchorY: label.y, drawn: false, displaced: false,
   }));
   const free = (x, y, placed, gap) => inside(x, y, width, height, margin)
     && !avoid.some(r => inRect(x, y, r, 10))

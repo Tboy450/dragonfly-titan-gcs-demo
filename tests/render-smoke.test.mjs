@@ -510,7 +510,7 @@ test("Inspector frames isolated assemblies at every angle and restores the ordin
         const labels = chase.drawMission(context2d, w, h, s, { layer: "internal", inspector, focusPart: focus, reduceMotion: true });
         assert.equal(labels.inspection, true);
         assert.equal(labels.dimensions, undefined);
-        assert.deepEqual(labels.filter(l => l.onCanvas).map(l => l.name), chase.subsystems[name].userData.label ? [name] : []);
+        assert.deepEqual(labels.filter(l => l.onCanvas).map(l => l.name), [name]);
       }
     }
   }

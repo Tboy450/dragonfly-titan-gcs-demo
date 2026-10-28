@@ -39,6 +39,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-27: Complete inspection numbering and surface-anchor placement
+- **Signed:** Codex (OpenAI).
+- **What changed:** Shared catalog numbers all 32 selectable assemblies across
+  menus, canvas, list and detail title; original 1–24 unchanged. Missing structure,
+  insulation, generator and harness entries append as 25–32. No duplicate options.
+- **Placement:** Actual visible-mesh triangle anchors replace bounding-box guesses;
+  cached barycentric coordinates follow movement/deformation, rotation and cover masks.
+  Existing badge collision/leader layout retained. Owner says keep part 5 grouped.
+- **Checks:** 733 tests; hollow/separated geometry, masks, 32 actual assemblies,
+  desktop and 390px UI, wall 27 Thermal/rotated, MMRTG 31 and Bay harness 32.
+- **Archive / next:** Exact before files/tag at 7db927e; old samples reused. No model
+  or physics changes. Owner requests blower-pair reconstruction next; combined
+  publication follows it. Sources and fit boundaries already saved in electrical audit.
+
 ### 2026-10-27: Fit the MEB branch and retain it in part-5 inspection
 - **Signed:** Codex (OpenAI).
 - **Commit:** Fit estimated MEB harness interface and shared inspection context.

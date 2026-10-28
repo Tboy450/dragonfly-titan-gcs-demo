@@ -1,0 +1,108 @@
+// Mission-only viewing controls. None of these fields affect flight, science or saved missions.
+import { samplingSequence } from "./science.mjs?v=dev";
+import { visibilityDefaults, openInteriorLayers } from "./inspection-visibility.mjs?v=dev";
+
+export const inspectionDefaults = Object.freeze({
+  azimuth: Math.atan2(1.6, 7.2), elevation: Math.atan2(5.35, Math.hypot(1.6, 7.2)),
+  zoom: 1, panX: 0, panY: 0, rotate: false, focusPart: null, subassembly: null, isolate: false, followSampling: false,
+  ...visibilityDefaults,
+  hiddenLayers: openInteriorLayers,
+});
+// Same ordered labeled groups that supply the 3D markers and temperature list.
+// Extra assemblies are deliberately unnumbered; they must not shift parts 1–24.
+export function inspectionOptionTitle(part,numberedParts,hiddenCount=0){
+  const index=numberedParts.findIndex(candidate=>candidate.name===part.name);
+  const title=part.userData.label??part.userData.inspectionTitle;
+  return `${index>=0?String(index+1)+". ":""}${title}${hiddenCount>0?` / ${hiddenCount} hidden`:""}`;
+}
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+export const createInspector = () => ({ ...inspectionDefaults, resetSerial: 0 });
+export const inspectionAvailable = state => state.view === "mission" && state.missionLayer !== "exterior" && state.vehicleModel !== "original";
+export function inspectionTarget(state) {
+  const i = state.inspector;
+  if (!i) return null;
+  const job = samplingSequence(state);
+  return i.followSampling && job.active ? job.part : i.focusPart;
+}
+export function resetInspector(i) {
+  const serial = i.resetSerial + 1;
+  Object.assign(i, inspectionDefaults, { resetSerial: serial });
+}
+export function rotateInspector(i, dx, dy, width, height) {
+  if (![dx, dy, width, height].every(Number.isFinite) || width <= 0 || height <= 0) return;
+  i.azimuth = ((i.azimuth - dx / width * Math.PI * 2) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+  i.elevation = clamp(i.elevation + dy / height * Math.PI, -1.35, 1.35);
+}
+export function zoomInspector(i, factor) {
+  if (Number.isFinite(factor) && factor > 0) i.zoom = clamp(i.zoom * factor, 0.6, 3);
+}
+export function panInspector(i, dx, dy, width, height) {
+  if (![dx, dy, width, height].every(Number.isFinite) || width <= 0 || height <= 0) return;
+  i.panX = clamp((i.panX ?? 0) + dx / width, -1, 1);
+  i.panY = clamp((i.panY ?? 0) + dy / height, -1, 1);
+}
+export function wheelZoomInspector(state, event, pageHeight = 600) {
+  if (!inspectionAvailable(state) || !state.inspector?.rotate || event.ctrlKey || event.metaKey) return false;
+  if (!Number.isFinite(event.deltaY) || event.deltaY === 0) return false;
+  // Wheel events report pixels, lines or pages; cap each step for smooth bounded zoom.
+  const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2
+    ? (Number.isFinite(pageHeight) && pageHeight > 0 ? pageHeight : 600) : 1;
+  zoomInspector(state.inspector, Math.exp(-clamp(event.deltaY * unit, -200, 200) * 0.0015));
+  return true;
+}
+export function focusInspector(state, name) {
+  state.selectedPart = name;
+  state.inspector.focusPart = name;
+  state.inspector.followSampling = false;
+  state.inspector.zoom = 1;
+  state.inspector.panX = state.inspector.panY = 0;
+  state.inspector.subassembly = null;
+  if (!name) state.inspector.isolate = false;
+}
+export function inspectionSubassemblies(group) {
+  const result = [];
+  group?.traverse(child => { if (child.userData.inspectionLabel) result.push(child); });
+  return result;
+}
+export function inspectionSubassembly(group, inspector) {
+  return inspectionSubassemblies(group).find(child => child.name === inspector?.subassembly) ?? null;
+}
+export function inspectionFocusRadius(boundsRadiusM, subassembly = null) {
+  const requested = subassembly?.userData.inspectionMinimumRadiusM;
+  // Millimeter hardware gets a macro view, never oversized geometry. Other parts
+  // retain their original framing; malformed metadata cannot collapse the camera.
+  const minimum = Number.isFinite(requested) && requested >= .003 && requested <= .22 ? requested : .22;
+  return Math.max(minimum, Number.isFinite(boundsRadiusM) && boundsRadiusM >= 0 ? boundsRadiusM : 0);
+}
+export function selectInspectionSubassembly(state, group, name) {
+  if (!group || inspectionTarget(state) !== group.name) return;
+  const child = inspectionSubassemblies(group).find(child => child.name === name);
+  if (name && !child) return;
+  state.inspector.subassembly = child?.name ?? null;
+  state.inspector.zoom = 1;
+  state.inspector.panX = state.inspector.panY = 0;
+  state.inspector.resetSerial += 1;
+}
+export function inspectionGroups(name, subassemblyName = null) {
+  const related = {
+    "nose-electronics": !subassemblyName || subassemblyName==='ocellus-meb' ? ["nose-electronics","navigation-meb-link"] : ["nose-electronics"],
+    "main-harness": subassemblyName ? ["main-harness"] : ["main-harness","navigation-meb-link"],
+    "sample-lines": ["drills", "sample-lines", "sample-flow", "sample-carousel", "drill-blower"],
+    drams: ["drams"],
+    battery: ["battery", "battery-sensor"],
+    "battery-sensor": ["battery", "battery-sensor"],
+    "mmrtg-sensor": ["mmrtg", "mmrtg-sensor"],
+    mmrtg: ["mmrtg", "mmrtg-sensor"],
+    "wall-end-joints": ["wall-end-joints", "starboard-wall", "port-wall", "nose-bulkhead", "aft-bulkhead"],
+    "hga-actuators": ["hga-actuators", "high-gain-antenna"],
+    "aft-bulkhead": ["aft-bulkhead", "mmrtg", "fan"],
+  };
+  return related[name] ?? (name ? [name] : []);
+}
+
+export function inspectionModified(i, target) {
+  return !!target || Math.abs(i.zoom - 1) > 1e-6
+    || Math.abs(i.panX ?? 0) > 1e-6 || Math.abs(i.panY ?? 0) > 1e-6
+    || Math.abs(i.azimuth - inspectionDefaults.azimuth) > 1e-6
+    || Math.abs(i.elevation - inspectionDefaults.elevation) > 1e-6;
+}

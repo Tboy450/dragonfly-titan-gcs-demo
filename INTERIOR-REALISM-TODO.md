@@ -10,6 +10,21 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+Owner steering, October 27, current pass:
+- [x] Number every currently selectable top-level inspection assembly consistently
+  across model markers, component selector, temperature list and detail title.
+  Preserve original 1–24 IDs; append missing structure/harness assemblies.
+- [x] Check anchors against actual hardware, including rotated views and hidden
+  covers. Keep readable leader placement; do not put markers in empty group centers.
+- [x] **Leave part 5 grouped**, per owner's clarification. Existing MEB/FEB/IMU/shelf
+  subassembly controls stay; no new split parts or per-unit numbering requested now.
+  [Numbering pass](research/inspection-numbering-2026-10-27/README.md): stable IDs
+  25–32 appended, actual triangle pins, 733 tests, desktop/Thermal/390px checks saved.
+  Committed locally before blower pass; combined publication still pending.
+- [ ] After numbering/placement is complete, owner explicitly requests the **blower
+  pair** rebuild. Use saved real supplier EM/catalog photos and 345 ×168 mm reference
+  dimensions; reconcile both units and plumbing together, preserve source boundaries.
+
 October 27: [Part 5 MEB harness connection](research/navigation-meb-link-2026-10-27/README.md).
 - [x] Correctly identify the curved line as Bay harness `navigation-meb`; earlier
   shelf-leg interpretation was wrong. Reuse original real wiring/workmanship and

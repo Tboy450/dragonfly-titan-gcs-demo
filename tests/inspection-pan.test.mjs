@@ -6,6 +6,7 @@ import * as inspector from "../dist/vehicle-inspector.mjs";
 import * as visibility from "../dist/inspection-visibility.mjs";
 import { createFlightState } from "../dist/flight-model.mjs";
 import { samplingSequence } from "../dist/science.mjs";
+import {numberedInspectionParts} from "../dist/inspection-catalog.mjs";
 
 function ui() {
   const state = { ...createFlightState(), view: "mission", missionLayer: "internal",
@@ -33,11 +34,11 @@ function ui() {
   }
   const $ = id => { if(!elements.has(id)) elements.set(id,new Element()); return elements.get(id); };
   const canvas=$("flight-canvas");
-  const scope={ ...inspector,...visibility,state,$,flightCanvas:canvas,samplingSequence,
+  const scope={ ...inspector,...visibility,state,$,flightCanvas:canvas,samplingSequence,numberedInspectionParts,
     chaseRenderer:{subsystems:{},inspectionLayers:{available:()=>false}},
     document:{createElement:()=>new Element(),createTextNode:text=>({text}),body:{classList:{toggle(){}}}} };
   const source=readFileSync(new URL("../dist/ui/vehicle-inspector.mjs",import.meta.url),"utf8")
-    .replace(/^import[\s\S]*?from "[^"]+";\r?\n/gm,"").replace("export function updateInspectorUI","function updateInspectorUI");
+    .replace(/^import[\s\S]*?from ["'][^"']+["'];\r?\n/gm,"").replace("export function updateInspectorUI","function updateInspectorUI");
   runInNewContext(source,scope);
   return { state, canvas, $ };
 }

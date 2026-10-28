@@ -5,6 +5,12 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ## The short version
 
+October 27 inspection catalog: `inspection-catalog.mjs` fixes 32 top-level IDs
+(old 1–24 plus 25–32). Menus and rendered labels share it; physical initial asset
+count remains 24. `inspection-anchor.mjs` caches actual triangle/barycentric pins
+on visible hardware, following mesh motion/deformation and reselecting on hide.
+Part 5 grouping/subassembly controls stay unchanged. No model/flight state changes.
+
 October 27 MEB link: `navigation-meb-interface.mjs` defines an EST external shell/
 strain relief and terminal approach. `main-harness.mjs` builds the single cable;
 `vehicle-research.mjs` gives it a separate unnumbered context root shared by part 5

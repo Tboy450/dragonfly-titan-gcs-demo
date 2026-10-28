@@ -1,5 +1,10 @@
 # Dragonfly Titan GCS
 
+October 27: [Complete inspection numbering and anchor check](research/inspection-numbering-2026-10-27/README.md).
+All 32 selectable assemblies have matching menu/canvas/list IDs; original 1–24
+preserved. Pins use actual visible mesh surfaces and follow motion/cover changes.
+Part 5 stays grouped. 733 tests and desktop/phone checks pass. Blower pair next.
+
 October 27: [MEB harness connection and isolation](research/navigation-meb-link-2026-10-27/README.md).
 The curved line by part 5 now seats in an estimated external connector shell and
 strain relief; the same single branch remains visible with part 5/MEB or Bay harness.
