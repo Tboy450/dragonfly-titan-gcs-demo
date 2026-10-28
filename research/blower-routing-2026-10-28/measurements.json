@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-28",
+  "scope": "Compact estimated rigid-tube geometry, not verified flight routing or pressure-loss analysis",
+  "routes": [
+    {
+      "name": "draco-forward-blower-exhaust",
+      "lengthM": 0.10621797932236003,
+      "previousLengthM": 0.27049790990571737,
+      "reductionPercent": 60.73242142263409,
+      "construction": "CurvePath",
+      "segmentTypes": [
+        "LineCurve3",
+        "QuadraticBezierCurve3",
+        "LineCurve3"
+      ]
+    },
+    {
+      "name": "draco-forward-blower-selector-inlet",
+      "lengthM": 0.457292175830628,
+      "previousLengthM": 0.9430874786431173,
+      "reductionPercent": 51.511160291454125,
+      "construction": "CurvePath",
+      "segmentTypes": [
+        "LineCurve3",
+        "QuadraticBezierCurve3",
+        "LineCurve3",
+        "QuadraticBezierCurve3",
+        "LineCurve3",
+        "QuadraticBezierCurve3",
+        "LineCurve3"
+      ]
+    },
+    {
+      "name": "draco-aft-blower-exhaust",
+      "lengthM": 0.10621797932235999,
+      "previousLengthM": 0.2704979099057174,
+      "reductionPercent": 60.73242142263411,
+      "construction": "CurvePath",
+      "segmentTypes": [
+        "LineCurve3",
+        "QuadraticBezierCurve3",
+        "LineCurve3"
+      ]
+    },
+    {
+      "name": "draco-aft-blower-selector-inlet",
+      "lengthM": 0.8659573052101197,
+      "previousLengthM": 1.3638143587910152,
+      "reductionPercent": 36.5047523053088,
+      "construction": "CurvePath",
+      "segmentTypes": [
+        "LineCurve3",
+        "QuadraticBezierCurve3",
+        "LineCurve3",
+        "QuadraticBezierCurve3",
+        "LineCurve3",
+        "QuadraticBezierCurve3",
+        "LineCurve3",
+        "QuadraticBezierCurve3",
+        "LineCurve3",
+        "QuadraticBezierCurve3",
+        "LineCurve3"
+      ]
+    }
+  ],
+  "retentionClips": 2,
+  "unitExteriorsAndPoses": "Exact archive-preservation regression",
+  "newInsulationHoles": 0,
+  "tubeSurfaceHits": [],
+  "bodyContacts": [
+    {
+      "mesh": "draco-blower-flow-diverter",
+      "other": "draco-return-tube",
+      "owner": "draco-transfer-tubes"
+    }
+  ],
+  "intendedContact": "Existing return tube seated in the unchanged selector",
+  "flightInstallationConfirmed": false
+}

@@ -6,6 +6,13 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part24 tube correction (Codex, October28):** [pass/measurements/limits](blower-routing-2026-10-28/README.md).
+[Zacny et al., LPSC2020 abstract1763 p1](https://www.hou.usra.edu/meetings/lpsc2020/pdf/1763.pdf)
+text supports bent tubes/standard fittings and avoiding unnecessary length.
+2022 topology pages and existing supplier photos reused. No new hardware photo
+or figure-derived flight route; all coordinates, bends, clips and installation EST.
+Before/after compares only changed routing; unchanged real/model source sheet reused.
+
 **Part 24 replacement (Codex, October 28):** [pass, fit and samples](draco-blower-pair-2026-10-27/README.md),
 [saved real supplier EM photos/catalog specifications](sources/barber-nichols-draco-2026-10-27/README.md).
 Rechecked original supplier pages. Motor bands, dished case/tapered intake, square

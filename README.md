@@ -1,5 +1,14 @@
 # Dragonfly Titan GCS
 
+October 28 correction: [Compact blower tubing](research/blower-routing-2026-10-28/README.md).
+Owner rejected the loose-looking loops in the first blower installation. Four
+shorter rigid-tube examples now use straight sections/local bends, two retention
+clips and short open exhaust spouts. Intake lengths shrink37–52%, exhausts61%.
+Unit exteriors, poses, selector and all upstream sample plumbing stay exact.
+Routes/supports remain estimated; no flight installation or pressure-loss claim.
+Before/after sample and prior source/archive retained.
+751 merged tests pass; desktop/Thermal/390px phone have no overflow/errors.
+
 October 28: [Supplier-referenced DrACO blower pair](research/draco-blower-pair-2026-10-27/README.md).
 Real engineering-model photos replace the compact placeholders, with nominal
 345 ×168 mm unit references, fitted gas branches, two open exhausts and four

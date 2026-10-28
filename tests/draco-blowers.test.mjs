@@ -8,6 +8,7 @@ import {blowerLayout} from '../dist/draco-blowers.mjs';
 import {createInspectionVisibility} from '../dist/inspection-visibility.mjs';
 import {createFlightState} from '../dist/flight-model.mjs';
 import {inspectionPartNumber} from '../dist/inspection-catalog.mjs';
+import {fingerprint} from '../research/draco-side-audit-2026-10-26/audit.mjs';
 
 test('Two photo-referenced units fit the supplier nominal envelope without silently sizing their installed plumbing',()=>{
  const f=fixture();assert.equal(f.blowers.units.length,2);assert.equal(blowerLayout.flightInstallationConfirmed,false);
@@ -90,5 +91,34 @@ test('All five inspection categories independently hide and restore without ungr
   for(const g of f.blowers.group.children)assert.equal(g.visible,g.userData.inspectionLayer!==layer);
   for(const[o,value]of saved)o.visible=value;
   for(const g of f.blowers.group.children)assert.equal(g.visible,true);
+ }
+});
+
+test('Compact routing preserves the photo-referenced units, poses, selector, fittings and four wall supports exactly',async()=>{
+ let source=await readFile(new URL('../archive/blower-routing-2026-10-28/draco-blowers.mjs',import.meta.url),'utf8');
+ for(const file of ['vendor/three/three.module.min.js','foam-optical-ports.mjs'])
+  source=source.replaceAll('./'+file+'?v=dev',new URL('../dist/'+file+'?v=dev',import.meta.url).href);
+ const old=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+ const root=new T.Group();old.buildSupplierBlowers({parent:root,mesh,diverter:[-.462,-.175,-.5975]});
+ const keep=o=>!/-selector-inlet$|-exhaust$|-pipe-clip$|-pipe-support$/.test(o.name);
+ assert.deepEqual(fingerprint(fixture().root).filter(keep),fingerprint(root).filter(keep));
+});
+
+test('Rigid runs stay close to the equipment, shorten every old run and seat two clips on their existing brackets',()=>{
+ const f=fixture(),oldLengths={'draco-forward-blower-exhaust':.27049790990571737,'draco-aft-blower-exhaust':.2704979099057174,
+  'draco-forward-blower-selector-inlet':.9430874786431173,'draco-aft-blower-selector-inlet':1.3638143587910152};
+ for(const pipe of f.blowers.plumbing.children){
+  const path=pipe.geometry.parameters.path;assert.equal(path.type,'CurvePath');
+  assert.ok(path.curves.every(c=>['LineCurve3','QuadraticBezierCurve3'].includes(c.type)));
+  assert.ok(path.getLength()<oldLengths[pipe.name]*.75,'no return to long loose loops');
+  const box=new T.Box3().setFromObject(pipe);assert.ok(box.min.x>=-.592&&box.max.x<=-.435,'tucked outside the foam, close to the units');
+ }
+ for(const u of f.blowers.units){const prefix=`draco-${u.name}-blower`,clip=f.root.getObjectByName(prefix+'-pipe-clip'),tab=f.root.getObjectByName(prefix+'-pipe-support');
+  assert.ok(clip&&tab);const path=u.inlet.geometry.parameters.path;
+  let nearest=Infinity;for(let i=0;i<=1500;i++)nearest=Math.min(nearest,path.getPoint(i/1500).distanceTo(clip.position));
+  assert.ok(nearest<.001,'retention clip is concentric with a straight pipe run');
+  const brackets=f.root.getObjectsByProperty('name',prefix+'-wall-bracket');
+  const from=new T.Vector3(...tab.userData.from);assert.ok(brackets.some(b=>new T.Box3().setFromObject(b).expandByScalar(1e-8).containsPoint(from)));
+  assert.ok(Math.abs(new T.Vector3(...tab.userData.to).distanceTo(clip.position)-.0095)<1e-8);
  }
 });

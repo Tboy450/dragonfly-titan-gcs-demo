@@ -5,6 +5,12 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ## The short version
 
+October28 routing correction: `draco-blowers.mjs` now uses CurvePath straight runs
+and local quadratic bends instead of free-form Catmull-Rom loops. Two clip/tab
+examples attach the shorter intake lines to existing supports; no new shell/foam
+cut or equipment move. Two regression tests preserve unchanged equipment and
+bound pipe lengths/extents and support contact. Detailed flight routing EST.
+
 October 28 blower pair: `draco-blowers.mjs` owns the supplier-referenced exterior,
 unit envelope, estimated installed ports/brackets and four gas branches. The
 `draco-plumbing.mjs` wrapper retains upstream sample routes and selector exactly.

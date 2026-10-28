@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [blower-routing-2026-10-28](blower-routing-2026-10-28/README.md) | First supplier-referenced pair's long loops; exact builder/tests/disclosure, old screenshots reused | 2026-10-28 | `archive/blower-routing-2026-10-28` on923828b |
 | [draco-blower-pair-2026-10-27](draco-blower-pair-2026-10-27/README.md) | Compact blower pair, exact model/assembly/evidence sources and original preview; failed route controls retained | 2026-10-28 | `archive/draco-blower-pair-2026-10-27` on 8bca7a2 |
 | [inspection-numbering-2026-10-27](inspection-numbering-2026-10-27/README.md) | Before IDs 25–32 and triangle-surface anchors; exact model/UI source, old samples reused | 2026-10-27 | `archive/inspection-numbering-2026-10-27` on 7db927e |
 | [navigation-meb-link-2026-10-27](navigation-meb-link-2026-10-27/README.md) | Unseated MEB branch and prior isolation/masks; exact modules, owner before picture reused | 2026-10-27 | `archive/navigation-meb-link-2026-10-27` on f9660ce |

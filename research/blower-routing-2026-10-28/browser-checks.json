@@ -1,0 +1,14 @@
+{
+  "phone": {
+    "access": "open",
+    "disclosed": true,
+    "options": 33,
+    "part": "drill-blower",
+    "rows": 32,
+    "scrollWidth": 375,
+    "width": 390
+  },
+  "errors": [],
+  "tests": 751,
+  "date": "2026-10-28"
+}

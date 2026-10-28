@@ -10,6 +10,20 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October 28 corrective pass: [Blower tube layout](research/blower-routing-2026-10-28/README.md).
+- [x] Owner rightly rejects the first installation's long loose-looking loops.
+  Recheck DrACO2020/2022 sources: bent tubing, shared topology and the cost of
+  excess length, not proof of an exact flight route. Existing real photos reused.
+- [x] Four compact rigid-tube examples with local bends, short exhausts and two
+  clips/tabs on existing brackets. All source-referenced equipment/poses/ports,
+  selector, upstream drill/sample routes and four original foam clearances retained.
+- [x] New archive guards and route length/extent/clip checks; original full-model
+  triangle/stroke/mask suite retained. Old broad-phase cable-box false hit now
+  disambiguated with actual surfaces. No new flight/dynamic inputs.
+- [ ] Finish merged full-suite/public check; save before/after and desktop/phone
+  samples, publish corrected layout and record receipt. Exact flight installation,
+  materials/bend radius/qualification and electrical interfaces remain open.
+
 Owner steering, October 27, current pass:
 - [x] Number every currently selectable top-level inspection assembly consistently
   across model markers, component selector, temperature list and detail title.

@@ -5,7 +5,7 @@ import {cutSurfacePort} from './foam-optical-ports.mjs?v=dev';
 // exterior only. [EST] proportional details, vertical installation, mounts and ports.
 // Diameter is used as the nominal transverse package reference, not a flight ICD.
 export const blowerLayout=Object.freeze({
- revision:'draco-blowers-bncp74-2026-10-27',lengthM:.345,transverseM:.168,
+ revision:'draco-blowers-compact-pipes-2026-10-28',lengthM:.345,transverseM:.168,
  centers:Object.freeze([Object.freeze([-.525,-.28,-.65]),Object.freeze([-.525,-.28,-.20])]),
  unitYawX:Math.PI/2,caseRadiusM:.0625,wallX:-.3725,
  flightInstallationConfirmed:false,
@@ -41,8 +41,19 @@ export function buildSupplierBlowers({parent,mesh,diverter}){
   return add(g,m,[0,0,0],target,name);
  };
  const tube=(points,target,name)=>{
-  const path=new T.CatmullRomCurve3(points.map(v),false,'centripetal');
-  return add(new T.TubeGeometry(path,96,.0065,10,false),silver,[0,0,0],target,name);
+  // [EST] bent rigid-tube illustration: straight runs with local tangent bends.
+  // Keep every bend within the control polygon; no spline overshoot or loose coils.
+  const p=points.map(v),path=new T.CurvePath();let last=p[0];
+  for(let i=1;i<p.length-1;i++){
+   const before=p[i-1],corner=p[i],after=p[i+1];
+   const cut=Math.min(.035,corner.distanceTo(before)*.4,corner.distanceTo(after)*.4);
+   const enter=corner.clone().addScaledVector(before.clone().sub(corner).normalize(),cut);
+   const leave=corner.clone().addScaledVector(after.clone().sub(corner).normalize(),cut);
+   if(last.distanceTo(enter)>1e-8)path.add(new T.LineCurve3(last,enter));
+   path.add(new T.QuadraticBezierCurve3(enter,corner,leave));last=leave;
+  }
+  path.add(new T.LineCurve3(last,p.at(-1)));
+  return add(new T.TubeGeometry(path,128,.0065,10,false),silver,[0,0,0],target,name);
  };
  // Existing selector/return interface retained exactly; hidden valve internals unmodeled.
  const [dx,dy,dz]=diverter;
@@ -99,12 +110,20 @@ export function buildSupplierBlowers({parent,mesh,diverter}){
   add(matingFlange,silver,[0,.084,-.012],mating,`${prefix}-discharge-mating-flange`);
   const [x,y,z]=center;
   const out=[x,y+.012,z+.081];
-  const exhaust=tube([out,[x,y+.012,z+.095],[x,y+.012,z+.110],[x-.095,y-.025,z+.110],[x-.14,y-.08,z+.084],[x-.14,y-.14,z+.084]],plumbing,`${prefix}-exhaust`);
+  const exhaust=tube([out,[x,y+.012,z+.126],[x-.060,y-.020,z+.126]],plumbing,`${prefix}-exhaust`);
   const seat=[x,y-.1695,z];
   const route=index
-   ? [[dx,dy-.0125,dz+.025],[dx,-.215,dz+.025],[-.52,-.23,-.5725],[-.665,-.24,-.5725],[-.665,-.24,-.4],[-.665,-.25,-.05],[-.665,-.49,-.05],[-.665,-.49,z],[x,-.49,z],[x,-.47,z],seat]
-   : [[dx+.009,dy-.0125,dz-.025],[dx+.009,-.24,dz-.025],[dx+.009,-.34,dz-.025],[-.665,-.35,dz-.025],[-.665,-.35,-.75],[-.665,-.49,-.75],[-.665,-.49,z],[x,-.49,z],[x,-.47,z],seat];
+   ? [[dx,dy,dz+.055],[dx,dy,-.50],[-.442,-.135,-.48],[-.442,-.135,z],[-.442,-.52,z],[x,-.52,z],seat]
+   : [[dx+.009,dy-.0125,dz-.025],[dx+.009,-.435,dz-.025],[dx+.009,-.52,z],[x,-.52,z],seat];
   const inlet=tube(route,plumbing,`${prefix}-selector-inlet`);
+  // [EST] one local retention clip per rigid inlet run, tied to the existing
+  // lower blower wall bracket. No new hole through the vehicle insulation.
+  const clipAt=index?[-.442,-.30,z]:[dx+.009,-.30,dz-.025];
+  const clip=add(new T.TorusGeometry(.008,.0015,12,64),silver,clipAt,mounts,`${prefix}-pipe-clip`);clip.rotation.x=Math.PI/2;
+  const tie=v([clipAt[0],y+.027,z-.081]),end=v(clipAt).add(new T.Vector3(0,0,-.0095)),direction=end.clone().sub(tie);
+  const tab=box([.009,.0025,direction.length()],tie.clone().lerp(end,.5).toArray(),silver,mounts,`${prefix}-pipe-support`);
+  tab.quaternion.setFromUnitVectors(new T.Vector3(0,0,1),direction.normalize());
+  Object.assign(tab.userData,{estimated:true,from:tie.toArray(),to:end.toArray()});
   units.push({name,center,poses,inlet,exhaust,intakeSeat:seat,dischargeSeat:out});
  }
  return {group,casings,covers,ports,mounts,plumbing,units,actuator};

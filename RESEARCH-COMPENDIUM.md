@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October28 routing correction (Codex):** [compact blower tubes](research/blower-routing-2026-10-28/README.md).
+[PUB] LPSC2020 p1 describes bent tubing/standard fittings and increased blower
+power from excess length;2022 confirms topology. [EST] compact paths, local bends,
+two retention clips and short exhausts. [CALC] model intake lengths0.457/0.866 m
+instead of0.943/1.364 m; exhausts0.106 m instead of0.270 m. These are geometry
+measurements, not required flight sizes or simulated pressure loss. Original unit
+meshes/poses, selector, upstream routing and dynamics unchanged. Before/after saved.
+
 **October 28 part 24 replacement (Codex):** [model/fit/source boundaries](research/draco-blower-pair-2026-10-27/README.md).
 [PUB] real BNCP-74 engineering models and 345 ×168 mm nominal reference, rechecked
 against supplier pages. [EST] detailed proportions, diameter-as-unit-envelope

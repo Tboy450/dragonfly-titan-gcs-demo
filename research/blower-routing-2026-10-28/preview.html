@@ -1,0 +1,23 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blower tubing correction — before and after</title>
+<style>body{margin:0;background:#e5e9eb;color:#172b39;font:16px Arial}header,footer{padding:18px 24px;max-width:950px;margin:auto}h1{font-size:24px;margin:0 0 9px}button{padding:9px 15px;margin:10px 5px 0 0}canvas{display:block;width:min(100%,1000px);height:auto;margin:auto}footer{font-size:15px;line-height:1.5}#mode{font-weight:bold}</style>
+<header><h1>Part 24 / blower tubing correction</h1>Same source-referenced equipment and poses; compare the estimated installation routes.<br>
+<button id="old">Archived long loops</button><button id="new">Compact rigid tubes</button><p id="mode"></p></header>
+<canvas width="1000" height="590"></canvas>
+<footer>Both layouts are estimates. No verified flight installation drawing or pressure-loss model. New routes use straight sections/local bends, two retention clips and short open exhausts. Real supplier photos still guide the unchanged unit exteriors.</footer>
+<script type="module">
+import * as T from '../../dist/vendor/three/three.module.min.js';
+import {buildBlowers} from '../../dist/draco-plumbing.mjs';
+let code=await fetch('../../archive/blower-routing-2026-10-28/draco-blowers.mjs').then(r=>r.text());
+for(const file of ['vendor/three/three.module.min.js','foam-optical-ports.mjs'])code=code.replaceAll('./'+file+'?v=dev',new URL('../../dist/'+file+'?v=dev',location.href).href);
+const old=await import(URL.createObjectURL(new Blob([code],{type:'text/javascript'})));
+const scene=new T.Scene();scene.background=new T.Color(0xe5e9eb);const before=new T.Group(),after=new T.Group();scene.add(before,after);
+const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};
+old.buildSupplierBlowers({parent:before,mesh,diverter:[-.462,-.175,-.5975]});buildBlowers({parent:after,mesh});
+scene.add(new T.HemisphereLight(0xffffff,0x5e707c,2.4));
+for(const[p,intensity]of [[[1,2,2],3],[[-2,0,-1],1.5]]){const light=new T.DirectionalLight(0xffffff,intensity);light.position.fromArray(p);scene.add(light);}
+const camera=new T.PerspectiveCamera(35,1000/590,.001,20),target=new T.Vector3(-.54,-.30,-.41);camera.position.copy(target).add(new T.Vector3(-.975,.60,.9375));camera.lookAt(target);
+const renderer=new T.WebGLRenderer({canvas:document.querySelector('canvas'),antialias:true});renderer.setSize(1000,590,false);renderer.setPixelRatio(1);
+function show(archived){before.visible=archived;after.visible=!archived;document.querySelector('#mode').textContent=archived?'BEFORE / unnecessarily long estimated loops':'AFTER / shorter rigid-tube example, estimated clips';renderer.render(scene,camera);}
+document.querySelector('#old').onclick=()=>show(true);document.querySelector('#new').onclick=()=>show(false);show(false);
+</script></html>

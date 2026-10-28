@@ -39,6 +39,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-28: Correct the blower pair's loose-looking tube layout
+- **Signed:** Codex (OpenAI).
+- **What changed:** Owner rejected the first oversized loops. Four shorter rigid
+  tube examples use straight sections/local bends, two retention clips on existing
+  brackets and short open exhausts. Intake lengths decrease37–52%, exhausts61%.
+- **Evidence/limits:** DrACO2020 describes bent tubes/standard fittings and the
+  power cost of extra length;2022 topology and real supplier photos reused. Exact
+  route, supports, bend dimensions and flight qualification remain EST/unconfirmed.
+- **Preserved:** Exact source-referenced unit geometry/poses/fittings, selector,
+  upstream drill/sample routes, original wall/foam supports and dynamic inputs.
+- **Checks:** Two new regressions for exact equipment preservation, route type/
+  length/extent and clip seating. Existing actual-mesh clearance and both drill
+  stroke checks retained; coarse cable-box false positives now use actual surfaces.
+  751 merged tests pass; desktop/Thermal/390px phone verified without overflow/errors.
+- **Archive/samples:** archive/blower-routing-2026-10-28 tag on923828b, before/after
+  under research/blower-routing-2026-10-28. Prior real/model sheet reused.
+- **Next:** Complete merged/public verification; exact flight interfaces and wiring
+  remain unresolved. No unrelated project or private data edited.
+
 ### 2026-10-28: Swarmfall towns surrender to a quiet swarm
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Let calm settlements surrender at 60% control"

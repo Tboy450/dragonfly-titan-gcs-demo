@@ -11,6 +11,7 @@ import { buildIem } from "../dist/iem.mjs";
 import { buildFrontierRadio } from "../dist/frontier-radio.mjs";
 import { buildDramsAssembly } from "../dist/drams-assembly.mjs";
 import { buildWonderwall } from "../dist/wonderwall.mjs";
+import {triangles} from '../research/drill-moving-leads-2026-10-27/audit.mjs';
 
 function mesh(geometry, material, position, parent) {
   const part = new THREE.Mesh(geometry, material); part.position.fromArray(position); parent.add(part); return part;
@@ -81,11 +82,11 @@ test("Lines and blowers clear every rebuilt part", () => {
   const { parent } = build();
   const mine = boxes(parent);
   const others = [buildSampleCarousel, buildWonderwall, buildDramsAssembly, buildFrontierRadio, buildIem, buildPowerUnits, buildSideCameras, buildNoseCameras].map(b => {
-    const g = new THREE.Group(); b({ parent: g, mesh }); return [b.name, boxes(g)];
+    const g = new THREE.Group(); b({ parent: g, mesh }); return [b.name, boxes(g), g];
   });
   const drills = new THREE.Group();
   for (const side of [-1, 1]) buildDrill({ parent: drills, mesh, side });
-  others.push(["buildDrill", boxes(drills)]);
+  others.push(["buildDrill", boxes(drills), drills]);
   // The manifold stub seats on the carousel inlet by design.
   const seated = new Set(["draco-manifold-inlet-stub"]);
   for (const [name, other] of others) {
@@ -102,8 +103,19 @@ test("Lines and blowers clear every rebuilt part", () => {
     const path = t.geometry.parameters.path, r = t.geometry.parameters.radius;
     for (let i = 0; i <= 200; i += 1) {
       const p = path.getPoint(i / 200).applyMatrix4(t.matrixWorld);
-      for (const [name, other] of others) {
+      for (const [name, other, group] of others) {
         const hit = other.find(([, b]) => b.clone().expandByScalar(r * 0.9).containsPoint(p));
+        // A moving cable's large U-shaped AABB contains empty space. New blower
+        // runs are also checked against the full model at all stroke positions;
+        // disambiguate this broad-phase hit using actual transformed surfaces.
+        if(hit && /^draco-(forward|aft)-blower/.test(t.name)){
+          const nearest=new THREE.Vector3();let actual=false;
+          group.traverse(o=>{if(!o.isMesh||actual)return;
+            const box=new THREE.Box3().setFromObject(o).expandByScalar(r*.9);
+            if(box.containsPoint(p))actual=triangles(o).some(tri=>tri.getArea()>1e-14&&tri.closestPointToPoint(p,nearest).distanceTo(p)<r*.9);
+          });
+          if(!actual)continue;
+        }
         // Allowed contacts: each hose's end on its drill's port fitting (the connection itself).
         const atPort = t.name.startsWith("draco-flexible-hose") && hit && p.distanceTo(path.getPoint(1)) < 0.03 && /drill-port-fitting|drill-swivel/.test(hit[0]);
         if (hit && !atPort && !(name === "buildSampleCarousel" && t.name === "draco-return-tube" && i < 3)) {
