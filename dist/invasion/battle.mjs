@@ -12,7 +12,7 @@ import {
   payloadSlots, payloadCost, payloadCount, weaponFor, reachFor,
 } from "./units.mjs?v=dev";
 import { nextRandom, randomRange, randomPick } from "./random.mjs?v=dev";
-import { createHazardState, stepHazards } from "./hazards.mjs?v=dev";
+import { createHazardState, stepHazards, clearSpot, ventStructureDamage } from "./hazards.mjs?v=dev";
 import { validPayload, packDropPods, planDropLandings, podStaggerS } from "./drop-waves.mjs?v=dev";
 import { objectiveText } from './objective-rules.mjs?v=dev';
 import { findRoute } from "./paths.mjs?v=dev";
@@ -727,15 +727,18 @@ function kill(b, unit, cause) {
     }
     return;
   }
+  // Lightning and eruptions (HAZ-04) kill defenders too: the wreck still pays salvage, but the
+  // public does not blame the swarm for the weather.
+  const natural = cause === "hazard";
   if (unit.structure) {
     b.stats.defensesDestroyed += 1;
-    b.alarm += 5 * alarmGain(b);
+    if (!natural) b.alarm += 5 * alarmGain(b);
     b.matter += salvageMatter;
     b.stats.matterHarvested += salvageMatter;
-    b.log.push({ t: b.time, tone: "good", text: `${defenderTypes[unit.type].name} destroyed (+${salvageMatter} matter salvage).` });
+    b.log.push({ t: b.time, tone: "good", text: `${defenderTypes[unit.type].name} destroyed${natural ? " by the weather" : ""} (+${salvageMatter} matter salvage).` });
   } else {
     b.stats.militiaDefeated += 1;
-    b.alarm += 0.8 * alarmGain(b);
+    if (!natural) b.alarm += 0.8 * alarmGain(b);
   }
 }
 
@@ -820,12 +823,14 @@ function resolveStrikes(b, swarm) {
   for (const strike of b.strikes) {
     if (strike.hit || b.time < strike.hitAt) continue;
     strike.hit = true;
+    const lightning = strike.source === "lightning";
     for (const unit of swarm) {
       if (!unit.alive || dist2(unit, strike) > strike.radius ** 2) continue;
-      // Held zones have lightning rods; artillery hits everywhere.
-      const lightning = strike.source === "lightning";
-      hurt(b, unit, strike.damage * (lightning && heldZoneAt(b, unit) ? 0.5 : 1), lightning ? "hazard" : "strike");
+      // Held zones have lightning rods, and Weather sealing softens bolts; artillery hits everywhere.
+      hurt(b, unit, lightning ? strike.damage * (heldZoneAt(b, unit) ? 0.5 : 1) * upgradeEffects(b).hazard : strike.damage, lightning ? "hazard" : "strike");
     }
+    // Bolts strike defenders as well (HAZ-04); the natives' own shells do not.
+    if (lightning) for (const unit of b.units) if (unit.alive && unit.side === "native" && dist2(unit, strike) <= strike.radius ** 2) hurt(b, unit, strike.damage, "hazard");
     b.events.push({ kind: "strike", source: strike.source, x: strike.x, z: strike.z, radius: strike.radius });
   }
   b.strikes = b.strikes.filter(strike => !strike.hit || b.time - strike.hitAt < 1.5);
@@ -838,6 +843,11 @@ function hazardDamage(b, dt, swarm) {
     let damage = effects.damage * (heldZoneAt(b, unit) || unit.landed ? 0.5 : 1);
     for (const zone of effects.zones) if (dist2(unit, zone) <= zone.radius ** 2) damage += zone.damage;
     hurt(b, unit, damage * upgradeEffects(b).hazard * dt, "hazard");
+  }
+  // An eruption burns defenders in its circle too (HAZ-04); defenses stand up to it better.
+  if (effects.zones.length) for (const unit of b.units) {
+    if (!unit.alive || unit.side !== "native") continue;
+    for (const zone of effects.zones) if (dist2(unit, zone) <= zone.radius ** 2) hurt(b, unit, zone.damage * (unit.structure ? ventStructureDamage : 1) * dt, "hazard");
   }
 }
 
@@ -943,8 +953,9 @@ export function captureBlocker(b, zone) {
 
 // Matter per second from a held zone: richer, more developed worlds yield more.
 export const zoneIncome = (b, zone) => (zone.value || 0) * (1 + 0.15 * b.threat);
-// Artillery answers an alarm this high (on worlds whose society has it).
-export const artilleryAlarm = 70;
+// Artillery answers an alarm this high (on worlds whose society has it). This share of its shells
+// land as near misses (HAZ-06).
+export const artilleryAlarm = 70, artilleryNearMiss = 0.25;
 
 function economy(b, dt, swarm) {
   for (const zone of b.zones) {
@@ -1035,12 +1046,15 @@ function artillery(b, dt, swarm) {
   const targets = swarm.filter(u => u.alive);
   if (!targets.length) return;
   const target = randomPick(b, targets);
+  // Some shells fall short or long (HAZ-06): beside the swarm, clear of every drone.
+  const miss = nextRandom(b) < artilleryNearMiss ? clearSpot(b, target, 22 + 3, 70) : null;
+  const point = miss || { x: target.x + randomRange(b, -6, 6), z: target.z + randomRange(b, -6, 6) };
   b.strikes.push({
-    x: target.x + randomRange(b, -6, 6), z: target.z + randomRange(b, -6, 6), radius: 22,
+    x: point.x, z: point.z, radius: 22, ...(miss ? { nearMiss: true } : {}),
     damage: 30 + 4 * b.threat, markedAt: b.time, hitAt: b.time + 4, source: "artillery", hit: false,
   });
   b.log.push({ t: b.time, tone: "bad", text: "Artillery incoming: move out of the marked circle!" });
-  b.events.push({ kind: "artillery", x: target.x, z: target.z });
+  b.events.push({ kind: "artillery", x: point.x, z: point.z });
 }
 
 // Surviving drones return to the Hive and half their cost goes back into matter.

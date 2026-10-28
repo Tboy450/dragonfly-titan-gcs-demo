@@ -24,9 +24,9 @@ test("A hazard's tooltip lists what it does, scaled by the planet's severity", (
   assert.deepEqual(hazardEffects("dustStorm", 1), ["20% slower", "see 55% less", "weapons reach 30% less",
     "lose 0.35 health/s outside your zones (half inside)", "wind pushes drones up to 5 m/s"]);
   assert.ok(hazardEffects("dustStorm", 2).includes("lose 0.7 health/s outside your zones (half inside)"));
-  assert.deepEqual(hazardEffects("eruption", 0.5), ["7.5 damage/s inside a 55 m circle"]);
+  assert.deepEqual(hazardEffects("eruption", 0.5), ["7.5 damage/s inside a 55 m circle, to defenders too (defenses take 40%)"]);
   assert.deepEqual(hazardEffects("solarFlare"), ["drones outside your zones are stunned"]);
-  assert.ok(hazardEffects("lightning").some(e => e.startsWith("bolts every 3.5 s, 24 damage")));
+  assert.ok(hazardEffects("lightning").some(e => e.startsWith("bolts every 3.5 s on drones and defenders alike, 24 damage")));
   for (const type of Object.keys(hazardTypes)) {
     const text = hazardTooltip(type, 1);
     assert.ok(text.startsWith(`${hazardTypes[type].name}: ${hazardTypes[type].advice}\nWhile it lasts: `), type);
