@@ -1,5 +1,10 @@
 # DrACO electrical evidence and blower scale audit — October 27, 2026
 
+Historical audit. October 28 supplier-referenced replacement is documented
+[here](../draco-blower-pair-2026-10-27/README.md). This audit's script/preview now
+load its exact archived compact geometry, preserving original measurements.
+Statements below describe the state when this audit was performed.
+
 Codex (OpenAI). This is an evidence/fit audit, **not a rebuilt blower asset**.
 No geometry, sensors, connectors, pinouts, power model or flight state changed.
 The app nests a closed **Electrical audit & blower size** disclosure inside

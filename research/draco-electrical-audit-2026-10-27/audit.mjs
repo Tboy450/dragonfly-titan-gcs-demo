@@ -1,5 +1,10 @@
 import * as T from '../../dist/vendor/three/three.module.min.js';
-import {buildBlowers,dracoPlumbingAsset} from '../../dist/draco-plumbing.mjs';
+import {readFileSync} from 'node:fs';
+// Historical audit measures the archived compact pair, never a later replacement.
+const original=readFileSync(new URL('../../archive/draco-blower-pair-2026-10-27/draco-plumbing.mjs',import.meta.url),'utf8')
+ .replace('./vendor/three/three.module.min.js?v=dev',new URL('../../dist/vendor/three/three.module.min.js?v=dev',import.meta.url).href)
+ .replace('./drills.mjs?v=dev',new URL('../../dist/drills.mjs?v=dev',import.meta.url).href);
+const {buildBlowers,dracoPlumbingAsset}=await import('data:text/javascript;base64,'+Buffer.from(original).toString('base64'));
 import {dracoBlowerReference} from '../../dist/draco-electrical-evidence.mjs';
 import {writeFile} from 'node:fs/promises';
 import {pathToFileURL} from 'node:url';

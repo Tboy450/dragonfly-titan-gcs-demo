@@ -33,9 +33,16 @@ export function trace(f = fixture()) {
   boxJoin('carousel selector to shared return',point('draco-return-tube',0),'draco-flow-diverter-manifold');
   boxJoin('shared return to blower selector',point('draco-return-tube',1),'draco-blower-flow-diverter');
   for (const side of ['forward','aft']) {
-    const inlet = find(`draco-${side}-blower-inlet`), half = inlet.geometry.parameters.height/2;
-    boxJoin(`blower selector to ${side} inlet`,inlet.localToWorld(new THREE.Vector3(0,half,0)),'draco-blower-flow-diverter');
-    boxJoin(`${side} inlet to blower body`,inlet.localToWorld(new THREE.Vector3(0,-half,0)),`draco-${side}-blower-volute`);
+    const branch=f.root.getObjectByName(`draco-${side}-blower-selector-inlet`);
+    if(branch){
+      boxJoin(`blower selector to ${side} inlet`,point(branch.name,0),'draco-blower-flow-diverter');
+      boxJoin(`${side} inlet to blower body`,point(branch.name,1),`draco-${side}-blower-inlet`);
+    }else{
+      // Historical compact model retained for the archived-gap regression.
+      const inlet = find(`draco-${side}-blower-inlet`), half = inlet.geometry.parameters.height/2;
+      boxJoin(`blower selector to ${side} inlet`,inlet.localToWorld(new THREE.Vector3(0,half,0)),'draco-blower-flow-diverter');
+      boxJoin(`${side} inlet to blower body`,inlet.localToWorld(new THREE.Vector3(0,-half,0)),`draco-${side}-blower-volute`);
+    }
   }
   return {scope:'Rendered endpoint/envelope continuity only; no valve-interior or flow solver',rows,
     connected:rows.every(row=>row.connected),

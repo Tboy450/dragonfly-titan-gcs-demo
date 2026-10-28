@@ -13,7 +13,9 @@ import {dracoInventory as rows,dracoInventorySources as sources,dracoInventoryLi
 test('DrACO audit retains all mechanics except the separately tested return and moving-lead updates',async()=>{
   const current=fixture(),before=await baseline();
   // Later continuity and moving-lead suites verify their explicit changes against archives.
-  const unchanged = root => fingerprint(root).filter(row=>row.name!=='draco-return-tube').filter(unchangedDrillMesh).filter(retainedBeforeFeedStage);
+  // Rebuilt blower shells/pipes have their own exact archive and fit suite.
+  const oldBlower=row=>/^draco-(forward|aft)-blower/.test(row.name)||/^draco-blower-(scroll|cover-seam|exhaust-mouth|bracket)$/.test(row.name);
+  const unchanged = root => fingerprint(root).filter(row=>row.name!=='draco-return-tube'&&!oldBlower(row)).filter(unchangedDrillMesh).filter(retainedBeforeFeedStage);
   assert.deepEqual(unchanged(current.root),unchanged(before.root));
   for(const feed of [0,.065,.13]){
     for(const f of [current,before])for(const [i,d] of f.drills.entries()){

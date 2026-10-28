@@ -20,10 +20,31 @@ Owner steering, October 27, current pass:
   subassembly controls stay; no new split parts or per-unit numbering requested now.
   [Numbering pass](research/inspection-numbering-2026-10-27/README.md): stable IDs
   25–32 appended, actual triangle pins, 733 tests, desktop/Thermal/390px checks saved.
-  Committed locally before blower pass; combined publication still pending.
-- [ ] After numbering/placement is complete, owner explicitly requests the **blower
+  Committed as 8bca7a2 before blower pass; combined publication recorded below.
+- [x] After numbering/placement is complete, owner explicitly requests the **blower
   pair** rebuild. Use saved real supplier EM/catalog photos and 345 ×168 mm reference
   dimensions; reconcile both units and plumbing together, preserve source boundaries.
+
+October 28: [Part 24 supplier-referenced replacement](research/draco-blower-pair-2026-10-27/README.md).
+- [x] Recheck supplier primary pages and saved real EM photos; retain CGI only as
+  published installation context, not an appearance source. Two units, no third.
+- [x] Replace both compact bodies together: banded motor, dish/cone, square outlet,
+  feet. Nominal 345 mm axial /168 mm transverse unit reference; detailed proportions
+  and interpretation of diameter EST. Installed adapters excluded from unit bounds.
+- [x] Reconcile ports/selector branches, two open exhausts, four wall supports and
+  local foam clearances. Preserve existing sample hoses/tubes/shared return/selector,
+  drills, cables, carousel and flight/thermal inputs. No invented blower wiring.
+- [x] Seven new tests: dimensions/inventory, archive preservation, continuity,
+  full installed triangle clearance, both drill strokes, separate pipes, structural
+  seating/insulation openings and independent access masks. 740 full tests pass.
+- [x] Single/pair/installed/Internal/Thermal/390px samples and real/model/layout
+  comparison saved; source packet reused. Part 5 stays grouped, 32 IDs consistent.
+- [ ] Actual flight installation, supplier dimensioned drawing, electrical power,
+  ports/pinout, blower/diverter leads, feed sensor identity and remote controller
+  continuation remain unresolved. Do not invent them to check off completion.
+- [ ] Navigation FEB/IMU leads remain separate open items; MEB example does not
+  establish complete navigation wiring. Reuse existing source packets and focus
+  the next pass on supported connections rather than another casing makeover.
 
 October 27: [Part 5 MEB harness connection](research/navigation-meb-link-2026-10-27/README.md).
 - [x] Correctly identify the curved line as Bay harness `navigation-meb`; earlier
@@ -42,7 +63,7 @@ October 27: [Part 5 MEB harness connection](research/navigation-meb-link-2026-10
   24 numbered parts, Open interior and no overflow/errors verified.
 - [ ] Actual flight MEB ports/circuits, separate FEB/IMU leads and internal routing
   remain open. Do not declare the whole navigation harness complete.
-- [ ] NEXT scheduled model rebuild: part 24 supplier-scale blower pair/plumbing,
+- [x] NEXT scheduled model rebuild: part 24 supplier-scale blower pair/plumbing,
   as detailed in the electrical audit below. No third inferred blower or guessed pinout.
 
 October 27: [Electrical evidence / blower scale audit](research/draco-electrical-audit-2026-10-27/README.md).
@@ -69,7 +90,7 @@ October 27: [Electrical evidence / blower scale audit](research/draco-electrical
   README and saved clarification screenshot. No geometry changed for this diagnosis.
   Its estimated external installation/inspection continuation is completed in the
   newer MEB link pass above; exact flight mating remains unresolved.
-- [ ] NEXT: rebuild **part 24 blower pair together** from real supplier photos and
+- [x] NEXT: rebuild **part 24 blower pair together** from real supplier photos and
   published overall dimensions. Reconcile orientation/centers, supports, inlet,
   exhaust, selector and return fit; check other rebuilt parts and access layers.
   Preserve two redundant units; older APL cylinder/cone identity remains a candidate,

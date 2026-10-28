@@ -1,5 +1,6 @@
 import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { drillAsset } from "./drills.mjs?v=dev";
+import {blowerLayout,buildSupplierBlowers} from './draco-blowers.mjs?v=dev';
 
 // Parts 02 and 24: DrACO's Pneumatic Transport System (Zacny et al., LPSC 2022, fig. 1 and the
 // cross-strapped schematic; Honeybee KISS slides 21-22; NASA "Playing Lacrosse on Titan";
@@ -18,12 +19,12 @@ import { drillAsset } from "./drills.mjs?v=dev";
 // body side and up the front of the attic.
 const TUBE = 0.0065, HOSE = 0.0075;
 export const dracoPlumbingAsset = Object.freeze({
-  revision: "draco-plumbing-2026-10-27",
+  revision: "draco-plumbing-bncp74-2026-10-27",
   returnSeatDepthM: 0.003, // [EST] drawn overlap into selector, not a flight coupling specification
   tubeOuterDiameterM: 2 * TUBE,
   hoseAnchors: Object.freeze([Object.freeze([-0.40, -0.40, -0.52]), Object.freeze([0.40, -0.40, -0.52])]),
   manifold: Object.freeze([-0.20, 0.415, -1.40]),
-  blowerCenters: Object.freeze([Object.freeze([-0.475, -0.245, -0.64]), Object.freeze([-0.475, -0.245, -0.555])]),
+  blowerCenters: blowerLayout.centers,
   blowerDiverter: Object.freeze([-0.462, -0.175, -0.5975]),
 });
 
@@ -136,47 +137,5 @@ export function buildSampleLines({ parent, mesh, carouselInlet }) {
 }
 
 export function buildBlowers({ parent, mesh }) {
-  const group = new THREE.Group();
-  group.name = "draco-blowers";
-  parent.add(group);
-  Object.assign(parent.userData, { assetRevision: dracoPlumbingAsset.revision, dimensionConfidence: "EST" });
-  const layer = (name, inspectionLayer) => {
-    const g = new THREE.Group(); g.name = name; g.userData.inspectionLayer = inspectionLayer; group.add(g); return g;
-  };
-  const casings = layer("draco-blower-casings", "equipment-casings");
-  const ports = layer("draco-blower-ports", "interfaces");
-  const mounts = layer("draco-blower-mounts", "mounts");
-  const alum = new THREE.MeshStandardMaterial({ color: 0xc9cfd2, roughness: 0.35, metalness: 0.75 });
-  const dark = new THREE.MeshStandardMaterial({ color: 0x23272a, roughness: 0.5, metalness: 0.4 });
-  const valve = new THREE.MeshStandardMaterial({ color: 0x9aa3a8, roughness: 0.38, metalness: 0.75 });
-  const R = 0.038;
-
-  // Inlet flow diverter: selects the forward or aft blower (the schematic's upper diverters).
-  const [dx, dy, dz] = dracoPlumbingAsset.blowerDiverter;
-  mesh(new THREE.BoxGeometry(0.03, 0.025, 0.11), valve, [dx, dy, dz], ports).name = "draco-blower-flow-diverter";
-  mesh(new THREE.CylinderGeometry(0.009, 0.009, 0.02, 12), dark, [dx, dy + 0.0225, dz], ports).name = "draco-blower-diverter-actuator";
-
-  for (const [i, c] of dracoPlumbingAsset.blowerCenters.entries()) {
-    const [x, y, z] = c;
-    const name = i === 0 ? "forward" : "aft";
-    // Volute: a flat scroll housing with a bulge toward the outlet, the motor below it.
-    mesh(new THREE.CylinderGeometry(R, R, 0.03, 32), alum, [x, y, z], casings).name = `draco-${name}-blower-volute`;
-    mesh(new THREE.CylinderGeometry(R * 0.75, R * 0.75, 0.03, 24), alum, [x - 0.012, y, z + 0.012], casings).name = "draco-blower-scroll";
-    mesh(new THREE.CylinderGeometry(R * 1.02, R * 1.02, 0.004, 32), dark, [x, y + 0.015, z], casings).name = "draco-blower-cover-seam";
-    mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.045, 20), dark, [x, y - 0.0375, z], casings).name = `draco-${name}-blower-motor`;
-    // Axial inlet on top, fed from the diverter.
-    mesh(new THREE.CylinderGeometry(0.009, 0.011, dy - 0.0125 - (y + 0.015), 14), valve, [x, (dy - 0.0125 + y + 0.015) / 2, z], ports).name = `draco-${name}-blower-inlet`;
-    // Tangential exhaust, pointing down and outboard, with a flared mouth.
-    const start = new THREE.Vector3(x - R * 0.8, y, z + 0.02), end = new THREE.Vector3(x - R - 0.025, y - 0.028, z + 0.03);
-    const dir = end.clone().sub(start);
-    const pipe = mesh(new THREE.CylinderGeometry(0.009, 0.009, dir.length(), 14), alum, start.clone().lerp(end, 0.5).toArray(), ports);
-    pipe.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize()); pipe.name = `draco-${name}-blower-exhaust`;
-    const mouth = mesh(new THREE.CylinderGeometry(0.014, 0.009, 0.012, 16, 1, true), alum, end.toArray(), ports);
-    mouth.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize()); mouth.name = "draco-blower-exhaust-mouth";
-    mouth.material = alum.clone(); mouth.material.side = THREE.DoubleSide;
-    // Bracket from the volute's inboard face to the body side (port side, x < 0).
-    const inner = x + R, body = -0.43;
-    mesh(new THREE.BoxGeometry(Math.abs(body - inner) + 0.002, 0.05, 0.05), valve, [(inner + body) / 2, y, z], mounts).name = "draco-blower-bracket";
-  }
-  return { group, casings, ports, mounts };
+  return buildSupplierBlowers({parent,mesh,diverter:dracoPlumbingAsset.blowerDiverter});
 }

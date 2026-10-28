@@ -5,6 +5,14 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ## The short version
 
+October 28 blower pair: `draco-blowers.mjs` owns the supplier-referenced exterior,
+unit envelope, estimated installed ports/brackets and four gas branches. The
+`draco-plumbing.mjs` wrapper retains upstream sample routes and selector exactly.
+`vehicle-research.mjs` opens four local bracket clearances in surface-only foam
+using the existing triangle clipper. Casings/Covers/Interfaces/Mounts/Plumbing
+remain independent. New fit tests cover source size, actual installed triangles,
+both drill strokes and pipe separation. Catalog data never drives dynamic state.
+
 October 27 inspection catalog: `inspection-catalog.mjs` fixes 32 top-level IDs
 (old 1–24 plus 25–32). Menus and rendered labels share it; physical initial asset
 count remains 24. `inspection-anchor.mjs` caches actual triangle/barycentric pins
@@ -22,7 +30,8 @@ October 27 evidence audit: `draco-electrical-evidence.mjs` is immutable referenc
 data only. `ui/sampling-connections.mjs` renders its closed nested disclosure in
 the DrACO inventory; existing focus callbacks are reused. Supplier values must
 not enter flight/thermal budgets without a separate sourced model change. Part 24
-geometry is unchanged and now explicitly flagged for supplier-scale reconciliation.
+geometry was unchanged in that historical audit. Its measurements and preview now
+import the archived compact pair; the October 28 supplier-referenced pass supersedes it.
 See `research/draco-electrical-audit-2026-10-27/README.md` before its next rebuild.
 
 - A static web app with **no build step**: everything in `dist/` is served as-is.

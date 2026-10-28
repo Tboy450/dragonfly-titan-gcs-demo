@@ -39,6 +39,32 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-28: Rebuild part 24 from real supplier hardware and fit the pair
+- **Signed:** Codex (OpenAI)
+- **Commit:** Rebuild DrACO blower pair from real supplier references
+- **What changed:** Replace both compact placeholders with supplier-referenced
+  banded motor/dished case/tapered intake/square outlet/feet. Fit both estimated
+  vertical installations, branches and open exhausts to the retained selector.
+  Four brackets seat at the structural wall through local insulation clearances.
+  This ships with 8bca7a2's complete 32-part numbering and visible-surface anchors;
+  part 5 remains grouped with its existing navigation subassembly controls.
+- **Files:** draco-blowers.mjs, plumbing wrapper, assembly integration, source
+  disclosures, seven new tests, historical audit/continuity guards and research/archive.
+- **Assumptions:** 345 ×168 mm nominal unit reference from Barber-Nichols, real EM
+  photos for exterior appearance. Detailed proportions, diameter interpretation,
+  vertical installation, ports/adapters/supports/routes EST. No hidden impeller,
+  flight wiring, voltage or pinout inferred; catalog figures do not drive dynamics.
+- **Checks:** 740 full tests; both drills across travel, actual transformed mesh
+  clearance, separate-pipe fit, inlet/outlet joins, structural seating and reversible
+  masks. Desktop/Internal/Thermal/390px samples, no overflow/errors, grouped part 5
+  retained. Real/photo-model/published-layout comparison and exact prior modules saved.
+- **Archive:** archive/draco-blower-pair-2026-10-27 on 8bca7a2; historical audit now
+  loads this baseline. Rejected route controls/intersections retained. Numbering
+  archive tag on 7db927e publishes with it. No unrelated project/private files staged.
+- **Open / next:** Actual installed flight drawing, electrical exits/circuits and
+  feed sensors remain unconfirmed; FEB/IMU leads still open. See research pass and
+  INTERIOR-REALISM-TODO.md for continuation. Combined live verification recorded after deploy.
+
 ### 2026-10-27: Complete inspection numbering and surface-anchor placement
 - **Signed:** Codex (OpenAI).
 - **What changed:** Shared catalog numbers all 32 selectable assemblies across

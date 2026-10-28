@@ -6,6 +6,15 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part 24 replacement (Codex, October 28):** [pass, fit and samples](draco-blower-pair-2026-10-27/README.md),
+[saved real supplier EM photos/catalog specifications](sources/barber-nichols-draco-2026-10-27/README.md).
+Rechecked original supplier pages. Motor bands, dished case/tapered intake, square
+side outlet and feet follow real hardware. 345 ×168 mm nominal reference; detailed
+proportions, diameter interpretation and installed pair/adapters/mounts EST.
+Existing ICES thermal figure reused only for placement context. One useful
+real/thermal-layout/model comparison, not duplicated source photos. 740 tests;
+no flight pinout, hidden impeller or source-derived dynamic power claim.
+
 **MEB link, part 5 (Codex, October 27):** [pass / sources / limits](navigation-meb-link-2026-10-27/README.md).
 Reuses real NASA/APL/Ed Whitman September wiring photo and NASA workmanship pages
 29–31 for general wire dress/backshell reasoning. Prior Ocellus real-related/CAD
@@ -19,7 +28,8 @@ or redundant comparison sheet; 725 tests and desktop/phone checks pass.
 [related KArLE boundary](sources/karle-shs-2022/README.md).
 Original supplier EM composite (CGI upper left, real bench/lower panels) and
 catalog physical unit on edited blue background saved once, with credit/hashes.
-Published 345 × 168 mm exposes scale mismatch; current pair unchanged. AMS/LPSC
+Published 345 × 168 mm exposed the old scale mismatch; that historical pair is
+archived and the replacement is recorded above. AMS/LPSC
 sources reused. KArLE pages 1/4 retained to document why its sensors are not
 DrACO evidence. No sensor/wire model added; next part 24 housing/plumbing rebuild.
 

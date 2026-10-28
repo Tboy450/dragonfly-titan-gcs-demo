@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DrACO blower pair — supplier-referenced model</title>
+<style>body{margin:0;background:#e5e9eb;color:#172b39;font:16px Arial}header,footer{padding:18px 24px;max-width:950px;margin:auto}h1{font-size:24px;margin:0 0 9px}button{padding:9px 15px;margin:10px 5px 0 0;border:1px solid #67818e;border-radius:5px;background:white}canvas{display:block;width:min(100%,1000px);height:auto;margin:auto}footer{font-size:15px;line-height:1.5}#mode{font-weight:bold}</style>
+<header><h1>DrACO sample blower • part 24</h1>Real Barber-Nichols engineering-model photos guide the exterior. Nominal supplier reference: 345 mm length ×168 mm diameter.<br>
+<button id="single">Single unit / photo angle</button><button id="pair">Installed pair / plumbing</button><p id="mode">Single unit • installed fittings hidden</p></header>
+<canvas width="1000" height="590"></canvas>
+<footer>Model sample, not a hardware photograph. Detailed proportions, ports, four supports and vertical pair installation are estimates. External adapters and pipes lie outside the nominal unit reference. No hidden impeller, flight wiring or valve internals inferred.<br>Source/credit: <a href="https://barber-nichols.com/barber-nichols-blower-will-ride-on-nasas-dragonfly-rotorcraft-to-saturns-moon-titan/">Barber-Nichols real engineering models</a>. <a href="https://barber-nichols.com/cryogenic-compressors-blowers/">Supplier specifications</a>.</footer>
+<script type="module">
+import * as T from '../../dist/vendor/three/three.module.min.js';
+import {buildBlowers} from '../../dist/draco-plumbing.mjs';
+const scene=new T.Scene();scene.background=new T.Color(0xe5e9eb);
+const installed=new T.Group(),single=new T.Group();scene.add(installed,single);
+const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};
+const built=buildBlowers({parent:installed,mesh});installed.updateMatrixWorld(true);
+for(const pose of Object.values(built.units[0].poses))for(const child of pose.children)single.add(child.clone());
+single.rotation.y=Math.PI/2;
+scene.add(new T.HemisphereLight(0xffffff,0x5e707c,2.4));
+for(const[p,intensity]of [[[1,2,2],3],[[-2,0,-1],1.5]]){const light=new T.DirectionalLight(0xffffff,intensity);light.position.fromArray(p);scene.add(light);}
+const camera=new T.PerspectiveCamera(35,1000/590,.001,20);
+const renderer=new T.WebGLRenderer({canvas:document.querySelector('canvas'),antialias:true});renderer.setSize(1000,590,false);renderer.setPixelRatio(1);
+function show(pair){installed.visible=pair;single.visible=!pair;
+ const target=pair?new T.Vector3(-.54,-.30,-.41):new T.Vector3(0,0,0);
+ camera.position.copy(target).add(pair?new T.Vector3(-.78,.48,.75):new T.Vector3(.07,.20,.62));camera.lookAt(target);
+ document.querySelector('#mode').textContent=pair?'Estimated installed pair • shared selector, two intakes, two open exhausts':'Single unit • installed fittings hidden';
+ renderer.render(scene,camera);
+}
+document.querySelector('#single').onclick=()=>show(false);document.querySelector('#pair').onclick=()=>show(true);show(false);
+</script></html>

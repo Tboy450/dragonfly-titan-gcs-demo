@@ -1,0 +1,9 @@
+{
+  "scope":"Rejected, unpublished 13 mm gas route controls; other unit geometry as replacement module. Retain for reproducible fit reasoning.",
+  "drafts":[
+    {"name":"forward-return-crossing","controls":[[-0.462,-0.1875,-0.6225],[-0.46,-0.205,-0.75],[-0.665,-0.22,-0.75],[-0.665,-0.49,-0.75],[-0.665,-0.49,-0.65],[-0.525,-0.49,-0.65],[-0.525,-0.47,-0.65],[-0.525,-0.4455,-0.65]],"hit":"draco-return-tube","point":[-0.45905,-0.19126,-0.65124]},
+    {"name":"aft-inboard-corner-overshoot","controls":[[-0.462,-0.1875,-0.5725],[-0.44,-0.19,-0.55],[-0.44,-0.20,-0.05],[-0.665,-0.23,-0.05],[-0.665,-0.49,-0.05],[-0.665,-0.49,-0.20],[-0.525,-0.49,-0.20],[-0.525,-0.47,-0.20],[-0.525,-0.4455,-0.20]],"hits":["body-foam-port-surface","drill-motor-lead"]},
+    {"name":"forward-outboard-through-motor","controls":[[-0.462,-0.1875,-0.6225],[-0.462,-0.23,-0.6225],[-0.665,-0.24,-0.6225],[-0.665,-0.24,-0.75],[-0.665,-0.49,-0.75],[-0.665,-0.49,-0.65],[-0.525,-0.49,-0.65],[-0.525,-0.47,-0.65],[-0.525,-0.4455,-0.65]],"hits":["own motor","own retaining band","own backplate"],"point":[-0.50956,-0.24172,-0.61684]}
+  ],
+  "resolution":"Forward branch descends just inboard of its case before crossing outboard. Aft branch bypasses the drill entirely outboard. Four local foam support slots remove surface crossings; no neighbor hardware moved."
+}

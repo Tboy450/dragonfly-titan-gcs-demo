@@ -4,6 +4,16 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**October 28 part 24 replacement (Codex):** [model/fit/source boundaries](research/draco-blower-pair-2026-10-27/README.md).
+[PUB] real BNCP-74 engineering models and 345 ×168 mm nominal reference, rechecked
+against supplier pages. [EST] detailed proportions, diameter-as-unit-envelope
+interpretation, vertical pair placement, ports, adapters, four supports and local
+foam clearances. [CALC] actual model unit 345 mm axial, 168 mm maximum transverse;
+installed adapters/pipes extend beyond it. Seven new tests, 740 total; upstream
+sample routes and selector preserved. No impeller/flight electrical reconstruction
+or catalog values added to dynamic budgets. Historical compact audit below now
+loads the archive, not the replacement. Part 5 grouping retained; inspection IDs32.
+
 **October 27 MEB link (Codex):** [evidence and fitted example](research/navigation-meb-link-2026-10-27/README.md).
 [PUB] real wiring appearance and generic NASA backshell/stress-relief guidance.
 [EST] external MEB shell/flange, blind panel-facing interface, strain relief,

@@ -70,10 +70,10 @@ test("Lines reach the carousel inlet and the blowers; blowers sit behind the por
   assert.ok(diverter.containsPoint(retEnd), "the return line ends at the blower diverter");
   for (const [x, , z] of dracoPlumbingAsset.blowerCenters) {
     assert.ok(x < -0.43, "outside the port side of the body (exposed to Titan)");
-    assert.ok(z > -0.75 && z < -0.43, "aft of the forward arm root, forward of the drill");
+    assert.ok(z > -0.75 && z < 0, "estimated pair fits behind the forward arm within the fore bay");
   }
-  const exhaust = find(blowers.ports, "draco-forward-blower-exhaust");
-  const dir = new THREE.Vector3(0, 1, 0).applyQuaternion(exhaust.quaternion);
+  const exhaust = find(blowers.plumbing, "draco-forward-blower-exhaust");
+  const dir = exhaust.geometry.parameters.path.getPoint(1).sub(exhaust.geometry.parameters.path.getPoint(0));
   assert.ok(dir.x < 0 && dir.y < 0, "exhaust points outboard and down");
 });
 
@@ -92,7 +92,7 @@ test("Lines and blowers clear every rebuilt part", () => {
     for (const [mn, mb] of mine) {
       if (seated.has(mn) && name === "buildSampleCarousel") continue;
       // Tube bounding boxes are coarse; check them against other parts with a margin in the test of record below.
-      if (mn.startsWith("draco-intake-tube") || mn === "draco-return-tube" || mn.startsWith("draco-flexible-hose")) continue;
+      if (find(parent,mn)?.geometry?.parameters?.path) continue;
       assert.ok(!other.some(([, b]) => b.intersectsBox(mb)), `${mn} clears ${name}`);
     }
   }

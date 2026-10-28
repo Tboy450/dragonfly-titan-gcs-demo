@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-28",
+  "desktop": {
+    "access": "open",
+    "options": [
+      "Whole vehicle",
+      "1. DrACO drill and feed assemblies",
+      "2. DrACO sample-transfer lines: hoses, tubes, flow diverter and return to the blowers",
+      "3. Nose bulkhead (provisional structural panel)",
+      "4. Nose cameras: Forward MAC, Forward WAC, two Side Cameras, two NavCams (no active airflow)",
+      "5. Ocellus outer-structure / MIMU family approximations",
+      "6. Cold attic: DrACO sample carousel",
+      "7. Wonderwall: warm/cold attic interface",
+      "8. Warm attic: DraMS instrument assembly",
+      "9. Rotor drive electronics: provisional enclosure illustration",
+      "10. HGA gimbal: azimuth and elevation actuators, motorized arm and stow locks",
+      "11. Two power switching units (PSUs)",
+      "12. Integrated electronics module (IEM)",
+      "13. Frontier X-band radio",
+      "14. 100 W X-band TWTA: tube and power conditioner under the top deck",
+      "15. Battery: 11.5 kWh, 24 cells (GS Yuasa), heat pipes, fans and a phase-change buffer",
+      "16. Aft bulkhead: canted gold end bulkhead with the MMRTG interface",
+      "17. Circulation fans A and B: MMRTG-warmed air into the duct, 0.052 kg/s, 15 W allocation",
+      "18. Under-floor warm duct: fans to the nose, opening into the body below the nose",
+      "19. Trim device: cold bypass duct under the belly with fore and aft diverter flaps",
+      "20. Battery temperature sensor (family approximation)",
+      "21. MMRTG fin-root sensor (RTD family approximation)",
+      "22. DraGMet: EFIELD / METHAN",
+      "23. DragonCam lower cameras: Microscopic Camera, LED array, two Down Cameras (in foam cavities)",
+      "24. DrACO blowers: supplier-referenced pair, estimated installation",
+      "25. Body insulation regions (surface estimate)",
+      "26. Attic cover / insulation (surface estimate)",
+      "27. Starboard structural wall",
+      "28. Port structural wall",
+      "29. Wall end joints (estimated)",
+      "30. Top deck / attic edge",
+      "31. MMRTG generator body",
+      "32. Bay harness (routing estimate)"
+    ],
+    "part": "nose-electronics",
+    "scrollWidth": 1265,
+    "subassembly": "",
+    "subassemblyChoices": [
+      "All subassemblies",
+      "Ocellus MEB (outer-structure estimate)",
+      "Ocellus FEB (outer-structure estimate)",
+      "IMU A (Honeywell MIMU family approximation)",
+      "IMU B (Honeywell MIMU family approximation)",
+      "Support shelf (installation estimate)"
+    ],
+    "width": 1280
+  },
+  "phone": {
+    "access": "open",
+    "component": "24. DrACO blowers: supplier-referenced pair, estimated installation",
+    "isolated": true,
+    "options": 33,
+    "scrollWidth": 375,
+    "width": 390
+  },
+  "errors": []
+}

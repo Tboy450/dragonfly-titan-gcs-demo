@@ -6,7 +6,11 @@
 <footer>Supplier reference: BNCP-74-000, 345 mm length × 168 mm diameter. These existing compact units require a housing/placement/plumbing rebuild before electrical routing. No sensors, connectors or new housing geometry added here.</footer>
 <script type="module">
 import * as T from '../../dist/vendor/three/three.module.min.js';
-import {buildBlowers} from '../../dist/draco-plumbing.mjs';
+// Historical compact model: never silently render a later replacement here.
+const archived=await fetch('../../archive/draco-blower-pair-2026-10-27/draco-plumbing.mjs').then(r=>r.text());
+const code=archived.replace('./vendor/three/three.module.min.js?v=dev',new URL('../../dist/vendor/three/three.module.min.js?v=dev',location.href).href)
+ .replace('./drills.mjs?v=dev',new URL('../../dist/drills.mjs?v=dev',location.href).href);
+const {buildBlowers}=await import(URL.createObjectURL(new Blob([code],{type:'text/javascript'})));
 const scene=new T.Scene();scene.background=new T.Color(0xe5e9eb);
 const root=new T.Group();scene.add(root);
 const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};

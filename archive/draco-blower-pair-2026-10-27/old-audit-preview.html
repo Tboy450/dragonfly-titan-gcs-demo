@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><meta charset="utf-8">
+<title>Current DrACO blower placeholders: scale audit</title>
+<style>body{margin:0;background:#e5e9eb;color:#172b39;font:16px Arial}header,footer{padding:14px 24px}h1{font-size:22px;margin:0 0 8px}canvas{display:block;width:640px;height:520px;margin:auto}footer{max-width:840px;margin:auto;font-size:14px}</style>
+<header><h1>Current blower placeholders / unchanged in this audit</h1>Actual simulator meshes. These are not a reconstruction at the new supplier dimensions.</header>
+<canvas></canvas>
+<footer>Supplier reference: BNCP-74-000, 345 mm length × 168 mm diameter. These existing compact units require a housing/placement/plumbing rebuild before electrical routing. No sensors, connectors or new housing geometry added here.</footer>
+<script type="module">
+import * as T from '../../dist/vendor/three/three.module.min.js';
+import {buildBlowers} from '../../dist/draco-plumbing.mjs';
+const scene=new T.Scene();scene.background=new T.Color(0xe5e9eb);
+const root=new T.Group();scene.add(root);
+const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};
+buildBlowers({parent:root,mesh});
+const target=new T.Vector3(-.485,-.235,-.5975),camera=new T.PerspectiveCamera(38,640/520,.001,10);
+camera.position.copy(target).add(new T.Vector3(-.30,.20,.30));camera.lookAt(target);
+scene.add(new T.HemisphereLight(0xffffff,0x7a8791,2.3));
+for(const [p,intensity]of [[[-1,2,2],3],[[2,0,-1],1.2]]){
+ const light=new T.DirectionalLight(0xffffff,intensity);light.position.fromArray(p);scene.add(light);
+}
+const renderer=new T.WebGLRenderer({canvas:document.querySelector('canvas'),antialias:true});
+renderer.setPixelRatio(1);renderer.setSize(640,520,false);renderer.render(scene,camera);
+</script></html>

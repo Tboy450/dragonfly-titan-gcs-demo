@@ -28,7 +28,9 @@ test('Return correction retains all other plumbing and mechanics; later lead upd
   assert.deepEqual(a.slice(0,-1),b.slice(0,-1));
   assert.deepEqual(a.at(-1).slice(0,2),b.at(-1).slice(0,2));
   assert.ok(Math.abs(a.at(-1)[2]-b.at(-1)[2]-.004)<1e-12);
-  const keep=root=>fingerprint(root).filter(row=>row.name!=='draco-return-tube').filter(unchangedDrillMesh).filter(retainedBeforeFeedStage);
+  // Blower replacement has its own supplier-size/fit/archive suite; retain the selector here.
+  const blower=row=>/^draco-(forward|aft)-blower/.test(row.name)||/^draco-blower-(scroll|cover-seam|exhaust-mouth|bracket)$/.test(row.name);
+  const keep=root=>fingerprint(root).filter(row=>row.name!=='draco-return-tube'&&!blower(row)).filter(unchangedDrillMesh).filter(retainedBeforeFeedStage);
   assert.deepEqual(keep(current.root),keep(before.root));
   const oldTube=before.root.getObjectByName('draco-return-tube'),newTube=current.root.getObjectByName('draco-return-tube');
   for(const parameter of ['radius','tubularSegments','radialSegments','closed'])

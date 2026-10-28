@@ -35,7 +35,7 @@ test('Evidence preserves unresolved sensor/diverter interfaces and distinguishes
 });
 
 test('Audit leaves blower/plumbing geometry exact and reports reference-envelope overlap without claiming solid collision',async()=>{
- const current=await readFile(new URL('../dist/draco-plumbing.mjs',import.meta.url),'utf8');
+ const current=await readFile(new URL('../archive/draco-blower-pair-2026-10-27/draco-plumbing.mjs',import.meta.url),'utf8');
  const before=await readFile(new URL('../archive/draco-electrical-audit-2026-10-27/draco-plumbing.mjs',import.meta.url),'utf8');
  assert.equal(current,before);
  const result=report();assert.equal(result.rows.length,2);

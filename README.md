@@ -1,9 +1,18 @@
 # Dragonfly Titan GCS
 
+October 28: [Supplier-referenced DrACO blower pair](research/draco-blower-pair-2026-10-27/README.md).
+Real engineering-model photos replace the compact placeholders, with nominal
+345 ×168 mm unit references, fitted gas branches, two open exhausts and four
+supports/insulation clearances. Detailed proportions and installed poses remain
+estimates; flight wiring/ICDs unresolved. All 740 tests pass; useful real/model
+comparison and installed desktop/phone samples saved. Ships with the 32-part
+numbering/visible-surface anchor pass below; part 5 stays grouped.
+
 October 27: [Complete inspection numbering and anchor check](research/inspection-numbering-2026-10-27/README.md).
 All 32 selectable assemblies have matching menu/canvas/list IDs; original 1–24
 preserved. Pins use actual visible mesh surfaces and follow motion/cover changes.
-Part 5 stays grouped. 733 tests and desktop/phone checks pass. Blower pair next.
+Part 5 stays grouped. 733 tests and desktop/phone checks passed before the blower
+replacement above; both passes are included in the current publication.
 
 October 27: [MEB harness connection and isolation](research/navigation-meb-link-2026-10-27/README.md).
 The curved line by part 5 now seats in an estimated external connector shell and
@@ -15,10 +24,11 @@ preserved unchanged; **729 combined tests** pass. Live MEB isolation, 24 parts,
 Open interior and no overflow/errors verified; public sample saved.
 
 October 27: [DrACO electrical evidence and blower scale audit](research/draco-electrical-audit-2026-10-27/README.md).
-Real supplier photos and BNCP-74-000 specifications reveal that the current blower
+Historical audit: real supplier photos and BNCP-74-000 specifications revealed that the then-current blower
 pair needs a coordinated housing/placement/plumbing rebuild. Added a nested, closed
 evidence panel with inspection links; no speculative sensors or wiring added.
-721 tests and desktop/phone checks pass. Next: part 24, before electrical routing.
+721 tests and desktop/phone checks passed. Its compact-pair measurements/preview
+now load the archive; the October 28 replacement above supersedes its next step.
 Published **5e25b65**; Pages 40602293824 succeeded. Live build, closed audit,
 Open interior, 24 numbered parts and no overflow/errors verified; public sample saved.
 
