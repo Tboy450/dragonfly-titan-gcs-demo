@@ -38,3 +38,12 @@ Claude 97, Codex 130, both 2, GitHub Copilot 2, unattributed 15.
   Oct 27 DrACO audit; Oct 28 blowers rebuilt.
 
 Commit counts are recorded activity, not hours or effort; a day of research can be one commit.
+
+## Second graph: subsystem grid
+
+`subsystem-grid-by-assistant.png` (script `make_subsystem_grid.py`, rows in
+`commits-by-subsystem.csv`): the same 246 commits by subsystem and week, each cell split by
+assistant, as a companion to Codex's subsystem grid. Each commit counts once, in the subsystem
+most of its changed files belong to (Claude's own path table); the early catch-all files
+(`app.js`, `index.html`) defer to the commit message. Codex's grid counts 223 commits with its
+own rules, so the two differ cell by cell.
