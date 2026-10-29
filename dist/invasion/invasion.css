@@ -76,6 +76,14 @@ a { color: var(--swarm); }
 .hazard-list small { color: var(--muted); display: block; }
 .invade { width: 100%; margin-top: 16px; padding: 12px; font-size: 17px; }
 .locked-note { color: var(--muted); margin-top: 14px; }
+/* Replay challenges (ECON-04) in the planet panel. */
+.challenge-note { color: var(--muted); font-size: 13px; margin: 2px 0 8px; }
+.challenge-list { display: grid; gap: 6px; }
+.challenge { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; padding: 8px 10px; }
+.challenge small { color: var(--muted); }
+button.challenge[aria-pressed="true"] { background: rgba(255, 180, 87, 0.16); border-color: var(--amber); }
+.challenge-reward { font-size: 13px; margin: 8px 0 0; }
+.objective-list .challenges, #objective-list .challenges { color: #ffd479; }
 
 /* ---- Mission ---- */
 #mission-canvas, #mission-overlay { position: absolute; inset: 0; width: 100%; height: 100%; }

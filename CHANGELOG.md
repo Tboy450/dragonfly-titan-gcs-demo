@@ -39,6 +39,30 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-29: Swarmfall replay challenges
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add replay challenges on conquered planets"
+- **What changed:** Checklist ECON-04.
+  - A conquered planet's panel offers three optional challenges for the next attempt. Each
+    adds bonus matter to the replay reward:
+    - Raised threat (+50% of the conquest reward): one threat level higher.
+    - Wild weather (+35%): sooner, harder hazards.
+    - On alert (+35%): the alarm never drops below 30, so towns never surrender.
+  - A plain replay still pays 30%. Titan offers only Wild weather.
+  - Each challenge won with is marked ✦ on the planet and counted on the title screen.
+  - The battle log, Objectives panel, pause menu and debrief name the active challenges.
+    Restart and Play again keep them, and saved battles keep them.
+- **Files:** `dist/invasion/replay.mjs` (new), `dist/invasion/battle.mjs`,
+  `dist/invasion/campaign.mjs`, `dist/invasion/mission-save.mjs`, `dist/invasion/main.mjs`,
+  `dist/invasion/invasion.css`, `tests/invasion-replay.test.mjs` (new), `SWARMFALL-TODO.md`,
+  `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (287 pass). In the browser on Kepra:
+  - Real clicks turned on two challenges, and the reward line showed +173 matter.
+  - The battle ran at threat 2 with the alarm held at 30.
+  - A forced win paid the bonus and marked both challenges, and the title read "2 of 19
+    challenges".
+  - The challenge list fits a 375 px phone. The preview's saved data was put back afterwards.
+
 ### Public verification — Frontier bay connection pass
 - **Signed:** Codex (OpenAI).
 - **Published:** 89b4899; Pages40815721341 succeeded.766 combined tests pass.

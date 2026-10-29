@@ -11,6 +11,7 @@ import {
   droneTypes, defenderTypes, societies, droneOrder, dropCooldownS, dropDurationS,
   payloadSlots, payloadCost, payloadCount, weaponFor, reachFor, difficulties, difficultyOf,
 } from "./units.mjs?v=dev";
+import { replayModifiers, alertFloor, cleanModifiers, modifierNames } from "./replay.mjs?v=dev";
 import { nextRandom, randomRange, randomPick } from "./random.mjs?v=dev";
 import { createHazardState, stepHazards, clearSpot, ventStructureDamage } from "./hazards.mjs?v=dev";
 import { validPayload, packDropPods, planDropLandings, podStaggerS } from "./drop-waves.mjs?v=dev";
@@ -34,10 +35,12 @@ const isDrone = (unit) => unit.alive && unit.side === "swarm" && !unit.structure
 
 // options: seed, unlocks, podSlots, matter (the campaign bank), terrain ({ heightAt, isLand, setPads? }).
 export function createBattle(planet, options = {}) {
-  const { seed = planet.seed ?? 1, unlocks = ["scout", "link"], podSlots = 12, matter = 160, terrain = flatTerrain, upgrades = {}, difficulty = "normal" } = options;
+  const { seed = planet.seed ?? 1, unlocks = ["scout", "link"], podSlots = 12, matter = 160, terrain = flatTerrain, upgrades = {}, difficulty = "normal", modifiers = [] } = options;
   const society = societies[planet.society] || societies[0];
+  // Replay challenges (ECON-04, replay.mjs) this planet offers, fixed for the battle.
+  const challenges = cleanModifiers(planet, modifiers);
   const b = {
-    planetId: planet.id, practice: !!planet.practice, threat: planet.threat || 0, tier: society.tier,
+    planetId: planet.id, practice: !!planet.practice, threat: (planet.threat || 0) + (challenges.includes("threat") ? 1 : 0), tier: society.tier,
     rngState: seed >>> 0, time: 0, paused: false, outcome: null, endTime: null,
     // UI injects a unique attempt ID. Deterministic simulations/tests can supply their own.
     missionId: options.missionId || `simulation-${planet.id}-${seed >>> 0}`,
@@ -53,8 +56,9 @@ export function createBattle(planet, options = {}) {
     upgrades: Object.fromEntries(Object.entries(upgrades).filter(([id, n]) => upgradeIds.includes(id) && Number.isInteger(n) && n > 0)),
     // Difficulty (OBJ-05, units.mjs difficulties), fixed for the battle.
     difficulty: Object.hasOwn(difficulties, difficulty) ? difficulty : "normal",
+    modifiers: challenges,
     matter, unlocks: [...unlocks], podSlots, required: planet.required, objectives: planet.objectives || [],
-    alarm: 0, alarmStage: 0, zones: [], units: [], squads: [], pods: [], strikes: [],
+    alarm: challenges.includes("alert") ? alertFloor : 0, alarmStage: 0, zones: [], units: [], squads: [], pods: [], strikes: [],
     events: [], log: [], nextId: 1, lastDropAt: -Infinity,
     reinforceIn: 40, strikeIn: 20, specials: [], refund: 0,
     stats: {
@@ -75,9 +79,17 @@ export function createBattle(planet, options = {}) {
   garrison(b, planet, society);
   b.hazards = createHazardState(b, planet);
   b.hazards.severity *= difficultyOf(b.difficulty).hazards;
+  if (challenges.includes("weather")) {
+    const wild = replayModifiers.weather;
+    b.hazards.calm *= wild.calm;
+    b.hazards.severity *= wild.severity;
+    // Still nothing in the first minute, while the first pods land.
+    for (const type in b.hazards.next) b.hazards.next[type] = Math.max(60, b.hazards.next[type] * wild.calm);
+  }
   b.log.push({ t: 0, tone: "info", text: planet.practice
     ? "Practice planet: call a drop on the Hive beacon, then send drones to the beacons."
-    : `${society.name} society, threat ${planet.threat}. Call a drop on the Hive beacon to begin.` });
+    : `${society.name} society, threat ${b.threat}. Call a drop on the Hive beacon to begin.` });
+  if (challenges.length) b.log.push({ t: 0, tone: "warn", text: `Replay challenges: ${modifierNames(challenges)}.` });
   return b;
 }
 
@@ -1030,7 +1042,8 @@ function stepAlarm(b, dt, swarm) {
     }
   }
   b.alarm += (Math.min(seen, 40) * 0.012 * gain + Math.min(crossfire, 20) * 0.12 * gain - calm - 0.35) * dt;
-  b.alarm = Math.max(0, Math.min(100, b.alarm));
+  // On alert (ECON-04): the public never calms below the floor.
+  b.alarm = Math.max(b.modifiers?.includes("alert") ? alertFloor : 0, Math.min(100, b.alarm));
   b.stats.alarmPeak = Math.max(b.stats.alarmPeak, b.alarm);
   const stage = alarmStages.filter(s => b.alarm >= s.at).length;
   if (stage > b.alarmStage) {
@@ -1280,6 +1293,6 @@ export function missionResult(b) {
   return {
     missionId: b.missionId,
     outcome: b.outcome || "retreated", matter: b.matter, stars: starsEarned(b), time: b.endTime ?? b.time,
-    stats: { ...b.stats }, recovered: b.specials.filter(special => droneTypes[special]),
+    stats: { ...b.stats }, recovered: b.specials.filter(special => droneTypes[special]), modifiers: [...(b.modifiers || [])],
   };
 }

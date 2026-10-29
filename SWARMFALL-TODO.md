@@ -572,8 +572,27 @@ complete solely because its assets download or its unit tests pass.
   planet rewards.
 - [ ] **ECON-03 (P2)** Review every matter source and cost (zone income, salvage, Dragonfly
   drilling, recall refund, supply floor) and record the reasoning (DOC-01).
-- [ ] **ECON-04 (P2)** Replay modifiers on conquered planets (higher threat, extra hazards) for
-  bonus matter and stars.
+- [x] **ECON-04 (P2) — Claude (October 29)** Replay modifiers on conquered planets (higher
+  threat, extra hazards) for bonus matter and stars.
+  - Three replay challenges (`replay.mjs`), switched on in the planet panel of a conquered
+    planet before Invade again:
+    - Raised threat (+50% of the conquest reward): the planet plays one threat level higher,
+      so defenders are more numerous and tougher, militia come faster and artillery hits harder.
+    - Wild weather (+35%): hazards come about a third sooner and hit 30% harder. The first
+      minute stays calm.
+    - On alert (+35%): the public never calms below 30, so militia gather from the start and
+      no town surrenders.
+  - A plain replay still pays 30% of the conquest reward; all three together pay 150%.
+    Titan offers only Wild weather, since nobody lives there. Frontier maps have none.
+  - Each challenge won with is marked ✦ on the planet (`progress.challenges`, validated on
+    load) and counted on the title screen ("2 of 19 challenges").
+  - The battle keeps its challenges in its save. The battle log, the Objectives panel, the
+    pause menu and the debrief name them. Restart and Play again keep them.
+  - Saved battles may now have threat 6 (Aurex with Raised threat).
+  - `tests/invasion-replay.test.mjs` (5 tests). In the browser on Kepra, real clicks turned on
+    Raised threat and On alert (+173 matter). The battle ran at threat 2 with the alarm held at
+    30. A forced win paid 250 + 173 matter, marked both challenges ✦, and the title read "2 of
+    19 challenges". The list fits a 375 px phone. The preview's saved data was put back.
 - [ ] **ECON-05 (P3)** A seeded challenge planet of the day.
 
 ## 5. Drones and weapons (DRONE)

@@ -1,6 +1,7 @@
 // The invasion campaign: planets in the order they are invaded, what each one rewards, and the
 // player's saved progress between missions. No DOM; covered by tests/invasion-campaign.test.mjs.
 import { droneOrder, droneTypes, startingDrones, basePodSlots, payloadCount, difficulties, difficultyOf } from "./units.mjs?v=dev";
+import { modifiersFor, cleanModifiers, replayReward, modifierNames } from "./replay.mjs?v=dev";
 import { objectiveText } from './objective-rules.mjs?v=dev';
 import { validMissionId } from "./mission-id.mjs?v=dev";
 
@@ -211,6 +212,8 @@ export function createProgress() {
     lastWaves: {},
     // Difficulty for new missions (OBJ-05, units.mjs difficulties).
     difficulty: "normal",
+    // Replay challenges beaten on each conquered planet (ECON-04): { planetId: [modifier ids] }.
+    challenges: {},
     stats: Object.fromEntries(statNames.map(name => [name, 0])),
   };
 }
@@ -225,6 +228,12 @@ export function isPlanetUnlocked(progress, planet) {
 export function nextPlanet(progress) {
   return planets.find(planet => isPlanetUnlocked(progress, planet) && !progress.captured[planet.id]) || planets.at(-1);
 }
+
+// Replay challenges beaten across the campaign, and how many it offers (ECON-04).
+export const challengeTally = (progress) => ({
+  beaten: planets.reduce((sum, planet) => sum + cleanModifiers(planet, progress.challenges?.[planet.id]).length, 0),
+  total: planets.reduce((sum, planet) => sum + modifiersFor(planet).length, 0),
+});
 
 export const availableDrones = (progress) => droneOrder.filter(type => progress.unlocks.includes(type));
 
@@ -291,9 +300,17 @@ export function applyMissionResult(progress, planet, result) {
     next.stats.missionsWon += 1;
     const first = !next.captured[planet.id];
     next.captured[planet.id] = true;
-    const matter = first ? planet.reward.matter : Math.round(planet.reward.matter * 0.3);
+    // A replay pays a share of the conquest reward, more with challenges on (ECON-04).
+    const challenges = first ? [] : cleanModifiers(planet, result.modifiers);
+    const matter = first ? planet.reward.matter : replayReward(planet, challenges);
     next.matter += matter;
-    notes.push(`${first ? "Conquest" : "Replay"} reward: +${matter} matter.`);
+    notes.push(`${first ? "Conquest" : "Replay"} reward: +${matter} matter${challenges.length ? ` with ${modifierNames(challenges)}` : ""}.`);
+    if (challenges.length) {
+      next.challenges ||= {};
+      const before = next.challenges[planet.id] || [], fresh = challenges.filter(id => !before.includes(id));
+      next.challenges[planet.id] = cleanModifiers(planet, [...before, ...challenges]);
+      if (fresh.length) notes.push(`Challenge${fresh.length === 1 ? "" : "s"} beaten on ${planet.name}: ${modifierNames(fresh)}.`);
+    }
     if (first && planet.reward.unlock && !next.unlocks.includes(planet.reward.unlock)) {
       next.unlocks.push(planet.reward.unlock);
       notes.push(`${droneTypes[planet.reward.unlock].name} drones unlocked.`);
@@ -348,6 +365,10 @@ export function validProgress(raw) {
       clean.frontier[map.id] = { wins: Math.min(1e6, record.wins), stars: record.stars, best: Math.round(record.best) };
   }
   if (typeof raw.difficulty === "string" && Object.hasOwn(difficulties, raw.difficulty)) clean.difficulty = raw.difficulty;
+  for (const planet of planets) {
+    const beaten = cleanModifiers(planet, raw.challenges?.[planet.id]);
+    if (beaten.length && clean.captured[planet.id]) clean.challenges[planet.id] = beaten;
+  }
   if (raw.lastWaves && typeof raw.lastWaves === "object" && !Array.isArray(raw.lastWaves)) {
     for (const map of [...planets, ...frontiers]) {
       const wave = raw.lastWaves[map.id];
