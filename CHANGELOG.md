@@ -39,6 +39,20 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-29: Verify published fan-bore correction and RF review
+- **Signed:** Codex (OpenAI).
+- **Published:** bd5e42b; Pages40940042344 succeeded.782 combined tests pass.
+  Source commits9232b65/29e77aa and both recovery tags pushed.
+- **Live checks:** Actual fan ExtrudeGeometry,32 IDs/33 options, fan disclosure,
+  seven closed RF evidence rows/focus and390px widths verified; no page errors.
+  Public screenshots/JSON and merged test run saved in the fan source packet.
+- **Context:** Owner clarified game/graph exchange was historical and Claude owns
+  Swarmfall. Incoming14237bc game/graph files unchanged; both changelog sections
+  retained. No separate game work, force push or personal save changes. Earlier
+  publication hold resolved. Temporary browser/servers closed.
+- **Next:** Thermal-interface review remains source-gated; no guessed internal
+  fan/duct/rotary-joint or flight wiring completion. IEM local26 routes remain done.
+
 ### 2026-10-29: Open estimated circulation-fan housing bores
 - **Signed:** Codex (OpenAI).
 - **Commit:** Open circulation fan bores within retained installation envelopes

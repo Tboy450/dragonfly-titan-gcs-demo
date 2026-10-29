@@ -12,8 +12,8 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
-| [Fan bore correction](fan-bore-2026-10-29/README.md) | Exact solid-box housing module and UI text; before/model/source sample retained | October29,2026 | archive/fan-bore-2026-10-29 on29e77aa (local) |
-| [RF review UI baseline](rf-installation-review-2026-10-29/README.md) | Two exact prior UI modules; hardware unchanged; before sample in research packet | October29,2026 | archive/rf-installation-review-2026-10-29 (local) |
+| [Fan bore correction](fan-bore-2026-10-29/README.md) | Exact solid-box housing module and UI text; before/model/source sample retained | October29,2026 | archive/fan-bore-2026-10-29 on29e77aa (pushed) |
+| [RF review UI baseline](rf-installation-review-2026-10-29/README.md) | Two exact prior UI modules; hardware unchanged; before sample in research packet | October29,2026 | archive/rf-installation-review-2026-10-29 (pushed) |
 | [frontier-bay-link-2026-10-28](frontier-bay-link-2026-10-28/README.md) | Unseated14 mm radio branch, prior shared inspection/audit/disclosure; exact source and old samples reused | Pass begun2026-10-28 | `archive/frontier-bay-link-2026-10-28` on e7569f7 |
 | [blower-routing-2026-10-28](blower-routing-2026-10-28/README.md) | First supplier-referenced pair's long loops; exact builder/tests/disclosure, old screenshots reused | 2026-10-28 | `archive/blower-routing-2026-10-28` on923828b |
 | [draco-blower-pair-2026-10-27](draco-blower-pair-2026-10-27/README.md) | Compact blower pair, exact model/assembly/evidence sources and original preview; failed route controls retained | 2026-10-28 | `archive/draco-blower-pair-2026-10-27` on 8bca7a2 |

@@ -6,14 +6,16 @@ same outer envelopes, exposing existing rotors. No new fan identity, simulation
 or duct changes.771 tests and desktop/phone layer checks pass. Actual samples,
 source context, exact prior code and continuation notes saved. Owner clarified
 Claude owns Swarmfall; game/graph changes stay separate from this checklist.
+Published **bd5e42b**, Pages40940042344 succeeded; **782 combined tests** pass.
+Live fan geometry,32 IDs/seven RF rows and390px no-overflow/errors verified.
 
 Local October29 continuation: [RF installation review](research/rf-installation-2026-10-29/README.md).
 Seven closed evidence rows under Connection installation status distinguish RF,
 high-voltage power and actuator wiring. Existing parts/routes stay unchanged.
 Hidden gimbal feed remains unmodeled; the visible feed moves rigidly with the arm.
-769 tests pass. Local only; publication/integration gate recorded in the checklist.
+Initial769 tests passed; RF is now included in publishedbd5e42b above.
 
-Next connection pass: [Frontier radio bay lead](research/frontier-bay-link-2026-10-28/README.md).
+Prior connection pass: [Frontier radio bay lead](research/frontier-bay-link-2026-10-28/README.md).
 The existing branch now seats in a labeled EST shell/strain relief at the
 photo-labeled J22 face, with one fitted support. One estimated lead is refitted
 from14 to6 mm; its two network junctions and all other routes remain exact.

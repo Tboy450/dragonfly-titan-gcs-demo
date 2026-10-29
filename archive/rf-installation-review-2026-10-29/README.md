@@ -10,4 +10,5 @@ shows the exact baseline Connection installation status without the new review.
 Restore these two files to `dist/ui/`; the now-unused `dist/rf-installation.mjs`
 can remain archived alongside the source packet. Preserve all other changes.
 The baseline marker is in `baseline.txt`. Local recovery tag
-`archive/rf-installation-review-2026-10-29` is on eb84229; no merge/publish yet.
+`archive/rf-installation-review-2026-10-29` is on eb84229 and pushed.
+RF review is published inbd5e42b; current release receipt is in the research packet.

@@ -56,7 +56,19 @@ samples, without an image generation service. Sources credited NASA/Johns Hopkin
 APL; TFAWS2024 author D. Lin and TFAWS2023 authors Holtzman/Castano.
 
 [Archive/restore](../../archive/fan-bore-2026-10-29/README.md).
-Publication receipt pending. This is a scoped part17 correction, not a completed
+## Publication receipt
+
+Implementation9232b65 and the preceding RF review29e77aa are deployed in
+**bd5e42b**. [Pages40940042344](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/40940042344)
+succeeded. **782 combined tests** pass after integrating14237bc; all incoming
+Swarmfall/graph paths verified byte-identical in the Git tree. Both separate
+authored changelog sections retained; no game/lab feature edits or personal saves.
+Recovery tags pushed. Live32 IDs/33 options, actual shipped ExtrudeGeometry,
+fan disclosure, seven RF rows/default/focus and390px widths/errors verified.
+`public-checks.json`, `public-fans.png` and `public-phone.png` retain the result;
+`merged-test-results.txt` records the complete run. Isolated browser and servers closed.
+
+This is a scoped part17 correction, not a completed
 thermal-interface package. Next source-dependent work: actual fan shroud/support,
 fan-to-duct attachment, open duct sections and aft gas penetration. Keep unknown
 circuits/hardware source-gated; avoid another unsupported casing redesign.

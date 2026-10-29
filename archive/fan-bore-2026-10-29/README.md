@@ -8,4 +8,5 @@ Restore `thermal-loop.mjs` to `dist/thermal-loop.mjs` to restore the closed box
 housings/flanges. For just the old explanatory text, restore only the fan paragraph
 from `layers-panel.mjs`, not later unrelated UI updates. Hardware outside those
 six shapes was not changed. Local recovery tag `archive/fan-bore-2026-10-29`
-is on29e77aa.
+is on29e77aa and pushed. Correction published inbd5e42b; see the source packet
+for the live release receipt and samples.

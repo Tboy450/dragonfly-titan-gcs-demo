@@ -1,0 +1,15 @@
+{
+  "build": "bd5e42b",
+  "rows": 32,
+  "options": 33,
+  "rfRows": 7,
+  "rfClosedDefault": true,
+  "rfFocus": true,
+  "fanBoreDisclosure": true,
+  "fanHousingGeometry": "ExtrudeGeometry",
+  "widths": {
+    "client": 390,
+    "scroll": 390
+  },
+  "errors": []
+}

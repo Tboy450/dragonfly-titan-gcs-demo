@@ -66,10 +66,15 @@ hiding. Phone client/scroll widths both390px; no page errors. Saved samples:
 for the final equipment samples. Local recovery tag
 `archive/rf-installation-review-2026-10-29` points to eb84229.
 
-Publication is pending. Remote origin/main has unrelated game/work-log updates.
-Automatic approval review rejected merging them under the owner's no-touch
-instruction for Swarmfall/Assets Lab. The remote was inspected but not merged;
-no unrelated source/data was edited and this pass is not on the live site.
+## Publication / context reconciliation
+
+Published with part17 in **bd5e42b**; Pages40940042344 succeeded and782 combined
+tests pass. Owner clarified the pasted Claude exchange was history and shared
+repository use is acceptable with separately labeled changes. Incoming14237bc
+game/graph files preserved exactly; no changes to their functionality or saves.
+The earlier automatic-review merge hold is resolved, not a pending game task.
+Live seven closed RF rows and existing HGA focus verified; see
+`../fan-bore-2026-10-29/public-checks.json` and its publication receipt/samples.
 
 Next: investigate real gimbal/feed transition evidence before reconstructing any
 moving connection; actual flight port assignment, cable construction and actuator

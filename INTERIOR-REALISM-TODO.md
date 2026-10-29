@@ -23,8 +23,13 @@ October29 context correction / [part17 fan openings](research/fan-bore-2026-10-2
 - [x] Ray-through/solid-rim, retained-mesh/envelope and existing installation tests:
  771 full tests pass. Desktop/Thermal/390px, Casings hide/restore,32 IDs and33
  options, no overflow/page errors. Comparison and actual app samples saved.
-- [ ] Finish recovery tag/commit/publication receipt. Full thermal-interface review
- remains open: source identity, attachment details, hollow ducts and aft penetration.
+- [x] Commit9232b65 and recovery tag pushed; deployed **bd5e42b** with RF29e77aa.
+  Pages **40940042344** succeeded. **782 combined tests** pass after preserving
+  incoming14237bc game/graph files exactly. Live32 IDs/33 options, fan ExtrudeGeometry,
+  seven closed RF rows/focus, current disclosure and390px no-overflow/errors verified.
+  Public samples/JSON saved. Browser/temporary servers closed.
+- [ ] Full thermal-interface review remains open: source identity, attachment
+  details, hollow ducts and aft penetration. No speculative flight fan/circuit redesign.
 
 October29: [RF installation review](research/rf-installation-2026-10-29/README.md).
 - [x] Recheck NASA spacecraft/real arm sources and reuse saved real Frontier,
@@ -42,12 +47,12 @@ October29: [RF installation review](research/rf-installation-2026-10-29/README.m
   33 options/32 parts, closed defaults and Exterior gating; no horizontal overflow
   or page errors. Real app and before/panel/phone samples saved. Recovery tag
   `archive/rf-installation-review-2026-10-29` marks exact prior UI on eb84229.
-- [ ] Publish after resolving the integration gate below; current live site unchanged.
+- [x] RF review included in deployedbd5e42b; see current release receipt above.
 - [ ] Hidden RF transition, actual port assignments, qualified motion and full
   RF-chain/actuator wiring remain open. Do not check off overall RF continuity.
 - [x] Historical publication confusion reconciled with owner above: game/graphs
   are not pending Dragonfly tasks. Keep apps/commits separately labeled and
-  preserve incoming authors' files. RF remains on29e77aa pending ordinary release;
+  preserve incoming authors' files. RF29e77aa is now published inbd5e42b;
   no force push or other-assistant feature edits.
 
 October28 next supported connection: Frontier radio / existing bay branch.
