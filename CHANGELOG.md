@@ -39,6 +39,28 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-29: Swarmfall mid-mission events
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add supply caches, counter-attacks and reinforcement waves"
+- **What changed:** Checklist OBJ-02.
+  - From 2:30, once the first wave is down, the battle announces an event every two to three
+    minutes:
+    - A Hive supply cache: matter for the first drone to reach it within a minute.
+    - A militia counter-attack on a zone the swarm holds.
+    - Reinforcements for the town the swarm is closest to taking: fresh militia and repaired
+      defenses, unless it falls first.
+  - Announcements toast, and J jumps there. Target zones count down on their labels.
+  - Caches get an amber ring, a label, a minimap dot and an edge arrow.
+  - Titan only gets supply caches. Older saved battles have no events.
+- **Files:** `dist/invasion/battle.mjs`, `dist/invasion/mission-save.mjs`,
+  `dist/invasion/camera-assist.mjs`, `dist/invasion/scene.mjs`, `dist/invasion/main.mjs`,
+  `tests/invasion-mission-events.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (293 pass). In the browser on Kepra:
+  - Reinforcements reached Pequa on time after a countdown on its label.
+  - A supply cache landed, its edge arrow led the camera there, and a right-click order
+    collected +55 matter.
+  - The preview's saved data was put back afterwards.
+
 ### 2026-10-29: Swarmfall replay challenges
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add replay challenges on conquered planets"

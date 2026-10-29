@@ -8,7 +8,7 @@ import { payloadCount, payloadSlots, dropDurationS } from "./units.mjs?v=dev";
 import { legacyMissionId, validMissionId } from "./mission-id.mjs?v=dev";
 import { commandCheckpoint, restoreCommandState } from './command-state.mjs?v=dev';
 import { CITY_LAYOUT_VERSION } from "./city-layout.mjs?v=dev";
-import { upgradeIds, formations, stances } from "./battle.mjs?v=dev";
+import { upgradeIds, formations, stances, operationKinds } from "./battle.mjs?v=dev";
 
 export const MISSION_SAVE_VERSION = 3;
 // Recovery bounds [EST], deliberately above current campaign sizes, not gameplay caps.
@@ -259,9 +259,25 @@ export function validMissionCheckpoint(value) {
       && (s.hit ? s.hitAt <= b.time : s.hitAt >= b.time - 1e-6) && ["artillery", "lightning"].includes(s.source))) return null;
     if (!b.log.every(l => between(l.t, 0, b.time) && text(l.text, 2048) && ["info", "good", "warn", "bad"].includes(l.tone))) return null;
     if (!validHazards(b.hazards, b)) return null;
+    if (!validOperations(b.ops, b)) return null;
     if (!point(value.cam?.focus) || !between(value.cam.distance, .001, 1e5) || !between(value.cam.yaw, -1e9, 1e9) || !between(value.cam.pitch, -Math.PI, Math.PI)) return null;
     return { ...jsonClone(value), command: restoreCommandState(command, b) };
   } catch { return null; }
+}
+
+// Mid-mission events (OBJ-02): absent on battles saved before them. Supply caches carry their
+// matter; an announced counter-attack or reinforcement names zones of this battle.
+function validOperations(ops, b) {
+  if (ops === undefined) return true;
+  const zone = (id) => b.zones.some(z => z.id === id);
+  const pending = ops?.pending;
+  return object(ops) && between(ops.next, 0, 1e9) && integer(ops.serial, 1, 1e9)
+    && Array.isArray(ops.caches) && ops.caches.length <= 8
+    && ops.caches.every(c => object(c) && integer(c.id, 1, ops.serial - 1) && point(c) && between(c.matter, 0, 1e5) && between(c.until, 0, b.time + 600))
+    && unique(ops.caches.map(c => c.id))
+    && (pending === null || object(pending) && operationKinds.includes(pending.kind) && point(pending) && between(pending.at, 0, b.time + 600)
+      && (pending.kind === "supply" ? between(pending.matter, 0, 1e5)
+        : zone(pending.zone) && integer(pending.count, 1, 100) && (pending.kind !== "counter" || zone(pending.source))));
 }
 
 // The planet to rebuild a checkpoint's terrain from: the map, city and landform the battle was

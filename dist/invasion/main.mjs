@@ -1645,8 +1645,11 @@ function drawOverlay() {
     const blocked = zone.drones > 0 ? { links: "needs Links", jammed: "jammed", stunned: "drones stunned" }[captureBlocker(b, zone)] : null;
     // A calm town gives up at surrenderControl (ENEMY-07): said while drones are there to take it.
     const yields = zone.drones > 0 && canSurrender(b, zone) ? ` · surrenders at ${surrenderControl}%` : "";
+    // An announced counter-attack or reinforcement (OBJ-02) counts down on its zone.
+    const coming = b.ops?.pending && b.ops.pending.zone === zone.id
+      ? ` · ${b.ops.pending.kind === "counter" ? "counter-attack" : "reinforcements"} in ${Math.max(0, Math.ceil(b.ops.pending.at - b.time))} s` : "";
     const status = zone.kind === "beachhead" ? "Hive beacon" : zone.captured ? "held" : `${Math.round(zone.control)}%${zone.contested ? " · contested" : ""}${blocked ? ` · ${blocked}` : ""}${yields}`;
-    const text = zone.kind === "beachhead" ? status : `${zone.name} · ${status}`;
+    const text = zone.kind === "beachhead" ? status : `${zone.name} · ${status}${coming}`;
     const w = ctx.measureText(text).width + 14;
     ctx.fillStyle = "rgba(6, 8, 16, 0.72)";
     ctx.beginPath();
@@ -1662,6 +1665,7 @@ function drawOverlay() {
       ctx.fillText("tap to preview courts", p.x, p.y + 22 * ui);
     }
   }
+  drawCaches(ctx, b, width, height, ui);
   const squadColor = new Map(b.squads.map(s => [s.id, s.color]));
   for (const [index, point] of (mission.dropPreview?.ok ? mission.dropPreview.landings : []).entries()) {
     const y = scene.heightAt(point.x, point.z) + 1;
@@ -1787,15 +1791,40 @@ function drawOverlay() {
   drawEdgeMarks(ctx, b, width, height);
 }
 
+// Supply caches (OBJ-02) on the map: where one is landing, and each one down with its matter and
+// the seconds left to collect it.
+function drawCaches(ctx, b, width, height, ui) {
+  const ops = b.ops;
+  const marks = [...(ops?.caches || [])];
+  if (ops?.pending?.kind === "supply") marks.push({ ...ops.pending, landing: true });
+  for (const cache of marks) {
+    const p = scene.project(cache.x, scene.heightAt(cache.x, cache.z) + 8, cache.z, width, height);
+    if (!p.visible || p.x < -80 || p.x > width + 80 || p.y < -20 || p.y > height + 20) continue;
+    const text = cache.landing ? `Supply cache in ${Math.max(0, Math.ceil(cache.at - b.time))} s` : `Supply · ${cache.matter} matter · ${Math.max(0, Math.ceil(cache.until - b.time))} s`;
+    const w = ctx.measureText(text).width + 14;
+    ctx.fillStyle = "rgba(6, 8, 16, 0.72)";
+    ctx.beginPath(); ctx.roundRect(p.x - w / 2, p.y - 11 * ui, w, 20 * ui, 10 * ui); ctx.fill();
+    ctx.strokeStyle = "#ffb457"; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = "#ffe3b8";
+    ctx.fillText(text, p.x, p.y + 4 * ui);
+  }
+}
+
 // Alerts off screen (FIX-12): a red arrow at the screen's edge toward the newest alert (for
 // 20 s, like its minimap ring) and toward every strike still on its way, with what it is and
-// how far. Tapping an arrow looks there (tap); J still jumps to the newest alert.
+// how far; an amber one toward each supply cache waiting (OBJ-02). Tapping an arrow looks there
+// (tap); J still jumps to the newest alert.
 function drawEdgeMarks(ctx, b, width, height) {
   const alerts = [];
   if (mission.lastAlert && b.time - mission.lastAlert.at < 20) alerts.push(mission.lastAlert);
   for (const strike of b.strikes) {
     if (strike.hit || alerts.some(a => Math.hypot(a.x - strike.x, a.z - strike.z) < 20)) continue;
     alerts.push({ x: strike.x, z: strike.z, text: strike.source === "lightning" ? "Lightning strike marked" : "Artillery incoming" });
+  }
+  for (const cache of b.ops?.caches || []) {
+    const near = alerts.findIndex(a => Math.hypot(a.x - cache.x, a.z - cache.z) < 20);
+    if (near >= 0) alerts.splice(near, 1);
+    alerts.push({ x: cache.x, z: cache.z, text: "Supply cache", color: "#ffb457" });
   }
   const from = mission.freeCam || mission.cam.focus;
   const ui = settings.uiScale;
@@ -1806,7 +1835,7 @@ function drawEdgeMarks(ctx, b, width, height) {
     mission.edgeMarks.push({ x: edge.x, y: edge.y, alert });
     ctx.save();
     ctx.translate(edge.x, edge.y); ctx.rotate(edge.angle);
-    ctx.fillStyle = "#ff4a3a"; ctx.strokeStyle = "rgba(6, 8, 16, 0.85)"; ctx.lineWidth = 2;
+    ctx.fillStyle = alert.color || "#ff4a3a"; ctx.strokeStyle = "rgba(6, 8, 16, 0.85)"; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(14, 0); ctx.lineTo(-6, -10); ctx.lineTo(-2, 0); ctx.lineTo(-6, 10); ctx.closePath();
     ctx.stroke(); ctx.fill();
     ctx.restore();
@@ -1816,7 +1845,7 @@ function drawEdgeMarks(ctx, b, width, height) {
     const ly = Math.min(height - 14, Math.max(14, edge.y - Math.sin(edge.angle) * 24));
     ctx.fillStyle = "rgba(6, 8, 16, 0.78)";
     ctx.beginPath(); ctx.roundRect(lx - w / 2, ly - 10 * ui, w, 20 * ui, 10 * ui); ctx.fill();
-    ctx.strokeStyle = "#ff4a3a"; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.strokeStyle = alert.color || "#ff4a3a"; ctx.lineWidth = 1.5; ctx.stroke();
     ctx.fillStyle = "#f1f4ff"; ctx.textAlign = "center";
     ctx.fillText(text, lx, ly + 4 * ui);
   }
@@ -1874,6 +1903,10 @@ function drawMinimap() {
     ctx.strokeStyle = "#ff4a3a";
     ctx.beginPath(); ctx.arc(sx(strike.x), sz(strike.z), 4, 0, Math.PI * 2); ctx.stroke();
   }
+  // Supply caches (OBJ-02): a filled amber dot once down, a ring while one is landing.
+  ctx.fillStyle = ctx.strokeStyle = "#ffb457";
+  for (const cache of b.ops?.caches || []) { ctx.beginPath(); ctx.arc(sx(cache.x), sz(cache.z), 3.5, 0, Math.PI * 2); ctx.fill(); }
+  if (b.ops?.pending?.kind === "supply") { ctx.beginPath(); ctx.arc(sx(b.ops.pending.x), sz(b.ops.pending.z), 4, 0, Math.PI * 2); ctx.stroke(); }
   for (const event of b.hazards.events) {
     if (event.kind !== "eruption") continue;
     ctx.strokeStyle = "#ff3a1a";
@@ -2013,6 +2046,10 @@ function handleEvents(events) {
       const pod = b.pods.find(p => p.id === event.pod);
       if (pod) { mission.selected.add(pod.squad); updateSquadBar(); }
     }
+    // Mid-mission events (OBJ-02): announcements, attacks and arrivals toast from the battle log.
+    if (event.kind === "operation" && event.type === "supply" && event.phase === "landed")
+      toast(`Supply cache down: ${event.matter} matter for the first drone to reach it. Tap to look.`, "good", 5000, () => { setFollow(false); lookAt(event.x, event.z); });
+    if (event.kind === "operation" && event.type === "supply" && event.phase === "collected") toast(`+${event.matter} matter from the supply cache.`, "good", 3000);
     if (event.kind === "recovered") toast(`${droneTypes[event.unlock]?.name || event.unlock} recovered! It is in your drop menu now.`, "achievement", 6000);
   }
   for (const entry of b.log) {

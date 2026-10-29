@@ -61,6 +61,8 @@ export function createBattle(planet, options = {}) {
     alarm: challenges.includes("alert") ? alertFloor : 0, alarmStage: 0, zones: [], units: [], squads: [], pods: [], strikes: [],
     events: [], log: [], nextId: 1, lastDropAt: -Infinity,
     reinforceIn: 40, strikeIn: 20, specials: [], refund: 0,
+    // Mid-mission events (OBJ-02): the next one, one announced and on its way, and supply caches.
+    ops: { next: operations.firstAt, pending: null, caches: [], serial: 1 },
     stats: {
       drops: 0, podsLaunched: 0, dronesDropped: 0, dronesLost: 0, hazardLosses: 0, zonesCaptured: 0, defensesDestroyed: 0,
       militiaDefeated: 0, matterHarvested: 0, hazardEvents: 0, maxAlive: 0, alarmPeak: 0, damageDealt: 0,
@@ -1096,6 +1098,141 @@ function artillery(b, dt, swarm) {
   b.events.push({ kind: "artillery", x: point.x, z: point.z });
 }
 
+// ---- Mid-mission events (OBJ-02) ----
+// Every two or three minutes, once the first wave is down, something is announced ahead of time:
+// a Hive supply cache for the first drone to reach it, a militia counter-attack on a zone the
+// swarm holds, or reinforcements for a town it has not taken yet. Nobody lives on the practice
+// planet, so it only gets supply caches. Battles saved before this have no events.
+export const operations = Object.freeze({
+  firstAt: 150, gapS: [120, 180],
+  supply: Object.freeze({ warnS: 10, lifeS: 60, reach: 14 }),
+  counter: Object.freeze({ warnS: 25 }),
+  reinforce: Object.freeze({ warnS: 30 }),
+});
+export const operationKinds = Object.freeze(["supply", "counter", "reinforce"]);
+export const cacheMatter = (b) => 40 + 15 * b.threat;
+const militiaSources = (b) => b.zones.filter(zone => !zone.captured && ["settlement", "capital", "mine"].includes(zone.kind));
+const openTowns = (b) => b.zones.filter(zone => !zone.captured && ["settlement", "capital"].includes(zone.kind));
+const heldZones = (b) => b.zones.filter(zone => zone.captured && zone.kind !== "beachhead");
+
+function operationChoices(b) {
+  const choices = b.ops.caches.length ? [] : ["supply"];
+  if (societies[b.tier]?.militia) {
+    if (heldZones(b).length && militiaSources(b).length) choices.push("counter");
+    if (openTowns(b).length) choices.push("reinforce");
+  }
+  return choices;
+}
+
+// Exported so tests can announce a given kind; the battle picks one at random.
+export function announceOperation(b, kind) {
+  const ops = b.ops;
+  let pending, tone, text;
+  if (kind === "supply") {
+    // Out between a zone the swarm holds and one it does not, to draw a squad forward.
+    const from = randomPick(b, b.zones.filter(zone => zone.captured)), away = b.zones.filter(zone => !zone.captured);
+    const to = away.length ? randomPick(b, away) : null, share = randomRange(b, 0.35, 0.65);
+    const angle = nextRandom(b) * Math.PI * 2, spread = randomRange(b, 10, 30), { centerX, centerZ, half } = b.map;
+    const clamp = (value, center) => Math.min(center + half * 0.9, Math.max(center - half * 0.9, value));
+    const x = clamp((to ? from.x + (to.x - from.x) * share : from.x + Math.cos(angle) * 90) + Math.cos(angle) * spread, centerX);
+    const z = clamp((to ? from.z + (to.z - from.z) * share : from.z + Math.sin(angle) * 90) + Math.sin(angle) * spread, centerZ);
+    pending = { kind, at: b.time + operations.supply.warnS, x, z, matter: cacheMatter(b) };
+    tone = "warn";
+    text = `Hive supply cache landing in ${operations.supply.warnS} s: ${pending.matter} matter for the first drone to reach it.`;
+  } else if (kind === "counter") {
+    const target = randomPick(b, heldZones(b));
+    const source = militiaSources(b).reduce((best, zone) => (dist2(zone, target) < dist2(best, target) ? zone : best));
+    const count = Math.max(2, Math.round((2 + b.threat) * difficultyOf(b.difficulty).reinforce));
+    pending = { kind, at: b.time + operations.counter.warnS, x: target.x, z: target.z, zone: target.id, source: source.id, count };
+    tone = "bad";
+    text = `Counter-attack: ${count} militia from ${source.name} will march on ${target.name} in ${operations.counter.warnS} s.`;
+  } else {
+    // The town the swarm is closest to taking.
+    const towns = openTowns(b), most = Math.max(...towns.map(zone => zone.control));
+    const target = randomPick(b, towns.filter(zone => zone.control === most));
+    const count = 2 + Math.floor(b.threat / 2);
+    pending = { kind, at: b.time + operations.reinforce.warnS, x: target.x, z: target.z, zone: target.id, count };
+    tone = "warn";
+    text = `Reinforcements will reach ${target.name} in ${operations.reinforce.warnS} s: take it first, or it gets ${count} fresh militia and repaired defenses.`;
+  }
+  ops.pending = pending;
+  b.log.push({ t: b.time, tone, text });
+  b.events.push({ kind: "operation", type: kind, phase: "announced", x: pending.x, z: pending.z, text });
+}
+
+function resolveOperation(b, pending) {
+  const ops = b.ops, society = societies[b.tier];
+  if (pending.kind === "supply") {
+    const cache = { id: ops.serial++, x: pending.x, z: pending.z, matter: pending.matter, until: b.time + operations.supply.lifeS };
+    ops.caches.push(cache);
+    b.log.push({ t: b.time, tone: "good", text: `Supply cache down: ${cache.matter} matter. Send any drone to it within ${operations.supply.lifeS} s.` });
+    b.events.push({ kind: "operation", type: "supply", phase: "landed", x: cache.x, z: cache.z, matter: cache.matter });
+    return;
+  }
+  const zone = zoneById(b, pending.zone);
+  if (pending.kind === "counter") {
+    const source = zoneById(b, pending.source);
+    if (!zone?.captured || !source || source.captured || !society?.militia) {
+      b.log.push({ t: b.time, tone: "good", text: `The counter-attack on ${zone?.name || "your zone"} was called off.` });
+      return;
+    }
+    for (let i = 0; i < pending.count; i += 1) {
+      const angle = nextRandom(b) * Math.PI * 2;
+      const unit = spawnUnit(b, "native", society.militia, source.x + Math.cos(angle) * source.radius * 0.5, source.z + Math.sin(angle) * source.radius * 0.5, { home: source.id });
+      unit.slot = formationSlot(i + 1, 5);
+      unit.raid = zone.id;
+    }
+    b.log.push({ t: b.time, tone: "bad", text: `The counter-attack has begun: ${pending.count} militia from ${source.name} march on ${zone.name}.` });
+    b.events.push({ kind: "operation", type: "counter", phase: "started", x: zone.x, z: zone.z, zone: zone.id });
+    return;
+  }
+  if (!zone || zone.captured || !society?.militia) {
+    b.log.push({ t: b.time, tone: "good", text: `The reinforcements for ${zone?.name || "the town"} turned back: the swarm holds it.` });
+    return;
+  }
+  for (const unit of b.units) {
+    if (unit.alive && unit.side === "native" && unit.structure && dist2(unit, zone) <= (zone.radius + 4) ** 2) unit.hp = unit.maxHp;
+  }
+  for (let i = 0; i < pending.count; i += 1) {
+    const angle = nextRandom(b) * Math.PI * 2;
+    const unit = spawnUnit(b, "native", society.militia, zone.x + Math.cos(angle) * zone.radius * 0.5, zone.z + Math.sin(angle) * zone.radius * 0.5, { home: zone.id });
+    unit.slot = formationSlot(i + 1, 5);
+  }
+  b.log.push({ t: b.time, tone: "bad", text: `Reinforcements reached ${zone.name}: ${pending.count} militia and repaired defenses.` });
+  b.events.push({ kind: "operation", type: "reinforce", phase: "arrived", x: zone.x, z: zone.z, zone: zone.id });
+}
+
+function stepOperations(b, swarm) {
+  const ops = b.ops;
+  if (!ops) return;
+  // A drone over a cache collects it; one nobody reaches in time is lost.
+  for (const cache of ops.caches) {
+    if (swarm.some(unit => unit.alive && dist2(unit, cache) <= operations.supply.reach ** 2)) {
+      cache.taken = true;
+      b.matter += cache.matter;
+      b.stats.matterHarvested += cache.matter;
+      b.log.push({ t: b.time, tone: "good", text: `Supply cache collected: +${cache.matter} matter.` });
+      b.events.push({ kind: "operation", type: "supply", phase: "collected", x: cache.x, z: cache.z, matter: cache.matter });
+    } else if (b.time >= cache.until) {
+      cache.taken = true;
+      b.log.push({ t: b.time, tone: "info", text: "A supply cache was lost: no drone reached it in time." });
+    }
+  }
+  if (ops.caches.some(cache => cache.taken)) ops.caches = ops.caches.filter(cache => !cache.taken);
+  if (ops.pending) {
+    if (b.time < ops.pending.at) return;
+    const pending = ops.pending;
+    ops.pending = null;
+    resolveOperation(b, pending);
+    return;
+  }
+  // Nothing before the first wave is down.
+  if (b.time < ops.next || !b.stats.drops) return;
+  const choices = operationChoices(b);
+  ops.next = b.time + randomRange(b, ...operations.gapS);
+  if (choices.length) announceOperation(b, randomPick(b, choices));
+}
+
 // Surviving drones return to the Hive and half their cost goes back into matter.
 function recallSwarm(b) {
   let refund = 0;
@@ -1172,6 +1309,7 @@ export function stepBattle(b, dt) {
   stepAlarm(b, dt, swarm);
   reinforce(b, dt);
   artillery(b, dt, swarm);
+  stepOperations(b, swarm);
   b.units = b.units.filter(u => u.alive);
   b.stats.maxAlive = Math.max(b.stats.maxAlive, b.units.filter(isDrone).length);
   if (b.events.length > 600) b.events.splice(0, b.events.length - 600);

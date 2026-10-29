@@ -11,7 +11,7 @@ import { dropDurationS, droneTypes } from "./units.mjs?v=dev";
 import { droneModels, figureModel, interceptorModel, structureModels, buildingModels, dragonflyTemplate, societyColors, civilianModel } from "./models.mjs?v=dev";
 import { projectedDiameter } from './drone-markers.mjs?v=dev';
 import { buildCity } from './city-render.mjs?v=dev';
-import { cityFound, hiddenUnits } from "./battle.mjs?v=dev";
+import { cityFound, hiddenUnits, operations } from "./battle.mjs?v=dev";
 import { freeTarget } from "./free-camera.mjs?v=dev";
 import { qualityLevels, createAdaptive, adaptFrame } from "./quality.mjs?v=dev";
 import { createSwarmDust, dustLimits } from "./swarm-dust.mjs?v=dev";
@@ -901,6 +901,10 @@ export function createInvasionScene(canvas, options = {}) {
       const u = Math.min(1, (b.time - strike.markedAt) / Math.max(0.1, strike.hitAt - strike.markedAt));
       mark(strike.x, strike.z, strike.radius, strike.source === "lightning" ? "#cfe0ff" : "#ff4a3a", 0.35 + 0.5 * Math.abs(Math.sin(time * (6 + u * 14))));
     }
+    // Supply caches (OBJ-02): an amber ring where one is landing, pulsing once it is down.
+    const ops = b.ops;
+    if (ops?.pending?.kind === "supply") mark(ops.pending.x, ops.pending.z, operations.supply.reach, "#ffb457", 0.3);
+    for (const cache of ops?.caches || []) mark(cache.x, cache.z, operations.supply.reach, "#ffb457", 0.45 + 0.4 * Math.abs(Math.sin(time * 3)));
     const erupting = [];
     for (const event of b.hazards.events) {
       if (event.kind !== "eruption") continue;

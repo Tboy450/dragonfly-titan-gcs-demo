@@ -733,8 +733,34 @@ complete solely because its assets download or its unit tests pass.
 - [ ] **OBJ-01 (P2)** More objective kinds: hold for a time, protect a zone, destroy the
   headquarters, take a planet without destroying anything, escort the Dragonfly, rescue
   downed drones.
-- [ ] **OBJ-02 (P2)** Mid-mission events: reinforcement waves, supply drops, announced
-  counter-attacks.
+- [x] **OBJ-02 (P2) — Claude (October 29)** Mid-mission events: reinforcement waves, supply
+  drops, announced counter-attacks.
+  - From 2:30, once the first wave is down, one event every two to three minutes, each
+    announced ahead of time (`operations`, battle.mjs):
+    - Hive supply cache (10 s warning): lands between a zone the swarm holds and one it does
+      not. The first drone within 14 m collects 40 + 15 × threat matter. It is lost after a
+      minute.
+    - Counter-attack (25 s warning): 2 + threat militia (scaled by difficulty) from the nearest
+      town march on a zone the swarm holds. Called off if that zone is lost first.
+    - Reinforcements (30 s warning): head for the town the swarm is closest to taking. They
+      repair its defenses and add 2 + half the threat in militia, unless the swarm takes the
+      town first.
+  - Titan, with nobody living there, only gets supply caches. Battles saved before this have
+    no events.
+  - On the page:
+    - Announcements toast, and J jumps there.
+    - The target zone's label counts down ("reinforcements in 29 s").
+    - A cache shows an amber ring in the world, a label with its matter and time left, an
+      amber minimap dot, and an amber arrow at the screen edge when off screen.
+    - Landings, pickups and arrivals toast.
+  - Checkpoints keep the event state, validated (`validOperations`).
+  - `tests/invasion-mission-events.test.mjs` (6 tests). In the browser on Kepra:
+    - Reinforcements were announced for Pequa. J jumped there, and the label counted down. On
+      arrival, Pequa had 3 more militia and its tower was repaired.
+    - A supply cache landed with its ring and label. Off screen, the amber arrow read "Supply
+      cache · 337 m". Tapping it looked there, and a right-click order sent squad 1 to collect
+      +55 matter.
+    - The preview's saved data was put back.
 - [ ] **OBJ-03 (P2)** Briefing and debrief text per planet; story beats along the campaign.
 - [ ] **OBJ-04 (P2)** More achievements (per planet, per drone), badge art, progress bars for
   counting goals.
