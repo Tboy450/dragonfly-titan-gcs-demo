@@ -11,7 +11,7 @@ async function old(){
  return import('data:text/javascript;base64,'+Buffer.from(src).toString('base64'));
 }
 const changed=name=>/^fan-[ab]-(housing|flange)$/.test(name);
-function snapshot(root){const rows=[];root.traverse(o=>{if(o.isMesh&&!changed(o.name))rows.push({name:o.name,position:o.position.toArray(),quaternion:o.quaternion.toArray(),scale:o.scale.toArray(),vertices:Array.from(o.geometry.attributes.position.array),index:o.geometry.index?Array.from(o.geometry.index.array):null});});return rows;}
+function snapshot(root,skip=null){const rows=[];root.traverse(o=>{if(o.isMesh&&!changed(o.name)&&o.name!==skip)rows.push({name:o.name,position:o.position.toArray(),quaternion:o.quaternion.toArray(),scale:o.scale.toArray(),vertices:Array.from(o.geometry.attributes.position.array),index:o.geometry.index?Array.from(o.geometry.index.array):null});});return rows;}
 test('Both fan housings/flanges have open bores with solid outer rims, viewed from either side',()=>{
  const {root}=build(buildFans),R=thermalLoopAsset.fans.diameter/2;
  for(const [i,[x,y,z]] of thermalLoopAsset.fans.centers.entries()){
@@ -38,7 +38,8 @@ test('Fan correction preserves outer envelopes and every other fan/duct/trim mes
   const x=new T.Box3().setFromObject(o),y=new T.Box3().setFromObject(before);
   assert.ok(x.min.distanceTo(y.min)<3e-8&&x.max.distanceTo(y.max)<3e-8);
  });
- assert.deepEqual(snapshot(build(buildWarmDuct).root),snapshot(build(previous.buildWarmDuct).root));
+ // The later transition package owns its exact one-mesh change and preservation suite.
+ assert.deepEqual(snapshot(build(buildWarmDuct).root,'warm-duct-fan-transition'),snapshot(build(previous.buildWarmDuct).root,'warm-duct-fan-transition'));
  assert.deepEqual(snapshot(build(buildTrimDevice).root),snapshot(build(previous.buildTrimDevice).root));
  assert.deepEqual(airLoopPaths(),previous.airLoopPaths());
  assert.deepEqual(thermalLoopAsset.fans,previous.thermalLoopAsset.fans);

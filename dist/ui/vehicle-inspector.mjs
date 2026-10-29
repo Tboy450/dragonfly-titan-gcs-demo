@@ -69,7 +69,8 @@ export function updateInspectorUI() {
   if (!enabled) { releasePointer(); return; }
   const i = state.inspector, target = inspectionTarget(state), job = samplingSequence(state);
   const group = chaseRenderer.subsystems[target], assemblies = inspectionSubassemblies(group);
-  $("inspection-subassembly-label").hidden = assemblies.length < 2;
+  // Even one named detail is a useful choice alongside the whole assembly.
+  $("inspection-subassembly-label").hidden = assemblies.length === 0;
   if (subassemblyTarget !== target) {
     subassemblyTarget = target;
     const all = document.createElement("option"); all.value = ""; all.textContent = "All subassemblies";

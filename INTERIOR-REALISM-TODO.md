@@ -10,6 +10,23 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October29: [Part18 fan-side duct connection](research/fan-duct-interface-2026-10-29/README.md).
+- [x] Recheck saved real DTM and thermal plan/section sources; use existing source
+  photos, not CGI for appearance. No exact flight coupling drawing established.
+- [x] Replace only solid fan transition with generic1.5 mm open shell; bring its
+  fan edge7 mm to retained flange plane. Estimated16 mm throat clears retained
+  rotor envelope. Straight-taper failed motion trial recorded; no fan/duct reroute.
+- [x] Five tests: open passage/rims, two seats, exact retained meshes, full-model
+  contact audit and24 rotor angles.787 full tests pass. Only numerical main-run
+  end-plane contact allowed; no old fan-blade crossings. All other thermal parts/
+  airflow curves unchanged, no new physics/circuits.
+- [x] Part18 macro added; show a single named detail alongside whole assembly.
+  Desktop/Thermal/390px/Casings hide-restore,32 IDs/33 options and no overflow/
+  page errors verified. Before/after and actual app samples, exact prior files saved.
+- [ ] Finish tag/commit/publication receipt; preserve Claude's incoming game work.
+- [ ] Remaining: complete main run/nose/other duct sections, aft collar attachment
+  and bulkhead penetration only where justified. Thermal package is not complete.
+
 October29 context correction / [part17 fan openings](research/fan-bore-2026-10-29/README.md).
 - [x] Owner clarifies Claude is doing Swarmfall. Pasted chat was history; game and
   graph work is complete/owned elsewhere, not the Dragonfly agenda. Shared repo

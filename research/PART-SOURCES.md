@@ -6,6 +6,11 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part18 transition (Codex, October29):** [evidence/measurements/samples](fan-duct-interface-2026-10-29/README.md).
+Reuse real DTM photo and TFAWS2023/2024 plan/section material; exact flight coupling
+unknown. Generic shell/seat/throat EST, one named transition changed; no new source
+collage or appearance identification. Full rotor sweep and preserved equipment checked.
+
 **Part17 fan-bore correction (Codex, October29):**
 [scope/source/sample](fan-bore-2026-10-29/README.md). Reuses real DTM photos and
 published thermal plan from TFAWS2023/2024. Generic115 mm openings are estimated

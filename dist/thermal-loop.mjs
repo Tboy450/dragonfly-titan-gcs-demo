@@ -18,7 +18,7 @@ import { aftBulkheadAsset } from "./aft-bulkhead.mjs?v=dev";
 // wide, from z -1.18 to +0.93, widening to the fans; fans about 0.13 m, near z +1.2. Duct height,
 // cold-duct section, housing shapes, flap hinge sides and the actuators are [EST].
 export const thermalLoopAsset = Object.freeze({
-  revision: "thermal-loop-2026-10-29-open-fan-bores",
+  revision: "thermal-loop-2026-10-29-open-fan-transition",
   // y lowered 7.5 mm on Oct 15 so the duct and its joint flanges sit fully under the bay floor
   // (y -0.284), inside the foam; the first position is archived (archive/warm-duct-v1-2026-10-15).
   duct: Object.freeze({ width: 0.14, height: 0.045, y: -0.3125, front: -1.175, back: 0.93 }),
@@ -29,6 +29,12 @@ export const thermalLoopAsset = Object.freeze({
   diverters: Object.freeze({ front: -0.61, aft: 0.67 }),
   maxFlapDeg: 24,
   bellyY: -0.36,
+});
+
+// [EST] Inspection shell, not a dimensioned flight duct or fluid-performance model.
+export const fanDuctInterfaceAsset=Object.freeze({
+  wallM:0.0015,fanFrontOffsetM:0.038,fanEndWidthM:0.27,fanEndHeightM:0.13,fanThroatM:0.016,
+  flightGeometryConfirmed:false,
 });
 
 // A box whose +z end is scaled to (w1, h1) and -z end to (w0, h0): a rectangular taper.
@@ -77,6 +83,28 @@ function openFanShroud(side, depth, boreRadius) {
   return geometry;
 }
 
+// Four outer/inner walls with annular rims; no caps across the passage. End planes
+// stay perpendicular to vehicle z, matching the existing axial fan-flange faces.
+function openFanTransition(mesh,z0,z1,y0,y1,w0,h0,w1,h1,wall,throat,material,target){
+  const midY=(y0+y1)/2,midZ=(z0+z1)/2,vertices=[];
+  const ring=(w,h,y,z)=>[[-w/2,y-h/2,z],[w/2,y-h/2,z],[w/2,y+h/2,z],[-w/2,y+h/2,z]];
+  // Retained blades project forward of the flange. A short constant-section
+  // throat clears their full rotating envelope before the sloping reduction.
+  const sections=[[w0,h0,y0,z0],[w1,h1,y1,z1-throat],[w1,h1,y1,z1]];
+  const outer=sections.map(([w,h,y,z])=>ring(w,h,y-midY,z-midZ));
+  const inner=sections.map(([w,h,y,z])=>ring(w-2*wall,h-2*wall,y-midY,z-midZ));
+  const quad=(p,q,r,s)=>vertices.push(...p,...q,...r,...p,...r,...s);
+  for(let k=0;k<sections.length-1;k++)for(let i=0;i<4;i++){const j=(i+1)%4;
+    const a=outer[k],b=outer[k+1],ai=inner[k],bi=inner[k+1];
+    quad(a[i],a[j],b[j],b[i]);quad(ai[j],ai[i],bi[i],bi[j]);
+  }
+  for(let i=0;i<4;i++){const j=(i+1)%4,a=outer[0],b=outer.at(-1),ai=inner[0],bi=inner.at(-1);
+    quad(a[j],a[i],ai[i],ai[j]);quad(b[i],b[j],bi[j],bi[i]);
+  }
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));geometry.computeVertexNormals();
+  return mesh(geometry,material,[0,midY,midZ],target);
+}
+
 export function buildWarmDuct({ parent, mesh }) {
   const { width: W, height: H, y, front, back } = thermalLoopAsset.duct;
   const group = new THREE.Group(); group.name = "warm-duct"; group.userData.inspectionLayer = "equipment-casings";
@@ -96,8 +124,11 @@ export function buildWarmDuct({ parent, mesh }) {
   grille.rotation.x = 0.55; grille.name = "warm-duct-outlet-grille";
   // Aft end: the flared transition up to the two fans.
   const [, fy, fz] = thermalLoopAsset.fans.centers[0];
-  const diffuser = taperAlongZ(mesh, back, fz - 0.045, y, fy, W, H, 0.27, 0.13, transition, group);
+  const F=fanDuctInterfaceAsset;
+  const diffuser = openFanTransition(mesh,back,fz-F.fanFrontOffsetM,y,fy,W,H,F.fanEndWidthM,F.fanEndHeightM,F.wallM,F.fanThroatM,transition,group);
   diffuser.name = "warm-duct-fan-transition";
+  diffuser.userData.inspectionLabel="Fan transition (estimated open shell)";
+  diffuser.userData.inspectionMinimumRadiusM=0.04;
   return { group };
 }
 

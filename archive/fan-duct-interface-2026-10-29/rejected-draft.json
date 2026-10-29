@@ -1,0 +1,7 @@
+{
+  "scope": "Unpublished straight open-transition trial",
+  "parameters": {"wallM": 0.0015, "fanFrontOffsetM": 0.038, "fanEndWidthM": 0.27, "fanEndHeightM": 0.13, "fanThroatM": 0},
+  "reproduce": "Use start/end sections only, or set the current helper throat to zero; the physical straight-taper surface is reproduced. Do not publish.",
+  "rejectedBecause": "Static seating/neighbor checks passed, but a 24-angle rotor sweep found a retained fan blade crossing the sloping wall.",
+  "acceptedChange": "Use a 16 mm constant-section throat. Retained rotor forward bound z=0.9925816066 m; flange-front plane z=1.002 m. Geometry is an estimated accommodation, not a sourced flight coupling."
+}

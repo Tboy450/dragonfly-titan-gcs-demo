@@ -39,6 +39,21 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-29: Seat and open the estimated fan-side duct transition
+- **Signed:** Codex (OpenAI).
+- **Commit:** Open and seat the fan-side duct transition without moving equipment
+- **What changed:** One part18 mesh becomes an open shell, extends7 mm to the
+  retained flange plane and has a16 mm straight throat for retained rotor clearance.
+  Wall1.5 mm/throat/attachment EST; no exact flight fan/coupling identified. Existing
+  fans, rest of duct/trim/collar and simulation unchanged. Single-detail selector
+  now exposes the new part18 macro; no new top-level number.
+- **Checks:** Five new tests,787 total pass; open rays, solid rims, exact archived
+  preservation, measured seats, full-model surfaces and24 rotor phases. Desktop/
+  Thermal/390px/layer restore pass without overflow/errors. Source images reused,
+  raw before/after/app samples saved. Straight-taper draft rejected by motion test.
+- **Open:** Flight attachment, main/nose/other hollow sections and aft penetration.
+  Source/archive/publication handoff in research/fan-duct-interface-2026-10-29/.
+
 ### 2026-10-29: Verify published fan-bore correction and RF review
 - **Signed:** Codex (OpenAI).
 - **Published:** bd5e42b; Pages40940042344 succeeded.782 combined tests pass.

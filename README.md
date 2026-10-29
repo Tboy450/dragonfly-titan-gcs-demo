@@ -1,5 +1,11 @@
 # Dragonfly Titan GCS
 
+October29 continuation: [fan-to-duct transition](research/fan-duct-interface-2026-10-29/README.md).
+One generic open shell replaces the solid transition/7 mm flange gap. Estimated
+wall/throat clears retained rotors; other hardware and simulation unchanged.
+Part18 has a focused inspection detail.787 tests and desktop/phone layers pass;
+source, rejected trial, archive and samples saved. Publication receipt pending.
+
 October29: [part17 open fan housings](research/fan-bore-2026-10-29/README.md).
 Six solid housing/flange shapes now have generic circular openings within the
 same outer envelopes, exposing existing rotors. No new fan identity, simulation

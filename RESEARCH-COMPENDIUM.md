@@ -4,6 +4,12 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**Part18 transition (Codex, October29):**
+[local interface and limits](research/fan-duct-interface-2026-10-29/README.md).
+[PUB] fan/duct gas-circulation architecture; [EST] generic1.5 mm shell and16 mm
+throat.7 mm is the old illustration's flange gap, not a flight measurement.
+Unchanged fans/controls, no inferred pressure loss/CFD or bulkhead penetration.
+
 **Part17 fan openings (Codex, October29):**
 [sources and preserved geometry](research/fan-bore-2026-10-29/README.md).
 [PUB] circulation fans/test-module context; [EST] retained shroud and new generic

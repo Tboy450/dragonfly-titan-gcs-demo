@@ -83,6 +83,13 @@ See `research/draco-electrical-audit-2026-10-27/README.md` before its next rebui
 
 ## Files
 
+October29 fan/duct interface: `thermal-loop.mjs` builds one hollow, rimmed,
+three-section transition with estimated wall/throat. Only its fan-side end
+extends7 mm; other assets/curves retained. Existing fan-bore tests delegate this
+exact mesh to `fan-duct-interface.test.mjs`; no broad preservation exemption.
+The UI subassembly selector permits one detail plus Whole assembly. No new
+part number, simulation state, per-frame geometry or game edits.
+
 October29 fan correction: `thermal-loop.mjs` uses an extruded square annulus
 for the two generic fan shrouds/four flanges instead of a solid box. Their old
 outer envelopes/names/transforms are retained; other geometry and simulation
