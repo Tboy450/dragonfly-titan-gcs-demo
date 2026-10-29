@@ -1,5 +1,11 @@
 # Dragonfly Titan GCS
 
+Local October29 continuation: [RF installation review](research/rf-installation-2026-10-29/README.md).
+Seven closed evidence rows under Connection installation status distinguish RF,
+high-voltage power and actuator wiring. Existing parts/routes stay unchanged.
+Hidden gimbal feed remains unmodeled; the visible feed moves rigidly with the arm.
+769 tests pass. Local only; publication/integration gate recorded in the checklist.
+
 Next connection pass: [Frontier radio bay lead](research/frontier-bay-link-2026-10-28/README.md).
 The existing branch now seats in a labeled EST shell/strain relief at the
 photo-labeled J22 face, with one fitted support. One estimated lead is refitted

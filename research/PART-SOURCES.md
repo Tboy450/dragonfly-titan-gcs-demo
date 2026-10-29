@@ -6,6 +6,13 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**RF installation review, parts10/13/14 (Codex, October29):**
+[scope/measurements/handoff](rf-installation-2026-10-29/README.md).
+NASA spacecraft and July9 real-arm sources rechecked. Reuse saved actual arm and
+Frontier photo, related LRO TWTA hardware pages and existing dimensional context.
+No appearance rebuild. Hidden gimbal transition remains unmodeled; outer modeled
+contacts do not establish flight mating. Seven nested source/inspection rows.
+
 **Part13 bay connection (Codex):** [fit and source limits](frontier-bay-link-2026-10-28/README.md).
 Reuses saved real NASA/APL Frontier photo and NASA workmanship pages29–31. The
 photo labels J22; choosing it for this illustrative branch is EST, not a flight

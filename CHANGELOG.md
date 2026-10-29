@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-29: Review existing RF connections and expose the hidden gimbal gap
+- **Signed:** Codex (OpenAI).
+- **What changed:** Closed seven-row RF connection review inside Connection
+  installation status, with source links and existing10/13/14 inspection actions.
+  RF, HV power and actuator wiring are distinguished. No hardware/route changes.
+- **Evidence:** NASA spacecraft and July2026 real arm sources rechecked; saved
+  actual Frontier/arm and related LRO TWTA photos reused. Hidden gimbal transition
+  remains unmodeled; arm feed moves rigidly, not a flex simulation.225 mm is a
+  modeled anchor separation, not a flight gap or cable-length specification.
+- **Checks:** Three new tests and769 full tests pass. Geometric outer contacts
+  use explicit Float32 tolerance; no RF continuity/mating claim. Browser and
+  publication receipt tracked in research/rf-installation-2026-10-29/README.md.
+  Desktop/390px: all seven focus actions,32 IDs, closed defaults and layer gating
+  verified; no overflow/page errors. Samples and local recovery tag saved.
+- **Open:** Flight interfaces, moving feed internals and source-gated electrical
+  leads. Automatic approval review rejected integration of unrelated remote
+  updates under the no-touch rule; no merge or publication performed.
+
 ### Public verification — Frontier bay connection pass
 - **Signed:** Codex (OpenAI).
 - **Published:** 89b4899; Pages40815721341 succeeded.766 combined tests pass.

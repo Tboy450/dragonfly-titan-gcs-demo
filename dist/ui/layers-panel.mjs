@@ -7,7 +7,7 @@ import {inspectionPartNumber} from '../inspection-catalog.mjs?v=dev';
 import { samplingSequence } from "../science.mjs?v=dev";
 import { updateInspectorUI } from "./vehicle-inspector.mjs?v=dev";
 import { focusInspector, selectInspectionSubassembly } from "../vehicle-inspector.mjs?v=dev";
-import { renderSamplingConnections, renderConnectionCoverage, renderDracoElectricalAudit } from "./sampling-connections.mjs?v=dev";
+import { renderSamplingConnections, renderConnectionCoverage, renderDracoElectricalAudit, renderRfInstallationAudit } from "./sampling-connections.mjs?v=dev";
 import {installationFamilies,installationSources,installationLimits} from "../avionics-installation.mjs?v=dev";
 import {dracoInventory,dracoInventorySources,dracoInventoryLimits} from "../sampling-connections.mjs?v=dev";
 import {applyInspectionAccessPreset} from "../inspection-visibility.mjs?v=dev";
@@ -30,7 +30,7 @@ const inspectDraco=row=>{
 renderConnectionCoverage($("draco-inventory-body"),inspectDraco,{rows:dracoInventory,sources:dracoInventorySources,limits:dracoInventoryLimits});
 // Additional research stays inside the existing collapsed inventory.
 renderDracoElectricalAudit($("draco-inventory-body"),inspectDraco);
-renderConnectionCoverage($("avionics-installation-body"),row=>{
+const inspectInstallation=row=>{
   if(!chaseRenderer?.subsystems[row.inspect])return;
   applyInspectionAccessPreset(state.inspector,"open");
   focusInspector(state,row.inspect);
@@ -39,7 +39,12 @@ renderConnectionCoverage($("avionics-installation-body"),row=>{
   if(Number.isFinite(row.azimuth))state.inspector.azimuth=row.azimuth;
   if(Number.isFinite(row.elevation))state.inspector.elevation=row.elevation;
   updateInspectorUI();
-},{rows:installationFamilies,sources:installationSources,limits:installationLimits});
+};
+renderConnectionCoverage($("avionics-installation-body"),inspectInstallation,{rows:installationFamilies,sources:installationSources,limits:installationLimits});
+renderRfInstallationAudit($("avionics-installation-body"),row=>{
+  inspectInstallation(row);
+  $("flight-canvas").scrollIntoView({block:"center"});
+});
 
 const sources = {
   blowerSupplier: ["Barber-Nichols BNCP-74-000: real supplier photo and published size/performance reference", "https://barber-nichols.com/cryogenic-compressors-blowers/"],

@@ -4,6 +4,13 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**RF installation review (Codex, October29):**
+[measurements and unresolved transition](research/rf-installation-2026-10-29/README.md).
+[PUB] Frontier/TWTA/HGA roles and real arm operation; [EST] retained coax/waveguide
+and gimbal installation.225 mm is separation of displayed reconstruction anchors,
+not flight evidence. The hidden gimbal feed is unfinished; visible feed moves
+rigidly with its arm. No RF loss, cable-flex or new flight/thermal solver added.
+
 **Frontier bay-lead installation (Codex):** [evidence, fit and limits](research/frontier-bay-link-2026-10-28/README.md).
 [PUB] real NASA/APL Frontier photo labels J22; existing4×6-inch slice references
 unchanged. [EST] J22 choice for this bay lead, external shell/relief,6 mm cable,

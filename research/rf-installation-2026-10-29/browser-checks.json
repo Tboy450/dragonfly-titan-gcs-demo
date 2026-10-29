@@ -1,0 +1,13 @@
+{
+  "rows": 7,
+  "focusActions": 7,
+  "numberedOptions": 33,
+  "closedByDefault": true,
+  "thermalVisible": true,
+  "exteriorHidden": true,
+  "widths": {
+    "client": 390,
+    "scroll": 390
+  },
+  "errors": []
+}

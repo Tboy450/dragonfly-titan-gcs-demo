@@ -10,6 +10,30 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October29: [RF installation review](research/rf-installation-2026-10-29/README.md).
+- [x] Recheck NASA spacecraft/real arm sources and reuse saved real Frontier,
+  LRO-reference TWTA and antenna source packets. No duplicate casing rebuild.
+- [x] Measure existing radio/coax and waveguide/flange contacts. Explicit numerical
+  tolerance; envelope contact is not a flight circuit or reconstructed bore.
+- [x] Record hidden lower-gimbal-to-arm-feed transition as unfinished. Displayed
+  stowed anchors225 mm apart; not a flight gap or required internal cable length.
+ 36 sampled poses confirm the visible feed moves rigidly with the arm rather than
+  deforming; no guessed hidden route/rotary-joint internals added.
+- [x] Add seven-row nested closed RF review with source links and existing part
+ 10/13/14 inspection shortcuts. RF/HV power/actuator media distinct;32 IDs retained.
+ Three new tests;769 full tests pass. Prior UI sources archived exactly.
+- [x] Desktop/390px Internal/Thermal checks: seven rows/seven focus actions,
+  33 options/32 parts, closed defaults and Exterior gating; no horizontal overflow
+  or page errors. Real app and before/panel/phone samples saved. Recovery tag
+  `archive/rf-installation-review-2026-10-29` marks exact prior UI on eb84229.
+- [ ] Publish after resolving the integration gate below; current live site unchanged.
+- [ ] Hidden RF transition, actual port assignments, qualified motion and full
+  RF-chain/actuator wiring remain open. Do not check off overall RF continuity.
+- [ ] Publication gate: remote includes unrelated Swarmfall/work-log updates.
+  Automatic approval review rejected merging those under the owner's no-touch
+  instruction. Continue local Dragonfly work; obtain explicit exception before
+  integrating unrelated updates. No force push or alternate merge workaround.
+
 October28 next supported connection: Frontier radio / existing bay branch.
 - [x] Recheck blower electrical sources: no public flight port/pinout/controller
   established. Keep those wires open; generic Honeybee capabilities are not an ICD.

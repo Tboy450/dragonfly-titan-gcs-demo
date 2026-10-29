@@ -83,6 +83,12 @@ See `research/draco-electrical-audit-2026-10-27/README.md` before its next rebui
 
 ## Files
 
+October29 RF review: `rf-installation.mjs` is static evidence/limits metadata, not
+geometry or an RF solver. The existing connection-coverage renderer puts its seven
+rows inside a nested closed details in Connection installation status. Inspection
+callbacks reuse existing10/13/14 equipment. Source/measurement/pose audit lives in
+`research/rf-installation-2026-10-29/`; all hardware/routes stay unchanged.
+
 ### Simulation (no DOM; covered by tests)
 
 October 27 fixed feed lead: `drill-fixed-feed-lead.mjs` owns a static, arc-length
