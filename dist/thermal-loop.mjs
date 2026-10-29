@@ -18,7 +18,7 @@ import { aftBulkheadAsset } from "./aft-bulkhead.mjs?v=dev";
 // wide, from z -1.18 to +0.93, widening to the fans; fans about 0.13 m, near z +1.2. Duct height,
 // cold-duct section, housing shapes, flap hinge sides and the actuators are [EST].
 export const thermalLoopAsset = Object.freeze({
-  revision: "thermal-loop-2026-10-15b",
+  revision: "thermal-loop-2026-10-29-open-fan-bores",
   // y lowered 7.5 mm on Oct 15 so the duct and its joint flanges sit fully under the bay floor
   // (y -0.284), inside the foam; the first position is archived (archive/warm-duct-v1-2026-10-15).
   duct: Object.freeze({ width: 0.14, height: 0.045, y: -0.3125, front: -1.175, back: 0.93 }),
@@ -66,6 +66,17 @@ function taperBetween(mesh, a, b, w0, h0, w1, h1, material, target) {
   return part;
 }
 
+// [EST] An open axial shroud within the retained outer envelope. This corrects
+// solid-box end caps in the previous illustration; not a flight fan drawing.
+function openFanShroud(side, depth, boreRadius) {
+  const h=side/2, shape=new THREE.Shape();
+  shape.moveTo(-h,-h);shape.lineTo(h,-h);shape.lineTo(h,h);shape.lineTo(-h,h);shape.closePath();
+  const bore=new THREE.Path();bore.absarc(0,0,boreRadius,0,Math.PI*2,true);shape.holes.push(bore);
+  const geometry=new THREE.ExtrudeGeometry(shape,{depth,bevelEnabled:false,steps:1,curveSegments:32});
+  geometry.translate(0,0,-depth/2);
+  return geometry;
+}
+
 export function buildWarmDuct({ parent, mesh }) {
   const { width: W, height: H, y, front, back } = thermalLoopAsset.duct;
   const group = new THREE.Group(); group.name = "warm-duct"; group.userData.inspectionLayer = "equipment-casings";
@@ -105,8 +116,8 @@ export function buildFans({ parent, mesh }) {
   thermalLoopAsset.fans.centers.forEach(([x, y, z], i) => {
     const name = i === 0 ? "fan-a" : "fan-b";
     // Square housing with a round bore, flanges front and back.
-    mesh(new THREE.BoxGeometry(D + 0.016, D + 0.016, 0.07), housing, [x, y, z], casings).name = `${name}-housing`;
-    for (const dz of [-0.035, 0.035]) mesh(new THREE.BoxGeometry(D + 0.026, D + 0.026, 0.006), housing, [x, y, z + dz], casings).name = `${name}-flange`;
+    mesh(openFanShroud(D+0.016,0.07,D/2), housing, [x, y, z], casings).name = `${name}-housing`;
+    for (const dz of [-0.035, 0.035]) mesh(openFanShroud(D+0.026,0.006,D/2), housing, [x, y, z + dz], casings).name = `${name}-flange`;
     // Rotor: hub with the motor behind it and seven blades, visible through the bore.
     const rotor = new THREE.Group(); rotor.name = `${name}-rotor`; rotor.position.set(x, y, z - 0.036); rotors.add(rotor);
     const hub = mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.02, 16), dark, [0, 0, 0], rotor); hub.rotation.x = Math.PI / 2;

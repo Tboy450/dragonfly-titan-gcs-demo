@@ -1,5 +1,12 @@
 # Dragonfly Titan GCS
 
+October29: [part17 open fan housings](research/fan-bore-2026-10-29/README.md).
+Six solid housing/flange shapes now have generic circular openings within the
+same outer envelopes, exposing existing rotors. No new fan identity, simulation
+or duct changes.771 tests and desktop/phone layer checks pass. Actual samples,
+source context, exact prior code and continuation notes saved. Owner clarified
+Claude owns Swarmfall; game/graph changes stay separate from this checklist.
+
 Local October29 continuation: [RF installation review](research/rf-installation-2026-10-29/README.md).
 Seven closed evidence rows under Connection installation status distinguish RF,
 high-voltage power and actuator wiring. Existing parts/routes stay unchanged.

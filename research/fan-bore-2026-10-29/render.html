@@ -1,0 +1,24 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Part 17 fan-bore correction</title>
+<style>body{margin:0;background:#e3e8eb;font:18px system-ui;color:#17323d}header,footer{padding:16px 24px}canvas{display:block;width:100%;height:620px}footer{font-size:14px}</style>
+<header>17 · Circulation fans — <span id="version"></span></header><canvas aria-label="Actual circulation fan pair geometry"></canvas><footer>Estimated fan sections within the unchanged outer envelope. Adapter hidden for this inspection. Actual flight fan shape remains unverified; these are the existing modeled motors and blades.</footer>
+<script type="module">
+import * as T from '../../dist/vendor/three/three.module.min.js?v=dev';
+const before=new URLSearchParams(location.search).has('before');
+const {buildFans}=await import(before?'/before/dist/thermal-loop.mjs':'../../dist/thermal-loop.mjs?v=dev');
+document.querySelector('#version').textContent=before?'archived solid housings':'open housing bores';
+const scene=new T.Scene();scene.background=new T.Color('#e3e8eb');
+scene.add(new T.HemisphereLight(0xffffff,0x697078,2.2));const light=new T.DirectionalLight(0xffffff,3);light.position.set(-1,2,-3);scene.add(light);
+const root=new T.Group();scene.add(root);
+const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};
+const fans=buildFans({parent:root,mesh});fans.adapters.visible=false;
+const canvas=document.querySelector('canvas'),renderer=new T.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
+const camera=new T.OrthographicCamera();
+function draw(){const width=canvas.clientWidth,height=620,aspect=width/height,half=.105;
+ renderer.setSize(width,height,false);camera.left=-half*aspect;camera.right=half*aspect;camera.top=half;camera.bottom=-half;camera.near=.001;camera.far=10;
+ const center=new T.Vector3(0,-.19,1.04);camera.position.copy(center).add(new T.Vector3(.025,.036,-.42));camera.lookAt(center);camera.updateProjectionMatrix();renderer.render(scene,camera);
+ const pixels=new Uint8Array(width*height*4);renderer.getContext().readPixels(0,0,width,height,renderer.getContext().RGBA,renderer.getContext().UNSIGNED_BYTE,pixels);
+ let count=0;for(let i=0;i<pixels.length;i+=4)if(Math.max(Math.abs(pixels[i]-227),Math.abs(pixels[i+1]-232),Math.abs(pixels[i+2]-235))>30)count++;
+ canvas.dataset.nonblank=String(count>2000);canvas.dataset.version=before?'before':'after';
+}
+window.addEventListener('resize',draw);draw();
+</script></html>

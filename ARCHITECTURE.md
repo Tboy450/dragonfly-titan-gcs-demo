@@ -83,6 +83,13 @@ See `research/draco-electrical-audit-2026-10-27/README.md` before its next rebui
 
 ## Files
 
+October29 fan correction: `thermal-loop.mjs` uses an extruded square annulus
+for the two generic fan shrouds/four flanges instead of a solid box. Their old
+outer envelopes/names/transforms are retained; other geometry and simulation
+remain unchanged. `tests/fan-bore.test.mjs` checks actual ray openings/rims and
+exact retained geometry against archive. Sources, samples and limits are in
+`research/fan-bore-2026-10-29/`. No new per-frame geometry allocation.
+
 October29 RF review: `rf-installation.mjs` is static evidence/limits metadata, not
 geometry or an RF solver. The existing connection-coverage renderer puts its seven
 rows inside a nested closed details in Connection installation status. Inspection

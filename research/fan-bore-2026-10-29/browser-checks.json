@@ -1,0 +1,13 @@
+{
+  "beforeAfterNonblank": true,
+  "part": "fan",
+  "partNumber": 17,
+  "options": 33,
+  "casingsHideRestore": true,
+  "internalThermal": true,
+  "widths": {
+    "client": 390,
+    "scroll": 390
+  },
+  "errors": []
+}

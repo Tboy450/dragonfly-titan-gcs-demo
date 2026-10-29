@@ -10,6 +10,22 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October29 context correction / [part17 fan openings](research/fan-bore-2026-10-29/README.md).
+- [x] Owner clarifies Claude is doing Swarmfall. Pasted chat was history; game and
+  graph work is complete/owned elsewhere, not the Dragonfly agenda. Shared repo
+  is acceptable with clearly labeled separate changes. Preserve concurrent code.
+- [x] Resume thermal-interface/access package: replace only six solid fan-housing/
+  flange geometries with generic open bores. Exact outer envelopes/poses retained;
+  motors/rotors/collar/ducts/trim and airflow curves unchanged. No new fan design.
+- [x] Recheck saved real DTM/source material and published plan; no clear flight-fan
+  detail photo found. Openings/sections EST. Old code and before sample archived;
+  one useful real/plan/before/after comparison, not repeated source sheets.
+- [x] Ray-through/solid-rim, retained-mesh/envelope and existing installation tests:
+ 771 full tests pass. Desktop/Thermal/390px, Casings hide/restore,32 IDs and33
+ options, no overflow/page errors. Comparison and actual app samples saved.
+- [ ] Finish recovery tag/commit/publication receipt. Full thermal-interface review
+ remains open: source identity, attachment details, hollow ducts and aft penetration.
+
 October29: [RF installation review](research/rf-installation-2026-10-29/README.md).
 - [x] Recheck NASA spacecraft/real arm sources and reuse saved real Frontier,
   LRO-reference TWTA and antenna source packets. No duplicate casing rebuild.
@@ -29,10 +45,10 @@ October29: [RF installation review](research/rf-installation-2026-10-29/README.m
 - [ ] Publish after resolving the integration gate below; current live site unchanged.
 - [ ] Hidden RF transition, actual port assignments, qualified motion and full
   RF-chain/actuator wiring remain open. Do not check off overall RF continuity.
-- [ ] Publication gate: remote includes unrelated Swarmfall/work-log updates.
-  Automatic approval review rejected merging those under the owner's no-touch
-  instruction. Continue local Dragonfly work; obtain explicit exception before
-  integrating unrelated updates. No force push or alternate merge workaround.
+- [x] Historical publication confusion reconciled with owner above: game/graphs
+  are not pending Dragonfly tasks. Keep apps/commits separately labeled and
+  preserve incoming authors' files. RF remains on29e77aa pending ordinary release;
+  no force push or other-assistant feature edits.
 
 October28 next supported connection: Frontier radio / existing bay branch.
 - [x] Recheck blower electrical sources: no public flight port/pinout/controller
@@ -1467,8 +1483,9 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [x] **IEM second-column middle route:** lead 6 separated, label attached, one support and
   two ties added. All endpoints/other geometry retained; terminal gathering overlaps remain
   open. [Real/CAD/model comparison, checks and handoff](research/iem-middle-lead-2026-10-25/README.md).
-- [ ] **Five-family routing continuation:** remaining 17 IEM
-  routes and other PSU leads; identified external radio/navigation mating before new wires.
+- [ ] **Five-family routing continuation:** IEM's26 local example routes are
+  completed (October26); remaining work includes other PSU leads and supported
+  external radio/navigation mating before new wires.
   Battery full flight-pack routing remains unverified. Support additions do not close these.
 - [ ] **Floor/perimeter routing audit:** review existing three harness passes together; remove
   no geometry without archiving. Separate actual bundled routes from accidental doubled runs;
@@ -1497,11 +1514,11 @@ statuses: initial part, installation, construction access, and final UI/integrat
 - [x] **IEM third-column upper IDs 8/9:** two service routes, attached tags/supports/lacing,
   separate focus and full-IEM sample; seven previous routes exact. 609 tests pass.
   [Sources, archive and handoff](research/iem-third-upper-2026-10-25/README.md).
-- [ ] **IEM remaining 17 local leads:** next third-column lower IDs 10/11.
-  Preserve all nine reviewed routes and every endpoint; no new flight circuit assignments.
-- [ ] **Complete IEM local connector installation:** audit remaining service
-  bends, lacing and support contact without moving the photo-referenced enclosure or claiming
-  circuit identity. Keep main-branch/stub endpoints from the current bay register.
+- [x] **IEM remaining local leads / local connector examples:** all26 reviewed
+  routes, service bends, tags/lacing/supports completed through the final columns
+  and terminal cleanup onOctober26. These older unchecked entries were stale.
+  Actual circuit identity, qualified bends and terminal-network capacity remain
+  open; local completion is not a flight wiring/whole-network acceptance claim.
 - [x] **Attic local-line audit / DraMS short wire (Codex, October23):** eight examples
   registered; media masks/focuses corrected; one estimated wire support/slack pass complete.
   Full preceding attic network remains open. [Sources, sample and handoff](research/attic-connection-media-2026-10-23/README.md).

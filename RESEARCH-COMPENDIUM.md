@@ -4,6 +4,12 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**Part17 fan openings (Codex, October29):**
+[sources and preserved geometry](research/fan-bore-2026-10-29/README.md).
+[PUB] circulation fans/test-module context; [EST] retained shroud and new generic
+open section. No clear flight fan detail photo/supplier established. No new
+flow/pressure/thermal model or physical-performance inference from the opening.
+
 **RF installation review (Codex, October29):**
 [measurements and unresolved transition](research/rf-installation-2026-10-29/README.md).
 [PUB] Frontier/TWTA/HGA roles and real arm operation; [EST] retained coax/waveguide

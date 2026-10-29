@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part17 fan-bore correction (Codex, October29):**
+[scope/source/sample](fan-bore-2026-10-29/README.md). Reuses real DTM photos and
+published thermal plan from TFAWS2023/2024. Generic115 mm openings are estimated
+inspection geometry within existing housings, not a new flight-fan identification.
+Six box caps replaced; all other fan/duct/trim hardware and simulation retained.
+
 **RF installation review, parts10/13/14 (Codex, October29):**
 [scope/measurements/handoff](rf-installation-2026-10-29/README.md).
 NASA spacecraft and July9 real-arm sources rechecked. Reuse saved actual arm and

@@ -39,6 +39,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-29: Open estimated circulation-fan housing bores
+- **Signed:** Codex (OpenAI).
+- **Commit:** Open circulation fan bores within retained installation envelopes
+- **What changed:** Part17's six solid housing/flange geometries become square
+  annular sections. All outer envelopes/poses, motors/rotors, ducts/collar/trim
+  and airflow paths retained. Layer description now identifies the generic
+  openings as EST inspection geometry, not an identified flight fan design.
+- **Evidence:** Saved real NASA/APL DTM photos and TFAWS2023/2024 arrangement/
+  fan sources rechecked/reused; actual shroud/supplier remains unconfirmed.
+- **Checks:** Two new ray/opening/rim and archive-preservation tests;771 full
+  tests pass. Desktop/390px Internal/Thermal, Casings hide/restore,32 IDs/33
+  options, no overflow/page errors. Actual samples and one useful source/plan/
+  before/after comparison saved in research/fan-bore-2026-10-29/.
+- **Handoff:** Correct stale IEM entries (all26 local routes already completed).
+  Owner clarifies pasted Claude/game/graph exchange was history; applications
+  may share a repo with separate labeled changes. No game feature edits here.
+  Full thermal attachment/duct/flight interfaces remain open. Publish receipt
+  and archive recovery tracked in the research packet/checklist.
+
 ### 2026-10-29: Review existing RF connections and expose the hidden gimbal gap
 - **Signed:** Codex (OpenAI).
 - **What changed:** Closed seven-row RF connection review inside Connection
