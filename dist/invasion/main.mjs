@@ -4,8 +4,9 @@
 import {
   planets, planetById, createProgress, isPlanetUnlocked, nextPlanet,
   applyMissionResult, missionMatter, frontiers, missionSupply, applyFrontierResult,
-  hiveUpgrades, upgradeLevel, buyUpgrade,
+  hiveUpgrades, upgradeLevel, buyUpgrade, challengeTally,
 } from "./campaign.mjs?v=dev";
+import { replayModifiers, modifiersFor, replayReward, modifierNames } from "./replay.mjs?v=dev";
 import {
   createBattle, stepBattle, requestDrop, checkDrop, orderAt, orderSquads, orderHold, battleSummary,
   objectiveStatus, starsEarned, missionResult, retreat, publicMood, dropZoneAt, extractVictory, continueCapturing,
@@ -93,7 +94,8 @@ function drawTitle() {
   drawStarfield(ctx, width, height, titleGalaxyPlace(width, height, { left: card.left - box.left, right: card.left - box.left + card.width, top: card.top - box.top, bottom: card.top - box.top + card.height }));
   const done = planets.filter(p => progress.captured[p.id]).length;
   const earned = Object.keys(progress.achievements).length;
-  $("title-progress").textContent = done || earned ? `${done} of ${planets.length} planets conquered · ${earned} of ${achievements.length} achievements` : "";
+  const tally = challengeTally(progress);
+  $("title-progress").textContent = done || earned ? `${done} of ${planets.length} planets conquered · ${earned} of ${achievements.length} achievements${tally.beaten ? ` · ${tally.beaten} of ${tally.total} challenges` : ""}` : "";
   $("play-button").textContent = done || progress.stats.missionsPlayed ? "Continue campaign" : "Play campaign";
   $("resume-button").hidden = !savedMission;
   $("resume-button").textContent = savedMission ? `Resume mission · ${planetById(savedMission.battle.planetId).name}` : "Resume mission";
@@ -198,6 +200,32 @@ $("galaxy-canvas").addEventListener("click", (event) => {
   if (hit) { selectedPlanet = hit.id; renderPlanetPanel(); }
 });
 
+// Replay challenges (ECON-04): chosen in the planet panel for the next attempt on a conquered
+// planet, and remembered for this visit.
+const replayPicks = new Map();
+const picksFor = (planet) => modifiersFor(planet).filter(id => replayPicks.get(planet.id)?.has(id));
+function challengePanel(planet) {
+  const ids = modifiersFor(planet), picked = picksFor(planet), beaten = progress.challenges?.[planet.id] || [];
+  if (!ids.length) return "";
+  return `<p class="section-title">Replay challenges</p>
+    <p class="challenge-note">Optional. Each makes the next attempt harder and adds bonus matter. Each one you win with is marked ✦.</p>
+    <div class="challenge-list">${ids.map(id => {
+      const m = replayModifiers[id];
+      return `<button type="button" class="challenge" data-challenge="${id}" aria-pressed="${picked.includes(id)}"><strong>${beaten.includes(id) ? "✦" : "✧"} ${escapeHtml(m.name)} · +${Math.round(planet.reward.matter * m.bonus)} matter</strong><small>${escapeHtml(m.text)}</small></button>`;
+    }).join("")}</div>
+    <p class="challenge-reward">Replay reward: +${replayReward(planet, picked)} matter${picked.length ? ` with ${escapeHtml(modifierNames(picked))}` : ""} · ${beaten.length} of ${ids.length} challenges beaten</p>`;
+}
+$("planet-panel").addEventListener("click", (event) => {
+  const button = event.target.closest?.("[data-challenge]");
+  const planet = planetById(selectedPlanet), id = button?.dataset.challenge;
+  if (!button || !planet || !progress.captured[planet.id] || !modifiersFor(planet).includes(id)) return;
+  const picks = replayPicks.get(planet.id) || new Set();
+  if (picks.has(id)) picks.delete(id); else picks.add(id);
+  replayPicks.set(planet.id, picks);
+  renderPlanetPanel();
+  $("planet-panel").querySelector(`[data-challenge="${id}"]`)?.focus();
+});
+
 function renderPlanetPanel() {
   const planet = planetById(selectedPlanet) || planets[0];
   const society = societies[planet.society];
@@ -228,15 +256,15 @@ function renderPlanetPanel() {
     <ul class="objective-list"><li>Hold ${planet.required} zones, then leave for victory or continue capturing (★)</li>${planet.objectives.map(o => `<li>☆ ${escapeHtml(o.text)}</li>`).join("")}</ul>
     <p class="section-title">Reward for conquest</p>
     <p>${escapeHtml(reward.join(" · "))}</p>
-    ${progress.captured[planet.id] ? `<p class="section-title">Your record</p><p>${"★".repeat(stars)}${"☆".repeat(3 - stars)}${best ? ` · best time ${clock(best)}` : ""}</p>` : ""}
+    ${progress.captured[planet.id] ? `<p class="section-title">Your record</p><p>${"★".repeat(stars)}${"☆".repeat(3 - stars)}${best ? ` · best time ${clock(best)}` : ""}</p>${challengePanel(planet)}` : ""}
     ${open ? `<p class="section-title">Supply for this attempt</p><p>${missionMatter(progress, planet)} matter · ${progress.podSlots} slots per wave · 1–3 drones per pod · ${difficultyOf(progress.difficulty).name} difficulty</p>
-      <button id="invade-button" class="primary invade" type="button">${progress.captured[planet.id] ? "Invade again" : `Invade ${escapeHtml(planet.name)}`}</button>`
+      <button id="invade-button" class="primary invade" type="button">${progress.captured[planet.id] ? `Invade again${picksFor(planet).length ? ` · ${picksFor(planet).length} challenge${picksFor(planet).length === 1 ? "" : "s"}` : ""}` : `Invade ${escapeHtml(planet.name)}`}</button>`
       : `<p class="locked-note">Locked. Conquer ${escapeHtml(previous?.name || "the previous planet")} first.</p>`}
   `;
   $("galaxy-resume")?.addEventListener("click", () => { if (savedMission) startMission(planetById(savedMission.battle.planetId), savedMission); });
   $("invade-button")?.addEventListener("click", async () => {
     if (savedMission && !await confirmDialog("Start a new mission and replace your saved battle? Campaign progress will be kept.")) return;
-    startMission(planet);
+    startMission(planet, null, { modifiers: progress.captured[planet.id] ? picksFor(planet) : [] });
   });
   $("bank-matter").textContent = progress.matter;
   $("bank-pod").textContent = progress.podSlots;
@@ -556,7 +584,8 @@ function defaultPayload(b) {
   return payload;
 }
 
-function startMission(planet, checkpoint = null) {
+// modifiers: replay challenges (ECON-04) for a new battle on a conquered planet.
+function startMission(planet, checkpoint = null, { modifiers = [] } = {}) {
   if (!ensureScene()) return;
   resetPointers();
   $("debrief").open && $("debrief").close();
@@ -566,7 +595,7 @@ function startMission(planet, checkpoint = null) {
   const restored = checkpoint ? restoreMissionCheckpoint(checkpoint, terrain) : null;
   if (checkpoint && !restored) return;
   const battle = restored?.battle || createBattle(planet, {
-    ...missionSupply(progress, planet), terrain, seed: planet.seed,
+    ...missionSupply(progress, planet), terrain, seed: planet.seed, modifiers,
     missionId: globalThis.crypto?.randomUUID?.() || `attempt-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`,
   });
   scene.load(planet, terrain, battle);
@@ -1276,7 +1305,7 @@ function openPauseMenu() {
   mission.paused = true;
   resetPointers(); cancelPlacement(); closeDropPanel();
   const b = mission.battle, summary = battleSummary(b);
-  $("pause-summary").textContent = `${mission.planet.name} · ${clock(b.time)} · ${summary.held} of ${summary.required} zones held${b.difficulty && b.difficulty !== "normal" ? ` · ${difficultyOf(b.difficulty).name}` : ""}`;
+  $("pause-summary").textContent = `${mission.planet.name} · ${clock(b.time)} · ${summary.held} of ${summary.required} zones held${b.difficulty && b.difficulty !== "normal" ? ` · ${difficultyOf(b.difficulty).name}` : ""}${b.modifiers?.length ? ` · ${modifierNames(b.modifiers)}` : ""}`;
   $("pause-quit").textContent = mission.planet.frontier ? "Quit to the title" : "Quit to the galaxy";
   $("pause-note").textContent = `Quitting keeps this battle saved. Resume it from the ${mission.planet.frontier ? "title screen" : "galaxy map or the title screen"}.`;
   updatePauseSettings();
@@ -1297,7 +1326,7 @@ function closePauseMenu(play) {
 async function restartMission() {
   if (!mission || mission.battle.outcome) return;
   $("pause-menu").close();
-  const planet = mission.planet, win = mission.battle.victoryAvailable, was = mission.menuWasPaused;
+  const planet = mission.planet, win = mission.battle.victoryAvailable, was = mission.menuWasPaused, modifiers = mission.battle.modifiers || [];
   const ok = await confirmDialog(win
     ? `Restart ${planet.name}? You hold enough zones, so this attempt is recorded as a victory first.`
     : `Restart ${planet.name}? This attempt is recorded as a retreat: surviving drones return for half their cost, and cargo still in the air is refunded.`);
@@ -1305,7 +1334,7 @@ async function restartMission() {
   retreat(mission.battle);
   finishMission();
   $("debrief").close();
-  startMission(planet);
+  startMission(planet, null, { modifiers });
   toast(`${planet.name} restarted. The last attempt was recorded as ${win ? "a victory" : "a retreat"}.`, "info", 5000);
 }
 async function quitToGalaxy() {
@@ -1561,7 +1590,7 @@ function updateHud() {
   $("objective-list").innerHTML = objectiveStatus(b).map(o => {
     const state = o.done ? "done" : o.failed ? "failed" : "";
     return `<li class="${state}"><span class="mark">${o.done ? "✓" : o.failed ? "✗" : o.primary ? "•" : "☆"}</span><span>${escapeHtml(o.text)}</span>${o.progress ? `<small>${escapeHtml(o.progress)}</small>` : ""}</li>`;
-  }).join("");
+  }).join("") + (b.modifiers?.length ? `<li class="challenges"><span class="mark">✧</span><span>Challenges: ${escapeHtml(modifierNames(b.modifiers))}</span></li>` : "");
   updateTutorial(b);
   $("hud-log").innerHTML = b.log.slice(-4).map(entry => `<li class="${entry.tone}">${escapeHtml(entry.text)}</li>`).join("");
   updateSquadBar();
@@ -1616,8 +1645,11 @@ function drawOverlay() {
     const blocked = zone.drones > 0 ? { links: "needs Links", jammed: "jammed", stunned: "drones stunned" }[captureBlocker(b, zone)] : null;
     // A calm town gives up at surrenderControl (ENEMY-07): said while drones are there to take it.
     const yields = zone.drones > 0 && canSurrender(b, zone) ? ` · surrenders at ${surrenderControl}%` : "";
+    // An announced counter-attack or reinforcement (OBJ-02) counts down on its zone.
+    const coming = b.ops?.pending && b.ops.pending.zone === zone.id
+      ? ` · ${b.ops.pending.kind === "counter" ? "counter-attack" : "reinforcements"} in ${Math.max(0, Math.ceil(b.ops.pending.at - b.time))} s` : "";
     const status = zone.kind === "beachhead" ? "Hive beacon" : zone.captured ? "held" : `${Math.round(zone.control)}%${zone.contested ? " · contested" : ""}${blocked ? ` · ${blocked}` : ""}${yields}`;
-    const text = zone.kind === "beachhead" ? status : `${zone.name} · ${status}`;
+    const text = zone.kind === "beachhead" ? status : `${zone.name} · ${status}${coming}`;
     const w = ctx.measureText(text).width + 14;
     ctx.fillStyle = "rgba(6, 8, 16, 0.72)";
     ctx.beginPath();
@@ -1633,6 +1665,7 @@ function drawOverlay() {
       ctx.fillText("tap to preview courts", p.x, p.y + 22 * ui);
     }
   }
+  drawCaches(ctx, b, width, height, ui);
   const squadColor = new Map(b.squads.map(s => [s.id, s.color]));
   for (const [index, point] of (mission.dropPreview?.ok ? mission.dropPreview.landings : []).entries()) {
     const y = scene.heightAt(point.x, point.z) + 1;
@@ -1758,15 +1791,40 @@ function drawOverlay() {
   drawEdgeMarks(ctx, b, width, height);
 }
 
+// Supply caches (OBJ-02) on the map: where one is landing, and each one down with its matter and
+// the seconds left to collect it.
+function drawCaches(ctx, b, width, height, ui) {
+  const ops = b.ops;
+  const marks = [...(ops?.caches || [])];
+  if (ops?.pending?.kind === "supply") marks.push({ ...ops.pending, landing: true });
+  for (const cache of marks) {
+    const p = scene.project(cache.x, scene.heightAt(cache.x, cache.z) + 8, cache.z, width, height);
+    if (!p.visible || p.x < -80 || p.x > width + 80 || p.y < -20 || p.y > height + 20) continue;
+    const text = cache.landing ? `Supply cache in ${Math.max(0, Math.ceil(cache.at - b.time))} s` : `Supply · ${cache.matter} matter · ${Math.max(0, Math.ceil(cache.until - b.time))} s`;
+    const w = ctx.measureText(text).width + 14;
+    ctx.fillStyle = "rgba(6, 8, 16, 0.72)";
+    ctx.beginPath(); ctx.roundRect(p.x - w / 2, p.y - 11 * ui, w, 20 * ui, 10 * ui); ctx.fill();
+    ctx.strokeStyle = "#ffb457"; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = "#ffe3b8";
+    ctx.fillText(text, p.x, p.y + 4 * ui);
+  }
+}
+
 // Alerts off screen (FIX-12): a red arrow at the screen's edge toward the newest alert (for
 // 20 s, like its minimap ring) and toward every strike still on its way, with what it is and
-// how far. Tapping an arrow looks there (tap); J still jumps to the newest alert.
+// how far; an amber one toward each supply cache waiting (OBJ-02). Tapping an arrow looks there
+// (tap); J still jumps to the newest alert.
 function drawEdgeMarks(ctx, b, width, height) {
   const alerts = [];
   if (mission.lastAlert && b.time - mission.lastAlert.at < 20) alerts.push(mission.lastAlert);
   for (const strike of b.strikes) {
     if (strike.hit || alerts.some(a => Math.hypot(a.x - strike.x, a.z - strike.z) < 20)) continue;
     alerts.push({ x: strike.x, z: strike.z, text: strike.source === "lightning" ? "Lightning strike marked" : "Artillery incoming" });
+  }
+  for (const cache of b.ops?.caches || []) {
+    const near = alerts.findIndex(a => Math.hypot(a.x - cache.x, a.z - cache.z) < 20);
+    if (near >= 0) alerts.splice(near, 1);
+    alerts.push({ x: cache.x, z: cache.z, text: "Supply cache", color: "#ffb457" });
   }
   const from = mission.freeCam || mission.cam.focus;
   const ui = settings.uiScale;
@@ -1777,7 +1835,7 @@ function drawEdgeMarks(ctx, b, width, height) {
     mission.edgeMarks.push({ x: edge.x, y: edge.y, alert });
     ctx.save();
     ctx.translate(edge.x, edge.y); ctx.rotate(edge.angle);
-    ctx.fillStyle = "#ff4a3a"; ctx.strokeStyle = "rgba(6, 8, 16, 0.85)"; ctx.lineWidth = 2;
+    ctx.fillStyle = alert.color || "#ff4a3a"; ctx.strokeStyle = "rgba(6, 8, 16, 0.85)"; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(14, 0); ctx.lineTo(-6, -10); ctx.lineTo(-2, 0); ctx.lineTo(-6, 10); ctx.closePath();
     ctx.stroke(); ctx.fill();
     ctx.restore();
@@ -1787,7 +1845,7 @@ function drawEdgeMarks(ctx, b, width, height) {
     const ly = Math.min(height - 14, Math.max(14, edge.y - Math.sin(edge.angle) * 24));
     ctx.fillStyle = "rgba(6, 8, 16, 0.78)";
     ctx.beginPath(); ctx.roundRect(lx - w / 2, ly - 10 * ui, w, 20 * ui, 10 * ui); ctx.fill();
-    ctx.strokeStyle = "#ff4a3a"; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.strokeStyle = alert.color || "#ff4a3a"; ctx.lineWidth = 1.5; ctx.stroke();
     ctx.fillStyle = "#f1f4ff"; ctx.textAlign = "center";
     ctx.fillText(text, lx, ly + 4 * ui);
   }
@@ -1845,6 +1903,10 @@ function drawMinimap() {
     ctx.strokeStyle = "#ff4a3a";
     ctx.beginPath(); ctx.arc(sx(strike.x), sz(strike.z), 4, 0, Math.PI * 2); ctx.stroke();
   }
+  // Supply caches (OBJ-02): a filled amber dot once down, a ring while one is landing.
+  ctx.fillStyle = ctx.strokeStyle = "#ffb457";
+  for (const cache of b.ops?.caches || []) { ctx.beginPath(); ctx.arc(sx(cache.x), sz(cache.z), 3.5, 0, Math.PI * 2); ctx.fill(); }
+  if (b.ops?.pending?.kind === "supply") { ctx.beginPath(); ctx.arc(sx(b.ops.pending.x), sz(b.ops.pending.z), 4, 0, Math.PI * 2); ctx.stroke(); }
   for (const event of b.hazards.events) {
     if (event.kind !== "eruption") continue;
     ctx.strokeStyle = "#ff3a1a";
@@ -1984,6 +2046,10 @@ function handleEvents(events) {
       const pod = b.pods.find(p => p.id === event.pod);
       if (pod) { mission.selected.add(pod.squad); updateSquadBar(); }
     }
+    // Mid-mission events (OBJ-02): announcements, attacks and arrivals toast from the battle log.
+    if (event.kind === "operation" && event.type === "supply" && event.phase === "landed")
+      toast(`Supply cache down: ${event.matter} matter for the first drone to reach it. Tap to look.`, "good", 5000, () => { setFollow(false); lookAt(event.x, event.z); });
+    if (event.kind === "operation" && event.type === "supply" && event.phase === "collected") toast(`+${event.matter} matter from the supply cache.`, "good", 3000);
     if (event.kind === "recovered") toast(`${droneTypes[event.unlock]?.name || event.unlock} recovered! It is in your drop menu now.`, "achievement", 6000);
   }
   for (const entry of b.log) {
@@ -2030,6 +2096,7 @@ function finishMission() {
     ["Lost to hazards", s.hazardLosses], ["Zones captured", s.zonesCaptured], ["Defenses destroyed", s.defensesDestroyed],
     ["Matter gathered", Math.round(s.matterHarvested)], ["Hazards weathered", s.hazardEvents], ["Peak alarm", Math.round(s.alarmPeak)],
     ["Recall/cancelled cargo refund", `${b.refund} matter`], ["Matter in the bank", progress.matter], ["Difficulty", difficultyOf(b.difficulty).name],
+    ...(b.modifiers?.length ? [["Challenges", modifierNames(b.modifiers)]] : []),
   ];
   $("debrief-stats").innerHTML = rows.map(([k, v]) => `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd>`).join("");
   $("debrief-notes").innerHTML = [...applied.notes, ...earned.map(a => `Achievement: ${a.name}`)].map(n => `<li>${escapeHtml(n)}</li>`).join("");
@@ -2051,7 +2118,11 @@ function retrySettlementSave() {
 }
 $("settlement-retry").addEventListener("click", retrySettlementSave);
 
-$("debrief-retry").addEventListener("click", () => { const planet = mission.planet; $("debrief").close(); startMission(planet); });
+$("debrief-retry").addEventListener("click", () => {
+  const planet = mission.planet, modifiers = mission.battle.modifiers || [];
+  $("debrief").close();
+  startMission(planet, null, { modifiers });
+});
 function returnToGalaxy() {
   $("debrief").close();
   quietSound();

@@ -1,0 +1,247 @@
+﻿date,commit,assistant,via,subject
+2026-09-20,69da51ba585e2f2ee5db3280846fb5daea90fb10,Unattributed,,Build Dragonfly Titan GCS demo
+2026-09-20,72f5e650bccc039c35dce8eb8f30f85fe5ea0cd6,Unattributed,,Add switchable pilot camera view
+2026-09-21,0279ae8c43aefd7febde7971e1cbed65d1115b11,Unattributed,,Correct Dragonfly deck and rotor silhouette
+2026-09-21,08dbe2b67ba634fe14b7fbff462fbf1cde5d8dbe,Unattributed,,Refine Dragonfly model and Titan flight view
+2026-09-21,1f8f3a73fba153c6f559ac01280d507817b5a029,Unattributed,,Update Site source
+2026-09-21,2e201183a1d111abf5590699293dc96678ad9005,Unattributed,,Update Site source
+2026-09-21,3f8e1e46e6fe7042ca2b6b417b3dc42e14c2a303,Unattributed,,Add fixed and free chase cameras
+2026-09-21,4127d7ced012c895149d7f8ea05efdec5913a04c,Unattributed,,Render tapered coaxial rotor blur
+2026-09-21,689041318756b9588043534f616e60471866c6d6,Unattributed,,Stabilize live canvas layout
+2026-09-21,b89a7f82cc1174705a646ad3d79cb1406ae86d8a,Unattributed,,Publish simulator through GitHub Pages
+2026-09-21,e12fe96094a6a1c141ba3c409294a22bcf1f5334,Unattributed,,Add Titan ridge scenery asset
+2026-09-26,bd37a532f27f5e4c7449f74c7b11bf03526394e9,Unattributed,,Ground terrain rocks and unify engineering-aware flight views
+2026-09-27,25d021093ce16f580bd4d62490f6a139e3b4e1a7,Unattributed,,Add sourced thermal diagnostics and shoreline survey mission
+2026-09-28,10304020254c6f1d37bdf8a0671f2f57f1589a09,Claude,co-author line,"Add motor preheat, daylight comms, flight endurance and wind stress labels"
+2026-09-28,31827cd56005f3462854870a520f6b356420eb8b,Claude,co-author line,Version module and stylesheet URLs so phones load fresh files
+2026-09-28,3bb6cd4e4191bb59a2719137b05abe0c3cb37180,Claude,co-author line,"Smooth flight controls, fix mode-change jumps, and rebuild phone layouts"
+2026-09-28,4fbc0c9297ea01c100133820c9d84989720abedd,Claude,co-author line,"Add signed change log, build label and automatic version stamping"
+2026-09-28,4fd40369961bd84c5e70cf659cba845d2991036f,Unattributed,,Center fixed chase camera behind aircraft with slight elevation
+2026-09-28,541a05fa268e7f4670de38bb3d4fa37a166c237f,Claude,co-author line,Replace the fictional lake with a rain-darkened interdune and methane puddle
+2026-09-28,74ed2c4c34385a7066fdad3f3fa2d2ca59a875d6,Unattributed,,Refine Titan thermal and flight models from published research
+2026-09-28,96cab59b234d3c40005c0b545c08ab47ac7f6622,Claude,co-author line,Add autonomous flight planning with leapfrog scouting
+2026-09-28,9abab562b89a49e0f903b8f6370af3f8bf9b7b52,Claude,co-author line,Add a redirect page for retiring the ChatGPT Sites copy
+2026-09-28,9ac134f5fdead8c99e534302387b6fa780928b24,Claude,co-author line,Clean up heat-exchanger reference images
+2026-09-28,b26e8028c9159420c64942eaf9f924bef8e7c11a,Claude,co-author line,Add Titan haze lighting and a raise-and-stow high-gain antenna
+2026-09-28,b724b4b935a77c845aaf54e88bccb375649c50b7,Claude,co-author line,Reword heat-exchanger figure captions and study notes
+2026-09-29,04a1dc06ebd610b74281ba195c60c255b5df6139,Claude,co-author line,Zoom out on the parachute phases of the arrival sequence
+2026-09-29,14a95cbee42f34ef4257f14ca8e9fe1d329d3cf5,Claude,co-author line,Add internal and thermal vehicle layers and link Mission and Pilot readouts
+2026-09-29,25cf2f1cd31ff8be765c62f72359c87f0befed7e,Claude,co-author line,Make the Pilot view panels see-through and compact on phones
+2026-09-29,283de670e44b5025442be8405553387ee918ea2a,Claude,co-author line,Add labeled mock-up internal and thermal views for the original model
+2026-09-29,2f0a0b7ef40556673ed13fd083f74c79262f6074,Claude,co-author line,Split app.js into focused ui/ modules without changing behavior
+2026-09-29,4cc92f8b51175d048f85dc3aa6e25c86e8245b37,Claude,co-author line,Add search metadata and a sitemap
+2026-09-29,51c464994ccbfa68f40a00c9cd76cf0636b3d92a,Claude,co-author line,Record the new tboy450.github.io home page in the change log
+2026-09-29,63eb373c20dbb22c072e7417de8efcd6f4e17cbe,Claude,co-author line,Confirm Start over with a second tap instead of a popup
+2026-09-29,64b948e8b0b9138c6d35a39c606210bd77219780,Claude,co-author line,Keep the frame loop running when the view has no size
+2026-09-29,8dea7fb67b62c164d50ed69bbea712455e3aaf9a,Claude,co-author line,Model the battery's phase-change wax buffer
+2026-09-29,8ec910bec493d20336069c9b49ae3fc6e7e5e01d,Claude,co-author line,Archive the classic sharp-peak terrain style
+2026-09-29,9126262fa47e24d6351c3ce26467a9da5accca7e,Claude,co-author line,Add an architecture and handoff guide
+2026-09-29,93254c2cbeb549062c050fdeae7bfc535d6c128a,Claude,co-author line,Add a research-based Dragonfly model and fix land-now timing
+2026-09-29,9bd7326601f08afe74650cd77fc049ddb7063924,Claude,co-author line,"Add the arrival-at-Titan entry, descent and landing sequence"
+2026-09-29,9f13ed3aa70ce1b2ffd4dcd240b87c24bd323290,Claude,co-author line,Smooth the far terrain and recenter it without a stall
+2026-09-29,a39584a51fd591c55c2528344f890f959b93b93d,Claude,co-author line,Save mission progress in the browser
+2026-09-29,a6571b6b0f82a9c3bc59985741fe6ad773e5eee3,Claude,co-author line,Rework the arrival sequence graphics and camera
+2026-09-29,b020f3bc59f2084c632cd4098510d357de02d8d2,Claude,co-author line,"Make the science instruments produce data, samples and results"
+2026-09-29,b3f56b74e8ecd2203914b8bcf4c93e4d059d8bcf,Claude,co-author line,Add a Start over button that replays the landing
+2026-09-29,e493c64aad29c7ee35f86f2c666bd79c6b934f24,Claude,co-author line,Move the research model and arrival hardware out of chase-vehicle.mjs
+2026-09-30,3d413ab34beed961f7ef809e099132806ae31b05,Claude,co-author line,Archive the mountain-basin map before the landing-area change
+2026-10-04,0c9e50691855286da03952b11b359dad766371d0,Copilot,co-author line,Add Titan weather and optional reverse braking
+2026-10-04,5a5b98e74bff97b504082b79881c50aa8f206b15,Copilot,co-author line,Add first expedition and improve temperature views
+2026-10-04,af36b5c8c2146c83018b9f50e06f966fabb0309f,Codex,co-author line,Fix survey science results and sampling hibernation guards
+2026-10-04,e27369ba43815cee3fc330d100cfb8fa16c5aeae,Codex,co-author line,Commit landing-area dunes and arrival camera framing
+2026-10-08,03581eb3330117e65dee880a8b65b0358ce6fbd9,Claude,co-author line,"Show how the warm-air loop moves, is regulated and is measured"
+2026-10-08,1abb8ad60e9d48adfbfe25ebed8eb6906eb63dac,Claude,co-author line,"Refine the NASA model's rotors, fins and skids"
+2026-10-08,417c91bf405a8b672a916a12aaec29dd1af6a5b5,Claude,co-author line,Add rotor-wash dust and Titan acoustics
+2026-10-08,62a129d6185ed58e9b7e09c4cf746050a5563cf3,Claude,co-author line,Give each Mission layer its own backdrop
+2026-10-08,775b5027de3468cc546a26ea5746e67f0c8889f6,Claude,co-author line,Finish the Ahmakiq Undae landing area
+2026-10-08,8090e0e26f83dcb0835cd1b6c67324e7829f251c,Claude,co-author line,Settle the lander onto sloped ground and wake after sunrise
+2026-10-08,849dff2e202e3cce009fa58bc67836143b0f0a78,Claude,co-author line,Add an optional synthesized soundscape
+2026-10-08,9349ed157f5fadd860566d7c887dcb30771f2b26,Claude,co-author line,Add a time-scaled Titan day cycle
+2026-10-08,c6a7f07cd855f2a0fe8320020035e6b8d509942b,Claude,co-author line,Archive the Mission backdrop drafts
+2026-10-08,d34eb0809a11d7c7dac02e550812434b538d7ae1,Claude,co-author line,Add the archive-everything house rule
+2026-10-08,efdf95407c06522d7e80a6997762f6bf155b4267,Claude,co-author line,Archive the paddle rotor blades as an asset
+2026-10-09,3b0dfc36ba452306f7f1f5c8a91ccec7eb0a4fad,Claude,co-author line,Add a white grid to the Titan-air thermal backdrop
+2026-10-09,665a6699aed6199f99ffb7ea8968bd47bb9d53ee,Claude,co-author line,Make the Exterior backdrops more detailed
+2026-10-09,7c96bdcdfa2b2553c0913caabda648a538012dbd,Claude,co-author line,Add light-grey and yellow-grid backdrops for Thermal and Internal
+2026-10-09,aaf13493b43f89eeac88c7131e0b8bb08f9d9bb4,Codex,co-author line,Restore scrollable Pilot page and finish review fixes
+2026-10-10,19c05566ed638809f54a47c19997f58fe0b24e3e,Codex,co-author line,Use cinematic NASA imagery for Exterior backdrops
+2026-10-10,231b2218b45659cdfe86164cd70a46abf80c74d8,Codex,co-author line,Record official Dragonfly sources and model references
+2026-10-10,ac79847261bac47e0adb75d495bcce838bbed6b1,Codex,co-author line,Add sparse mountain landmarks and park the clean-room portrait
+2026-10-11,03ac4cff0b386f98b4a5e1134f07431cdfed2700,Codex,co-author line,Refine Dragonfly inspection model and add credited references
+2026-10-11,8b12b3c917e0e3077fffcd976ef9909cccfa0848,Codex,co-author line,Animate state-linked Dragonfly sampling sequence
+2026-10-12,0886e40ab8646788ebbfedff37124ac6ac100694,Codex,co-author line,Add surface operations queue and interior realism checklist
+2026-10-12,1ab20bcaeea8755c0f46d1b8a1e971a44c21db3e,Codex,co-author line,Add science profiles and expandable mission sections
+2026-10-12,3387a30c457c1bcfeba8841b880d086f8be2a087,Codex,co-author line,Rebuild sample carousel from NASA integration references
+2026-10-12,80242ee51996f0feeab5c2265146d8234b5afc9a,Codex,co-author line,Refresh rebuilt instrument neighbor notes
+2026-10-12,a115d4a9015bb6ea8034bccbfda3d5e03bf71a03,Codex,co-author line,Add interactive inspection and bounded reverse assist
+2026-10-12,ade916f92e45c964e8deeed2e9d66d2b8441c042,Codex,co-author line,Rebuild Wonderwall interface with separate inspection layers
+2026-10-12,bc527e83e7809132b34e87175b12aaba77971321,Codex,co-author line,Rebuild DraMS enclosures and aligned inspection interface
+2026-10-13,16b1f1091abcdc5d4d69f3db84f1743348748219,Claude,co-author line,Rebuild the nose cameras from the DragonCam paper
+2026-10-13,18207995b354665433e61a1f4889393e3de21787,Claude,co-author line,Save the paper figures and patent drawings behind the rebuilt parts
+2026-10-13,439f0443a6e221f3540c77249707b636334f7b9c,Claude,co-author line,Rebuild the lower DragonCam cameras from the 2026 camera paper
+2026-10-13,47c776a0e63379d60b780403c6a7a6ebe055364c,Claude,co-author line,"Update model assumptions, footer and part references"
+2026-10-13,512169051b708ed9389b29fc5131bccf6308cd36,Claude,co-author line,Rebuild the power switching units from NASA/APL's testing photo
+2026-10-13,5710749eee08953a2359eddb06e8cd58a4f18c5a,Claude,co-author line,Rebuild the DrACO drills from the LPSC 2022 drill figure
+2026-10-13,6a8b0812d3097e9349ae3e6fd806f663cec79343,Claude,co-author line,Correct the IEM and PSUs from full-resolution photos and connector standards
+2026-10-13,71bbe3b7709b877be00986084ddaa83fff7f0491,Claude,co-author line,"Describe detail capture as the goal, with techniques as examples"
+2026-10-13,7a78f8fa00079c40e71f5003158ecc8af0fc50f3,Claude,co-author line,Link the DrACO paper from the drill's component sources
+2026-10-13,7ee774bdc7d64dc7a351fcd7d5ca8c6bbf534dbe,Claude,co-author line,Rebuild the Frontier radio from APL's photo and published slice size
+2026-10-13,8dfe691c88f46349f5292f7e685a81adee319a12,Claude,co-author line,Restore the original assumption wording and archive the earlier text
+2026-10-13,abba3af5c0f045de3f2b916b9f2c71a592fefc77,Claude,co-author line,Record the interior part-rebuild process and handoff notes
+2026-10-13,bb82b607c1e313ba589ad0095ff12cb6717a3395,Claude,co-author line,Rebuild the IEM from NASA/APL integration photos
+2026-10-13,c23f3d92749e8db4a30b1545d01715064c9885c9,Claude,co-author line,Keep the app's assumptions and part references current with each part
+2026-10-13,c36db54424bef1d18cb14918a526d81733ee75ea,Claude,co-author line,Keep the research-PDF rule entry neutral
+2026-10-13,ceab34a16cadc37a47053fc4c0532ad9d0c18d93,Claude,co-author line,Reword the research-PDF house rule
+2026-10-13,d40180fe5cb1aa641e553ec4f07f659b8230a668,Claude,co-author line,Add the placement rule and placement status table
+2026-10-14,0104106c337c0f9ed3cdf9f91118e87158fff30a,Claude,co-author line,Draw the antenna's spiral slot pattern from NASA's test-chamber photo
+2026-10-14,6e04ef1e6a54f6ec3267624fdfe941621efbf0bc,Claude,co-author line,"Rebuild the fans, warm duct and trim device from the TFAWS thermal talks"
+2026-10-14,b2ac24a146e9844e58f5a827e0b37f92b4c6cfe7,Claude,co-author line,Give the antenna face a Kapton sheen and keep its slots sharp at grazing angles
+2026-10-14,c2fbefd0bff92538bbcb196ad9a13768208d8bdf,Claude,co-author line,Rebuild the TWTA after published flight amplifiers
+2026-10-14,caec79e40157cdcac9934bda54ff4199de6dbad0,Claude,co-author line,Fix the fans' verb in the warm-air loop panel
+2026-10-14,cceb29a018c2647fb37a241e6ce0bd4c8d8995e3,Claude,co-author line,Rebuild the DrACO sample lines and blowers from the DrACO layout figure
+2026-10-14,e43fc855535417e96f9cd9d06b8562095f678c87,Claude,co-author line,Add a part-by-part assumptions list to the engineering references
+2026-10-14,f20648c2d1cf7cb6162b829d780a88da027aec13,Claude,co-author line,Rebuild the antenna gimbal and arm from the thermal papers and APL's arm photo
+2026-10-15,203bdad33f5721abb244af0783b0ffca3aa9c52c,Claude,co-author line,Rebuild the battery from APL's test-module photos; add Codex's provisional RDE enclosures
+2026-10-15,436136750ab8ca51ef2f324644faba8f754da8cd,Claude,co-author line,Redraw the rotor heads from the Revolutionary Rotors video
+2026-10-15,73c83e6f4ace4b219a8a2075a637114d7cf6b7b5,Claude,co-author line,"Add Swarmfall, a drone invasion campaign game built from the simulator"
+2026-10-15,8b2399b937c7f58c1303989bc5a90a32cee71918,Claude,co-author line,Send mistyped or decorated game links to the game from a site-wide 404 page
+2026-10-15,92ab0c4ed6b22a34f99233c93e2ad56020980cb7,Claude,co-author line,"Add scroll, pinch and button zoom to the pilot view's free camera"
+2026-10-15,f1e9072045b750d6ee2d7353d674272d9b7376cd,Claude,co-author line,Record the hexagonal arm-shoulder fitting as a future update
+2026-10-15,f45a08a4d364a0b4af4285a4a4f28cb40f6631e6,Claude,co-author line,Pin the part numbers to their parts and stop them jumping as the view turns
+2026-10-16,0aa7b87e591eac523961ca6e83a5d57d20723a83,Codex,co-author line,Add source-city previews and preserve reviewed coastal foundation drafts
+2026-10-16,2f7d83f801e88ee8eee2dac1beecaca9647ac654,Codex,co-author line,Implement Blender raycast foundations on the preferred low coast
+2026-10-16,598e3b9d9030daaac6cb7883319151fc29ec6e0c,Both,co-author line,Add Codex's Swarmfall Environment Lab and city research
+2026-10-16,eed63b12cb4b7cd2b591642fcdd3ee204912cd31,Both,co-author line,Complete Claude's aft bulkhead and independent inspection layers
+2026-10-16,f2161621a3f54cce8014633de7c5cd342ae5e41f,Codex,co-author line,Save and resume Swarmfall missions and expand campaign checklist
+2026-10-17,45fb8bc6172cdc00f732c2f50d005c5eb031d00f,Codex,co-author line,Publish Asset and Environment Lab with asset inspection
+2026-10-17,7d6273881a2dcbfd572b705045fab8e7073c7623,Codex,co-author line,Rebuild EFIELD probes from published engineering-model references
+2026-10-18,9f3fea1fe61bd635d0ee2ec956fae3dccd4af0bd,Codex,co-author line,Complete part 22 with approved METHAN design approximation
+2026-10-18,e133dbf96ebdfcce768999cced3571c29226c73d,Codex,co-author line,Inspect individual part-22 probes and record METHAN reference gap
+2026-10-19,0ce4428da4f01bfebafb9a9d0ede4cf962e3eeba,Codex,co-author line,Harden Swarmfall checkpoint validation
+2026-10-19,0fc30b745a9a0c5b78b0eb2471830c15aca81da0,Codex,change-log signer,Record inspected Ocellus and SQRLi hardware evidence
+2026-10-19,11c0b313f2939a4fa743e2b825d6866458313862,Codex,co-author line,Record public RDE inspection acceptance
+2026-10-19,1a2be64fcbd058bb0001ba49449e6509d1a6478f,Codex,co-author line,Trace Ocellus hardware families across related NASA projects
+2026-10-19,204fb0f3ca383e55180377263572cfdfdb3469d6,Codex,co-author line,Refine Scout hull and recessed sensor housing
+2026-10-19,47281699e4bb8884ebe403479d7e419b49e29454,Codex,co-author line,Prepare small asset batches and geometry baseline
+2026-10-19,514241beb24249663301323a69e810c0fc7fbe7d,Codex,co-author line,Record live Ocellus model verification
+2026-10-19,51d063dd4e2546ef5607afac5a59e928e510fefa,Codex,co-author line,Add approved Ocellus outer-structure approximation
+2026-10-19,5220223983b8c26721aefd21859578482000bdcd,Codex,co-author line,Explain Hold when no squad is selected
+2026-10-19,564f000fc1725446ad88a0431175045058a87c45,Codex,co-author line,Clarify Swarmfall neutralization objectives
+2026-10-19,5b05c32aa0c0ca607722a4e9bb3e88776caf377e,Codex,co-author line,Deliver multi-pod squad waves and clean battlefield view
+2026-10-19,5d85fd05b9c239da1b88119777bca9bece54a688,Codex,co-author line,Add individual RDE inspection and supplier evidence
+2026-10-19,7ab195e50426ebd77fed3ad134d5838008fc980c,Codex,co-author line,Add original and polished Scout lab comparison
+2026-10-19,81177edf96ed205d76428a5be839c6fe486dd474,Codex,co-author line,Add protected Swarmfall save recovery and export
+2026-10-19,8632674a66d3284b4b8cec0f89ae7b8cd467ca34,Codex,co-author line,Improve provisional nose panel and record real CAD model comparison
+2026-10-19,9e647baf1f84e6dbe708125906c6fdd86b6e7882,Codex,change-log signer,Add photo-referenced MIMU family assets and Ocellus dimension study
+2026-10-19,9f6920575514969d917518b289f321b85f0a4a48,Codex,co-author line,Separate desktop selection from battlefield orders
+2026-10-19,ac2ba157fa5fe2f99f14186747d6e3db1cb09489,Codex,change-log signer,Record part-05 public deployment verification
+2026-10-19,bde836a1211e02e1315f05d2fd1f7d65eaee6b52,Codex,co-author line,Keep tiny friendly drones visible with squad markers
+2026-10-19,cf4c866646e96bc68c4db83700255689b4913c2d,Codex,co-author line,Add smoke and fire to lab destruction previews
+2026-10-19,ede71e4a52d6f321abeb17b73554e20c1d484af5,Codex,co-author line,Preserve Swarmfall command state across resume
+2026-10-19,f1ad9191887765712dee5b7d3c0b3e0626696b77,Codex,co-author line,Offer victory extraction and settle mission results once
+2026-10-19,f31d291a9d2cc05434b54d616a54758b63393fa0,Codex,co-author line,Record Swarmfall priorities and free-roam design
+2026-10-20,21ded4e752dc4c307b2d579004a50f0603a74d6f,Codex,co-author line,Record public battery annotation verification
+2026-10-20,28197a2c0444c0476cf4538f1f2a87cdb4f5f4db,Claude,co-author line,"Add the photographed frame, port fitting, Kapton and clips to the Wonderwall"
+2026-10-20,3ff49b55b28f698902de19e5fc4464123819d59f,Codex,co-author line,Clarify battery temperature annotation and inspection context
+2026-10-20,52dc4a81207c2af056bdb0ac40cc70f57baa7ce5,Claude,co-author line,Record the harness photo study and next step in the checklist
+2026-10-20,6793b49e3d119b3c1e38d6e2bdf7c7c2c4ae83d5,Claude,co-author line,Add kit-built lab worlds and rebuild Metropolis from modular parts
+2026-10-20,8d871a53894fa4015b8a4c1a720d484c81516c70,Claude,co-author line,"Add DraMS's photographed blanket, valves, brass cylinder and wiring"
+2026-10-20,8dad2eafa01bd74499f0e85936edcdc9a362949c,Claude,co-author line,Show part 21 as a fin-root annotation on the MMRTG instead of a floating sphere
+2026-10-20,9c2eaef29747f29d04bc20c0ff96e403f861574c,Claude,co-author line,"Record the owner's note on missing Wonderwall, DraMS and connecting detail"
+2026-10-20,a3e12346dc1c9382e5dbb88b7cd1cbfb3a72a026,Codex,co-author line,Collapse phone battlefield panels after first capture
+2026-10-20,a7261bb12ee33100fec92fa9902a2dbffa2d87d5,Codex,co-author line,Give squad orders from the minimap
+2026-10-20,a796b69e479f674b35ed38cd450b23465e538b78,Claude,co-author line,Draw the arm shoulders as the machined hexagonal fittings from the frame photo
+2026-10-21,28436087aac55bed37cfd4bfb5f440ed2648e214,Codex,co-author line,Record battery sensor public acceptance [skip ci]
+2026-10-21,3b7f82d1c54075655526bb15bd31dd8aa82a3965,Claude,co-author line,Lay the main wiring harness on the bay floor from the September wiring photo
+2026-10-21,46c4814b2bad43736f6f19dc8c8f5cdb94ae6f72,Claude,co-author line,Lay strands with the harness trunk and add two cross-floor bundles
+2026-10-21,5f9e1bbbd04c3afa8b97fe449a823ad6340deae6,Claude,co-author line,Add Frontier mode with Corvan Frontier and return campaign Corvan to its snowfield
+2026-10-21,6189cd897a863a9935eedba2b445dc2efdab061e,Codex,co-author line,Add reference-based fin-root RTD and close initial part list
+2026-10-21,6276276c1c7115379ad3057ff91b2804dea259ba,Codex,co-author line,Record fin-root public acceptance [skip ci]
+2026-10-21,83ff28af7f3ff6873dc05fc75bc32a9d620b41c6,Codex,co-author line,Add reference-based battery sensor and detailed interior roadmap
+2026-10-21,9027d1352b2d84f838bba6a94989c95ba42917b3,Claude,co-author line,Close out the rotor drive electronics as an owner-approved approximation
+2026-10-21,9b7739923644cababf55b4b71f1fd4010acacd88,Claude,co-author line,Build a city district into Corvan's planetary map
+2026-10-21,bc31d9b83360ec40f611d310b4ee5e14e209662d,Claude,co-author line,Add the RDE archive row to the archive index
+2026-10-21,e26d1330d1f9b404754c38bff292d9163d5fb1d1,Claude,co-author line,Close out the nose bulkhead as an owner-approved approximation
+2026-10-21,e7f7993f28d3170e130f7540ae3f79d8435e5643,Codex,co-author line,Add RDE service loops and independent harness inspection
+2026-10-21,ed9f6b973be0628f12f7989928e9b3c3b1615ed4,Claude,co-author line,"Add the carousel's photographed foil-wrapped unit, valve block and wiring"
+2026-10-21,f1c6129c4f269ef9b7c9a10455501acb4471f54c,Codex,co-author line,Record public RDE service-loop acceptance
+2026-10-21,fbf08c17012d5477ead4f1eb7e72dcd75f00b9f3,Claude,co-author line,Extend the harness up the walls to the TWTA and gimbal and back to the fans
+2026-10-22,1baa16175f77c1745bb932694e538c5188307a80,Claude,co-author line,Make Aurex's skyline solid and look further ahead when climbing
+2026-10-22,23f3ac45b385819754c90d0e898a57801b828af4,Claude,co-author line,Move the publish workflow to the Node 24 Pages actions
+2026-10-22,25a1daec625032ea32a89a18deb8fccc622bbd7a,Codex,co-author line,Add sourced starboard structural wall inspection
+2026-10-22,27f163fe8d20cd333eb98a4578f81e1bfdc43bd7,Codex,co-author line,Record top deck public acceptance [skip ci]
+2026-10-22,43f6e2124aa1a64245ae49a4614688c526f0bf86,Codex,co-author line,Add sourced top deck and attic edge inspection
+2026-10-22,9f6f2433116c783bd152c18c80c6c5ea5f5a2b58,Codex,co-author line,Rebuild MMRTG exterior and add generator inspection
+2026-10-22,b4559dc44b6cb3401a633bccf96fee055352bd7c,Codex,co-author line,Record MMRTG public acceptance [skip ci]
+2026-10-22,d1343f2e8f566c280672f1e15d2b0df282f2cac2,Codex,co-author line,Add port structural wall and estimated end joints
+2026-10-22,dcfc5fe0c98e90a5f7973db233604965edc5c537,Codex,co-author line,Record structural wall public acceptance [skip ci]
+2026-10-22,e5625ed8f06c3d1fa5165727416d9c9a3533eb8c,Codex,co-author line,Separate body insulation into five removable inspection surfaces
+2026-10-22,eaa630e914c375378d33211458d8f541189978d5,Claude,co-author line,Add a Campaign planets world to the Asset & Environment Lab
+2026-10-22,ef3b4296d6fe3d5aca50abaf2189832ade850d83,Codex,co-author line,Record body insulation deployment and verification limits [skip ci]
+2026-10-22,f14f2f0f6ad8c37072aae6e21e5cfecec38605b6,Claude,co-author line,Point the lab planets archive at its rebased baseline commit
+2026-10-22,fb401f732c279f34914905a7c4149cef9538be2e,Codex,co-author line,Record port wall and joint public acceptance [skip ci]
+2026-10-23,4930d3429ceacbd2c88557db0f383f734843f6d9,Codex,co-author line,Version all renderer imports consistently
+2026-10-23,4d377633cd7936a2f87c0d4ab00ca092807faa4e,Codex,co-author line,Record live camera-harness acceptance [skip ci]
+2026-10-23,59a03b9176377b7198dd934abbab1ff98f56f60e,Codex,co-author line,Update Lab renderer import contract for release stamps
+2026-10-23,905bc0562c66a567cb88ba40f72f73a98c906352,Codex,co-author line,Record insulation release and public acceptance limits [skip ci]
+2026-10-23,a4ed215fbe464da7226ae3879c4d2ec27b0ef4a4,Codex,co-author line,Audit bay endpoints and finish lower-camera harness installation
+2026-10-23,a9fb571efe17588a05b68410cd4f39d903fdfc73,Codex,co-author line,Add attic and local insulation access with open interior preset
+2026-10-23,e4ffe5ddfb16f1b5af651e8f7a66eb8d3fa050df,Codex,co-author line,Record live attic-line acceptance [skip ci]
+2026-10-23,faf4fbd67cab17bb90714214e4cee7734937fb4c,Codex,co-author line,Separate attic line media and support the DraMS local wire
+2026-10-24,08e0a6db71ee4050c5591341fddd04621856339e,Codex,co-author line,Record live carousel-drive acceptance [skip ci]
+2026-10-24,19b379f2272983090dafe2d272fda7f5ecbc2487,Codex,co-author line,Refine IEM upper service pair with preserved endpoints
+2026-10-24,38f297e0d152cd04b5006d779526d9e4bceac73d,Codex,co-author line,Refine IEM lower service pair and preserve upper installation
+2026-10-24,7a50d2e13c4fe93f232d81ff2bac3a2335f90bcd,Codex,co-author line,Record live IEM upper-pair acceptance [skip ci]
+2026-10-24,b83d9eb20f5f042108adb6c971962ebe1ac5e0fc,Codex,co-author line,Record live lower-IEM acceptance [skip ci]
+2026-10-24,c3b219910d7df9b98363026b815d6b5d679f569c,Codex,co-author line,Add sourced sampling-electronics coverage and inspection links
+2026-10-24,d3fe35d07ba45678b7ed85547dd11895b5344021,Codex,co-author line,Record live sampling-coverage acceptance [skip ci]
+2026-10-24,d9033df81bc7efdeef70f888e8f3dc1d1a4e8602,Codex,co-author line,Refine carousel warm drives and local lead examples
+2026-10-25,00d32beda3df9f203359bbdfb5a029b75976d1fc,Codex,co-author line,Refine IEM columns five and six and add touch inspection pan
+2026-10-25,051c9d9b940de9018e234afb0a31ec94feb6cec1,Codex,co-author line,Improve inspection wheel zoom and layer layout
+2026-10-25,09e58ebc3877ddbdd37f8455faf23a4aedd19f85,Codex,co-author line,Refine third-column IEM upper leads and preserve completed routes
+2026-10-25,0a7b5902e83016cfca4e5a93e919a31253ff7daa,Codex,co-author line,Record third-column upper publication receipt [skip ci]
+2026-10-25,24915589938146ede4fd858fd9477e2e172b3981,Codex,co-author line,Refine third-column lower IEM routes and preserve reviewed hardware
+2026-10-25,31afae885b9b20f0866378c459dfe25175c3b308,Codex,co-author line,Add five-family avionics installation supports and coverage
+2026-10-25,3e21c5e7a863ea915e5fa2c994d9e68d4e878a96,Codex,co-author line,Record inspection pan publication receipt [skip ci]
+2026-10-25,693390808d5c42d4d5aed80fa2e875022ad91078,Codex,co-author line,Refine IEM second-column routes around the completed middle lead
+2026-10-25,7cb0d320e8e5b3624a7e7ae4a96d5d919fb9c91c,Codex,co-author line,Record fourth-column publication receipt [skip ci]
+2026-10-25,88715f8dea9a0fbbb79b0afd19ffe98feca36798,Codex,co-author line,Record live IEM middle-lead acceptance [skip ci]
+2026-10-25,95d5f898a91ceacfddabcbebe326580465cacdc0,Codex,co-author line,Refine IEM middle-lead service route and preserve completed fittings
+2026-10-25,a2a055c1f94c579a9ae98771ca87b336126cc294,Codex,co-author line,Record IEM five-six publication receipt [skip ci]
+2026-10-25,a68e08abc942dd7339e55557ef6e15e0daf09097,Codex,co-author line,Add right-drag inspection panning
+2026-10-25,a9da566fed7b1a9e5b412b26ae4bab76c09cbe1a,Codex,co-author line,Record live IEM second-column acceptance [skip ci]
+2026-10-25,abad1f6173de37417a4b2e4c6da96d14a961cc08,Codex,co-author line,Record live five-family installation acceptance [skip ci]
+2026-10-25,c5e4b5855bd029e72027f299a58c9409d5ce5fd4,Codex,co-author line,Record third-column lower publication receipt [skip ci]
+2026-10-25,de2500a640695f33e60c0e06198c1e196bcc1394,Codex,co-author line,Record inspection controls publication receipt [skip ci]
+2026-10-25,e372a1b64c4258cf65f12989d3296b88fcc4b370,Codex,co-author line,Refine fourth-column IEM routes with shared reference evidence
+2026-10-25,f62b5ffd563236890d0e0fff5136a11f4f27e518,Codex,co-author line,Save settled IEM public inspection sample [skip ci]
+2026-10-26,020bfaeb811b4cf454698de1eabf658461292a7d,Codex,co-author line,Complete final IEM columns and approved lower refits
+2026-10-26,05cc35996b73165e42375f6754d0fee9d82c7ae0,Codex,co-author line,Record final IEM publication receipt [skip ci]
+2026-10-26,7538184a25650507465b2e4007c09049abdc56ac,Codex,co-author line,Fix IEM tag attachment and hollow terminal wraps
+2026-10-26,a67cb6f5a22bfe6d19cc08746475d33972858af5,Codex,co-author line,Record verified IEM cleanup publication [skip ci]
+2026-10-27,056de6c9b8d9c4fd2a7ffaee1e35e1b93c020d95,Codex,co-author line,Record audit publication and unfinished IMU support interface [skip ci]
+2026-10-27,0e5ca4205909a9d1b5c27bec69246a4dfedb3219,Codex,co-author line,Record verified drill carriage publication [skip ci]
+2026-10-27,143119947a50c4d0997862fc86e3984e3265e49e,Codex,co-author line,Record DrACO side inventory publication receipt [skip ci]
+2026-10-27,4f375be4eefdddba286182873ae10436cc207de4,Codex,co-author line,Add sourced DrACO side inventory and inspection targets
+2026-10-27,58148defaa0a8ea1d918b32c3c7906ea5c671e17,Codex,co-author line,Record verified fixed lead and inspector publication [skip ci]
+2026-10-27,5e25b65b0c1d8f36027f5a0aa00272fbca4bb3db,Codex,co-author line,Audit DrACO electrical evidence and supplier blower scale
+2026-10-27,6090dc750df0bc0e68ac74705f8030884427607f,Codex,co-author line,Correct upper drill drive seating and mounting relief
+2026-10-27,6a3d71fdaa7da3ededae8737337b5dd818a28fca,Codex,co-author line,Record drill feed-stage publication receipt [skip ci]
+2026-10-27,7db927e69a01192f4a29938a7dc9488395290be6,Codex,co-author line,Record live MEB connection verification and next handoff [skip ci]
+2026-10-27,8bca7a28fa94172fd3f79dde71fab8d576da6d36,Codex,co-author line,Number all inspection assemblies and pin labels to visible hardware
+2026-10-27,8c8d384d358897c1006aac4416174cd374540ccd,Codex,co-author line,Add fixed feed lead and numbered open-interior inspection
+2026-10-27,a075ce547a2d436031e675792cb92b6f7828d0a1,Codex,co-author line,Fit estimated MEB harness interface and shared inspection context
+2026-10-27,b27cb6e9c7a2f3f1e4b0ab95a0fa2a96329bc35d,Codex,co-author line,Seat DrACO shared return and verify both drill routes
+2026-10-27,b6fb179f766f1ff9ba63b4aab104d43133f6b506,Codex,co-author line,Add constant-length moving drill lead examples
+2026-10-27,c99f0dce9f71ba989cfe5f4773bf7144ba3f6607,Codex,co-author line,Record DrACO continuity publication receipt [skip ci]
+2026-10-27,cf714c6ea3787cf4aaae6167a72ab4ee722534cb,Codex,co-author line,Record verified upper drill drive publication [skip ci]
+2026-10-27,dc0ee8a3d29714ac351f562772c53408fddd3863,Codex,co-author line,Refine drill feed covers and paired dust bellows
+2026-10-27,e42240d9f6484fb428ba4bafdc171940c91dccf5,Codex,co-author line,Record moving drill leads publication and handoff [skip ci]
+2026-10-27,ee24ad0faa3216d9fdedc4205f8ad9fac6c43f1a,Codex,co-author line,Refine drill roller carriage and spherical lead nut
+2026-10-27,f9660cea3d0ca4fbb4f280fa8aba79af9cef2e90,Codex,co-author line,Correct navigation harness identification and unfinished interface note [skip ci]
+2026-10-28,4ffd00c709f5eff3a9185308ead03d3a98c50a21,Codex,co-author line,Rebuild DrACO blower pair from real supplier references
+2026-10-28,6de0fabb8e242916bd3139b4372d16e22a35977b,Codex,co-author line,Replace loose blower loops with compact supported tube runs
+2026-10-28,923828bd8f3b19a77644b784fd4b5896b3a08ca1,Codex,co-author line,Record live numbering and blower verification [skip ci]
+2026-10-28,a36255d8a0060b8cb17fd90985bfa3e96224e2a1,Codex,co-author line,Record public compact blower tube verification [skip ci]
+2026-10-29,64a4cfea3f8eb46774abe36f4d667b6cfe4439d9,Codex,co-author line,Fit estimated Frontier bay-lead mating shell and shared inspection context
+2026-10-29,eb842296f6e2a4bbf6a91a01bfb6b4c9e4b3203f,Codex,co-author line,Record live Frontier bay connection verification [skip ci]

@@ -75,6 +75,51 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Open:** Flight interfaces, moving feed internals and source-gated electrical
   leads. Automatic approval review rejected integration of unrelated remote
   updates under the no-touch rule; no merge or publication performed.
+### 2026-10-29: Swarmfall mid-mission events
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add supply caches, counter-attacks and reinforcement waves"
+- **What changed:** Checklist OBJ-02.
+  - From 2:30, once the first wave is down, the battle announces an event every two to three
+    minutes:
+    - A Hive supply cache: matter for the first drone to reach it within a minute.
+    - A militia counter-attack on a zone the swarm holds.
+    - Reinforcements for the town the swarm is closest to taking: fresh militia and repaired
+      defenses, unless it falls first.
+  - Announcements toast, and J jumps there. Target zones count down on their labels.
+  - Caches get an amber ring, a label, a minimap dot and an edge arrow.
+  - Titan only gets supply caches. Older saved battles have no events.
+- **Files:** `dist/invasion/battle.mjs`, `dist/invasion/mission-save.mjs`,
+  `dist/invasion/camera-assist.mjs`, `dist/invasion/scene.mjs`, `dist/invasion/main.mjs`,
+  `tests/invasion-mission-events.test.mjs` (new), `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (293 pass). In the browser on Kepra:
+  - Reinforcements reached Pequa on time after a countdown on its label.
+  - A supply cache landed, its edge arrow led the camera there, and a right-click order
+    collected +55 matter.
+  - The preview's saved data was put back afterwards.
+
+### 2026-10-29: Swarmfall replay challenges
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add replay challenges on conquered planets"
+- **What changed:** Checklist ECON-04.
+  - A conquered planet's panel offers three optional challenges for the next attempt. Each
+    adds bonus matter to the replay reward:
+    - Raised threat (+50% of the conquest reward): one threat level higher.
+    - Wild weather (+35%): sooner, harder hazards.
+    - On alert (+35%): the alarm never drops below 30, so towns never surrender.
+  - A plain replay still pays 30%. Titan offers only Wild weather.
+  - Each challenge won with is marked ✦ on the planet and counted on the title screen.
+  - The battle log, Objectives panel, pause menu and debrief name the active challenges.
+    Restart and Play again keep them, and saved battles keep them.
+- **Files:** `dist/invasion/replay.mjs` (new), `dist/invasion/battle.mjs`,
+  `dist/invasion/campaign.mjs`, `dist/invasion/mission-save.mjs`, `dist/invasion/main.mjs`,
+  `dist/invasion/invasion.css`, `tests/invasion-replay.test.mjs` (new), `SWARMFALL-TODO.md`,
+  `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (287 pass). In the browser on Kepra:
+  - Real clicks turned on two challenges, and the reward line showed +173 matter.
+  - The battle ran at threat 2 with the alarm held at 30.
+  - A forced win paid the bonus and marked both challenges, and the title read "2 of 19
+    challenges".
+  - The challenge list fits a 375 px phone. The preview's saved data was put back afterwards.
 
 ### Public verification — Frontier bay connection pass
 - **Signed:** Codex (OpenAI).

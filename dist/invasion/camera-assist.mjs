@@ -12,7 +12,9 @@ export function squadCenter(units, squads) {
 }
 
 // The newest alert: marked artillery or lightning, an eruption, a drone under fire or lost this
-// frame. Returns the previous alert when nothing newer happened.
+// frame, or a mid-mission event announced or landing (OBJ-02). Returns the previous alert when
+// nothing newer happened.
+const operationAlerts = { supply: "Supply cache", counter: "Counter-attack", reinforce: "Reinforcements" };
 export function latestAlert(previous, events, b) {
   let best = previous, units = null;
   const offer = (x, z, at, text) => { if (!best || at >= best.at) best = { x, z, at, text }; };
@@ -26,6 +28,7 @@ export function latestAlert(previous, events, b) {
     }
   }
   for (const event of events) if (event.kind === "destroyed" && event.side === "swarm" && !event.structure) offer(event.x, event.z, b.time, "Drone lost");
+  for (const event of events) if (event.kind === "operation" && event.phase !== "collected") offer(event.x, event.z, b.time, operationAlerts[event.type]);
   return best;
 }
 
