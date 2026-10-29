@@ -2,7 +2,7 @@
 // the first defenders in sight, each kind of defense, each alarm stage, the first artillery and
 // the first captured defense. Each tip shows once per device: `seen` is a Set of tip IDs the page
 // saves. Pure, so it is tested without a page. Texts follow units.mjs and battle.mjs.
-import { droneTypes } from "./units.mjs?v=dev";
+import { droneTypes, wildlifeTypes } from "./units.mjs?v=dev";
 
 export const defenseTips = Object.freeze({
   watchtower: "Watchtowers throw bolts at drones and troops. Strikers knock them out.",
@@ -25,6 +25,8 @@ export const generalTips = Object.freeze({
   artillery: "Artillery is marked: a red circle shows where shells land in a few seconds. Move drones out of it.",
   converted: "Captured defenses now fight for you, and Links capture without destroying the guns.",
 });
+// Wildlife (HAZ-01), the first time a drone sees one.
+export const wildlifeTip = (name) => `${name} ahead: wildlife attacks anything that comes near, drones and locals alike. Fly round its ground, or bring guns. Killing it raises no alarm.`;
 
 // Tips due now, in order; their IDs are added to `seen`.
 export function newTips(seen, b, events) {
@@ -37,6 +39,10 @@ export function newTips(seen, b, events) {
   if (b.units.some(unit => unit.alive && unit.converted)) offer("converted", generalTips.converted);
   // Defenders in sight of a drone: the first ones at all, then each new kind of defense.
   const drones = b.units.filter(unit => unit.alive && unit.side === "swarm" && !unit.structure);
+  const sees = (unit) => drones.some(drone => (drone.x - unit.x) ** 2 + (drone.z - unit.z) ** 2 < (droneTypes[drone.type]?.sight || 120) ** 2);
+  for (const unit of b.units) {
+    if (unit.alive && unit.side === "wild" && !seen.has(`wildlife:${unit.type}`) && sees(unit)) offer(`wildlife:${unit.type}`, wildlifeTip(wildlifeTypes[unit.type]?.name || "A creature"));
+  }
   for (const unit of b.units) {
     if (!unit.alive || unit.side !== "native") continue;
     const kindDue = defenseTips[unit.type] && !seen.has(`defense:${unit.type}`);

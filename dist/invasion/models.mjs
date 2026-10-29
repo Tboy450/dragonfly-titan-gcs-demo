@@ -196,6 +196,55 @@ export function interceptorModel() {
     .build();
 }
 
+// Wildlife (HAZ-01): invented creatures [EST], in meters, facing +z, standing on y = 0.
+export function wildlifeModels() {
+  // Sandworm: an arch of ringed segments out of the sand, head down over a toothed mouth.
+  const worm = new Parts();
+  const sand = 0xc79a68, ridge = 0x9b6e45, mound = 0xd8b27a;
+  for (let i = 0; i <= 9; i += 1) {
+    const a = 0.25 + i * 0.2, r = 1.75 - i * 0.03;
+    worm.add(ball(r, 12, 8), i % 2 ? ridge : sand, { at: [0, 6 * Math.sin(a), -1 - 6 * Math.cos(a)] });
+  }
+  worm.add(ball(1.9, 14, 10), 0xb38458, { at: [0, 4.6, 2.9] })
+    .add(cyl(1.35, 1.35, 0.35, 16), 0x3a1c14, { at: [0, 3.9, 4.1], rotate: [1.1, 0, 0] });
+  for (let k = 0; k < 8; k += 1) {
+    const t = k / 8 * Math.PI * 2;
+    worm.add(cone(0.18, 0.7, 6), 0xf0e6cc, { at: [Math.cos(t) * 1.05, 3.9 + Math.sin(t) * 0.45, 4.25 + Math.sin(t) * 0.75], rotate: [1.1 + Math.PI, 0, 0] });
+  }
+  worm.add(ball(3.2, 14, 8), mound, { at: [0, 0, -6.4], scale: [1, 0.28, 1] })
+    .add(ball(2.6, 14, 8), mound, { at: [0, 0, 2.6], scale: [1, 0.24, 1] });
+
+  // Swamp beast: a heavy, mossy body on four legs, with tusks and glowing eyes.
+  const moss = 0x4c5a33, belly = 0x6e6845, hide = 0x3c4628;
+  const beast = new Parts()
+    .add(ball(1.6, 14, 10), moss, { at: [0, 1.9, 0], scale: [1.1, 0.8, 1.6] })
+    .add(ball(1.3, 12, 8), belly, { at: [0, 1.5, 0.1], scale: [1, 0.6, 1.4] })
+    .add(ball(0.85, 12, 8), 0x55603a, { at: [0, 2.0, 2.35] })
+    .add(box(1.0, 0.35, 0.9), hide, { at: [0, 1.55, 2.75] })
+    .add(cone(0.12, 0.75, 6), 0xe6dcc0, { at: [0.42, 1.55, 3.05], rotate: [-0.9, 0, 0] })
+    .add(cone(0.12, 0.75, 6), 0xe6dcc0, { at: [-0.42, 1.55, 3.05], rotate: [-0.9, 0, 0] })
+    .add(ball(0.13, 8, 6), 0xe8d040, { at: [0.36, 2.3, 2.95] })
+    .add(ball(0.13, 8, 6), 0xe8d040, { at: [-0.36, 2.3, 2.95] });
+  for (const [sx, sz] of [[1, 1], [-1, 1], [1, -1], [-1, -1]]) beast.beam([0.9 * sx, 1.6, 1.2 * sz], [1.15 * sx, 0, 1.45 * sz], 0.45, hide);
+  for (let k = 0; k < 4; k += 1) beast.add(cone(0.22, 0.7, 6), 0x2f3a22, { at: [0, 2.85 - k * 0.08, 1.0 - k * 0.75] });
+
+  // Ice crawler: a low, pale, armored body on six jointed legs, with mandibles.
+  const shell = 0xc6dde8, leg = 0x3d4c5a;
+  const crawler = new Parts();
+  for (const z of [-0.8, 0, 0.8]) crawler.add(ball(0.55, 12, 8), shell, { at: [0, 0.8, z], scale: [1.15, 0.55, 1] });
+  crawler.add(ball(0.45, 12, 8), 0xa9c6d6, { at: [0, 0.75, 1.4] })
+    .add(cone(0.08, 0.5, 6), 0x2c3a46, { at: [0.2, 0.6, 1.85], rotate: [Math.PI / 2, 0, -0.3] })
+    .add(cone(0.08, 0.5, 6), 0x2c3a46, { at: [-0.2, 0.6, 1.85], rotate: [Math.PI / 2, 0, 0.3] })
+    .add(ball(0.08, 8, 6), 0x58c8ff, { at: [0.18, 0.92, 1.72] })
+    .add(ball(0.08, 8, 6), 0x58c8ff, { at: [-0.18, 0.92, 1.72] });
+  for (const side of [1, -1]) {
+    for (const z of [-0.7, 0, 0.7]) {
+      crawler.beam([0.45 * side, 0.8, z], [1.0 * side, 1.15, z + 0.1], 0.12, leg).beam([1.0 * side, 1.15, z + 0.1], [1.4 * side, 0, z + 0.25], 0.1, leg);
+    }
+  }
+  return { sandworm: worm.build(), swampBeast: beast.build(), iceCrawler: crawler.build() };
+}
+
 // Structures (meters, real-ish sizes). glow parts get the owner's color.
 export function structureModels() {
   const wood = 0x7a5532, roof = 0x5a3b22, steel = 0x5f6a70, dark = 0x2d3438, olive = 0x4f5a3a, white = 0xd8dde2;

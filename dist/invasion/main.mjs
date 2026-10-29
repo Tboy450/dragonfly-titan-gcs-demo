@@ -14,13 +14,13 @@ import {
   canSurrender, surrenderControl,
   orderFor, queueOrder, setPatrol, replaceOrders,
 } from "./battle.mjs?v=dev";
-import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS, difficultyOrder, difficultyOf } from "./units.mjs?v=dev";
+import { droneTypes, droneOrder, defenderTypes, societies, threatNames, payloadSlots, payloadCost, dropDurationS, difficultyOrder, difficultyOf, wildlifeTypes } from "./units.mjs?v=dev";
 import { packDropPods, podRadius, podStaggerS, dropPresets, fillPayload, presetAvailable } from "./drop-waves.mjs?v=dev";
 import { hazardTypes, hazardAdvisory, hazardForecast } from "./hazards.mjs?v=dev";
 import { achievements, achievementContext, newAchievements, recordAchievements } from "./achievements.mjs?v=dev";
 import { createPlanetTerrain } from "./planet-terrain.mjs?v=dev";
 import { drawGalaxy, drawStarfield, titleGalaxyPlace } from "./galaxy.mjs?v=dev";
-import { createInvasionScene, swarmColor, nativeColor } from "./scene.mjs?v=dev";
+import { createInvasionScene, swarmColor, nativeColor, wildColor } from "./scene.mjs?v=dev";
 import { missionCheckpoint, restoreMissionCheckpoint, checkpointPlanet } from "./mission-save.mjs?v=dev";
 import { pointerIntent, exceedsTapSlop, holdToBoxMs, boxRect, squadsInBox } from './pointer-controls.mjs?v=dev';
 import { tinyDroneMarker } from './drone-markers.mjs?v=dev';
@@ -226,6 +226,14 @@ $("planet-panel").addEventListener("click", (event) => {
   $("planet-panel").querySelector(`[data-challenge="${id}"]`)?.focus();
 });
 
+// Wildlife (HAZ-01) among a planet's threats: what lives there and how many.
+function wildlifeLine(planet) {
+  const w = wildlifeTypes[planet.wildlife?.type];
+  if (!w) return "";
+  const count = planet.wildlife.dens * (planet.wildlife.pack || 1);
+  return `<li><strong>Wildlife: ${count} ${escapeHtml(w.name.toLowerCase())}${count === 1 ? "" : "s"}${planet.wildlife.pack > 1 ? ` in packs of ${planet.wildlife.pack}` : ""}</strong><small>${escapeHtml(w.text)} Attacks drones and locals alike.</small></li>`;
+}
+
 function renderPlanetPanel() {
   const planet = planetById(selectedPlanet) || planets[0];
   const society = societies[planet.society];
@@ -248,7 +256,7 @@ function renderPlanetPanel() {
     </div>
     <p>${escapeHtml(planet.description)}</p>
     <p class="section-title">Environmental threats</p>
-    <ul class="hazard-list">${planet.hazards.map(h => `<li><strong>${escapeHtml(hazardTypes[h].name)}</strong><small>${escapeHtml(hazardTypes[h].advice)}</small></li>`).join("")}</ul>
+    <ul class="hazard-list">${planet.hazards.map(h => `<li><strong>${escapeHtml(hazardTypes[h].name)}</strong><small>${escapeHtml(hazardTypes[h].advice)}</small></li>`).join("")}${wildlifeLine(planet)}</ul>
     ${planet.hazards.length ? `<p class="hazard-counters">${hazardCounters(progress.upgrades?.sealing || 0).map(escapeHtml).join(" ")}</p>` : ""}
     <p class="section-title">Defenders</p>
     <p>${escapeHtml(defenders)} ${escapeHtml(society.description)}</p>
@@ -979,7 +987,8 @@ function tap(clientX, clientY, additive, action = "smart") {
     toast("Select a squad first: click or tap a squad card below or one of your drones.", "warn");
     return;
   }
-  const enemy = unitAtScreen(x, y, u => u.alive && u.side === "native", 22);
+  // A defender or a creature (HAZ-01) under the tap is attacked.
+  const enemy = unitAtScreen(x, y, u => u.alive && (u.side === "native" || u.side === "wild"), 22);
   let order = enemy ? { kind: "attack", target: enemy.id, x: enemy.x, z: enemy.z } : null;
   if (!order) {
     const ground = scene.pickGround(x / width * 2 - 1, -(y / height) * 2 + 1);
@@ -1783,7 +1792,7 @@ function drawOverlay() {
       const w = unit.structure ? 30 : 18, f = Math.max(0, unit.hp / unit.maxHp);
       ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
       ctx.fillRect(p.x - w / 2 - 1, p.y - 6, w + 2, 5);
-      ctx.fillStyle = unit.side === "swarm" ? (f > 0.4 ? "#8dffb0" : "#ffd479") : "#ff7a5a";
+      ctx.fillStyle = unit.side === "swarm" ? (f > 0.4 ? "#8dffb0" : "#ffd479") : unit.side === "wild" ? wildColor : "#ff7a5a";
       ctx.fillRect(p.x - w / 2, p.y - 5, w * f, 3);
     }
   }
@@ -1894,8 +1903,8 @@ function drawMinimap() {
   const hidden = hiddenUnits(b);
   for (const unit of b.units) {
     if (hidden.has(unit.id)) continue;
-    ctx.fillStyle = unit.side === "swarm" ? (squadColor.get(unit.squad) || swarmColor) : nativeColor;
-    const s = unit.structure ? 3 : 2;
+    ctx.fillStyle = unit.side === "swarm" ? (squadColor.get(unit.squad) || swarmColor) : unit.side === "wild" ? wildColor : nativeColor;
+    const s = unit.structure || unit.side === "wild" ? 3 : 2;
     ctx.fillRect(sx(unit.x) - s / 2, sz(unit.z) - s / 2, s, s);
   }
   for (const strike of b.strikes) {

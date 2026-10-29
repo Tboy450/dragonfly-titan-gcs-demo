@@ -1,9 +1,10 @@
 // Field guide (TUT-03): every drone, defender, society and hazard with its numbers and what beats
 // it, generated from units.mjs and hazards.mjs so it never drifts from the rules, then the controls
 // (ACCESS-01). Plain data; the page renders it.
-import { droneTypes, droneOrder, defenderTypes, societies } from "./units.mjs?v=dev";
+import { droneTypes, droneOrder, defenderTypes, societies, wildlifeTypes } from "./units.mjs?v=dev";
+import { planets } from "./campaign.mjs?v=dev";
 import { hazardTypes, ventStructureDamage } from "./hazards.mjs?v=dev";
-import { alarmStages, artilleryAlarm, salvageMatter, healPerS, zoneIncome, publicMood, upgradeEffects, surrenderControl, surrenderAlarm } from "./battle.mjs?v=dev";
+import { alarmStages, artilleryAlarm, salvageMatter, healPerS, zoneIncome, publicMood, upgradeEffects, surrenderControl, surrenderAlarm, wildLeash } from "./battle.mjs?v=dev";
 import { defaultKeys, fillKeys } from "./settings.mjs?v=dev";
 
 const classOf = (def) => (def.structure ? "structure" : def.air ? "air" : "ground");
@@ -153,6 +154,19 @@ export function fieldGuide(keys = defaultKeys()) {
         `Settlements surrender at ${surrenderControl}% control while the alarm is under ${surrenderAlarm}, unless civilians were caught in crossfire`,
       ],
     })) },
+    // Wildlife (HAZ-01): where it lives, its numbers and what beats it.
+    { section: "Wildlife", items: Object.values(wildlifeTypes).map(w => {
+      const homes = planets.filter(p => p.wildlife?.type === w.id).map(p => p.name), beats = strongest(drones, "ground");
+      return {
+        name: w.name, summary: w.text,
+        facts: [
+          `${w.hp} health · ${w.speed} m/s · notices prey ${w.sight} m away and chases it up to ${Math.round(w.roam * wildLeash)} m from its den`,
+          ...w.weapons.map(weaponText),
+          `Lives on ${homes.join(", ") || "no campaign planet yet"}. Attacks drones and troops alike, and both fight back; killing it raises no alarm`,
+          beats.length ? `Beaten by: ${beats.join(", ")}` : "No drone weapon reaches it",
+        ],
+      };
+    }) },
     { section: "Hazards", items: Object.values(hazardTypes).map(h => ({
       name: h.name, summary: h.advice,
       facts: [`Warning ${h.warnS} s ahead · lasts ${h.durationS[0]}-${h.durationS[1]} s · returns every ${h.gapS[0]}-${h.gapS[1]} s`],

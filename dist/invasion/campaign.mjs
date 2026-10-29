@@ -35,6 +35,8 @@ export const planets = Object.freeze([
   {
     id: "kepra", order: 2, name: "Kepra", subtitle: "Desert world", supply: 220,
     society: 1, threat: 1, biome: "desert", hazards: ["dustStorm"], color: "#e0b070",
+    // Wildlife (HAZ-01, units.mjs wildlifeTypes): which creature, how many dens, how many per den.
+    wildlife: { type: "sandworm", dens: 2, pack: 1 },
     galaxy: { x: 0.26, y: 0.5 },
     description: "Wind-carved dunes and mesas. Tribal villages keep watch from wooden towers and throw spears at anything that flies low.",
     map: { centerX: 0, centerZ: 0, half: 420 }, zoneCount: 4, required: 3, seed: 1201,
@@ -47,6 +49,7 @@ export const planets = Object.freeze([
   {
     id: "velm", order: 3, name: "Velm", subtitle: "Swamp jungle", supply: 300,
     society: 2, threat: 2, biome: "jungle", hazards: ["acidRain"], color: "#5fae6a",
+    wildlife: { type: "swampBeast", dens: 3, pack: 1 },
     galaxy: { x: 0.37, y: 0.76 },
     description: "Steaming swamps under a green sky. Farming towns answer drones with rifles, and the rain eats through rotor housings.",
     map: { centerX: 0, centerZ: 0, half: 440 }, zoneCount: 5, required: 4, seed: 2207,
@@ -59,6 +62,7 @@ export const planets = Object.freeze([
   {
     id: "corvan", order: 4, name: "Corvan", subtitle: "Ice world", supply: 380,
     society: 3, threat: 3, biome: "ice", hazards: ["blizzard"], color: "#bfe3f2",
+    wildlife: { type: "iceCrawler", dens: 2, pack: 3 },
     galaxy: { x: 0.5, y: 0.6 },
     description: "Frozen ridges and factory towns. Flak and radar cover the passes, and a full alarm brings artillery.",
     map: { centerX: 0, centerZ: 0, half: 460 }, zoneCount: 5, required: 4, seed: 3109,
