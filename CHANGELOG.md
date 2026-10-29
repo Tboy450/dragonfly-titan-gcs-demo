@@ -53,6 +53,30 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   raw before/after/app samples saved. Straight-taper draft rejected by motion test.
 - **Open:** Flight attachment, main/nose/other hollow sections and aft penetration.
   Source/archive/publication handoff in research/fan-duct-interface-2026-10-29/.
+### 2026-10-29: Swarmfall wildlife
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add sandworms, swamp beasts and ice crawlers"
+- **What changed:** Checklist HAZ-01 (owner request).
+  - Kepra has 2 sandworms, Velm 3 swamp beasts, and Corvan 2 packs of 3 ice crawlers.
+  - They prowl round dens away from the Hive beacon and the zones. They attack drones and
+    troops that come near, chasing only so far from their den.
+  - Drones and locals fight back, and you can right-click one to attack it.
+  - Their kills raise no alarm; drones they kill count as hazard losses.
+  - Spear throwers can now hit ground targets.
+  - New simple models, lime attacks, minimap dots and health bars, a first-sighting tip, a
+    Field guide section and a planet panel line.
+  - The numbers are first estimates. The sandworm was toned down after it wiped out a
+    Scout and Link squad in the browser.
+- **Files:** `dist/invasion/units.mjs`, `dist/invasion/campaign.mjs`, `dist/invasion/battle.mjs`,
+  `dist/invasion/mission-save.mjs`, `dist/invasion/camera-assist.mjs`, `dist/invasion/models.mjs`,
+  `dist/invasion/scene.mjs`, `dist/invasion/main.mjs`, `dist/invasion/tips.mjs`,
+  `dist/invasion/field-guide.mjs`, `tests/invasion-wildlife.test.mjs` (new),
+  `tests/helpers/invasion-ui-harness.mjs`, `SWARMFALL-TODO.md`, `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (299 pass). In the browser:
+  - All three creatures were looked at in their worlds.
+  - On Kepra, the first-sighting tip appeared, and a right-click attacked a sandworm.
+  - The minimap showed lime dots.
+  - The preview's storage was left as found.
 
 ### 2026-10-29: Verify published fan-bore correction and RF review
 - **Signed:** Codex (OpenAI).

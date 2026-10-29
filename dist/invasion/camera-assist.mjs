@@ -21,7 +21,7 @@ export function latestAlert(previous, events, b) {
   for (const strike of b.strikes) if (!strike.hit) offer(strike.x, strike.z, strike.markedAt, strike.source === "lightning" ? "Lightning strike marked" : "Artillery incoming");
   for (const hazard of b.hazards.events) if (hazard.kind === "eruption") offer(hazard.x, hazard.z, hazard.startedAt, hazard.name);
   for (const event of events) {
-    if (event.kind === "shot" && event.side === "native") {
+    if (event.kind === "shot" && event.side !== "swarm") {
       units ??= new Map(b.units.map(unit => [unit.id, unit]));
       const target = units.get(event.to);
       if (target && target.side === "swarm" && !target.structure) offer(target.x, target.z, b.time, "Squad under attack");

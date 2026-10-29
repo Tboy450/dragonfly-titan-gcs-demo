@@ -9,7 +9,7 @@
 //             standing when the zone falls switch sides and fire for the swarm.
 import {
   droneTypes, defenderTypes, societies, droneOrder, dropCooldownS, dropDurationS,
-  payloadSlots, payloadCost, payloadCount, weaponFor, reachFor, difficulties, difficultyOf,
+  payloadSlots, payloadCost, payloadCount, weaponFor, reachFor, difficulties, difficultyOf, wildlifeTypes,
 } from "./units.mjs?v=dev";
 import { replayModifiers, alertFloor, cleanModifiers, modifierNames } from "./replay.mjs?v=dev";
 import { nextRandom, randomRange, randomPick } from "./random.mjs?v=dev";
@@ -29,7 +29,7 @@ export const healPerS = 1.5;
 export const salvageMatter = 6;
 
 export const flatTerrain = Object.freeze({ heightAt: () => 0, isLand: () => true });
-export const defOf = (unit) => droneTypes[unit.type] || defenderTypes[unit.type];
+export const defOf = (unit) => droneTypes[unit.type] || defenderTypes[unit.type] || wildlifeTypes[unit.type];
 const dist2 = (a, b) => (a.x - b.x) ** 2 + (a.z - b.z) ** 2;
 const isDrone = (unit) => unit.alive && unit.side === "swarm" && !unit.structure;
 
@@ -92,8 +92,43 @@ export function createBattle(planet, options = {}) {
     ? "Practice planet: call a drop on the Hive beacon, then send drones to the beacons."
     : `${society.name} society, threat ${b.threat}. Call a drop on the Hive beacon to begin.` });
   if (challenges.length) b.log.push({ t: 0, tone: "warn", text: `Replay challenges: ${modifierNames(challenges)}.` });
+  releaseWildlife(b, planet);
   return b;
 }
+
+// ---- Wildlife (HAZ-01) ----
+// Dens well away from the Hive beacon and the zones, placed from the planet's seed alone. The
+// creatures are added last, so the zones, garrison and weather are the same as without them.
+function releaseWildlife(b, planet) {
+  const spec = planet.wildlife, def = wildlifeTypes[spec?.type];
+  if (!def) return;
+  const holder = { rngState: (Math.imul((planet.seed ?? 1) >>> 0, 2654435761) ^ 0x5eed) >>> 0 };
+  const { centerX, centerZ, half } = b.map, home = b.zones.find(zone => zone.kind === "beachhead");
+  const ground = b.walkable || b.isLand, dens = [];
+  for (let tries = 0; dens.length < spec.dens && tries < 400; tries += 1) {
+    const x = centerX + randomRange(holder, -0.85, 0.85) * half, z = centerZ + randomRange(holder, -0.85, 0.85) * half;
+    if (ground && !ground(x, z)) continue;
+    if (Math.hypot(x - home.x, z - home.z) < wildDenClear.beachhead) continue;
+    if (b.zones.some(zone => Math.hypot(x - zone.x, z - zone.z) < zone.radius + wildZoneClear(def))) continue;
+    if (dens.some(den => Math.hypot(x - den.x, z - den.z) < wildDenClear.den)) continue;
+    dens.push({ x, z });
+  }
+  const pack = spec.pack || 1;
+  for (const den of dens) {
+    for (let i = 0; i < pack; i += 1) {
+      const angle = i / pack * Math.PI * 2, spread = pack > 1 ? 6 : 0;
+      const unit = spawnUnit(b, "wild", def.id, den.x + Math.cos(angle) * spread, den.z + Math.sin(angle) * spread);
+      unit.den = { x: den.x, z: den.z };
+    }
+  }
+}
+// How far dens keep from the Hive beacon and from each other (m).
+export const wildDenClear = Object.freeze({ beachhead: 280, den: 160 });
+// And from each zone's edge: far enough that a creature prowling round its den does not notice
+// drones holding the zone.
+export const wildZoneClear = (def) => def.sight + def.roam * 0.5;
+// A creature gives up a chase once its prey is this many times its roam from the den.
+export const wildLeash = 2.2;
 
 function zoneName(b, kind) {
   const word = randomPick(b, syllables) + randomPick(b, syllables) + (nextRandom(b) < 0.4 ? randomPick(b, syllables) : "");
@@ -166,9 +201,11 @@ export function upgradeEffects(b) {
 }
 
 function spawnUnit(b, side, type, x, z, extra = {}) {
-  const def = side === "swarm" && droneTypes[type] ? droneTypes[type] : defenderTypes[type] || droneTypes[type];
-  const boost = upgradeEffects(b);
-  const scale = side === "native" ? strength(b) : droneTypes[type] ? { hp: boost.health, damage: boost.damage } : { hp: 1, damage: 1 };
+  const def = side === "swarm" && droneTypes[type] ? droneTypes[type] : defenderTypes[type] || wildlifeTypes[type] || droneTypes[type];
+  const boost = upgradeEffects(b), level = difficultyOf(b.difficulty);
+  // Wildlife follows the difficulty but not the planet's threat.
+  const scale = side === "native" ? strength(b) : side === "wild" ? { hp: level.hp, damage: level.damage }
+    : droneTypes[type] ? { hp: boost.health, damage: boost.damage } : { hp: 1, damage: 1 };
   const unit = {
     id: b.nextId++, side, type, x, z, alt: extra.alt ?? (def.cruise || 0), vx: 0, vz: 0,
     hp: def.hp * scale.hp, maxHp: def.hp * scale.hp, damageScale: scale.damage,
@@ -569,7 +606,7 @@ function buildGrid(units, cell) {
 // Weapons fire from about this high above the ground: defenses from their mount, troops from the
 // shoulder, flying units from where they fly. Buildings between two units block direct fire
 // (b.lineBlocked, from a city); artillery strikes are indirect and are not affected.
-const eyeHeight = (unit) => unit.alt + (unit.structure ? 4 : unit.side === "native" && !unit.alt ? 1.6 : 0.6);
+const eyeHeight = (unit) => unit.alt + (unit.structure ? 4 : unit.side === "wild" ? (wildlifeTypes[unit.type]?.size || 2) * 0.6 : unit.side === "native" && !unit.alt ? 1.6 : 0.6);
 const clearShot = (b, unit, other) => !b.lineBlocked || !b.lineBlocked(unit.x, unit.z, eyeHeight(unit), other.x, other.z, eyeHeight(other));
 // For the page: true when something stands between a unit and its target.
 export const shotBlocked = (b, unit, other) => !clearShot(b, unit, other);
@@ -603,6 +640,8 @@ function moveUnits(b, dt, auras, swarm, natives) {
   const quiet = new Set(), tight = new Set();
   for (const squad of b.squads) { if (squad.stance === "hold") quiet.add(squad.id); if (squad.formation === "tight") tight.add(squad.id); }
   const huntable = swarm.filter(drone => !inBeachhead(b, drone));
+  // Wildlife prey: drones off the Hive beacon and troops (HAZ-01).
+  const prey = b.units.some(unit => unit.alive && unit.side === "wild") ? [...huntable, ...natives.filter(unit => !unit.structure)] : [];
   const { centerX, centerZ, half } = b.map;
   for (const unit of b.units) {
     if (!unit.alive || unit.structure) continue;
@@ -650,6 +689,19 @@ function moveUnits(b, dt, auras, swarm, natives) {
         const settled = Math.hypot(tx - unit.x, tz - unit.z) < 3 && order.kind !== "attack";
         unit.landed = settled && !!heldZoneAt(b, unit) && !natives.some(n => n.alive && dist2(n, unit) < 70 * 70);
       }
+    } else if (unit.side === "wild") {
+      // Wildlife (HAZ-01): goes for the nearest drone or trooper in sight while it is near the den,
+      // otherwise prowls slowly round the den.
+      const den = unit.den || unit;
+      const target = nearestEnemy(unit, prey, def.sight);
+      if (target && Math.hypot(target.x - den.x, target.z - den.z) < def.roam * wildLeash) {
+        unit.target = target.id;
+        if (shotRange(b, unit, target) > def.range * 0.7) { tx = target.x; tz = target.z; arrive = 2; }
+      } else {
+        const angle = unit.id * 2.4 + b.time * 0.08;
+        tx = den.x + Math.cos(angle) * def.roam * 0.5; tz = den.z + Math.sin(angle) * def.roam * 0.5;
+        speed *= 0.4;
+      }
     } else {
       // Locals: engage drones in sight near home, raid captured zones when alarmed, else guard home.
       const home = unit.home ? zoneById(b, unit.home) : null;
@@ -668,7 +720,7 @@ function moveUnits(b, dt, auras, swarm, natives) {
       }
     }
     const goal = { x: tx, z: tz };
-    if (unit.side === "native" && !def.air && unit.route) {
+    if (unit.side !== "swarm" && !def.air && unit.route) {
       const route = unit.route;
       if (Math.hypot(route.to.x - goal.x, route.to.z - goal.z) > 20) delete unit.route;
       else {
@@ -698,7 +750,7 @@ function moveUnits(b, dt, auras, swarm, natives) {
     let nx = Math.min(centerX + half, Math.max(centerX - half, unit.x + unit.vx * dt));
     let nz = Math.min(centerZ + half, Math.max(centerZ - half, unit.z + unit.vz * dt));
     const walkable = b.walkable || b.isLand;
-    if (unit.side === "native" && !def.air && !walkable(nx, nz)) {
+    if (unit.side !== "swarm" && !def.air && !walkable(nx, nz)) {
       // Blocked: plan a route if there is none to this goal yet (and the step budget allows).
       if (!unit.route && routes > 0) {
         routes -= 1;
@@ -744,13 +796,18 @@ function kill(b, unit, cause) {
   if (unit.side === "swarm") {
     if (!unit.structure) {
       b.stats.dronesLost += 1;
-      if (cause === "hazard") b.stats.hazardLosses += 1;
+      // Drones killed by wildlife count with those lost to the weather (HAZ-01).
+      if (cause === "hazard" || cause?.side === "wild") b.stats.hazardLosses += 1;
     }
     return;
   }
+  if (unit.side === "wild") {
+    b.log.push({ t: b.time, tone: "good", text: `${wildlifeTypes[unit.type]?.name || "A creature"} killed${cause?.side === "native" ? " by the locals" : ""}.` });
+    return;
+  }
   // Lightning and eruptions (HAZ-04) kill defenders too: the wreck still pays salvage, but the
-  // public does not blame the swarm for the weather.
-  const natural = cause === "hazard";
+  // public does not blame the swarm for the weather, nor for its wildlife (HAZ-01).
+  const natural = cause === "hazard" || cause?.side === "wild";
   if (unit.structure) {
     b.stats.defensesDestroyed += 1;
     if (!natural) b.alarm += 5 * alarmGain(b);
@@ -789,9 +846,11 @@ const maxRange = (def) => {
   return longestReach.get(def);
 };
 
-function fight(b, dt, auras, swarm, natives) {
+function fight(b, dt, auras, swarm, natives, wild = []) {
   const effects = b.hazards.effects;
-  const swarmIndex = combatIndex(swarm), nativeIndex = combatIndex(natives);
+  const swarmIndex = combatIndex(swarm), nativeIndex = combatIndex(natives), wildIndex = combatIndex(wild);
+  // Wildlife (HAZ-01) is everyone's enemy, and goes for both sides.
+  const foes = { swarm: [nativeIndex, wildIndex], native: [swarmIndex, wildIndex], wild: [swarmIndex, nativeIndex] };
   const eyes = new Map(), eyeOf = (u) => { let y = eyes.get(u); if (y === undefined) eyes.set(u, y = worldEye(b, u)); return y; };
   const range = (u, other) => Math.sqrt(dist2(u, other) + (eyeOf(other) - eyeOf(u)) ** 2);
   const quiet = new Set(b.squads.filter(s => s.stance === "hold").map(s => s.id));
@@ -799,7 +858,7 @@ function fight(b, dt, auras, swarm, natives) {
     if (!unit.alive) continue;
     const def = defOf(unit);
     if (!def.weapons.length || stunned(b, unit)) continue;
-    const enemyIndex = unit.side === "swarm" ? nativeIndex : swarmIndex;
+    const enemyIndexes = foes[unit.side] || foes.native;
     const rangeScale = unit.side === "swarm" ? effects.range : 1;
     const armed = (other) => other?.alive && other.side !== unit.side && weaponFor(def, other, range(unit, other), rangeScale) && clearShot(b, unit, other);
     let target = null;
@@ -815,9 +874,11 @@ function fight(b, dt, auras, swarm, natives) {
     }
     if (!target && !holding) {
       let bestD = Infinity;
-      for (const other of combatNear(enemyIndex, unit.x, unit.z, maxRange(def) * rangeScale)) {
-        const d = dist2(unit, other);
-        if (d < bestD && armed(other)) { bestD = d; target = other; }
+      for (const enemyIndex of enemyIndexes) {
+        for (const other of combatNear(enemyIndex, unit.x, unit.z, maxRange(def) * rangeScale)) {
+          const d = dist2(unit, other);
+          if (d < bestD && armed(other)) { bestD = d; target = other; }
+        }
       }
     }
     unit.target = target ? target.id : null;
@@ -828,8 +889,10 @@ function fight(b, dt, auras, swarm, natives) {
     if (target.structure && inAura(auras.armor, target, target.side)) damage *= 1 - 0.65;
     hurt(b, target, damage, unit);
     if (w.splash) {
-      for (const other of combatNear(enemyIndex, target.x, target.z, w.splash)) {
-        if (other !== target && other.alive && dist2(other, target) <= w.splash ** 2) hurt(b, other, damage * 0.4, unit);
+      for (const enemyIndex of enemyIndexes) {
+        for (const other of combatNear(enemyIndex, target.x, target.z, w.splash)) {
+          if (other !== target && other.alive && dist2(other, target) <= w.splash ** 2) hurt(b, other, damage * 0.4, unit);
+        }
       }
     }
     unit.fireIn -= dt;
@@ -1300,7 +1363,7 @@ export function stepBattle(b, dt) {
   scout(b, swarm);
   // Converted structures fight for the swarm, so targets are gathered per side, not per drone.
   const swarmSide = b.units.filter(u => u.alive && u.side === "swarm");
-  fight(b, dt, auras, swarmSide, natives);
+  fight(b, dt, auras, swarmSide, natives, b.units.filter(u => u.alive && u.side === "wild"));
   resolveStrikes(b, swarm);
   hazardDamage(b, dt, swarm);
   captureZones(b, dt, auras);

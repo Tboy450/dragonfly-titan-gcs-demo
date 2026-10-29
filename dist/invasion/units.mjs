@@ -69,7 +69,7 @@ export const dropDurationS = 10;
 // drones, shield pylons reduce damage to nearby structures.
 export const defenderTypes = Object.freeze({
   spearman: withRange({ id: "spearman", name: "Spear thrower", mobile: true, hp: 18, speed: 4.5, sight: 90,
-    weapons: [weapon("spear", "Spears", ["air", "structure"], 1.6, 28, { fx: "spear" })] }),
+    weapons: [weapon("spear", "Spears", ["air", "structure", "ground"], 1.6, 28, { fx: "spear" })] }),
   rifleman: withRange({ id: "rifleman", name: "Rifle militia", mobile: true, hp: 28, speed: 5, sight: 110,
     weapons: [weapon("rifle", "Rifles", ["air", "structure", "ground"], 3.2, 55)] }),
   trooper: withRange({ id: "trooper", name: "Trooper", mobile: true, hp: 45, speed: 6, sight: 130,
@@ -87,6 +87,22 @@ export const defenderTypes = Object.freeze({
   laser: withRange({ id: "laser", name: "Laser turret", structure: true, hp: 380, sight: 200,
     weapons: [weapon("laser", "Laser", ["air", "ground", "structure"], 15, 140, { fx: "laser" })] }),
   shield: withRange({ id: "shield", name: "Shield pylon", structure: true, hp: 480, aura: { armor: 0.65, radius: 120 }, sight: 120 }),
+});
+
+// Wildlife (HAZ-01): creatures native to a planet, on no one's side. Each roams near its den and
+// goes for anything that comes close, drones and locals alike, and both fight back. Bites and spit
+// reach drones flying low overhead. roam: how far round the den it prowls (m); size: body height
+// (m), which sets where its attacks come from.
+export const wildlifeTypes = Object.freeze({
+  sandworm: withRange({ id: "sandworm", name: "Sandworm", hp: 500, speed: 8, sight: 85, roam: 80, size: 7,
+    text: "Burrows under the dunes and lunges at anything that crosses its ground.",
+    weapons: [weapon("lunge", "Lunge", ["air", "ground"], 14, 36, { fx: "bite" })] }),
+  swampBeast: withRange({ id: "swampBeast", name: "Swamp beast", hp: 380, speed: 9, sight: 80, roam: 70, size: 4,
+    text: "Wallows in the bogs and spits acid at anything that comes close.",
+    weapons: [weapon("spit", "Acid spit", ["air", "ground"], 10, 45, { fx: "spit", splash: 5 })] }),
+  iceCrawler: withRange({ id: "iceCrawler", name: "Ice crawler", hp: 110, speed: 13, sight: 70, roam: 60, size: 2,
+    text: "Hunts in packs over the ice and leaps at low drones.",
+    weapons: [weapon("leap", "Leaping bite", ["air", "ground"], 6, 30, { fx: "bite" })] }),
 });
 
 export function targetClass(unit) {

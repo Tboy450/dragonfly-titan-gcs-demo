@@ -1,6 +1,6 @@
 // Versioned, JSON-safe battle checkpoints. Terrain functions and renderer state are rebuilt.
 import { planetById } from "./campaign.mjs?v=dev";
-import { droneTypes, defenderTypes, difficulties } from "./units.mjs?v=dev";
+import { droneTypes, defenderTypes, difficulties, wildlifeTypes } from "./units.mjs?v=dev";
 import { cleanModifiers } from "./replay.mjs?v=dev";
 import { hazardTypes } from "./hazards.mjs?v=dev";
 import { validPayload, podStaggerS, dronesPerPod } from "./drop-waves.mjs?v=dev";
@@ -237,14 +237,18 @@ export function validMissionCheckpoint(value) {
     const squads = new Set(b.squads.map(s => s.id));
     if (squads.size !== b.squads.length) return null;
     if (!b.units.every(u => {
-      const drone = known(droneTypes, u.type), def = drone ? droneTypes[u.type] : known(defenderTypes, u.type) ? defenderTypes[u.type] : null;
+      const drone = known(droneTypes, u.type), wild = known(wildlifeTypes, u.type);
+      const def = drone ? droneTypes[u.type] : known(defenderTypes, u.type) ? defenderTypes[u.type] : wild ? wildlifeTypes[u.type] : null;
       return def && positiveId(u.id) && point(u) && between(u.hp, 0, u.maxHp) && between(u.maxHp, .001, 1e6)
         && between(u.alt, 0, 10000) && fields(u, ["vx", "vz"], n => between(n, -1e4, 1e4))
         && between(u.heading, -1e9, 1e9) && between(u.fireIn, -1, 60) && between(u.damageScale, .001, 1000)
         && typeof u.alive === "boolean" && u.alive === (u.hp > 0) && typeof u.landed === "boolean"
         && (!u.landed || u.type === "dragonfly") && u.structure === !!def.structure && typeof u.converted === "boolean"
         && (drone ? u.side === "swarm" && !u.converted && squads.has(u.squad) && b.unlocks.includes(u.type)
+          // Wildlife (HAZ-01): on no side, and always with its den.
+          : wild ? u.side === "wild" && u.squad === null && !u.converted
           : u.squad === null && (u.side === "native" && !u.converted || u.side === "swarm" && u.structure && u.converted))
+        && (wild ? point(u.den) : u.den === undefined)
         && validOrder(u.order, b, zones) && slot(u.slot)
         && (u.home === null || zones.has(u.home)) && (u.raid === null || zones.has(u.raid))
         && (u.target === null || positiveId(u.target) && u.target < b.nextId)

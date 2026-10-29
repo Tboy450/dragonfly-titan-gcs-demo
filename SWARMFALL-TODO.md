@@ -661,9 +661,38 @@ complete solely because its assets download or its unit tests pass.
 
 ## 7. Planet threats and hazards (HAZ)
 
-- [ ] **HAZ-01 ★ (P2)** Wildlife and other threats on the planet (owner: "other threats on the
-  planet"): sandworms on Kepra, swamp beasts on Velm, ice crawlers on Corvan. Neutral; they
-  attack anything nearby.
+- [x] **HAZ-01 ★ (P2) — Claude (October 29)** Wildlife and other threats on the planet (owner:
+  "other threats on the planet"): sandworms on Kepra, swamp beasts on Velm, ice crawlers on
+  Corvan. Neutral; they attack anything nearby.
+  - Creatures (`wildlifeTypes`, units.mjs). All numbers are first estimates, not playtested:
+    - Kepra: 2 sandworms (500 health, 14/s lunge out to 36 m).
+    - Velm: 3 swamp beasts (380 health, 10/s acid spit out to 45 m with splash).
+    - Corvan: 6 ice crawlers in 2 packs of 3 (110 health each, 6/s leaping bite out to 30 m).
+  - Their attacks reach drones flying low overhead. Strikers can stand off out of reach.
+  - Each prowls slowly round its den. It goes for the nearest drone or trooper in sight, and
+    gives up once the prey is more than 2.2 times its prowl range from the den.
+  - Dens are placed from the planet's seed, at least 280 m from the Hive beacon, clear of
+    every zone by the creature's sight plus half its prowl range, and apart from each other.
+    The creatures are added last, so zones, garrison and weather are unchanged.
+  - A third side in combat: drones and locals shoot creatures in range, and creatures attack
+    both. Right-click or tap a creature to order an attack on it.
+  - Creatures do not count in captures. Their kills raise no alarm, and drones they kill count
+    with "Lost to hazards". Killing one pays nothing.
+  - Spear throwers' spears now also hit ground targets, so tribes can fight back.
+  - Simple invented models (`wildlifeModels`, models.mjs): the sandworm rises and sinks, and
+    the others bob as they walk. Their attacks are drawn lime, and they show as lime dots on
+    the minimap with lime health bars.
+  - A first-sighting tip, a Field guide section (Wildlife) and a line in the planet panel.
+    Saved battles keep creatures and their dens.
+  - `tests/invasion-wildlife.test.mjs` (6 tests); the UI test harness now provides the scene's
+    colors. In the browser:
+    - All three creatures were looked at in their worlds.
+    - On Kepra, the first-sighting tip appeared, and a right-click order sent a squad to attack
+      a sandworm.
+    - That squad of 4 Scouts and 2 Links was wiped out, all counted as hazard losses with no
+      alarm. So the sandworm was toned down (from 600 health and 18/s), and dens were moved
+      further from the zones.
+    - The preview's storage was left as found (empty).
 - [ ] **HAZ-02 (P2)** More hazards: quakes, floods and tides on Halcyon, meteor showers,
   radiation storms, sinkholes.
 - [x] **HAZ-03 (P2) — Claude (October 27)** A forecast of the next hazards, and counters

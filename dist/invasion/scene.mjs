@@ -7,8 +7,8 @@ import * as THREE from "../vendor/three/three.module.min.js?v=dev";
 import { createTitanTerrain } from "../titan-terrain.mjs?v=dev";
 import { createArrivalHardware } from "../arrival-hardware.mjs?v=dev";
 import { edlStateAt } from "../edl.mjs?v=dev";
-import { dropDurationS, droneTypes } from "./units.mjs?v=dev";
-import { droneModels, figureModel, interceptorModel, structureModels, buildingModels, dragonflyTemplate, societyColors, civilianModel } from "./models.mjs?v=dev";
+import { dropDurationS, droneTypes, wildlifeTypes } from "./units.mjs?v=dev";
+import { droneModels, figureModel, interceptorModel, structureModels, buildingModels, dragonflyTemplate, societyColors, civilianModel, wildlifeModels } from "./models.mjs?v=dev";
 import { projectedDiameter } from './drone-markers.mjs?v=dev';
 import { buildCity } from './city-render.mjs?v=dev';
 import { cityFound, hiddenUnits, operations } from "./battle.mjs?v=dev";
@@ -18,7 +18,9 @@ import { createSwarmDust, dustLimits } from "./swarm-dust.mjs?v=dev";
 
 export const swarmColor = "#7ce7ff";
 export const nativeColor = "#ff8a4a";
-const swarmTint = new THREE.Color(swarmColor), nativeTint = new THREE.Color(nativeColor);
+// Wildlife (HAZ-01) on the map and in its attacks.
+export const wildColor = "#c8e070";
+const swarmTint = new THREE.Color(swarmColor), nativeTint = new THREE.Color(nativeColor), wildTint = new THREE.Color(wildColor);
 // NASA's Dragonfly is 3.85 m across; drawn 2.4 times that to match the enlarged swarm.
 const dragonflyScale = 2.4;
 
@@ -182,6 +184,11 @@ export function createInvasionScene(canvas, options = {}) {
   let people = [];
   const interceptors = instanced(interceptorModel(), bodyMaterial, 120);
   unitGroup.add(figures, interceptors);
+  const wildMeshes = {};
+  for (const [type, geometry] of Object.entries(wildlifeModels())) {
+    wildMeshes[type] = instanced(geometry, bodyMaterial, 24);
+    unitGroup.add(wildMeshes[type]);
+  }
   const structureMeshes = {};
   for (const [type, model] of Object.entries(structureModels())) {
     structureMeshes[type] = { body: instanced(model.body, bodyMaterial, 60), glow: instanced(model.glow, glowMaterial, 60) };
@@ -656,6 +663,7 @@ export function createInvasionScene(canvas, options = {}) {
     for (const mesh of Object.values(droneMeshes)) { mesh.body.count = 0; mesh.glow.count = 0; mesh.discs.count = 0; }
     for (const mesh of Object.values(structureMeshes)) { mesh.body.count = 0; mesh.glow.count = 0; }
     figures.count = 0; interceptors.count = 0;
+    for (const mesh of Object.values(wildMeshes)) mesh.count = 0;
     let dragonflyIndex = 0;
     const hidden = hiddenUnits(b);
     for (const unit of b.units) {
@@ -692,6 +700,18 @@ export function createInvasionScene(canvas, options = {}) {
           mesh.discs.count += 1;
         }
         counts[unit.type] = (counts[unit.type] || 0) + 1;
+      } else if (unit.side === "wild") {
+        const mesh = wildMeshes[unit.type];
+        if (!mesh) continue;
+        // The sandworm rises out of the dunes and sinks back; the others bob as they walk.
+        const moving = Math.hypot(unit.vx, unit.vz) > 0.5;
+        const lift = unit.type === "sandworm" ? -1.4 + Math.sin(time * 1.1 + unit.id) * 0.9 : moving ? Math.abs(Math.sin(time * 7 + unit.id)) * 0.2 : 0;
+        dummy.position.set(unit.x, unitHeight(unit) + lift, unit.z);
+        dummy.rotation.set(0, unit.heading, 0);
+        dummy.scale.setScalar(1);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(mesh.count, dummy.matrix);
+        mesh.count += 1;
       } else if (unit.structure) {
         const mesh = structureMeshes[unit.type];
         if (!mesh) continue;
@@ -731,6 +751,7 @@ export function createInvasionScene(canvas, options = {}) {
     for (const mesh of Object.values(droneMeshes)) { flag(mesh.body); flag(mesh.glow); flag(mesh.discs); }
     for (const mesh of Object.values(structureMeshes)) { flag(mesh.body); flag(mesh.glow); }
     flag(figures); flag(interceptors);
+    for (const mesh of Object.values(wildMeshes)) flag(mesh);
   }
 
   // Townspeople of each populated settlement (not the Hive beacon): they wander near home, run
@@ -806,9 +827,10 @@ export function createInvasionScene(canvas, options = {}) {
   const shotStyle = {
     tracer: { life: 0.16, length: 0.3 }, laser: { life: 0.22, length: 1 }, missile: { life: 0.55, length: 0.12 },
     spear: { life: 0.45, length: 0.15, arc: true }, flak: { life: 0.2, length: 0.3 }, charge: { life: 0.3, length: 0.2 },
+    bite: { life: 0.18, length: 1 }, spit: { life: 0.5, length: 0.2, arc: true },
   };
   function unitPoint(unit, out) {
-    const lift = unit.structure ? 4 : unit.side === "native" && !unit.alt ? 2 : 0.6;
+    const lift = unit.structure ? 4 : unit.side === "wild" ? (wildlifeTypes[unit.type]?.size || 2) * 0.6 : unit.side === "native" && !unit.alt ? 2 : 0.6;
     return out.set(unit.x, unitHeight(unit) + unit.alt + lift, unit.z);
   }
   function consume(b, events) {
@@ -822,7 +844,7 @@ export function createInvasionScene(canvas, options = {}) {
         const target = to.side ? to : null;
         const bpt = target ? unitPoint(target, new THREE.Vector3()) : new THREE.Vector3(to.x, terrain.heightAt(to.x, to.z) + (to.alt || 0), to.z);
         const style = shotStyle[e.fx] || shotStyle.tracer;
-        const color = e.fx === "laser" ? (e.side === "swarm" ? swarmTint : new THREE.Color("#ff3355")) : e.side === "swarm" ? swarmTint : e.fx === "spear" ? new THREE.Color("#c8a070") : nativeTint;
+        const color = e.side === "wild" ? wildTint : e.fx === "laser" ? (e.side === "swarm" ? swarmTint : new THREE.Color("#ff3355")) : e.side === "swarm" ? swarmTint : e.fx === "spear" ? new THREE.Color("#c8a070") : nativeTint;
         shots.push({ a, b: bpt, t: 0, ...style, color });
         if (e.fx === "flak") blast(bpt.x + (Math.random() - 0.5) * 6, bpt.y + (Math.random() - 0.5) * 4, bpt.z + (Math.random() - 0.5) * 6, 3, 0xffd0a0, 0.35);
         if (e.fx === "charge") blast(bpt.x, bpt.y, bpt.z, 5, 0xffb060, 0.5);
@@ -1078,7 +1100,7 @@ export function createInvasionScene(canvas, options = {}) {
     return { x: (projected.x + 1) / 2 * width, y: (1 - projected.y) / 2 * height, visible: projected.z < 1 && projected.z > -1 };
   }
 
-  const unitTop = (unit) => terrain.heightAt(unit.x, unit.z) + unit.alt + (unit.structure ? 15 : unit.side === "swarm" ? 4 : 6.5);
+  const unitTop = (unit) => terrain.heightAt(unit.x, unit.z) + unit.alt + (unit.structure ? 15 : unit.side === "swarm" ? 4 : unit.side === "wild" ? (wildlifeTypes[unit.type]?.size || 2) + 1.5 : 6.5);
   const markerPosition = new THREE.Vector3();
   function unitPixelSize(unit, height) {
     markerPosition.set(unit.x, unitTop(unit), unit.z).applyMatrix4(camera.matrixWorldInverse);
