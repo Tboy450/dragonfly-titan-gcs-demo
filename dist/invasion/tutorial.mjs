@@ -6,13 +6,13 @@ const anyDrone = (b) => b.units.some(u => u.alive && u.side === "swarm" && !u.st
 const relic = (b) => b.zones.find(z => z.special === "dragonfly");
 
 export const tutorialSteps = Object.freeze([
-  { id: "drop", target: "drop-button", text: "Press Drop wave (B), keep the Scouts and Links, then Land on the Hive beacon. Each pod carries up to 3 drones; the wave is one squad.",
+  { id: "drop", target: "drop-button", text: "Press Drop wave ({drop}), keep the Scouts and Links, then Land on the Hive beacon. Each pod carries up to 3 drones; the wave is one squad.",
     done: (b) => b.stats.drops > 0 },
   { id: "land", target: null, text: "The pods come down under their parachutes. Drones release just above the ground.",
     done: (b) => anyDrone(b) },
   { id: "select", target: "squad-bar", text: "Select the squad: tap its card at the bottom, or click one of your drones.",
     done: (b, ui) => ui.selected > 0 || b.squads.some(s => s.order && s.order.kind !== "hold") },
-  { id: "move", target: null, text: "Right-click (or tap) the ground to send the squad there. Drag to move the view, scroll or pinch to zoom, right-drag or Q/E to turn.",
+  { id: "move", target: null, text: "Right-click (or tap) the ground to send the squad there. Drag to move the view, scroll or pinch to zoom, right-drag or {turnLeft}/{turnRight} to turn.",
     done: (b) => b.squads.some(s => s.order && s.order.kind !== "hold") || b.stats.zonesCaptured > 0 },
   { id: "capture", target: null, text: "Right-click (or tap) inside a white beacon ring: the squad flies there and captures it.",
     done: (b) => b.stats.zonesCaptured > 0 },

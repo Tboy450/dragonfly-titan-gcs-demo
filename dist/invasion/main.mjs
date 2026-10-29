@@ -30,6 +30,7 @@ import { cycleSound, soundLabel, updateBattleSound, quietSound } from "./sound.m
 import { qualityLevels, nextQuality } from "./quality.mjs?v=dev";
 import { newTips } from "./tips.mjs?v=dev";
 import { fieldGuide, droneTooltip, alarmTooltip, matterTooltip, forecastTooltip, hazardCounters, aboutTime } from "./field-guide.mjs?v=dev";
+import { SETTINGS_KEY, keyActions, keyName, createSettings, validSettings, bindKey, resetKeys, actionFor, nextOf, percent, cameraSpeeds, uiScales, fillKeys } from "./settings.mjs?v=dev";
 import { tutorialState } from "./tutorial.mjs?v=dev";
 
 // First-time tips (tips.mjs), each shown once per device.
@@ -334,7 +335,7 @@ $("frontier-button").addEventListener("click", showFrontiers);
 
 // ---- Field guide (field-guide.mjs, generated from the rules) ----
 function showFieldGuide() {
-  $("guide-body").innerHTML = fieldGuide().map(({ section, items }) => `<h3>${escapeHtml(section)}</h3><ul class="achievement-list guide-list">${items.map(item => `
+  $("guide-body").innerHTML = fieldGuide(settings.keys).map(({ section, items }) => `<h3>${escapeHtml(section)}</h3><ul class="achievement-list guide-list">${items.map(item => `
     <li><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.summary)}</small>
       <ul>${item.facts.map(fact => `<li>${escapeHtml(fact)}</li>`).join("")}</ul></li>`).join("")}</ul>`).join("");
   resetPointers();
@@ -374,6 +375,152 @@ $("difficulty-button").addEventListener("click", () => {
   showDifficulty();
 });
 showDifficulty();
+
+// ---- Settings (CTRL-10): camera speed, invert drag, UI size and keys, kept on this device ----
+let settings = createSettings();
+try { settings = validSettings(JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null")); } catch { /* optional */ }
+let armedKey = null; // the action waiting for its new key
+const keyLabel = (id) => keyName(settings.keys[id]);
+const actionLabel = (id) => keyActions.find(a => a.id === id).label;
+function saveSettings() {
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); return true; } catch { return false; }
+}
+// Buttons and tooltips name the keys as they are bound now.
+function showKeyLabels() {
+  const k = keyLabel;
+  $("sound-button").title = `Sound: off, quiet, medium, loud (${k("sound")}). Off by default.`;
+  $("pause-sound").title = `Sound: off, quiet, medium, loud (${k("sound")})`;
+  $("pause-button").title = `Pause (${k("pause")})`;
+  $("hold-button").title = `Stop and hold position (${k("hold")})`;
+  $("drop-button").title = `Call a squad wave of parachute pods (${k("drop")})`;
+  $("follow-button").textContent = `Follow · ${k("follow")}`;
+  $("follow-button").title = `Follow the selected squads; panning stops it (${k("follow")}). ${k("resetView")} resets the view.`;
+  $("alert-button").textContent = `Alert · ${k("alert")}`;
+  $("alert-button").title = `Jump to the newest alert: a lost drone, artillery or lightning marked, an eruption (${k("alert")})`;
+  $("free-camera").title = `Free camera: fly anywhere. ${k("forward")} ${k("left")} ${k("back")} ${k("right")} move, ${k("tiltUp")}/${k("tiltDown")} or the wheel up and down, ${k("turnLeft")}/${k("turnRight")} turn, ${k("zoomOut")}/${k("zoomIn")} look, Shift faster, right-drag to look (${k("freeCam")})`;
+  updateFreeCameraUi();
+  labelCleanView(!!mission?.cleanView);
+  $("coach").dataset.key = ""; // the tutorial redraws with the new keys
+}
+function applySettings() {
+  document.documentElement?.style.setProperty("--ui-scale", String(settings.uiScale));
+  measureHudTop();
+  showKeyLabels();
+}
+// The CSS keeps the panels under the top bar below its real height, which grows when it wraps.
+function measureHudTop() {
+  const bar = document.querySelector(".hud-top");
+  if (bar) document.documentElement?.style.setProperty("--hud-top", `${Math.ceil(bar.getBoundingClientRect().bottom)}px`);
+}
+if (typeof ResizeObserver === "function") new ResizeObserver(measureHudTop).observe(document.querySelector(".hud-top"));
+const keyButton = (id) => $("settings-keys").querySelector(`[data-action="${id}"]`);
+const settingsNote = (text) => { $("settings-note").textContent = text; };
+function renderSettings() {
+  $("settings-camera").textContent = `Camera speed ${settings.cameraSpeed}×`;
+  $("settings-invert").textContent = `Invert drag: ${settings.invertDrag ? "On" : "Off"}`;
+  $("settings-invert").setAttribute("aria-pressed", String(settings.invertDrag));
+  $("settings-ui").textContent = `UI size ${percent(settings.uiScale)}`;
+  const list = $("settings-keys");
+  list.replaceChildren();
+  let group = null;
+  for (const action of keyActions) {
+    if (action.group !== group) {
+      group = action.group;
+      const head = document.createElement("p");
+      head.className = "settings-group";
+      head.textContent = group;
+      list.append(head);
+    }
+    const row = document.createElement("div"), label = document.createElement("span"), button = document.createElement("button");
+    row.className = "settings-key";
+    label.textContent = action.label;
+    button.type = "button";
+    button.dataset.action = action.id;
+    button.textContent = armedKey === action.id ? "Press a key…" : keyLabel(action.id);
+    button.setAttribute("aria-label", `${action.label}: ${keyLabel(action.id)}. Press to change.`);
+    button.addEventListener("click", () => armKey(action.id));
+    row.append(label);
+    row.append(button);
+    list.append(row);
+  }
+}
+function armKey(id) {
+  armedKey = id;
+  settingsNote(`Press the new key for ${actionLabel(id)}. Escape cancels.`);
+  renderSettings();
+  keyButton(id)?.focus();
+}
+function openSettings() {
+  armedKey = null;
+  settingsNote("Choose an action, then press its new key. A key already in use swaps over.");
+  renderSettings();
+  resetPointers();
+  $("settings-dialog").showModal();
+  $("settings-camera").focus();
+}
+function changeSettings(next) {
+  settings = next;
+  const saved = saveSettings();
+  applySettings();
+  renderSettings();
+  if (!saved) settingsNote("These settings could not be saved on this device, so they last until the page closes.");
+}
+$("settings-camera").addEventListener("click", () => changeSettings({ ...settings, cameraSpeed: nextOf(cameraSpeeds, settings.cameraSpeed) }));
+$("settings-invert").addEventListener("click", () => changeSettings({ ...settings, invertDrag: !settings.invertDrag }));
+$("settings-ui").addEventListener("click", () => changeSettings({ ...settings, uiScale: nextOf(uiScales, settings.uiScale) }));
+$("settings-reset-keys").addEventListener("click", () => {
+  armedKey = null;
+  settingsNote("Every key is back to its default.");
+  changeSettings(resetKeys(settings));
+});
+$("settings-close").addEventListener("click", () => $("settings-dialog").close());
+// While an action waits for its key, the next key press is taken here and goes no further.
+// Escape cancels (and does not close the settings); Tab cancels and moves on as usual.
+$("settings-dialog").addEventListener("keydown", (event) => {
+  if (!armedKey) return;
+  const key = event.key.toLowerCase(), id = armedKey;
+  if (["shift", "control", "alt", "meta", "altgraph", "capslock"].includes(key)) return; // wait for the key itself
+  if (key === "tab") {
+    armedKey = null;
+    settingsNote(`${actionLabel(id)} keeps ${keyLabel(id)}.`);
+    const button = keyButton(id);
+    if (button) button.textContent = keyLabel(id);
+    return;
+  }
+  event.preventDefault();
+  event.stopPropagation();
+  if (key === "escape") {
+    armedKey = null;
+    settingsNote(`${actionLabel(id)} keeps ${keyLabel(id)}.`);
+    renderSettings();
+    keyButton(id)?.focus();
+    return;
+  }
+  if (event.ctrlKey || event.altKey || event.metaKey) { settingsNote("Ctrl, Alt and Cmd shortcuts stay with the browser. Press a key on its own, or Escape to cancel."); return; }
+  const result = bindKey(settings, id, key);
+  if (!result) { settingsNote("That key keeps its own job: Enter, Escape, Tab, the number keys, the arrow keys, Page Up/Down and + - = can't be changed. Press another key, or Escape to cancel."); return; }
+  armedKey = null;
+  const swapped = result.swapped ? ` ${actionLabel(result.swapped)} moved to ${keyName(result.settings.keys[result.swapped])}.` : "";
+  settingsNote(`${actionLabel(id)}: ${keyName(key)}.${swapped}`);
+  changeSettings(result.settings);
+  keyButton(id)?.focus();
+});
+// Opened from the pause menu, the settings keep the battle paused and return to the menu.
+$("settings-dialog").addEventListener("close", () => {
+  armedKey = null;
+  if (mission?.settingsFromMenu === undefined || current !== "mission") return;
+  const was = mission.settingsFromMenu;
+  delete mission.settingsFromMenu;
+  openPauseMenu();
+  mission.menuWasPaused = was;
+});
+$("settings-button").addEventListener("click", openSettings);
+$("pause-settings-button").addEventListener("click", () => {
+  $("pause-menu").close();
+  if (mission) mission.settingsFromMenu = mission.menuWasPaused;
+  openSettings();
+});
+applySettings();
 
 function ensureScene() {
   if (scene) return scene;
@@ -512,7 +659,7 @@ function lookFree(dx, dy) {
 function updateFreeCameraUi() {
   const on = !!mission?.freeCam;
   $("free-camera").setAttribute("aria-pressed", String(on));
-  $("free-camera").textContent = on ? "Orbit cam · C" : "Free cam · C";
+  $("free-camera").textContent = `${on ? "Orbit cam" : "Free cam"} · ${keyLabel("freeCam")}`;
   $("free-controls").hidden = !on;
 }
 function setFreeCamera(enabled) {
@@ -604,31 +751,35 @@ function pan(dx, dy) {
   cam.focus.z += (-rz * dx + fz * dy) * k;
   clampCamera();
 }
+// Keys as bound in the settings, plus the fixed arrow, page and +/- keys; camera speed scales it all.
 function keyboardCamera(dt) {
+  const on = (id, ...fixed) => (keys.has(settings.keys[id]) || fixed.some(name => keys.has(name)) ? 1 : 0);
+  dt *= settings.cameraSpeed;
   if (mission.freeCam) {
-    const on = (...names) => (names.some(name => keys.has(name)) ? 1 : 0);
     const input = {
-      forward: on("w", "arrowup") - on("s", "arrowdown"), right: on("d", "arrowright") - on("a", "arrowleft"),
-      up: on("r", "pageup") - on("f", "pagedown") + mission.freeInput.up, turn: on("e") - on("q"),
-      look: on("x") - on("z") + mission.freeInput.look, fast: keys.has("shift"),
+      forward: on("forward", "arrowup") - on("back", "arrowdown"), right: on("right", "arrowright") - on("left", "arrowleft"),
+      up: on("tiltUp", "pageup") - on("tiltDown", "pagedown") + mission.freeInput.up, turn: on("turnRight") - on("turnLeft"),
+      look: on("zoomIn") - on("zoomOut") + mission.freeInput.look, fast: keys.has("shift"),
     };
     if (input.forward || input.right || input.up || input.turn || input.look) moveFree(mission.freeCam, input, dt, freeWorld());
     return;
   }
   if (!keys.size) return;
   const cam = mission.cam, step = cam.distance * 1.1 * dt / 0.0021 / cam.distance;
-  if (keys.has("w") || keys.has("arrowup")) pan(0, step);
-  if (keys.has("s") || keys.has("arrowdown")) pan(0, -step);
-  if (keys.has("a") || keys.has("arrowleft")) pan(step, 0);
-  if (keys.has("d") || keys.has("arrowright")) pan(-step, 0);
-  if (keys.has("q")) cam.yaw -= 1.3 * dt;
-  if (keys.has("e")) cam.yaw += 1.3 * dt;
-  if (keys.has("r")) cam.pitch += 0.8 * dt;
-  if (keys.has("f")) cam.pitch -= 0.8 * dt;
-  if (keys.has("z") || keys.has("-")) cam.distance *= 1 + 1.2 * dt;
-  if (keys.has("x") || keys.has("=") || keys.has("+")) cam.distance /= 1 + 1.2 * dt;
+  if (on("forward", "arrowup")) pan(0, step);
+  if (on("back", "arrowdown")) pan(0, -step);
+  if (on("left", "arrowleft")) pan(step, 0);
+  if (on("right", "arrowright")) pan(-step, 0);
+  if (on("turnLeft")) cam.yaw -= 1.3 * dt;
+  if (on("turnRight")) cam.yaw += 1.3 * dt;
+  if (on("tiltUp")) cam.pitch += 0.8 * dt;
+  if (on("tiltDown")) cam.pitch -= 0.8 * dt;
+  if (on("zoomOut", "-")) cam.distance *= 1 + 1.2 * dt;
+  if (on("zoomIn", "=", "+")) cam.distance /= 1 + 1.2 * dt;
   clampCamera();
 }
+// Drags follow the settings: camera speed scales them and invert drag turns them around.
+const dragged = (dx, dy) => { const s = settings.cameraSpeed * (settings.invertDrag ? -1 : 1); return [dx * s, dy * s]; };
 
 const pointers = new Map();
 let gesture = null;
@@ -689,13 +840,13 @@ overlay.addEventListener("pointermove", (event) => {
       // Free camera: spread to fly forward, pinch to back away, twist to turn, drag to slide.
       mission.freeCam.yaw -= now.angle - before.angle;
       nudgeFree((now.dist - before.dist) * freeScale() * 2, 0, 0);
-      pan(now.x - before.x, now.y - before.y);
+      pan(...dragged(now.x - before.x, now.y - before.y));
       gesture.pinch = now;
       return;
     }
     mission.cam.distance *= Math.max(10, before.dist) / Math.max(10, now.dist);
     mission.cam.yaw -= now.angle - before.angle;
-    pan(now.x - before.x, now.y - before.y);
+    pan(...dragged(now.x - before.x, now.y - before.y));
     gesture.pinch = now;
     return;
   }
@@ -709,8 +860,9 @@ overlay.addEventListener("pointermove", (event) => {
   const dx = event.clientX - gesture.lastX, dy = event.clientY - gesture.lastY;
   if (exceedsTapSlop(gesture, event)) gesture.moved = true;
   if (gesture.moved) {
-    if (gesture.rotate && mission.freeCam) lookFree(dx, dy);
-    else if (gesture.rotate) { mission.cam.yaw -= dx * 0.006; mission.cam.pitch += dy * 0.004; clampCamera(); } else pan(dx, dy);
+    const [mx, my] = dragged(dx, dy);
+    if (gesture.rotate && mission.freeCam) lookFree(mx, my);
+    else if (gesture.rotate) { mission.cam.yaw -= mx * 0.006; mission.cam.pitch += my * 0.004; clampCamera(); } else pan(mx, my);
   }
   gesture.lastX = event.clientX; gesture.lastY = event.clientY;
 });
@@ -740,8 +892,8 @@ overlay.addEventListener("wheel", (event) => {
   if (!battlefieldActive()) return;
   event.preventDefault();
   // The wheel raises and lowers the free camera; it zooms the orbit camera.
-  if (mission.freeCam) { nudgeFree(0, 0, event.deltaY * (0.15 + freeScale() * 0.9)); return; }
-  mission.cam.distance *= Math.exp(event.deltaY * 0.0012);
+  if (mission.freeCam) { nudgeFree(0, 0, event.deltaY * (0.15 + freeScale() * 0.9) * settings.cameraSpeed); return; }
+  mission.cam.distance *= Math.exp(event.deltaY * 0.0012 * settings.cameraSpeed);
   clampCamera();
 }, { passive: false });
 
@@ -923,14 +1075,14 @@ function updateSquadTools() {
     options.push(["rename", "Rename…"]);
   }
   if (chosen.length) {
-    options.push(["queue", "Queue next order"], ["hunt", "Attack-move next order (T)"]);
+    options.push(["queue", "Queue next order"], ["hunt", `Attack-move next order (${keyLabel("attackMove")})`]);
     const patrolling = b.squads.filter(s => chosen.includes(s.id)).every(s => s.patrol);
-    options.push(["patrol", patrolling ? "Patrol: on → off (P)" : "Patrol: off → on (P)"]);
+    options.push(["patrol", `Patrol: ${patrolling ? "on → off" : "off → on"} (${keyLabel("patrol")})`]);
     // Formation and stance (CTRL-07): the choices not already set on every selected squad.
     const squads = b.squads.filter(s => chosen.includes(s.id));
-    for (const formation of formations) if (!squads.every(s => (s.formation || "spread") === formation)) options.push([`formation:${formation}`, `Formation: ${formationNames[formation]} (L)`]);
+    for (const formation of formations) if (!squads.every(s => (s.formation || "spread") === formation)) options.push([`formation:${formation}`, `Formation: ${formationNames[formation]} (${keyLabel("formation")})`]);
     const holding = squads.every(s => s.stance === "hold");
-    options.push(["stance", holding ? "Hold fire: on → off (Y)" : "Hold fire: off → on (Y)"]);
+    options.push(["stance", `Hold fire: ${holding ? "on → off" : "off → on"} (${keyLabel("holdFire")})`]);
   }
   const signature = options.map(o => o.join(":")).join("|");
   if (select.dataset.signature !== signature) {
@@ -1096,11 +1248,15 @@ function setCleanView(enabled) {
   mission.cleanView = enabled;
   if (enabled) { resetMinimapPointers(); cancelPlacement(); closeDropPanel(); }
   $("screen-mission").classList.toggle("clean-view", enabled);
-  $("clean-view-button").textContent = enabled ? "Show HUD · V" : "Clean view · V";
-  $("clean-view-button").setAttribute("aria-pressed", String(enabled));
-  $("clean-view-button").title = enabled ? "Restore panels and labels (V or Escape)" : "Hide panels and labels (V)";
+  labelCleanView(enabled);
   if (enabled && document.activeElement !== $("clean-view-button") && $("screen-mission").contains(document.activeElement))
     $("clean-view-button").focus({ preventScroll: true });
+}
+function labelCleanView(enabled) {
+  const k = keyLabel("cleanView");
+  $("clean-view-button").textContent = enabled ? `Show HUD · ${k}` : `Clean view · ${k}`;
+  $("clean-view-button").setAttribute("aria-pressed", String(enabled));
+  $("clean-view-button").title = enabled ? `Restore panels and labels (${k} or Escape)` : `Hide panels and labels (${k})`;
 }
 $("clean-view-button").addEventListener("click", () => { if (mission) setCleanView(!mission.cleanView); });
 $("pause-button").addEventListener("click", () => { if (mission) mission.paused = !mission.paused; updateHud(); });
@@ -1226,20 +1382,21 @@ const typingField = "input, textarea, select, [contenteditable]", pressable = "b
 window.addEventListener("keydown", (event) => {
   if (current !== "mission" || !mission || event.target.closest?.(typingField) || document.querySelector("dialog[open]")) return;
   if (event.ctrlKey || event.altKey || event.metaKey) return;
-  const key = event.key.toLowerCase();
+  // Enter, Escape and the number keys are fixed; the rest follow the settings (CTRL-10).
+  const key = event.key.toLowerCase(), action = actionFor(settings, key);
   if ((key === " " || key === "enter") && event.target.closest?.(pressable)) return;
   if (key === "enter") { if (!event.repeat) actAtCenter(event.shiftKey); event.preventDefault(); return; }
-  if (key === "v" && !event.repeat) { setCleanView(!mission.cleanView); event.preventDefault(); return; }
-  if (key === "c" && !event.repeat) { setFreeCamera(!mission.freeCam); event.preventDefault(); return; }
-  if (key === "g" && !event.repeat) { setFollow(!mission.follow); return; }
-  if (key === "m" && !event.repeat) { $("sound-button").textContent = cycleSound(); return; }
-  if (key === "j" && !event.repeat) { jumpToAlert(); return; }
-  if (key === "t" && !event.repeat) { armAttackMove(); return; }
-  if (key === "p" && !event.repeat) { togglePatrol(); return; }
-  if (key === "l" && !event.repeat) { cycleFormation(); checkpointMission(); return; }
-  if (key === "y" && !event.repeat) { toggleHoldFire(); checkpointMission(); return; }
-  if (key === "home") { resetView(); event.preventDefault(); return; }
-  if (key === " ") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
+  if (action === "cleanView" && !event.repeat) { setCleanView(!mission.cleanView); event.preventDefault(); return; }
+  if (action === "freeCam" && !event.repeat) { setFreeCamera(!mission.freeCam); event.preventDefault(); return; }
+  if (action === "follow" && !event.repeat) { setFollow(!mission.follow); return; }
+  if (action === "sound" && !event.repeat) { $("sound-button").textContent = cycleSound(); return; }
+  if (action === "alert" && !event.repeat) { jumpToAlert(); return; }
+  if (action === "attackMove" && !event.repeat) { armAttackMove(); return; }
+  if (action === "patrol" && !event.repeat) { togglePatrol(); return; }
+  if (action === "formation" && !event.repeat) { cycleFormation(); checkpointMission(); return; }
+  if (action === "holdFire" && !event.repeat) { toggleHoldFire(); checkpointMission(); return; }
+  if (action === "resetView") { resetView(); event.preventDefault(); return; }
+  if (action === "pause") { mission.paused = !mission.paused; updateHud(); event.preventDefault(); return; }
   if (key === "escape") {
     const panelOpen = !$("drop-panel").hidden;
     // Nothing to close or cancel: Escape opens the pause menu (CTRL-12). preventDefault stops the
@@ -1249,7 +1406,7 @@ window.addEventListener("keydown", (event) => {
     if (panelOpen) $("drop-button").focus();
     return;
   }
-  if (key === "b") {
+  if (action === "drop") {
     if (!$("drop-panel").hidden) { closeDropPanel(); $("drop-button").focus(); return; }
     openDropPanel();
     // Opened from the keyboard: start on the first control that can be used, so Tab and Enter launch.
@@ -1257,9 +1414,9 @@ window.addEventListener("keydown", (event) => {
     first?.focus();
     return;
   }
-  if (key === "h") { if (!event.repeat) holdSelected(); return; }
+  if (action === "hold") { if (!event.repeat) holdSelected(); return; }
   if (key === "0") {
-    if (!battleSummary(mission.battle).squads.some(s => s.size > 0 || s.inbound)) { toast("No squads yet: press B to drop a wave.", "info"); return; }
+    if (!battleSummary(mission.battle).squads.some(s => s.size > 0 || s.inbound)) { toast(`No squads yet: press ${keyLabel("drop")} to drop a wave.`, "info"); return; }
     selectAll(); return;
   }
   if (/^[1-9]$/.test(key)) {
@@ -1270,7 +1427,7 @@ window.addEventListener("keydown", (event) => {
       const center = squadCenter(mission.battle.units, mission.selected);
       if (center) { setFollow(false); lookAt(center.x, center.z); }
     } else if (squad) selectSquad(squad.id, event.shiftKey);
-    else if (!event.repeat) toast(squads.length ? `There ${squads.length === 1 ? "is 1 squad" : `are ${squads.length} squads`}; ${key} selects squad ${key}.` : "No squads yet: press B to drop a wave.", "info");
+    else if (!event.repeat) toast(squads.length ? `There ${squads.length === 1 ? "is 1 squad" : `are ${squads.length} squads`}; ${key} selects squad ${key}.` : `No squads yet: press ${keyLabel("drop")} to drop a wave.`, "info");
     return;
   }
   keys.add(key);
@@ -1310,7 +1467,7 @@ function updateTutorial(b) {
   if (coach.dataset.key !== key) {
     coach.dataset.key = key;
     coach.innerHTML = state ? `<span class="steps" aria-label="Step ${state.index + 1} of ${state.total}">${state.checks.map((done, i) => (done ? "✓" : i === state.index ? "●" : "○")).join(" ")}</span>
-      <span>${escapeHtml(state.step.text)}</span> <button type="button" class="link" data-tutorial="skip">Skip tutorial</button>` : "";
+      <span>${escapeHtml(fillKeys(state.step.text, settings.keys))}</span> <button type="button" class="link" data-tutorial="skip">Skip tutorial</button>` : "";
   }
   coach.hidden = !state;
   for (const element of document.querySelectorAll(".tutorial-target")) if (element.id !== state?.step.target) element.classList.remove("tutorial-target");
@@ -1448,7 +1605,8 @@ function drawOverlay() {
   mission.edgeMarks = [];
   if (mission.cleanView) return;
   const b = mission.battle;
-  ctx.font = "600 12px system-ui, sans-serif";
+  const ui = settings.uiScale;
+  ctx.font = `600 ${Math.round(12 * ui)}px system-ui, sans-serif`;
   ctx.textAlign = "center";
   for (const zone of b.zones) {
     if (zone.scouted === false) continue;
@@ -1463,16 +1621,16 @@ function drawOverlay() {
     const w = ctx.measureText(text).width + 14;
     ctx.fillStyle = "rgba(6, 8, 16, 0.72)";
     ctx.beginPath();
-    ctx.roundRect(p.x - w / 2, p.y - 11, w, 20, 10);
+    ctx.roundRect(p.x - w / 2, p.y - 11 * ui, w, 20 * ui, 10 * ui);
     ctx.fill();
     ctx.strokeStyle = zone.captured ? swarmColor : zone.kind === "beacon" || zone.kind === "relic" || b.tier === 0 ? "#e8e2d0" : nativeColor;
     ctx.lineWidth = 1.5;
     ctx.stroke();
     ctx.fillStyle = "#f1f4ff";
-    ctx.fillText(text, p.x, p.y + 4);
+    ctx.fillText(text, p.x, p.y + 4 * ui);
     if (mission.placing && zone.captured) {
       ctx.fillStyle = swarmColor;
-      ctx.fillText("tap to preview courts", p.x, p.y + 22);
+      ctx.fillText("tap to preview courts", p.x, p.y + 22 * ui);
     }
   }
   const squadColor = new Map(b.squads.map(s => [s.id, s.color]));
@@ -1611,7 +1769,8 @@ function drawEdgeMarks(ctx, b, width, height) {
     alerts.push({ x: strike.x, z: strike.z, text: strike.source === "lightning" ? "Lightning strike marked" : "Artillery incoming" });
   }
   const from = mission.freeCam || mission.cam.focus;
-  ctx.font = "600 12px system-ui, sans-serif";
+  const ui = settings.uiScale;
+  ctx.font = `600 ${Math.round(12 * ui)}px system-ui, sans-serif`;
   for (const alert of alerts.slice(0, 4)) {
     const edge = edgeMarker(scene.project(alert.x, scene.heightAt(alert.x, alert.z) + 6, alert.z, width, height), width, height);
     if (!edge) continue;
@@ -1627,10 +1786,10 @@ function drawEdgeMarks(ctx, b, width, height) {
     const lx = Math.min(width - w / 2 - 4, Math.max(w / 2 + 4, edge.x - Math.cos(edge.angle) * (w / 2 + 18)));
     const ly = Math.min(height - 14, Math.max(14, edge.y - Math.sin(edge.angle) * 24));
     ctx.fillStyle = "rgba(6, 8, 16, 0.78)";
-    ctx.beginPath(); ctx.roundRect(lx - w / 2, ly - 10, w, 20, 10); ctx.fill();
+    ctx.beginPath(); ctx.roundRect(lx - w / 2, ly - 10 * ui, w, 20 * ui, 10 * ui); ctx.fill();
     ctx.strokeStyle = "#ff4a3a"; ctx.lineWidth = 1.5; ctx.stroke();
     ctx.fillStyle = "#f1f4ff"; ctx.textAlign = "center";
-    ctx.fillText(text, lx, ly + 4);
+    ctx.fillText(text, lx, ly + 4 * ui);
   }
 }
 
@@ -1937,7 +2096,7 @@ function tick(now) {
   for (const event of events) if (event.kind === "alarm" || event.kind === "artillery") tipEvents.push(event);
   for (const alert of [...zoneAlerts(mission.zoneWatch, b), ...squadLosses(events, b)]) {
     mission.lastAlert = alert;
-    toast(`${alert.text}. Tap to view (J).`, "bad", 6000, jumpToAlert);
+    toast(`${alert.text}. Tap to view (${keyLabel("alert")}).`, "bad", 6000, jumpToAlert);
   }
   handleEvents(events);
   offerVictoryChoice();

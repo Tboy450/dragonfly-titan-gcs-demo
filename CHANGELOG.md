@@ -58,6 +58,32 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 - **Next:** Publication receipt follows. Exact radio flight assignment, FEB/IMU,
   blower/diverter wiring and feed-sensor identities remain open. No unrelated data edited.
 
+### 2026-10-28: Swarmfall settings: camera speed, invert drag, UI size and keys
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Add camera, drag, UI size and key settings"
+- **What changed:** Checklist CTRL-10.
+  - A Settings window, from the title screen or the pause menu (More settings). Settings are
+    kept on this device, apart from the campaign save.
+  - Camera speed 0.5× to 2× for keys, the wheel and drags. Invert drag flips panning and
+    right-drag turning.
+  - UI size 85% to 130% for the battle's panels, buttons, map labels and dialogs. Panels now
+    sit below the top bar's real height, and its buttons wrap instead of running off a phone
+    screen.
+  - 23 actions can be rebound. A key in use swaps over, and Escape cancels. Enter, Escape,
+    Tab, Shift, the number keys, arrows, Page Up/Down and + - = stay fixed.
+  - Buttons, tooltips, menus, toasts, the tutorial and the Field guide name the keys as bound.
+- **Files:** `dist/invasion/settings.mjs` (new), `dist/invasion/main.mjs`,
+  `dist/invasion/field-guide.mjs`, `dist/invasion/tutorial.mjs`, `dist/invasion/index.html`,
+  `dist/invasion/invasion.css`, `tests/invasion-settings.test.mjs` (new), `SWARMFALL-TODO.md`,
+  `ARCHITECTURE.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (282 pass). In the browser, with real
+  key presses and drags:
+  - Rebinding, swapping, Escape and the reserved-key refusal all worked. Pause on K paused the
+    battle.
+  - Invert drag reversed an 80 px drag (49 m each way), and 2× doubled it.
+  - At 130%, the desktop and a 375 px phone had no overlaps or sideways scrolling.
+  - The preview's saved data was put back afterwards.
+
 ### 2026-10-28: Swarmfall difficulty levels
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add Easy, Normal and Hard difficulty"

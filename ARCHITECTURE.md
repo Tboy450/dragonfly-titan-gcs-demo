@@ -381,6 +381,7 @@ same split as the simulator: plain modules with tests, plus a page layer.
 | `invasion/tips.mjs` | First-time tips: first defenders in sight, each kind of defense, alarm stages, first artillery and captured defense |
 | `invasion/field-guide.mjs` | The Field guide: every drone, defender, society and hazard with numbers and counters, generated from the rules, plus the controls, and the same facts as tooltips for drop rows, matter, alarm and hazards (TUT-04), with the hazard forecast and counters (HAZ-03) |
 | `invasion/paths.mjs` | Ground routes: a deterministic grid search round water, buildings and walls, used by troops on foot when blocked |
+| `invasion/settings.mjs` | Device settings apart from the campaign save (CTRL-10): camera speed, invert drag, UI size and key bindings, checked on load; rebinding swaps a key in use; key names for labels and the Field guide |
 | `invasion/tutorial.mjs` | The Titan tutorial: checked steps from the battle (drop to win, plus a weather step) and the button to highlight |
 | `invasion/swarm-dust.mjs` | Rotor-wash dust: a pooled, seeded puff simulation for low drones and pod touchdowns, drawn with sprites |
 | `invasion/camera-assist.mjs` | Follow the selected squads' center, the newest alert to jump to, lost-squad alerts, edge-of-screen alert arrows, edge scrolling and the starting view |
