@@ -1,0 +1,74 @@
+﻿date,commit,assistant,via,subsystem,subject
+2026-10-15,73c83e6f4ace4b219a8a2075a637114d7cf6b7b5,Claude,co-author line,"Battle, units & drones","Add Swarmfall, a drone invasion campaign game built from the simulator"
+2026-10-15,8b2399b937c7f58c1303989bc5a90a32cee71918,Claude,co-author line,"Campaign, planets & frontier",Send mistyped or decorated game links to the game from a site-wide 404 page
+2026-10-16,0aa7b87e591eac523961ca6e83a5d57d20723a83,Codex,co-author line,Asset & environment lab,Add source-city previews and preserve reviewed coastal foundation drafts
+2026-10-16,2f7d83f801e88ee8eee2dac1beecaca9647ac654,Codex,co-author line,Cities & terrain,Implement Blender raycast foundations on the preferred low coast
+2026-10-16,598e3b9d9030daaac6cb7883319151fc29ec6e0c,Both,co-author line,Asset & environment lab,Add Codex's Swarmfall Environment Lab and city research
+2026-10-16,f2161621a3f54cce8014633de7c5cd342ae5e41f,Codex,co-author line,"Controls, camera & HUD",Save and resume Swarmfall missions and expand campaign checklist
+2026-10-17,45fb8bc6172cdc00f732c2f50d005c5eb031d00f,Codex,co-author line,Cities & terrain,Publish Asset and Environment Lab with asset inspection
+2026-10-19,0ce4428da4f01bfebafb9a9d0ede4cf962e3eeba,Codex,co-author line,Saves & progress,Harden Swarmfall checkpoint validation
+2026-10-19,204fb0f3ca383e55180377263572cfdfdb3469d6,Codex,co-author line,"Battle, units & drones",Refine Scout hull and recessed sensor housing
+2026-10-19,47281699e4bb8884ebe403479d7e419b49e29454,Codex,co-author line,"Research, records & publishing",Prepare small asset batches and geometry baseline
+2026-10-19,5220223983b8c26721aefd21859578482000bdcd,Codex,co-author line,"Controls, camera & HUD",Explain Hold when no squad is selected
+2026-10-19,564f000fc1725446ad88a0431175045058a87c45,Codex,co-author line,"Battle, units & drones",Clarify Swarmfall neutralization objectives
+2026-10-19,5b05c32aa0c0ca607722a4e9bb3e88776caf377e,Codex,co-author line,"Battle, units & drones",Deliver multi-pod squad waves and clean battlefield view
+2026-10-19,72b2d4d9fa85fc928ad8c322863d6badb7ada022,Codex,co-author line,"Research, records & publishing",Prioritize future small asset visual upgrades
+2026-10-19,7ab195e50426ebd77fed3ad134d5838008fc980c,Codex,co-author line,Asset & environment lab,Add original and polished Scout lab comparison
+2026-10-19,81177edf96ed205d76428a5be839c6fe486dd474,Codex,co-author line,"Controls, camera & HUD",Add protected Swarmfall save recovery and export
+2026-10-19,9f6920575514969d917518b289f321b85f0a4a48,Codex,co-author line,"Controls, camera & HUD",Separate desktop selection from battlefield orders
+2026-10-19,bde836a1211e02e1315f05d2fd1f7d65eaee6b52,Codex,co-author line,"Battle, units & drones",Keep tiny friendly drones visible with squad markers
+2026-10-19,cda94547a49e6b4f65b927cdea51d714e8f2d7fb,Codex,co-author line,"Research, records & publishing",Record individual drone first and third person mode
+2026-10-19,cf4c866646e96bc68c4db83700255689b4913c2d,Codex,co-author line,Asset & environment lab,Add smoke and fire to lab destruction previews
+2026-10-19,ede71e4a52d6f321abeb17b73554e20c1d484af5,Codex,co-author line,"Controls, camera & HUD",Preserve Swarmfall command state across resume
+2026-10-19,f1ad9191887765712dee5b7d3c0b3e0626696b77,Codex,co-author line,"Battle, units & drones",Offer victory extraction and settle mission results once
+2026-10-19,f31d291a9d2cc05434b54d616a54758b63393fa0,Codex,co-author line,"Research, records & publishing",Record Swarmfall priorities and free-roam design
+2026-10-20,30182bb65ae5277eeb541453162827cf1e2854dc,Claude,co-author line,Cities & terrain,Add the walled market town and forge city to the lab
+2026-10-20,6793b49e3d119b3c1e38d6e2bdf7c7c2c4ae83d5,Claude,co-author line,Asset & environment lab,Add kit-built lab worlds and rebuild Metropolis from modular parts
+2026-10-20,a3e12346dc1c9382e5dbb88b7cd1cbfb3a72a026,Codex,co-author line,"Controls, camera & HUD",Collapse phone battlefield panels after first capture
+2026-10-20,a7261bb12ee33100fec92fa9902a2dbffa2d87d5,Codex,co-author line,"Controls, camera & HUD",Give squad orders from the minimap
+2026-10-21,5bf3431a25193b707476aa1463513a47fba67aa1,Claude,co-author line,Cities & terrain,Make city buildings block line of sight and give cover
+2026-10-21,5f9e1bbbd04c3afa8b97fe449a823ad6340deae6,Claude,co-author line,"Controls, camera & HUD",Add Frontier mode with Corvan Frontier and return campaign Corvan to its snowfield
+2026-10-21,9b7739923644cababf55b4b71f1fd4010acacd88,Claude,co-author line,Cities & terrain,Build a city district into Corvan's planetary map
+2026-10-21,dde12922127c2fc69135d1be8e51a4a49bc363de,Claude,co-author line,Cities & terrain,Add Ashfall Frontier with the forge city Forgeholm
+2026-10-22,1baa16175f77c1745bb932694e538c5188307a80,Claude,co-author line,Saves & progress,Make Aurex's skyline solid and look further ahead when climbing
+2026-10-22,1bee304effe6bfa2a72b31bc068475781e64acf9,Claude,co-author line,"Battle, units & drones","Route troops on foot round water, buildings and town walls"
+2026-10-22,2190944553a3b62509bed52d071bb3667c292c91,Claude,co-author line,"Controls, camera & HUD","Add camera follow, jump to alert, edge-scroll and view reset"
+2026-10-22,22e7df8728cbdf060f1eded987fb40ef4e65975d,Claude,co-author line,"Controls, camera & HUD",Add a graphics quality setting and adaptive resolution
+2026-10-22,23f3ac45b385819754c90d0e898a57801b828af4,Claude,co-author line,"Research, records & publishing",Move the publish workflow to the Node 24 Pages actions
+2026-10-22,3095cb312696f8d414b5f5ae8ee358135f4088ae,Claude,co-author line,"Campaign, planets & frontier","Add first-time tips for defenders, alarm stages, artillery and captures"
+2026-10-22,36dc76d16a1764899efa2ae733761a6efbafffc6,Claude,co-author line,Asset & environment lab,"Add Swarmfall defenders, defenses, settlements, city styles and the Dragonfly to the lab"
+2026-10-22,3bad264f75a109849ddf24dfdbde2be893c8aa1a,Claude,co-author line,Asset & environment lab,Add a search box to the lab's asset inspector
+2026-10-22,492765414221d66d4c5694c2000c5945bceb523d,Claude,co-author line,Sound,Add optional generated sound to Swarmfall
+2026-10-22,5299df2fa67b55bbffc075a4b70f183b64645c4d,Claude,co-author line,"Controls, camera & HUD","Add squad tools: merge, split in half or by type, rename"
+2026-10-22,5bb4401376b947f86907a15b41fc7f8d4bb94a41,Claude,co-author line,"Controls, camera & HUD",Alert on squads under fire and zones being retaken; tap warnings to jump
+2026-10-22,5ea11036860a4a4c705247ce5342a43e9c1afa41,Claude,co-author line,Cities & terrain,Add Velm Frontier with the walled market town Brackenford
+2026-10-22,652b398ce172ddb724b7c8b80ccaf86417c34802,Claude,co-author line,"Battle, units & drones","Add waypoint queues, patrol and attack-move orders"
+2026-10-22,71542d5efae2f999bdeaf0a78a6c8b99bb923832,Claude,co-author line,"Battle, units & drones",Search for targets and splash victims in a spatial grid
+2026-10-22,74161180988cb0f9ccc1d56efb1677ca4e0782d0,Claude,co-author line,"Controls, camera & HUD","Add drag-box selection: Shift+drag, or hold then drag on touch"
+2026-10-22,7f946adc8675d951dd5e1074eea879c27e4431e4,Claude,co-author line,"Controls, camera & HUD","Add keyboard paths for orders and pods, and keep shortcuts off focused controls"
+2026-10-22,8ac4e596898d6bc0b14726525fa4478259e8025b,Claude,co-author line,"Controls, camera & HUD",Add a field guide generated from the rules
+2026-10-22,8dd1467974e36946ee47a39766287d46a132d249,Claude,co-author line,"Controls, camera & HUD",Add an interactive Titan tutorial with checked steps
+2026-10-22,bc57d826680368d8e32420c33c0f4041bbbce88a,Claude,co-author line,"Battle, units & drones",Add rotor-wash dust under low drones and at pod touchdowns
+2026-10-22,ce9b949deafb622945cda57ac9ce9ce34639124b,Claude,co-author line,"Controls, camera & HUD",Add Hive upgrades bought with banked matter
+2026-10-22,d2f1a778c6b8c16ea325412b56c2829f326ad6e4,Claude,co-author line,"Battle, units & drones",Measure weapon range in 3D between firing heights
+2026-10-22,e49d3ffa0055b0b0f827d44fce8e20540bf35c4c,Claude,co-author line,"Controls, camera & HUD",Keep a record for each Frontier map
+2026-10-22,eaa630e914c375378d33211458d8f541189978d5,Claude,co-author line,"Campaign, planets & frontier",Add a Campaign planets world to the Asset & Environment Lab
+2026-10-22,ecb3cc55f805a29bb80481e95ec6106fc79ddfa8,Claude,co-author line,"Controls, camera & HUD",Keep battle time real on slow frames and drop stalls
+2026-10-22,f22007cdee596f4443232cfa15d75c6b4e31499c,Claude,co-author line,"Controls, camera & HUD",Add a scene smoke test across every planet and frontier map
+2026-10-22,f7f35750fadcb8e82ed1fadc2835209bc52d3bce,Claude,co-author line,"Controls, camera & HUD","Add a free camera, ridge line of sight and blocked-shot lines"
+2026-10-22,f8e88e379edd9e7dea39ed6b610cffafdbd47f00,Claude,co-author line,"Battle, units & drones",Show townspeople who flee drones and penalize fighting in towns
+2026-10-23,4930d3429ceacbd2c88557db0f383f734843f6d9,Codex,co-author line,Asset & environment lab,Version all renderer imports consistently
+2026-10-23,59a03b9176377b7198dd934abbab1ff98f56f60e,Codex,co-author line,"Campaign, planets & frontier",Update Lab renderer import contract for release stamps
+2026-10-23,92e5a58a058719ee31b87519c49a21f6e3e394a5,Claude,co-author line,"Battle, units & drones","Show squad destinations, reach, defense coverage and why captures stall"
+2026-10-27,0c7d200cd1a387b4e9c1dd4a9963b4b4e0dd2ff6,Claude,co-author line,"Campaign, planets & frontier",Add rule-based tooltips to the drop panel and HUD
+2026-10-27,7391e2c152f85587618470ae2e22b72488bdbaf3,Claude,co-author line,"Battle, units & drones",Add squad formations and a hold-fire stance
+2026-10-27,7dd3b91deeebd2635907de23b60a978e0f9cb8f4,Claude,co-author line,Cities & terrain,Let zone rings show through hills and houses
+2026-10-27,7f3a9e5437e6533c160fd2546525098aed538e9a,Claude,co-author line,"Campaign, planets & frontier",Forecast coming hazards and show their counters
+2026-10-27,9a0affae2ed119ff7e9103069a96f4eaef723f3f,Claude,co-author line,"Controls, camera & HUD",Add drop presets and remember each planet's last wave
+2026-10-27,c4204252d68b2653bf999c6d50db098d9613f56a,Claude,co-author line,"Controls, camera & HUD",Add a pause menu with restart and quit to the galaxy
+2026-10-27,e1e9507210b2fe52f3cf730e9853e65bbe299278,Claude,co-author line,"Controls, camera & HUD",Show the title galaxy and mark off-screen alerts
+2026-10-28,32db4d8c27d7751391c978c1072ea04c404c0123,Claude,co-author line,"Controls, camera & HUD","Add camera, drag, UI size and key settings"
+2026-10-28,82f38d6df434382e837be65966f781a829bbcdd0,Claude,co-author line,"Campaign, planets & frontier",Let calm settlements surrender at 60% control
+2026-10-28,a23fa6d2a7e2fb8eb6d2f18a6d847057a9cbb1fd,Claude,co-author line,"Battle, units & drones",Give strikes near misses and let the weather hit defenders
+2026-10-28,e7569f712c5374caaf679bf668b356c39f519271,Claude,co-author line,"Battle, units & drones","Add Easy, Normal and Hard difficulty"
+2026-10-29,00096ae084cc413138c0e88ea7c005088d091ccd,Claude,co-author line,"Campaign, planets & frontier",Add replay challenges on conquered planets
