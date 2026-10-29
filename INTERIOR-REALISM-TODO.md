@@ -23,7 +23,11 @@ October29: [Part18 fan-side duct connection](research/fan-duct-interface-2026-10
 - [x] Part18 macro added; show a single named detail alongside whole assembly.
   Desktop/Thermal/390px/Casings hide-restore,32 IDs/33 options and no overflow/
   page errors verified. Before/after and actual app samples, exact prior files saved.
-- [ ] Finish tag/commit/publication receipt; preserve Claude's incoming game work.
+- [x] Commit678d3a1/recovery tag pushed. Deployed **700c882**; Pages
+ **40945342706** succeeded, **793 combined tests** pass. Incoming4f65cf8 game/
+ helper/checklist paths exact; both signed changelog entries retained. Live part18
+ focus, single-detail selector,32 IDs/33 options, EST wall/throat and390px widths/
+ errors verified. Public samples/JSON saved; browser/temporary server closed.
 - [ ] Remaining: complete main run/nose/other duct sections, aft collar attachment
   and bulkhead penetration only where justified. Thermal package is not complete.
 

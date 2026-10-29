@@ -4,7 +4,9 @@ October29 continuation: [fan-to-duct transition](research/fan-duct-interface-202
 One generic open shell replaces the solid transition/7 mm flange gap. Estimated
 wall/throat clears retained rotors; other hardware and simulation unchanged.
 Part18 has a focused inspection detail.787 tests and desktop/phone layers pass;
-source, rejected trial, archive and samples saved. Publication receipt pending.
+source, rejected trial, archive and samples saved. Published **700c882**; Pages
+40945342706 succeeded, **793 combined tests** pass. Live part18 focus, estimate
+metadata,32 IDs and390px layout verified. Claude's incoming game files unchanged.
 
 October29: [part17 open fan housings](research/fan-bore-2026-10-29/README.md).
 Six solid housing/flange shapes now have generic circular openings within the

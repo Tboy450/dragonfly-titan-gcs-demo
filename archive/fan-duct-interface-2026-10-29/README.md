@@ -11,4 +11,5 @@ Retain later unrelated edits when restoring. All other hardware is unchanged.
 `rejected-draft.json` preserves the unpublished zero-throat trial, its parameters,
 reconstruction steps and reason for rejection during rotor motion. The final
 16 mm throat is EST; none of these trial dimensions identifies flight hardware.
-Local recovery tag `archive/fan-duct-interface-2026-10-29` is on915a204.
+Recovery tag `archive/fan-duct-interface-2026-10-29` is on915a204 and pushed.
+Correction is published in700c882; see the source packet's live receipt.

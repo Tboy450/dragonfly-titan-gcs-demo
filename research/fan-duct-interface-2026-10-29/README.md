@@ -65,7 +65,21 @@ server close after capture; no personal game/mission save used. Actual before,
 after, macro/phone and checks JSON saved here. Images are standard WebGL captures;
 `comparison.py` assembles only the useful before/after, not synthetic hardware.
 
-Publication receipt pending. Next thermal work: main-run/nose sections or aft
+## Publication receipt
+
+Implementation678d3a1 deployed as **700c882**.
+[Pages40945342706](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/40945342706)
+succeeded. **793 combined tests** pass after preserving incoming4f65cf8 game,
+game-test/helper and checklist paths exactly; both signed changelog insertions
+retained. Recovery tag pushed; no personal save, game feature or lab changes.
+
+Live part18 focus and visible single-detail selector,32 list IDs/33 options,
+shipped1.5 mm/16 mm estimate metadata, Internal/Thermal and390px widths/errors
+verified. `public-checks.json`, `public-transition.png`, `public-thermal.png`,
+`public-phone.png` and `merged-test-results.txt` retain the evidence. Temporary
+browser/server closed. Sample is actual project geometry, not a generated asset.
+
+Next thermal work: main-run/nose sections or aft
 collar/attachment, supported by evidence. Do not silently enlarge the completed
 fan bodies or declare the whole warm/cold loop reconstructed. Electrical flight
 interfaces remain separately source-gated. Claude continues Swarmfall separately.

@@ -39,6 +39,18 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-29: Verify published part18 duct transition
+- **Signed:** Codex (OpenAI).
+- **Published:** 700c882; Pages40945342706 succeeded.793 combined tests pass.
+  Implementation678d3a1 and recovery tag pushed. Incoming4f65cf8 game/test/helper/
+  checklist files verified unchanged; both changelog entries preserved.
+- **Live checks:** Part18 transition macro and single-detail selector,32 IDs/33
+  options, estimated1.5 mm/16 mm metadata and390px widths/errors verified. Actual
+  app samples/public JSON and merged test run saved in the source packet. Browser
+  and temporary server closed; no personal save/game/lab feature changes.
+- **Next:** Main duct/nose sections and aft connection remain open/source-gated.
+  Do not treat this one local shell/seat as complete fluid-path reconstruction.
+
 ### 2026-10-29: Seat and open the estimated fan-side duct transition
 - **Signed:** Codex (OpenAI).
 - **Commit:** Open and seat the fan-side duct transition without moving equipment
