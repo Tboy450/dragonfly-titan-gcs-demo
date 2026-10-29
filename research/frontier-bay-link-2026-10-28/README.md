@@ -61,6 +61,18 @@ Installed/close/Thermal/RF-only/phone samples saved. RF-only omits the bay branc
 the whole radio shows it. Real source photo and `connection-detail.png` queued in
 right file panel. `measurements.json` is reproducible with `node .../audit.mjs`.
 
+## Publication receipt
+
+Implementation64a4cfe, integrated public release **89b4899**.
+[Pages40815721341](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/40815721341)
+succeeded including CI. **766 combined tests** pass after merging32db4d8;
+incoming shared-project files preserved unchanged. Live part13,6 mm/unconfirmed
+J22 disclosure,32 list IDs/33 options, Open interior and no overflow/errors checked.
+`public.png`/`public-checks.json` save the actual deployed result. Archive tag
+pushed. Preview stopped, viewport restored, public radio inspection retained.
+Photo and new connection sample queued in right file panel. Next unresolved items
+remain source-gated: actual radio mating/circuit, FEB/IMU and blower/diverter leads.
+
 [Exact before files/tag](../../archive/frontier-bay-link-2026-10-28/README.md).
 Rejected draft dimensions/routes are retained there. All new installation details
 remain EST. Next: exact radio flight circuit/connector assignment, FEB/IMU leads

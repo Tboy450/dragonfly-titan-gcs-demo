@@ -25,8 +25,14 @@ October28 next supported connection: Frontier radio / existing bay branch.
   as geometric contact only. Six new tests,761 full tests pass. Independent layers
   and RF-only focus checked,32 IDs retained, no browser overflow/errors. Real photo
   and new connection sample queued in right file panel; no duplicate source sheet.
-- [ ] Publish and record live receipt. No invented pins/circuit. Exact radio flight
-  connection and cable qualification remain unresolved.
+- [x] Published **89b4899**; Pages **40815721341** succeeded. **766 combined tests**
+  pass after preserving concurrent update32db4d8 unchanged. Live part13, current
+  estimated6 mm/J22-unconfirmed disclosure, all32 list IDs/33 options and Open
+  interior verified without overflow/errors. Public screenshot/JSON saved; archive
+  tag pushed, preview stopped, viewport restored. Photo/sample queued in right panel.
+- [ ] Exact radio flight circuit/mating and cable qualification remain unresolved.
+  Blower/diverter electrical interfaces, feed sensors and separate FEB/IMU leads
+  still require source evidence; do not invent circuits to close the checklist.
 
 October 28 corrective pass: [Blower tube layout](research/blower-routing-2026-10-28/README.md).
 - [x] Owner rightly rejects the first installation's long loose-looking loops.

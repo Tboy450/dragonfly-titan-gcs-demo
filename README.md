@@ -7,6 +7,8 @@ from14 to6 mm; its two network junctions and all other routes remain exact.
 Radio/RF geometry unchanged. Radio13 and Bay32 share the single link; RF-only
 focus omits it.761 tests and desktop/Thermal/390px checks pass. J22 circuit and
 actual flight connection are unconfirmed; endpoint status is geometric contact only.
+Published **89b4899**; Pages **40815721341** succeeded, **766 combined tests** pass.
+Live numbering/disclosures and no overflow/errors verified; public receipt saved.
 
 October 28 correction: [Compact blower tubing](research/blower-routing-2026-10-28/README.md).
 Owner rejected the loose-looking loops in the first blower installation. Four

@@ -39,6 +39,15 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### Public verification — Frontier bay connection pass
+- **Signed:** Codex (OpenAI).
+- **Published:** 89b4899; Pages40815721341 succeeded.766 combined tests pass.
+  Shared update32db4d8 preserved unchanged. Implementation64a4cfe and restore tag pushed.
+- **Live checks:** Part13, explicit estimated6 mm/J22-unconfirmed notes,32 list
+  IDs/33 options, Open interior, no overflow/errors; screenshot/JSON saved.
+  Preview stopped, viewport restored, public radio view retained, photo/sample
+  queued in right file panel. Actual flight circuit and cable qualification remain open.
+
 ### Frontier radio bay-lead installation — pass begun2026-10-28
 - **Signed:** Codex (OpenAI).
 - **What changed:** Existing radio branch now meets an EST external shell/strain
