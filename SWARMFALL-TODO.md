@@ -484,7 +484,35 @@ complete solely because its assets download or its unit tests pass.
   - `tests/invasion-drop-presets.test.mjs` (4 tests). In the browser on Corvan, Assault filled
     12 slots with 3 Scouts, 3 Strikers and 1 Breacher. After launching it, a new Corvan mission
     started with that wave and offered "Last wave".
-- [ ] **CTRL-10 (P2)** Settings: camera speed, invert drag, key rebinding, UI size.
+- [x] **CTRL-10 (P2) — Claude (October 28)** Settings: camera speed, invert drag, key
+  rebinding, UI size.
+  - A Settings window, opened from the title screen or the pause menu's More settings (which
+    returns to the menu). Settings are kept on this device, apart from the campaign save, and
+    checked field by field when they load (`settings.mjs`).
+  - Camera speed (0.5× to 2×) scales key panning, turning, tilting and zooming, the wheel, and
+    drags. Pinch zoom stays one to one.
+  - Invert drag: dragging moves the view the way you drag instead of pulling the ground along,
+    for panning and right-drag turning.
+  - UI size (85% to 130%) scales the battle's panels, buttons, map labels and dialogs. Panels
+    under the top bar now sit below its real height, which grows when it wraps. The top bar's
+    buttons wrap instead of running off the screen, and on phones the left panels stay clear of
+    the minimap.
+  - Keys: 23 actions can be rebound (camera moves, follow, alert, free camera, clean view, drop,
+    hold, attack-move, patrol, formation, hold fire, pause, sound). Click one and press its new
+    key. A key in use swaps over, so nothing is left without one. Escape cancels without
+    closing the window.
+    - Enter, Escape, Tab, Shift, the number keys, the arrow keys, Page Up/Down and + - = keep
+      their jobs. The arrow keys, Page Up/Down and +/- always pan, fly and zoom as well.
+    - Button labels, tooltips, squad-menu entries, toasts, the tutorial and the Field guide's
+      Controls name the keys as bound.
+  - `tests/invasion-settings.test.mjs` (5 tests). In the browser, with real key presses: Enter
+    was refused, Escape cancelled, H for Pause swapped Hold onto Space, and Space bound back.
+    With Pause on K, K paused the battle and Space did not.
+    - The same 80 px drag moved the view 49 m one way, 49 m the other way with invert on, and
+      98 m at 2×.
+    - At 130% the desktop and a 375 px phone had no overlaps or sideways scrolling. The Settings
+      window and its Done button fit both screens.
+    - The preview's saved data was put back as it was.
 - [ ] **CTRL-11 (P3)** Gamepad support.
 - [x] **CTRL-12 (P3) — Claude (October 27)** Pause menu with restart, settings and quit to the
   galaxy.
@@ -1559,12 +1587,16 @@ an optional dedicated mode as a first step. Keep this future work unchecked unti
 - [ ] **ACCESS-03 (P2)** Add independent UI scale/text sizing and persist settings without
   changing campaign state. Test long names, large text and dense squad bars; avoid hiding
   critical information behind clipped or overlapping panels.
+  - Partly done by CTRL-10 (October 28): UI size 85–130%, kept apart from the campaign save,
+    checked on desktop and a 375 px phone. Long names and dense squad bars are still to test.
 - [ ] **ACCESS-04 (P2)** Use icons/shapes/labels as well as color for teams, hazards,
   selected squads, damage and capture progress. Review color contrast in each biome and
   dusk/light mode; minimap markers must remain distinguishable.
 - [ ] **ACCESS-05 (P2)** Offer reduced camera shake/flashes, motion intensity and comfortable
   camera speeds. Respect reduced-motion preferences where applicable while retaining clear
   hit, alarm, descent and hazard feedback.
+  - Camera speed (0.5× to 2×) came with CTRL-10 on October 28; shake, flashes and reduced
+    motion are still open.
 - [ ] **ACCESS-06 (P2)** Pair important audio alerts with readable visual equivalents;
   provide master/effect/music controls and remember choices. Start with AUD-01 through AUD-03
   rather than making sound mandatory for objectives or survival.

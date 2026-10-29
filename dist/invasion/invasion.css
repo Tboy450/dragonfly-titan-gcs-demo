@@ -99,7 +99,7 @@ a { color: var(--swarm); }
 .hazard-counters { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
 .hud-hazard.active { background: rgba(255, 90, 90, 0.25); border-color: var(--danger); animation: pulse 1s infinite alternate; }
 @keyframes pulse { from { opacity: 0.75; } to { opacity: 1; } }
-.hud-buttons { display: flex; gap: 6px; margin-left: auto; }
+.hud-buttons { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
 .hud-buttons button { min-height: 32px; padding: 4px 10px; }
 
 .hud-left { position: absolute; left: 10px; top: 64px; width: min(290px, 46vw); display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
@@ -205,6 +205,23 @@ a { color: var(--swarm); }
 .pause-actions button { padding: 10px; font-size: 15px; }
 .pause-settings { display: flex; gap: 8px; flex-wrap: wrap; }
 .pause-note { color: var(--muted); font-size: 13px; margin: 12px 0 0; }
+/* Settings (CTRL-10). UI size scales the battle's panels and every dialog together. */
+.hud-top, .hud-left, .hud-bottom, #minimap-panel, .drop-panel, .placement-hint, .toasts, .clean-view-button, .dialog { zoom: var(--ui-scale, 1); }
+/* Panels under the top bar sit below its real height (--hud-top, measured by the page), which
+   grows when the bar wraps at a larger UI size or on a narrow screen. */
+.hud-left, #minimap-panel { top: calc(max(64px * var(--ui-scale, 1), var(--hud-top, 0px) + 10px) / var(--ui-scale, 1)); }
+.clean-view-button { top: calc(max(68px * var(--ui-scale, 1), var(--hud-top, 0px) + 14px) / var(--ui-scale, 1)); }
+.settings-dialog { width: min(440px, calc(100% - 24px)); }
+.settings-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.settings-note { margin: 0 0 6px; min-height: 2.8em; }
+/* The key list takes the room left in the dialog and scrolls, so Done stays on screen. */
+.settings-dialog[open] { display: flex; flex-direction: column; }
+.settings-dialog[open] > * { flex: none; }
+.settings-dialog[open] > .settings-keys { flex: 1 1 auto; min-height: 96px; }
+.settings-keys { display: grid; align-content: start; gap: 4px; max-height: 420px; overflow-y: auto; padding-right: 4px; }
+.settings-group { margin: 8px 0 2px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+.settings-key { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.settings-key button { min-width: 96px; min-height: 30px; }
 .galaxy-resume { width: 100%; margin: 0 0 12px; }
 .dialog-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
 .achievement-list { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 6px; }
@@ -226,13 +243,14 @@ a { color: var(--swarm); }
 .no-webgl { position: fixed; inset: auto 16px 16px 16px; padding: 12px; background: #301010; border: 1px solid var(--danger); border-radius: 8px; }
 
 @media (max-width: 720px) {
-  .clean-view-button { top: 102px; }
+  .clean-view-button { top: calc(max(102px * var(--ui-scale, 1), var(--hud-top, 0px) + 18px) / var(--ui-scale, 1)); }
   .clean-view .clean-view-button { top: max(10px, env(safe-area-inset-top)); }
   #planet-panel { top: auto; bottom: 0; right: 0; left: 0; width: auto; max-height: 52%; border-radius: 14px 14px 0 0; }
   .bar-stats { display: none; }
   .hud-top { gap: 8px; }
   .hud-alarm { min-width: 96px; }
-  .hud-left { top: 104px; width: 60vw; }
+  /* The left panels stay clear of the minimap column at any UI size. */
+  .hud-left { top: calc(max(104px * var(--ui-scale, 1), var(--hud-top, 0px) + 20px) / var(--ui-scale, 1)); width: calc(min(60vw, 100vw - 150px * var(--ui-scale, 1)) / var(--ui-scale, 1)); }
   #objectives-box:not([open]) { width: max-content; }
   #minimap-panel { top: auto; bottom: 122px; width: 110px; }
   #minimap { height: 110px; }

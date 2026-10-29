@@ -23,6 +23,7 @@
           <button id="reset-button" class="ghost" type="button">Reset progress</button>
           <button id="save-files-button" class="ghost" type="button">Save files</button>
           <button id="difficulty-button" class="ghost" type="button">Difficulty: Normal</button>
+          <button id="settings-button" class="ghost" type="button" title="Camera speed, invert drag, UI size and keys">Settings</button>
           <button id="quality-button" class="ghost" type="button" title="Graphics quality: decor density, city detail and the sharpest resolution. The resolution also adapts on its own when frames slow down.">Graphics: High</button>
         </div>
         <section id="save-notice" class="save-notice" aria-label="Saved data needs attention" hidden><p id="save-notice-text" role="status"></p><button id="save-review" type="button">Review saved data</button></section>
@@ -193,8 +194,26 @@
         <button id="pause-sound" type="button" title="Sound: off, quiet, medium, loud (M)">♪ Off</button>
         <button id="pause-speed" type="button" title="Game speed: 1×, 2× or 3×">Speed 1×</button>
         <button id="pause-guide" type="button" title="Every drone, defender, society and hazard, and the controls">Field guide</button>
+        <button id="pause-settings-button" type="button" title="Camera speed, invert drag, UI size and keys">More settings</button>
       </div>
       <p id="pause-note" class="pause-note">Quitting keeps this battle saved. Resume it from the galaxy map or the title screen.</p>
+    </dialog>
+
+    <dialog id="settings-dialog" class="dialog settings-dialog" aria-labelledby="settings-title" aria-describedby="settings-about">
+      <h2 id="settings-title">Settings</h2>
+      <p id="settings-about" class="pause-note">Kept on this device, apart from the campaign save.</p>
+      <div class="settings-grid">
+        <button id="settings-camera" type="button" title="How fast the keys, the wheel and dragging move, turn and zoom the camera">Camera speed 1×</button>
+        <button id="settings-invert" type="button" aria-pressed="false" title="On: dragging moves the view the way you drag, instead of pulling the ground along. Applies to panning and right-drag turning.">Invert drag: Off</button>
+        <button id="settings-ui" type="button" title="Size of the battle's panels, buttons, map labels and dialogs">UI size 100%</button>
+      </div>
+      <p class="section-title">Keys</p>
+      <p id="settings-note" class="pause-note settings-note" role="status"></p>
+      <div id="settings-keys" class="settings-keys"></div>
+      <div class="dialog-actions">
+        <button id="settings-reset-keys" type="button">Default keys</button>
+        <button id="settings-close" class="primary" type="button">Done</button>
+      </div>
     </dialog>
 
     <dialog id="confirm-dialog" class="dialog">

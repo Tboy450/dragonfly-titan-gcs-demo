@@ -4,6 +4,7 @@
 import { droneTypes, droneOrder, defenderTypes, societies } from "./units.mjs?v=dev";
 import { hazardTypes, ventStructureDamage } from "./hazards.mjs?v=dev";
 import { alarmStages, artilleryAlarm, salvageMatter, healPerS, zoneIncome, publicMood, upgradeEffects, surrenderControl, surrenderAlarm } from "./battle.mjs?v=dev";
+import { defaultKeys, fillKeys } from "./settings.mjs?v=dev";
 
 const classOf = (def) => (def.structure ? "structure" : def.air ? "air" : "ground");
 const weaponText = (w) => `${w.name}: ${w.damage}/s against ${w.hits.join(", ")} out to ${w.range} m${w.splash ? `, ${w.splash} m splash` : ""}`;
@@ -94,38 +95,41 @@ export function matterTooltip(b) {
 }
 
 // Keyboard first, then mouse and touch. Every essential action has a key; Tab reaches each button.
+// "{hold}" and the like become the keys as bound in the settings (CTRL-10).
 const controls = [
   { name: "Squads", summary: "Choose who gets your orders", facts: [
     "1-9 select a squad (press again to bring the camera to it; Shift adds or removes it); 0 selects all",
     "Click or tap a drone or a squad card; Shift+drag draws a box around drones",
-    "H holds the selected squads where they are",
+    "{hold} holds the selected squads where they are",
   ] },
   { name: "Orders", summary: "Send the selected squads", facts: [
     "Enter orders them to the middle of the screen, or attacks the defender there; Shift+Enter adds a waypoint",
     "Right-click the ground to move, or a defender to attack; Shift+right-click adds a waypoint; on touch, tap",
-    "T arms attack-move for the next order; P turns patrol on or off",
-    "L changes formation: spread (less splash), tight (fits streets), line (a wide front)",
-    "Y holds fire: drones shoot only at what you order them to attack, for a quiet takeover",
+    "{attackMove} arms attack-move for the next order; {patrol} turns patrol on or off",
+    "{formation} changes formation: spread (less splash), tight (fits streets), line (a wide front)",
+    "{holdFire} holds fire: drones shoot only at what you order them to attack, for a quiet takeover",
   ] },
   { name: "Drop waves", summary: "Buy drones and land them in a zone you hold", facts: [
-    "B opens the drop panel; Tab moves between its buttons and Enter presses one",
+    "{drop} opens the drop panel; Tab moves between its buttons and Enter presses one",
     "While picking a zone, Enter previews pods at the middle of the screen and Enter again launches",
     "Escape cancels placement and closes the panel",
     "Presets fill the wave with a mix: Assault, Hack team or Scout swarm. Last wave repeats the wave you last sent on this planet, and the next mission there starts with it",
   ] },
   { name: "Camera", summary: "Look around the battle", facts: [
-    "W A S D or the arrow keys pan; Q and E turn; R and F tilt; Z and X (or the wheel) zoom",
-    "C switches to the free camera: R and F (or the wheel) fly up and down, Shift moves faster",
-    "G follows the selected squads; J jumps to the newest alert; Home resets the view; V hides the panels",
+    "{forward} {left} {back} {right} or the arrow keys pan; {turnLeft} and {turnRight} turn; {tiltUp} and {tiltDown} tilt; {zoomOut} and {zoomIn} (or the wheel) zoom",
+    "{freeCam} switches to the free camera: {tiltUp} and {tiltDown} (or the wheel) fly up and down, Shift moves faster",
+    "{follow} follows the selected squads; {alert} jumps to the newest alert; {resetView} resets the view; {cleanView} hides the panels",
   ] },
   { name: "Mission", summary: "Pause, sound and leaving", facts: [
-    "Space pauses and resumes; M changes the sound",
+    "{pause} pauses and resumes; {sound} changes the sound",
     "Escape (or Menu) opens the pause menu: resume, restart, quit to the galaxy with the battle saved, sound and speed",
     "Shortcuts pause while you type or use a menu, and Ctrl, Alt or Cmd shortcuts stay with the browser",
+    "Settings (title screen or pause menu) change these keys, the camera speed, the drag direction and the UI size",
   ] },
 ];
 
-export function fieldGuide() {
+// keys: the bindings from the settings (CTRL-10); the defaults when left out.
+export function fieldGuide(keys = defaultKeys()) {
   const drones = droneOrder.map(id => droneTypes[id]), defenders = Object.values(defenderTypes);
   return [
     { section: "Drones", items: droneOrder.map(id => ({ name: droneTypes[id].name, summary: droneTypes[id].role, facts: droneFacts(id) })) },
@@ -153,6 +157,6 @@ export function fieldGuide() {
       name: h.name, summary: h.advice,
       facts: [`Warning ${h.warnS} s ahead · lasts ${h.durationS[0]}-${h.durationS[1]} s · returns every ${h.gapS[0]}-${h.gapS[1]} s`],
     })) },
-    { section: "Controls", items: controls },
+    { section: "Controls", items: controls.map(item => ({ ...item, facts: item.facts.map(fact => fillKeys(fact, keys)) })) },
   ];
 }
