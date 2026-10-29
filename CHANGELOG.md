@@ -39,6 +39,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### Frontier radio bay-lead installation — pass begun2026-10-28
+- **Signed:** Codex (OpenAI).
+- **What changed:** Existing radio branch now meets an EST external shell/strain
+  relief at photo-labeled J22; one fitted local support. Single6 mm lead refits
+  the old14 mm illustration; original trunk/junction controls and all other routes
+  exact. Radio hardware and RF jumpers remain byte-for-byte unchanged.
+- **Inspection:** Shared single context for Radio13/Bay32, RF-only/camera focus
+  omits it, independent masks and32 IDs retained. Part5 remains grouped.
+- **Evidence/limits:** Real NASA/APL Frontier photo and generic workmanship reused.
+  J22 choice, cable and new hardware EST. No flight circuit, pinout or actual
+  connector mating established. Endpoint register is geometric-contact-only.
+- **Checks:** Six new tests;761 full tests pass. Actual face/rib clearance, full
+  installed swept lead, hollow relief/normal approach/basic fold guard, support,
+  archive preservation, endpoint status and isolation/masks. Desktop/Thermal/390px
+  checks show no overflow/errors; saved samples. Rejected fat-lead/rib-crossing
+  draft recorded; exact baseline/tag e7569f7 archived.
+- **Next:** Publication receipt follows. Exact radio flight assignment, FEB/IMU,
+  blower/diverter wiring and feed-sensor identities remain open. No unrelated data edited.
+
 ### 2026-10-28: Swarmfall difficulty levels
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Add Easy, Normal and Hard difficulty"

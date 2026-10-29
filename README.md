@@ -1,5 +1,13 @@
 # Dragonfly Titan GCS
 
+Next connection pass: [Frontier radio bay lead](research/frontier-bay-link-2026-10-28/README.md).
+The existing branch now seats in a labeled EST shell/strain relief at the
+photo-labeled J22 face, with one fitted support. One estimated lead is refitted
+from14 to6 mm; its two network junctions and all other routes remain exact.
+Radio/RF geometry unchanged. Radio13 and Bay32 share the single link; RF-only
+focus omits it.761 tests and desktop/Thermal/390px checks pass. J22 circuit and
+actual flight connection are unconfirmed; endpoint status is geometric contact only.
+
 October 28 correction: [Compact blower tubing](research/blower-routing-2026-10-28/README.md).
 Owner rejected the loose-looking loops in the first blower installation. Four
 shorter rigid-tube examples now use straight sections/local bends, two retention

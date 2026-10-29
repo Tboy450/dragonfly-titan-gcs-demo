@@ -1,5 +1,7 @@
 import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import {navigationMebInterface,buildNavigationMebInterface} from "./navigation-meb-interface.mjs?v=dev";
+import {frontierBayInterface,buildFrontierBayInterface} from './frontier-bay-interface.mjs?v=dev';
+import {addCableSupport} from './cable-installation.mjs?v=dev';
 
 // Main wiring harness on the equipment-bay floor (owner, October 20: "a lot of connecting
 // equipment is left"). NASA/APL's September 2, 2026 photo of the flight fuselage being wired
@@ -16,7 +18,7 @@ const onFloor = (r) => floorY + r + 0.004;   // on low standoffs
 const T = onFloor(0.012);
 const B = -0.27;   // branches' floor height: 4-5 mm above the floor and the units' mounting flanges
 export const mainHarnessAsset = Object.freeze({
-  revision: "main-harness-2026-10-27-meb-interface",
+  revision: "main-harness-2026-10-28-radio-interface",
   trunk: Object.freeze({ radiusM: 0.012, points: Object.freeze([[0, T, -1.0], [0, T, -0.75], [0, T, -0.4], [0, T, -0.1], [0, T, 0.12], [-0.02, T, 0.27]].map(Object.freeze)) }),
   // [name, radius, points]: each branch starts on the trunk and ends at its unit.
   branches: Object.freeze([
@@ -24,7 +26,7 @@ export const mainHarnessAsset = Object.freeze({
     ["power-unit-2", 0.009, [[0, T, -0.30], [0.06, B, -0.29], [0.122, B, -0.278]]],
     ["power-unit-1", 0.009, [[0, T, 0.03], [-0.06, B, 0.031], [-0.122, B, 0.032]]],
     ["battery", 0.007, [[-0.02, T, 0.27], [-0.1, B, 0.281], [-0.17, B, 0.281], [-0.213, -0.264, 0.29]]],
-    ["radio", 0.007, [[0, T, 0.17], [0.07, B, 0.172], [0.112, -0.245, 0.178]]],
+    ["radio", frontierBayInterface.cableRadiusM, frontierBayInterface.cableControls],
     ["rde-1", 0.007, [[0, T, -0.75], [-0.08, B, -0.735], [-0.16, -0.25, -0.70]]],
     ["rde-2", 0.007, [[0, T, -0.75], [0.08, B, -0.735], [0.16, -0.25, -0.70]]],
     ["navigation-feb-imu", 0.008, [[0, T, -1.0], [0.1, B, -1.005], [0.2, -0.24, -1.014]]],
@@ -62,7 +64,7 @@ export const mainHarnessAsset = Object.freeze({
   clampSpacingM: 0.16,
 });
 
-export function buildMainHarness({ parent, mesh, navigationParent = parent }) {
+export function buildMainHarness({ parent, mesh, navigationParent = parent, radioParent = parent }) {
   const A = mainHarnessAsset;
   const harness = new THREE.Group();
   harness.name = "main-harness";
@@ -95,10 +97,12 @@ export function buildMainHarness({ parent, mesh, navigationParent = parent }) {
       tie.userData.routeName = name;
     }
     for (let s = 0.08; s < length - 0.04; s += A.clampSpacingM) {
+      if(name==='radio')continue; // Replaced below by one fitted local support.
       const t = s / length, p = curve.getPointAt(t), d = curve.getTangentAt(t);
       if (p.y > floorY + r + 0.02 || Math.abs(d.y) > 0.3) continue;
       const foot = mesh(new THREE.BoxGeometry(0.03, 0.003, 0.012), clamp, [p.x, floorY + 0.0015, p.z], mounts);
       foot.rotation.y = Math.atan2(d.x, d.z); foot.name = "main-harness-clamp";   // across the run
+      foot.userData.routeName=name;
     }
     return bundle;
   };
@@ -118,5 +122,12 @@ export function buildMainHarness({ parent, mesh, navigationParent = parent }) {
   navigationWire.userData.inspectionLayer='harnesses';navigationParent.add(navigationWire);
   for(const object of [...harness.children])if(object.userData.routeName==='navigation-meb')navigationWire.add(object);
   const navigationInterface=buildNavigationMebInterface({parent:navigationParent,mesh});
-  return { harness, mounts, navigationWire, navigationInterface };
+  const radioWire=new THREE.Group();radioWire.name='frontier-bay-wire';radioWire.userData.inspectionLayer='harnesses';radioParent.add(radioWire);
+  const radioMounts=new THREE.Group();radioMounts.name='frontier-bay-supports';radioMounts.userData.inspectionLayer='mounts';radioParent.add(radioMounts);
+  for(const o of [...harness.children])if(o.userData.routeName==='radio')radioWire.add(o);
+  for(const o of [...mounts.children])if(o.userData.routeName==='radio')radioMounts.add(o);
+  const radioInterface=buildFrontierBayInterface({parent:radioParent,mesh});
+  const radioBundle=radioWire.getObjectByName('main-harness-radio'),p=radioBundle.geometry.parameters.path.getPointAt(.75);
+  const radioSupport=addCableSupport({wire:radioBundle,fraction:.75,foot:[p.x,floorY,p.z],normal:[0,1,0],mounts:radioMounts,id:'radio-bay'});
+  return { harness, mounts, navigationWire, navigationInterface, radioWire, radioMounts, radioInterface, radioSupport };
 }

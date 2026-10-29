@@ -17,13 +17,13 @@ function fixture(){
  parent.updateMatrixWorld(true);navigation.updateMatrixWorld(true);equipment.updateMatrixWorld(true);
  return {parent,navigation,equipment,...built,...units};
 }
-test('Only the MEB tail changes; all other branch points, trunk, cable sizes and enclosures remain exact',async()=>{
+test('MEB tail archive guard preserves other routes, deferring the separately tested radio refit',async()=>{
  const prior=await readFile(new URL('../archive/navigation-meb-link-2026-10-27/main-harness.mjs',import.meta.url),'utf8');
  const vendor=new URL('../dist/vendor/three/three.module.min.js?v=dev',import.meta.url).href;
  const old=(await import('data:text/javascript;base64,'+Buffer.from(prior.replace('./vendor/three/three.module.min.js?v=dev',vendor)).toString('base64'))).mainHarnessAsset;
  for(const key of ['trunk','strands','crossBundles','clampSpacingM'])assert.deepEqual(mainHarnessAsset[key],old[key]);
- for(const run of mainHarnessAsset.branches){const b=old.branches.find(r=>r.name===run.name);assert.equal(run.radiusM,b.radiusM);
-  if(run.name==='navigation-meb')assert.deepEqual(run.points.slice(0,2),b.points.slice(0,2));else assert.deepEqual(run,b);
+ for(const run of mainHarnessAsset.branches){const b=old.branches.find(r=>r.name===run.name);if(run.name!=='radio')assert.equal(run.radiusM,b.radiusM);
+  if(['navigation-meb','radio'].includes(run.name))assert.deepEqual(run.points.slice(0,2),b.points.slice(0,2));else assert.deepEqual(run,b);
  }
  assert.equal(A.flightMatingConfirmed,false);assert.equal(A.confidence,'EST');
 });

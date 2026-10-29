@@ -94,6 +94,11 @@ export function createInspectionVisibility(subsystems) {
     const target=parts.get(owner);if(!target)continue;
     for(const [category,objects]of navigation)target.get(category).push(...objects);
   }
+  const radio=parts.get('radio-harness-link');
+  if(radio)for(const owner of ['frontier-radio','main-harness']){
+    const target=parts.get(owner);if(!target)continue;
+    for(const [category,objects]of radio)target.get(category).push(...objects);
+  }
   return {
     available: (id, part = null) => !!(part ? parts.get(part)?.get(id) : global.get(id))?.length,
     apply(inspector, previous) {

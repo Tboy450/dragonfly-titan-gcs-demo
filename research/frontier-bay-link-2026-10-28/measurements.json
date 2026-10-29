@@ -1,0 +1,76 @@
+{
+  "scope": "Illustrative external mating at photo J22; not assigned flight wiring",
+  "interface": {
+    "revision": "frontier-bay-interface-2026-10-28",
+    "confidence": "EST",
+    "photoPort": "J22",
+    "flightMatingConfirmed": false,
+    "circuitAssigned": false,
+    "boreRadiusM": 0.0031,
+    "cableRadiusM": 0.003,
+    "face": [
+      0.1376,
+      -0.252,
+      0.1952
+    ],
+    "seat": [
+      0.1296,
+      -0.252,
+      0.1952
+    ],
+    "cableControls": [
+      [
+        0,
+        -0.26799999999999996,
+        0.17
+      ],
+      [
+        0.07,
+        -0.27,
+        0.172
+      ],
+      [
+        0.0996,
+        -0.252,
+        0.1952
+      ],
+      [
+        0.1136,
+        -0.252,
+        0.1952
+      ],
+      [
+        0.1296,
+        -0.252,
+        0.1952
+      ]
+    ]
+  },
+  "cableDiameterM": 0.006,
+  "oldEstimatedDiameterM": 0.014,
+  "lengthM": 0.14290678542646493,
+  "sampledMinimumCenterlineRadiusM": 0.008650425719125596,
+  "ratedBendLimitKnown": false,
+  "end": [
+    0.1296,
+    -0.252,
+    0.1952
+  ],
+  "terminalTangent": [
+    1,
+    0,
+    0
+  ],
+  "bodySurfaceContacts": [
+    {
+      "mesh": "frontier-bay-est-mating-shell",
+      "other": "frontier-radio-J22-insert",
+      "owner": "frontier-radio-connectors"
+    }
+  ],
+  "intendedContact": "J22 insert front plane; numerical face contact, no changed receptacle",
+  "endpointStatus": "geometric-contact-only",
+  "flightTopologyConfirmed": false,
+  "sourceRadioGeometryChanged": false,
+  "otherHarnessRoutesChanged": false
+}

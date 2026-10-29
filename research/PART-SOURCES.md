@@ -6,6 +6,13 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part13 bay connection (Codex):** [fit and source limits](frontier-bay-link-2026-10-28/README.md).
+Reuses saved real NASA/APL Frontier photo and NASA workmanship pages29–31. The
+photo labels J22; choosing it for this illustrative branch is EST, not a flight
+power/data assignment. Unit/RF model unchanged. New generic mating shell,6 mm
+lead and local support estimated. Existing real/CAD/model sheet reused; actual
+connection/installed/phone samples added.761 tests pass, no invented pins/circuit.
+
 **Part24 tube correction (Codex, October28):** [pass/measurements/limits](blower-routing-2026-10-28/README.md).
 [Zacny et al., LPSC2020 abstract1763 p1](https://www.hou.usra.edu/meetings/lpsc2020/pdf/1763.pdf)
 text supports bent tubes/standard fittings and avoiding unnecessary length.

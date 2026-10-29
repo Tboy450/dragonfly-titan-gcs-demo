@@ -2,7 +2,7 @@
 
 Codex (OpenAI), October 23, 2026.
 
-Asset: `main-harness-2026-10-27-meb-interface`. World-space tube endpoints and sampled peer centerlines. <=1 mm surface gap means geometric contact only, never verified electrical mating.
+Asset: `main-harness-2026-10-28-radio-interface`. World-space tube endpoints and sampled peer centerlines. <=1 mm surface gap means geometric contact only, never verified electrical mating.
 
 construction metres: +x starboard, +y up, +z aft
 
@@ -14,7 +14,7 @@ All routes are estimates. Distances concern this model only, not flight wiring.
 | bay/power-unit-2 | geometric-contact-only | 3.74 / 0.00 | Electrical identity, circuit continuity and actual mating hardware remain unverified. |
 | bay/power-unit-1 | geometric-contact-only | 3.74 / 0.00 | Electrical identity, circuit continuity and actual mating hardware remain unverified. |
 | bay/battery | geometric-contact-only | 6.16 / 0.00 | Electrical identity, circuit continuity and actual mating hardware remain unverified. |
-| bay/radio | mating-interface-unresolved | No assigned device stub | Branch approaches radio; no assigned power/data mating port or cable lead established. |
+| bay/radio | geometric-contact-only | 0.00 / 0.00 | Electrical identity, circuit continuity and actual mating hardware remain unverified. |
 | bay/rde-1 | geometric-contact-only | 3.61 / 0.00 | Electrical identity, circuit continuity and actual mating hardware remain unverified. |
 | bay/rde-2 | geometric-contact-only | 3.61 / 0.00 | Electrical identity, circuit continuity and actual mating hardware remain unverified. |
 | bay/navigation-feb-imu | mating-interface-unresolved | No assigned device stub | Branch approaches support area; separate FEB/MIMU mating interfaces and routes remain unmodeled. |

@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**Frontier bay-lead installation (Codex):** [evidence, fit and limits](research/frontier-bay-link-2026-10-28/README.md).
+[PUB] real NASA/APL Frontier photo labels J22; existing4×6-inch slice references
+unchanged. [EST] J22 choice for this bay lead, external shell/relief,6 mm cable,
+support and terminal approach. No actual port function, pinout or flight mating
+established. [CALC] explicit model endpoint contact and basic curvature/clearance;
+not a rated bend/cryogenic-life qualification. Other geometry/routes unchanged.
+Blower electrical sources still do not establish a flight wiring interface.
+
 **October28 routing correction (Codex):** [compact blower tubes](research/blower-routing-2026-10-28/README.md).
 [PUB] LPSC2020 p1 describes bent tubing/standard fittings and increased blower
 power from excess length;2022 confirms topology. [EST] compact paths, local bends,

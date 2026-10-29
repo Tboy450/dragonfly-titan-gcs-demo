@@ -1,5 +1,5 @@
 {
-  "revision": "main-harness-2026-10-27-meb-interface",
+  "revision": "main-harness-2026-10-28-radio-interface",
   "coordinateFrame": "construction metres: +x starboard, +y up, +z aft",
   "measurement": "World-space tube endpoints and sampled peer centerlines. <=1 mm surface gap means geometric contact only, never verified electrical mating.",
   "references": [
@@ -743,17 +743,17 @@
       "medium": "unassigned illustrative electrical bundle",
       "confidence": "EST",
       "flightTopologyConfirmed": false,
-      "radiusM": 0.007,
-      "lengthM": 0.119887,
+      "radiusM": 0.003,
+      "lengthM": 0.142907,
       "start": [
         0,
         -0.268,
         0.17
       ],
       "end": [
-        0.112,
-        -0.245,
-        0.178
+        0.1296,
+        -0.252,
+        0.1952
       ],
       "startAttachment": {
         "run": "trunk",
@@ -762,8 +762,21 @@
         "radiusM": 0.012
       },
       "supports": "Existing generic floor clamps/lacing; wall support and strain-relief verification open.",
-      "status": "mating-interface-unresolved",
-      "missingSegment": "Branch approaches radio; no assigned power/data mating port or cable lead established."
+      "targetStubs": [
+        {
+          "id": "frontier-bay-interface/estimated-J22-seat",
+          "end": [
+            0.1296,
+            -0.252,
+            0.1952
+          ],
+          "radiusM": 0.007,
+          "centerlineGapM": 0,
+          "surfaceGapM": 0
+        }
+      ],
+      "status": "geometric-contact-only",
+      "missingSegment": "Electrical identity, circuit continuity and actual mating hardware remain unverified."
     },
     {
       "id": "bay/rde-1",
@@ -1174,9 +1187,9 @@
       "status": "network-link-only",
       "endAttachment": {
         "run": "radio",
-        "fraction": 0.586667,
-        "centerlineGapM": 0.000028,
-        "radiusM": 0.007
+        "fraction": 0.493333,
+        "centerlineGapM": 0.000045,
+        "radiusM": 0.003
       },
       "missingSegment": "Appearance-only network link; not an identified device-to-device circuit."
     },

@@ -472,9 +472,12 @@ export function buildResearchModel(kit) {
   subsystem("navigation-meb-link", "equipment-bay");
   subsystems["navigation-meb-link"].userData.layer="interior";
   const navigationParent=buildTarget;
+  subsystem('radio-harness-link','equipment-bay');
+  subsystems['radio-harness-link'].userData.layer='interior';
+  const radioParent=buildTarget;
   subsystem("main-harness", "equipment-bay");
   subsystems["main-harness"].userData.layer = "interior";
-  buildMainHarness({ parent: buildTarget, mesh, navigationParent });
+  buildMainHarness({ parent: buildTarget, mesh, navigationParent, radioParent });
 
   // Circulation loop (ICES-2023 p2-p3): MMRTG -> fan -> under-floor duct forward -> into the body
   // below the nose -> aft through the bay -> back into the MMRTG. Arrows move along it at a speed

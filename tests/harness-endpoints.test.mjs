@@ -27,7 +27,7 @@ test("Endpoint register covers every existing branch/link and distinguishes mode
     assert.ok(row.startAttachment.centerlineGapM <= .012, row.id + " peer attachment");
     assert.ok(row.missingSegment && row.supports && row.medium.includes("unassigned"));
   }
-  for (const id of ["radio", "navigation-feb-imu", "circulation-fans"]) {
+  for (const id of ["navigation-feb-imu", "circulation-fans"]) {
     assert.equal(report.routes.find(row => row.owner === id).status, "mating-interface-unresolved");
   }
   assert.equal(report.decorativeStrands.length, asset.strands.length);
@@ -51,7 +51,7 @@ test("Only three camera tails and the new port route change; other branch contro
   assert.equal(asset.branches.length, before.branches.length + 1);
   for (const run of before.branches) {
     const current = asset.branches.find(row => row.name === run.name);
-    if(run.name==='navigation-meb')continue; // Specific archive/fit guard in navigation-meb-interface.test.mjs.
+    if(['navigation-meb','radio'].includes(run.name))continue; // Dedicated archive/fit guards.
     if (!cameraNames.includes(run.name)) assert.deepEqual(current, run);
     else { assert.deepEqual(current.points.slice(0, -1), run.points.slice(0, -1)); assert.equal(current.radiusM, run.radiusM); }
   }

@@ -5,6 +5,13 @@ Codex or a person). Read this, then the top entries of [CHANGELOG.md](CHANGELOG.
 
 ## The short version
 
+Radio bay link: `frontier-bay-interface.mjs` derives the photo-J22 seat from the
+existing radio layout and builds only an EST external shell/relief. Main harness
+owns the refitted6 mm lead, shared via unnumbered `radio-harness-link` between
+radio13 and Bay32. Inspector/visibility aliases mirror the single existing MEB
+pattern; RF-only focus omits the bay link. No extra top-level ID or electrical
+assignment. The endpoint register records geometry only, not flight continuity.
+
 October28 routing correction: `draco-blowers.mjs` now uses CurvePath straight runs
 and local quadratic bends instead of free-form Catmull-Rom loops. Two clip/tab
 examples attach the shorter intake lines to existing supports; no new shell/foam

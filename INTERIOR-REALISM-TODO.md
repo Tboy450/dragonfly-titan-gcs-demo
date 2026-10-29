@@ -10,6 +10,24 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October28 next supported connection: Frontier radio / existing bay branch.
+- [x] Recheck blower electrical sources: no public flight port/pinout/controller
+  established. Keep those wires open; generic Honeybee capabilities are not an ICD.
+- [x] Fit the existing radio branch to one clearly EST external mating-shell
+  example at the photo-labeled J22 face. Reuse NASA/APL real Frontier photo and
+  generic workmanship references. J22 choice is illustrative, NOT a power/data
+  assignment or confirmed flight connection. Keep all radio/RF geometry unchanged.
+- [x] Refit only this estimated branch diameter (old14 mm, new6 mm); preserve
+  first two controls/junctions, all other routes/trunk and
+  part5 grouping. Share the single connection context between radio13 and Bay32,
+  with independent access masks and no duplicate inspection number.
+- [x] Archive/fit/full-model clearance/desktop-phone sample; update endpoint register
+  as geometric contact only. Six new tests,761 full tests pass. Independent layers
+  and RF-only focus checked,32 IDs retained, no browser overflow/errors. Real photo
+  and new connection sample queued in right file panel; no duplicate source sheet.
+- [ ] Publish and record live receipt. No invented pins/circuit. Exact radio flight
+  connection and cable qualification remain unresolved.
+
 October 28 corrective pass: [Blower tube layout](research/blower-routing-2026-10-28/README.md).
 - [x] Owner rightly rejects the first installation's long loose-looking loops.
   Recheck DrACO2020/2022 sources: bent tubing, shared topology and the cost of

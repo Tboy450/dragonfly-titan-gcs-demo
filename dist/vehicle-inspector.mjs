@@ -87,7 +87,8 @@ export function selectInspectionSubassembly(state, group, name) {
 export function inspectionGroups(name, subassemblyName = null) {
   const related = {
     "nose-electronics": !subassemblyName || subassemblyName==='ocellus-meb' ? ["nose-electronics","navigation-meb-link"] : ["nose-electronics"],
-    "main-harness": subassemblyName ? ["main-harness"] : ["main-harness","navigation-meb-link"],
+    "main-harness": subassemblyName ? ["main-harness"] : ["main-harness","navigation-meb-link","radio-harness-link"],
+    'frontier-radio': !subassemblyName||subassemblyName==='frontier-radio-connectors' ? ['frontier-radio','radio-harness-link'] : ['frontier-radio'],
     "sample-lines": ["drills", "sample-lines", "sample-flow", "sample-carousel", "drill-blower"],
     drams: ["drams"],
     battery: ["battery", "battery-sensor"],

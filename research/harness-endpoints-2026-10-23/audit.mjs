@@ -1,6 +1,7 @@
 import * as THREE from "../../dist/vendor/three/three.module.min.js?v=dev";
 import { mainHarnessAsset } from "../../dist/main-harness.mjs";
 import {navigationMebInterface} from "../../dist/navigation-meb-interface.mjs";
+import {frontierBayInterface} from '../../dist/frontier-bay-interface.mjs';
 import { buildIem } from "../../dist/iem.mjs";
 import { buildPowerUnits } from "../../dist/power-units.mjs";
 import { buildBattery } from "../../dist/battery.mjs";
@@ -63,6 +64,8 @@ function targetStubs() {
   });
   targets.set("navigation-meb",[{id:"navigation-meb-interface/estimated-cable-seat",
     point:new THREE.Vector3(...navigationMebInterface.seat),radiusM:.008}]);
+  targets.set('radio',[{id:'frontier-bay-interface/estimated-J22-seat',
+    point:new THREE.Vector3(...frontierBayInterface.seat),radiusM:.007}]);
   return targets;
 }
 

@@ -385,8 +385,8 @@ export function createChaseRenderer(options = {}) {
           if (subassembly) {
             bounds.setFromObject(subassembly);
             // MEB focus includes its shared cable so the junction stays on screen on phones.
-            if(groups.includes("navigation-meb-link")&&subsystems["navigation-meb-link"])
-              bounds.union(new THREE.Box3().setFromObject(subsystems["navigation-meb-link"]));
+            for(const shared of ['navigation-meb-link','radio-harness-link'])if(groups.includes(shared)&&subsystems[shared])
+              bounds.union(new THREE.Box3().setFromObject(subsystems[shared]));
           }
           else for (const name of groups) if (subsystems[name]) bounds.union(new THREE.Box3().setFromObject(subsystems[name]));
           bounds.getCenter(center);

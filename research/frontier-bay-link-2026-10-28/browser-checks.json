@@ -1,0 +1,14 @@
+{
+  "phone": {
+    "access": "open",
+    "disclosed": true,
+    "options": 33,
+    "part": "frontier-radio",
+    "rows": 32,
+    "scrollWidth": 375,
+    "subassembly": "",
+    "width": 390
+  },
+  "errors": [],
+  "tests": 761
+}
