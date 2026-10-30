@@ -12,6 +12,7 @@ were never committed).
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [Main duct / nose outlet](warm-duct-passages-2026-10-30/README.md) | Exact solid-run/flange/nose/outlet baseline, original UI/tests and before views | October30,2026 | archive/warm-duct-passages-2026-10-30 on3033b92 |
 | [Fan/duct transition](fan-duct-interface-2026-10-29/README.md) | Exact solid transition/UI/test baseline, rejected straight-shell parameters and before sample | October29,2026 | archive/fan-duct-interface-2026-10-29 on915a204 (pushed) |
 | [Fan bore correction](fan-bore-2026-10-29/README.md) | Exact solid-box housing module and UI text; before/model/source sample retained | October29,2026 | archive/fan-bore-2026-10-29 on29e77aa (pushed) |
 | [RF review UI baseline](rf-installation-review-2026-10-29/README.md) | Two exact prior UI modules; hardware unchanged; before sample in research packet | October29,2026 | archive/rf-installation-review-2026-10-29 (pushed) |

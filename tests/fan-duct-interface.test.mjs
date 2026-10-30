@@ -6,7 +6,8 @@ import {baseline,build,mesh,report,targetName} from '../research/fan-duct-interf
 import {inspectionSubassemblies} from '../dist/vehicle-inspector.mjs';
 import {inspectionPartNumber} from '../dist/inspection-catalog.mjs';
 import {surfacesCross} from '../research/draco-blower-pair-2026-10-27/audit.mjs';
-function snapshot(root,skip=''){const rows=[];root.traverse(o=>{if(o.isMesh&&o.name!==skip)rows.push({name:o.name,position:o.position.toArray(),quaternion:o.quaternion.toArray(),vertices:Array.from(o.geometry.attributes.position.array),index:o.geometry.index?Array.from(o.geometry.index.array):null});});return rows;}
+import {warmDuctChangedNames} from '../dist/warm-duct-passages.mjs';
+function snapshot(root,skip=''){const rows=[];root.traverse(o=>{if(o.isMesh&&o.name!==skip&&!warmDuctChangedNames.includes(o.name))rows.push({name:o.name,position:o.position.toArray(),quaternion:o.quaternion.toArray(),vertices:Array.from(o.geometry.attributes.position.array),index:o.geometry.index?Array.from(o.geometry.index.array):null});});return rows;}
 test('Fan transition has open ends and solid wall rims instead of capped airflow faces',()=>{
  const {transition}=build(),d=thermalLoopAsset.duct,F=fanDuctInterfaceAsset,[,fy,fz]=thermalLoopAsset.fans.centers[0],end=fz-F.fanFrontOffsetM;
  // Trace interior lines in the duct's sloping frame through both end planes.
@@ -31,7 +32,7 @@ test('Both fan mouth apertures reach the unchanged flange plane without a seven-
  assert.deepEqual(r.contacts.filter(o=>!old.has(JSON.stringify(o))&&o.other!=='warm-duct-run'),[]);
  assert.ok(r.contacts.every(o=>o.other==='warm-duct-run'||old.has(JSON.stringify(o))));
 });
-test('Only the named transition changes; fans, remainder of warm duct, trim and airflow retain exact geometry',async()=>{
+test('Only named, separately guarded duct changes occur; fans, transition, trim and airflow retain exact geometry',async()=>{
  const old=await baseline(),a=build(),b=build(old.buildWarmDuct);
  assert.deepEqual(snapshot(a.root,targetName),snapshot(b.root,targetName));
  for(const [current,previous]of [[buildFans,old.buildFans],[buildTrimDevice,old.buildTrimDevice]]){
@@ -43,7 +44,7 @@ test('Only the named transition changes; fans, remainder of warm duct, trim and 
 test('The existing part18 gains a real geometry focus without a new numbered part',()=>{
  const {root,transition}=build();
  assert.equal(inspectionPartNumber('underfloor-duct'),18);
- assert.deepEqual(inspectionSubassemblies(root).map(o=>o.name),[targetName]);
+ assert.deepEqual(inspectionSubassemblies(root).map(o=>o.name),['warm-duct-run','warm-duct-nose-outlet','warm-duct-outlet-grille',targetName]);
  assert.equal(transition.userData.inspectionMinimumRadiusM,.04);
 });
 test('Transition walls clear the retained rotors through a full sampled revolution',()=>{

@@ -83,6 +83,13 @@ See `research/draco-electrical-audit-2026-10-27/README.md` before its next rebui
 
 ## Files
 
+October30: `warm-duct-passages.mjs` builds the part18 main run, annular joints,
+fitted nose elbow and open outlet frame. Frozen EST metadata/derived nose sections
+are separate from simulation. thermal-loop.mjs retains the exact fan transition,
+fans, trim and arrow curves. Six baseline/ray/seat/contact/access tests own only
+the four explicitly named changed mesh families. Four detail focuses use the
+existing inspector. No extra top-level ID or per-frame geometry.
+
 October29 fan/duct interface: `thermal-loop.mjs` builds one hollow, rimmed,
 three-section transition with estimated wall/throat. Only its fan-side end
 extends7 mm; other assets/curves retained. Existing fan-bore tests delegate this

@@ -1,5 +1,6 @@
 import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { aftBulkheadAsset } from "./aft-bulkhead.mjs?v=dev";
+import { buildWarmDuctPassages } from "./warm-duct-passages.mjs?v=dev";
 
 // Parts 17, 18 and 19: the Titan-surface air loop. Published layout [PUB]:
 // - TFAWS 2023 (Holtzman and Castano, APL) slide 4: fan and ducting at the MMRTG; warm ducted
@@ -18,7 +19,7 @@ import { aftBulkheadAsset } from "./aft-bulkhead.mjs?v=dev";
 // wide, from z -1.18 to +0.93, widening to the fans; fans about 0.13 m, near z +1.2. Duct height,
 // cold-duct section, housing shapes, flap hinge sides and the actuators are [EST].
 export const thermalLoopAsset = Object.freeze({
-  revision: "thermal-loop-2026-10-29-open-fan-transition",
+  revision: "thermal-loop-2026-10-30-open-main-nose",
   // y lowered 7.5 mm on Oct 15 so the duct and its joint flanges sit fully under the bay floor
   // (y -0.284), inside the foam; the first position is archived (archive/warm-duct-v1-2026-10-15).
   duct: Object.freeze({ width: 0.14, height: 0.045, y: -0.3125, front: -1.175, back: 0.93 }),
@@ -113,15 +114,9 @@ export function buildWarmDuct({ parent, mesh }) {
   const duct = new THREE.MeshStandardMaterial({ color: 0xd8c27a, roughness: 0.5, metalness: 0.35 }); // plan-view ducting color
   const transition = new THREE.MeshStandardMaterial({ color: 0x9a3b2c, roughness: 0.5, metalness: 0.4 });
   const steel = new THREE.MeshStandardMaterial({ color: 0xb4bbbf, roughness: 0.35, metalness: 0.75 });
-  // Main run under the floor, with flange rings at its joints.
-  const run = mesh(new THREE.BoxGeometry(W, H, back - front), duct, [0, y, (front + back) / 2], group);
-  run.name = "warm-duct-run";
-  for (let z = front + 0.3; z < back; z += 0.42) mesh(new THREE.BoxGeometry(W + 0.012, H + 0.012, 0.012), steel, [0, y, z], group).name = "warm-duct-flange";
-  // Nose end: the duct turns up and opens into the body below the nose.
-  const elbow = taperBetween(mesh, [0, y, front], [0, -0.215, front - 0.12], W, H, W, 0.07, transition, group);
-  elbow.name = "warm-duct-nose-outlet";
-  const grille = mesh(new THREE.BoxGeometry(W + 0.006, 0.006, 0.075), steel, [0, -0.18, front - 0.15], group);
-  grille.rotation.x = 0.55; grille.name = "warm-duct-outlet-grille";
+  // Main run and fitted nose elbow are generic open inspection shells [EST].
+  // Trim risers/valves and the aft bulkhead passage still need separate review.
+  buildWarmDuctPassages({parent:group,mesh,layout:thermalLoopAsset.duct,duct,steel,transition});
   // Aft end: the flared transition up to the two fans.
   const [, fy, fz] = thermalLoopAsset.fans.centers[0];
   const F=fanDuctInterfaceAsset;

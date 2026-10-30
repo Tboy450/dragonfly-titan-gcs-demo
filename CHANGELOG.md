@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-30: Open part18 main duct and fit its nose return outlet
+- **Signed:** Codex (OpenAI).
+- **Commit:** Open the warm duct run and seat its estimated nose outlet
+- **What changed:** Solid main run, five joint flanges and outlet become open
+  sections. Fitted curved nose shell meets the retained outlet-frame perimeter;
+  run/ring/frame outer envelopes stay exact. Four inspection focuses,32 IDs retained.
+- **Sources/estimates:** NASA/APL TFAWS2023 slides3–4, real DTM photos and sections
+  in TFAWS2024 slides5/7/15 reused. Wall1.5 mm, fitted85.34 mm bend and detailed
+  flight outlet/attachment EST; no invented grille pattern or material claim.
+- **Checks:** Six new tests;801 full tests pass. Exact retained fan transition/
+  fans/trim/airflow, open rays/rims, all outlet corner seats, installed contacts,
+  Internal/Thermal/390px and Casings hide/restore verified. No overflow/errors.
+- **Open:** Four inherited run/trim contacts and one joint/harness-clamp contact
+  retained, zero new pairs. Part19 risers/flaps/cold openings and aft penetration
+  remain unfinished. No flow, thermal, power, game or save behavior changed.
+- **Archive:** Exact prior files/views, baseline3033b92; source and next-step notes
+  in research/warm-duct-passages-2026-10-30/. Incoming Claude3033b92 preserved.
+
 ### 2026-10-30: Swarmfall P1 browser review (Clean view, victory choice, multi-pod drops)
 - **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
 - **Commit:** "Review the P1 features in the browser and fix pod wording"

@@ -1,0 +1,14 @@
+{
+  "part": 18,
+  "subassemblies": 4,
+  "options": 33,
+  "numberedParts": 32,
+  "internalThermal": true,
+  "casingsHideRestore": true,
+  "widths": {
+    "viewport": 390,
+    "client": 375,
+    "scroll": 375
+  },
+  "errors": []
+}

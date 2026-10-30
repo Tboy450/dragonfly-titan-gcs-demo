@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part18 main/nose passages (Codex, October30):** [sources, fit, samples and limits](warm-duct-passages-2026-10-30/README.md).
+Rechecked TFAWS2023 slides3–4 and TFAWS2024 slides5/7/15. Real DTM photos are test
+hardware; sections constrain topology, not exact flight outlet appearance.
+Open sections,1.5 mm wall and fitted85.34 mm bend EST. Existing saved pages reused.
+No invented grille pattern, flight material or pressure-loss performance.
+
 **Part18 transition (Codex, October29):** [evidence/measurements/samples](fan-duct-interface-2026-10-29/README.md).
 Reuse real DTM photo and TFAWS2023/2024 plan/section material; exact flight coupling
 unknown. Generic shell/seat/throat EST, one named transition changed; no new source

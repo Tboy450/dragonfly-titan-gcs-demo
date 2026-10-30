@@ -10,6 +10,25 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+October30: [Part18 main duct / nose outlet](research/warm-duct-passages-2026-10-30/README.md).
+- [x] Recheck real DTM photos and NASA/APL 2023/2024 sections; no exact flight
+  outlet drawing established. Reuse saved sources; no generated/duplicate photos.
+- [x] Open main run/five joint rings and fit an open nose elbow to the retained
+  outlet-frame perimeter. Run/ring/frame outer envelopes exact; 1.5 mm wall,
+  85.34 mm fitted bend radius and outlet detail EST. Completed fan transition,
+  fans, trim, equipment and simulated gas/power/temperature behavior unchanged.
+- [x] Four part18 focuses; no new top-level IDs. Six new tests, **801 full tests**
+  pass with incoming Claude3033b92 preserved. Actual Internal/Thermal/390px,
+  Casings hide/restore,32 numbers/33 options, no overflow/errors checked.
+- [x] Exact prior files, before views and recovery baseline3033b92 archived.
+  Source limits/assumptions and installed samples updated; no unrelated app edits.
+- [ ] Publish/check Pages and live sample; receipt pending.
+- [ ] NEXT: part19 risers/flaps/cold-duct openings together. Existing full-model
+  contacts: run vs two risers/two flaps, plus one ring vs main-harness clamp;
+  zero new pairs, but these retained conflicts are not resolved by open shells.
+  Review clamp fit separately. Aft collar/bulkhead passage remains source-gated.
+  Do not mark the entire gas circuit complete or infer performance from geometry.
+
 October29: [Part18 fan-side duct connection](research/fan-duct-interface-2026-10-29/README.md).
 - [x] Recheck saved real DTM and thermal plan/section sources; use existing source
   photos, not CGI for appearance. No exact flight coupling drawing established.

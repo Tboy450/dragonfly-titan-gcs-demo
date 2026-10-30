@@ -1,5 +1,12 @@
 # Dragonfly Titan GCS
 
+October30: [Part18 open main duct / fitted nose outlet](research/warm-duct-passages-2026-10-30/README.md).
+Main run, five joint rings and the nose outlet are open inspection shells; the
+elbow now seats to the retained outlet frame. Wall/bend/attachment EST; four
+inspection details, original32 IDs and flight/thermal behavior retained.
+801 tests and desktop/Thermal/390px checks pass. Sources/old geometry/samples saved.
+Five inherited trim/clamp contact pairs remain; whole gas circuit is not complete.
+
 October29 continuation: [fan-to-duct transition](research/fan-duct-interface-2026-10-29/README.md).
 One generic open shell replaces the solid transition/7 mm flange gap. Estimated
 wall/throat clears retained rotors; other hardware and simulation unchanged.

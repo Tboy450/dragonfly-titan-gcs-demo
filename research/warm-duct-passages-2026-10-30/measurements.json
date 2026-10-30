@@ -1,0 +1,122 @@
+{
+  "scope": "Part18 generic open shells; no complete fluid path or flight interface claim",
+  "asset": {
+    "revision": "warm-duct-passages-2026-10-30",
+    "wallM": 0.0015,
+    "outletFrame": {
+      "widthM": 0.146,
+      "lengthM": 0.075,
+      "thicknessM": 0.006,
+      "angleRad": 0.55
+    },
+    "flightGeometryConfirmed": false
+  },
+  "noseRadiusM": 0.08533756897999101,
+  "noseTurnDeg": 121.51267873219525,
+  "bounds": {
+    "warm-duct-run": {
+      "min": [
+        -0.07000000029802322,
+        -0.33500000089406967,
+        -1.1750000095367432
+      ],
+      "max": [
+        0.07000000029802322,
+        -0.28999999910593033,
+        0.9300000095367431
+      ]
+    },
+    "warm-duct-flange": {
+      "min": [
+        -0.07599999755620956,
+        -0.34100000001490116,
+        0.7989999999478459
+      ],
+      "max": [
+        0.07599999755620956,
+        -0.28399999998509884,
+        0.811000000052154
+      ]
+    },
+    "warm-duct-nose-outlet": {
+      "min": [
+        -0.0729999989271164,
+        -0.33500000834465027,
+        -1.3728798627853394
+      ],
+      "max": [
+        0.0729999989271164,
+        -0.16295680403709412,
+        -1.1749999523162842
+      ]
+    },
+    "warm-duct-outlet-grille": {
+      "min": [
+        -0.0729999989271164,
+        -0.2021583454521742,
+        -1.3585377325480141
+      ],
+      "max": [
+        0.0729999989271164,
+        -0.15784165454782578,
+        -1.2914622674519858
+      ]
+    }
+  },
+  "currentContacts": [
+    {
+      "mesh": "warm-duct-run",
+      "other": "front-diverter-riser",
+      "owner": "cold-duct"
+    },
+    {
+      "mesh": "warm-duct-run",
+      "other": "aft-diverter-riser",
+      "owner": "cold-duct"
+    },
+    {
+      "mesh": "warm-duct-run",
+      "other": "front-diverter-flap",
+      "owner": "trim-flap-front"
+    },
+    {
+      "mesh": "warm-duct-run",
+      "other": "aft-diverter-flap",
+      "owner": "trim-flap-aft"
+    },
+    {
+      "mesh": "warm-duct-flange",
+      "other": "main-harness-clamp",
+      "owner": "main-harness-clamps"
+    }
+  ],
+  "originalContacts": [
+    {
+      "mesh": "warm-duct-run",
+      "other": "front-diverter-riser",
+      "owner": "cold-duct"
+    },
+    {
+      "mesh": "warm-duct-run",
+      "other": "aft-diverter-riser",
+      "owner": "cold-duct"
+    },
+    {
+      "mesh": "warm-duct-run",
+      "other": "front-diverter-flap",
+      "owner": "trim-flap-front"
+    },
+    {
+      "mesh": "warm-duct-run",
+      "other": "aft-diverter-flap",
+      "owner": "trim-flap-aft"
+    },
+    {
+      "mesh": "warm-duct-flange",
+      "other": "main-harness-clamp",
+      "owner": "main-harness-clamps"
+    }
+  ],
+  "newContactPairs": [],
+  "remaining": "Unchanged trim risers/flaps, cold-duct openings and aft collar/bulkhead penetration remain unresolved. No simulated gas/power/temperature inputs changed."
+}

@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**Part18 main/nose passages (Codex, October30):**
+[source/fit/handoff](research/warm-duct-passages-2026-10-30/README.md).
+[PUB] forward ducted flow then open body return. [EST] open run/joints/nose shell,
+1.5 mm wall and outlet frame; [CALC from retained EST model endpoints]85.34 mm
+bend radius. DTM is test hardware, not a flight outlet reference. No complete
+trim/cold-duct/aft gas path or CFD reconstruction. Five inherited contact pairs
+recorded, none added. Simulation inputs/curves retained exactly.
+
 **Part18 transition (Codex, October29):**
 [local interface and limits](research/fan-duct-interface-2026-10-29/README.md).
 [PUB] fan/duct gas-circulation architecture; [EST] generic1.5 mm shell and16 mm
