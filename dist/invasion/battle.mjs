@@ -367,7 +367,7 @@ function releasePod(b, pod) {
   b.stats.dronesDropped += index;
   b.events.push({ kind: "release", pod: pod.id, x: pod.x, z: pod.z });
   const remaining = b.pods.filter(p => p.squad === pod.squad && !p.released).length;
-  b.log.push({ t: b.time, tone: "good", text: `${squad?.name || "Squad"}: pod ${(pod.waveIndex || 0) + 1}/${pod.waveCount || 1} down, ${index} drones${remaining ? ` · ${remaining} pods inbound` : " · wave complete"}.` });
+  b.log.push({ t: b.time, tone: "good", text: `${squad?.name || "Squad"}: pod ${(pod.waveIndex || 0) + 1}/${pod.waveCount || 1} down, ${index} ${index === 1 ? "drone" : "drones"}${remaining ? ` · ${remaining} ${remaining === 1 ? "pod" : "pods"} inbound` : " · wave complete"}.` });
 }
 
 function stepPods(b, dt) {

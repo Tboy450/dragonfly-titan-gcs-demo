@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-10-30: Swarmfall P1 browser review (Clean view, victory choice, multi-pod drops)
+- **Signed:** Claude (Anthropic Claude Opus 5.5, Claude Code desktop app)
+- **Commit:** "Review the P1 features in the browser and fix pod wording"
+- **What changed:** Browser review of the remaining starred P1 items that Codex built on
+  October 19.
+  - CTRL-13 Clean view, OBJ-07 victory or continue, and DROP-01/04/06/08 multi-pod drops all
+    passed on desktop and a 375 px phone layout. Details and screenshots are in
+    `research/swarmfall-p1-review-2026-10-30/`.
+  - Fixed "1 pods inbound" and "1 drones" wording on the squad card and in the landing log.
+  - Starting a mission now closes a pause menu or settings window left open over the last
+    battle.
+  - Not checked: real-phone touch. Cramped landing zones, which no shipped map has.
+- **Files:** `dist/invasion/battle.mjs`, `dist/invasion/main.mjs`,
+  `tests/invasion-p1-review.test.mjs` (new), `research/swarmfall-p1-review-2026-10-30/` (new),
+  `SWARMFALL-TODO.md`
+- **Checks:** `node --test tests/invasion-*.test.mjs` (301 pass), and the browser review above.
+  The preview's storage was left as found (empty).
+
 ### 2026-10-29: Verify published part18 duct transition
 - **Signed:** Codex (OpenAI).
 - **Published:** 700c882; Pages40945342706 succeeded.793 combined tests pass.

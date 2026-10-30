@@ -598,6 +598,9 @@ function startMission(planet, checkpoint = null, { modifiers = [] } = {}) {
   resetPointers();
   $("debrief").open && $("debrief").close();
   $("victory-dialog").open && $("victory-dialog").close();
+  // A menu or the settings left open over the last battle do not carry over to the new one.
+  $("pause-menu").open && $("pause-menu").close();
+  $("settings-dialog").open && $("settings-dialog").close();
   // A battle saved before its planet gained a city resumes on the landscape it was saved on.
   const terrain = createPlanetTerrain(checkpoint && checkpointPlanet(checkpoint) || planet);
   const restored = checkpoint ? restoreMissionCheckpoint(checkpoint, terrain) : null;
@@ -1543,7 +1546,7 @@ function updateSquadBar() {
     const mix = {};
     for (const unit of members) mix[unit.type] = (mix[unit.type] || 0) + 1;
     const health = members.length ? members.reduce((s, u) => s + u.hp / u.maxHp, 0) / members.length : 1;
-    card.querySelector("strong").textContent = `${squad.name} · ${members.length} ready${squad.inbound ? ` · ${squad.inboundPods} pods inbound` : ""}${squad.formation && squad.formation !== "spread" ? ` · ${squad.formation}` : ""}${squad.stance === "hold" ? " · holding fire" : ""}`;
+    card.querySelector("strong").textContent = `${squad.name} · ${members.length} ready${squad.inbound ? ` · ${squad.inboundPods} ${squad.inboundPods === 1 ? "pod" : "pods"} inbound` : ""}${squad.formation && squad.formation !== "spread" ? ` · ${squad.formation}` : ""}${squad.stance === "hold" ? " · holding fire" : ""}`;
     card.querySelector(".mix").textContent = [Object.entries(mix).map(([t, n]) => `${n} ${droneTypes[t].name}`).join(", "), squad.inboundDrones ? `${squad.inboundDrones} arriving` : ""].filter(Boolean).join(" · ");
     card.querySelector(".health i").style.width = `${Math.round(health * 100)}%`;
     card.setAttribute("aria-pressed", String(mission.selected.has(squad.id)));

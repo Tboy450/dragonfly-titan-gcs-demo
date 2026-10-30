@@ -528,10 +528,14 @@ complete solely because its assets download or its unit tests pass.
   - `tests/invasion-pause-menu.test.mjs` (5 tests). In the browser, Escape opened and closed
     the menu. Quitting to the galaxy showed "Resume battle · Kepra", which brought back the
     battle at the same moment, paused. On a 375 px phone the HUD buttons still fit one row.
-- [ ] **CTRL-13 ★ (P1) — implementation by Codex, October 19; browser review pending**
+- [x] **CTRL-13 ★ (P1) — implementation by Codex, October 19; browser review by Claude, October 30**
   Clean view hides mission panels, minimap, toasts and battlefield labels. A small restore
   button remains; V toggles and Escape restores the HUD. Drop controls/mission end restore
   the HUD; camera controls remain available. V preserves the existing R/F pitch controls.
+  - Reviewed with real keys and clicks on desktop and a 375 px phone. Everything listed above
+    hid; only "Show HUD · V" stayed. Turning and tilting still worked.
+  - V, Escape (without opening the menu), the button, B and a mission ending each restored the
+    HUD. [Evidence](research/swarmfall-p1-review-2026-10-30/README.md)
 - [x] **CTRL-14 ★ (P2) — Claude (October 21)** Free camera (owner: "a free camera there we can
   move up and down freely would be nice"). **Free cam · C** under the minimap switches between
   the orbit camera and a camera that flies anywhere (`free-camera.mjs`):
@@ -824,14 +828,18 @@ complete solely because its assets download or its unit tests pass.
   October 16). Design configurable drone bodies, propulsion, weapons and equipment, with
   understandable cost/performance tradeoffs. This is a future design request; scope and
   the specific Tank Wars reference need clarification when implementation begins.
-- [ ] **OBJ-07 ★ (P1)** Meeting the level's required objectives should offer a choice:
+- [x] **OBJ-07 ★ (P1)** Meeting the level's required objectives should offer a choice:
   **leave and claim victory** or **continue capturing everything** (owner, October 16).
   Keep the battle running when continuing, retain an explicit victory/extraction action,
   show remaining zones, and award campaign rewards exactly once. Define loss/retreat after
   victory is available and when optional objectives/stars are finalized.
   **Codex, October 19:** implemented with tested rule/save/settlement behavior. Browser/touch
   acceptance remains open, including choice on resume and visible extraction while continuing.
-- [ ] **DROP-01 ★ (P1)** Split a squad's delivery into multiple parachute pods carrying
+  **Claude, October 30: browser review passed** on desktop and a 375 px phone layout:
+  - The choice appeared once, and again on resume until made.
+  - Continuing kept the battle running, with "3/4 held · 1 remain" and Leave for victory shown.
+  - Two quick Leave clicks settled once. Real-phone touch was not checked. [Evidence](research/swarmfall-p1-review-2026-10-30/README.md)
+- [x] **DROP-01 ★ (P1)** Split a squad's delivery into multiple parachute pods carrying
   **1–3 drones per pod**, dropped beside one another (owner, October 16; suggested rule).
   Keep one squad/order group across the wave. Show pod count before launch; find spaced,
   safe landing points inside the chosen zone, with a fallback when space is limited.
@@ -839,6 +847,9 @@ complete solely because its assets download or its unit tests pass.
   release timing, inbound counts, save/resume and drop HUD; test small and large payloads.
   **Codex, October 19:** implementation and automated rules/scene checks delivered; keep
   this broad item open until DROP-08's browser/touch acceptance is completed.
+  **Claude, October 30:** DROP-08's browser review passed for the shipped maps (below).
+  Real-phone touch and city districts with buildings inside zones stay with TEST-03 and CITY
+  work.
 
 Free mode (★ owner: "eventually a free mode with a universe or galaxy to pick planets"):
 
@@ -1260,21 +1271,38 @@ current terrains first, then reuse the same placement contract in city districts
 - [x] **DROP-03 ★ (P1) — Codex, October 19** Give each wave and physical pod stable IDs. Charge matter and apply
   recharge once per accepted wave; failed validation charges nothing. Preserve one squad,
   type limits, unlock rules and loss recovery. Count waves versus physical pods separately.
-- [ ] **DROP-04 ★ (P1)** Preview spaced touchdown positions beside one another within a held
+- [x] **DROP-04 ★ (P1) — Codex (October 19), browser review by Claude (October 30)** Preview spaced touchdown positions beside one another within a held
   landing area. Check dry/allowed surface, slope, playable bounds, canopy/pod clearance and
   formation space. Use a bounded reposition/stagger fallback when the first layout cannot fit.
+  - Reviewed:
+    - Kepra showed 4 labeled courts. The Aurex city beacon showed 6, on open ground, 20 m
+      apart.
+    - An edge tap moved them back inside the zone. A tap outside held zones explained why.
 - [x] **DROP-05 ★ (P1) — Codex, October 19** Coordinate staggered arrivals. Assign unique formation slots across
   sibling pods; retain squad commands while later pods descend. A delayed pod must not reset
   orders, overlap released drones or split the delivery into unrelated squad cards.
-- [ ] **DROP-06 ★ (P1)** Render every inbound pod/parachute with separate touchdown cues and
+- [x] **DROP-06 ★ (P1) — Codex (October 19), browser review by Claude (October 30)** Render every inbound pod/parachute with separate touchdown cues and
   controlled separation. Review the current fixed visual pod pool before increasing count;
   never silently hide excess inbound pods. Explain inbound, released and missing drones in HUD.
+  - Reviewed: four separate canopies came down side by side.
+  - The scene adds a visual pod whenever one is needed, so none is hidden.
+  - The squad card went from "4 pods inbound · 12 arriving" to "12 ready · 8 Scout, 4 Link".
 - [x] **DROP-07 ★ (P1) — Codex, October 19** Save/resume complete wave state: payload partition, positions,
   timers, released flags and shared squad ID. Reload before descent, between releases and
   after release; produce each drone once and never charge/refund a wave twice. Depends TECH-03.
-- [ ] **DROP-08 ★ (P1)** Accept the feature with 1/2/3/4 drones, mixed and maximum payloads,
+- [x] **DROP-08 ★ (P1) — Claude (October 30), for the shipped maps** Accept the feature with 1/2/3/4 drones, mixed and maximum payloads,
   multiple waves, paused launches, narrow courts, shoreline/roof/bridge obstacles and low
   frame rate. Test failure feedback, last-pod arrival and command continuity on desktop/touch.
+  - Reviewed in the browser:
+    - Pod counts were right for every wave size, and a wave over 16 slots was refused.
+    - Each wave was charged once, and a second wave launched while paused was charged once too.
+    - An order given during descent reached all 12 drones.
+    - A reload mid-descent landed exactly 7 drones, with no second charge.
+    - It ran at about a quarter of real time, with the slow-motion notice.
+    - The phone layout fits.
+  - No zone on any of the 10 maps has blocked ground inside it, so cramped landings are left
+    to the unit tests and to CITY work for city districts. Real-phone touch was not checked.
+  - [Evidence](research/swarmfall-p1-review-2026-10-30/README.md)
 
 Codex evidence, October 19: 12 focused wave/checkpoint tests plus the real Three.js scene
 with a stand-in renderer (15 visible pod assemblies, 44 payload bodies, teardown/reload).
