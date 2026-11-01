@@ -2,18 +2,15 @@
 
 Existing bundled renderer: r180. License: [MIT](LICENSE).
 
-Environment Lab adds these unchanged files from the official npm `three@0.180.0` package:
-
-- `addons/loaders/GLTFLoader.js`
-- `addons/utils/BufferGeometryUtils.js`
-- `addons/controls/OrbitControls.js`
+The simulator uses only the renderer. The Environment Lab's three unchanged addons
+(GLTFLoader, BufferGeometryUtils, OrbitControls from npm `three@0.180.0`) moved with their
+history to Swarmfall's own copy in `swarmfall/dist/vendor/three/` when the game was isolated on
+November 1, 2026; that folder also holds the game's copy of this renderer.
 
 Source: https://github.com/mrdoob/three.js/tree/r180/examples/jsm
 Package: https://registry.npmjs.org/three/-/three-0.180.0.tgz
 
-The gallery import map resolves bare `three` imports to this existing local renderer. The
-simulator and campaign retain their existing imports. Original downloaded package remains
-in local research; no package installation or remote runtime/CDN dependency is required.
+No package installation or remote runtime/CDN dependency is required.
 
 October23 Codex: the nested `./three.core.min.js` import in the renderer wrapper now uses
 `?v=dev`, stamped by the publish workflow. URL-only patch after a reproducible stalled

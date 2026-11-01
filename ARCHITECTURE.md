@@ -50,9 +50,10 @@ See `research/draco-electrical-audit-2026-10-27/README.md` before its next rebui
 - A static web app with **no build step**: everything in `dist/` is served as-is.
   `index.html` loads `app.js`, which imports the other modules.
 - **Tests:** `node --test tests/*.test.mjs` (Node 22). They must pass before publishing.
+  Swarmfall has its own: `node --test swarmfall/tests/*.test.mjs`.
 - **Publishing:** push to `main` on GitHub (the local branch is `master`:
-  `git push origin master:main`). The workflow runs the tests, stamps versions and publishes
-  `dist/` to GitHub Pages.
+  `git push origin master:main`). The workflow runs both test suites, adds `swarmfall/dist/` as
+  `invasion/`, stamps versions and publishes to GitHub Pages.
 - **Every change gets a signed entry** at the top of `CHANGELOG.md`.
 
 ## House rules
@@ -383,55 +384,27 @@ a false sentinel; its previously unsafe optional lookup has a regression test.
 | `ui/persistence.mjs` | Saves progress in the browser (every 5 s while landed and when the page is left), restores it on load, "Start a new mission" |
 | `dist/index.html`, `dist/styles.css` | Markup and styles. The phone Pilot-view overrides are in the last section of `styles.css` |
 
-### Swarmfall drone invasion game (`dist/invasion/`, its own page)
-A strategy game that reuses the simulator's Titan terrain, arrival hardware and research model.
-It imports those modules read-only and never touches the simulator's state. Rules follow the
-same split as the simulator: plain modules with tests, plus a page layer.
-| File | What it does |
-|---|---|
-| `invasion/units.mjs` | Drone, defender, wildlife and society types; weapons per target class (ground, structure, air) so drones can later carry different arms against rival drones; pod slots and costs |
-| `invasion/campaign.mjs` | The seven planets in campaign order, rewards, per-planet supply (scaled by the difficulty), saved progress (validated field by field, including each planet's last wave and the difficulty) and `applyMissionResult`; Frontier maps (`frontiers`), `missionSupply` and `applyFrontierResult`, which never touch the campaign bank |
-| `invasion/mission-save.mjs` | Versioned JSON battle checkpoints, validation and terrain callback/pad restoration; stored with campaign progress by the page; battles record their map, city and landform, and `checkpointPlanet` rebuilds exactly that world (older Corvan saves included) |
-| `invasion/battle.mjs` | One mission: zones, drops, orders (group pace, attack-move), movement, combat, capture (damage or control path, converted defenses), public alarm, reinforcements, artillery, income, mid-mission events (supply caches, counter-attacks, reinforcement waves), wildlife (a third side: dens, prowling, chases), objectives, stars, outcome; frontier scouting (`cityFound`, `hiddenUnits` for the page); direct fire needs a clear line past city buildings |
-| `invasion/hazards.mjs` | Seeded environmental threats with advance warning; shelter in held zones; the forecast; where strikes land (near misses clear of the swarm, vents beside it), and lightning and eruptions that hit defenders too |
-| `invasion/achievements.mjs` | Twelve campaign achievements, checked live and at the end of a mission |
-| `invasion/planet-terrain.mjs` | Ground height per planet: Titan reuses `terrainHeight`; the other worlds are invented noise landscapes with liquid levels and level zone pads; a planet with `city` gets level city ground, `walkable`, `roofAt` and a building-aware `canDropAt`; a `landform` (frontier valley) gives ridged mountains, a flat valley, the beacon's basin and a pass, optional lava channels and volcano cones, plus `siteOK` for gentle zone sites |
-| `invasion/city-layout.mjs` | A seeded, versioned city district (blocks, lots, tiered buildings, streets, squares, parks) and fast `buildingAt` / `roofAt` / `clearAt` / `lineBlocked` queries; the one source for city rules and drawing; styles "metropolis", "forge" (halls, smokestacks, cooling towers) and "town" (houses, keep, walls with gates, turrets) |
-| `invasion/city-render.mjs` | Draws a city layout with the Environment Lab kit: streets, sidewalks, squares, parks, merged facade buildings and rooftop gear; forge cities get halls, stacks, towers, slag yards and animated smoke; towns get tile-roofed houses, a keep and crenellated walls |
-| `invasion/random.mjs` | Seeded random numbers stored on the battle (reproducible missions) |
-| `invasion/models.mjs` | Procedural drone, defender, structure and building geometry (vertex colors, merged for instancing) and the compacted Dragonfly research model |
-| `invasion/scene.mjs` | three.js view: planet ground/sky/liquid/decor (Titan via `createTitanTerrain`), zone rings (with faint copies drawn on top so hills never hide them), instanced units, townspeople who flee drones (drawn only), shots, explosions, strike markers, weather particles, pods via `createArrivalHardware` + `edlStateAt` |
-| `invasion/galaxy.mjs` | The campaign galaxy drawing, and where the title screen's galaxy goes beside the card |
-| `invasion/battle-sound.mjs` | What the optional sound should be: hum, rain, wind and rumble levels from the battle and view, one-shot cues from events, and the sound levels |
-| `invasion/sound.mjs` | Plays it with Web Audio (no sound files): beds, shots, explosions, chimes, sirens, thunder, pod entry and parachutes; off by default |
-| `invasion/quality.mjs` | Graphics quality levels (decor, city detail, ground, pixel ratio) and adaptive resolution from frame time |
-| `invasion/tips.mjs` | First-time tips: first defenders in sight, each kind of defense, alarm stages, first artillery and captured defense |
-| `invasion/field-guide.mjs` | The Field guide: every drone, defender, society and hazard with numbers and counters, generated from the rules, plus the controls, and the same facts as tooltips for drop rows, matter, alarm and hazards (TUT-04), with the hazard forecast and counters (HAZ-03) |
-| `invasion/paths.mjs` | Ground routes: a deterministic grid search round water, buildings and walls, used by troops on foot when blocked |
-| `invasion/replay.mjs` | Replay challenges on conquered planets (ECON-04): Raised threat, Wild weather and On alert, which ones each planet offers, and the bonus each adds to the replay reward |
-| `invasion/settings.mjs` | Device settings apart from the campaign save (CTRL-10): camera speed, invert drag, UI size and key bindings, checked on load; rebinding swaps a key in use; key names for labels and the Field guide |
-| `invasion/tutorial.mjs` | The Titan tutorial: checked steps from the battle (drop to win, plus a weather step) and the button to highlight |
-| `invasion/swarm-dust.mjs` | Rotor-wash dust: a pooled, seeded puff simulation for low drones and pod touchdowns, drawn with sprites |
-| `invasion/camera-assist.mjs` | Follow the selected squads' center, the newest alert to jump to, lost-squad alerts, edge-of-screen alert arrows, edge scrolling and the starting view |
-| `invasion/frame-clock.mjs` | Turns each frame's real time into battle steps of at most 0.05 s: slow frames catch up, stalls are dropped, sustained lag is detected |
-| `invasion/free-camera.mjs` | The free camera's movement: start from and return to the orbit camera, fly with limits (ground, roofs, ceiling, map edge, no flying into buildings) |
-| `invasion/main.mjs` | Screens, saving, the mission loop, camera and touch controls, selection, orders, drop panel, HUD, minimap, debrief |
-| `invasion/index.html`, `invasion/invasion.css` | Markup and styles (phone layout in the last section) |
-
-Balance was checked with a scripted bot that plays the whole campaign (all seven planets won on
-first tries, losses rising from 0 to about 150 drones); real playtesting is still needed.
+### Swarmfall drone invasion game (`swarmfall/`, its own project)
+Since November 1, 2026 the game and its Asset & Environment Lab are a separate project in
+`swarmfall/`, published at `invasion/` by the same workflow. Its file map and tests are in
+[swarmfall/ARCHITECTURE.md](swarmfall/ARCHITECTURE.md). It reuses this simulator's Titan terrain,
+arrival hardware and research model through a pinned copy (`swarmfall/dist/vendor/dragonfly/`,
+refreshed with `node swarmfall/tools/sync-dragonfly.mjs`), so changing those modules here changes
+the game only once that copy is refreshed. Nothing in `dist/` may import the game
+(`tests/site-layout.test.mjs`).
 
 ### Documents and tooling
 | File | What it is |
 |---|---|
 | `CHANGELOG.md` | Signed record of every change (newest first) |
 | `INTERIOR-REALISM-TODO.md` | Owner-requested callout fix, numbered part-by-part asset rebuild and enclosure/insulation views; persistent handoff checklist |
-| `SWARMFALL-TODO.md` | The game's update checklist: known problems, owner requests (free mode, local versus, planet threats) and planned work by area, with item IDs and priorities |
+| `swarmfall/` | Swarmfall, the drone game, as its own project: see [swarmfall/README.md](swarmfall/README.md) |
+| `swarmfall/TODO.md` | The game's update checklist (formerly `SWARMFALL-TODO.md`): known problems, owner requests (free mode, local versus, planet threats) and planned work by area, with item IDs and priorities |
 | `RESEARCH-COMPENDIUM.md` | Research reference: sources, values with tags, implementation status (§7), next steps (§8), future requests |
 | `RESEARCH.md`, `RESEARCH-FOLLOWUP.md` | Earlier source audit and GPT/Codex review notes |
 | `research/titan_physics.py` | Script behind the [CALC] values |
 | `tests/` | Node tests (see below) |
-| `.github/workflows/pages.yml` | Test, stamp and publish to GitHub Pages |
+| `.github/workflows/pages.yml` | Test both projects, add Swarmfall to the site as `invasion/`, stamp and publish to GitHub Pages |
 | `sites-redirect/` | Page for retiring the old ChatGPT Sites copy (not yet published) |
 
 ## The shared state
@@ -488,7 +461,7 @@ should survive a reload, add it there (and bump `SAVE_VERSION` if old saves woul
 | `flight-camera.test.mjs`, `cache-version.test.mjs` | Chase camera; `?v=dev` stamps and the build label |
 | `thermal-scale.test.mjs` | Fixed cold/reference/hot colors, continuous interpolation and accurate temperature anchors in both legend windows |
 | `weather.test.mjs` | Seeded scheduling, advance warnings, smooth/bounded gusts, rain and drying, optional strong storm, fixed wind, pause/arrival, real convection, rest warning stop, planner cautions/restrictions, save validation and legacy migration |
-| `invasion-battle.test.mjs`, `invasion-campaign.test.mjs` | Swarmfall: practice win and Dragonfly recovery, drop checks, damage and control paths, hazard warnings, lightning, solar flares, loss and retreat, generated planets on dry level ground, determinism, campaign order and rewards, save validation, achievements, page stamps |
+| `site-layout.test.mjs` | The simulator stands alone (no `dist/invasion/`, no imports from Swarmfall); the publish workflow tests both projects and adds Swarmfall at `invasion/` before stamping; the site's not-found page sends mistyped game links to the game. Swarmfall's own tests are in `swarmfall/tests/` |
 
 ## Local testing tips
 

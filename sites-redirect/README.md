@@ -10,4 +10,5 @@ How to publish it (pick one):
 - Or push it to the Sites git remote (`sites`): the site serves `dist/`, so the redirect goes
   in as `dist/index.html` with the other `dist` files removed.
 
-GitHub Pages is not affected: its workflow publishes the main `dist` folder, not this one.
+GitHub Pages is not affected: its workflow publishes the main `dist` folder (with Swarmfall's
+`swarmfall/dist` added as `invasion/`), not this one.

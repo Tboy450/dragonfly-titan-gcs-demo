@@ -1,0 +1,257 @@
+{
+  "about": "Pinned copy of the Dragonfly simulator modules Swarmfall uses. Written by swarmfall/tools/sync-dragonfly.mjs; do not edit by hand. sha256 is of each file with LF line endings (text) or as is (images).",
+  "simulator": {
+    "commit": "454c3e637a60f7985311da3fe93b92f9c33ba978",
+    "date": "2026-10-30",
+    "uncommittedChanges": false,
+    "entries": [
+      "vehicle-research.mjs",
+      "titan-terrain.mjs",
+      "mission-systems.mjs",
+      "arrival-hardware.mjs",
+      "edl.mjs"
+    ]
+  },
+  "files": {
+    "aft-bulkhead.mjs": {
+      "from": "dist/aft-bulkhead.mjs",
+      "sha256": "d1c2b067f075ceaf0263e40f4765e86b68d33278358d3ececdd7bc47692b2887"
+    },
+    "arm-shoulder.mjs": {
+      "from": "dist/arm-shoulder.mjs",
+      "sha256": "8d323b6ce4c98342a0c05e36f4358f4a8276ebcc24cfa27997d579eb9b184d29"
+    },
+    "arrival-hardware.mjs": {
+      "from": "dist/arrival-hardware.mjs",
+      "sha256": "eaa29da2610996c3b096833cf11efefdd084233e502ac9965c0248c02c9ae150"
+    },
+    "assets/titan-mountain-reference.jpg": {
+      "from": "dist/assets/titan-mountain-reference.jpg",
+      "sha256": "79afdb95b51d2f1c33f0ea7db64c64f6f4f63d9c1ab144b800a63683a05485d5"
+    },
+    "attic-insulation.mjs": {
+      "from": "dist/attic-insulation.mjs",
+      "sha256": "5a3f171218899c069423dfda5167fdf378d931c7485c68fd13a0c3cd50f516c5"
+    },
+    "battery-measurement.mjs": {
+      "from": "dist/battery-measurement.mjs",
+      "sha256": "4713c6bc50fe7241867a8254b699cf105e3a0b280cb2c0f7b9fa9e42efce136d"
+    },
+    "battery.mjs": {
+      "from": "dist/battery.mjs",
+      "sha256": "f5b97057c7c198cb16ea60aa4aea1c509c72d48a65174535aa662682f85ad362"
+    },
+    "body-foam.mjs": {
+      "from": "dist/body-foam.mjs",
+      "sha256": "b1b4be12ebc6583afa189a1487539026c12ffa6fce970bbcbf3d350409c8071d"
+    },
+    "cable-installation.mjs": {
+      "from": "dist/cable-installation.mjs",
+      "sha256": "97a87591b8bd7ae9965daa790724a7fb4c47fbfc7f52d59ed380c5b09ea76d21"
+    },
+    "carousel-warm-drives.mjs": {
+      "from": "dist/carousel-warm-drives.mjs",
+      "sha256": "1c45d3e39056afeeb8da287bebd36d5e82382841d70211b40668ce9ddd9ce2d8"
+    },
+    "draco-blowers.mjs": {
+      "from": "dist/draco-blowers.mjs",
+      "sha256": "263e5362db7e6a48df1c406ec7c538592988e6ea7276d4214a7eceaabff313ef"
+    },
+    "draco-plumbing.mjs": {
+      "from": "dist/draco-plumbing.mjs",
+      "sha256": "bb4bf1c027c25a0b0718c6117c5e51500f004a972baea312a7bb9c4e698d929c"
+    },
+    "drams-assembly.mjs": {
+      "from": "dist/drams-assembly.mjs",
+      "sha256": "590b873c69d9af7b8f7814ce85c47ba22047e2122a23bc1bb2de1d5c5832e2aa"
+    },
+    "drill-carriage.mjs": {
+      "from": "dist/drill-carriage.mjs",
+      "sha256": "b8d4abb327ebde766aa8e5d43438bf5199c10a9707f950600d0ffe503ecbbab6"
+    },
+    "drill-drive.mjs": {
+      "from": "dist/drill-drive.mjs",
+      "sha256": "16e4f6407d8ffd85e4521f807ba06275251a3f73368591e28c9fa49ee3dad4c9"
+    },
+    "drill-feed-stage.mjs": {
+      "from": "dist/drill-feed-stage.mjs",
+      "sha256": "490185f9f4612405a8f099bb2a987705b8201f56058b952e813bac0220ee448d"
+    },
+    "drill-fixed-feed-lead.mjs": {
+      "from": "dist/drill-fixed-feed-lead.mjs",
+      "sha256": "d06a9243c0a4a1bae9affa1474c31b81e5556a4ec85292c2a43bc578ed4b6893"
+    },
+    "drill-moving-leads.mjs": {
+      "from": "dist/drill-moving-leads.mjs",
+      "sha256": "c47b4b37df88ae3f3ec7f4ff3ba17d211e07a73ee55f980ac45bbc97b5bd9358"
+    },
+    "drills.mjs": {
+      "from": "dist/drills.mjs",
+      "sha256": "42f24a2fd633c61d10207eedc9f089dc246bf86cf676e0aac9e0b85a5c9dbc75"
+    },
+    "ecam.mjs": {
+      "from": "dist/ecam.mjs",
+      "sha256": "263afef490719a97dcf555cc12f040f6d35ebb9828dfafda4fca4fff4ee4bbf0"
+    },
+    "edl.mjs": {
+      "from": "dist/edl.mjs",
+      "sha256": "a3bee1acb962d6aebb2e50e1a3f64d546b76e7d720dc7abf432501be1fbe34a0"
+    },
+    "expedition.mjs": {
+      "from": "dist/expedition.mjs",
+      "sha256": "fe7f38c7befea95f7ab269f0971b3891d41ad1da2877e24e66d323354c1fe08b"
+    },
+    "flight-model.mjs": {
+      "from": "dist/flight-model.mjs",
+      "sha256": "dde48889fc272c822553085e8a646ee6b661394844e886843695ad285314e994"
+    },
+    "flight-plan.mjs": {
+      "from": "dist/flight-plan.mjs",
+      "sha256": "47e2587467d878c4034336bb70264926846e1d3fe4a0934d276aadf1dfbdc837"
+    },
+    "foam-optical-ports.mjs": {
+      "from": "dist/foam-optical-ports.mjs",
+      "sha256": "4f64135ad2ef2455a95f65a9a621138cee1e753179c126413ed87d2a5fe82f20"
+    },
+    "frontier-bay-interface.mjs": {
+      "from": "dist/frontier-bay-interface.mjs",
+      "sha256": "6414998a24e6c8cd96c3d5b6b93a1abad6f3752c63545279d80189d90cd1513f"
+    },
+    "frontier-radio.mjs": {
+      "from": "dist/frontier-radio.mjs",
+      "sha256": "d0d334b5f03a0a0f184fedffd1d300fc619a60d348988ed79a5a4fd8703f0592"
+    },
+    "hga-gimbal.mjs": {
+      "from": "dist/hga-gimbal.mjs",
+      "sha256": "63e1f144decf2e58f48efbf9334ec9f8648b0661e44ea8168a3e86ef99e0216f"
+    },
+    "iem-final-service-routes.mjs": {
+      "from": "dist/iem-final-service-routes.mjs",
+      "sha256": "ca9539c7a801cf641658160ff1329509b2f3f056b715f591928a841feb0c3d18"
+    },
+    "iem-next-service-routes.mjs": {
+      "from": "dist/iem-next-service-routes.mjs",
+      "sha256": "f36acebc36afc94aca7bd3ee6e2b68b2673137641ce708aa1604fbb0ee15af40"
+    },
+    "iem.mjs": {
+      "from": "dist/iem.mjs",
+      "sha256": "b2252ab3a65630c3389aa31e205a60db6b83dc9ca6fcca63d0f5f1da5449a358"
+    },
+    "insulation-surfaces.mjs": {
+      "from": "dist/insulation-surfaces.mjs",
+      "sha256": "573ec0f5f12aa9cf93eea6cdeb9bd99828a1beebbf8912ada7ab14b34f239a1a"
+    },
+    "local-insulation.mjs": {
+      "from": "dist/local-insulation.mjs",
+      "sha256": "3ea9029930dd1af04357e9730d43b857977c1c0d89c14d4724d65ff459174d2e"
+    },
+    "main-harness.mjs": {
+      "from": "dist/main-harness.mjs",
+      "sha256": "ee3741720ba8f25e865f460bb6e1d65e505cb3eb75d92b5e267880dabb18181a"
+    },
+    "mission-systems.mjs": {
+      "from": "dist/mission-systems.mjs",
+      "sha256": "73c4a9e1c413839f9fd6710cfe8d24642a23d3ffa022e635134aadb5e912279c"
+    },
+    "mmrtg-measurement.mjs": {
+      "from": "dist/mmrtg-measurement.mjs",
+      "sha256": "f54c40bf3239ead427880237f67a4a6cbb2fce6b36b7f19e0f3959decf7c0c63"
+    },
+    "mmrtg.mjs": {
+      "from": "dist/mmrtg.mjs",
+      "sha256": "7705aafe32f3295f27cf92a59f6f6927344f52bdc73718bc906de10cddc524bd"
+    },
+    "navigation-meb-interface.mjs": {
+      "from": "dist/navigation-meb-interface.mjs",
+      "sha256": "24aa784a8500c3f7a308fb52289ad38484649aace56aa07d7aa5deb40b7eaecd"
+    },
+    "nose-bulkhead.mjs": {
+      "from": "dist/nose-bulkhead.mjs",
+      "sha256": "4c8c88f4aab6e9d58ded67301fca6cefbeda79b000069bd6bd0a9ce8fd113f68"
+    },
+    "nose-cameras.mjs": {
+      "from": "dist/nose-cameras.mjs",
+      "sha256": "1f016d0e74874704f925608edb8d369b103cf7d2ee35f1409333f68d3813e934"
+    },
+    "nose-electronics.mjs": {
+      "from": "dist/nose-electronics.mjs",
+      "sha256": "8adcf4532a2400157d95ddb215d45ce8b99d02bdc225b7aa1713d74acf1891ce"
+    },
+    "nose-sensors.mjs": {
+      "from": "dist/nose-sensors.mjs",
+      "sha256": "2719218c0028e440fb1249638906713613aef002cf71fb5aab4b0292a1eb0241"
+    },
+    "operations.mjs": {
+      "from": "dist/operations.mjs",
+      "sha256": "0ba75714beac354d2c0ddf5aeecc38af9ed18cfe9bcf7fcf87582db6622e96d7"
+    },
+    "power-units.mjs": {
+      "from": "dist/power-units.mjs",
+      "sha256": "cc3d002bddc92f3a0f79eac54d21d3ffc2327e5293337d42c0336fca6056e7d8"
+    },
+    "rotor-drive-electronics.mjs": {
+      "from": "dist/rotor-drive-electronics.mjs",
+      "sha256": "9b4a167750c1d5fb2ec89effe0e588a85c5a9f3fc69853cf3f28b29b2641c0f4"
+    },
+    "rotor-heads.mjs": {
+      "from": "dist/rotor-heads.mjs",
+      "sha256": "ba9deb5fb3681dbc79c3d1d11873d570f626f53af624951885ecdaf17d189469"
+    },
+    "sample-carousel.mjs": {
+      "from": "dist/sample-carousel.mjs",
+      "sha256": "bd6e18059d866c46d940bc697b420c63da84430012352116484bcb3e4feba05b"
+    },
+    "science-programs.mjs": {
+      "from": "dist/science-programs.mjs",
+      "sha256": "4dd83c3030cf028fbcbc6e595b742f476bf20a279744ed3095f7b52dd593e16c"
+    },
+    "science.mjs": {
+      "from": "dist/science.mjs",
+      "sha256": "5461a900907a8e501be19cb1776e82b50c3ca1756b1fb2b69b3a21b963c2194a"
+    },
+    "side-cameras.mjs": {
+      "from": "dist/side-cameras.mjs",
+      "sha256": "426b2fe3e376c45542416bbffa94f1e4ef8e0888da0c53144fe18422539715e8"
+    },
+    "side-wall.mjs": {
+      "from": "dist/side-wall.mjs",
+      "sha256": "9d929c701f8efc4e02d8d9800c4e73d59efaa6b08b8bff46910a196f42bd0796"
+    },
+    "thermal-loop.mjs": {
+      "from": "dist/thermal-loop.mjs",
+      "sha256": "80869fed9eec198ca6ae7dfd744d209aa3b662d818b90880b5a25e364f942d9a"
+    },
+    "titan-terrain.mjs": {
+      "from": "dist/titan-terrain.mjs",
+      "sha256": "d99aae620b6c9a435b7f8b264913427b1c11a34755606e2381ee1bd8f911e808"
+    },
+    "top-deck.mjs": {
+      "from": "dist/top-deck.mjs",
+      "sha256": "2f7d5e5b2cac04fb18834727f77668dfb73252e3fec6a79b75ca696411626916"
+    },
+    "twta.mjs": {
+      "from": "dist/twta.mjs",
+      "sha256": "19ad9b4ce0a634ba2954788a50bcd9401a439f0f9244469e6431cc129fbfc2e2"
+    },
+    "vehicle-research.mjs": {
+      "from": "dist/vehicle-research.mjs",
+      "sha256": "1ae1cf27d8d523baa44082543ba5f8c23ea7dbbdc4571b6e6f77973777da6ed3"
+    },
+    "wall-end-joints.mjs": {
+      "from": "dist/wall-end-joints.mjs",
+      "sha256": "041c1bfeb0351b29387a3f756f0d3080ad40027636da2b661007906bbe354003"
+    },
+    "warm-duct-passages.mjs": {
+      "from": "dist/warm-duct-passages.mjs",
+      "sha256": "2185c810f301f64ab077958b719141e78b123e72daae5393003719c7b3295415"
+    },
+    "weather.mjs": {
+      "from": "dist/weather.mjs",
+      "sha256": "57656720255088cb654a96d6ef6f558ec136dc9b2acfa70f6b515e9496f11366"
+    },
+    "wonderwall.mjs": {
+      "from": "dist/wonderwall.mjs",
+      "sha256": "f9610c5bb10e38c44e2ce311ec811339e68a0999f9cdeea0ce11986614851c07"
+    }
+  }
+}
