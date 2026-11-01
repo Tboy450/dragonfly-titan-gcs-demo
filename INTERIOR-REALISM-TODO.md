@@ -22,7 +22,9 @@ October30: [Part18 main duct / nose outlet](research/warm-duct-passages-2026-10-
   Casings hide/restore,32 numbers/33 options, no overflow/errors checked.
 - [x] Exact prior files, before views and recovery baseline3033b92 archived.
   Source limits/assumptions and installed samples updated; no unrelated app edits.
-- [ ] Publish/check Pages and live sample; receipt pending.
+- [x] Published **454c3e6**; Pages **41017348104** succeeded. Recovery tag pushed.
+  November1 closeout rechecks live build,32 IDs/33 menu options/four details,
+  focused nose and390px width375/375 with no browser errors. Receipt/samples saved.
 - [ ] NEXT: part19 risers/flaps/cold-duct openings together. Existing full-model
   contacts: run vs two risers/two flaps, plus one ring vs main-harness clamp;
   zero new pairs, but these retained conflicts are not resolved by open shells.

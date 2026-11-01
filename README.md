@@ -6,6 +6,8 @@ elbow now seats to the retained outlet frame. Wall/bend/attachment EST; four
 inspection details, original32 IDs and flight/thermal behavior retained.
 801 tests and desktop/Thermal/390px checks pass. Sources/old geometry/samples saved.
 Five inherited trim/clamp contact pairs remain; whole gas circuit is not complete.
+Published **454c3e6**; Pages41017348104 succeeded. Live build/details/390px and
+zero browser errors rechecked November1; publication receipt saved.
 
 October29 continuation: [fan-to-duct transition](research/fan-duct-interface-2026-10-29/README.md).
 One generic open shell replaces the solid transition/7 mm flange gap. Estimated

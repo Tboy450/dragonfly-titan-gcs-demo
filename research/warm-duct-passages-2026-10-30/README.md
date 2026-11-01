@@ -78,4 +78,11 @@ cold duct and aft penetration remain unfinished. No CFD or pressure-loss inferen
 Archive/recovery: ../../archive/warm-duct-passages-2026-10-30/README.md.
 Private outreach/work-log/temp folders are excluded from this implementation.
 
-Publication receipt will be added after checking the Pages deployment.
+## Publication receipt (closed November 1)
+
+Implementation **454c3e6** and recovery tag were pushed. [Pages run 41017348104](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/41017348104)
+succeeded. The live build/four detail targets,32 IDs/33 menu options, selected
+nose and390px no-overflow/errors were rechecked on November1. See
+public-checks.json, public-nose.png, public-thermal.png and public-phone.png.
+Corrected archive-view captures and local server SVG content type are included
+with this receipt. Temporary inspection choices only; no mission reset.

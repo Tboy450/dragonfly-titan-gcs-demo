@@ -39,6 +39,15 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-11-01: Close the published part18 verification receipt
+- **Signed:** Codex (OpenAI).
+- **Published:** 454c3e6; Pages41017348104 succeeded;801 full tests passed.
+- **Checks:** Live build,32 IDs/33 menu options/four named details, focused nose,
+  390px width375/375 and zero browser errors rechecked. Public screenshots/JSON
+  and corrected archive captures retained. Local preview serves SVGs correctly.
+- **Next:** Part19 riser/flap/cold-duct interface package; preserve separate clamp
+  and aft bulkhead follow-ups. No extra feature, mission reset or game change.
+
 ### 2026-10-30: Open part18 main duct and fit its nose return outlet
 - **Signed:** Codex (OpenAI).
 - **Commit:** Open the warm duct run and seat its estimated nose outlet
