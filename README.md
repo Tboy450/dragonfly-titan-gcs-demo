@@ -5,6 +5,8 @@ Two warm-floor ports and hollow connectors meet the open cold duct; existing
 flaps/actuators and thermal behavior retained. Three inspection details,807 tests
 and desktop/Thermal/390px/layer checks pass. Detailed joints/walls EST; four old
 warm/trim contacts removed. Two insulation-boundary and one clamp contact remain.
+Published **8078ff2**; Pages41289918002 succeeded. Live build, all three
+details, Thermal/layers and390px widths375/375 verified; no browser errors.
 
 October30: [Part18 open main duct / fitted nose outlet](research/warm-duct-passages-2026-10-30/README.md).
 Main run, five joint rings and the nose outlet are open inspection shells; the

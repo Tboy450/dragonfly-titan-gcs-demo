@@ -21,7 +21,10 @@ November1: [Part19 warm/cold bypass interfaces](research/trim-interfaces-2026-11
   Exact old files, failed draft/measurements and before/after samples archived.
 - [x] Three part19 targets,32 IDs/33 options, Internal/Thermal/390px and
   Casings/Insulation hide-restore checked without overflow/errors. Assumptions updated.
-- [ ] Publish and verify Pages/live build; receipt pending.
+- [x] Published **8078ff2**; Pages41289918002 succeeded. Live build, three
+  details,32 IDs/33 options, Thermal, independent casing/insulation controls,
+  estimate disclosure and390px widths375/375 verified without browser errors.
+  Public desktop captures/JSON saved; public phone capture failed, local retained.
 - [ ] NEXT: one joint/main-harness clamp contact; preserve completed routes.
   Two inherited housing/body-belly insulation-surface contacts need separate
   boundary review. Flight seals/actuator linkages and aft collar/bulkhead remain

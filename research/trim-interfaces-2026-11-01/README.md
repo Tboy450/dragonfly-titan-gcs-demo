@@ -79,4 +79,21 @@ for inspection without changing any simulation code.
 Archive and exact restore baseline09a03d4:
 ../../archive/trim-interfaces-2026-11-01/README.md.
 
-Publication receipt pending successful Pages/live verification.
+## Publication receipt — November1,2026
+
+Implementation **8078ff277ddde829ac02b9d78a00f34a16e3fb20** pushed to main and
+codex/dragonfly-nose-sensors-publish. Recovery tag
+archive/trim-interfaces-2026-11-01 points to exact baseline09a03d4.
+[Pages41289918002](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/41289918002)
+completed successfully, including its simulation/terrain check.
+[Public build](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=8078ff2)
+visibly stamped8078ff2. All32 numbered components/33 options, three part19
+details, estimate disclosure, Thermal and independent casing/insulation removal
+verified. At390px viewport, client/scroll width375/375; no browser errors.
+No mission reset or sampling/flight command issued. Normal viewport restored.
+public-checks.json and desktop screenshots record this check. Browser screenshot
+capture failed at phone size; no public phone screenshot is claimed. app-phone.png
+remains the earlier successful local phone capture.
+
+Local preview closed and its task server stopped. Next: one clamp/joint fit,
+then the two inherited insulation boundaries, preserving finished routes.

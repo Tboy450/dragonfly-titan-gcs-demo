@@ -39,6 +39,17 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-11-01: Record published part19 verification
+- **Signed:** Codex (OpenAI).
+- **Published:** 8078ff2; Pages41289918002 succeeded;807 local full tests pass.
+- **Live checks:** Build stamp,32 numbered components/33 options, three details,
+  Thermal, separate casing/insulation access, estimate disclosure and390px
+  widths375/375; no browser errors. Desktop evidence and JSON saved. Browser
+  phone screenshot failed; local phone sample retained, no public capture claimed.
+- **Handoff:** One duct/harness clamp contact, then two insulation boundaries.
+  Preserve completed routes. Qualified seals/linkages/aft penetration remain
+  source-gated. Public mission was not reset; no Swarmfall/assets-lab changes.
+
 ### 2026-11-01: Fit part19's hollow bypass interfaces to the moving flaps
 - **Signed:** Codex (OpenAI).
 - **Commit:** Fit hollow trim connectors and warm-floor ports around retained flaps

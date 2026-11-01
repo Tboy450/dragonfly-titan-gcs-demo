@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-01",
+  "build": "8078ff2",
+  "commit": "8078ff277ddde829ac02b9d78a00f34a16e3fb20",
+  "pagesRun": 41289918002,
+  "pagesConclusion": "success",
+  "numberedParts": 32,
+  "partOptions": 33,
+  "part19Details": 3,
+  "selected": "front-diverter-riser",
+  "thermal": true,
+  "casingsInsulationIndependentlyRemovable": true,
+  "estimateDisclosure": true,
+  "phoneViewport": [
+    390,
+    844
+  ],
+  "phoneClientScroll": [
+    375,
+    375
+  ],
+  "phoneScreenshot": "Browser capture failed; no public phone image claimed. Local phone capture retained.",
+  "browserErrors": [],
+  "missionReset": false
+}
