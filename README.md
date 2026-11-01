@@ -1,5 +1,11 @@
 # Dragonfly Titan GCS
 
+November1: [Part19 fitted bypass passages](research/trim-interfaces-2026-11-01/README.md).
+Two warm-floor ports and hollow connectors meet the open cold duct; existing
+flaps/actuators and thermal behavior retained. Three inspection details,807 tests
+and desktop/Thermal/390px/layer checks pass. Detailed joints/walls EST; four old
+warm/trim contacts removed. Two insulation-boundary and one clamp contact remain.
+
 October30: [Part18 open main duct / fitted nose outlet](research/warm-duct-passages-2026-10-30/README.md).
 Main run, five joint rings and the nose outlet are open inspection shells; the
 elbow now seats to the retained outlet frame. Wall/bend/attachment EST; four

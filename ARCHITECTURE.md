@@ -83,6 +83,13 @@ See `research/draco-electrical-audit-2026-10-27/README.md` before its next rebui
 
 ## Files
 
+November1: `trim-interfaces.mjs` owns specific part18 floor ports and part19
+open channel/connectors/local insulation-surface cuts. It imports the existing
+surface clipper, accepts layout metadata and adds three named inspection details.
+Flaps/actuators/hinges/ribs and update logic remain in thermal-loop.mjs unchanged.
+Six new tests own five exact trim mesh families and the warm-run floor change;
+older suites delegate only these names. No new top-level ID, state or solver.
+
 October30: `warm-duct-passages.mjs` builds the part18 main run, annular joints,
 fitted nose elbow and open outlet frame. Frozen EST metadata/derived nose sections
 are separate from simulation. thermal-loop.mjs retains the exact fan transition,

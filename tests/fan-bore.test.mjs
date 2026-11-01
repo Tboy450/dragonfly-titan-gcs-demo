@@ -4,6 +4,7 @@ import {readFile} from 'node:fs/promises';
 import * as T from '../dist/vendor/three/three.module.min.js';
 import {buildFans,buildWarmDuct,buildTrimDevice,thermalLoopAsset,airLoopPaths} from '../dist/thermal-loop.mjs';
 import {warmDuctChangedNames} from '../dist/warm-duct-passages.mjs';
+import {trimChangedNames} from '../dist/trim-interfaces.mjs';
 const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};
 function build(builder){const root=new T.Group();const result=builder({parent:root,mesh});root.updateMatrixWorld(true);return{root,result};}
 async function old(){
@@ -42,7 +43,9 @@ test('Fan correction preserves outer envelopes and every other fan/duct/trim mes
  // Named later changes have exact guards in fan-duct-interface and warm-duct-passages suites.
  const later=n=>n==='warm-duct-fan-transition'||warmDuctChangedNames.includes(n);
  assert.deepEqual(snapshot(build(buildWarmDuct).root,later),snapshot(build(previous.buildWarmDuct).root,later));
- assert.deepEqual(snapshot(build(buildTrimDevice).root),snapshot(build(previous.buildTrimDevice).root));
+ // Exact named trim changes are owned by trim-interfaces.test.mjs.
+ const trimLater=n=>trimChangedNames.includes(n);
+ assert.deepEqual(snapshot(build(buildTrimDevice).root,trimLater),snapshot(build(previous.buildTrimDevice).root,trimLater));
  assert.deepEqual(airLoopPaths(),previous.airLoopPaths());
  assert.deepEqual(thermalLoopAsset.fans,previous.thermalLoopAsset.fans);
 });

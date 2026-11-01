@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**Part19 bypass interfaces (Codex, November1):**
+[source/limits/fit](research/trim-interfaces-2026-11-01/README.md). [PUB] two-flap
+cold-bypass architecture/test behavior. [EST]1.5 mm walls/131×93 mm ports/6 mm
+throat, fitted connectors and surface-only foam cuts. DTM reference is not
+flight hardware. Existing motion/controller/flow curves unchanged; no CFD or
+flight seals/linkages inferred. Four warm/trim conflicts removed; housing/belly
+surface boundaries and a separate harness-clamp contact remain unresolved.
+
 **Part18 main/nose passages (Codex, October30):**
 [source/fit/handoff](research/warm-duct-passages-2026-10-30/README.md).
 [PUB] forward ducted flow then open body return. [EST] open run/joints/nose shell,

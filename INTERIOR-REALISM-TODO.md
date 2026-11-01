@@ -10,6 +10,23 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+November1: [Part19 warm/cold bypass interfaces](research/trim-interfaces-2026-11-01/README.md).
+- [x] Recheck saved real DTM photo and TFAWS2023/2024 topology/test sources.
+  Test article is not flight hardware; no repeated source collage or generated asset.
+- [x] Open cold channel/two warm-floor ports; fit hollow risers and local foam
+  surface clearances.1.5 mm walls/6 mm throat/port sizes EST. Exact flaps,
+  hinges, actuators, ribs, fan/nose/placement constants and simulation retained.
+- [x]25-angle check rejects direct taper and clears fitted throat. Six new tests;
+  **807 total pass**. Four warm/trim conflicts removed, no new installed pairs.
+  Exact old files, failed draft/measurements and before/after samples archived.
+- [x] Three part19 targets,32 IDs/33 options, Internal/Thermal/390px and
+  Casings/Insulation hide-restore checked without overflow/errors. Assumptions updated.
+- [ ] Publish and verify Pages/live build; receipt pending.
+- [ ] NEXT: one joint/main-harness clamp contact; preserve completed routes.
+  Two inherited housing/body-belly insulation-surface contacts need separate
+  boundary review. Flight seals/actuator linkages and aft collar/bulkhead remain
+  source-gated; do not mark the entire gas loop or insulation package complete.
+
 October30: [Part18 main duct / nose outlet](research/warm-duct-passages-2026-10-30/README.md).
 - [x] Recheck real DTM photos and NASA/APL 2023/2024 sections; no exact flight
   outlet drawing established. Reuse saved sources; no generated/duplicate photos.

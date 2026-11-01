@@ -39,6 +39,24 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-11-01: Fit part19's hollow bypass interfaces to the moving flaps
+- **Signed:** Codex (OpenAI).
+- **Commit:** Fit hollow trim connectors and warm-floor ports around retained flaps
+- **What changed:** Open cold channel, two fitted hollow risers, corresponding
+  warm-floor ports and local housing surface clearances. Three part19 details;
+  original32 IDs and independent Casings/Interfaces/Insulation retained.
+- **Sources/estimates:** Real DTM photo and sections/test data, NASA/APL TFAWS2024
+  slides9/15/16 and TFAWS2023 slide4 reused. Detailed1.5 mm walls/6 mm throat,
+  port sizes and installation EST. Test article is not flight hardware.
+- **Checks:** Six new tests;807 full tests pass.25-angle flap sweep, open rays,
+  fitted end planes and exact preserved flaps/actuators/ribs/fans/nose/arrows.
+  Four old warm/trim conflicts removed; no new installed pairs. Actual app
+  Internal/Thermal/390px and hide/restore checks pass without overflow/errors.
+- **Open:** Two housing/body-foam surface boundaries and one separate harness
+  clamp/joint contact remain. Flight seals/linkages/aft penetration source-gated.
+  No flight/thermal/power/game behavior change. Archive09a03d4/failed draft and
+  source/sample handoff in research/trim-interfaces-2026-11-01/.
+
 ### 2026-11-01: Close the published part18 verification receipt
 - **Signed:** Codex (OpenAI).
 - **Published:** 454c3e6; Pages41017348104 succeeded;801 full tests passed.

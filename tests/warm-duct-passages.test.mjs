@@ -5,6 +5,7 @@ import {buildFans,buildTrimDevice,thermalLoopAsset,airLoopPaths} from '../dist/t
 import {warmDuctPassageAsset as A,warmDuctChangedNames,warmDuctNoseSections} from '../dist/warm-duct-passages.mjs';
 import {baseline,build,snapshots,report,mesh} from '../research/warm-duct-passages-2026-10-30/audit.mjs';
 import {inspectionSubassemblies} from '../dist/vehicle-inspector.mjs';
+import {trimChangedNames} from '../dist/trim-interfaces.mjs';
 const isChanged=n=>warmDuctChangedNames.includes(n);
 const close=(a,b,e=1e-7)=>assert.ok(Math.abs(a-b)<e,`${a} != ${b}`);
 function ray(a,b,objects){const v=b.clone().sub(a);return new T.Raycaster(a,v.clone().normalize(),0,v.length()).intersectObjects(objects,false);}
@@ -56,15 +57,18 @@ test('Only main-run, flange, nose and outlet shapes change; completed fan transi
   assert.equal(aa.length,bb.length);aa.forEach((a,i)=>assert.ok(a.min.distanceTo(bb[i].min)<1e-7&&a.max.distanceTo(bb[i].max)<1e-7,name+' outer envelope retained'));
  }
  for(const [a,b]of [[buildFans,old.buildFans],[buildTrimDevice,old.buildTrimDevice]]){
-  const x=new T.Group(),y=new T.Group();a({parent:x,mesh});b({parent:y,mesh});assert.deepEqual(snapshots(x),snapshots(y));
+  const x=new T.Group(),y=new T.Group();a({parent:x,mesh});b({parent:y,mesh});
+  // Later trim suite owns its five exact mesh families, not the rest of the hardware.
+  assert.deepEqual(snapshots(x,n=>trimChangedNames.includes(n)),snapshots(y,n=>trimChangedNames.includes(n)));
  }
  assert.deepEqual(thermalLoopAsset.duct,old.thermalLoopAsset.duct);assert.deepEqual(airLoopPaths(),old.airLoopPaths());
 });
 
-test('Full installed-model audit adds no contacts; retained trim and clamp contacts remain explicitly recorded',async()=>{
+test('Full installed-model audit adds no contacts; later trim pass removes its four conflicts while the clamp remains recorded',async()=>{
  const result=await report();assert.deepEqual(result.newContactPairs,[]);
- assert.deepEqual(result.currentContacts,result.originalContacts);
- assert.equal(result.currentContacts.length,5,'four retained trim contacts and one retained harness clamp contact');
+ const trim=n=>/^(front|aft)-diverter-(riser|flap)$/.test(n);
+ assert.deepEqual(result.currentContacts,result.originalContacts.filter(o=>!trim(o.other)));
+ assert.equal(result.currentContacts.length,1,'the inherited harness clamp contact remains; trim regression owns the four removals');
  assert.ok(result.currentContacts.every(o=>o.mesh!=='warm-duct-nose-outlet'&&o.mesh!=='warm-duct-outlet-grille'));
 });
 

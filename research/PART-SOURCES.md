@@ -6,6 +6,12 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Part19 bypass interfaces (Codex, November1):** [source/fit/checks](trim-interfaces-2026-11-01/README.md).
+TFAWS2024 real DTM photo slide9 and section/test slides15/16; TFAWS2023 slide4.
+Reuse saved pages, no generated hardware or duplicate source sheets. Topology PUB;
+walls,6 mm throat, floor ports and insulation surface cuts EST. No flight seal,
+material, actuator-linkage or flow-performance inference from the test mock-up.
+
 **Part18 main/nose passages (Codex, October30):** [sources, fit, samples and limits](warm-duct-passages-2026-10-30/README.md).
 Rechecked TFAWS2023 slides3–4 and TFAWS2024 slides5/7/15. Real DTM photos are test
 hardware; sections constrain topology, not exact flight outlet appearance.

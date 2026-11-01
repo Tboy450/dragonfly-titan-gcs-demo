@@ -1,6 +1,7 @@
 import * as THREE from "./vendor/three/three.module.min.js?v=dev";
 import { aftBulkheadAsset } from "./aft-bulkhead.mjs?v=dev";
 import { buildWarmDuctPassages } from "./warm-duct-passages.mjs?v=dev";
+import {openColdDuct,buildTrimRiser,openTrimFoam} from './trim-interfaces.mjs?v=dev';
 
 // Parts 17, 18 and 19: the Titan-surface air loop. Published layout [PUB]:
 // - TFAWS 2023 (Holtzman and Castano, APL) slide 4: fan and ducting at the MMRTG; warm ducted
@@ -19,7 +20,7 @@ import { buildWarmDuctPassages } from "./warm-duct-passages.mjs?v=dev";
 // wide, from z -1.18 to +0.93, widening to the fans; fans about 0.13 m, near z +1.2. Duct height,
 // cold-duct section, housing shapes, flap hinge sides and the actuators are [EST].
 export const thermalLoopAsset = Object.freeze({
-  revision: "thermal-loop-2026-10-30-open-main-nose",
+  revision: "thermal-loop-2026-11-01-trim-interfaces",
   // y lowered 7.5 mm on Oct 15 so the duct and its joint flanges sit fully under the bay floor
   // (y -0.284), inside the foam; the first position is archived (archive/warm-duct-v1-2026-10-15).
   duct: Object.freeze({ width: 0.14, height: 0.045, y: -0.3125, front: -1.175, back: 0.93 }),
@@ -116,7 +117,7 @@ export function buildWarmDuct({ parent, mesh }) {
   const steel = new THREE.MeshStandardMaterial({ color: 0xb4bbbf, roughness: 0.35, metalness: 0.75 });
   // Main run and fitted nose elbow are generic open inspection shells [EST].
   // Trim risers/valves and the aft bulkhead passage still need separate review.
-  buildWarmDuctPassages({parent:group,mesh,layout:thermalLoopAsset.duct,duct,steel,transition});
+  buildWarmDuctPassages({parent:group,mesh,layout:thermalLoopAsset.duct,diverters:thermalLoopAsset.diverters,duct,steel,transition});
   // Aft end: the flared transition up to the two fans.
   const [, fy, fz] = thermalLoopAsset.fans.centers[0];
   const F=fanDuctInterfaceAsset;
@@ -181,7 +182,8 @@ export function buildTrimDevice({ parent, mesh }) {
   const dark = new THREE.MeshStandardMaterial({ color: 0x23272a, roughness: 0.5, metalness: 0.4 });
   const { width: W, height: H, y, front, back } = thermalLoopAsset.coldDuct;
   // Cold duct: an aluminum channel along the belly, outside the foam, exposed to Titan, with ribs.
-  mesh(new THREE.BoxGeometry(W, H, back - front), alum, [0, y, (front + back) / 2], ductLayer).name = "cold-duct-channel";
+  const coldChannel=mesh(new THREE.BoxGeometry(W, H, back - front), alum, [0, y, (front + back) / 2], ductLayer);coldChannel.name = "cold-duct-channel";
+  openColdDuct(coldChannel,thermalLoopAsset.coldDuct);
   for (let z = front + 0.1; z < back; z += 0.1) mesh(new THREE.BoxGeometry(W + 0.008, 0.006, 0.008), alum, [0, y - H / 2 - 0.003, z], ductLayer).name = "cold-duct-rib";
   const flaps = [];
   for (const [end, zc] of Object.entries(thermalLoopAsset.diverters)) {
@@ -197,7 +199,8 @@ export function buildTrimDevice({ parent, mesh }) {
     mesh(new THREE.BoxGeometry(W - 0.012, 0.006, 0.09), flapMat, [0, 0, -dir * 0.045], hinge).name = `${end}-diverter-flap`;
     flaps.push({ hinge, dir });
     // Short riser from the warm-duct opening down to the cold duct.
-    mesh(new THREE.BoxGeometry(W, 0.05, 0.08), alum, [0, -0.35, zc], ductLayer).name = `${end}-diverter-riser`;
+    const {rings}=buildTrimRiser({mesh,parent:ductLayer,material:alum,warm:thermalLoopAsset.duct,cold:thermalLoopAsset.coldDuct,diverters:thermalLoopAsset.diverters,end});
+    openTrimFoam(housing,rings);
     // Actuator on the side of the riser [EST].
     const act = mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.06, 14), dark, [W / 2 + 0.02, -0.36, zc], actuators);
     act.rotation.x = Math.PI / 2; act.name = `${end}-diverter-actuator`;

@@ -7,7 +7,8 @@ import {inspectionSubassemblies} from '../dist/vehicle-inspector.mjs';
 import {inspectionPartNumber} from '../dist/inspection-catalog.mjs';
 import {surfacesCross} from '../research/draco-blower-pair-2026-10-27/audit.mjs';
 import {warmDuctChangedNames} from '../dist/warm-duct-passages.mjs';
-function snapshot(root,skip=''){const rows=[];root.traverse(o=>{if(o.isMesh&&o.name!==skip&&!warmDuctChangedNames.includes(o.name))rows.push({name:o.name,position:o.position.toArray(),quaternion:o.quaternion.toArray(),vertices:Array.from(o.geometry.attributes.position.array),index:o.geometry.index?Array.from(o.geometry.index.array):null});});return rows;}
+import {trimChangedNames} from '../dist/trim-interfaces.mjs';
+function snapshot(root,skip=''){const rows=[];root.traverse(o=>{if(o.isMesh&&o.name!==skip&&!warmDuctChangedNames.includes(o.name)&&!trimChangedNames.includes(o.name))rows.push({name:o.name,position:o.position.toArray(),quaternion:o.quaternion.toArray(),vertices:Array.from(o.geometry.attributes.position.array),index:o.geometry.index?Array.from(o.geometry.index.array):null});});return rows;}
 test('Fan transition has open ends and solid wall rims instead of capped airflow faces',()=>{
  const {transition}=build(),d=thermalLoopAsset.duct,F=fanDuctInterfaceAsset,[,fy,fz]=thermalLoopAsset.fans.centers[0],end=fz-F.fanFrontOffsetM;
  // Trace interior lines in the duct's sloping frame through both end planes.

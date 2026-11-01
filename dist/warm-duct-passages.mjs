@@ -1,4 +1,5 @@
 import * as T from './vendor/three/three.module.min.js?v=dev';
+import {openWarmTrimPorts} from './trim-interfaces.mjs?v=dev';
 
 // [PUB] Forward ducted flow, then open return through the body (TFAWS23 slide4).
 // [EST] This is an inspection shell, not a flight duct, material specification,
@@ -49,10 +50,11 @@ export function warmDuctNoseSections(layout){
  return {sections,radiusM:radius,angleRad:angle,endY,endZ};
 }
 
-export function buildWarmDuctPassages({parent,mesh,layout,duct,steel,transition}){
+export function buildWarmDuctPassages({parent,mesh,layout,diverters,duct,steel,transition}){
  const {width:W,height:H,y,front,back}=layout,A=warmDuctPassageAsset,t=A.wallM;
  const run=mesh(rectangularFrame(W,H,W-2*t,H-2*t,back-front),duct,[0,y,(front+back)/2],parent);
  run.name='warm-duct-run';run.userData.inspectionLabel='Main warm duct (estimated open section)';run.userData.inspectionMinimumRadiusM=.06;
+ openWarmTrimPorts(run,layout,diverters);
  for(let z=front+.3;z<back;z+=.42)mesh(rectangularFrame(W+.012,H+.012,W-2*t,H-2*t,.012),steel,[0,y,z],parent).name='warm-duct-flange';
  const nose=warmDuctNoseSections(layout),outlet=mesh(shellGeometry(nose.sections,t),transition,[0,0,0],parent);
  outlet.name='warm-duct-nose-outlet';outlet.userData.inspectionLabel='Nose return elbow (estimated open shell)';outlet.userData.inspectionMinimumRadiusM=.07;

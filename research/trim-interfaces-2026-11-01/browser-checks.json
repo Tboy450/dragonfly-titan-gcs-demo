@@ -1,0 +1,13 @@
+{
+  "parts": 32,
+  "options": 33,
+  "details": 3,
+  "selected": "front-diverter-riser",
+  "internalThermal": true,
+  "casingsInsulationHideRestore": true,
+  "phoneWidths": [
+    375,
+    375
+  ],
+  "errors": []
+}

@@ -1,0 +1,96 @@
+{
+  "asset": {
+    "revision": "trim-interfaces-2026-11-01",
+    "wallM": 0.0015,
+    "portWidthM": 0.131,
+    "portLengthM": 0.093,
+    "riserWidthM": 0.134,
+    "riserLengthM": 0.096,
+    "throatM": 0.006,
+    "foamClearanceM": 0.002,
+    "flightGeometryConfirmed": false,
+    "foamSurfaceOnly": true
+  },
+  "contacts": [
+    {
+      "mesh": "front-diverter-housing",
+      "other": "body-foam-belly-surface",
+      "owner": "body-foam-belly"
+    },
+    {
+      "mesh": "aft-diverter-housing",
+      "other": "body-foam-belly-surface",
+      "owner": "body-foam-belly"
+    }
+  ],
+  "oldContacts": [
+    {
+      "mesh": "front-diverter-riser",
+      "other": "warm-duct-run",
+      "owner": "warm-duct"
+    },
+    {
+      "mesh": "aft-diverter-riser",
+      "other": "warm-duct-run",
+      "owner": "warm-duct"
+    },
+    {
+      "mesh": "front-diverter-housing",
+      "other": "body-foam-belly-surface",
+      "owner": "body-foam-belly"
+    },
+    {
+      "mesh": "aft-diverter-housing",
+      "other": "body-foam-belly-surface",
+      "owner": "body-foam-belly"
+    },
+    {
+      "mesh": "front-diverter-flap",
+      "other": "warm-duct-run",
+      "owner": "warm-duct"
+    },
+    {
+      "mesh": "aft-diverter-flap",
+      "other": "warm-duct-run",
+      "owner": "warm-duct"
+    }
+  ],
+  "warmContacts": [
+    {
+      "mesh": "warm-duct-flange",
+      "other": "main-harness-clamp",
+      "owner": "main-harness-clamps"
+    }
+  ],
+  "oldWarmContacts": [
+    {
+      "mesh": "warm-duct-run",
+      "other": "front-diverter-riser",
+      "owner": "cold-duct"
+    },
+    {
+      "mesh": "warm-duct-run",
+      "other": "aft-diverter-riser",
+      "owner": "cold-duct"
+    },
+    {
+      "mesh": "warm-duct-run",
+      "other": "front-diverter-flap",
+      "owner": "trim-flap-front"
+    },
+    {
+      "mesh": "warm-duct-run",
+      "other": "aft-diverter-flap",
+      "owner": "trim-flap-aft"
+    },
+    {
+      "mesh": "warm-duct-flange",
+      "other": "main-harness-clamp",
+      "owner": "main-harness-clamps"
+    }
+  ],
+  "newContactPairs": [],
+  "motion": [],
+  "rings": "See measurements.json",
+  "scope": "Estimated fitted inspection shells. No fluid solver, flight interface, foam thickness or seal qualification."
+}

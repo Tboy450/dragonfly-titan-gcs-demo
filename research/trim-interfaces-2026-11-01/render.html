@@ -1,0 +1,24 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>19 · Bypass duct interface</title>
+<style>body{margin:0;background:#e3e8eb;color:#17323d;font:16px system-ui}header,footer{padding:12px 20px}nav{padding:0 20px}button{padding:8px;margin-right:8px}canvas{display:block;width:100%;height:510px}footer{font-size:14px}</style>
+<header>19 · <span id="version"></span> · Actual simulator geometry</header>
+<nav><button data-view="front">Front joint</button><button data-view="aft">Aft joint</button><button data-view="whole">Whole loop</button><label>Flap angle <input id="angle" type="range" min="0" max="24" value="24"> <output>24°</output></label> <label><input id="foam" type="checkbox"> Show insulation surface</label> <label><input id="warm" type="checkbox" checked> Show warm duct</label></nav>
+<canvas aria-label="Warm duct floor, moving flaps and cold bypass joints"></canvas>
+<footer>NASA/APL thermal arrangement; detailed walls, joints, clearance and insulation cuts estimated. This is not a flight drawing or a flow-performance model.</footer>
+<script type="module">
+import * as T from '../../dist/vendor/three/three.module.min.js?v=dev';
+const params=new URLSearchParams(location.search),before=params.has('before');
+const {buildWarmDuct,buildTrimDevice}=await import((before?'/before':'')+'/dist/thermal-loop.mjs?v=dev');
+document.querySelector('#version').textContent=before?'Archived solid/gapped illustration':'Open, fitted bypass passages';
+const scene=new T.Scene();scene.background=new T.Color('#e3e8eb');scene.add(new T.HemisphereLight(0xffffff,0x63717b,2.5));
+const light=new T.DirectionalLight(0xffffff,3);light.position.set(-1,-3,-2);scene.add(light);
+const root=new T.Group();scene.add(root);const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};
+const warm=buildWarmDuct({parent:root,mesh});const trim=buildTrimDevice({parent:root,mesh});
+const canvas=document.querySelector('canvas'),renderer=new T.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true}),camera=new T.OrthographicCamera();let view='front';
+function draw(){const angle=Number(document.querySelector('#angle').value);document.querySelector('output').textContent=angle+'°';
+ trim.flaps.forEach(({hinge,dir})=>hinge.rotation.x=dir*angle*Math.PI/180);trim.housings.visible=document.querySelector('#foam').checked;warm.group.visible=document.querySelector('#warm').checked;
+ const w=canvas.clientWidth,h=510,half=view==='whole'?1.15:.15,center=new T.Vector3(0,-.35,view==='whole'?-.13:view==='front'?-.6:.67);
+ renderer.setSize(w,h,false);camera.left=-half*w/h;camera.right=half*w/h;camera.top=half;camera.bottom=-half;camera.near=.001;camera.far=10;
+ camera.position.copy(center).add(view==='whole'?new T.Vector3(1,-.7,-.6):new T.Vector3(.2,warm.group.visible?-.18:.22,view==='front'?-.22:.22));camera.lookAt(center);camera.updateProjectionMatrix();renderer.render(scene,camera);canvas.dataset.ready='true';
+}
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{view=b.dataset.view;draw();});document.querySelector('#angle').oninput=draw;document.querySelector('#foam').onchange=draw;document.querySelector('#warm').onchange=draw;window.addEventListener('resize',draw);draw();
+</script></html>

@@ -1,0 +1,379 @@
+{
+  "asset": {
+    "revision": "trim-interfaces-2026-11-01",
+    "wallM": 0.0015,
+    "portWidthM": 0.131,
+    "portLengthM": 0.093,
+    "riserWidthM": 0.134,
+    "riserLengthM": 0.096,
+    "throatM": 0.006,
+    "foamClearanceM": 0.002,
+    "flightGeometryConfirmed": false,
+    "foamSurfaceOnly": true
+  },
+  "contacts": [
+    {
+      "mesh": "front-diverter-housing",
+      "other": "body-foam-belly-surface",
+      "owner": "body-foam-belly"
+    },
+    {
+      "mesh": "aft-diverter-housing",
+      "other": "body-foam-belly-surface",
+      "owner": "body-foam-belly"
+    }
+  ],
+  "oldContacts": [
+    {
+      "mesh": "front-diverter-riser",
+      "other": "warm-duct-run",
+      "owner": "warm-duct"
+    },
+    {
+      "mesh": "aft-diverter-riser",
+      "other": "warm-duct-run",
+      "owner": "warm-duct"
+    },
+    {
+      "mesh": "front-diverter-housing",
+      "other": "body-foam-belly-surface",
+      "owner": "body-foam-belly"
+    },
+    {
+      "mesh": "aft-diverter-housing",
+      "other": "body-foam-belly-surface",
+      "owner": "body-foam-belly"
+    },
+    {
+      "mesh": "front-diverter-flap",
+      "other": "warm-duct-run",
+      "owner": "warm-duct"
+    },
+    {
+      "mesh": "aft-diverter-flap",
+      "other": "warm-duct-run",
+      "owner": "warm-duct"
+    }
+  ],
+  "warmContacts": [
+    {
+      "mesh": "warm-duct-flange",
+      "other": "main-harness-clamp",
+      "owner": "main-harness-clamps"
+    }
+  ],
+  "oldWarmContacts": [
+    {
+      "mesh": "warm-duct-run",
+      "other": "front-diverter-riser",
+      "owner": "cold-duct"
+    },
+    {
+      "mesh": "warm-duct-run",
+      "other": "aft-diverter-riser",
+      "owner": "cold-duct"
+    },
+    {
+      "mesh": "warm-duct-run",
+      "other": "front-diverter-flap",
+      "owner": "trim-flap-front"
+    },
+    {
+      "mesh": "warm-duct-run",
+      "other": "aft-diverter-flap",
+      "owner": "trim-flap-aft"
+    },
+    {
+      "mesh": "warm-duct-flange",
+      "other": "main-harness-clamp",
+      "owner": "main-harness-clamps"
+    }
+  ],
+  "newContactPairs": [],
+  "motion": [],
+  "rings": {
+    "front": {
+      "dir": -1,
+      "centerZ": -0.61,
+      "endZ": -0.56,
+      "outer": [
+        [
+          [
+            -0.067,
+            -0.335,
+            -0.658
+          ],
+          [
+            0.067,
+            -0.335,
+            -0.658
+          ],
+          [
+            0.067,
+            -0.335,
+            -0.5619999999999999
+          ],
+          [
+            -0.067,
+            -0.335,
+            -0.5619999999999999
+          ]
+        ],
+        [
+          [
+            -0.067,
+            -0.341,
+            -0.658
+          ],
+          [
+            0.067,
+            -0.341,
+            -0.658
+          ],
+          [
+            0.067,
+            -0.341,
+            -0.5619999999999999
+          ],
+          [
+            -0.067,
+            -0.341,
+            -0.5619999999999999
+          ]
+        ],
+        [
+          [
+            -0.07,
+            -0.395,
+            -0.56
+          ],
+          [
+            0.07,
+            -0.395,
+            -0.56
+          ],
+          [
+            0.07,
+            -0.36,
+            -0.56
+          ],
+          [
+            -0.07,
+            -0.36,
+            -0.56
+          ]
+        ]
+      ],
+      "inner": [
+        [
+          [
+            -0.0655,
+            -0.335,
+            -0.6565
+          ],
+          [
+            0.0655,
+            -0.335,
+            -0.6565
+          ],
+          [
+            0.0655,
+            -0.335,
+            -0.5635
+          ],
+          [
+            -0.0655,
+            -0.335,
+            -0.5635
+          ]
+        ],
+        [
+          [
+            -0.0655,
+            -0.341,
+            -0.6565
+          ],
+          [
+            0.0655,
+            -0.341,
+            -0.6565
+          ],
+          [
+            0.0655,
+            -0.341,
+            -0.5635
+          ],
+          [
+            -0.0655,
+            -0.341,
+            -0.5635
+          ]
+        ],
+        [
+          [
+            -0.0685,
+            -0.3935,
+            -0.56
+          ],
+          [
+            0.0685,
+            -0.3935,
+            -0.56
+          ],
+          [
+            0.0685,
+            -0.3615,
+            -0.56
+          ],
+          [
+            -0.0685,
+            -0.3615,
+            -0.56
+          ]
+        ]
+      ]
+    },
+    "aft": {
+      "dir": 1,
+      "centerZ": 0.67,
+      "endZ": 0.6,
+      "outer": [
+        [
+          [
+            -0.067,
+            -0.335,
+            0.622
+          ],
+          [
+            0.067,
+            -0.335,
+            0.622
+          ],
+          [
+            0.067,
+            -0.335,
+            0.7180000000000001
+          ],
+          [
+            -0.067,
+            -0.335,
+            0.7180000000000001
+          ]
+        ],
+        [
+          [
+            -0.067,
+            -0.341,
+            0.622
+          ],
+          [
+            0.067,
+            -0.341,
+            0.622
+          ],
+          [
+            0.067,
+            -0.341,
+            0.7180000000000001
+          ],
+          [
+            -0.067,
+            -0.341,
+            0.7180000000000001
+          ]
+        ],
+        [
+          [
+            -0.07,
+            -0.36,
+            0.6
+          ],
+          [
+            0.07,
+            -0.36,
+            0.6
+          ],
+          [
+            0.07,
+            -0.395,
+            0.6
+          ],
+          [
+            -0.07,
+            -0.395,
+            0.6
+          ]
+        ]
+      ],
+      "inner": [
+        [
+          [
+            -0.0655,
+            -0.335,
+            0.6235
+          ],
+          [
+            0.0655,
+            -0.335,
+            0.6235
+          ],
+          [
+            0.0655,
+            -0.335,
+            0.7165
+          ],
+          [
+            -0.0655,
+            -0.335,
+            0.7165
+          ]
+        ],
+        [
+          [
+            -0.0655,
+            -0.341,
+            0.6235
+          ],
+          [
+            0.0655,
+            -0.341,
+            0.6235
+          ],
+          [
+            0.0655,
+            -0.341,
+            0.7165
+          ],
+          [
+            -0.0655,
+            -0.341,
+            0.7165
+          ]
+        ],
+        [
+          [
+            -0.0685,
+            -0.3615,
+            0.6
+          ],
+          [
+            0.0685,
+            -0.3615,
+            0.6
+          ],
+          [
+            0.0685,
+            -0.3935,
+            0.6
+          ],
+          [
+            -0.0685,
+            -0.3935,
+            0.6
+          ]
+        ]
+      ]
+    }
+  },
+  "scope": "Estimated fitted inspection shells. No fluid solver, flight interface, foam thickness or seal qualification."
+}
