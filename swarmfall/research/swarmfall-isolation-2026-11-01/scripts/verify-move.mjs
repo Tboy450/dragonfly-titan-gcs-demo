@@ -1,0 +1,11 @@
+import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
+const dir = process.argv[2];
+const old = JSON.parse(readFileSync(dir + "/old-files.json", "utf8"));
+const { files: map } = JSON.parse(readFileSync(dir + "/move-map.json", "utf8"));
+const expected = new Set(old.map(f => map[f] || f));
+const now = new Set(execFileSync("git", ["ls-files", "-z"], { encoding: "utf8", maxBuffer: 1 << 28 }).split("\0").filter(Boolean));
+const missing = [...expected].filter(f => !now.has(f)), extra = [...now].filter(f => !expected.has(f));
+console.log(JSON.stringify({ expected: expected.size, now: now.size, missing: missing.slice(0, 10), missingCount: missing.length, extra: extra.slice(0, 10), extraCount: extra.length }));
+const status = execFileSync("git", ["status", "--porcelain"], { encoding: "utf8", maxBuffer: 1 << 28 }).split("\n").filter(Boolean);
+console.log("renames:", status.filter(l => l.startsWith("R ")).length, "other:", status.filter(l => !l.startsWith("R ")).slice(0, 5));
