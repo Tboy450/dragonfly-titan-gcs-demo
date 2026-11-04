@@ -25,24 +25,34 @@ jobs:
         uses: actions/checkout@v6
       - name: Check simulation and terrain
         run: node --test tests/*.test.mjs
+      - name: Check Swarmfall
+        run: node --test swarmfall/tests/*.test.mjs
+      - name: Assemble the site
+        # The simulator's dist/ is the site root. Swarmfall is developed in swarmfall/ and published
+        # under invasion/, the game's address since it first went live.
+        run: |
+          mkdir _site
+          cp -R dist/. _site/
+          test ! -e _site/invasion
+          cp -R swarmfall/dist _site/invasion
       - name: Stamp build version
         # Source files use ?v=dev and "Build local"; each release gets the commit as its version,
         # so phones fetch fresh files and the header shows which build is live.
         run: |
           short="${GITHUB_SHA::7}"
           stamp="$(TZ=America/New_York date +%Y-%m-%d)"
-          grep -rlF '?v=dev' dist --include='*.html' --include='*.js' --include='*.mjs' | xargs sed -i "s/?v=dev/?v=${short}/g"
-          sed -i "s|data-build-stamp>Build local<|data-build-stamp>Build ${short} · ${stamp}<|" dist/index.html dist/invasion/index.html dist/invasion/environments/index.html
-          grep -qF "Build ${short}" dist/index.html
-          grep -qF "Build ${short}" dist/invasion/index.html
-          grep -qF "Build ${short}" dist/invasion/environments/index.html
-          ! grep -rqF '?v=dev' dist --include='*.html' --include='*.js' --include='*.mjs'
+          grep -rlF '?v=dev' _site --include='*.html' --include='*.js' --include='*.mjs' | xargs sed -i "s/?v=dev/?v=${short}/g"
+          sed -i "s|data-build-stamp>Build local<|data-build-stamp>Build ${short} · ${stamp}<|" _site/index.html _site/invasion/index.html _site/invasion/environments/index.html
+          grep -qF "Build ${short}" _site/index.html
+          grep -qF "Build ${short}" _site/invasion/index.html
+          grep -qF "Build ${short}" _site/invasion/environments/index.html
+          ! grep -rqF '?v=dev' _site --include='*.html' --include='*.js' --include='*.mjs'
       - name: Configure Pages
         uses: actions/configure-pages@v6
       - name: Upload the static app
         uses: actions/upload-pages-artifact@v5
         with:
-          path: dist
+          path: _site
       - name: Publish
         id: deployment
         uses: actions/deploy-pages@v5

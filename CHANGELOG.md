@@ -26,6 +26,9 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   `RESEARCH-COMPENDIUM.md` §0, §7 and §8. Update them when you finish an item there.
 - Publishing: pushing to `main` on GitHub runs the tests and publishes `dist` to GitHub Pages.
   The local branch here is `master` tracking `origin/main`: `git push origin master:main`.
+- **Swarmfall** (the drone game and its Asset & Environment Lab) is its own project in
+  `swarmfall/` since November 1, 2026. Record game and lab changes in
+  [swarmfall/CHANGELOG.md](swarmfall/CHANGELOG.md); older game entries stay below.
 - Leave every `?v=dev` stamp and the "Build local" label as they are. The publish workflow
   replaces them with the commit hash (see `.github/workflows/pages.yml`).
 - **At the start of a session (or after time away),** read the README and these entries, and
@@ -38,6 +41,49 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   with pictures, restore steps and a git tag (house rule 6 in ARCHITECTURE.md).
 
 ## Entries
+
+### 2026-11-01: Isolate Swarmfall into its own project folder
+- **Signed:** GitHub Copilot (Claude Opus 5.5, GitHub Copilot app)
+- **Commit:** Isolate Swarmfall into its own project folder
+- **What changed:** At the owner's request, everything that belongs to the drone game moved with
+  its git history into `swarmfall/`: the game and the Asset & Environment Lab (`dist/invasion/`
+  → `swarmfall/dist/`), its 58 tests with their harness and fixtures (`swarmfall/tests/`),
+  `SWARMFALL-TODO.md` (→ `swarmfall/TODO.md`) and 17 research and 21 archive folders. The game no
+  longer loads any simulator file. It has its own copy of three.js r180, and the lab's three
+  addons moved there from `dist/vendor/three/addons/`. The five simulator modules it used (Titan
+  terrain, training geography, arrival timeline and hardware, research model), the 54 modules
+  they import and the Titan ground image are a pinned copy in `swarmfall/dist/vendor/dragonfly/`
+  (from simulator 454c3e6). That copy changes only when `node swarmfall/tools/sync-dragonfly.mjs`
+  is run on purpose; `--check` lists what differs. The publish workflow runs both test suites,
+  copies `swarmfall/dist` into the site as `invasion/` and then stamps it, so every public address
+  is unchanged. The game's README and architecture sections, its archive index rows and future
+  game entries of this log are now in `swarmfall/` (README, ARCHITECTURE, archive/README, CHANGELOG).
+- **Files:** `swarmfall/` (moved files; new `README.md`, `ARCHITECTURE.md`, `CHANGELOG.md`,
+  `archive/README.md`, `tools/sync-dragonfly.mjs`, `tests/isolation.test.mjs`, vendored copies with
+  README/manifest); `.github/workflows/pages.yml`; `tests/site-layout.test.mjs` (with the not-found
+  page test moved from the game's tests); `README.md`, `ARCHITECTURE.md`, `archive/README.md`,
+  `dist/vendor/three/README.md`, `sites-redirect/README.md`, `.gitignore`. Moved research scripts
+  point at their new paths; `preview-server.py` now serves the published layout.
+- **Assumptions:** No game rule, model, save format or simulator behavior changed. The vendored
+  files are the simulator's with only a two-line header and the three.js import path changed.
+  Visitors who open both the simulator and the game now download three.js twice (about 720 KB).
+  Older entries below keep the paths of their time; only their links were updated.
+- **Checks:** Simulator suite 503 tests and Swarmfall suite 305 (801 before plus seven new
+  boundary tests) pass, except `iem-final-columns`, which fails the same way before this change on
+  this Windows machine (last-digit floating-point difference). The new tests fail as intended when
+  the game imports the simulator, a vendored file is edited or the simulator imports the game.
+  The workflow's own assemble and stamp steps, run in Git Bash on a copy, give the published tree
+  from before plus 69 vendored files under `invasion/vendor/`; the three addons moved there; 15
+  game files differ only in import paths; no `?v=dev` remains and all three build labels are
+  stamped. The Dragonfly drone (269 meshes, 383,939 vertices), 4,544 Titan terrain samples, the
+  arrival timeline and the Titan battle ground are identical to before. In a browser via the
+  preview server, a Titan mission and the lab's Titan Hive world load every file from
+  `/invasion/` with one three.js and no errors. All 1,031 relative Markdown links checked; none broke.
+- **Open / next:** Not yet published. Existing checkouts keep local ignored authoring files
+  (Blender/Houdini scenes, conversion tools) at `research/fantasy-city-2026-10-16/`; move them to
+  `swarmfall/research/fantasy-city-2026-10-16/` before running its scripts. Refresh the pinned
+  copy only when the game should take simulator changes, then test and look at the game.
+- **Archive:** Nothing was replaced, so no archive folder; the combined layout is commit 454c3e6.
 
 ### 2026-11-01: Record published part19 verification
 - **Signed:** Codex (OpenAI).
@@ -2539,7 +2585,7 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   remain compatible. Original source preserved/tagged. Neither environment lab changed.
 - **Open / next:** Native browser/touch/phone visual acceptance remains open; prior browser
   automation restriction not retried. CTRL-08 implementation complete; checklist26/305.
-  [Evidence](research/swarmfall-minimap-orders-2026-10-20/README.md).
+  [Evidence](swarmfall/research/swarmfall-minimap-orders-2026-10-20/README.md).
 
 ### 2026-10-19: FIX-11 guidance for Hold without selection
 - **Signed:** Codex (OpenAI)
@@ -2553,7 +2599,7 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   Hold and ended-mission paths pass. Original source archived and recovery tag created.
 - **Open / next:** Native browser/touch review remains open; prior restriction not retried.
   FIX-11 implementation complete; canonical checklist 25/305.
-  [Evidence](research/swarmfall-hold-hint-2026-10-19/README.md).
+  [Evidence](swarmfall/research/swarmfall-hold-hint-2026-10-19/README.md).
 
 ### 2026-10-19: FIX-04 tiny-drone squad markers
 - **Signed:** Codex (OpenAI)
@@ -2572,7 +2618,7 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   browser automation restriction was not retried. FIX-04 closes implementation/automated
   scope; checklist 24/305. Original-source archive hashes verified and recovery tag created
   on 7ab195e; public deployment is checked after push.
-  [Evidence](research/swarmfall-drone-markers-2026-10-19/README.md).
+  [Evidence](swarmfall/research/swarmfall-drone-markers-2026-10-19/README.md).
 
 ### 2026-10-19: Verify published individual RDE inspection
 - **Signed:** Codex (OpenAI)
@@ -2617,7 +2663,7 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   Scout remains584 body triangles, original432; no additional drone redesign.
 - **Open / next:** Actual browser/touch/phone and owner art acceptance remain open. Prior
   browser restriction was not retried. ART-09 stays unchecked; canonical count23/305.
-  [Comparison links/evidence](research/scout-lab-comparison-2026-10-19/README.md).
+  [Comparison links/evidence](swarmfall/research/scout-lab-comparison-2026-10-19/README.md).
 
 ### 2026-10-19: ART-09 A1 Scout hull and sensor polish
 - **Signed:** Codex (OpenAI)
@@ -2633,8 +2679,8 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   triangles vs468, +32.5% shared template geometry, no new material/mesh batch. Not a GPU benchmark.
 - **Open / next:** Owner/browser visual acceptance, High/Light/phone review; previous browser
   restriction was not retried. Link follows Scout feedback. ART-09 remains open; count23/305.
-  [Evidence](research/scout-polish-2026-10-19/README.md),
-  [original and restore steps](archive/scout-polish-2026-10-19/README.md).
+  [Evidence](swarmfall/research/scout-polish-2026-10-19/README.md),
+  [original and restore steps](swarmfall/archive/scout-polish-2026-10-19/README.md).
 
 ### 2026-10-19: Prepare two small ART-09 follow-up steps
 - **Signed:** Codex (OpenAI)
@@ -2689,8 +2735,8 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
   with DOM/projection/capture stand-ins; preserved sources verified against baseline tag.
 - **Open / next:** Real browser/touch/capture acceptance remains open; prior browser restriction
   was not retried. CTRL-01/03 selection tools/queues remain open. Checklist now 23/304 checked.
-  [Evidence](research/swarmfall-pointer-controls-2026-10-19/README.md),
-  [preserved behavior and historical picture](archive/swarmfall-pointer-controls-2026-10-19/README.md).
+  [Evidence](swarmfall/research/swarmfall-pointer-controls-2026-10-19/README.md),
+  [preserved behavior and historical picture](swarmfall/archive/swarmfall-pointer-controls-2026-10-19/README.md).
 
 ### 2026-10-19: Verify published Ocellus approximation
 - **Signed:** Codex (OpenAI).

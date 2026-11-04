@@ -22,3 +22,23 @@ research/fantasy-city-2026-10-16/houdini-authoring/**/*.obj
 research/fantasy-city-2026-10-16/houdini-authoring/**/*.bak
 research/fantasy-city-2026-10-16/houdini-authoring/backup/
 research/fantasy-city-2026-10-16/houdini-authoring/drafts/**/*.glb
+
+# Swarmfall's city research moved to swarmfall/research/ on 2026-11-01: the same local-only files
+# are ignored there. The rules above still cover copies left at the old path in existing checkouts.
+swarmfall/research/fantasy-city-2026-10-16/kenney_fantasy-town-kit_2.0.zip
+swarmfall/research/fantasy-city-2026-10-16/three-0.180.0.tgz
+swarmfall/research/fantasy-city-2026-10-16/tools/
+swarmfall/research/fantasy-city-2026-10-16/converted-sources/**/*.blend
+swarmfall/research/fantasy-city-2026-10-16/converted-sources/**/*.log
+swarmfall/research/fantasy-city-2026-10-16/foundation-authoring/**/*.blend
+swarmfall/research/fantasy-city-2026-10-16/foundation-authoring/**/*.blend1
+swarmfall/research/fantasy-city-2026-10-16/foundation-authoring/**/*.log
+swarmfall/research/fantasy-city-2026-10-16/foundation-authoring/coast-input.json
+swarmfall/research/fantasy-city-2026-10-16/foundation-authoring/contacts.json
+swarmfall/research/fantasy-city-2026-10-16/foundation-authoring/drafts/**/*.glb
+swarmfall/research/fantasy-city-2026-10-16/houdini-authoring/**/*.hipnc
+swarmfall/research/fantasy-city-2026-10-16/houdini-authoring/**/*.bgeo.sc
+swarmfall/research/fantasy-city-2026-10-16/houdini-authoring/**/*.obj
+swarmfall/research/fantasy-city-2026-10-16/houdini-authoring/**/*.bak
+swarmfall/research/fantasy-city-2026-10-16/houdini-authoring/backup/
+swarmfall/research/fantasy-city-2026-10-16/houdini-authoring/drafts/**/*.glb
