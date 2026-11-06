@@ -86,4 +86,15 @@ chase-vehicle module. No new source-comparison collage was needed.
   annotate unresolved interfaces rather than invent circuit or valve identities.
 - Aft collar/bulkhead passage and actuator linkage remain source-gated.
 
-Publication receipt pending Pages/live verification.
+## Publication receipt
+
+Implementation **00e26ad51aa93ab4451531db7572f337ee2eaec6** pushed to main and
+the Codex publication branch, with recovery tag on874a0d6.
+[Pages42191056557](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/42191056557)
+succeeded with both test suites. The [live app](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=00e26ad)
+visibly showed build00e26ad, six access presets and33 part options. Live belly
+selection focused fuselage/body-foam-belly; harness preset selected successfully.
+Public samples and public-checks.json saved; no browser errors. Initial cold
+module loading briefly left the static old selector options; verification waited
+for full initialization. No public mission reset or flight/science command issued.
+Task preview server stopped after verification; public deliverable tab retained.

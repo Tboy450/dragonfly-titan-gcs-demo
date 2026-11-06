@@ -23,7 +23,8 @@ November 6 continuation: [Belly boundary and access views](research/belly-bypass
 - [x] Eight added tests; **521 simulator +305 game tests pass**. Before/after
   rays, exact preservation, installed contacts/flap sweep, mask/material restore,
   desktop/Thermal and390px widths375/375 checked; samples saved.
-- [ ] Publish and verify live presets/build; record receipt.
+- [x] Published **00e26ad**; Pages42191056557 succeeded. Live six presets,
+  33 part options, belly/detail and harness selections verified; zero errors.
 - [ ] NEXT: source-gated liner/encapsulation/local thickness; harness continuity
   audit before full power/signal diagrams. Future gas/sample diagram presets can
   reuse existing paths. Qualified aft passage/actuator linkage remain open.

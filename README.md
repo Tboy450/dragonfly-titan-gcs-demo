@@ -6,6 +6,8 @@ surface-only opening. Access view now includes body/attic insulation, belly
 cutaway and modeled wiring routes, with collapsed notes.521 simulator and305
 separate game tests pass; desktop/Thermal/390px checked. Flight edge construction,
 local thickness/seals and complete electrical continuity remain unconfirmed.
+Published **00e26ad**; Pages42191056557 succeeded. Live six presets, belly and
+harness views verified; no browser errors. Publication receipt and samples saved.
 
 November 6: [Thermal installation audit](research/thermal-installation-2026-11-06/README.md).
 The reported harness-clamp collision is numerical contact at the shared floor

@@ -42,6 +42,15 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-11-06: Close published belly / access-view verification
+- **Signed:** Codex (OpenAI).
+- **Published:**00e26ad; Pages42191056557 succeeded, both suites green.
+- **Live:** Six presets/33 component options, belly/detail focus and harness
+  selection verified after cold module initialization. Public screenshots and
+  receipt saved; no browser errors or public mission reset.826 total tests pass.
+- **Next:** Source-bounded local construction and harness continuity before
+  complete schematic claims; handoff in research/belly-bypass-2026-11-06/.
+
 ### 2026-11-06: Expose the belly bypass and add insulation / wiring access views
 - **Signed:** Codex (OpenAI).
 - **Commit:** Expose the cold bypass and add layered inspection presets
