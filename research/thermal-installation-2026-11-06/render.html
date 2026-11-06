@@ -1,0 +1,29 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Duct and harness floor seat audit</title>
+<style>body{margin:0;background:#e3e8eb;color:#17323d;font:16px system-ui}header,footer{padding:12px 20px}nav{padding:0 20px}button{padding:8px;margin-right:8px}canvas{display:block;width:100%;height:500px}footer{font-size:14px;max-width:950px}</style>
+<header>Existing model · Harness foot / warm-duct joint inspection · No geometry changed</header>
+<nav><button data-view="seat">Floor seat detail</button><button data-view="context">Thermal context</button><button data-view="foam">Unresolved belly boundary</button></nav>
+<canvas aria-label="Actual simulator geometry: estimated harness foot and warm duct joint"></canvas>
+<footer id="note">Foot above and joint below the same floor plane (y −0.284 m). The raw contact flag is a Float32 rounding artifact. Detailed hardware, floor construction and flight attachment are unconfirmed.</footer>
+<script type="module">
+import * as T from '../../dist/vendor/three/three.module.min.js?v=dev';
+import {buildWarmDuct,buildTrimDevice} from '../../dist/thermal-loop.mjs?v=dev';
+import {buildMainHarness} from '../../dist/main-harness.mjs?v=dev';
+import {buildBodyFoam} from '../../dist/body-foam.mjs?v=dev';
+const scene=new T.Scene();scene.background=new T.Color('#e3e8eb');scene.add(new T.HemisphereLight(0xffffff,0x63717b,2.5));
+const light=new T.DirectionalLight(0xffffff,3);light.position.set(-1,2,-2);scene.add(light);
+const mesh=(g,m,p,parent)=>{const o=new T.Mesh(g,m);o.position.fromArray(p);parent.add(o);return o;};
+const root=new T.Group();scene.add(root);const warm=buildWarmDuct({parent:root,mesh}),trim=buildTrimDevice({parent:root,mesh});
+const wire=new T.Group();root.add(wire);buildMainHarness({parent:wire,mesh});const body=new T.Group();root.add(body);
+buildBodyFoam({parent:body,mesh,material:new T.MeshStandardMaterial({color:0xdcd3c1,roughness:.85,side:T.DoubleSide})});
+const canvas=document.querySelector('canvas'),renderer=new T.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true}),camera=new T.OrthographicCamera();let view='seat';
+function draw(){
+ const detail=view==='seat',foam=view==='foam';body.visible=foam;trim.group.visible=!detail;wire.visible=!foam;
+ wire.traverse(o=>{if(o.isMesh)o.visible=!detail||o.name==='main-harness-power-unit-1-to-rde-1'||(o.name==='main-harness-clamp'&&o.userData.routeName==='power-unit-1-to-rde-1');});
+ const center=new T.Vector3(detail?-.03:0,detail?-.284:-.37,detail?-.455:0),half=detail?.045:.9,w=canvas.clientWidth,h=500;
+ renderer.setSize(w,h,false);camera.left=-half*w/h;camera.right=half*w/h;camera.top=half;camera.bottom=-half;camera.near=.001;camera.far=10;
+ camera.position.copy(center).add(detail?new T.Vector3(-.08,.025,-.07):new T.Vector3(1,foam?-1.3:-.7,-.6));camera.lookAt(center);camera.updateProjectionMatrix();
+ document.querySelector('#note').textContent=foam?'Known unfinished boundary: existing belly surface covers the cold channel and crosses both housing surfaces. Surface-only illustration; local insulation thickness, tile seams and seals remain unmodeled.':'Foot above and joint below the same floor plane (y −0.284 m). The raw contact flag is a Float32 rounding artifact. Detailed hardware, floor construction and flight attachment are unconfirmed.';
+ renderer.render(scene,camera);canvas.dataset.ready='true';
+}
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{view=b.dataset.view;draw();});window.addEventListener('resize',draw);draw();
+</script></html>

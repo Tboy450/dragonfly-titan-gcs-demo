@@ -84,6 +84,13 @@ See `research/draco-electrical-audit-2026-10-27/README.md` before its next rebui
 
 ## Files
 
+November 6: `research/thermal-installation-2026-11-06/audit.mjs` classifies the
+single duct/harness foot touch against its explicit construction floor plane.
+Numerical epsilon is not an engineering clearance. Historical raw triangle hits
+are retained; no runtime collision utility/model/route changed. Part assumptions
+state the finding. Next insulation pass must use actual bevel geometry and check
+exposed cold-channel sightlines, not rely only on nominal bellyY.
+
 November1: `trim-interfaces.mjs` owns specific part18 floor ports and part19
 open channel/connectors/local insulation-surface cuts. It imports the existing
 surface clipper, accepts layout metadata and adds three named inspection details.

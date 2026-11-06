@@ -4,6 +4,15 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**Thermal installation review (Codex, November 6):**
+[measurement and evidence](research/thermal-installation-2026-11-06/README.md).
+The joint/harness foot flag is numerical floor seating (about2.8e−11 m overlap);
+no geometry was moved. This is a model measurement, not flight attachment evidence.
+Two real housing/belly surface intersections remain; actual beveled belly also
+obscures the cold duct from below. Reconcile the exposed-channel/insulation boundary
+together before calling the installed cold duct complete. Detailed seals, local
+thickness, actuator linkage and aft gas passage remain unconfirmed.
+
 **Part19 bypass interfaces (Codex, November1):**
 [source/limits/fit](research/trim-interfaces-2026-11-01/README.md). [PUB] two-flap
 cold-bypass architecture/test behavior. [EST]1.5 mm walls/131×93 mm ports/6 mm

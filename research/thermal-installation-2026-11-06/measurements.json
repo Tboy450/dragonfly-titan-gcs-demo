@@ -1,0 +1,92 @@
+{
+  "baseline": "83b3e9583757b4eef0982587173011eb91a6caad",
+  "numericalEpsilonM": 1e-7,
+  "seats": [
+    {
+      "route": "power-unit-1-to-rde-1",
+      "foot": "main-harness-clamp",
+      "flange": "warm-duct-flange",
+      "classification": "numerical-floor-seat",
+      "planeYM": -0.284,
+      "planeResidualM": 1.4901135880762695e-11,
+      "signedGapM": -2.7939650593111764e-11,
+      "overlapXZM": [
+        0.030276399171896222,
+        0.0060423557753712664
+      ],
+      "footBoundsM": {
+        "min": [
+          -0.04544344773845849,
+          -0.2840000000130385,
+          -0.4550423557232172
+        ],
+        "max": [
+          -0.015167048566562267,
+          -0.28099999998696146,
+          -0.4423336038577567
+        ]
+      },
+      "flangeBoundsM": {
+        "min": [
+          -0.07599999755620956,
+          -0.34100000001490116,
+          -0.4610000000521541
+        ],
+        "max": [
+          0.07599999755620956,
+          -0.28399999998509884,
+          -0.44899999994784595
+        ]
+      }
+    }
+  ],
+  "rawWarmContacts": [
+    {
+      "mesh": "warm-duct-flange",
+      "other": "main-harness-clamp",
+      "owner": "main-harness-clamps"
+    }
+  ],
+  "rawTrimContacts": [
+    {
+      "mesh": "front-diverter-housing",
+      "other": "body-foam-belly-surface",
+      "owner": "body-foam-belly"
+    },
+    {
+      "mesh": "aft-diverter-housing",
+      "other": "body-foam-belly-surface",
+      "owner": "body-foam-belly"
+    }
+  ],
+  "coldDuctBoundsM": {
+    "min": [
+      -0.07000000029802322,
+      -0.3950000000745058,
+      -0.5599999833106994
+    ],
+    "max": [
+      0.07000000029802322,
+      -0.3599999999254942,
+      0.5999999833106995
+    ]
+  },
+  "bellyBoundsM": {
+    "min": [
+      -0.4204508662223816,
+      -0.4099999964237213,
+      -1.8140531778335571
+    ],
+    "max": [
+      0.4204508364200592,
+      -0.30396705865859985,
+      1.3861807584762573
+    ]
+  },
+  "unchangedGeometry": true,
+  "limitations": [
+    "Seat is geometric only; flight clamp, floor structure, attachment and thermal isolation unconfirmed.",
+    "Two actual housing/belly surface intersections remain. Belly also obscures cold duct from below.",
+    "Resolve local insulation/exposed-channel boundary together; no inferred flight tile seam, thickness, seal or heat-leak coefficient."
+  ]
+}

@@ -42,6 +42,23 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-11-06: Verify the duct/harness floor seat and identify the insulation boundary
+- **Signed:** Codex (OpenAI).
+- **Commit:** Verify the thermal harness seat without moving completed hardware
+- **What changed:** Explicit construction-plane/footprint audit identifies the
+  inherited clamp flag as about 2.8e−11 m numerical overlap. Raw contacts retained;
+  expandable part 18/19 notes and handoff corrected. No model/route/solver change.
+- **Evidence:** Reused NASA/APL real wiring and DTM photographs plus NASA harness
+  workmanship guidance. Prior open duct/trim architecture is sourced; detailed
+  geometry is estimated. No flight clamp/thermal isolation qualification claimed.
+- **Checks:** Four new tests, all 513 simulator and 305 separate Swarmfall tests
+  pass. Actual seat and known belly issue rendered; local nested assumptions checked.
+  Copilot isolation through83b3e95 fast-forwarded; Swarmfall/lab files unchanged.
+- **Next:** Both real housing/belly intersections and cold-duct underside exposure
+  need one insulation boundary pass using the actual beveled profile. Source-gated
+  seals/local thickness/actuators/aft passage remain open. Publication receipt pending.
+- **Archive:** No asset replaced; existing model and all prior archives retained.
+
 ### 2026-11-01: Isolate Swarmfall into its own project folder
 - **Signed:** GitHub Copilot (Claude Opus 5.5, GitHub Copilot app)
 - **Commit:** Isolate Swarmfall into its own project folder

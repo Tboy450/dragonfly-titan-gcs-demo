@@ -10,6 +10,25 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+November 6: [Thermal installation / clamp audit](research/thermal-installation-2026-11-06/README.md).
+- [x] Recheck previous two updates, real wiring/DTM photos and NASA support guidance.
+  Architecture is sourced; detailed joint geometry remains EST. Incoming Copilot
+  project separation fast-forwarded; game/lab data and vendored model left intact.
+- [x] Resolve the reported clamp contact by measurement: foot and duct ring touch
+  at y −0.284 m. The roughly 2.8e−11 m overlap is Float32 roundoff, not a reason
+  to reroute the completed harness. Explicit plane/footprint check retains raw hits.
+- [x] Four new tests; **513 simulator + 305 separate game boundary tests pass**.
+  Real gap/penetration and displaced footprints fail the seat classification.
+  Existing geometry unchanged; no unnecessary asset redraw or comparison sheet.
+- [x] Sample and known insulation-issue view saved; expandable assumptions updated.
+- [ ] Publish and verify corrected notes; record receipt.
+- [ ] NEXT: reconcile both housing/belly surface intersections AND the belly
+  hiding the exposed cold channel. Use actual beveled surface (bottom about
+  −0.410 m), not nominal bellyY −0.36 m. Archive surfaces before replacement;
+  retain equipment/routes and independent body/component insulation masks.
+  Recheck underside visibility, flap sweep and installed contacts together.
+  Local contour/thickness/seals and aft penetration remain unconfirmed.
+
 November1: [Part19 warm/cold bypass interfaces](research/trim-interfaces-2026-11-01/README.md).
 - [x] Recheck saved real DTM photo and TFAWS2023/2024 topology/test sources.
   Test article is not flight hardware; no repeated source collage or generated asset.
@@ -25,7 +44,8 @@ November1: [Part19 warm/cold bypass interfaces](research/trim-interfaces-2026-11
   details,32 IDs/33 options, Thermal, independent casing/insulation controls,
   estimate disclosure and390px widths375/375 verified without browser errors.
   Public desktop captures/JSON saved; public phone capture failed, local retained.
-- [ ] NEXT: one joint/main-harness clamp contact; preserve completed routes.
+- [x] Joint/main-harness clamp contact checked November 6: numerical floor seat,
+  not meaningful penetration; preserve completed routes (see newer audit above).
   Two inherited housing/body-belly insulation-surface contacts need separate
   boundary review. Flight seals/actuator linkages and aft collar/bulkhead remain
   source-gated; do not mark the entire gas loop or insulation package complete.

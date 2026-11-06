@@ -6,6 +6,13 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Thermal installation audit (Codex, November 6):**
+[evidence, measurements and next boundary](thermal-installation-2026-11-06/README.md).
+Reused NASA/APL/Ed Whitman's real September2026 wiring photo, NASA-STD-8739.4A
+Change4 page29, and TFAWS2024 real DTM underside photo slide9. Sources rechecked
+online; no duplicate source sheets or new CGI reference. General support/exposed
+duct reasoning only, not flight clamp/seal/foam geometry or compliance evidence.
+
 **Part19 bypass interfaces (Codex, November1):** [source/fit/checks](trim-interfaces-2026-11-01/README.md).
 TFAWS2024 real DTM photo slide9 and section/test slides15/16; TFAWS2023 slide4.
 Reuse saved pages, no generated hardware or duplicate source sheets. Topology PUB;

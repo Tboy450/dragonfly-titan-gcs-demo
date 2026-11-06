@@ -1,5 +1,11 @@
 # Dragonfly Titan GCS
 
+November 6: [Thermal installation audit](research/thermal-installation-2026-11-06/README.md).
+The reported harness-clamp collision is numerical contact at the shared floor
+plane; no geometry change was needed. Expandable assumptions corrected.
+513 simulator and 305 separate Swarmfall boundary tests pass. Next: reconcile
+the real housing/belly intersections and cold-channel exposure together.
+
 November1: [Part19 fitted bypass passages](research/trim-interfaces-2026-11-01/README.md).
 Two warm-floor ports and hollow connectors meet the open cold duct; existing
 flaps/actuators and thermal behavior retained. Three inspection details,807 tests
