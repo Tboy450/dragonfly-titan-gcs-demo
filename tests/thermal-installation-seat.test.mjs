@@ -24,10 +24,10 @@ test('Seat classification uses the construction frame and survives world rotatio
  const result=floorSeat(foot,flange,root);assert.equal(result.classification,initial.classification);
  assert.ok(Math.abs(result.signedGapM-initial.signedGapM)<1e-12);
 });
-test('Installed audit distinguishes the one numerical seat from two genuine insulation intersections',()=>{
+test('Installed audit retains numerical floor seating after the later belly surface relief',()=>{
  const r=inspect();assert.equal(r.seats.length,1);assert.equal(r.seats[0].route,'power-unit-1-to-rde-1');
  assert.ok(Math.abs(r.seats[0].signedGapM)<1e-9);
  assert.deepEqual(r.rawWarmContacts,[{mesh:'warm-duct-flange',other:'main-harness-clamp',owner:'main-harness-clamps'}]);
- assert.deepEqual(r.rawTrimContacts.map(o=>o.other),['body-foam-belly-surface','body-foam-belly-surface']);
+ assert.deepEqual(r.rawTrimContacts,[]); // Later belly-bypass suite owns the insulation/exposure correction.
  assert.ok(r.coldDuctBoundsM.min.y>r.bellyBoundsM.min.y,'existing belly lies below the cold duct; exposure boundary still needs review');
 });

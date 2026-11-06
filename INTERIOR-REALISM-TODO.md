@@ -10,6 +10,24 @@ whole interior in one pass. Complete, verify and archive one part before moving 
 
 ## Owner's Ordered Continuation (October21)
 
+November 6 continuation: [Belly boundary and access views](research/belly-bypass-2026-11-06/README.md).
+- [x] Recheck real DTM photo/exposed-channel evidence; archive exact874a0d6
+  integration, UI, renderer/tests and prior underside sample before replacing.
+- [x] One connected estimated surface opening exposes the cold duct and clears
+  both housings. Only belly mesh changes; hardware/routes/other surfaces exact.
+  2 mm margin and contour EST; thickness/closing surfaces/seals unmodeled.
+- [x] Add Body insulation, Attic insulation, Belly/cold-duct cutaway and Wiring/
+  harness routes to existing Access view selector, per owner's clarification.
+  Independent masks,32 IDs/33 part options, collapsed notes, opaque focused
+  insulation and normal open/Pilot materials retained. No new circuit invented.
+- [x] Eight added tests; **521 simulator +305 game tests pass**. Before/after
+  rays, exact preservation, installed contacts/flap sweep, mask/material restore,
+  desktop/Thermal and390px widths375/375 checked; samples saved.
+- [ ] Publish and verify live presets/build; record receipt.
+- [ ] NEXT: source-gated liner/encapsulation/local thickness; harness continuity
+  audit before full power/signal diagrams. Future gas/sample diagram presets can
+  reuse existing paths. Qualified aft passage/actuator linkage remain open.
+
 November 6: [Thermal installation / clamp audit](research/thermal-installation-2026-11-06/README.md).
 - [x] Recheck previous two updates, real wiring/DTM photos and NASA support guidance.
   Architecture is sourced; detailed joint geometry remains EST. Incoming Copilot
@@ -23,7 +41,9 @@ November 6: [Thermal installation / clamp audit](research/thermal-installation-2
 - [x] Sample and known insulation-issue view saved; expandable assumptions updated.
 - [x] Published **c299fec**; Pages42185647082 succeeded. November 6 public
   build stamp and expanded part18 assumption text verified. No mission reset.
-- [ ] NEXT: reconcile both housing/belly surface intersections AND the belly
+- [x] Subsequent belly-boundary pass reconciles both housing/belly intersections
+  and exposes the cold channel via an estimated connected surface opening.
+  Prior continuation notes (superseded above): reconcile both intersections AND the belly
   hiding the exposed cold channel. Use actual beveled surface (bottom about
   −0.410 m), not nominal bellyY −0.36 m. Archive surfaces before replacement;
   retain equipment/routes and independent body/component insulation masks.

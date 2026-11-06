@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-06",
+  "accessViews": [
+    "all",
+    "open",
+    "body",
+    "attic",
+    "belly",
+    "harness"
+  ],
+  "newPresetsVisuallyChecked": [
+    "body",
+    "attic",
+    "belly",
+    "harness"
+  ],
+  "thermalBodyChecked": true,
+  "phoneViewport": [
+    390,
+    844
+  ],
+  "phoneClientScroll": [
+    375,
+    375
+  ],
+  "phoneViews": [
+    "belly",
+    "harness"
+  ],
+  "partOptions": 33,
+  "openInteriorRestoresIsolation": true,
+  "errors": [],
+  "note": "A pointer click after resizing toggled the local original-model button; restored research model and verified Thermal via focused keyboard activation."
+}

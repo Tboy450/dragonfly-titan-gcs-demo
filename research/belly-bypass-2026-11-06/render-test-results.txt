@@ -1,0 +1,33 @@
+research model envelope: 3.85 x 3.94 x 1.74 m
+✔ Focused insulation stays opaque when peeled; open interior and Pilot restore normal materials and visibility (880.5135ms)
+✔ The 3D scene builds and draws every view, model and antenna pose without errors (538.0482ms)
+✔ Clean-room presentation stays parked without changing or freezing live flight state (515.3899ms)
+✔ Sampling poses follow the science clock, with internal-only markers and a stowed clean room (637.9848ms)
+✔ The research model matches the published 3.85 x 3.85 x 1.75 m envelope (2242.6798ms)
+✔ Weather changes Pilot haze, light and the wet-ground uniform without changing arrival visuals (729.2292ms)
+✔ Every research-model part belongs to a named subsystem with a thermal zone (746.3607ms)
+✔ Refined drill assemblies clear the landing runners and remain visible in all vehicle layers (794.0582ms)
+✔ The arrival sequence hardware draws at every phase (1273.4851ms)
+✔ Interior parts fit inside the insulated cavity of the exterior model (710.1209ms)
+✔ Mission-view layers draw and return callouts for every labeled part (816.0857ms)
+✔ The original model's Internal and Thermal views are labeled mock-ups and fit its body (766.4012ms)
+✔ Thermal mesh colors keep absolute temperature meaning when the legend range changes (995.3031ms)
+✔ The terrain recenters a few rows per frame, and at once after a jump (713.6735ms)
+✔ On a sloping dune flank the lander settles onto all four skid ends (1067.2749ms)
+✔ Rotor-wash dust appears when hovering low and clears when high (1540.7261ms)
+✔ Dust expires across Mission-view gaps, freezes on pause and clears on a clock reset (9.6185ms)
+✔ The Internal layer returns the published envelope dimensions for the blueprint (811.1497ms)
+✔ Inspector frames isolated assemblies at every angle and restores the ordinary model (1851.9559ms)
+✔ Inspector pan moves projected hardware and its labels by the drag distance without rotating or moving the craft (1305.6768ms)
+✔ Part 22 frames either EFIELD probe, preserves numbering and restores subassembly visibility (1380.1945ms)
+✔ The air loop follows the fans and the cold-duct diverter flaps (781.2882ms)
+✔ Inspection masks hide existing layers without moving the camera, renumbering parts or leaking into other views (869.158ms)
+✔ An interrupted inspection render restores masks and ordinary scene settings (797.768ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22993.4401

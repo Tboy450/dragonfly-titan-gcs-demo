@@ -26,7 +26,7 @@ export const partInspectionLayers = Object.freeze([
   { id: "insulation", label: "Insulation" },
 ]);
 export const visibilityDefaults = Object.freeze({
-  hiddenLayers: Object.freeze([]), hiddenPartLayers: Object.freeze({}),
+  hiddenLayers: Object.freeze([]), hiddenPartLayers: Object.freeze({}), onlyLayer: null,
 });
 export const inspectionLayerVisible = (i, id, part = null) =>
   !(part ? i.hiddenPartLayers?.[part] : i.hiddenLayers)?.includes(id);
@@ -45,16 +45,26 @@ export const hiddenInspectionCount = i => (i.hiddenLayers?.length ?? 0)
   + Object.values(i.hiddenPartLayers ?? {}).reduce((sum, layers) => sum + layers.length, 0);
 
 export const openInteriorLayers=Object.freeze(["body-shell","attic-shell","insulation","partitions","structural-panels","deck-panels","flow-markers"]);
+// Viewing presets reuse existing surfaces/routes. None is an engineering drawing,
+// a new physical insulation layer, or a complete electrical schematic.
+export const inspectionAccessViews=Object.freeze([
+ {id:'all',label:'All layers',hidden:[],target:null,elevation:.62,note:'Existing outer and inner model surfaces; detailed construction includes estimates.'},
+ {id:'open',label:'Open interior',hidden:openInteriorLayers,target:null,elevation:.62,note:'Enclosing surfaces hidden; equipment and modeled connections retained.'},
+ {id:'body',label:'Body insulation',hidden:['attic-shell','partitions','structural-panels','deck-panels','flow-markers'],target:'fuselage',elevation:.55,note:'Five surface regions, not flight tiles or volumetric foam. Use Subassembly or Inspection layers to peel individual regions.'},
+ {id:'attic',label:'Attic insulation',hidden:['body-shell','partitions','structural-panels','deck-panels','flow-markers'],target:'attic',elevation:.55,note:'Removable cover surfaces. Local foam thickness, membranes and hidden construction are unmodeled.'},
+ {id:'belly',label:'Belly / cold-duct cutaway',hidden:['attic-shell','body-foam-top','body-foam-port','body-foam-starboard','body-foam-ends','partitions','structural-panels','deck-panels','flow-markers'],target:'fuselage',subassembly:'body-foam-belly',elevation:-.7,note:'Estimated connected belly opening around the existing cold bypass. Edge construction, local foam thickness and flight seals are unconfirmed.'},
+ {id:'harness',label:'Wiring / harness routes',hidden:openInteriorLayers,target:null,onlyLayer:'harnesses',elevation:.62,note:'Shows existing modeled wiring across assemblies. Routing and endpoints include estimates; connections are incomplete. This is not a verified electrical schematic.'},
+].map(v=>Object.freeze({...v,hidden:Object.freeze([...v.hidden])})));
 export function applyInspectionAccessPreset(i,preset){
-  if(!["all","open"].includes(preset))return;
-  i.hiddenLayers=preset==="open"?[...openInteriorLayers]:[];
+  const view=inspectionAccessViews.find(v=>v.id===preset);if(!view)return;
+  i.hiddenLayers=[...view.hidden];i.onlyLayer=view.onlyLayer??null;
   i.hiddenPartLayers={};
+  return view;
 }
 export function inspectionAccessPreset(i){
   if(Object.keys(i.hiddenPartLayers??{}).length)return "custom";
   const hidden=i.hiddenLayers??[];
-  if(!hidden.length)return "all";
-  return hidden.length===openInteriorLayers.length&&openInteriorLayers.every(id=>hidden.includes(id))?"open":"custom";
+  return inspectionAccessViews.find(v=>(i.onlyLayer??null)===(v.onlyLayer??null)&&hidden.length===v.hidden.length&&v.hidden.every(id=>hidden.includes(id)))?.id??'custom';
 }
 
 export function visibleInspectionHardware(group) {
@@ -66,6 +76,7 @@ export function visibleInspectionHardware(group) {
 export function createInspectionVisibility(subsystems) {
   const global = new Map(globalInspectionLayers.map(({ id }) => [id, []]));
   const parts = new Map();
+  const nonHarnessMeshes=[];
   const add = (id, object) => { if (object) global.get(id).push(object); };
   add("body-shell", subsystems.fuselage);
   add("attic-shell", subsystems.attic);
@@ -78,6 +89,11 @@ export function createInspectionVisibility(subsystems) {
   for (const [name, group] of Object.entries(subsystems)) {
     const layers = new Map(partInspectionLayers.map(({ id }) => [id, []]));
     group.traverse(object => {
+      if(object.isMesh){
+        let ancestor=object,wiring=false;
+        while(ancestor){if(ancestor.userData.inspectionLayer==='harnesses'){wiring=true;break;}if(ancestor===group)break;ancestor=ancestor.parent;}
+        if(!wiring)nonHarnessMeshes.push(object);
+      }
       const category = object.userData.inspectionLayer;
       if (global.has(object.userData.inspectionGlobalLayer)) add(object.userData.inspectionGlobalLayer, object);
       if (bodyFoamRegions.some(({ id }) => id === object.userData.bodyFoamRegion)) add(object.userData.bodyFoamRegion, object);
@@ -106,6 +122,7 @@ export function createInspectionVisibility(subsystems) {
         if (!previous.has(object)) previous.set(object, object.visible);
         object.visible = false;
       };
+      if(inspector.onlyLayer==='harnesses')for(const object of nonHarnessMeshes)hide(object);
       for (const id of inspector.hiddenLayers ?? []) for (const object of global.get(id) ?? []) hide(object);
       for (const [part, ids] of Object.entries(inspector.hiddenPartLayers ?? {})) {
         for (const id of ids) for (const object of parts.get(part)?.get(id) ?? []) hide(object);

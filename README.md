@@ -1,5 +1,12 @@
 # Dragonfly Titan GCS
 
+November 6 continuation: [Belly opening / layered inspection](research/belly-bypass-2026-11-06/README.md).
+Cold duct exposed, two housing intersections removed through an estimated
+surface-only opening. Access view now includes body/attic insulation, belly
+cutaway and modeled wiring routes, with collapsed notes.521 simulator and305
+separate game tests pass; desktop/Thermal/390px checked. Flight edge construction,
+local thickness/seals and complete electrical continuity remain unconfirmed.
+
 November 6: [Thermal installation audit](research/thermal-installation-2026-11-06/README.md).
 The reported harness-clamp collision is numerical contact at the shared floor
 plane; no geometry change was needed. Expandable assumptions corrected.

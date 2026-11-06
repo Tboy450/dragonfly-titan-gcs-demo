@@ -50,11 +50,11 @@ test('Exact baseline preserves flaps, hinges, actuators, ribs, fans, completed n
  for(const key of ['duct','fans','coldDuct','diverters','maxFlapDeg','bellyY'])assert.deepEqual(L[key],old.thermalLoopAsset[key]);
  assert.deepEqual(airLoopPaths(),old.airLoopPaths());
 });
-test('Installed contact audit removes four warm/trim conflicts and adds none; unresolved foam/clamp remain named',async()=>{
+test('Installed contact audit removes four warm/trim conflicts and adds none; later belly relief removes insulation crossings; numerical clamp seat retained',async()=>{
  const r=await report();assert.deepEqual(r.newContactPairs,[]);
  assert.deepEqual(r.warmContacts,[{mesh:'warm-duct-flange',other:'main-harness-clamp',owner:'main-harness-clamps'}]);
  assert.equal(r.oldWarmContacts.length-r.warmContacts.length,4);
- assert.deepEqual(r.contacts.map(o=>o.other),['body-foam-belly-surface','body-foam-belly-surface']);
+ assert.deepEqual(r.contacts,[]); // Later belly-bypass suite owns the exact removed surface and exposure checks.
 });
 test('Three part19 details and independently removable insulation retain positions',()=>{
  const {root,device}=build(),before=snapshots(root);

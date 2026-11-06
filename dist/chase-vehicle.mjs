@@ -265,8 +265,8 @@ export function createChaseRenderer(options = {}) {
   }
   let appliedLayer = "";
   // which: "research" (NASA 2023 design) or "original" (demo model with a labeled mock-up interior).
-  function applyLayer(layer, state, which = "research") {
-    const key = `${layer}|${which}`;
+  function applyLayer(layer, state, which = "research", opaqueShell = false) {
+    const key = `${layer}|${which}|${opaqueShell}`;
     if (key === appliedLayer && layer !== "thermal") return;
     appliedLayer = key;
     const zones = layer === "thermal" ? thermalZoneTemps(state) : null;
@@ -282,9 +282,9 @@ export function createChaseRenderer(options = {}) {
         if (layer === "exterior" || !active || (!Array.isArray(base) && base.transparent)) { part.material = base; return; }
         const owner = ownerOf(part);
         const shell = isShell(part, owner);
-        if (layer === "internal") { part.material = shell ? ghostShell : base; return; }
+        if (layer === "internal") { part.material = shell && !opaqueShell ? ghostShell : base; return; }
         const zone = owner?.userData.thermalZone || "exterior-structure";
-        part.material = thermalMaterial(`${zone}|${shell}`, zones[zone]?.c ?? systemsModel.ambientC, shell);
+        part.material = thermalMaterial(`${zone}|${shell}|${opaqueShell}`, zones[zone]?.c ?? systemsModel.ambientC, shell && !opaqueShell);
       });
     }
     for (const group of Object.values(subsystems)) {
@@ -366,7 +366,7 @@ export function createChaseRenderer(options = {}) {
         trails.forEach((material) => { material.opacity = 0; }); // no rotor blur over the diagram
         rotorDiscMaterial.opacity = 0;
       }
-      applyLayer(layer, state, which);
+      applyLayer(layer, state, which, !!view.inspector?.isolate && ['fuselage','attic'].includes(view.focusPart));
       poseSampling(state, which === "research" ? layer : "exterior");
       // The original model's rotors sit on tall posts, so its layered views are framed wider.
       const layeredScale = which === "original" ? 1.25 : 1;

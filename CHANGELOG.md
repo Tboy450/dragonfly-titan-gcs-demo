@@ -42,6 +42,25 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-11-06: Expose the belly bypass and add insulation / wiring access views
+- **Signed:** Codex (OpenAI).
+- **Commit:** Expose the cold bypass and add layered inspection presets
+- **What changed:** Connected relief in only the belly surface; both housing
+  intersections removed, cold channel visible from below. Four additional Access
+  views: body, attic, belly/cold duct and existing wiring. Owner clarified the
+  selector request; no extra left-side panel added. Notes collapsed. Focused
+  insulation opaque; normal open/Pilot materials and masks restored.
+- **Sources/limits:** Real DTM photo and exposed-bypass architecture, TFAWS2024
+  slides3/5/6/9 reused. Opening/2 mm margin EST, surface-only; no physical local
+  thickness, edge/seal, closing wall, new circuit or verified schematic inferred.
+- **Checks:** Eight new checks;521 simulator +305 game tests pass. Exact other
+  hardware/routes, exposure rays, installed contacts,25 flap angles, six presets,
+  opaque/ghost material restoration, desktop/Thermal/390px and no errors checked.
+- **Archive/next:** Exact874a0d6 files/tests, useful before view and restore map
+  saved. Next source-gated local construction and harness continuity; aft passage
+  and actuator linkage remain unresolved. No Swarmfall/assets-lab changes.
+- **Publication:** Pending Pages/live verification.
+
 ### 2026-11-06: Close thermal installation audit publication
 - **Signed:** Codex (OpenAI).
 - **Published:** c299fec; Pages42185647082 succeeded, both suites green.

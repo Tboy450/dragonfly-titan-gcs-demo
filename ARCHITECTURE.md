@@ -84,6 +84,14 @@ See `research/draco-electrical-audit-2026-10-27/README.md` before its next rebui
 
 ## Files
 
+November 6 continuation: `belly-bypass.mjs` clips only the installed belly mesh
+using connected footprints from actual cold-channel/housing vertices. Integration
+runs after existing camera/blower cuts; no per-frame geometry or equipment move.
+`inspection-visibility.mjs` owns six access presets and a cached non-harness mask;
+UI reuses focus/subassembly controls. Focused body/attic gets opaque materials,
+even with custom peeling; normal open and Pilot restore old styling. All surfaces
+and routes remain estimates, not physical stack layers or a wiring schematic.
+
 November 6: `research/thermal-installation-2026-11-06/audit.mjs` classifies the
 single duct/harness foot touch against its explicit construction floor plane.
 Numerical epsilon is not an engineering clearance. Historical raw triangle hits

@@ -4,6 +4,14 @@ Companion to `RESEARCH.md`. It gathers public sources on the real mission and co
 
 **How to read the tags**
 
+**Belly boundary / inspection views (Codex, November 6):**
+[sources, fit and limits](research/belly-bypass-2026-11-06/README.md).
+[PUB] exposed cold bypass. [EST] connected belly-surface opening/2 mm margin,
+not a dimensioned flight recess or physical foam stack. Both housing crossings
+removed; underside rays reach the existing channel. Other hardware/routes exact.
+Six view presets show modeled surfaces/wiring; electrical continuity remains
+incomplete. Seals, local thickness/closing walls and aft interfaces stay unconfirmed.
+
 **Thermal installation review (Codex, November 6):**
 [measurement and evidence](research/thermal-installation-2026-11-06/README.md).
 The joint/harness foot flag is numerical floor seating (about2.8e−11 m overlap);

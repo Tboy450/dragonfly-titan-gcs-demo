@@ -6,6 +6,13 @@ in the same change as every part rebuild (step 3 of the process in `INTERIOR-REA
 
 ## Shared sources (saved pages)
 
+**Belly opening / access views (Codex, November 6):**
+[source/measurement/limits](belly-bypass-2026-11-06/README.md). Rechecked existing
+TFAWS2024 slide9 real DTM underside photo and slides3/5/6 for exposed-bypass
+architecture/test limitations. Photo credited to JHUAPL/NASA presentation authors.
+Reuse body-foam source packet for real material/test evidence; no duplicate images.
+Opening contour/2 mm margin EST, no new flight layer or electrical schematic claim.
+
 **Thermal installation audit (Codex, November 6):**
 [evidence, measurements and next boundary](thermal-installation-2026-11-06/README.md).
 Reused NASA/APL/Ed Whitman's real September2026 wiring photo, NASA-STD-8739.4A

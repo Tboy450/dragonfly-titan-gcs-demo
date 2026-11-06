@@ -35,6 +35,7 @@ import { buildNoseElectronics } from "./nose-electronics.mjs?v=dev";
 import { buildDrill } from "./drills.mjs?v=dev";
 import { buildSampleLines, buildBlowers } from "./draco-plumbing.mjs?v=dev";
 import {openBlowerMountPorts} from './draco-blowers.mjs?v=dev';
+import {openBellyBypass} from './belly-bypass.mjs?v=dev';
 import { buildFans, buildWarmDuct, buildTrimDevice, airLoopPaths, thermalLoopAsset } from "./thermal-loop.mjs?v=dev";
 
 export function buildResearchModel(kit) {
@@ -465,6 +466,7 @@ export function buildResearchModel(kit) {
   interiorPart("drill-blower", "drills", "DrACO blowers: supplier-referenced pair, estimated installation", "Barber-Nichols BNCP-74-000 real EM photos and 345 ×168 mm nominal size; LPSC 2022 schematic; ICES-2023 p7. Proportions, ports, supports and installed layout estimated", 0x8c8f93, "exterior");
   const sampleBlowers=buildBlowers({ parent: buildTarget, mesh });
   openBlowerMountPorts(subsystems.fuselage,sampleBlowers.mounts);
+  openBellyBypass(subsystems.fuselage,trimDevice.group);
 
   // Main wiring harness on the bay floor (main-harness.mjs; NASA/APL's September 2026 harness
   // photo): a trunk down the centerline and branches to the units' cable stubs and connectors.

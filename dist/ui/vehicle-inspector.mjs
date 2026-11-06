@@ -5,12 +5,15 @@ import { samplingSequence } from "../science.mjs?v=dev";
 import { focusInspector, inspectionAvailable, inspectionTarget, resetInspector, rotateInspector, panInspector, zoomInspector, wheelZoomInspector,
   inspectionSubassemblies, inspectionSubassembly, selectInspectionSubassembly, inspectionOptionTitle } from "../vehicle-inspector.mjs?v=dev";
 import { globalInspectionLayers, partInspectionLayers, inspectionLayerVisible, setInspectionLayer,
-  restoreInspectionLayers, hiddenInspectionCount,applyInspectionAccessPreset,inspectionAccessPreset } from "../inspection-visibility.mjs?v=dev";
+  restoreInspectionLayers, hiddenInspectionCount,applyInspectionAccessPreset,inspectionAccessPreset,inspectionAccessViews } from "../inspection-visibility.mjs?v=dev";
 
 const numberedParts = numberedInspectionParts(chaseRenderer?.subsystems??{});
 const parts = numberedParts;
 const select = $("inspection-part");
 const subassemblySelect = $("inspection-subassembly");
+const accessSelect=$("inspection-access-preset");
+accessSelect.replaceChildren(...inspectionAccessViews.map(view=>{const o=document.createElement('option');o.value=view.id;o.textContent=view.label;return o;}));
+const customAccess=document.createElement('option');customAccess.value='custom';customAccess.textContent='Custom layers';customAccess.disabled=true;accessSelect.append(customAccess);
 let subassemblyTarget;
 for (const part of parts) {
   const option = document.createElement("option");
@@ -81,7 +84,8 @@ export function updateInspectorUI() {
   }
   subassemblySelect.value = inspectionSubassembly(group, i)?.name ?? "";
   const hidden = hiddenInspectionCount(i);
-  $("inspection-access-preset").value=inspectionAccessPreset(i);
+  accessSelect.value=inspectionAccessPreset(i);
+  $("inspection-view-note").textContent=inspectionAccessViews.find(v=>v.id===accessSelect.value)?.note??'Custom surface and component masks. Restore layers or choose an access view to return to a preset.';
   for (const option of select.options) {
     if (!option.value) continue;
     const part = parts.find(part => part.name === option.value);
@@ -128,8 +132,11 @@ export function updateInspectorUI() {
 
 select.addEventListener("change", () => { focusInspector(state, select.value || null); updateInspectorUI(); });
 $("inspection-access-preset").addEventListener("change",event=>{
-  if(event.target.value==="open")focusInspector(state,null);
-  applyInspectionAccessPreset(state.inspector,event.target.value);updateInspectorUI();
+  const view=applyInspectionAccessPreset(state.inspector,event.target.value);if(!view)return;
+  focusInspector(state,view.target);state.inspector.isolate=!!view.target;
+  state.inspector.elevation=view.elevation;state.inspector.azimuth=.22;
+  if(view.subassembly)selectInspectionSubassembly(state,chaseRenderer.subsystems[view.target],view.subassembly);
+  updateInspectorUI();
 });
 subassemblySelect.addEventListener("change", () => {
   selectInspectionSubassembly(state, chaseRenderer.subsystems[inspectionTarget(state)], subassemblySelect.value);

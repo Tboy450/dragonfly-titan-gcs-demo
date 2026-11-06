@@ -37,10 +37,10 @@ export function inspect(){
   rawWarmContacts:bodyHits(f.root,f.subsystems['underfloor-duct']),
   rawTrimContacts:bodyHits(f.root,f.subsystems['trim-chimneys']),
   coldDuctBoundsM:boundsInFrame(cold,f.root),bellyBoundsM:boundsInFrame(belly,f.root),
-  unchangedGeometry:true,
+  auditMutatesGeometry:false,
   limitations:['Seat is geometric only; flight clamp, floor structure, attachment and thermal isolation unconfirmed.',
-   'Two actual housing/belly surface intersections remain. Belly also obscures cold duct from below.',
-   'Resolve local insulation/exposed-channel boundary together; no inferred flight tile seam, thickness, seal or heat-leak coefficient.']};
+   'Later belly-bypass surface relief removes the two crossings and exposes the channel; edge construction remains unmodeled.',
+   'No inferred flight tile seam, thickness, seal or heat-leak coefficient.']};
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){const result=inspect();
  await writeFile(new URL('measurements.json',import.meta.url),JSON.stringify(result,null,2)+'\n');

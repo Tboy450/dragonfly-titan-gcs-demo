@@ -1,0 +1,60 @@
+{
+  "baseline": "874a0d6",
+  "footprints": [
+    {
+      "name": "cold-duct-channel",
+      "min": [
+        -0.07200000029802323,
+        -0.3970000000745058,
+        -0.5619999833106994
+      ],
+      "max": [
+        0.07200000029802323,
+        -0.3579999999254942,
+        0.6019999833106995
+      ]
+    },
+    {
+      "name": "front-diverter-housing",
+      "min": [
+        -0.10200000149011612,
+        -0.43169297677072227,
+        -0.6766257309663211
+      ],
+      "max": [
+        0.10200000149011612,
+        -0.35317544233033515,
+        -0.5153567249138198
+      ]
+    },
+    {
+      "name": "aft-diverter-housing",
+      "min": [
+        -0.10200000149011612,
+        -0.43169297677072227,
+        0.5753567249138198
+      ],
+      "max": [
+        0.10200000149011612,
+        -0.35317544233033515,
+        0.7366257309663211
+      ]
+    }
+  ],
+  "previousContacts": [
+    {
+      "mesh": "front-diverter-housing",
+      "other": "body-foam-belly-surface",
+      "owner": "body-foam-belly"
+    },
+    {
+      "mesh": "aft-diverter-housing",
+      "other": "body-foam-belly-surface",
+      "owner": "body-foam-belly"
+    }
+  ],
+  "contacts": [],
+  "flapBellyContacts": [],
+  "unchangedOtherGeometry": true,
+  "scope": "Connected estimated surface-only opening. No local foam thickness, closing walls, flight tile seam, seal or thermal coefficient reconstructed."
+}

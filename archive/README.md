@@ -15,6 +15,7 @@ on November 1, 2026; archive replaced game and lab work there.
 
 | Folder | What | Replaced on | Git tag |
 |---|---|---|---|
+| [Belly / access views](belly-bypass-2026-11-06/README.md) | Exact former integration/UI/renderer/tests, covered cold duct before sample and restore map | November6,2026 | archive/belly-bypass-2026-11-06 on874a0d6 |
 | [Trim interfaces](trim-interfaces-2026-11-01/README.md) | Exact solid/gapped bypass and warm floor baseline, before views, rejected direct taper/audit | November1,2026 | archive/trim-interfaces-2026-11-01 on09a03d4 |
 | [Main duct / nose outlet](warm-duct-passages-2026-10-30/README.md) | Exact solid-run/flange/nose/outlet baseline, original UI/tests and before views | October30,2026 | archive/warm-duct-passages-2026-10-30 on3033b92 |
 | [Fan/duct transition](fan-duct-interface-2026-10-29/README.md) | Exact solid transition/UI/test baseline, rejected straight-shell parameters and before sample | October29,2026 | archive/fan-duct-interface-2026-10-29 on915a204 (pushed) |

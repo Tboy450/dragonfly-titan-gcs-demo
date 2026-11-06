@@ -22,6 +22,26 @@ function fakeRenderer() {
   };
 }
 
+test('Focused insulation stays opaque when peeled; open interior and Pilot restore normal materials and visibility',async()=>{
+ const {createChaseRenderer}=await import('../dist/chase-vehicle.mjs');
+ const {createFlightState}=await import('../dist/flight-model.mjs');
+ const {createInspector,focusInspector}=await import('../dist/vehicle-inspector.mjs');
+ const {applyInspectionAccessPreset,setInspectionLayer}=await import('../dist/inspection-visibility.mjs');
+ const renderer=fakeRenderer(),draw=renderer.render.bind(renderer);let opacity;
+ renderer.render=(scene,camera)=>{opacity=scene.getObjectByName('body-foam-belly-surface').material.opacity;draw(scene,camera);};
+ const chase=createChaseRenderer({renderer}),s={...createFlightState(),vehicleModel:'research',inspector:createInspector()};
+ for(const layer of ['internal','thermal']){
+  const v=applyInspectionAccessPreset(s.inspector,'body');focusInspector(s,v.target);s.inspector.isolate=true;
+  chase.drawMission(context2d,800,600,s,{layer,inspector:s.inspector,focusPart:s.inspector.focusPart});assert.equal(opacity,1);
+  setInspectionLayer(s.inspector,'body-foam-top',false);
+  chase.drawMission(context2d,800,600,s,{layer,inspector:s.inspector,focusPart:s.inspector.focusPart});assert.equal(opacity,1);
+  applyInspectionAccessPreset(s.inspector,'open');focusInspector(s,null);
+  chase.drawMission(context2d,800,600,s,{layer,inspector:s.inspector});assert.ok(opacity<.3);
+ }
+ chase.draw(context2d,800,600,s);assert.equal(opacity,1);
+ assert.ok(chase.subsystems.fuselage.visible);
+});
+
 test("The 3D scene builds and draws every view, model and antenna pose without errors", async () => {
   const { createChaseRenderer } = await import("../dist/chase-vehicle.mjs");
   const { createFlightState } = await import("../dist/flight-model.mjs");

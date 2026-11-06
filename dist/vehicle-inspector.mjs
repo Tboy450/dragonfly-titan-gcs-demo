@@ -85,6 +85,7 @@ export function selectInspectionSubassembly(state, group, name) {
   state.inspector.resetSerial += 1;
 }
 export function inspectionGroups(name, subassemblyName = null) {
+  if(name==='fuselage'&&subassemblyName==='body-foam-belly')return ['fuselage','trim-chimneys','underfloor-duct'];
   const related = {
     "nose-electronics": !subassemblyName || subassemblyName==='ocellus-meb' ? ["nose-electronics","navigation-meb-link"] : ["nose-electronics"],
     "main-harness": subassemblyName ? ["main-harness"] : ["main-harness","navigation-meb-link","radio-harness-link"],
