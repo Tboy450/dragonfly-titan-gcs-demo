@@ -83,4 +83,15 @@ provides the three inspection views; `serve.mjs` binds only 127.0.0.1:4216.
 The local app's nested Vehicle part assumptions disclosure visibly contains
 the corrected part 18 explanation. Its full text stays within expandable notes.
 
-Publication receipt pending deployment verification.
+## Publication receipt
+
+Implementation **c299fec4d76d4e4919e7d55eeea1792f4115652b** pushed to main and
+the Codex publication branch. [Pages42185647082](https://github.com/Tboy450/dragonfly-titan-gcs-demo/actions/runs/42185647082)
+succeeded, including both test suites. On November 6 the
+[public app](https://tboy450.github.io/dragonfly-titan-gcs-demo/?v=c299fec)
+visibly showed build c299fec and the expanded part18 assumption explaining the
+numerical floor seat and unconfirmed flight attachment. No public mission reset,
+sampling or piloting command issued. This text-only runtime change did not
+receive a new phone-layout sweep; earlier responsive checks remain historical.
+The task preview server was stopped after verification. No asset-lab or Swarmfall
+file changed relative to incoming83b3e95. Private outreach/temp folders excluded.

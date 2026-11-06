@@ -21,7 +21,8 @@ November 6: [Thermal installation / clamp audit](research/thermal-installation-2
   Real gap/penetration and displaced footprints fail the seat classification.
   Existing geometry unchanged; no unnecessary asset redraw or comparison sheet.
 - [x] Sample and known insulation-issue view saved; expandable assumptions updated.
-- [ ] Publish and verify corrected notes; record receipt.
+- [x] Published **c299fec**; Pages42185647082 succeeded. November 6 public
+  build stamp and expanded part18 assumption text verified. No mission reset.
 - [ ] NEXT: reconcile both housing/belly surface intersections AND the belly
   hiding the exposed cold channel. Use actual beveled surface (bottom about
   −0.410 m), not nominal bellyY −0.36 m. Archive surfaces before replacement;

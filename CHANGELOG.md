@@ -42,6 +42,14 @@ Notes for every session (see [ARCHITECTURE.md](ARCHITECTURE.md) for the file map
 
 ## Entries
 
+### 2026-11-06: Close thermal installation audit publication
+- **Signed:** Codex (OpenAI).
+- **Published:** c299fec; Pages42185647082 succeeded, both suites green.
+- **Live:** Build stamp and expanded part18 corrected floor-seat explanation
+  verified. No public mission reset or piloting/sampling command issued.
+- **Next:** Local insulation / exposed cold-channel boundary package; follow
+  the measurement-based handoff in research/thermal-installation-2026-11-06/.
+
 ### 2026-11-06: Verify the duct/harness floor seat and identify the insulation boundary
 - **Signed:** Codex (OpenAI).
 - **Commit:** Verify the thermal harness seat without moving completed hardware

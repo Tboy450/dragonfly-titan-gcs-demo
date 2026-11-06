@@ -5,6 +5,8 @@ The reported harness-clamp collision is numerical contact at the shared floor
 plane; no geometry change was needed. Expandable assumptions corrected.
 513 simulator and 305 separate Swarmfall boundary tests pass. Next: reconcile
 the real housing/belly intersections and cold-channel exposure together.
+Published **c299fec**; Pages42185647082 succeeded; live build and corrected
+expandable part18 note verified November 6.
 
 November1: [Part19 fitted bypass passages](research/trim-interfaces-2026-11-01/README.md).
 Two warm-floor ports and hollow connectors meet the open cold duct; existing
